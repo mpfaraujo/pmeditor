@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@benrbray/prosemirror-math':
         specifier: ^1.0.0
-        version: 1.0.0(katex@0.16.27)(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-inputrules@1.5.1)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-transform@1.11.0)(prosemirror-view@1.41.5)
+        version: 1.0.0(katex@0.16.28)(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-inputrules@1.5.1)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-transform@1.11.0)(prosemirror-view@1.41.5)
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -68,6 +68,9 @@ importers:
       inquirer:
         specifier: ^13.2.1
         version: 13.2.1(@types/node@20.19.30)
+      katex:
+        specifier: ^0.16.28
+        version: 0.16.28
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)
@@ -2191,8 +2194,8 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
-  katex@0.16.27:
-    resolution: {integrity: sha512-aeQoDkuRWSqQN6nSvVCEFvfXdqo1OQiCmmW1kc9xSdjutPv7BGO7pqY9sQRJpMOGrEdfDgF2TfRXe5eUAD2Waw==}
+  katex@0.16.28:
+    resolution: {integrity: sha512-YHzO7721WbmAL6Ov1uzN/l5mY5WWWhJBSW+jq4tkfZfsxmo1hu6frS0EOswvjBUnWE6NtjEs48SFn5CQESRLZg==}
     hasBin: true
 
   keyv@4.5.4:
@@ -3004,9 +3007,9 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@benrbray/prosemirror-math@1.0.0(katex@0.16.27)(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-inputrules@1.5.1)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-transform@1.11.0)(prosemirror-view@1.41.5)':
+  '@benrbray/prosemirror-math@1.0.0(katex@0.16.28)(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-inputrules@1.5.1)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-transform@1.11.0)(prosemirror-view@1.41.5)':
     dependencies:
-      katex: 0.16.27
+      katex: 0.16.28
       prosemirror-commands: 1.7.1
       prosemirror-history: 1.5.0
       prosemirror-inputrules: 1.5.1
@@ -5054,7 +5057,7 @@ snapshots:
       object.assign: 4.1.7
       object.values: 1.2.1
 
-  katex@0.16.27:
+  katex@0.16.28:
     dependencies:
       commander: 8.3.0
 
