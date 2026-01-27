@@ -1,0 +1,214 @@
+/* Largura-alvo do editor (equivalente à coluna 8,5cm) */
+.ProseMirror {
+  width: 8.5cm;
+  max-width: 8.5cm;
+
+  box-sizing: content-box; /* largura = área de texto */
+
+  font-size: 9pt;
+  line-height: 1.35;
+  font-family: Calibri, Arial, sans-serif;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Ajuste para impressão - proporcional a 8.5cm de largura */
+.ProseMirror {
+  position: relative;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 9pt; /* tamanho padrão para impressão */
+  line-height: 1.4;
+  max-width: 320px; /* aproximadamente 8.5cm em 96 DPI */
+}
+
+.ProseMirror p {
+  margin: 0.5em 0;
+}
+.ProseMirror pre {
+  white-space: pre-wrap;
+}
+
+.ProseMirror-hideselection *::selection {
+  background: transparent;
+}
+
+.ProseMirror-hideselection *::-moz-selection {
+  background: transparent;
+}
+
+.ProseMirror-hideselection {
+  caret-color: transparent;
+}
+
+.ProseMirror-selectednode {
+  outline: 2px solid #8cf;
+}
+
+/* Estilos customizados para questões */
+.question {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+}
+
+.base-text {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.statement {
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  padding: 0.2rem;
+  padding-left: 1.5rem; /* espaço para o A) B) C) */
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fafafa;
+  position: relative;
+}
+
+.option::before {
+  content: "(" attr(data-letter) ") ";
+  font-weight: normal;
+  color: #3b82f6;
+  position: absolute;
+  left: 0.25rem;
+  top: .55rem;
+}
+
+.option > * {
+  margin-left: 2rem;
+}
+
+/* Listas - IMPORTANTE: remover position: relative do li */
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 2rem;
+  margin: 0.5rem 0;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+}
+
+.ProseMirror li {
+  display: list-item;
+  margin: 0.25rem 0;
+}
+
+.ProseMirror li p {
+  margin: 0;
+  display: inline;
+}
+/* Listas customizadas */
+.ProseMirror ol.roman-list {
+  list-style-type: upper-roman;
+}
+
+.ProseMirror ol.alpha-list {
+  list-style-type: lower-alpha;
+}
+
+/* Lista de assertivas */
+.ProseMirror ul.assertive-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0.5rem 0;
+}
+
+.ProseMirror ul.assertive-list > li {
+  position: relative;
+  padding-left: 3rem;
+  margin: 0.25rem 0;
+  display: block;
+}
+
+.ProseMirror ul.assertive-list > li::before {
+  content: "(\00a0)";
+  position: absolute;
+  left: 0.5rem;
+  top: 0.25em;
+  font-weight: normal;
+  font-family: monospace;
+  letter-spacing: 0.5em;
+}
+
+.ProseMirror ul.assertive-list > li p {
+  margin: 0;
+  display: inline;
+}
+/* Code block */
+.ProseMirror pre {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.ProseMirror pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+}
+
+/* Code inline (mark) */
+.ProseMirror code {
+  background: #f0f0f0;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+}
+/* Imagens */
+.ProseMirror img {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
+/* ...seu CSS atual... */
+
+.ProseMirror img {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fórmula inline (KaTeX) */
+.ProseMirror .math-inline {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 2px;
+}
+
+.ProseMirror .math-inline .katex {
+  font-size: 1em;
+}

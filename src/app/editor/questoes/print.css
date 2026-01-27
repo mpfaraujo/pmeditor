@@ -1,0 +1,62 @@
+/* src/app/editor/questoes/print.css
+   Modo impressão – escopo: .print-mode
+*/
+
+.print-mode {
+  width: 8.5cm;
+  max-width: 8.5cm;
+  box-sizing: content-box;
+
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 9pt;
+  line-height: 1.1;
+  color: #000;
+
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* remove margens padrão */
+.print-mode p {
+  margin: 0;
+}
+
+/* texto-base / enunciado */
+.print-mode .base-text,
+.print-mode .statement,
+.print-mode .question-text {
+  margin: 0;
+  padding: 0;
+}
+
+/* opções */
+.print-mode .question-options {
+  margin-top: 2mm;
+}
+
+/* ===== CORREÇÃO DEFINITIVA DO (A)(B)(C) ===== */
+
+/* Tailwind: font-semibold */
+.print-mode .font-semibold {
+  font-weight: 400 !important;
+}
+
+/* garante que negrito real continue funcionando */
+.print-mode strong,
+.print-mode b {
+  font-weight: 700;
+}
+
+/* imagens */
+.print-mode img {
+  max-width: 8.5cm;
+  height: auto;
+  margin: 0.2em 0;
+}
+
+/* KaTeX inline */
+.print-mode .math-inline,
+.print-mode .math-inline .katex {
+  font-size: 1em;
+  line-height: 1.1;
+}

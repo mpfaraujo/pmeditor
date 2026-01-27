@@ -1,0 +1,251 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.prova-page {
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 1.5cm;
+  font-size: 10pt;
+  font-family: Calibri, Arial, sans-serif;
+}
+
+.prova-header {
+  margin-bottom: 0.8cm;
+}
+
+.header-grid {
+  display: grid;
+  grid-template-columns: 2cm 1fr 3cm;
+  gap: 0.15cm;
+  margin-bottom: 0.1cm;
+}
+
+.header-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2cm 2cm;
+  gap: 0.15cm;
+  margin-bottom: 0.1cm;
+}
+
+.logo-area {
+  grid-row: 1 / 3;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.field-wrapper {
+  position: relative;
+  padding-top: 8px;
+}
+
+.field-label {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  font-size: 7pt;
+  font-weight: normal;
+  background: white;
+  padding: 0 3px;
+  z-index: 1;
+}
+
+.field-content {
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 4px 6px;
+  min-height: 22px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.field-content:focus {
+  background: #f9f9f9;
+}
+
+.instituicao-footer {
+  background: #666;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  font-weight: bold;
+  outline: none;
+  margin-top: 0.1cm;
+  border-radius: 5px;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.instituicao-footer:focus {
+  background: #555;
+}
+
+/* 2 colunas manuais */
+.questoes-container {
+  position: relative;
+  display: flex;
+  gap: 1cm;
+}
+
+.coluna {
+  width: calc((100% - 1cm) / 2);
+  break-inside: avoid;
+}
+
+/* divisor central (imprime usando border, não background) */
+.questoes-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  border-left: 1px solid #000;
+  transform: translateX(-1px);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.questao-item-wrapper {
+  break-inside: avoid;
+  margin-bottom: 0.5cm;
+}
+
+.questao-item {
+  display: block;
+}
+
+.questao-header-linha {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 0.2cm;
+}
+.pontos-editavel {
+  position: absolute;
+  right: -0.5cm;
+  top: -9px;
+  outline: none;
+  min-width: 2.5cm;
+  border: none;
+  text-align: center;
+  font-size: 8pt;
+}
+
+.pontos-editavel:focus {
+  color: #000;
+  background: #fff;
+  border: 1px dashed #aaa;
+  padding: 1px 4px;
+}
+
+.questao-conteudo {
+  display: inline;
+  line-height: 1.1;
+}
+
+.questao-conteudo p {
+  margin: 0;
+  text-align: justify;
+}
+
+.questao-conteudo p + p {
+  margin-top: 0.25em;
+}
+
+.question-readonly p,
+.question-text {
+  text-align: justify;
+}
+.questao-header-wrap {
+  position: relative;
+  display: block;
+}
+
+.questao-header-svg {
+  display: block;
+}
+
+.questao-pontos-editavel {
+  position: absolute;
+  right: -0.5cm;
+  top: -0.05cm;
+  min-width: 2.5cm;
+  height: 0.55cm;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 8pt;
+  background: transparent;
+}
+
+
+
+.questao-pontos-editavel {
+  position: absolute;
+  right: -0.5cm;
+  top: -0.05cm;
+  min-width: 2.5cm;
+  height: 0.55cm;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 8pt;
+  background: transparent;
+}
+
+
+@media print {
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* não imprimir a camada de medição */
+  .measure-layer {
+    display: none !important;
+  }
+
+  /* wrapper externo não pode “empurrar” nada */
+  .a4-sheet {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+
+    break-after: page !important;
+    page-break-after: always !important;
+  }
+
+  .a4-sheet:last-of-type {
+    break-after: auto !important;
+    page-break-after: auto !important;
+  }
+
+  /* folha A4 real com margem interna de 1,5cm */
+  .prova-page {
+    width: 21cm !important;
+    height: 29.7cm !important;
+    min-height: 0 !important;
+    padding: 1.5cm !important;
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+    box-shadow: none !important;
+
+    /* necessário para a linha ocupar “altura útil inteira” */
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .prova-header {
+    flex: 0 0 auto !important;
+  }
+
+  .questoes-container {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
+}

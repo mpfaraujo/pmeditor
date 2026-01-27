@@ -1,0 +1,228 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+interface FilterOptions {
+  disciplinas: string[];
+  assuntos: string[];
+  tipos: string[];
+  dificuldades: string[];
+}
+
+interface FilterValues {
+  disciplinas: string[];
+  assuntos: string[];
+  tipos: string[];
+  dificuldades: string[];
+  tags: string;
+}
+
+interface QuestionsFilterProps {
+  onFilter: (filters: FilterValues) => void;
+  totalResults: number;
+}
+
+const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
+const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
+
+export function QuestionsFilter({ onFilter, totalResults }: QuestionsFilterProps) {
+  const [options, setOptions] = useState<FilterOptions>({
+    disciplinas: [],
+    assuntos: [],
+    tipos: [],
+    dificuldades: [],
+  });
+
+  const [filters, setFilters] = useState<FilterValues>({
+    disciplinas: [],
+    assuntos: [],
+    tipos: [],
+    dificuldades: [],
+    tags: "",
+  });
+
+  // Carregar opções de filtro
+  useEffect(() => {
+    loadFilterOptions();
+  }, []);
+
+  // Recarregar assuntos quando disciplinas mudam
+  useEffect(() => {
+    loadFilterOptions(filters.disciplinas);
+  }, [filters.disciplinas]);
+
+  const loadFilterOptions = async (disciplinas: string[] = []) => {
+    try {
+      const params = new URLSearchParams();
+      disciplinas.forEach(d => params.append("disciplinas[]", d));
+
+      const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
+        headers: { "X-Questions-Token": TOKEN },
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setOptions({
+          disciplinas: data.disciplinas || [],
+          assuntos: data.assuntos || [],
+          tipos: data.tipos || [],
+          dificuldades: data.dificuldades || [],
+        });
+      }
+    } catch (err) {
+      console.error("Erro ao carregar filtros:", err);
+    }
+  };
+
+  const toggleFilter = (key: keyof Omit<FilterValues, "tags">, value: string) => {
+    setFilters(prev => {
+      const current = prev[key];
+      const updated = current.includes(value)
+        ? current.filter(v => v !== value)
+        : [...current, value];
+      return { ...prev, [key]: updated };
+    });
+  };
+
+  const handleFilter = () => {
+    onFilter(filters);
+  };
+
+  const handleClear = () => {
+    const cleared: FilterValues = {
+      disciplinas: [],
+      assuntos: [],
+      tipos: [],
+      dificuldades: [],
+      tags: "",
+    };
+    setFilters(cleared);
+    onFilter(cleared);
+    loadFilterOptions();
+  };
+
+  return (
+    <div className="w-64 border-r bg-white h-screen sticky top-0 flex flex-col">
+      <div className="p-4 border-b">
+        <h2 className="font-semibold text-lg">Filtros</h2>
+        <p className="text-xs text-muted-foreground mt-1">
+          {totalResults} questões encontradas
+        </p>
+      </div>
+
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-4">
+          {/* Disciplinas */}
+          <div>
+            <Label className="text-xs font-medium mb-1.5 block">Disciplina</Label>
+            <div className="space-y-1">
+              {options.disciplinas.map(disc => (
+                <div key={disc} className="flex items-center gap-1.5">
+                  <Checkbox
+                    id={`disc-${disc}`}
+                    checked={filters.disciplinas.includes(disc)}
+                    onCheckedChange={() => toggleFilter("disciplinas", disc)}
+                    className="h-3.5 w-3.5"
+                  />
+                  <label htmlFor={`disc-${disc}`} className="text-xs cursor-pointer leading-tight">
+                    {disc}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Assuntos */}
+          {filters.disciplinas.length > 0 && options.assuntos.length > 0 && (
+            <div>
+              <Label className="text-xs font-medium mb-1.5 block">Assunto</Label>
+              <div className="space-y-1">
+                {options.assuntos.map(ass => (
+                  <div key={ass} className="flex items-center gap-1.5">
+                    <Checkbox
+                      id={`ass-${ass}`}
+                      checked={filters.assuntos.includes(ass)}
+                      onCheckedChange={() => toggleFilter("assuntos", ass)}
+                      className="h-3.5 w-3.5"
+                    />
+                    <label htmlFor={`ass-${ass}`} className="text-xs cursor-pointer leading-tight">
+                      {ass}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tipo */}
+          <div>
+            <Label className="text-xs font-medium mb-1.5 block">Tipo</Label>
+            <div className="space-y-1">
+              {options.tipos.map(tipo => (
+                <div key={tipo} className="flex items-center gap-1.5">
+                  <Checkbox
+                    id={`tipo-${tipo}`}
+                    checked={filters.tipos.includes(tipo)}
+                    onCheckedChange={() => toggleFilter("tipos", tipo)}
+                    className="h-3.5 w-3.5"
+                  />
+                  <label htmlFor={`tipo-${tipo}`} className="text-xs cursor-pointer leading-tight">
+                    {tipo}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dificuldade */}
+          <div>
+            <Label className="text-xs font-medium mb-1.5 block">Dificuldade</Label>
+            <div className="space-y-1">
+              {options.dificuldades.map(dif => (
+                <div key={dif} className="flex items-center gap-1.5">
+                  <Checkbox
+                    id={`dif-${dif}`}
+                    checked={filters.dificuldades.includes(dif)}
+                    onCheckedChange={() => toggleFilter("dificuldades", dif)}
+                    className="h-3.5 w-3.5"
+                  />
+                  <label htmlFor={`dif-${dif}`} className="text-xs cursor-pointer leading-tight">
+                    {dif}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div>
+            <Label htmlFor="tags-input" className="text-xs font-medium mb-1.5 block">
+              Tags
+            </Label>
+            <Input
+              id="tags-input"
+              placeholder="Buscar por tag..."
+              value={filters.tags}
+              onChange={(e) => setFilters(prev => ({ ...prev, tags: e.target.value }))}
+              className="text-xs h-7"
+            />
+          </div>
+        </div>
+      </ScrollArea>
+
+      <div className="p-4 border-t space-y-2">
+        <Button onClick={handleFilter} className="w-full">
+          Filtrar
+        </Button>
+        <Button onClick={handleClear} variant="outline" className="w-full">
+          Limpar
+        </Button>
+      </div>
+    </div>
+  );
+}

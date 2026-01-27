@@ -1,0 +1,86 @@
+{
+  "metadata": {
+    "schemaVersion": 1,
+    "id": "6b4b6c9f-5f7e-4d6b-9e20-8ad9f2b9b5d2",
+    "createdAt": "2026-01-26T21:45:00.000Z",
+    "updatedAt": "2026-01-26T21:45:00.000Z",
+    "tipo": "Múltipla Escolha",
+    "dificuldade": "Fácil",
+    "tags": [],
+    "gabarito": { "kind": "mcq", "correct": "D" },
+    "source": {
+      "kind": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2025,
+      "prova": "2º dia",
+      "cargo": "Caderno Cinza",
+      "numero": "136"
+    }
+  },
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "question",
+        "content": [
+          {
+            "type": "statement",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  { "type": "text", "text": "Se " },
+                  { "type": "math_inline", "attrs": { "latex": "x>0" } },
+                  { "type": "text", "text": ", então o valor de " },
+                  { "type": "math_inline", "attrs": { "latex": "sqrt{x^2}" } },
+                  { "type": "text", "text": " é" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "options",
+            "content": [
+              {
+                "type": "option",
+                "attrs": { "letter": "A" },
+                "content": [
+                  { "type": "paragraph", "content": [{ "type": "math_inline", "attrs": { "latex": "-x" } }] }
+                ]
+              },
+              {
+                "type": "option",
+                "attrs": { "letter": "B" },
+                "content": [
+                  { "type": "paragraph", "content": [{ "type": "text", "text": "0" }] }
+                ]
+              },
+              {
+                "type": "option",
+                "attrs": { "letter": "C" },
+                "content": [
+                  { "type": "paragraph", "content": [{ "type": "math_inline", "attrs": { "latex": "x^2" } }] }
+                ]
+              },
+              {
+                "type": "option",
+                "attrs": { "letter": "D" },
+                "content": [
+                  { "type": "paragraph", "content": [{ "type": "math_inline", "attrs": { "latex": "x" } }] }
+                ]
+              },
+              {
+                "type": "option",
+                "attrs": { "letter": "E" },
+                "content": [
+                  { "type": "paragraph", "content": [{ "type": "text", "text": "1" }] }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
