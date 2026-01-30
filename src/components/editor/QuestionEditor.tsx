@@ -19,6 +19,8 @@ import { MathInsert } from "./MathInsert";
 import { QuestionMetadataModal } from "./QuestionMetadataModal";
 import { QuestionMetadataV1, normalizeGabaritoForTipo } from "./QuestionMetaBar";
 import { placeholderPlugin } from "./placeholder-plugin";
+import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
+
 
 import { createQuestion } from "@/lib/questions";
 
@@ -100,6 +102,13 @@ function buildPlugins(): Plugin[] {
         wrappingInputRule(/^\(VF\)\s$/i, schema.nodes.assertive_list),
       ],
     }),
+    // AQUI:
+createSmartPastePlugin({
+  uploadEndpoint: "https://mpfaraujo.com.br/guardafiguras/api/upload.php",
+  uploadToken: "uso_exclusivo_para_o_editor_de_textos_proseMirror_editor_de_questoes",
+  maxImageWidthCm: 8,
+  stripAllHtmlImages: false,
+}),
     keymap({
       Enter: splitListItem(schema.nodes.list_item),
       Tab: sinkListItem(schema.nodes.list_item),

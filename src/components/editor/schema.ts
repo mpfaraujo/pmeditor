@@ -209,7 +209,7 @@ const nodes: Record<string, NodeSpec> = {
   },
 };
 
-const marks: Record<string, MarkSpec> = {
+export const marks: Record<string, MarkSpec> = {
   strong: {
     parseDOM: [
       { tag: "strong" },
@@ -262,7 +262,38 @@ const marks: Record<string, MarkSpec> = {
       return ["u", 0];
     },
   },
+
+  subscript: {
+    parseDOM: [
+      { tag: "sub" },
+      {
+        style: "vertical-align",
+        getAttrs(value: string) {
+          return value === "sub" ? null : false;
+        },
+      },
+    ] as readonly ParseRule[],
+    toDOM(): DOMOutputSpec {
+      return ["sub", 0];
+    },
+  },
+
+  superscript: {
+    parseDOM: [
+      { tag: "sup" },
+      {
+        style: "vertical-align",
+        getAttrs(value: string) {
+          return value === "super" ? null : false;
+        },
+      },
+    ] as readonly ParseRule[],
+    toDOM(): DOMOutputSpec {
+      return ["sup", 0];
+    },
+  },
 };
+
 
 export const schema = new Schema({ nodes, marks });
 
