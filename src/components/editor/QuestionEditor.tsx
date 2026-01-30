@@ -493,26 +493,40 @@ export function QuestionEditor() {
   };
 
   // SAVE: API (sem JSON download)
-  const performSaveApi = async () => {
-    if (!view) return;
+ const performSaveApi = async () => {
+  if (!view) return;
 
-    const payload: SavedQuestionV1 = {
-      metadata: meta,
-      content: view.state.doc.toJSON(),
-    };
+  // garante updatedAt sempre
+  const nowIso = new Date().toISOString();
+  const metaToSend: QuestionMetadataV1 = {
+    ...meta,
+    updatedAt: nowIso,
+  };
+
+  const payload: SavedQuestionV1 = {
+    metadata: metaToSend,
+    content: view.state.doc.toJSON(),
+  };
+
+  try {
+    const res = await createQuestion(payload);
+
+    // atualiza o state local com o que foi realmente salvo (principalmente updatedAt)
+    setMeta(metaToSend);
+
+    window.alert(`Salvo: ${res?.id ?? metaToSend.id}`);
 
     try {
-      const res = await createQuestion(payload);
-      window.alert(`Salvo: ${res?.id ?? meta.id}`);
-      try {
-        localStorage.setItem("pmeditor:last", JSON.stringify(payload));
-      } catch {
-        // ignore
-      }
+      localStorage.setItem("pmeditor:last", JSON.stringify(payload));
     } catch {
-      window.alert("Erro ao salvar questão.");
+      // ignore
     }
-  };
+  } catch (e: any) {
+    // se o backend travou base e você tentou salvar de novo a mesma, mostre isso
+    window.alert("Erro ao salvar questão.");
+  }
+};
+
 
   const handleSave = () => {
     if (!hasEssentialMetadata(meta)) {
