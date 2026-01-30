@@ -13,8 +13,23 @@ const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN?? "";
 
 async function handle(res: Response) {
   const text = await res.text();
-  if (!res.ok) throw new Error(text || `HTTP ${res.status}`);
-  return JSON.parse(text);
+
+  let body: any = null;
+  try {
+    body = text ? JSON.parse(text) : null;
+  } catch {
+    body = null;
+  }
+
+  if (!res.ok || (body && body.success === false)) {
+    const msg = body?.error || text || `HTTP ${res.status}`;
+    const err = new Error(msg) as Error & { status?: number; body?: any };
+    err.status = res.status;
+    err.body = body;
+    throw err;
+  }
+
+  return body ?? {};
 }
 
 export async function createQuestion(payload: QuestionPayload) {
@@ -28,7 +43,6 @@ export async function createQuestion(payload: QuestionPayload) {
   });
   return handle(res);
 }
-
 export async function getQuestion(id: string) {
   const res = await fetch(`${BASE_URL}/get.php?id=${encodeURIComponent(id)}`, {
     headers: { "X-Questions-Token": TOKEN },
