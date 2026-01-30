@@ -2,10 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { useProva } from "@/contexts/ProvaContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import QuestionRenderer from "@/components/Questions/QuestionRenderer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Printer, ListOrdered, Settings } from "lucide-react";
+import { ArrowLeft, Printer, ListOrdered } from "lucide-react";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 import { ReorderModal } from "@/components/prova/ReorderModal";
 import QuestionHeaderSvg from "@/components/prova/QuestaoHeaderSvg";
@@ -13,7 +13,7 @@ import PaginatedA4 from "@/components/prova/PaginatedA4";
 import { usePagination } from "@/hooks/usePagination";
 import { ProvaLayout } from "@/components/prova/layouts/ProvaLayout";
 import { ExerciseLayout } from "@/components/prova/layouts/ExerciseLayout";
-import { QuestionData, ColumnLayout } from "@/types/layout";
+import { LayoutType, ColumnCount, QuestionData, ColumnLayout } from "@/types/layout";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
@@ -21,7 +21,12 @@ const SAFETY_PX = 180;
 
 export default function MontarProvaPage() {
   const router = useRouter();
-  const { selectedQuestions: initialQuestions, updateColumnLayout, provaConfig, updateProvaConfig } = useProva();
+  const searchParams = useSearchParams();
+  const { selectedQuestions: initialQuestions, updateColumnLayout } = useProva();
+
+  // Parâmetros de query: ?type=prova|exercicio&columns=1|2
+  const layoutType: LayoutType = (searchParams.get("type") as LayoutType) || "prova";
+  const columnCount: ColumnCount = (parseInt(searchParams.get("columns") || "2") as ColumnCount) || 2;
 
   const [layout, setLayout] = useState<ColumnLayout>(() => {
     const mid = Math.ceil(initialQuestions.length / 2);
@@ -31,7 +36,7 @@ export default function MontarProvaPage() {
     };
   });
 
-  const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
 
@@ -53,16 +58,12 @@ export default function MontarProvaPage() {
     window.print();
   };
 
-  const handleEditarConfiguracao = () => {
-    router.push("/editor/prova/selecionar-layout");
-  };
-
   // Ordem linear atual (reordenação respeitada)
   const orderedQuestions = useMemo(() => {
     return [...layout.coluna1, ...layout.coluna2];
   }, [layout]);
 
-  // Hook de paginação
+  // Hook de paginação - extrai toda a lógica complexa
   const { pages, refs } = usePagination({
     config: {
       pageHeight: PAGE_HEIGHT,
@@ -79,7 +80,7 @@ export default function MontarProvaPage() {
       <div key={question.metadata.id} className="questao-item-wrapper">
         <div className="questao-item">
           <div className="questao-header-linha">
-            <QuestionHeaderSvg numero={globalIndex + 1} totalMm={provaConfig.columns === 2 ? 85 : 180} boxMm={28} />
+            <QuestionHeaderSvg numero={globalIndex + 1} totalMm={85} boxMm={28} />
             <span contentEditable suppressContentEditableWarning className="pontos-editavel"></span>
           </div>
 
@@ -99,24 +100,17 @@ export default function MontarProvaPage() {
   };
 
   // Seleciona o layout baseado no tipo
-  const LayoutComponent = provaConfig.layoutType === "exercicio" ? ExerciseLayout : ProvaLayout;
+  const LayoutComponent = layoutType === "exercicio" ? ExerciseLayout : ProvaLayout;
 
   return (
     <>
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
         {/* Barra de ações */}
         <div className="print:hidden fixed top-4 left-4 right-4 z-50 flex gap-2 justify-between bg-white p-4 border rounded-lg shadow-lg">
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => router.push("/editor/questoes")}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-
-            <Button variant="outline" onClick={handleEditarConfiguracao}>
-              <Settings className="h-4 w-4 mr-2" />
-              Configuração
-            </Button>
-          </div>
+          <Button variant="outline" onClick={() => router.push("/editor/questoes")}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Voltar
+          </Button>
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setReorderModalOpen(true)}>
@@ -139,16 +133,13 @@ export default function MontarProvaPage() {
           onLogoClick={() => setLogoDialogOpen(true)}
           renderQuestion={renderQuestion}
           refs={refs}
-          columns={provaConfig.columns}
+          columns={columnCount}
         />
 
         <ImageUpload
           open={logoDialogOpen}
           onOpenChange={setLogoDialogOpen}
-          onImageInsert={(url) => {
-            setLogoUrl(url);
-            updateProvaConfig({ logoUrl: url });
-          }}
+          onImageInsert={(url) => setLogoUrl(url)}
         />
 
         <ReorderModal

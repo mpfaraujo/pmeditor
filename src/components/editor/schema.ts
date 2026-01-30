@@ -1,328 +1,277 @@
-import { Schema, Node as ProseMirrorNode } from "prosemirror-model";
+import { Schema, type NodeSpec, type MarkSpec, type DOMOutputSpec, type ParseRule } from "prosemirror-model";
 
-// Definição dos nodes
-const nodes = {
-  // Node raiz do documento ProseMirror (obrigatório)
+const nodes: Record<string, NodeSpec> = {
   doc: {
     content: "question",
   },
 
-  // Node raiz da nossa estrutura de questão
   question: {
-    content: "base_text? statement options",
-    toDOM() {
-      return ["div", { class: "question" }, 0] as const;
+    // ALTERAÇÃO PARA DISCURSIVA: options?
+    content: "base_text? statement options?",
+    toDOM(): DOMOutputSpec {
+      return ["div", { class: "question" }, 0];
     },
   },
 
-  // Texto-base da questão (opcional)
   base_text: {
     content: "block+",
-    toDOM() {
-      return ["div", { class: "base-text" }, 0] as const;
+    toDOM(): DOMOutputSpec {
+      return ["div", { class: "base-text" }, 0];
     },
   },
 
-  // Enunciado da questão (obrigatório)
   statement: {
     content: "block+",
-    toDOM() {
-      return ["div", { class: "statement" }, 0] as const;
+    toDOM(): DOMOutputSpec {
+      return ["div", { class: "statement" }, 0];
     },
   },
 
-  // Container das opções
   options: {
+    // Mantém seu limite atual (2..5) quando options existir
     content: "option{2,5}",
-    toDOM() {
-      return ["div", { class: "options" }, 0] as const;
+    toDOM(): DOMOutputSpec {
+      return ["div", { class: "options" }, 0];
     },
   },
 
-  // Uma opção individual (A, B, C, D, E)
   option: {
     content: "block+",
     attrs: {
       letter: { default: "A" },
     },
-    toDOM(node: ProseMirrorNode) {
-      return ["div", { class: "option", "data-letter": node.attrs.letter }, 0] as const;
+    toDOM(node): DOMOutputSpec {
+      return ["div", { class: "option", "data-letter": node.attrs.letter }, 0];
     },
   },
 
-  // Parágrafo (bloco de texto básico)
   paragraph: {
     content: "inline*",
     group: "block",
     parseDOM: [{ tag: "p" }],
-    toDOM() {
-      return ["p", 0] as const;
+    toDOM(): DOMOutputSpec {
+      return ["p", 0];
     },
   },
 
-  // Imagem
+  text: {
+    group: "inline",
+  },
+
+  bullet_list: {
+    content: "list_item+",
+    group: "block",
+    parseDOM: [{ tag: "ul" }],
+    toDOM(): DOMOutputSpec {
+      return ["ul", 0];
+    },
+  },
+
+  ordered_list: {
+    content: "list_item+",
+    group: "block",
+    attrs: {
+      order: { default: 1 },
+    },
+    parseDOM: [
+      {
+        tag: "ol",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLOListElement;
+          const start = el.start;
+          return { order: start || 1 };
+        },
+      },
+    ],
+    toDOM(node): DOMOutputSpec {
+      return ["ol", { start: node.attrs.order }, 0];
+    },
+  },
+
+  list_item: {
+    content: "paragraph block*",
+    defining: true,
+    parseDOM: [{ tag: "li" }],
+    toDOM(): DOMOutputSpec {
+      return ["li", 0];
+    },
+  },
+
+  code_block: {
+    content: "text*",
+    group: "block",
+    marks: "",
+    code: true,
+    defining: true,
+    parseDOM: [
+      {
+        tag: "pre",
+        preserveWhitespace: "full" as const, // <-- FIX: literal
+      },
+    ],
+    toDOM(): DOMOutputSpec {
+      return ["pre", ["code", 0]];
+    },
+  },
+
   image: {
+    inline: true,
+    group: "inline",
+    draggable: true,
     attrs: {
       src: {},
-      alt: { default: null },
-      title: { default: null },
       width: { default: null },
-      height: { default: null },
-      align: { default: "center" },
     },
-    group: "block",
-    draggable: true,
     parseDOM: [
       {
         tag: "img[src]",
-        getAttrs(dom: HTMLElement) {
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLImageElement;
           return {
-            src: dom.getAttribute("src"),
-            alt: dom.getAttribute("alt"),
-            title: dom.getAttribute("title"),
-            width: dom.getAttribute("width"),
-            height: dom.getAttribute("height"),
-            align: dom.getAttribute("data-align") || "center",
+            src: el.getAttribute("src"),
+            width: el.getAttribute("data-width") || null,
           };
         },
       },
     ],
-    toDOM(node: ProseMirrorNode) {
-      const { src, alt, title, width, height, align } = node.attrs;
-      return [
-        "img",
-        {
-          src,
-          alt,
-          title,
-          width,
-          height,
-          "data-align": align,
-        },
-      ] as const;
+    toDOM(node): DOMOutputSpec {
+      const attrs: Record<string, string> = { src: String(node.attrs.src) };
+      if (node.attrs.width) attrs["data-width"] = String(node.attrs.width);
+      return ["img", attrs];
     },
   },
 
-  // Fórmula inline (KaTeX)
-  // Atom inline com LaTeX no atributo `latex`
+  table: {
+    content: "table_row+",
+    group: "block",
+    isolating: true,
+    parseDOM: [{ tag: "table" }],
+    toDOM(): DOMOutputSpec {
+      return ["table", ["tbody", 0]];
+    },
+  },
+
+  table_row: {
+    content: "table_cell+",
+    parseDOM: [{ tag: "tr" }],
+    toDOM(): DOMOutputSpec {
+      return ["tr", 0];
+    },
+  },
+
+  table_cell: {
+    content: "block+",
+    parseDOM: [{ tag: "td" }],
+    toDOM(): DOMOutputSpec {
+      return ["td", 0];
+    },
+  },
+
   math_inline: {
     inline: true,
     group: "inline",
     atom: true,
-    selectable: true,
     attrs: {
       latex: { default: "" },
     },
     parseDOM: [
       {
-        tag: "span[data-math]",
-        getAttrs(dom: HTMLElement) {
-          return { latex: dom.getAttribute("data-math") || "" };
+        tag: "span.math-inline",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { latex: el.getAttribute("data-latex") || "" };
         },
       },
     ],
-    toDOM(node: ProseMirrorNode) {
-      return [
-        "span",
-        {
-          class: "math-inline",
-          "data-math": node.attrs.latex,
-        },
-      ] as const;
+    toDOM(node): DOMOutputSpec {
+      return ["span", { class: "math-inline", "data-latex": node.attrs.latex }];
     },
   },
 
-  // Bloco de código
-  code_block: {
-    content: "text*",
+  math_block: {
     group: "block",
-    code: true, // Preserva whitespace
+    atom: true,
     attrs: {
-      showLineNumbers: { default: false },
+      latex: { default: "" },
     },
     parseDOM: [
       {
-        tag: "pre",
-        preserveWhitespace: "full" as const,
-      },
-    ],
-    toDOM(node: ProseMirrorNode) {
-      return [
-        "pre",
-        {
-          "data-line-numbers": node.attrs.showLineNumbers ? "true" : "false",
-        },
-        ["code", 0],
-      ] as const;
-    },
-  },
-
-  // Lista não ordenada (bullet)
-  bullet_list: {
-    content: "list_item+",
-    group: "block",
-    parseDOM: [{ tag: "ul" }],
-    toDOM() {
-      return ["ul", 0] as const;
-    },
-  },
-
-  // Lista ordenada
-  ordered_list: {
-    content: "list_item+",
-    group: "block",
-    attrs: { order: { default: 1 } },
-    parseDOM: [
-      {
-        tag: "ol",
-        getAttrs(dom: HTMLElement) {
-          return {
-            order: dom.hasAttribute("start")
-              ? parseInt(dom.getAttribute("start")!, 10)
-              : 1,
-          };
+        tag: "div.math-block",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { latex: el.getAttribute("data-latex") || "" };
         },
       },
     ],
-    toDOM(node: ProseMirrorNode) {
-      return node.attrs.order === 1
-        ? (["ol", 0] as const)
-        : (["ol", { start: node.attrs.order }, 0] as const);
+    toDOM(node): DOMOutputSpec {
+      return ["div", { class: "math-block", "data-latex": node.attrs.latex }];
     },
-  },
-
-  // Lista com números romanos
-  roman_list: {
-    content: "list_item+",
-    group: "block",
-    attrs: { order: { default: 1 } },
-    parseDOM: [
-      {
-        tag: "ol.roman-list",
-        getAttrs(dom: HTMLElement) {
-          return {
-            order: dom.hasAttribute("start")
-              ? parseInt(dom.getAttribute("start")!, 10)
-              : 1,
-          };
-        },
-      },
-    ],
-    toDOM(node: ProseMirrorNode) {
-      return [
-        "ol",
-        {
-          class: "roman-list",
-          start: node.attrs.order !== 1 ? node.attrs.order : undefined,
-        },
-        0,
-      ] as const;
-    },
-  },
-
-  // Lista alfabética
-  alpha_list: {
-    content: "list_item+",
-    group: "block",
-    parseDOM: [{ tag: "ol.alpha-list" }],
-    toDOM() {
-      return ["ol", { class: "alpha-list" }, 0] as const;
-    },
-  },
-
-  // Lista de assertivas (parênteses)
-  assertive_list: {
-    content: "list_item+",
-    group: "block",
-    parseDOM: [{ tag: "ul.assertive-list" }],
-    toDOM() {
-      return ["ul", { class: "assertive-list" }, 0] as const;
-    },
-  },
-
-  // Item de lista
-  list_item: {
-    content: "paragraph block*",
-    parseDOM: [{ tag: "li" }],
-    toDOM() {
-      return ["li", 0] as const;
-    },
-    defining: true,
-  },
-
-  // Texto (node obrigatório no ProseMirror)
-  text: {
-    group: "inline",
   },
 };
 
-// Definição dos marks (formatação inline)
-const marks = {
-  // Negrito
+const marks: Record<string, MarkSpec> = {
   strong: {
     parseDOM: [
       { tag: "strong" },
       {
         tag: "b",
-        getAttrs: (node: HTMLElement) =>
-          node.style.fontWeight !== "normal" && null,
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return el.style.fontWeight !== "normal" ? null : false;
+        },
       },
       {
         style: "font-weight",
-        getAttrs: (value: string) =>
-          /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
+        getAttrs(value: string) {
+          return /^(bold(er)?|[5-9]\d{2,})$/.test(value) ? null : false;
+        },
       },
-    ],
-    toDOM() {
-      return ["strong", 0] as const;
+    ] as readonly ParseRule[],
+    toDOM(): DOMOutputSpec {
+      return ["strong", 0];
     },
   },
 
-  // Itálico
   em: {
     parseDOM: [
       { tag: "i" },
       { tag: "em" },
-      { style: "font-style=italic" },
-    ],
-    toDOM() {
-      return ["em", 0] as const;
+      {
+        style: "font-style",
+        getAttrs(value: string) {
+          return value === "italic" ? null : false;
+        },
+      },
+    ] as readonly ParseRule[],
+    toDOM(): DOMOutputSpec {
+      return ["em", 0];
     },
   },
 
-  // Sublinhado
   underline: {
-    parseDOM: [{ tag: "u" }, { style: "text-decoration=underline" }],
-    toDOM() {
-      return ["u", 0] as const;
+    parseDOM: [
+      { tag: "u" },
+      {
+        style: "text-decoration",
+        getAttrs(value: string) {
+          return value.includes("underline") ? null : false;
+        },
+      },
+    ] as readonly ParseRule[],
+    toDOM(): DOMOutputSpec {
+      return ["u", 0];
     },
-  },
-
-  // Código inline
-  code: {
-    parseDOM: [{ tag: "code" }],
-    toDOM() {
-      return ["code", 0] as const;
-    },
-  },
-  // Sobrescrito
-  superscript: {
-    parseDOM: [{ tag: "sup" }, { style: "vertical-align=super" }],
-    toDOM() {
-      return ["sup", 0] as const;
-    },
-    excludes: "subscript",
-  },
-
-  // Subscrito
-  subscript: {
-    parseDOM: [{ tag: "sub" }, { style: "vertical-align=sub" }],
-    toDOM() {
-      return ["sub", 0] as const;
-    },
-    excludes: "superscript",
   },
 };
 
-// Criar e exportar o schema
 export const schema = new Schema({ nodes, marks });
+
+// Helper opcional
+export function extractPlainText(doc: any): string {
+  let out = "";
+  doc.descendants((node: any) => {
+    if (node.isText) out += node.text ?? "";
+    if (node.isBlock) out += "\n";
+  });
+  return out.trim();
+}

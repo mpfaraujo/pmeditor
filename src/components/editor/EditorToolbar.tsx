@@ -22,9 +22,13 @@ interface EditorToolbarProps {
   metadata?: any;
   loadId?: string;
   onLoadedMetadata?: (nextMetadata: any) => void;
-}
 
-const LETTERS = ["A", "B", "C", "D", "E"] as const;
+  // ações extras (tipo/largura/opções) tratadas fora da toolbar
+  onAction?: (action: string) => void;
+
+  // contagem real de opções (2..5); se não vier, deriva do doc
+  optionsCount?: number;
+}
 
 export function EditorToolbar({
   view,
@@ -37,15 +41,16 @@ export function EditorToolbar({
   metadata,
   loadId,
   onLoadedMetadata,
+  onAction,
+  optionsCount: optionsCountProp,
 }: EditorToolbarProps) {
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [symbolPickerOpen, setSymbolPickerOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
 
-  // Detectar tamanho da tela
   useEffect(() => {
     if (typeof window === "undefined") return;
-    
+
     const checkSize = () => setIsDesktop(window.innerWidth >= 1024);
     checkSize();
     window.addEventListener("resize", checkSize);
@@ -56,40 +61,17 @@ export function EditorToolbar({
 
   const state = view.state;
 
-  const getOptionsInfo = (): { pos: number | null; node: any | null } => {
-    let pos: number | null = null;
-    let node: any | null = null;
-    state.doc.descendants((n, p) => {
-      if (n.type === schema.nodes.options) {
-        pos = p;
-        node = n;
-        return false;
-      }
-    });
-    return { pos, node };
-  };
-
-  const getExistingOptionsByLetter = () => {
-    const map = new Map<string, any>();
-    state.doc.descendants((n) => {
-      if (n.type === schema.nodes.option) {
-        const letter = (n.attrs?.letter || "").toString();
-        if (letter) map.set(letter, n);
-      }
-    });
-    return map;
-  };
-
-  const hasOptionE = (() => {
-    let found = false;
+  const optionsCountFromDoc = (() => {
+    let n = 0;
     state.doc.descendants((node) => {
-      if (node.type === schema.nodes.option && node.attrs.letter === "E") {
-        found = true;
-        return false;
-      }
+      if (node.type === schema.nodes.option) n += 1;
     });
-    return found;
+    return n;
   })();
+
+  const optionsCount = Number.isFinite(optionsCountProp as number)
+    ? Math.max(0, Math.min(5, Math.floor(optionsCountProp as number)))
+    : optionsCountFromDoc;
 
   const handleToggleMark = (markType: string) => {
     const type = schema.marks[markType];
@@ -104,23 +86,20 @@ export function EditorToolbar({
     view.focus();
   };
 
-const handleInsertBaseText = () => {
-  let hasBaseText = false;
-  state.doc.descendants((node) => {
-    if (node.type === schema.nodes.base_text) {
-      hasBaseText = true;
-      return false;
-    }
-  });
-  if (hasBaseText) return;
+  const handleInsertBaseText = () => {
+    let hasBaseText = false;
+    state.doc.descendants((node) => {
+      if (node.type === schema.nodes.base_text) {
+        hasBaseText = true;
+        return false;
+      }
+    });
+    if (hasBaseText) return;
 
-  const baseText = schema.nodes.base_text.create(null, [
-    schema.nodes.paragraph.create(),  // SEM texto
-  ]);
-
-  view.dispatch(view.state.tr.insert(1, baseText));
-  view.focus();
-};
+    const baseText = schema.nodes.base_text.create(null, [schema.nodes.paragraph.create()]);
+    view.dispatch(view.state.tr.insert(1, baseText));
+    view.focus();
+  };
 
   const handleUndo = () => {
     undoCommand(view.state, view.dispatch);
@@ -145,33 +124,10 @@ const handleInsertBaseText = () => {
     view.focus();
   };
 
-  const normalizeOptions = (targetCount: 4 | 5) => {
-    const info = getOptionsInfo();
-    const pos = info.pos;
-    const optionsNode = info.node;
-    if (pos == null || !optionsNode) return;
-
-    const existing = getExistingOptionsByLetter();
-    const children = (LETTERS.slice(0, targetCount) as readonly string[]).map((letter) => {
-      const found = existing.get(letter);
-      if (found) {
-        return schema.nodes.option.create({ ...found.attrs, letter }, found.content);
-      }
-      return schema.nodes.option.create({ letter }, [
-        schema.nodes.paragraph.create(null, [schema.text(`Opção ${letter}`)]),
-      ]);
-    });
-
-    const newOptions = schema.nodes.options.create(optionsNode.attrs ?? null, children);
-    const from = pos;
-    const to = pos + (optionsNode.nodeSize as number);
-    const tr = view.state.tr.replaceWith(from, to, newOptions);
-    view.dispatch(tr);
-    view.focus();
-  };
-
   const handleSaveApi = async () => {
-    const id = (metadata?.id as string | undefined) ?? (window.prompt("ID da questão (ex.: q_123):") ?? "").trim();
+    const id =
+      (metadata?.id as string | undefined) ??
+      (window.prompt("ID da questão (ex.: q_123):") ?? "").trim();
     if (!id) return;
     const payload = { metadata: metadata ?? { id }, content: view.state.doc.toJSON() };
     const res = await createQuestion(payload);
@@ -190,37 +146,65 @@ const handleInsertBaseText = () => {
     const tr = view.state.tr.replaceWith(0, view.state.doc.content.size, node.content);
     view.dispatch(tr);
     view.focus();
-    if (res?.metadata && onLoadedMetadata) {
-      onLoadedMetadata(res.metadata);
-    }
+    if (res?.metadata && onLoadedMetadata) onLoadedMetadata(res.metadata);
     window.alert(`Carregado: ${id}`);
   };
 
   const handleAction = (action: string) => {
-    // Marks
-    if (action.startsWith("mark:")) {
-      const markType = action.replace("mark:", "");
-      handleToggleMark(markType);
+    // ações externas (tipo/largura/opções)
+    if (
+      action === "set-type-discursiva" ||
+      action === "set-type-multipla" ||
+      action === "set-width-narrow" ||
+      action === "set-width-wide" ||
+      action === "inc-options" ||
+      action === "dec-options"
+    ) {
+      onAction?.(action);
       return;
     }
 
-    // Actions
+    if (action.startsWith("mark:")) {
+      handleToggleMark(action.replace("mark:", ""));
+      return;
+    }
+
     switch (action) {
-      case "new": onNew?.(); break;
-      case "load": onLoad ? onLoad() : handleLoadApi(); break;
-      case "save": onSave ? onSave() : handleSaveApi(); break;
-      case "recover": onRecover?.(); break;
-      case "metadata": onOpenMetadata?.(); break;
-      case "undo": handleUndo(); break;
-      case "redo": handleRedo(); break;
-      case "image": setImageDialogOpen(true); break;
-      case "math": onOpenMath?.(); break;
-      case "codeblock": handleInsertCodeBlock(); break;
-      case "basetext": handleInsertBaseText(); break;
-      case "symbols": setSymbolPickerOpen(true); break;
-      case "toggle-options": 
-        const wantFour = !hasOptionE;
-        normalizeOptions(wantFour ? 5 : 4); 
+      case "new":
+        onNew?.();
+        break;
+      case "load":
+        onLoad ? onLoad() : void handleLoadApi();
+        break;
+      case "save":
+        onSave ? onSave() : void handleSaveApi();
+        break;
+      case "recover":
+        onRecover?.();
+        break;
+      case "metadata":
+        onOpenMetadata?.();
+        break;
+      case "undo":
+        handleUndo();
+        break;
+      case "redo":
+        handleRedo();
+        break;
+      case "image":
+        setImageDialogOpen(true);
+        break;
+      case "math":
+        onOpenMath?.();
+        break;
+      case "codeblock":
+        handleInsertCodeBlock();
+        break;
+      case "basetext":
+        handleInsertBaseText();
+        break;
+      case "symbols":
+        setSymbolPickerOpen(true);
         break;
     }
   };
@@ -228,9 +212,9 @@ const handleInsertBaseText = () => {
   return (
     <>
       {isDesktop ? (
-        <DesktopSidebar onAction={handleAction} hasOptionE={hasOptionE} />
+        <DesktopSidebar onAction={handleAction} optionsCount={optionsCount} />
       ) : (
-        <HorizontalToolbar onAction={handleAction} hasOptionE={hasOptionE} />
+        <HorizontalToolbar onAction={handleAction} optionsCount={optionsCount} />
       )}
 
       <ImageUpload

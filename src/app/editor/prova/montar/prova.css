@@ -3,6 +3,17 @@
   margin: 0;
 }
 
+:root {
+  /* LARGURAS FIXAS (cm) */
+  --col-width: 8.5cm;
+  --col-gap: 1cm;
+  --col-gap-half: 0.5cm;
+
+  /* 2 colunas: 8.5 + 1 + 8.5 = 18cm
+     1 coluna: pode ser 18cm também (como você pediu) */
+  --questoes-width: 18cm;
+}
+
 .prova-page {
   width: 21cm;
   min-height: 29.7cm;
@@ -82,28 +93,64 @@
   background: #555;
 }
 
-/* 2 colunas manuais */
+/* =========================================================
+   COLUNAS / LARGURAS FIXAS (cm)
+   - 1 coluna: 18cm (full)
+   - 2 colunas: 8.5cm + gap 1cm + 8.5cm (total 18cm)
+   ========================================================= */
+
+/* container com largura fixa */
 .questoes-container {
   position: relative;
+
+  width: var(--questoes-width);
+  margin: 0 auto;
+
   display: flex;
-  gap: 1cm;
+  gap: var(--col-gap);
+  align-items: flex-start;
+
+  /* importante em flex p/ não “estourar” com conteúdo grande */
+  min-width: 0;
 }
 
+/* por padrão (1 coluna), a coluna ocupa tudo */
 .coluna {
-  width: calc((100% - 1cm) / 2);
+  width: var(--questoes-width);
   break-inside: avoid;
+
+  /* importante p/ o conteúdo poder quebrar dentro do flex item */
+  min-width: 0;
 }
 
-/* divisor central (imprime usando border, não background) */
+/* quando existir .coluna-2, vira modo 2 colunas com largura fixa */
+.questoes-container:has(.coluna-2) .coluna {
+  width: var(--col-width);
+}
+
+/* divisor central: só aparece quando houver 2 colunas */
 .questoes-container::before {
   content: "";
+  display: none;
+}
+
+.questoes-container:has(.coluna-2)::before {
+  content: "";
+  display: block;
+
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 50%;
+
+  /* linha no centro do gap: 8.5cm + 0.5cm */
+  left: calc(var(--col-width) + var(--col-gap-half));
+
   width: 0;
   border-left: 1px solid #000;
-  transform: translateX(-1px);
+
+  /* não “comer” a coluna visualmente */
+  transform: translateX(-0.5px);
+
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -111,10 +158,14 @@
 .questao-item-wrapper {
   break-inside: avoid;
   margin-bottom: 0.5cm;
+
+  /* evitar overflow em flex/inline-block */
+  min-width: 0;
 }
 
 .questao-item {
   display: block;
+  min-width: 0;
 }
 
 .questao-header-linha {
@@ -122,6 +173,7 @@
   align-items: flex-end;
   margin-bottom: 0.2cm;
 }
+
 .pontos-editavel {
   position: absolute;
   right: -0.5cm;
@@ -140,14 +192,24 @@
   padding: 1px 4px;
 }
 
+/* ====== QUEBRA/ANTI-OVERFLOW (resolve “estourar a caixa”) ====== */
 .questao-conteudo {
   display: inline;
   line-height: 1.1;
+
+  /* força quebra mesmo com “palavra gigante”, URL, etc. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  min-width: 0;
 }
 
 .questao-conteudo p {
   margin: 0;
   text-align: justify;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .questao-conteudo p + p {
@@ -157,7 +219,11 @@
 .question-readonly p,
 .question-text {
   text-align: justify;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
+
 .questao-header-wrap {
   position: relative;
   display: block;
@@ -180,8 +246,6 @@
   background: transparent;
 }
 
-
-
 .questao-pontos-editavel {
   position: absolute;
   right: -0.5cm;
@@ -194,7 +258,6 @@
   font-size: 8pt;
   background: transparent;
 }
-
 
 @media print {
   html,

@@ -1,9 +1,10 @@
 /* Largura-alvo do editor (equivalente à coluna 8,5cm) */
+/* ProseMirror: largura controlada por variável (default 8.5cm) */
 .ProseMirror {
-  width: 8.5cm;
-  max-width: 8.5cm;
+  width: 100%;
+  max-width: 100%;
 
-  box-sizing: content-box; /* largura = área de texto */
+  box-sizing: border-box;
 
   font-size: 9pt;
   line-height: 1.35;
@@ -14,15 +15,6 @@
 }
 
 
-/* Ajuste para impressão - proporcional a 8.5cm de largura */
-.ProseMirror {
-  position: relative;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-size: 9pt; /* tamanho padrão para impressão */
-  line-height: 1.4;
-  max-width: 320px; /* aproximadamente 8.5cm em 96 DPI */
-}
 
 .ProseMirror p {
   margin: 0.5em 0;

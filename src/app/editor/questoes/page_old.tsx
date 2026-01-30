@@ -106,8 +106,7 @@ export default function QuestoesPage() {
   };
 
   const handleMontarProva = () => {
-    // MUDANÇA: Redireciona para a página de seleção de layout em vez de montar direto
-    router.push("/editor/prova/selecionar-layout");
+    router.push("/editor/prova/montar");
   };
 
   return (

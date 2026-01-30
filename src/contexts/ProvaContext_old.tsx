@@ -12,20 +12,6 @@ type ColumnLayout = {
   coluna2: QuestionData[];
 };
 
-type LayoutType = "prova" | "exercicio";
-type ColumnCount = 1 | 2;
-
-export type ProvaConfig = {
-  layoutType: LayoutType;
-  columns: ColumnCount;
-  logoUrl: string | null;
-  professor: string;
-  disciplina: string;
-  data: string;
-  turma: string;
-  instituicao: string;
-};
-
 type ProvaContextType = {
   selectedQuestions: QuestionData[];
   addQuestion: (question: QuestionData) => void;
@@ -33,29 +19,12 @@ type ProvaContextType = {
   clearAll: () => void;
   isSelected: (id: string) => boolean;
   updateColumnLayout: (layout: ColumnLayout) => void;
-  
-  // Novos: Configuração da prova
-  provaConfig: ProvaConfig;
-  updateProvaConfig: (config: Partial<ProvaConfig>) => void;
-  resetProvaConfig: () => void;
-};
-
-const defaultProvaConfig: ProvaConfig = {
-  layoutType: "prova",
-  columns: 2,
-  logoUrl: null,
-  professor: "",
-  disciplina: "",
-  data: "",
-  turma: "",
-  instituicao: "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca",
 };
 
 const ProvaContext = createContext<ProvaContextType | undefined>(undefined);
 
 export function ProvaProvider({ children }: { children: ReactNode }) {
   const [selectedQuestions, setSelectedQuestions] = useState<QuestionData[]>([]);
-  const [provaConfig, setProvaConfig] = useState<ProvaConfig>(defaultProvaConfig);
 
   const addQuestion = (question: QuestionData) => {
     setSelectedQuestions(prev => {
@@ -81,28 +50,8 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
     setSelectedQuestions([...layout.coluna1, ...layout.coluna2]);
   };
 
-  const updateProvaConfig = (config: Partial<ProvaConfig>) => {
-    setProvaConfig(prev => ({ ...prev, ...config }));
-  };
-
-  const resetProvaConfig = () => {
-    setProvaConfig(defaultProvaConfig);
-  };
-
   return (
-    <ProvaContext.Provider
-      value={{
-        selectedQuestions,
-        addQuestion,
-        removeQuestion,
-        clearAll,
-        isSelected,
-        updateColumnLayout,
-        provaConfig,
-        updateProvaConfig,
-        resetProvaConfig,
-      }}
-    >
+    <ProvaContext.Provider value={{ selectedQuestions, addQuestion, removeQuestion, clearAll, isSelected, updateColumnLayout }}>
       {children}
     </ProvaContext.Provider>
   );

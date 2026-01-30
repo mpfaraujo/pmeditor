@@ -9,7 +9,7 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ??
   "https://mpfaraujo.com.br/guardafiguras/api/questoes";
 
-const TOKEN = process.env.API_TOKEN_QUESTIONS_TOKEN ?? "";
+const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN?? "";
 
 async function handle(res: Response) {
   const text = await res.text();
