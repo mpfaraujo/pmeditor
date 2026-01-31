@@ -6,6 +6,7 @@
 
 import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ProvaHeader } from "../headers/ProvaHeader";
+import { useProva } from "@/contexts/ProvaContext";
 
 interface ProvaLayoutProps extends LayoutProps {
   columns: ColumnCount;
@@ -20,13 +21,25 @@ export function ProvaLayout({
   refs,
   columns,
 }: ProvaLayoutProps) {
+  const { provaConfig } = useProva();
+
   return (
     <>
       {/* Camada invisível para medição (NÃO IMPRIMIR) */}
       <div className="measure-layer absolute -z-10 invisible pointer-events-none">
         {/* Template 1: com cabeçalho */}
         <div className="prova-page mx-auto bg-white" ref={refs.measureFirstPageRef}>
-          <ProvaHeader logoUrl={logoUrl} onLogoClick={onLogoClick} isEditable={false} />
+          <ProvaHeader
+            logoUrl={logoUrl}
+            onLogoClick={onLogoClick}
+            isEditable={false}
+            nome={provaConfig.nome}
+            turma={provaConfig.turma}
+            professor={provaConfig.professor}
+            disciplina={provaConfig.disciplina}
+            data={provaConfig.data}
+            nota={provaConfig.nota}
+          />
           <div className="questoes-container" ref={refs.measureFirstQuestoesRef}>
             <div className="coluna coluna-1" />
             {columns === 2 && <div className="coluna coluna-2" />}
@@ -44,7 +57,6 @@ export function ProvaLayout({
         {/* Template 3: alturas das questões */}
         <div className="prova-page mx-auto bg-white">
           <div className={`questoes-container columns-${columns}`}>
-
             <div className="coluna coluna-1" ref={refs.measureItemsRef}>
               {orderedQuestions.map((q, idx) => renderQuestion(q, idx))}
             </div>
@@ -57,7 +69,17 @@ export function ProvaLayout({
         <div key={pageIndex} className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
           <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
             {pageIndex === 0 && (
-              <ProvaHeader logoUrl={logoUrl} onLogoClick={onLogoClick} isEditable={true} />
+              <ProvaHeader
+                logoUrl={logoUrl}
+                onLogoClick={onLogoClick}
+                isEditable={true}
+                nome={provaConfig.nome}
+                turma={provaConfig.turma}
+                professor={provaConfig.professor}
+                disciplina={provaConfig.disciplina}
+                data={provaConfig.data}
+                nota={provaConfig.nota}
+              />
             )}
 
             <div className="questoes-container">

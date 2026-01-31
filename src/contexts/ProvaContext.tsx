@@ -19,10 +19,15 @@ export type ProvaConfig = {
   layoutType: LayoutType;
   columns: ColumnCount;
   logoUrl: string | null;
+
+  // campos do cabeçalho
+  nome: string;
+  turma: string;
   professor: string;
   disciplina: string;
   data: string;
-  turma: string;
+  nota: string;
+
   instituicao: string;
 };
 
@@ -33,8 +38,7 @@ type ProvaContextType = {
   clearAll: () => void;
   isSelected: (id: string) => boolean;
   updateColumnLayout: (layout: ColumnLayout) => void;
-  
-  // Novos: Configuração da prova
+
   provaConfig: ProvaConfig;
   updateProvaConfig: (config: Partial<ProvaConfig>) => void;
   resetProvaConfig: () => void;
@@ -44,10 +48,14 @@ const defaultProvaConfig: ProvaConfig = {
   layoutType: "prova",
   columns: 2,
   logoUrl: null,
+
+  nome: "",
+  turma: "",
   professor: "",
   disciplina: "",
   data: "",
-  turma: "",
+  nota: "",
+
   instituicao: "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca",
 };
 
@@ -58,15 +66,15 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
   const [provaConfig, setProvaConfig] = useState<ProvaConfig>(defaultProvaConfig);
 
   const addQuestion = (question: QuestionData) => {
-    setSelectedQuestions(prev => {
-      const exists = prev.find(q => q.metadata.id === question.metadata.id);
+    setSelectedQuestions((prev) => {
+      const exists = prev.find((q) => q.metadata.id === question.metadata.id);
       if (exists) return prev;
       return [...prev, question];
     });
   };
 
   const removeQuestion = (id: string) => {
-    setSelectedQuestions(prev => prev.filter(q => q.metadata.id !== id));
+    setSelectedQuestions((prev) => prev.filter((q) => q.metadata.id !== id));
   };
 
   const clearAll = () => {
@@ -74,7 +82,7 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
   };
 
   const isSelected = (id: string) => {
-    return selectedQuestions.some(q => q.metadata.id === id);
+    return selectedQuestions.some((q) => q.metadata.id === id);
   };
 
   const updateColumnLayout = (layout: ColumnLayout) => {
@@ -82,7 +90,7 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
   };
 
   const updateProvaConfig = (config: Partial<ProvaConfig>) => {
-    setProvaConfig(prev => ({ ...prev, ...config }));
+    setProvaConfig((prev) => ({ ...prev, ...config }));
   };
 
   const resetProvaConfig = () => {
@@ -110,8 +118,6 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
 
 export function useProva() {
   const context = useContext(ProvaContext);
-  if (!context) {
-    throw new Error("useProva must be used within ProvaProvider");
-  }
+  if (!context) throw new Error("useProva must be used within ProvaProvider");
   return context;
 }

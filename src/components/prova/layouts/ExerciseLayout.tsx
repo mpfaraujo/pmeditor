@@ -1,11 +1,14 @@
 /**
  * Layout de Lista de Exercício
- * Renderiza lista com cabeçalho simples (ExerciseHeader)
+ * Renderiza lista com cabeçalho (ExerciseHeader)
  * Suporta 1 ou 2 colunas
  */
 
+"use client";
+
 import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ExerciseHeader } from "../headers/ExerciseHeader";
+import { useProva } from "@/contexts/ProvaContext";
 
 interface ExerciseLayoutProps extends LayoutProps {
   columns: ColumnCount;
@@ -20,13 +23,25 @@ export function ExerciseLayout({
   refs,
   columns,
 }: ExerciseLayoutProps) {
+  const { provaConfig } = useProva();
+
   return (
     <>
       {/* Camada invisível para medição (NÃO IMPRIMIR) */}
       <div className="measure-layer absolute -z-10 invisible pointer-events-none">
         {/* Template 1: com cabeçalho */}
         <div className="prova-page mx-auto bg-white" ref={refs.measureFirstPageRef}>
-          <ExerciseHeader logoUrl={logoUrl} onLogoClick={onLogoClick} isEditable={false} />
+          <ExerciseHeader
+            logoUrl={logoUrl}
+            onLogoClick={onLogoClick}
+            isEditable={false}
+            instituicao={provaConfig.instituicao}
+            titulo={provaConfig.layoutType === "exercicio" ? "Lista de Exercícios" : "Exercícios"}
+            professor={provaConfig.professor}
+            disciplina={provaConfig.disciplina}
+            turma={provaConfig.turma}
+            data={provaConfig.data}
+          />
           <div className="questoes-container" ref={refs.measureFirstQuestoesRef}>
             <div className="coluna coluna-1" />
             {columns === 2 && <div className="coluna coluna-2" />}
@@ -56,19 +71,32 @@ export function ExerciseLayout({
         <div key={pageIndex} className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
           <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
             {pageIndex === 0 && (
-              <ExerciseHeader logoUrl={logoUrl} onLogoClick={onLogoClick} isEditable={true} />
+              <ExerciseHeader
+                logoUrl={logoUrl}
+                onLogoClick={onLogoClick}
+                isEditable={true}
+                instituicao={provaConfig.instituicao}
+                titulo={provaConfig.layoutType === "exercicio" ? "Lista de Exercícios" : "Exercícios"}
+                professor={provaConfig.professor}
+                disciplina={provaConfig.disciplina}
+                turma={provaConfig.turma}
+                data={provaConfig.data}
+              />
             )}
 
-            <div className="questoes-container">
-              <div className="coluna coluna-1">
-                {p.coluna1.map((idx) => renderQuestion(orderedQuestions[idx], idx))}
-              </div>
-
-              {columns === 2 && (
-                <div className="coluna coluna-2">
-                  {p.coluna2.map((idx) => renderQuestion(orderedQuestions[idx], idx))}
+            {/* espaço controlado entre header e questões */}
+            <div className={pageIndex === 0 ? "pt-6" : ""}>
+              <div className="questoes-container">
+                <div className="coluna coluna-1">
+                  {p.coluna1.map((idx) => renderQuestion(orderedQuestions[idx], idx))}
                 </div>
-              )}
+
+                {columns === 2 && (
+                  <div className="coluna coluna-2">
+                    {p.coluna2.map((idx) => renderQuestion(orderedQuestions[idx], idx))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
