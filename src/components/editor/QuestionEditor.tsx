@@ -22,7 +22,7 @@ import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
 
 
-import { createQuestion } from "@/lib/questions";
+import { createQuestion, proposeQuestion } from "@/lib/questions";
 
 import "../../app/prosemirror.css";
 
@@ -496,7 +496,6 @@ export function QuestionEditor() {
  const performSaveApi = async () => {
   if (!view) return;
 
-  // garante updatedAt sempre
   const nowIso = new Date().toISOString();
   const metaToSend: QuestionMetadataV1 = {
     ...meta,
@@ -511,7 +510,6 @@ export function QuestionEditor() {
   try {
     const res = await createQuestion(payload);
 
-    // atualiza o state local com o que foi realmente salvo (principalmente updatedAt)
     setMeta(metaToSend);
 
     window.alert(`Salvo: ${res?.id ?? metaToSend.id}`);
@@ -522,11 +520,23 @@ export function QuestionEditor() {
       // ignore
     }
   } catch (e: any) {
-    // se o backend travou base e você tentou salvar de novo a mesma, mostre isso
+    if (e?.status === 409) {
+      try {
+        await proposeQuestion({
+          questionId: meta.id,
+          metadata: metaToSend,
+          content: view.state.doc.toJSON(),
+        });
+        window.alert("Salvo como proposta de edição.");
+      } catch {
+        window.alert("Erro ao salvar proposta.");
+      }
+      return;
+    }
+
     window.alert("Erro ao salvar questão.");
   }
 };
-
 
   const handleSave = () => {
     if (!hasEssentialMetadata(meta)) {
