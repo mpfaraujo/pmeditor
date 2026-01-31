@@ -160,6 +160,8 @@ function applyMarks(text: string, marks?: any[]) {
     if (mark.type === "em") return <em>{acc}</em>;
     if (mark.type === "underline") return <u>{acc}</u>;
     if (mark.type === "code") return <code>{acc}</code>;
+    if (mark.type === "subscript") return <sub>{acc}</sub>;
+    if (mark.type === "superscript") return <sup>{acc}</sup>;
     return acc;
   }, text);
 }
