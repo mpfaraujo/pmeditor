@@ -20,6 +20,9 @@ export type ProvaConfig = {
   columns: ColumnCount;
   logoUrl: string | null;
 
+  // gabarito
+  showGabarito: boolean;
+
   // campos do cabeçalho
   nome: string;
   turma: string;
@@ -30,6 +33,7 @@ export type ProvaConfig = {
 
   instituicao: string;
 };
+
 
 type ProvaContextType = {
   selectedQuestions: QuestionData[];
@@ -48,6 +52,7 @@ const defaultProvaConfig: ProvaConfig = {
   layoutType: "prova",
   columns: 2,
   logoUrl: null,
+  showGabarito: false,
 
   nome: "",
   turma: "",

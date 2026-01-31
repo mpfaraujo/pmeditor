@@ -18,6 +18,7 @@ interface ProvaHeaderProps {
   data?: string;
   nota?: string;
 }
+
 function formatDateBR(value: string) {
   if (!value) return "";
   // espera YYYY-MM-DD
@@ -59,34 +60,46 @@ export function ProvaHeader({
 
         <div className="field-wrapper">
           <div className="field-label">Nome</div>
-          <div className="field-content">{nome ?? ""}</div>
+          <div className="field-content">
+            <span className="field-text">{nome ?? ""}</span>
+          </div>
         </div>
 
         <div className="field-wrapper">
           <div className="field-label">Turma</div>
-          <div className="field-content">{turma ?? ""}</div>
+          <div className="field-content">
+            <span className="field-text">{turma ?? ""}</span>
+          </div>
         </div>
       </div>
 
       <div className="header-grid-2">
         <div className="field-wrapper">
           <div className="field-label">Professor</div>
-          <div className="field-content">{professor ?? ""}</div>
+          <div className="field-content">
+            <span className="field-text">{professor ?? ""}</span>
+          </div>
         </div>
 
         <div className="field-wrapper">
           <div className="field-label">Disciplina</div>
-          <div className="field-content">{disciplina ?? ""}</div>
+          <div className="field-content">
+            <span className="field-text">{disciplina ?? ""}</span>
+          </div>
         </div>
 
         <div className="field-wrapper">
           <div className="field-label">Data</div>
-          <div className="field-content">{formatDateBR(data ?? "")}</div>
+          <div className="field-content">
+            <span className="field-text">{formatDateBR(data ?? "")}</span>
+          </div>
         </div>
 
         <div className="field-wrapper">
           <div className="field-label">Nota</div>
-          <div className="field-content">{nota ?? ""}</div>
+          <div className="field-content">
+            <span className="field-text">{nota ?? ""}</span>
+          </div>
         </div>
       </div>
 

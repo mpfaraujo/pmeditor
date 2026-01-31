@@ -6,7 +6,14 @@ import { useProva } from "@/contexts/ProvaContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 
@@ -19,6 +26,10 @@ export default function SelecionarLayoutPage() {
 
   const [layoutType, setLayoutType] = useState<LayoutType>(provaConfig.layoutType);
   const [columns, setColumns] = useState<ColumnCount>(provaConfig.columns);
+
+  const [showGabarito, setShowGabarito] = useState<boolean>(
+    provaConfig.showGabarito
+  );
 
   const [nome, setNome] = useState(provaConfig.nome);
   const [turma, setTurma] = useState(provaConfig.turma);
@@ -34,6 +45,7 @@ export default function SelecionarLayoutPage() {
     updateProvaConfig({
       layoutType,
       columns,
+      showGabarito,
       nome,
       turma,
       professor,
@@ -58,8 +70,12 @@ export default function SelecionarLayoutPage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar
           </Button>
-          <h1 className="text-3xl font-bold text-slate-900">Configurar Prova</h1>
-          <p className="text-slate-600 mt-2">Escolha o layout e preencha os dados</p>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Configurar Prova
+          </h1>
+          <p className="text-slate-600 mt-2">
+            Escolha o layout e preencha os dados
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -75,7 +91,9 @@ export default function SelecionarLayoutPage() {
                   <button
                     onClick={() => setLayoutType("prova")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
-                      layoutType === "prova" ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white"
+                      layoutType === "prova"
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-slate-200 bg-white"
                     }`}
                   >
                     <div className="font-semibold">Prova</div>
@@ -88,7 +106,9 @@ export default function SelecionarLayoutPage() {
                         : "border-slate-200 bg-white"
                     }`}
                   >
-                    <div className="font-semibold">Lista de Exercício</div>
+                    <div className="font-semibold">
+                      Lista de Exercício
+                    </div>
                   </button>
                 </div>
 
@@ -96,7 +116,9 @@ export default function SelecionarLayoutPage() {
                   <button
                     onClick={() => setColumns(1)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
-                      columns === 1 ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white"
+                      columns === 1
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-slate-200 bg-white"
                     }`}
                   >
                     1 Coluna
@@ -104,11 +126,27 @@ export default function SelecionarLayoutPage() {
                   <button
                     onClick={() => setColumns(2)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
-                      columns === 2 ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white"
+                      columns === 2
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-slate-200 bg-white"
                     }`}
                   >
                     2 Colunas
                   </button>
+                </div>
+
+                {/* Gabarito */}
+                <div className="flex items-center gap-2 pt-2">
+                  <Checkbox
+                    id="showGabarito"
+                    checked={showGabarito}
+                    onCheckedChange={(v) =>
+                      setShowGabarito(Boolean(v))
+                    }
+                  />
+                  <Label htmlFor="showGabarito">
+                    Mostrar gabarito
+                  </Label>
                 </div>
               </CardContent>
             </Card>
@@ -129,7 +167,10 @@ export default function SelecionarLayoutPage() {
                     className="w-full h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer bg-slate-50"
                   >
                     {logoUrl ? (
-                      <img src={logoUrl} className="max-h-full max-w-full object-contain" />
+                      <img
+                        src={logoUrl}
+                        className="max-h-full max-w-full object-contain"
+                      />
                     ) : (
                       "Clique para adicionar logo"
                     )}
@@ -139,35 +180,65 @@ export default function SelecionarLayoutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label>Nome</Label>
-                    <Input value={nome} onChange={(e) => setNome(e.target.value)} />
+                    <Input
+                      value={nome}
+                      onChange={(e) => setNome(e.target.value)}
+                    />
                   </div>
                   <div>
                     <Label>Turma</Label>
-                    <Input value={turma} onChange={(e) => setTurma(e.target.value)} />
+                    <Input
+                      value={turma}
+                      onChange={(e) => setTurma(e.target.value)}
+                    />
                   </div>
                   <div>
                     <Label>Professor</Label>
-                    <Input value={professor} onChange={(e) => setProfessor(e.target.value)} />
+                    <Input
+                      value={professor}
+                      onChange={(e) =>
+                        setProfessor(e.target.value)
+                      }
+                    />
                   </div>
                   <div>
                     <Label>Disciplina</Label>
-                    <Input value={disciplina} onChange={(e) => setDisciplina(e.target.value)} />
+                    <Input
+                      value={disciplina}
+                      onChange={(e) =>
+                        setDisciplina(e.target.value)
+                      }
+                    />
                   </div>
                   <div>
                     <Label>Data</Label>
-                    <Input type="date" value={data} onChange={(e) => setData(e.target.value)} />
+                    <Input
+                      type="date"
+                      value={data}
+                      onChange={(e) => setData(e.target.value)}
+                    />
                   </div>
                   <div>
                     <Label>Nota</Label>
-                    <Input value={nota} onChange={(e) => setNota(e.target.value)} />
+                    <Input
+                      value={nota}
+                      onChange={(e) => setNota(e.target.value)}
+                    />
                   </div>
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                  <Button variant="outline" onClick={handleVoltar} className="flex-1">
+                  <Button
+                    variant="outline"
+                    onClick={handleVoltar}
+                    className="flex-1"
+                  >
                     Cancelar
                   </Button>
-                  <Button onClick={handleContinuar} className="flex-1">
+                  <Button
+                    onClick={handleContinuar}
+                    className="flex-1"
+                  >
                     Continuar
                   </Button>
                 </div>
