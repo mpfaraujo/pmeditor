@@ -29,11 +29,16 @@ interface ImageUploadProps {
   onImageInsert: (url: string, widthCm: number) => void;
 }
 
+function clampInt(n: number, min: number, max: number) {
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, Math.min(max, Math.round(n)));
+}
+
 export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [size, setSize] = useState<string>("4"); // tamanho padrão 4cm
+  const [size, setSize] = useState<string>("4"); // padrão 4cm
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -67,7 +72,8 @@ export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadPr
       const data = await response.json();
 
       if (data.success && data.url) {
-        onImageInsert(data.url, parseInt(size));
+        const widthCm = clampInt(parseInt(size, 10), 1, 8);
+        onImageInsert(data.url, widthCm);
         onOpenChange(false);
         setFile(null);
       } else {
@@ -98,32 +104,33 @@ export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadPr
             onChange={handleFileChange}
             disabled={uploading}
           />
-<div className="space-y-2">
-  <label className="text-sm font-medium">Largura da imagem (cm)</label>
-  <Select value={size} onValueChange={setSize}>
-    <SelectTrigger>
-      <SelectValue placeholder="Selecione o tamanho" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="2">2 cm</SelectItem>
-      <SelectItem value="3">3 cm</SelectItem>
-      <SelectItem value="4">4 cm</SelectItem>
-      <SelectItem value="5">5 cm</SelectItem>
-      <SelectItem value="6">6 cm</SelectItem>
-      <SelectItem value="7">7 cm</SelectItem>
-      <SelectItem value="8">8 cm</SelectItem>
-    </SelectContent>
-  </Select>
-</div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Largura da imagem (cm)</label>
+            <Select value={size} onValueChange={setSize}>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione o tamanho" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">1 cm</SelectItem>
+                <SelectItem value="2">2 cm</SelectItem>
+                <SelectItem value="3">3 cm</SelectItem>
+                <SelectItem value="4">4 cm</SelectItem>
+                <SelectItem value="5">5 cm</SelectItem>
+                <SelectItem value="6">6 cm</SelectItem>
+                <SelectItem value="7">7 cm</SelectItem>
+                <SelectItem value="8">8 cm</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           {file && (
             <p className="text-sm text-gray-600">
               Arquivo selecionado: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
             </p>
           )}
 
-          {error && (
-            <p className="text-sm text-red-600">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-600">{error}</p>}
         </div>
 
         <DialogFooter>

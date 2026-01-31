@@ -16,7 +16,7 @@ import { TOOLBAR_GROUPS } from "./toolbar-config";
 
 interface HorizontalToolbarProps {
   onAction: (action: string) => void;
-  optionsCount: number; // NOVO (2..5)
+  optionsCount: number; // 2..5
 }
 
 export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarProps) {
@@ -84,7 +84,7 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
 
           <Separator orientation="vertical" className="h-6 mx-1" />
 
-          {/* Opções (+ / -) 2..5 */}
+          {/* Opções (+ / -) */}
           <Button
             variant="ghost"
             size="icon"
@@ -110,6 +110,78 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
           </Button>
 
           <Separator orientation="vertical" className="h-6 mx-1" />
+
+          {/* Imagem (+ / - 1cm) */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("img-w-dec")}
+            title="Imagem −1cm"
+            aria-label="Diminuir imagem em 1cm"
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("img-w-inc")}
+            title="Imagem +1cm"
+            aria-label="Aumentar imagem em 1cm"
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+
+          <Separator orientation="vertical" className="h-6 mx-1" />
+
+          {/* Alinhamento */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("align-left")}
+            title="Esquerda"
+            aria-label="Alinhar à esquerda"
+          >
+            <Icons.AlignLeft className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("align-center")}
+            title="Centro"
+            aria-label="Centralizar"
+          >
+            <Icons.AlignCenter className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("align-right")}
+            title="Direita"
+            aria-label="Alinhar à direita"
+          >
+            <Icons.AlignRight className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("align-justify")}
+            title="Justificar"
+            aria-label="Justificar"
+          >
+            <Icons.AlignJustify className="h-4 w-4" />
+          </Button>
+
+          <Separator orientation="vertical" className="h-6 mx-1" />
         </div>
 
         {/* GRUPOS EXISTENTES */}
@@ -126,16 +198,14 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
                 <DropdownMenuLabel>{group.label}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
 
-                {group.items.map((item) => {
-                  return (
-                    <DropdownMenuItem key={item.id} onClick={() => onAction(item.action)}>
-                      <div className="flex items-center gap-2">
-                        {getIcon(item.icon)}
-                        <span>{item.label}</span>
-                      </div>
-                    </DropdownMenuItem>
-                  );
-                })}
+                {group.items.map((item) => (
+                  <DropdownMenuItem key={item.id} onClick={() => onAction(item.action)}>
+                    <div className="flex items-center gap-2">
+                      {getIcon(item.icon)}
+                      <span>{item.label}</span>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
 

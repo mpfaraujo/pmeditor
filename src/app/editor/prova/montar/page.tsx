@@ -57,12 +57,10 @@ export default function MontarProvaPage() {
     router.push("/editor/prova/selecionar-layout");
   };
 
-  // Ordem linear atual (reordenação respeitada)
   const orderedQuestions = useMemo(() => {
     return [...layout.coluna1, ...layout.coluna2];
   }, [layout]);
 
-  // Hook de paginação
   const { pages, refs } = usePagination({
     config: {
       pageHeight: PAGE_HEIGHT,
@@ -88,7 +86,7 @@ export default function MontarProvaPage() {
               questao-conteudo
               [&_p]:!m-0
               [&_p]:!p-0
-              [&_img]:!m-0
+              [&_img]:!my-0
             "
           >
             <QuestionRenderer content={question.content} />
@@ -98,13 +96,11 @@ export default function MontarProvaPage() {
     );
   };
 
-  // Seleciona o layout baseado no tipo
   const LayoutComponent = provaConfig.layoutType === "exercicio" ? ExerciseLayout : ProvaLayout;
 
   return (
     <>
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
-        {/* Barra de ações */}
         <div className="print:hidden fixed top-4 left-4 right-4 z-50 flex gap-2 justify-between bg-white p-4 border rounded-lg shadow-lg">
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => router.push("/editor/questoes")}>
@@ -131,7 +127,6 @@ export default function MontarProvaPage() {
           </div>
         </div>
 
-        {/* Renderiza o layout escolhido */}
         <LayoutComponent
           pages={pages}
           orderedQuestions={orderedQuestions}

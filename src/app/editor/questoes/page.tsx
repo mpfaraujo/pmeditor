@@ -1,4 +1,3 @@
-// src/app/editor/questoes/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,8 +15,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import "./print.css";
 import type { CarouselApi } from "@/components/ui/carousel";
+import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
+import "./print.css";
 
 type QuestionItem = {
   metadata: {
@@ -28,13 +28,13 @@ type QuestionItem = {
     tipo?: string;
     source?: { kind?: string };
     tags?: string[];
-    gabarito?: {
-      kind: "mcq" | "tf" | "essay";
-      correct?: string;
-      rubric?: string;
-    };
+    gabarito?: any;
   };
   content: any;
+  base?: {
+    metadata?: any;
+    content?: any;
+  };
   variantsCount?: number;
   active?: { kind: "base" | "variant"; id: string };
 };
@@ -50,11 +50,15 @@ type FilterValues = {
 export default function QuestoesPage() {
   const router = useRouter();
   const { selectedQuestions, addQuestion, removeQuestion, isSelected } = useProva();
+
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
+
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editing, setEditing] = useState<QuestionItem | null>(null);
 
   useEffect(() => {
     load({});
@@ -64,7 +68,12 @@ export default function QuestoesPage() {
   const load = async (filters: Partial<FilterValues>) => {
     setLoading(true);
     try {
-      const params: any = { page: 1, limit: 100, includeContent: true };
+      const params: any = {
+        page: 1,
+        limit: 100,
+        includeContent: true,
+        includeBase: true,
+      };
 
       if (filters.disciplinas?.length) params.disciplinas = filters.disciplinas;
       if (filters.assuntos?.length) params.assuntos = filters.assuntos;
@@ -73,8 +82,11 @@ export default function QuestoesPage() {
       if (filters.tags) params.tags = filters.tags;
 
       const res: any = await listQuestions(params);
-
-      const list = Array.isArray(res) ? res : Array.isArray(res?.items) ? res.items : [];
+      const list = Array.isArray(res)
+        ? res
+        : Array.isArray(res?.items)
+        ? res.items
+        : [];
 
       setItems(list);
       setTotalResults(res?.total ?? list.length);
@@ -97,15 +109,20 @@ export default function QuestoesPage() {
   }, [api]);
 
   const toggleSelect = (id: string, checked: boolean) => {
-    const question = items.find((q) => q.metadata.id === id);
-    if (!question) return;
-
-    if (checked) addQuestion(question);
-    else removeQuestion(id);
+    const q = items.find((x) => x.metadata.id === id);
+    if (!q) return;
+    checked ? addQuestion(q) : removeQuestion(id);
   };
 
   const handleMontarProva = () => {
     router.push("/editor/prova/selecionar-layout");
+  };
+
+  const handleEditAtual = () => {
+    const q = items[currentIndex];
+    if (!q) return;
+    setEditing(q);
+    setEditorOpen(true);
   };
 
   const hasSelection = selectedQuestions.length > 0;
@@ -124,30 +141,27 @@ export default function QuestoesPage() {
 
       <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-hidden">
         {loading && <div className="text-sm">Carregando…</div>}
-
-        {!loading && items.length === 0 && <div className="text-sm">Nenhuma questão encontrada.</div>}
+        {!loading && items.length === 0 && (
+          <div className="text-sm">Nenhuma questão encontrada.</div>
+        )}
 
         {!loading && items.length > 0 && (
           <div className="w-full max-w-full md:max-w-[12cm] mx-auto">
-            {/* TOPO FIXO (reserva espaço; não desloca o carousel) */}
             <div className="flex items-start justify-between gap-4 mb-3 min-h-[52px]">
               <div className="min-w-0">
                 <div className="text-sm text-muted-foreground mb-2">
                   Questão {currentIndex + 1} de {items.length}
                 </div>
 
-                {/* LEGENDA */}
                 <div className="flex items-center gap-6 text-xs text-muted-foreground flex-wrap">
                   <div className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-slate-300 ring-1 ring-border" />
                     <span>Original</span>
                   </div>
-
                   <div className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-amber-400 ring-1 ring-border" />
                     <span>Editada</span>
                   </div>
-
                   <div className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-blue-500 ring-1 ring-border" />
                     <span>Variante ativa</span>
@@ -155,8 +169,11 @@ export default function QuestoesPage() {
                 </div>
               </div>
 
-              {/* Botão no mesmo nível da legenda (sempre reserva espaço) */}
-              <div className="shrink-0">
+              <div className="shrink-0 flex items-center gap-2">
+                <Button size="sm" variant="secondary" onClick={handleEditAtual}>
+                  Editar
+                </Button>
+
                 <Button
                   onClick={handleMontarProva}
                   disabled={!hasSelection}
@@ -175,6 +192,7 @@ export default function QuestoesPage() {
                       <QuestionCard
                         metadata={q.metadata}
                         content={q.content}
+                        base={q.base}
                         variantsCount={q.variantsCount}
                         active={q.active}
                         selected={isSelected(q.metadata.id)}
@@ -193,6 +211,33 @@ export default function QuestoesPage() {
           </div>
         )}
       </div>
+
+<QuestionEditorModal
+  open={editorOpen}
+  onOpenChange={setEditorOpen}
+  question={editing}
+  onSaved={(updated) => {
+    const next = updated?.item ?? updated;
+
+    if (!next?.metadata?.id) return;
+
+    setItems((prev) =>
+      prev.map((it) =>
+        it.metadata.id === next.metadata.id
+          ? {
+              ...it,
+              ...next,
+              metadata: next.metadata ?? it.metadata,
+              content: next.content ?? it.content,
+              base: next.base ?? it.base,
+              variantsCount: next.variantsCount ?? it.variantsCount,
+              active: next.active ?? it.active,
+            }
+          : it
+      )
+    );
+  }}
+/>
     </div>
   );
 }

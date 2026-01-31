@@ -31,7 +31,6 @@ export default function QuestionRenderer({ content }: Props) {
   const blocks: React.ReactNode[] = [];
   const options: React.ReactNode[] = [];
 
-  // Seu JSON: doc -> question -> (base_text, statement, options)
   doc.content?.forEach((node, i) => {
     if (node.type !== "question") return;
 
@@ -61,11 +60,29 @@ export default function QuestionRenderer({ content }: Props) {
 
 function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
   return (
-    node.content?.map((child, i) => (
-      <p key={`${keyPrefix}-${i}`} className="leading-snug">
-        {renderInline(child)}
-      </p>
-    )) ?? []
+    node.content?.map((child, i) => {
+      // child geralmente é paragraph
+      const align = child?.attrs?.textAlign as
+        | "left"
+        | "right"
+        | "center"
+        | "justify"
+        | undefined;
+
+      const style: React.CSSProperties | undefined = align
+        ? { textAlign: align }
+        : undefined;
+
+      return (
+        <p
+          key={`${keyPrefix}-${i}`}
+          className="leading-snug"
+          style={style}
+        >
+          {renderInline(child)}
+        </p>
+      );
+    }) ?? []
   );
 }
 
@@ -74,11 +91,10 @@ function renderOptions(node: PMNode): React.ReactNode[] {
     node.content?.map((opt, i) => {
       const letter = opt.attrs?.letter ?? "?";
       return (
-<div key={`opt-${i}`} className="flex items-center gap-2">
-  <span>({letter})</span>
-  <div className="flex-1">{renderInline(opt)}</div>
-</div>
-
+        <div key={`opt-${i}`} className="flex items-center gap-2">
+          <span>({letter})</span>
+          <div className="flex-1">{renderInline(opt)}</div>
+        </div>
       );
     }) ?? []
   );
@@ -94,6 +110,7 @@ function renderInline(node: PMNode): React.ReactNode {
   if (node.type === "math_inline") {
     return (
       <span
+        className="math-inline"
         dangerouslySetInnerHTML={{
           __html: katex.renderToString(node.attrs?.latex ?? "", {
             throwOnError: false,
@@ -106,14 +123,26 @@ function renderInline(node: PMNode): React.ReactNode {
 
   if (node.type === "image") {
     const widthPx = Number(node.attrs?.width ?? 0);
-    return (
-      <img
-        src={node.attrs?.src}
-        style={{ width: widthPx ? `${widthPx}px` : "auto" }}
-        className="my-2"
-        alt=""
-      />
-    );
+    const align = node.attrs?.align as "left" | "center" | "right" | undefined;
+
+    const style: React.CSSProperties = {
+      width: widthPx ? `${widthPx}px` : "auto",
+      height: "auto",
+      display: "block",
+    };
+
+    if (align === "center") {
+      style.marginLeft = "auto";
+      style.marginRight = "auto";
+    } else if (align === "right") {
+      style.marginLeft = "auto";
+      style.marginRight = "0";
+    } else {
+      style.marginLeft = "0";
+      style.marginRight = "auto";
+    }
+
+    return <img src={node.attrs?.src} style={style} className="my-2" alt="" />;
   }
 
   if (node.content) {

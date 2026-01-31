@@ -30,6 +30,19 @@ interface EditorToolbarProps {
   optionsCount?: number;
 }
 
+function clampInt(n: number, min: number, max: number) {
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, Math.min(max, Math.round(n)));
+}
+
+function cmToPx(cm: number) {
+  return Math.round(cm * 37.8);
+}
+
+function pxToCm(px: number) {
+  return px ? px / 37.8 : 0;
+}
+
 export function EditorToolbar({
   view,
   onOpenMath,
@@ -112,7 +125,7 @@ export function EditorToolbar({
   };
 
   const handleImageInsert = (url: string, widthCm: number) => {
-    const widthPx = Math.round(widthCm * 37.8);
+    const widthPx = cmToPx(widthCm);
     const image = schema.nodes.image.create({ src: url, width: widthPx.toString() });
     view.dispatch(view.state.tr.replaceSelectionWith(image));
     view.focus();
@@ -150,6 +163,106 @@ export function EditorToolbar({
     window.alert(`Carregado: ${id}`);
   };
 
+  // ---------- helpers: localizar imagem selecionada ----------
+  const findSelectedImage = (): { pos: number; node: any } | null => {
+    const { selection } = view.state;
+    const { from, to } = selection;
+
+    let found: { pos: number; node: any } | null = null;
+
+    view.state.doc.nodesBetween(from, to, (node, pos) => {
+      if (found) return false;
+      if (node.type === schema.nodes.image) {
+        found = { pos, node };
+        return false;
+      }
+      return true;
+    });
+
+    if (!found && from === to) {
+      const $pos = view.state.doc.resolve(from);
+      const after = $pos.nodeAfter;
+      const before = $pos.nodeBefore;
+
+      if (after && after.type === schema.nodes.image) found = { pos: from, node: after };
+      else if (before && before.type === schema.nodes.image)
+        found = { pos: from - before.nodeSize, node: before };
+    }
+
+    return found;
+  };
+
+  // ---------- imagem: largura 1..8 cm ----------
+  const adjustSelectedImageWidth = (deltaCm: number) => {
+    const img = findSelectedImage();
+    if (!img) return;
+
+    const curPx = Number(img.node.attrs?.width ?? 0);
+    const curCm = curPx ? pxToCm(curPx) : 0;
+
+    const nextCm = clampInt((curCm || 1) + deltaCm, 1, 8);
+    const nextPx = cmToPx(nextCm);
+
+    const tr = view.state.tr.setNodeMarkup(img.pos, undefined, {
+      ...img.node.attrs,
+      width: String(nextPx),
+    });
+
+    view.dispatch(tr);
+    view.focus();
+  };
+
+  // ---------- alinhamento: imagem OU parágrafos ----------
+  const applyAlign = (align: "left" | "center" | "right" | "justify") => {
+    // 1) imagem (justify ignora)
+    const img = findSelectedImage();
+    if (img) {
+      if (align === "justify") return;
+      const tr = view.state.tr.setNodeMarkup(img.pos, undefined, {
+        ...img.node.attrs,
+        align,
+      });
+      view.dispatch(tr);
+      view.focus();
+      return;
+    }
+
+    // 2) parágrafos no range
+    const { from, to } = view.state.selection;
+    let tr = view.state.tr;
+    let changed = false;
+
+    view.state.doc.nodesBetween(from, to, (node, pos) => {
+      if (node.type === schema.nodes.paragraph) {
+        if (node.attrs?.textAlign !== align) {
+          tr = tr.setNodeMarkup(pos, undefined, { ...node.attrs, textAlign: align });
+          changed = true;
+        }
+      }
+      return true;
+    });
+
+    // seleção vazia: tenta paragraph pai
+if (!changed && from === to) {
+  const $pos = view.state.doc.resolve(from);
+  for (let d = $pos.depth; d > 0; d--) {
+    const n = $pos.node(d);
+    if (n.type === schema.nodes.paragraph) {
+      const pos = $pos.before(d); // posição do nó (não do conteúdo)
+      tr = tr.setNodeMarkup(pos, undefined, { ...n.attrs, textAlign: align });
+      changed = true;
+      break;
+    }
+  }
+}
+
+
+    if (changed) {
+      view.dispatch(tr);
+      view.focus();
+    }
+  };
+
   const handleAction = (action: string) => {
     // ações externas (tipo/largura/opções)
     if (
@@ -161,6 +274,27 @@ export function EditorToolbar({
       action === "dec-options"
     ) {
       onAction?.(action);
+      return;
+    }
+
+    // imagem +/- 1cm
+    if (action === "img-w-dec") {
+      adjustSelectedImageWidth(-1);
+      return;
+    }
+    if (action === "img-w-inc") {
+      adjustSelectedImageWidth(1);
+      return;
+    }
+
+    // alinhamento (imagem ou texto)
+    if (
+      action === "align-left" ||
+      action === "align-center" ||
+      action === "align-right" ||
+      action === "align-justify"
+    ) {
+      applyAlign(action.replace("align-", "") as any);
       return;
     }
 

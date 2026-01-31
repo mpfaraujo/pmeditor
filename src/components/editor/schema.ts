@@ -45,14 +45,31 @@ const nodes: Record<string, NodeSpec> = {
     },
   },
 
-  paragraph: {
-    content: "inline*",
-    group: "block",
-    parseDOM: [{ tag: "p" }],
-    toDOM(): DOMOutputSpec {
-      return ["p", 0];
-    },
+paragraph: {
+  content: "inline*",
+  group: "block",
+  attrs: {
+    textAlign: { default: null as null | "left" | "center" | "right" | "justify" },
   },
+  parseDOM: [
+    {
+      tag: "p",
+      getAttrs(dom: Node | string) {
+        const el = dom as HTMLElement;
+        const a = (el.style?.textAlign || "").trim();
+        const textAlign =
+          a === "left" || a === "center" || a === "right" || a === "justify" ? a : null;
+        return { textAlign };
+      },
+    },
+  ],
+  toDOM(node): DOMOutputSpec {
+    const attrs: Record<string, string> = {};
+    const a = node.attrs.textAlign;
+    if (a) attrs.style = `text-align:${a};`;
+    return ["p", attrs, 0];
+  },
+},
 
   text: {
     group: "inline",
@@ -114,32 +131,69 @@ const nodes: Record<string, NodeSpec> = {
     },
   },
 
-  image: {
-    inline: true,
-    group: "inline",
-    draggable: true,
-    attrs: {
-      src: {},
-      width: { default: null },
-    },
-    parseDOM: [
-      {
-        tag: "img[src]",
-        getAttrs(dom: Node | string) {
-          const el = dom as HTMLImageElement;
-          return {
-            src: el.getAttribute("src"),
-            width: el.getAttribute("data-width") || null,
-          };
-        },
-      },
-    ],
-    toDOM(node): DOMOutputSpec {
-      const attrs: Record<string, string> = { src: String(node.attrs.src) };
-      if (node.attrs.width) attrs["data-width"] = String(node.attrs.width);
-      return ["img", attrs];
-    },
+image: {
+  inline: true,
+  group: "inline",
+  draggable: true,
+  atom: true,
+  attrs: {
+    src: {},
+    width: { default: null },  // px
+    align: { default: null as null | "left" | "center" | "right" },
   },
+  parseDOM: [
+    {
+      tag: "img[src]",
+      getAttrs(dom: Node | string) {
+        const el = dom as HTMLImageElement;
+
+        const dw = el.getAttribute("data-width");
+        const wAttr = el.getAttribute("width");
+        const styleW = el.style?.width || "";
+        const stylePx = styleW.endsWith("px") ? styleW.slice(0, -2) : "";
+        const width = dw || wAttr || stylePx || null;
+
+        const da = el.getAttribute("data-align");
+        const align = da === "left" || da === "center" || da === "right" ? da : null;
+
+        return {
+          src: el.getAttribute("src"),
+          width,
+          align,
+        };
+      },
+    },
+  ],
+  toDOM(node): DOMOutputSpec {
+    const attrs: Record<string, string> = { src: String(node.attrs.src) };
+
+    const styles: string[] = ["height:auto;"];
+
+    const w = node.attrs.width;
+    if (w !== null && w !== undefined && String(w).trim() !== "") {
+      const px = Math.max(1, Math.round(Number(w)));
+      attrs["data-width"] = String(px);
+      attrs["width"] = String(px);
+      styles.push(`width:${px}px;`);
+    }
+
+    const align = node.attrs.align as any;
+    if (align) {
+      attrs["data-align"] = String(align);
+      // torna bloco pra alinhar por margem
+      styles.push("display:block;");
+      if (align === "center") styles.push("margin-left:auto;margin-right:auto;");
+      if (align === "left") styles.push("margin-left:0;margin-right:auto;");
+      if (align === "right") styles.push("margin-left:auto;margin-right:0;");
+    }
+
+    if (styles.length) attrs["style"] = styles.join("");
+
+    return ["img", attrs];
+  },
+},
+
+
 
   table: {
     content: "table_row+",

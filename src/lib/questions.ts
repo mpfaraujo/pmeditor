@@ -74,6 +74,7 @@ export async function listQuestions(params?: {
   limit?: number;
 
   includeContent?: boolean;
+  includeBase?: boolean;
 
   disciplinas?: string[];
   assuntos?: string[];
@@ -86,6 +87,7 @@ export async function listQuestions(params?: {
   q.set("limit", String(params?.limit ?? 20));
 
   if (params?.includeContent) q.set("includeContent", "1");
+  if (params?.includeBase) q.set("includeBase", "1");
 
   if (params?.disciplinas?.length) {
     params.disciplinas.forEach((d) => q.append("disciplinas[]", d));

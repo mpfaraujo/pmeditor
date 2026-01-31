@@ -12,13 +12,19 @@
   line-height: 1.1;
   color: #000;
 
-  text-align: justify;
-  text-justify: inter-word;
+  /* NÃO força alinhamento aqui */
+  text-align: initial;
 }
 
 /* remove margens padrão */
 .print-mode p {
   margin: 0;
+}
+
+/* JUSTIFICA SOMENTE parágrafos SEM alinhamento explícito */
+.print-mode p:not([style*="text-align"]) {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 /* texto-base / enunciado */
@@ -52,6 +58,7 @@
   max-width: 8.5cm;
   height: auto;
   margin: 0.2em 0;
+  display: block;
 }
 
 /* KaTeX inline */

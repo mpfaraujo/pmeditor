@@ -4,13 +4,9 @@
 }
 
 :root {
-  /* LARGURAS FIXAS (cm) */
   --col-width: 8.5cm;
   --col-gap: 1cm;
   --col-gap-half: 0.5cm;
-
-  /* 2 colunas: 8.5 + 1 + 8.5 = 18cm
-     1 coluna: pode ser 18cm também (como você pediu) */
   --questoes-width: 18cm;
 }
 
@@ -95,40 +91,28 @@
 
 /* =========================================================
    COLUNAS / LARGURAS FIXAS (cm)
-   - 1 coluna: 18cm (full)
-   - 2 colunas: 8.5cm + gap 1cm + 8.5cm (total 18cm)
    ========================================================= */
 
-/* container com largura fixa */
 .questoes-container {
   position: relative;
-
   width: var(--questoes-width);
   margin: 0 auto;
-
   display: flex;
   gap: var(--col-gap);
   align-items: flex-start;
-
-  /* importante em flex p/ não “estourar” com conteúdo grande */
   min-width: 0;
 }
 
-/* por padrão (1 coluna), a coluna ocupa tudo */
 .coluna {
   width: var(--questoes-width);
   break-inside: avoid;
-
-  /* importante p/ o conteúdo poder quebrar dentro do flex item */
   min-width: 0;
 }
 
-/* quando existir .coluna-2, vira modo 2 colunas com largura fixa */
 .questoes-container:has(.coluna-2) .coluna {
   width: var(--col-width);
 }
 
-/* divisor central: só aparece quando houver 2 colunas */
 .questoes-container::before {
   content: "";
   display: none;
@@ -137,20 +121,13 @@
 .questoes-container:has(.coluna-2)::before {
   content: "";
   display: block;
-
   position: absolute;
   top: 0;
   bottom: 0;
-
-  /* linha no centro do gap: 8.5cm + 0.5cm */
   left: calc(var(--col-width) + var(--col-gap-half));
-
   width: 0;
   border-left: 1px solid #000;
-
-  /* não “comer” a coluna visualmente */
   transform: translateX(-0.5px);
-
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -158,8 +135,6 @@
 .questao-item-wrapper {
   break-inside: avoid;
   margin-bottom: 0.5cm;
-
-  /* evitar overflow em flex/inline-block */
   min-width: 0;
 }
 
@@ -192,24 +167,33 @@
   padding: 1px 4px;
 }
 
-/* ====== QUEBRA/ANTI-OVERFLOW (resolve “estourar a caixa”) ====== */
+/* ====== QUEBRA/ANTI-OVERFLOW ====== */
 .questao-conteudo {
-  display: inline;
-  line-height: 1.1;
+  /* era inline — isso atrapalha bloco/img com margin auto */
+  display: block;
 
-  /* força quebra mesmo com “palavra gigante”, URL, etc. */
+  line-height: 1.1;
   overflow-wrap: anywhere;
   word-break: break-word;
-
   min-width: 0;
+}
+
+/* garante que imagem respeite alinhamento (margin auto vindo do inline style do renderer) */
+.questao-conteudo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .questao-conteudo p {
   margin: 0;
-  text-align: justify;
-
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.questao-conteudo p:not([style*="text-align"]) {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .questao-conteudo p + p {
@@ -218,10 +202,14 @@
 
 .question-readonly p,
 .question-text {
-  text-align: justify;
-
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.question-readonly p:not([style*="text-align"]),
+.question-text p:not([style*="text-align"]) {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .questao-header-wrap {
@@ -267,17 +255,14 @@
     background: #fff !important;
   }
 
-  /* não imprimir a camada de medição */
   .measure-layer {
     display: none !important;
   }
 
-  /* wrapper externo não pode “empurrar” nada */
   .a4-sheet {
     padding: 0 !important;
     margin: 0 !important;
     background: #fff !important;
-
     break-after: page !important;
     page-break-after: always !important;
   }
@@ -287,18 +272,14 @@
     page-break-after: auto !important;
   }
 
-  /* folha A4 real com margem interna de 1,5cm */
   .prova-page {
     width: 21cm !important;
     height: 29.7cm !important;
     min-height: 0 !important;
     padding: 1.5cm !important;
     box-sizing: border-box !important;
-
     overflow: hidden !important;
     box-shadow: none !important;
-
-    /* necessário para a linha ocupar “altura útil inteira” */
     display: flex !important;
     flex-direction: column !important;
   }

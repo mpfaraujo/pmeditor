@@ -47,11 +47,7 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? "Expandir" : "Recolher"}
         >
-          {collapsed ? (
-            <ChevronLeft className="h-4 w-4" />
-          ) : (
-            <ChevronRight className="h-4 w-4" />
-          )}
+          {collapsed ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </Button>
       </div>
 
@@ -59,9 +55,7 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
         {/* CONTROLES */}
         <div className="mb-2">
           {!collapsed && (
-            <div className="text-xs font-semibold text-muted-foreground px-2 py-2">
-              Config
-            </div>
+            <div className="text-xs font-semibold text-muted-foreground px-2 py-2">Config</div>
           )}
 
           <div className="space-y-1">
@@ -116,11 +110,7 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
             </div>
 
             {/* Opções (+ / -) */}
-            <div
-              className={`flex items-center ${
-                collapsed ? "justify-center" : "justify-between"
-              } px-1`}
-            >
+            <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}>
               <Button
                 variant="ghost"
                 size="icon"
@@ -133,9 +123,7 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
                 <Minus className="h-4 w-4" />
               </Button>
 
-              {!collapsed && (
-                <div className="text-sm tabular-nums px-2">{clampedOptions} opções</div>
-              )}
+              {!collapsed && <div className="text-sm tabular-nums px-2">{clampedOptions} opções</div>}
 
               <Button
                 variant="ghost"
@@ -147,6 +135,82 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
                 title="+ opção"
               >
                 <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Imagem (+ / - 1cm) */}
+            <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => onAction("img-w-dec")}
+                aria-label="Diminuir imagem"
+                title="Imagem −1cm"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+
+              {!collapsed && (
+                <div className="text-sm tabular-nums px-2 text-muted-foreground">Imagem</div>
+              )}
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => onAction("img-w-inc")}
+                aria-label="Aumentar imagem"
+                title="Imagem +1cm"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Alinhamento */}
+            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-1`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                onClick={() => onAction("align-left")}
+                title={collapsed ? "Esquerda" : undefined}
+              >
+                <Icons.AlignLeft className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Esquerda</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                onClick={() => onAction("align-center")}
+                title={collapsed ? "Centro" : undefined}
+              >
+                <Icons.AlignCenter className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Centro</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                onClick={() => onAction("align-right")}
+                title={collapsed ? "Direita" : undefined}
+              >
+                <Icons.AlignRight className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Direita</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                onClick={() => onAction("align-justify")}
+                title={collapsed ? "Justificar" : undefined}
+              >
+                <Icons.AlignJustify className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Justificar</span>}
               </Button>
             </div>
           </div>
@@ -169,9 +233,7 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
                   key={item.id}
                   variant="ghost"
                   size="sm"
-                  className={`w-full h-8 ${
-                    collapsed ? "justify-center px-0" : "justify-start"
-                  }`}
+                  className={`w-full h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
                   onClick={() => onAction(item.action)}
                   title={collapsed ? item.label : undefined}
                 >
