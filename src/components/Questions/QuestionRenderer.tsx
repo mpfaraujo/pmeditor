@@ -61,26 +61,45 @@ export default function QuestionRenderer({ content }: Props) {
 function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
   return (
     node.content?.map((child, i) => {
-      // child geralmente é paragraph
-      const align = child?.attrs?.textAlign as
-        | "left"
-        | "right"
-        | "center"
-        | "justify"
-        | undefined;
+      const key = `${keyPrefix}-${i}`;
 
-      const style: React.CSSProperties | undefined = align
-        ? { textAlign: align }
-        : undefined;
+      // paragraph
+      if (child.type === "paragraph") {
+        const align = child?.attrs?.textAlign as
+          | "left"
+          | "right"
+          | "center"
+          | "justify"
+          | undefined;
 
+        const style: React.CSSProperties | undefined = align
+          ? { textAlign: align }
+          : undefined;
+
+        return (
+          <p key={key} className="leading-snug" style={style}>
+            {renderInline(child)}
+          </p>
+        );
+      }
+
+      // listas (não embrulhar em <p>)
+      if (
+        child.type === "bullet_list" ||
+        child.type === "ordered_list"
+      ) {
+        return (
+          <div key={key} className="leading-snug">
+            {renderInline(child)}
+          </div>
+        );
+      }
+
+      // fallback seguro
       return (
-        <p
-          key={`${keyPrefix}-${i}`}
-          className="leading-snug"
-          style={style}
-        >
+        <div key={key} className="leading-snug">
           {renderInline(child)}
-        </p>
+        </div>
       );
     }) ?? []
   );
@@ -91,7 +110,7 @@ function renderOptions(node: PMNode): React.ReactNode[] {
     node.content?.map((opt, i) => {
       const letter = opt.attrs?.letter ?? "?";
       return (
-        <div key={`opt-${i}`} className="flex items-center gap-2">
+        <div key={`opt-${i}`} className="flex items-start gap-2">
           <span>({letter})</span>
           <div className="flex-1">{renderInline(opt)}</div>
         </div>
@@ -145,8 +164,43 @@ function renderInline(node: PMNode): React.ReactNode {
     return <img src={node.attrs?.src} style={style} className="my-2" alt="" />;
   }
 
+  /* ===== LISTAS ===== */
+
+  if (node.type === "bullet_list") {
+    return (
+      <ul>
+        {node.content?.map((li, i) => (
+          <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
+        ))}
+      </ul>
+    );
+  }
+
+  if (node.type === "ordered_list") {
+    return (
+      <ol>
+        {node.content?.map((li, i) => (
+          <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
+        ))}
+      </ol>
+    );
+  }
+
+  if (node.type === "list_item") {
+    return (
+      <li>
+        {node.content?.map((c, i) => (
+          <React.Fragment key={i}>{renderInline(c)}</React.Fragment>
+        ))}
+      </li>
+    );
+  }
+
+  // conteúdo genérico
   if (node.content) {
-    return node.content.map((c, i) => <span key={i}>{renderInline(c)}</span>);
+    return node.content.map((c, i) => (
+      <span key={i}>{renderInline(c)}</span>
+    ));
   }
 
   return null;
