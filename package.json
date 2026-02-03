@@ -42,6 +42,7 @@
     "prosemirror-state": "^1.4.4",
     "prosemirror-transform": "^1.11.0",
     "prosemirror-view": "^1.41.5",
+    "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.0"
