@@ -59,10 +59,78 @@ function extractAltFromMetadata(meta: any): Alt | null {
   return null;
 }
 
+/* ====================== set_questions helpers (somente leitura) ====================== */
+
+type PMNode = {
+  type: string;
+  attrs?: any;
+  content?: PMNode[];
+  text?: string;
+  marks?: any[];
+};
+
+function safeParseDoc(content: any): PMNode | null {
+  try {
+    const doc = typeof content === "string" ? JSON.parse(content) : content;
+    if (!doc || typeof doc !== "object") return null;
+    if (doc.type !== "doc") return null;
+    return doc as PMNode;
+  } catch {
+    return null;
+  }
+}
+
+function findSetNode(doc: PMNode | null): PMNode | null {
+  return doc?.content?.find((n) => n?.type === "set_questions") ?? null;
+}
+
+function splitSetNode(setNode: PMNode | null): {
+  baseText: PMNode | null;
+  items: PMNode[];
+} {
+  const content = setNode?.content ?? [];
+  const baseText = content.find((n) => n?.type === "base_text") ?? null;
+  const items = content.filter((n) => n?.type === "question_item");
+  return { baseText, items };
+}
+
+function wrapAsQuestionDoc(nodes: PMNode[]): PMNode {
+  return {
+    type: "doc",
+    content: [
+      {
+        type: "question",
+        content: nodes,
+      },
+    ],
+  };
+}
+
+function buildBaseDoc(baseText: PMNode | null): PMNode | null {
+  if (!baseText) return null;
+  return wrapAsQuestionDoc([baseText]);
+}
+
+function buildItemDoc(item: PMNode | null): PMNode | null {
+  if (!item) return null;
+
+  const nodes: PMNode[] = [];
+  (item.content ?? []).forEach((n) => {
+    if (n.type === "statement" || n.type === "options") nodes.push(n);
+  });
+
+  if (nodes.length === 0) return null;
+  return wrapAsQuestionDoc(nodes);
+}
+
+/* ====================== page ====================== */
+
 export default function MontarProvaPage() {
   const router = useRouter();
   const {
     selectedQuestions: initialQuestions,
+    selections,
+    setSetSelection,
     updateColumnLayout,
     provaConfig,
     updateProvaConfig,
@@ -79,6 +147,11 @@ export default function MontarProvaPage() {
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
+
+  // NOVO: modal mínimo p/ escolher itens do set
+  const [setPickerOpen, setSetPickerOpen] = useState(false);
+  const [setPickerSetId, setSetPickerSetId] = useState<string>("");
+  const [setPickerSelected, setSetPickerSelected] = useState<number[]>([]);
 
   if (initialQuestions.length === 0) {
     return (
@@ -104,35 +177,195 @@ export default function MontarProvaPage() {
     router.push("/editor/prova/selecionar-layout");
   };
 
+  // Mantém o comportamento atual de reordenação (sets continuam “1 card” aqui)
   const orderedQuestions = useMemo(() => {
     return [...layout.coluna1, ...layout.coluna2];
   }, [layout]);
+
+  const setCandidates = useMemo(() => {
+    const out: { id: string; n: number; selected: number[] }[] = [];
+
+    for (const q of orderedQuestions as any[]) {
+      const id = q?.metadata?.id;
+      if (!id) continue;
+
+      const sel = selections.find((s) => s.id === id);
+      if (!sel || sel.kind !== "set") continue;
+
+      const doc = safeParseDoc(q.content);
+      const setNode = findSetNode(doc);
+      const { items } = splitSetNode(setNode);
+      const n = items.length;
+
+      const chosen = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
+      const valid = chosen
+        .filter((x) => Number.isInteger(x) && x >= 0 && x < n)
+        .sort((a, b) => a - b);
+
+      out.push({ id, n, selected: valid });
+    }
+
+    return out;
+  }, [orderedQuestions, selections]);
+
+  const openSetPicker = () => {
+    if (setCandidates.length === 0) return;
+
+    const first = setCandidates[0];
+    setSetPickerSetId(first.id);
+    setSetPickerSelected(first.selected.length ? first.selected : Array.from({ length: first.n }, (_, i) => i));
+    setSetPickerOpen(true);
+  };
+
+  const currentSetCandidate = useMemo(() => {
+    return setCandidates.find((x) => x.id === setPickerSetId) ?? null;
+  }, [setCandidates, setPickerSetId]);
+
+  const toggleSetItem = (idx: number) => {
+    setSetPickerSelected((prev) => {
+      const has = prev.includes(idx);
+      if (has) return prev.filter((x) => x !== idx).sort((a, b) => a - b);
+      return [...prev, idx].sort((a, b) => a - b);
+    });
+  };
+
+  const canSaveSetPicker = setPickerSelected.length >= 2;
+
+  const saveSetPicker = () => {
+    if (!setPickerSetId) return;
+    if (!canSaveSetPicker) return;
+
+    setSetSelection(setPickerSetId, setPickerSelected);
+    setSetPickerOpen(false);
+  };
+
+  // NOVO: expande set_questions em question_item (para numeração global)
+  const expandedQuestions = useMemo(() => {
+    const out: any[] = [];
+
+    for (const q of orderedQuestions as any[]) {
+      const id = q?.metadata?.id;
+      if (!id) continue;
+
+      const sel = selections.find((s) => s.id === id);
+
+      // Caso normal: question
+      if (!sel || sel.kind === "question") {
+        out.push(q);
+        continue;
+      }
+
+      // Caso set: expande itens selecionados (>=2)
+      const doc = safeParseDoc(q.content);
+      const setNode = findSetNode(doc);
+      const { baseText, items } = splitSetNode(setNode);
+
+      const baseDoc = buildBaseDoc(baseText);
+      const selectedIdxs = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
+      const validIdxs = selectedIdxs
+        .filter((n) => Number.isInteger(n) && n >= 0 && n < items.length)
+        .sort((a, b) => a - b);
+
+      // se por algum motivo ficar inválido, não quebra: cai no doc inteiro como 1 “questão”
+      if (validIdxs.length < 2) {
+        out.push(q);
+        continue;
+      }
+
+      const headerText = `Use o texto a seguir para responder às próximas ${validIdxs.length} questões.`;
+
+      validIdxs.forEach((itemIdx, localPos) => {
+        const itemNode = items[itemIdx] ?? null;
+        const itemDoc = buildItemDoc(itemNode);
+
+        // se não conseguir montar item, ignora esse item (sem quebrar)
+        if (!itemDoc) return;
+
+        // tenta gabarito no attrs do item (se existir); fallback para meta do parent (se aplicável)
+        const itemMetaGabarito =
+          itemNode?.attrs?.gabarito ??
+          itemNode?.attrs?.answerKey ??
+          itemNode?.attrs?.correct ??
+          undefined;
+
+        const synthetic = {
+          ...q,
+          metadata: {
+            ...(q.metadata ?? {}),
+            // id único p/ keys e para não colidir no React
+            id: `${id}#${itemIdx + 1}`,
+            // gabarito específico do item, se existir
+            ...(itemMetaGabarito ? { gabarito: itemMetaGabarito } : null),
+          },
+          content: itemDoc,
+          __set: {
+            parentId: id,
+            isFirst: localPos === 0,
+            headerText,
+            baseDoc,
+          },
+        };
+
+        out.push(synthetic);
+      });
+    }
+
+    return out as QuestionData[];
+  }, [orderedQuestions, selections]);
 
   const { pages, refs } = usePagination({
     config: {
       pageHeight: PAGE_HEIGHT,
       safetyMargin: SAFETY_PX,
     },
-    questionCount: orderedQuestions.length,
-    dependencies: [orderedQuestions, logoUrl],
+    questionCount: expandedQuestions.length,
+    dependencies: [expandedQuestions, logoUrl],
   });
 
   const respostas = useMemo(() => {
     const out: Record<number, Alt> = {};
-    orderedQuestions.forEach((q, idx) => {
+    expandedQuestions.forEach((q: any, idx) => {
       const alt = extractAltFromMetadata((q as any)?.metadata);
       if (alt) out[idx + 1] = alt;
     });
     return out;
-  }, [orderedQuestions]);
+  }, [expandedQuestions]);
 
-  const totalQuestoes = orderedQuestions.length;
+  const totalQuestoes = expandedQuestions.length;
 
   const renderQuestion = (question: QuestionData | undefined, globalIndex: number) => {
     if (!question) return null;
 
+    const setMeta = (question as any).__set as
+      | {
+          parentId: string;
+          isFirst: boolean;
+          headerText: string;
+          baseDoc: any | null;
+        }
+      | undefined;
+
     return (
-      <div key={question.metadata.id} className="questao-item-wrapper">
+      <div key={(question as any).metadata?.id ?? globalIndex} className="questao-item-wrapper">
+        {/* NOVO: cabeçalho + base_text antes do primeiro item numerado do set */}
+        {setMeta?.isFirst && (
+          <div className="mb-3 space-y-2">
+            <div className="text-sm font-semibold">{setMeta.headerText}</div>
+            {setMeta.baseDoc ? (
+              <div
+                className="
+                  questao-conteudo
+                  [&_p]:!m-0
+                  [&_p]:!p-0
+                  [&_img]:!my-0
+                "
+              >
+                <QuestionRenderer content={setMeta.baseDoc} />
+              </div>
+            ) : null}
+          </div>
+        )}
+
         <div className="questao-item">
           <div className="questao-header-linha">
             <QuestionHeaderSvg
@@ -155,7 +388,7 @@ export default function MontarProvaPage() {
               [&_img]:!my-0
             "
           >
-            <QuestionRenderer content={question.content} />
+            <QuestionRenderer content={(question as any).content} />
           </div>
         </div>
       </div>
@@ -182,6 +415,12 @@ export default function MontarProvaPage() {
           </div>
 
           <div className="flex gap-2">
+            {setCandidates.length > 0 && (
+              <Button variant="outline" onClick={openSetPicker}>
+                Itens do conjunto
+              </Button>
+            )}
+
             <Button
               variant="outline"
               onClick={() =>
@@ -210,10 +449,10 @@ export default function MontarProvaPage() {
 
         <LayoutComponent
           pages={pages}
-          orderedQuestions={orderedQuestions}
+          orderedQuestions={expandedQuestions as any}
           logoUrl={logoUrl}
           onLogoClick={() => setLogoDialogOpen(true)}
-          renderQuestion={renderQuestion}
+          renderQuestion={renderQuestion as any}
           refs={refs}
           columns={provaConfig.columns}
         />
@@ -242,6 +481,110 @@ export default function MontarProvaPage() {
           onReorder={handleReorder}
         />
       </PaginatedA4>
+
+      {/* ===== Modal mínimo: escolher itens do set ===== */}
+      {setPickerOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 print:hidden">
+          <div className="w-[min(720px,calc(100vw-24px))] rounded-lg bg-white shadow-xl border p-4">
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <div className="min-w-0">
+                <div className="text-base font-semibold">Selecionar itens do conjunto</div>
+                <div className="text-xs text-muted-foreground">
+                  Regra: selecione no mínimo 2 itens.
+                </div>
+              </div>
+
+              <Button variant="outline" onClick={() => setSetPickerOpen(false)}>
+                Fechar
+              </Button>
+            </div>
+
+            {setCandidates.length === 0 ? (
+              <div className="text-sm text-muted-foreground">
+                Nenhum conjunto selecionado na prova.
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-col gap-2 mb-3">
+                  <label className="text-xs text-muted-foreground">
+                    Conjunto
+                  </label>
+                  <select
+                    className="border rounded-md h-9 px-2 text-sm"
+                    value={setPickerSetId}
+                    onChange={(e) => {
+                      const nextId = e.target.value;
+                      setSetPickerSetId(nextId);
+
+                      const cand = setCandidates.find((x) => x.id === nextId);
+                      if (!cand) return;
+
+                      setSetPickerSelected(
+                        cand.selected.length
+                          ? cand.selected
+                          : Array.from({ length: cand.n }, (_, i) => i)
+                      );
+                    }}
+                  >
+                    {setCandidates.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.id} ({c.n} itens)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="border rounded-md p-3 max-h-[50vh] overflow-auto">
+                  {currentSetCandidate ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                      {Array.from({ length: currentSetCandidate.n }, (_, i) => {
+                        const checked = setPickerSelected.includes(i);
+                        return (
+                          <label
+                            key={i}
+                            className="flex items-center gap-2 text-sm border rounded-md px-2 py-2 cursor-pointer select-none"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => toggleSetItem(i)}
+                            />
+                            <span>Item {i + 1}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-muted-foreground">
+                      Selecione um conjunto.
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <div className="text-xs text-muted-foreground">
+                    Selecionados: <span className="font-medium">{setPickerSelected.length}</span>
+                    {!canSaveSetPicker && (
+                      <span className="ml-2 text-red-600">
+                        (mínimo 2)
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" onClick={() => setSetPickerOpen(false)}>
+                      Cancelar
+                    </Button>
+                    <Button onClick={saveSetPicker} disabled={!canSaveSetPicker}>
+                      Aplicar
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

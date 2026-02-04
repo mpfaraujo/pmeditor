@@ -1,0 +1,130 @@
+// src/components/prova/headers/ProvaHeaderLayout7.tsx
+
+/**
+ * Layout 7 - Clean Card Style
+ * Design moderno tipo card, campos agrupados visualmente, sem bordas pesadas
+ */
+
+interface ProvaHeaderLayout7Props {
+  logoUrl: string | null;
+  onLogoClick: () => void;
+  isEditable?: boolean;
+  nome?: string;
+  turma?: string;
+  professor?: string;
+  disciplina?: string;
+  data?: string;
+  nota?: string;
+}
+
+function formatDateBR(value: string) {
+  if (!value) return "";
+  const [y, m, d] = value.split("-");
+  if (!y || !m || !d) return value;
+  return `${d}/${m}/${y.slice(2)}`;
+}
+
+export function ProvaHeaderLayout7({
+  logoUrl,
+  onLogoClick,
+  isEditable = true,
+  nome,
+  turma,
+  professor,
+  disciplina,
+  data,
+  nota,
+}: ProvaHeaderLayout7Props) {
+  return (
+    <div className="w-[18cm] bg-white shadow-sm border border-gray-200 mb-4">
+      {/* Header com logo e instituição */}
+      <div className="flex items-center gap-3 px-3 py-1.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+        <div
+          className={`w-10 h-10 flex-shrink-0 flex items-center justify-center ${
+            isEditable ? "cursor-pointer" : "cursor-default"
+          }`}
+          onClick={isEditable ? onLogoClick : undefined}
+        >
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt="Logo"
+              className="max-w-full max-h-full object-contain"
+            />
+          ) : (
+            <div className="w-full h-full border border-gray-300 flex items-center justify-center">
+              <span className="text-[9px] font-semibold text-gray-400">LOGO</span>
+            </div>
+          )}
+        </div>
+        <div className="flex-1">
+          <p className="text-[10px] font-semibold text-gray-700 leading-tight">
+            Centro Federal de Educação Tecnológica
+          </p>
+          <p className="text-[9px] text-gray-500">Celso Suckow da Fonseca</p>
+        </div>
+      </div>
+
+      {/* Campos organizados */}
+      <div className="p-3 space-y-2">
+        {/* Linha 1: Nome completo */}
+        <div>
+          <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+            Aluno
+          </label>
+          <div className="mt-0.5 text-sm font-medium text-gray-900 border-b border-gray-300 pb-0.5">
+            {nome || "—"}
+          </div>
+        </div>
+
+        {/* Linha 2: Grade com campos menores */}
+        <div className="grid grid-cols-12 gap-3">
+          <div className="col-span-2">
+            <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+              Turma
+            </label>
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
+              {turma || "—"}
+            </div>
+          </div>
+
+          <div className="col-span-5">
+            <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+              Professor
+            </label>
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
+              {professor || "—"}
+            </div>
+          </div>
+
+          <div className="col-span-3">
+            <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+              Disciplina
+            </label>
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
+              {disciplina || "—"}
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+              Data
+            </label>
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
+              {formatDateBR(data ?? "") || "—"}
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+              Nota
+            </label>
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
+              {nota || "—"}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

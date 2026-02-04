@@ -2,7 +2,7 @@ import { Schema, type NodeSpec, type MarkSpec, type DOMOutputSpec, type ParseRul
 
 const nodes: Record<string, NodeSpec> = {
   doc: {
-    content: "question",
+    content: "question | set_questions",
   },
 
   question: {
@@ -44,6 +44,26 @@ const nodes: Record<string, NodeSpec> = {
       return ["div", { class: "option", "data-letter": node.attrs.letter }, 0];
     },
   },
+  
+  set_questions: {
+  // contexto obrigatório e compartilhado
+  content: "base_text question_item+",
+  toDOM(): DOMOutputSpec {
+    return ["div", { class: "set-questions" }, 0];
+  },
+},
+
+question_item: {
+  // uma pergunta sobre o mesmo contexto
+  content: "statement options?",
+  attrs: {
+    answerKey: { default: null },
+  },
+  toDOM(): DOMOutputSpec {
+    return ["div", { class: "question-item" }, 0];
+  },
+},
+
 
 paragraph: {
   content: "inline*",

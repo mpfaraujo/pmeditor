@@ -84,6 +84,42 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
 
           <Separator orientation="vertical" className="h-6 mx-1" />
 
+          {/* Set questions (novo) */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("convert-to-setquestions")}
+            title="Conjunto (texto base + perguntas)"
+            aria-label="Conjunto (texto base + perguntas)"
+          >
+            <Icons.Layers className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("add-question-item")}
+            title="Adicionar pergunta"
+            aria-label="Adicionar pergunta"
+          >
+            <Icons.PlusSquare className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onAction("remove-question-item")}
+            title="Remover pergunta"
+            aria-label="Remover pergunta"
+          >
+            <Icons.MinusSquare className="h-4 w-4" />
+          </Button>
+
+          <Separator orientation="vertical" className="h-6 mx-1" />
+
           {/* Opções (+ / -) */}
           <Button
             variant="ghost"

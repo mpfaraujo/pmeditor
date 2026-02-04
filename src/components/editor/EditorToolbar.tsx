@@ -1,3 +1,4 @@
+// src/components/editor/EditorToolbar.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -26,7 +27,7 @@ interface EditorToolbarProps {
   // ações extras (tipo/largura/opções) tratadas fora da toolbar
   onAction?: (action: string) => void;
 
-  // contagem real de opções (2..5); se não vier, deriva do doc
+  // contagem real de opções (2..5); se não vier, deriva do container atual
   optionsCount?: number;
 }
 
@@ -74,12 +75,31 @@ export function EditorToolbar({
 
   const state = view.state;
 
+  // ===== ÚNICA ALTERAÇÃO REAL =====
+  // Antes: contava options no doc inteiro
+  // Agora: conta options APENAS no container atual (question ou question_item)
   const optionsCountFromDoc = (() => {
-    let n = 0;
-    state.doc.descendants((node) => {
-      if (node.type === schema.nodes.option) n += 1;
+    const $from = state.selection.$from;
+
+    let container: any | null = null;
+    for (let d = $from.depth; d > 0; d--) {
+      const n = $from.node(d);
+      if (
+        n.type === schema.nodes.question_item ||
+        n.type === schema.nodes.question
+      ) {
+        container = n;
+        break;
+      }
+    }
+
+    if (!container) return 0;
+
+    let count = 0;
+    container.descendants((node: any) => {
+      if (node.type === schema.nodes.option) count += 1;
     });
-    return n;
+    return count;
   })();
 
   const optionsCount = Number.isFinite(optionsCountProp as number)
@@ -109,7 +129,9 @@ export function EditorToolbar({
     });
     if (hasBaseText) return;
 
-    const baseText = schema.nodes.base_text.create(null, [schema.nodes.paragraph.create()]);
+    const baseText = schema.nodes.base_text.create(null, [
+      schema.nodes.paragraph.create(),
+    ]);
     view.dispatch(view.state.tr.insert(1, baseText));
     view.focus();
   };
@@ -126,7 +148,10 @@ export function EditorToolbar({
 
   const handleImageInsert = (url: string, widthCm: number) => {
     const widthPx = cmToPx(widthCm);
-    const image = schema.nodes.image.create({ src: url, width: widthPx.toString() });
+    const image = schema.nodes.image.create({
+      src: url,
+      width: widthPx.toString(),
+    });
     view.dispatch(view.state.tr.replaceSelectionWith(image));
     view.focus();
   };
@@ -148,7 +173,9 @@ export function EditorToolbar({
   };
 
   const handleLoadApi = async () => {
-    const id = (loadId as string | undefined) ?? (window.prompt("ID para carregar:") ?? "").trim();
+    const id =
+      (loadId as string | undefined) ??
+      (window.prompt("ID para carregar:") ?? "").trim();
     if (!id) return;
     const res = await getQuestion(id);
     if (!res?.content) {
@@ -156,7 +183,11 @@ export function EditorToolbar({
       return;
     }
     const node = schema.nodeFromJSON(res.content);
-    const tr = view.state.tr.replaceWith(0, view.state.doc.content.size, node.content);
+    const tr = view.state.tr.replaceWith(
+      0,
+      view.state.doc.content.size,
+      node.content
+    );
     view.dispatch(tr);
     view.focus();
     if (res?.metadata && onLoadedMetadata) onLoadedMetadata(res.metadata);
@@ -184,7 +215,8 @@ export function EditorToolbar({
       const after = $pos.nodeAfter;
       const before = $pos.nodeBefore;
 
-      if (after && after.type === schema.nodes.image) found = { pos: from, node: after };
+      if (after && after.type === schema.nodes.image)
+        found = { pos: from, node: after };
       else if (before && before.type === schema.nodes.image)
         found = { pos: from - before.nodeSize, node: before };
     }
@@ -214,7 +246,6 @@ export function EditorToolbar({
 
   // ---------- alinhamento: imagem OU parágrafos ----------
   const applyAlign = (align: "left" | "center" | "right" | "justify") => {
-    // 1) imagem (justify ignora)
     const img = findSelectedImage();
     if (img) {
       if (align === "justify") return;
@@ -227,7 +258,6 @@ export function EditorToolbar({
       return;
     }
 
-    // 2) parágrafos no range
     const { from, to } = view.state.selection;
     let tr = view.state.tr;
     let changed = false;
@@ -235,27 +265,31 @@ export function EditorToolbar({
     view.state.doc.nodesBetween(from, to, (node, pos) => {
       if (node.type === schema.nodes.paragraph) {
         if (node.attrs?.textAlign !== align) {
-          tr = tr.setNodeMarkup(pos, undefined, { ...node.attrs, textAlign: align });
+          tr = tr.setNodeMarkup(pos, undefined, {
+            ...node.attrs,
+            textAlign: align,
+          });
           changed = true;
         }
       }
       return true;
     });
 
-    // seleção vazia: tenta paragraph pai
-if (!changed && from === to) {
-  const $pos = view.state.doc.resolve(from);
-  for (let d = $pos.depth; d > 0; d--) {
-    const n = $pos.node(d);
-    if (n.type === schema.nodes.paragraph) {
-      const pos = $pos.before(d); // posição do nó (não do conteúdo)
-      tr = tr.setNodeMarkup(pos, undefined, { ...n.attrs, textAlign: align });
-      changed = true;
-      break;
+    if (!changed && from === to) {
+      const $pos = view.state.doc.resolve(from);
+      for (let d = $pos.depth; d > 0; d--) {
+        const n = $pos.node(d);
+        if (n.type === schema.nodes.paragraph) {
+          const pos = $pos.before(d);
+          tr = tr.setNodeMarkup(pos, undefined, {
+            ...n.attrs,
+            textAlign: align,
+          });
+          changed = true;
+          break;
+        }
+      }
     }
-  }
-}
-
 
     if (changed) {
       view.dispatch(tr);
@@ -271,13 +305,16 @@ if (!changed && from === to) {
       action === "set-width-narrow" ||
       action === "set-width-wide" ||
       action === "inc-options" ||
-      action === "dec-options"
+      action === "dec-options" ||
+      action === "toggle-options" ||
+      action === "convert-to-setquestions" ||
+      action === "add-question-item" ||
+      action === "remove-question-item"
     ) {
       onAction?.(action);
       return;
     }
 
-    // imagem +/- 1cm
     if (action === "img-w-dec") {
       adjustSelectedImageWidth(-1);
       return;
@@ -287,7 +324,6 @@ if (!changed && from === to) {
       return;
     }
 
-    // alinhamento (imagem ou texto)
     if (
       action === "align-left" ||
       action === "align-center" ||

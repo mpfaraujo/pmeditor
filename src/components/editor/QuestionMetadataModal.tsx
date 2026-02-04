@@ -39,6 +39,15 @@ interface QuestionMetadataModalProps {
   value: QuestionMetadataV1;
   onChange: (next: QuestionMetadataV1) => void;
   onSave?: () => void;
+  /**
+   * "question" -> usa metadata.gabarito
+   * "set_questions" -> usa question_item.attrs.answerKey (item ativo)
+   */
+  docKind?: "question" | "set_questions";
+  /** answerKey do question_item ativo (somente quando docKind === "set_questions") */
+  itemAnswerKey?: QuestionMetadataV1["gabarito"] | null;
+  /** gravação do answerKey do question_item ativo */
+  onItemAnswerKeyChange?: (next: QuestionMetadataV1["gabarito"] | null) => void;
 }
 
 export function QuestionMetadataModal({
@@ -47,6 +56,9 @@ export function QuestionMetadataModal({
   value,
   onChange,
   onSave,
+  docKind = "question",
+  itemAnswerKey = null,
+  onItemAnswerKeyChange,
 }: QuestionMetadataModalProps) {
   const tipo = value.tipo ?? "Múltipla Escolha";
 
@@ -63,6 +75,24 @@ export function QuestionMetadataModal({
       tipo: t,
       gabarito: normalizeGabaritoForTipo(t, value.gabarito),
     });
+
+    if (docKind === "set_questions" && onItemAnswerKeyChange) {
+      const normalized = normalizeGabaritoForTipo(t, itemAnswerKey ?? undefined);
+      onItemAnswerKeyChange(normalized);
+    }
+  };
+
+  const activeAnswerKey =
+    docKind === "set_questions"
+      ? normalizeGabaritoForTipo(tipo, itemAnswerKey ?? undefined)
+      : value.gabarito;
+
+  const writeAnswerKey = (next: QuestionMetadataV1["gabarito"]) => {
+    if (docKind === "set_questions") {
+      onItemAnswerKeyChange?.(next);
+      return;
+    }
+    set({ gabarito: next });
   };
 
   const handleSave = () => {
@@ -75,9 +105,7 @@ export function QuestionMetadataModal({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Informações da Questão</DialogTitle>
-          <DialogDescription>
-            Preencha os metadados da questão
-          </DialogDescription>
+          <DialogDescription>Preencha os metadados da questão</DialogDescription>
         </DialogHeader>
 
         <div className="grid grid-cols-2 gap-4 py-4">
@@ -118,14 +146,16 @@ export function QuestionMetadataModal({
           <div className="col-span-2 sm:col-span-1 space-y-2">
             <label className="text-sm font-medium">Gabarito</label>
 
-            {value.gabarito.kind === "mcq" && (
+            {activeAnswerKey && activeAnswerKey.kind === "mcq" && (
               <Select
-                value={value.gabarito.correct}
-                onValueChange={(v) => set({ gabarito: { kind: "mcq", correct: v as any } })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
+  value={activeAnswerKey.correct ?? ""}
+  onValueChange={(v) =>
+    writeAnswerKey({ kind: "mcq", correct: v as any })
+  }
+>
+  <SelectTrigger>
+    <SelectValue placeholder="Selecione" />
+  </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="A">A</SelectItem>
                   <SelectItem value="B">B</SelectItem>
@@ -136,10 +166,12 @@ export function QuestionMetadataModal({
               </Select>
             )}
 
-            {value.gabarito.kind === "tf" && (
+            {activeAnswerKey && activeAnswerKey.kind === "tf" && (
               <Select
-                value={value.gabarito.correct}
-                onValueChange={(v) => set({ gabarito: { kind: "tf", correct: v as any } })}
+                value={activeAnswerKey.correct}
+                onValueChange={(v) =>
+                  writeAnswerKey({ kind: "tf", correct: v as any })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -151,7 +183,7 @@ export function QuestionMetadataModal({
               </Select>
             )}
 
-            {value.gabarito.kind === "essay" && (
+            {activeAnswerKey && activeAnswerKey.kind === "essay" && (
               <Input disabled value="Discursiva (rubrica depois)" className="bg-muted" />
             )}
           </div>
@@ -215,7 +247,9 @@ export function QuestionMetadataModal({
                 <Input
                   placeholder="Ex: Prefeitura de São Paulo"
                   value={value.source.concurso ?? ""}
-                  onChange={(e) => set({ source: { ...value.source, concurso: e.target.value } })}
+                  onChange={(e) =>
+                    set({ source: { ...value.source, concurso: e.target.value } })
+                  }
                 />
               </div>
 
@@ -265,20 +299,14 @@ export function QuestionMetadataModal({
             </>
           )}
 
-          <div className="col-span-2 text-xs text-muted-foreground">
-            ID: {value.id}
-          </div>
+          <div className="col-span-2 text-xs text-muted-foreground">ID: {value.id}</div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Fechar
           </Button>
-          {onSave && (
-            <Button onClick={handleSave}>
-              Salvar Questão
-            </Button>
-          )}
+          {onSave && <Button onClick={handleSave}>Salvar Questão</Button>}
         </DialogFooter>
       </DialogContent>
     </Dialog>

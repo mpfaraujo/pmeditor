@@ -28,21 +28,98 @@ export default function QuestionRenderer({ content }: Props) {
 
   if (!doc || doc.type !== "doc") return null;
 
+  const rendered: React.ReactNode[] = [];
+
+  // 1) set_questions direto no doc
+  const directSet = findDirectSet(doc);
+  if (directSet) {
+    rendered.push(renderSetQuestions(directSet, "set-direct"));
+    return <div className="question-readonly-root space-y-3">{rendered}</div>;
+  }
+
+  // 2) set_questions aninhado em question (doc -> question -> set_questions)
+  const nestedSet = findNestedSetInQuestion(doc);
+  if (nestedSet) {
+    rendered.push(renderSetQuestions(nestedSet, "set-nested"));
+    return <div className="question-readonly-root space-y-3">{rendered}</div>;
+  }
+
+  // 3) fallback: renderiza question(s) normais
+  doc.content?.forEach((node, i) => {
+    if (node.type === "question") {
+      rendered.push(
+        <React.Fragment key={`q-${i}`}>
+          {renderQuestionLike(node.content ?? [], `q-${i}`)}
+        </React.Fragment>
+      );
+    }
+  });
+
+  if (rendered.length === 0) return null;
+  return <div className="question-readonly-root space-y-3">{rendered}</div>;
+}
+
+/* ---------------- set_questions ---------------- */
+
+function findDirectSet(doc: PMNode): PMNode | null {
+  return doc.content?.find((n) => n?.type === "set_questions") ?? null;
+}
+
+function findNestedSetInQuestion(doc: PMNode): PMNode | null {
+  const q = doc.content?.find((n) => n?.type === "question") ?? null;
+  return q?.content?.find((n) => n?.type === "set_questions") ?? null;
+}
+
+function splitSetQuestions(setNode: PMNode): {
+  baseTextNode: PMNode | null;
+  items: PMNode[];
+} {
+  const content = setNode.content ?? [];
+  const baseTextNode = content.find((n) => n?.type === "base_text") ?? null;
+  const items = content.filter((n) => n?.type === "question_item");
+  return { baseTextNode, items };
+}
+
+function renderSetQuestions(setNode: PMNode, keyPrefix: string): React.ReactNode {
+  const { baseTextNode, items } = splitSetQuestions(setNode);
+
+  return (
+    <div key={keyPrefix} className="question-set-readonly space-y-3">
+      <div className="text-sm font-semibold">
+        Use o texto a seguir para responder às próximas {items.length} questões.
+      </div>
+
+      {baseTextNode ? (
+        <div className="question-readonly">
+          <div className="question-text space-y-2">
+            {renderBlock(baseTextNode, `${keyPrefix}-base`)}
+          </div>
+        </div>
+      ) : null}
+
+      {items.map((it, idx) => (
+        <div key={`${keyPrefix}-it-${idx}`} className="question-set-item">
+          {renderQuestionLike(it.content ?? [], `${keyPrefix}-it-${idx}`)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ---------------- question-like rendering ---------------- */
+
+function renderQuestionLike(nodes: PMNode[], keyPrefix: string): React.ReactNode {
   const blocks: React.ReactNode[] = [];
   const options: React.ReactNode[] = [];
 
-  doc.content?.forEach((node, i) => {
-    if (node.type !== "question") return;
+  nodes.forEach((qNode, j) => {
+    if (qNode.type === "base_text" || qNode.type === "statement") {
+      blocks.push(...renderBlock(qNode, `${keyPrefix}-blk-${j}`));
+    }
 
-    node.content?.forEach((qNode, j) => {
-      if (qNode.type === "base_text" || qNode.type === "statement") {
-        blocks.push(...renderBlock(qNode, `blk-${i}-${j}`));
-      }
-
-      if (qNode.type === "options") {
-        options.push(...renderOptions(qNode));
-      }
-    });
+if (qNode.type === "options") {
+  options.push(...renderOptions(qNode, `${keyPrefix}-opts-${j}`));
+}
   });
 
   return (
@@ -56,14 +133,11 @@ export default function QuestionRenderer({ content }: Props) {
   );
 }
 
-/* ---------- helpers ---------- */
-
 function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
   return (
     node.content?.map((child, i) => {
       const key = `${keyPrefix}-${i}`;
 
-      // paragraph
       if (child.type === "paragraph") {
         const align = child?.attrs?.textAlign as
           | "left"
@@ -83,11 +157,7 @@ function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
         );
       }
 
-      // listas (não embrulhar em <p>)
-      if (
-        child.type === "bullet_list" ||
-        child.type === "ordered_list"
-      ) {
+      if (child.type === "bullet_list" || child.type === "ordered_list") {
         return (
           <div key={key} className="leading-snug">
             {renderInline(child)}
@@ -95,7 +165,6 @@ function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
         );
       }
 
-      // fallback seguro
       return (
         <div key={key} className="leading-snug">
           {renderInline(child)}
@@ -105,12 +174,12 @@ function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
   );
 }
 
-function renderOptions(node: PMNode): React.ReactNode[] {
+function renderOptions(node: PMNode, keyPrefix: string): React.ReactNode[] {
   return (
     node.content?.map((opt, i) => {
       const letter = opt.attrs?.letter ?? "?";
       return (
-        <div key={`opt-${i}`} className="flex items-start gap-2">
+        <div key={`${keyPrefix}-opt-${i}`} className="flex items-start gap-2">
           <span>({letter})</span>
           <div className="flex-1">{renderInline(opt)}</div>
         </div>
@@ -118,6 +187,7 @@ function renderOptions(node: PMNode): React.ReactNode[] {
     }) ?? []
   );
 }
+
 
 function renderInline(node: PMNode): React.ReactNode {
   if (!node) return null;
@@ -164,8 +234,6 @@ function renderInline(node: PMNode): React.ReactNode {
     return <img src={node.attrs?.src} style={style} className="my-2" alt="" />;
   }
 
-  /* ===== LISTAS ===== */
-
   if (node.type === "bullet_list") {
     return (
       <ul>
@@ -196,11 +264,8 @@ function renderInline(node: PMNode): React.ReactNode {
     );
   }
 
-  // conteúdo genérico
   if (node.content) {
-    return node.content.map((c, i) => (
-      <span key={i}>{renderInline(c)}</span>
-    ));
+    return node.content.map((c, i) => <span key={i}>{renderInline(c)}</span>);
   }
 
   return null;

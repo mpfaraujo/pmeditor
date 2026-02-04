@@ -49,7 +49,7 @@ type FilterValues = {
 
 export default function QuestoesPage() {
   const router = useRouter();
-  const { selectedQuestions, addQuestion, removeQuestion, isSelected } = useProva();
+  const { addQuestion, removeQuestion, isSelected, selectedCount } = useProva();
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -125,7 +125,7 @@ export default function QuestoesPage() {
     setEditorOpen(true);
   };
 
-  const hasSelection = selectedQuestions.length > 0;
+  const hasSelection = selectedCount > 0;
 
   return (
     <div className="flex h-screen">
@@ -179,15 +179,15 @@ export default function QuestoesPage() {
                   disabled={!hasSelection}
                   className={!hasSelection ? "opacity-0 pointer-events-none" : ""}
                 >
-                  Montar Prova ({selectedQuestions.length})
+                  Montar Prova ({selectedCount})
                 </Button>
               </div>
             </div>
 
             <Carousel opts={{ align: "center" }} className="w-full" setApi={setApi}>
               <CarouselContent>
-                {items.map((q) => (
-                  <CarouselItem key={q.metadata.id}>
+                {items.map((q, idx) => (
+  <CarouselItem key={`${q.metadata.id}-${idx}`}>
                     <div className="w-full md:w-[10cm] mx-auto px-2">
                       <QuestionCard
                         metadata={q.metadata}
@@ -212,32 +212,32 @@ export default function QuestoesPage() {
         )}
       </div>
 
-<QuestionEditorModal
-  open={editorOpen}
-  onOpenChange={setEditorOpen}
-  question={editing}
-  onSaved={(updated) => {
-    const next = updated?.item ?? updated;
+      <QuestionEditorModal
+        open={editorOpen}
+        onOpenChange={setEditorOpen}
+        question={editing}
+        onSaved={(updated) => {
+          const next = updated?.item ?? updated;
 
-    if (!next?.metadata?.id) return;
+          if (!next?.metadata?.id) return;
 
-    setItems((prev) =>
-      prev.map((it) =>
-        it.metadata.id === next.metadata.id
-          ? {
-              ...it,
-              ...next,
-              metadata: next.metadata ?? it.metadata,
-              content: next.content ?? it.content,
-              base: next.base ?? it.base,
-              variantsCount: next.variantsCount ?? it.variantsCount,
-              active: next.active ?? it.active,
-            }
-          : it
-      )
-    );
-  }}
-/>
+          setItems((prev) =>
+            prev.map((it) =>
+              it.metadata.id === next.metadata.id
+                ? {
+                    ...it,
+                    ...next,
+                    metadata: next.metadata ?? it.metadata,
+                    content: next.content ?? it.content,
+                    base: next.base ?? it.base,
+                    variantsCount: next.variantsCount ?? it.variantsCount,
+                    active: next.active ?? it.active,
+                  }
+                : it
+            )
+          );
+        }}
+      />
     </div>
   );
 }

@@ -49,7 +49,6 @@ async function getImageNaturalWidth(url: string): Promise<number> {
     const img = new Image();
     img.onload = () => resolve(img.naturalWidth || 0);
     img.onerror = () => reject(new Error("image load failed"));
-    // importante: para evitar CORS travar em alguns casos, mas naturalWidth normalmente funciona sem canvas
     img.src = url;
   });
 }
@@ -132,25 +131,23 @@ function htmlToPlainText(html: string) {
 
 function looksLikeQuestionHeader(text: string) {
   const t = normalizePastedText(text);
-
-  const reNumeric = /^\s*\d{1,4}\s*(?:[\)\.\-:]+)\s+\S/;
-  const reQuestao = /^\s*quest(?:a|ã)o\s*(?:n[ºo]\s*)?\d{1,4}\s*(?:[:\)\.\-]+)?\s+\S/i;
-  const reQ = /^\s*q\s*[\.\-]?\s*\d{1,4}\s*(?:[:\)\.\-]+)?\s+\S/i;
-
-  return reNumeric.test(t) || reQuestao.test(t) || reQ.test(t);
+  return (
+    /^\s*\d{1,4}[\)\.\-:]+\s+\S/.test(t) ||
+    /^\s*quest(?:a|ã)o\s*\d{1,4}/i.test(t) ||
+    /^\s*q\s*[\.\-]?\s*\d{1,4}/i.test(t)
+  );
 }
 
 function stripQuestionHeaderFromLine(s: string) {
-  let t = s.trim();
-  t = t.replace(/^\s*quest(?:a|ã)o\s*(?:n[ºo]\s*)?\d{1,4}\s*(?:[:\)\.\-]+)?\s*/i, "");
-  t = t.replace(/^\s*q\s*[\.\-]?\s*\d{1,4}\s*(?:[:\)\.\-]+)?\s*/i, "");
-  t = t.replace(/^\s*\d{1,4}\s*(?:[\)\.\-:]+)\s*/i, "");
-  return t.trim();
+  return s
+    .replace(/^\s*quest(?:a|ã)o\s*\d{1,4}[\)\.\-:]*/i, "")
+    .replace(/^\s*q\s*[\.\-]?\s*\d{1,4}[\)\.\-:]*/i, "")
+    .replace(/^\s*\d{1,4}[\)\.\-:]*/, "")
+    .trim();
 }
 
 function matchOptionLine(line: string) {
-  const s = line.trim();
-  const m = s.match(/^\(?\s*([A-Ea-e])\s*\)?\s*(?:[\)\.\-:]+)\s+([\s\S]+)$/);
+  const m = line.match(/^\(?\s*([A-Ea-e])\s*\)?[\)\.\-:]+\s+(.+)$/);
   if (!m) return null;
   return { letter: m[1].toUpperCase(), text: m[2].trim() };
 }
@@ -159,40 +156,27 @@ export function parseQuestionFromText(input: string): ParsedQuestion | null {
   const raw = normalizePastedText(input);
   if (!raw) return null;
 
-  const lines = raw
-    .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => l.length > 0);
+  const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return null;
 
-  if (lines.length === 0) return null;
-
-  const stmtLines: string[] = [];
+  const stmt: string[] = [];
   const options: Array<{ letter: string; text: string }> = [];
 
-  const firstLine = looksLikeQuestionHeader(lines[0])
+  const first = looksLikeQuestionHeader(lines[0])
     ? stripQuestionHeaderFromLine(lines[0])
     : lines[0];
 
-  if (firstLine) stmtLines.push(firstLine);
+  if (first) stmt.push(first);
 
   for (let i = 1; i < lines.length; i++) {
-    const line = lines[i];
-    const opt = matchOptionLine(line);
-    if (opt) {
-      options.push(opt);
-      continue;
-    }
-    if (options.length > 0) options[options.length - 1].text += ` ${line}`;
-    else stmtLines.push(line);
+    const opt = matchOptionLine(lines[i]);
+    if (opt) options.push(opt);
+    else if (options.length) options[options.length - 1].text += " " + lines[i];
+    else stmt.push(lines[i]);
   }
 
-  const statement = stmtLines.join("\n").trim();
-  if (!statement && options.length === 0) return null;
-
-  if (options.length >= 2) return { statement, options };
-  if (looksLikeQuestionHeader(raw)) return { statement };
-
-  return null;
+  if (!stmt.length && options.length < 2) return null;
+  return { statement: stmt.join("\n"), options: options.length ? options : undefined };
 }
 
 async function uploadImageFile(file: File, cfg: SmartPasteConfig): Promise<string> {
@@ -205,33 +189,27 @@ async function uploadImageFile(file: File, cfg: SmartPasteConfig): Promise<strin
     body: fd,
   });
 
-  if (!res.ok) {
-    const txt = await res.text().catch(() => "");
-    throw new Error(`[smartPaste] Upload falhou: HTTP ${res.status} ${txt}`);
-  }
-
-  const json = (await res.json()) as any;
-  if (!json?.success || typeof json?.url !== "string") {
-    throw new Error(`[smartPaste] Resposta inválida do upload: ${JSON.stringify(json)}`);
-  }
+  if (!res.ok) throw new Error("Upload falhou");
+  const json = await res.json();
+  if (!json?.success || typeof json?.url !== "string") throw new Error("Resposta inválida");
   return json.url;
 }
 
-async function insertInlineImageAtSelectionCapped(view: EditorView, url: string, maxWidthPx: number) {
+async function insertInlineImageAtSelectionCapped(
+  view: EditorView,
+  url: string,
+  maxWidthPx: number
+) {
   const schema = getRuntimeSchema(view);
   const image = ensureNode(schema, "image");
 
-  let widthPx: number | null = null;
+  let widthPx = maxWidthPx;
   try {
     const natural = await getImageNaturalWidth(url);
     if (natural > 0) widthPx = Math.min(natural, maxWidthPx);
-    else widthPx = maxWidthPx;
-  } catch {
-    widthPx = maxWidthPx; // fallback seguro
-  }
+  } catch {}
 
   const node = image.create({ src: url, width: widthPx });
-
   const tr = view.state.tr.replaceSelectionWith(node);
   view.dispatch(tr.scrollIntoView());
 }
@@ -239,243 +217,191 @@ async function insertInlineImageAtSelectionCapped(view: EditorView, url: string,
 function buildBlocksFromText(schema: Schema, raw: string): PMNode[] {
   const paragraph = ensureNode(schema, "paragraph");
   const mathInline = ensureNode(schema, "math_inline");
-  const mathBlock = ensureNode(schema, "math_block");
   const textNode = (s: string) => schema.text(s);
 
   const blocks: PMNode[] = [];
-  const src = normalizePastedText(raw ?? "");
+  const lines = normalizePastedText(raw).split("\n");
 
-  const reBlock = /\$\$([\s\S]*?)\$\$/g;
-  let lastIndex = 0;
-  let m: RegExpExecArray | null;
+  for (const line of lines) {
+    const inlines: PMNode[] = [];
+    const re = /\$(?!\$)(.*?)\$(?!\$)/g;
+    let last = 0;
+    let m: RegExpExecArray | null;
 
-  const pushTextAsParagraphs = (txt: string) => {
-    const lines = txt.replace(/\r\n/g, "\n").split("\n");
-    for (const line of lines) {
-      if (line.trim().length === 0) continue;
-
-      const inlines: PMNode[] = [];
-      const reInline = /\$(?!\$)([\s\S]*?)\$(?!\$)/g;
-
-      let li = 0;
-      let mi: RegExpExecArray | null;
-      while ((mi = reInline.exec(line))) {
-        const before = line.slice(li, mi.index);
-        if (before) inlines.push(textNode(before));
-        const latex = (mi[1] ?? "").trim();
-        inlines.push(mathInline.create({ latex }));
-        li = mi.index + mi[0].length;
-      }
-      const after = line.slice(li);
-      if (after) inlines.push(textNode(after));
-
-      blocks.push(paragraph.create(null, inlines.length ? inlines : null));
+    while ((m = re.exec(line))) {
+      if (m.index > last) inlines.push(textNode(line.slice(last, m.index)));
+      inlines.push(mathInline.create({ latex: m[1].trim() }));
+      last = m.index + m[0].length;
     }
-  };
+    if (last < line.length) inlines.push(textNode(line.slice(last)));
 
-  while ((m = reBlock.exec(src))) {
-    const before = src.slice(lastIndex, m.index);
-    if (before) pushTextAsParagraphs(before);
-
-    const latex = (m[1] ?? "").trim();
-    blocks.push(mathBlock.create({ latex }));
-
-    lastIndex = m.index + m[0].length;
+    blocks.push(paragraph.create(null, inlines));
   }
 
-  const rest = src.slice(lastIndex);
-  if (rest) pushTextAsParagraphs(rest);
-
-  if (blocks.length === 0) blocks.push(paragraph.create());
-  return blocks;
+  return blocks.length ? blocks : [paragraph.create()];
 }
 
 function buildQuestionNode(schema: Schema, parsed: ParsedQuestion): PMNode {
   const question = ensureNode(schema, "question");
   const statement = ensureNode(schema, "statement");
 
-  const statementBlocks = buildBlocksFromText(schema, parsed.statement);
-  const statementNode = statement.create(null, statementBlocks);
+  const statementNode = statement.create(null, buildBlocksFromText(schema, parsed.statement));
 
-  if (!parsed.options || parsed.options.length === 0) {
+  if (!parsed.options?.length) {
     return question.create(null, [statementNode]);
   }
 
   const options = ensureNode(schema, "options");
   const option = ensureNode(schema, "option");
 
-  const optionNodes = parsed.options.map((o) => {
-    const blocks = buildBlocksFromText(schema, o.text);
-    return option.create({ letter: o.letter }, blocks);
-  });
+  const optionNodes = parsed.options.map((o) =>
+    option.create({ letter: o.letter }, buildBlocksFromText(schema, o.text))
+  );
 
-  const optionsNode = options.create(null, optionNodes);
-  return question.create(null, [statementNode, optionsNode]);
+  return question.create(null, [statementNode, options.create(null, optionNodes)]);
 }
 
+/**
+ * ***CORREÇÃO PRINCIPAL***
+ * - Se o cursor estiver dentro de question_item → substitui só o item
+ * - Caso contrário → comportamento antigo (substitui o doc inteiro)
+ */
 function replaceDocWithSingleQuestion(view: EditorView, questionNode: PMNode) {
   const { state } = view;
+  const { $from } = state.selection;
+
+  let itemDepth: number | null = null;
+  for (let d = $from.depth; d > 0; d--) {
+    if ($from.node(d).type.name === "question_item") {
+      itemDepth = d;
+      break;
+    }
+  }
+
+  if (itemDepth !== null) {
+    const from = $from.before(itemDepth);
+    const to = $from.after(itemDepth);
+
+    const schema = getRuntimeSchema(view);
+    const questionItem = ensureNode(schema, "question_item");
+
+    // coloca statement+options dentro de um novo question_item
+ const innerNodes = questionNode.content.content; // PMNode[]
+    const newItem = questionItem.create($from.node(itemDepth).attrs ?? null, innerNodes);
+
+    let tr = state.tr.replaceWith(from, to, newItem);
+
+    // cursor no fim do item
+    const end = tr.doc.resolve(tr.mapping.map(from) + newItem.nodeSize - 1);
+    tr = tr.setSelection(TextSelection.near(end));
+
+    view.dispatch(tr.scrollIntoView());
+    return;
+  }
+
+
   let tr = state.tr.replaceWith(0, state.doc.content.size, questionNode);
-
-  const endPos = tr.doc.content.size;
-  tr = tr.setSelection(TextSelection.near(tr.doc.resolve(endPos)));
-
+  tr = tr.setSelection(TextSelection.near(tr.doc.resolve(tr.doc.content.size)));
   view.dispatch(tr.scrollIntoView());
 }
 
-function extractClipboardHTML(e: ClipboardEvent) {
-  const dt = e.clipboardData;
-  if (!dt) return "";
-  return dt.getData("text/html") || "";
-}
-
-function extractClipboardText(e: ClipboardEvent) {
-  const dt = e.clipboardData;
-  if (!dt) return "";
-
-  const plain = dt.getData("text/plain") || "";
-  if (plain.trim()) return normalizePastedText(plain);
-
-  const html = dt.getData("text/html") || "";
-  if (html.trim()) {
-    const cleaned = isProbablyWordHTML(html) ? cleanWordHTML(html, { stripAllHtmlImages: false }) : html;
-    return normalizePastedText(htmlToPlainText(cleaned));
-  }
-
-  return "";
-}
-
-function collectClipboardImages(e: ClipboardEvent): File[] {
-  const dt = e.clipboardData;
-  if (!dt?.items?.length) return [];
-  const out: File[] = [];
-  for (const item of Array.from(dt.items)) {
-    if (item.kind === "file" && item.type.startsWith("image/")) {
-      const f = item.getAsFile();
-      if (f) out.push(f);
-    }
-  }
-  return out;
-}
-
-function dataUrlToFile(dataUrl: string, filename = "pasted-image") {
-  const m = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
-  if (!m) return null;
-
-  const mime = m[1];
-  const b64 = m[2];
-
-  const bin = atob(b64);
-  const u8 = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-
-  const ext =
-    mime === "image/png"
-      ? "png"
-      : mime === "image/jpeg"
-        ? "jpg"
-        : mime === "image/webp"
-          ? "webp"
-          : "bin";
-
-  return new File([u8], `${filename}.${ext}`, { type: mime });
-}
-
-function extractDataImageFilesFromHTML(html: string): File[] {
-  if (!html.trim()) return [];
-  const cleaned = isProbablyWordHTML(html) ? cleanWordHTML(html, { stripAllHtmlImages: false }) : html;
-
-  const files: File[] = [];
-  const re = /<img\b[^>]*\bsrc=(["'])(data:image\/[^"']+)\1[^>]*>/gi;
-
-  let m: RegExpExecArray | null;
-  let idx = 1;
-  while ((m = re.exec(cleaned))) {
-    const dataUrl = m[2];
-    const f = dataUrlToFile(dataUrl, `pasted-${idx}`);
-    if (f) files.push(f);
-    idx++;
-  }
-  return files;
-}
-
 export function createSmartPastePlugin(cfg: SmartPasteConfig) {
-  const maxCm = cfg.maxImageWidthCm ?? 8;
-  const maxPx = cmToPx(maxCm);
+  const maxPx = cmToPx(cfg.maxImageWidthCm ?? 8);
 
   return new Plugin({
     key: smartPastePluginKey,
     props: {
       transformPastedHTML(html: string) {
-        if (!isProbablyWordHTML(html)) return html;
-        return cleanWordHTML(html, { stripAllHtmlImages: cfg.stripAllHtmlImages ?? false });
+        return isProbablyWordHTML(html)
+          ? cleanWordHTML(html, { stripAllHtmlImages: cfg.stripAllHtmlImages })
+          : html;
       },
 
       handlePaste(view: EditorView, event: ClipboardEvent) {
-        const schema = getRuntimeSchema(view);
-
         const text = extractClipboardText(event);
-
-        const itemFiles = collectClipboardImages(event);
-        const html = extractClipboardHTML(event);
-        const dataFiles = itemFiles.length ? [] : extractDataImageFilesFromHTML(html);
-
-        const images = itemFiles.length ? itemFiles : dataFiles;
-
         const parsed = text ? parseQuestionFromText(text) : null;
+
+        const images = collectClipboardImages(event);
+        const html = extractClipboardHTML(event);
+        if (!images.length) images.push(...extractDataImageFilesFromHTML(html));
 
         if (parsed) {
           event.preventDefault();
-
-          const questionNode = buildQuestionNode(schema, parsed);
+          const questionNode = buildQuestionNode(getRuntimeSchema(view), parsed);
           replaceDocWithSingleQuestion(view, questionNode);
 
           if (images.length) {
             (async () => {
-              for (const file of images) {
-                try {
-                  const url = await uploadImageFile(file, cfg);
-                  await insertInlineImageAtSelectionCapped(view, url, maxPx);
-                } catch (err) {
-                  console.error(err);
-                }
+              for (const f of images) {
+                const url = await uploadImageFile(f, cfg);
+                await insertInlineImageAtSelectionCapped(view, url, maxPx);
               }
             })();
           }
-
           return true;
         }
 
         if (images.length && !text.trim()) {
           event.preventDefault();
           (async () => {
-            for (const file of images) {
-              try {
-                const url = await uploadImageFile(file, cfg);
-                await insertInlineImageAtSelectionCapped(view, url, maxPx);
-              } catch (err) {
-                console.error(err);
-              }
+            for (const f of images) {
+              const url = await uploadImageFile(f, cfg);
+              await insertInlineImageAtSelectionCapped(view, url, maxPx);
             }
           })();
           return true;
-        }
-
-        if (images.length) {
-          (async () => {
-            for (const file of images) {
-              try {
-                const url = await uploadImageFile(file, cfg);
-                await insertInlineImageAtSelectionCapped(view, url, maxPx);
-              } catch (err) {
-                console.error(err);
-              }
-            }
-          })();
         }
 
         return false;
       },
     },
   });
+}
+
+/* -------- helpers finais -------- */
+
+function extractClipboardHTML(e: ClipboardEvent) {
+  return e.clipboardData?.getData("text/html") || "";
+}
+
+function extractClipboardText(e: ClipboardEvent) {
+  const dt = e.clipboardData;
+  if (!dt) return "";
+  const plain = dt.getData("text/plain") || "";
+  if (plain.trim()) return normalizePastedText(plain);
+  const html = dt.getData("text/html") || "";
+  return html ? normalizePastedText(htmlToPlainText(html)) : "";
+}
+
+function collectClipboardImages(e: ClipboardEvent): File[] {
+  const out: File[] = [];
+  const items = e.clipboardData?.items ?? [];
+  for (const it of items) {
+    if (it.kind === "file" && it.type.startsWith("image/")) {
+      const f = it.getAsFile();
+      if (f) out.push(f);
+    }
+  }
+  return out;
+}
+
+function extractDataImageFilesFromHTML(html: string): File[] {
+  const files: File[] = [];
+  const re = /<img[^>]+src=["'](data:image\/[^"']+)["']/gi;
+  let m: RegExpExecArray | null;
+  let i = 1;
+  while ((m = re.exec(html))) {
+    const f = dataUrlToFile(m[1], `pasted-${i++}`);
+    if (f) files.push(f);
+  }
+  return files;
+}
+
+function dataUrlToFile(dataUrl: string, filename: string) {
+  const m = dataUrl.match(/^data:(.+);base64,(.+)$/);
+  if (!m) return null;
+  const bin = atob(m[2]);
+  const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  return new File([u8], filename, { type: m[1] });
 }

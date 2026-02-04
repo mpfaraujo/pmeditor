@@ -109,6 +109,55 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
               </Button>
             </div>
 
+            {/* Set questions (novo) */}
+            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-1`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                onClick={() => onAction("convert-to-setquestions")}
+                title={collapsed ? "Conjunto" : undefined}
+              >
+                <Icons.Layers className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Conjunto</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                onClick={() => onAction("add-question-item")}
+                title={collapsed ? "Adicionar pergunta" : undefined}
+              >
+                <Icons.PlusSquare className="h-4 w-4" />
+                {!collapsed && <span className="ml-2">Pergunta</span>}
+              </Button>
+
+              {!collapsed && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 justify-start col-span-2"
+                  onClick={() => onAction("remove-question-item")}
+                >
+                  <Icons.MinusSquare className="h-4 w-4" />
+                  <span className="ml-2">Pergunta</span>
+                </Button>
+              )}
+
+              {collapsed && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 justify-center px-0"
+                  onClick={() => onAction("remove-question-item")}
+                  title="Remover pergunta"
+                >
+                  <Icons.MinusSquare className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+
             {/* Opções (+ / -) */}
             <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}>
               <Button

@@ -130,7 +130,9 @@ function defaultDoc() {
       schema.node(
         "options",
         null,
-        LETTERS.map((l) => schema.nodes.option.create({ letter: l }, schema.nodes.paragraph.create()))
+        LETTERS.map((l) =>
+          schema.nodes.option.create({ letter: l }, schema.nodes.paragraph.create())
+        )
       ),
     ]),
   ]);
@@ -163,25 +165,37 @@ const isSavedQuestionV1 = (x: any): x is SavedQuestionV1 => x && x.metadata && x
 const hasEssentialMetadata = (m: QuestionMetadataV1) => !!(m.disciplina && m.assunto);
 const isDiscursiveTipo = (t?: string) => (t || "").toLowerCase().includes("discurs");
 
-/* ---------- options helpers ---------- */
+/* ---------- options helpers (por container) ---------- */
 
-function findQuestion(doc: any): { pos: number; node: any } | null {
-  let found: { pos: number; node: any } | null = null;
-  doc.descendants((node: any, pos: number) => {
-    if (node.type === schema.nodes.question) {
-      found = { pos, node };
-      return false;
+type ContainerHit = { kind: "question" | "question_item"; pos: number; node: any };
+
+function findContainerAtSelection(v: EditorView): ContainerHit | null {
+  const $from = v.state.selection.$from;
+  for (let d = $from.depth; d > 0; d--) {
+    const n = $from.node(d);
+    if (schema.nodes.question_item && n.type === schema.nodes.question_item) {
+      return { kind: "question_item", pos: $from.before(d), node: n };
     }
-    return !found;
-  });
-  return found;
+    if (n.type === schema.nodes.question) {
+      return { kind: "question", pos: $from.before(d), node: n };
+    }
+  }
+  return null;
 }
 
-function findOptions(doc: any): { pos: number; node: any } | null {
+function countOptionsInNode(node: any): number {
+  let n = 0;
+  node.descendants((x: any) => {
+    if (x.type === schema.nodes.option) n += 1;
+  });
+  return n;
+}
+
+function findOptionsInContainer(container: ContainerHit): { pos: number; node: any } | null {
   let found: { pos: number; node: any } | null = null;
-  doc.descendants((node: any, pos: number) => {
+  container.node.descendants((node: any, relPos: number) => {
     if (node.type === schema.nodes.options) {
-      found = { pos, node };
+      found = { pos: container.pos + relPos, node };
       return false;
     }
     return !found;
@@ -189,28 +203,25 @@ function findOptions(doc: any): { pos: number; node: any } | null {
   return found;
 }
 
-function removeOptionsNode(v: EditorView) {
-  const hit = findOptions(v.state.doc);
+function removeOptionsInContainer(v: EditorView, container: ContainerHit) {
+  const hit = findOptionsInContainer(container);
   if (!hit) return;
   const from = hit.pos;
   const to = hit.pos + Number(hit.node.nodeSize);
   v.dispatch(v.state.tr.delete(from, to));
 }
 
-function ensureOptionsCount(v: EditorView, target: number) {
+function ensureOptionsCountInContainer(v: EditorView, container: ContainerHit, target: number) {
   const clamped = Math.max(2, Math.min(5, target));
-  const hit = findOptions(v.state.doc);
+  const hit = findOptionsInContainer(container);
 
   if (!hit) {
-    const qHit = findQuestion(v.state.doc);
-    if (!qHit) return;
-
     const children = Array.from({ length: clamped }, (_, i) =>
       schema.nodes.option.create({ letter: LETTERS[i] }, schema.nodes.paragraph.create())
     );
 
     const optionsNode = schema.nodes.options.create(null, children);
-    const insertPos = Number(qHit.pos) + Number(qHit.node.nodeSize) - 1;
+    const insertPos = Number(container.pos) + Number(container.node.nodeSize) - 1;
     v.dispatch(v.state.tr.insert(insertPos, optionsNode));
     return;
   }
@@ -244,8 +255,121 @@ function ensureOptionsCount(v: EditorView, target: number) {
 }
 
 function applyTipoToDoc(v: EditorView, tipo: QuestionMetadataV1["tipo"]) {
-  if (isDiscursiveTipo(tipo)) removeOptionsNode(v);
-  else ensureOptionsCount(v, 5);
+  const container = findContainerAtSelection(v);
+  if (!container) return;
+
+  if (isDiscursiveTipo(tipo)) removeOptionsInContainer(v, container);
+  else ensureOptionsCountInContainer(v, container, 5);
+}
+
+/* ---------- set_questions helpers ---------- */
+
+function isRootSetQuestions(doc: any) {
+  const root = doc.childCount ? doc.child(0) : null;
+  return !!root && schema.nodes.set_questions && root.type === schema.nodes.set_questions;
+}
+
+function ensureSetQuestionsRoot(v: EditorView) {
+  if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
+
+  if (isRootSetQuestions(v.state.doc)) return;
+
+  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.question) return;
+
+  let base: any | null = null;
+  let statement: any | null = null;
+  let options: any | null = null;
+
+  root.forEach((child: any) => {
+    if (child.type === schema.nodes.base_text) base = child;
+    else if (child.type === schema.nodes.statement) statement = child;
+    else if (child.type === schema.nodes.options) options = child;
+  });
+
+  const baseTextNode =
+    base ?? schema.nodes.base_text.create(null, [schema.nodes.paragraph.create()]);
+
+  const itemChildren: any[] = [
+    statement ?? schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
+  ];
+  if (options) itemChildren.push(options);
+
+  const item = schema.nodes.question_item.create(null, itemChildren);
+  const setQuestions = schema.nodes.set_questions.create(null, [baseTextNode, item]);
+
+  // FIX: troca o CONTEÚDO do doc (0..doc.content.size), sem offsets inventados
+  const from = 0;
+  const to = v.state.doc.content.size;
+  v.dispatch(v.state.tr.replaceWith(from, to, setQuestions));
+  v.focus();
+}
+
+function addQuestionItem(v: EditorView) {
+  if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
+
+  ensureSetQuestionsRoot(v);
+
+  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.set_questions) return;
+
+  const cur = findContainerAtSelection(v);
+
+  let insertPos = Number(root.nodeSize) - 1;
+  if (cur && cur.kind === "question_item") {
+    insertPos = Number(cur.pos) + Number(cur.node.nodeSize);
+  }
+
+  const item = schema.nodes.question_item.create(
+    { answerKey:null },
+    [
+      schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
+      // options opcional; não cria
+    ]
+  );
+
+  v.dispatch(v.state.tr.insert(insertPos, item));
+  v.focus();
+}
+
+
+function removeCurrentQuestionItem(v: EditorView) {
+  if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
+
+  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.set_questions) return;
+
+  const cur = findContainerAtSelection(v);
+  if (!cur || cur.kind !== "question_item") return;
+
+  // conta itens (question_item+)
+  let count = 0;
+  root.forEach((child: any) => {
+    if (child.type === schema.nodes.question_item) count += 1;
+  });
+  if (count <= 1) return;
+
+  const from = cur.pos;
+  const to = cur.pos + Number(cur.node.nodeSize);
+  v.dispatch(v.state.tr.delete(from, to));
+  v.focus();
+}
+
+/* ---------- answerKey helpers (set_questions) ---------- */
+
+function findActiveQuestionItemPos(state: any): number | null {
+  const $from = state.selection.$from;
+  for (let d = $from.depth; d > 0; d--) {
+    const n = $from.node(d);
+    if (n?.type?.name === "question_item") return $from.before(d);
+  }
+  return null;
+}
+
+function readItemAnswerKeyAtPos(state: any, pos: number): any | null {
+  const n = state.doc.nodeAt(pos);
+  if (!n || n.type.name !== "question_item") return null;
+  return n.attrs?.answerKey ?? null;
 }
 
 /* ---------- component ---------- */
@@ -271,15 +395,13 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
 
   const recompute = (v: EditorView) => {
     requestAnimationFrame(() => {
-      const root = v.dom as HTMLElement;
-      const base = root.querySelector(".base-text") as HTMLElement | null;
-      const stmt = root.querySelector(".statement") as HTMLElement | null;
+      const rootEl = v.dom as HTMLElement;
+      const base = rootEl.querySelector(".base-text") as HTMLElement | null;
+      const stmt = rootEl.querySelector(".statement") as HTMLElement | null;
       setTextLines((base ? estimateLines(base) : 0) + (stmt ? estimateLines(stmt) : 0));
 
-      let n = 0;
-      v.state.doc.descendants((node) => {
-        if (node.type === schema.nodes.option) n++;
-      });
+      const container = findContainerAtSelection(v);
+      const n = container ? countOptionsInNode(container.node) : 0;
       setOptionCount(n);
     });
   };
@@ -295,7 +417,10 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
       nodeViews: { math_inline: (n) => new MathInlineView(n) },
       handleDOMEvents: {
         dblclick(view, e) {
-          const hit = view.posAtCoords({ left: (e as MouseEvent).clientX, top: (e as MouseEvent).clientY });
+          const hit = view.posAtCoords({
+            left: (e as MouseEvent).clientX,
+            top: (e as MouseEvent).clientY,
+          });
           if (!hit) return false;
 
           const $pos = view.state.doc.resolve(hit.pos);
@@ -310,7 +435,12 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
 
           const pos = node === $pos.nodeAfter ? hit.pos : hit.pos - node.nodeSize;
 
-          setMathDialog({ open: true, mode: "edit", pos, latex: (node.attrs?.latex || "").toString() });
+          setMathDialog({
+            open: true,
+            mode: "edit",
+            pos,
+            latex: (node.attrs?.latex || "").toString(),
+          });
           return true;
         },
       },
@@ -376,6 +506,7 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
     if (!view) return;
 
     const payload = {
+      // OBS: para set_questions, metadata.gabarito fica irrelevante; o válido está no doc (question_item.attrs.answerKey)
       metadata: { ...meta, updatedAt: new Date().toISOString() },
       content: view.state.doc.toJSON(),
     };
@@ -387,7 +518,11 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
       if (!modal) window.alert("Salvo.");
     } catch (e: any) {
       if (e?.status === 409) {
-        await proposeQuestion({ questionId: meta.id, metadata: payload.metadata, content: payload.content });
+        await proposeQuestion({
+          questionId: meta.id,
+          metadata: payload.metadata,
+          content: payload.content,
+        });
         onSaved?.({ questionId: meta.id, kind: "variant" });
         if (!modal) window.alert("Salvo como variante.");
         return;
@@ -397,11 +532,8 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
   };
 
   const handleSave = () => {
-    if (!hasEssentialMetadata(meta)) {
-      setMetaDialog({ open: true, saveAfter: true });
-    } else {
-      void performSave();
-    }
+    if (!hasEssentialMetadata(meta)) setMetaDialog({ open: true, saveAfter: true });
+    else void performSave();
   };
 
   const handleNew = () => {
@@ -446,6 +578,25 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
     if (!view) return;
 
     switch (action) {
+      case "convert-to-setquestions": {
+        ensureSetQuestionsRoot(view);
+        recompute(view);
+        force((n) => n + 1);
+        return;
+      }
+      case "add-question-item": {
+        addQuestionItem(view);
+        recompute(view);
+        force((n) => n + 1);
+        return;
+      }
+      case "remove-question-item": {
+        removeCurrentQuestionItem(view);
+        recompute(view);
+        force((n) => n + 1);
+        return;
+      }
+
       case "set-type-discursiva": {
         const nextTipo = "Discursiva" as QuestionMetadataV1["tipo"];
         setMeta((m) => ({ ...m, tipo: nextTipo, updatedAt: new Date().toISOString() }));
@@ -471,23 +622,38 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           const nextTipo = "Múltipla Escolha" as QuestionMetadataV1["tipo"];
           setMeta((m) => ({ ...m, tipo: nextTipo, updatedAt: new Date().toISOString() }));
         }
-        ensureOptionsCount(view, optionCount + 1);
+        const c = findContainerAtSelection(view);
+        if (!c) return;
+        ensureOptionsCountInContainer(view, c, optionCount + 1);
+        recompute(view);
         return;
       }
       case "dec-options": {
         if (isDiscursiveTipo(metaRef.current.tipo)) return;
-        ensureOptionsCount(view, optionCount - 1);
+        const c = findContainerAtSelection(view);
+        if (!c) return;
+        ensureOptionsCountInContainer(view, c, optionCount - 1);
+        recompute(view);
         return;
       }
 
       case "toggle-options": {
+        const c = findContainerAtSelection(view);
+        if (!c) return;
+
         if (isDiscursiveTipo(metaRef.current.tipo)) {
           const nextTipo = "Múltipla Escolha" as QuestionMetadataV1["tipo"];
           setMeta((m) => ({ ...m, tipo: nextTipo, updatedAt: new Date().toISOString() }));
-          ensureOptionsCount(view, 5);
+          ensureOptionsCountInContainer(view, c, 5);
+          recompute(view);
           return;
         }
-        ensureOptionsCount(view, optionCount === 5 ? 4 : 5);
+
+        const hit = findOptionsInContainer(c);
+        if (hit) removeOptionsInContainer(view, c);
+        else ensureOptionsCountInContainer(view, c, 5);
+
+        recompute(view);
         return;
       }
 
@@ -496,6 +662,35 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
     }
   };
 
+  // --------- answerKey plumbing (question vs set_questions) ---------
+  const docType = view?.state.doc.type.name;
+const docKind: "question" | "set_questions" =
+  view && isRootSetQuestions(view.state.doc) ? "set_questions" : "question";
+
+  const activeItemPos =
+    docKind === "set_questions" && view ? findActiveQuestionItemPos(view.state) : null;
+
+  const activeItemAnswerKey =
+    docKind === "set_questions" && view && activeItemPos != null
+      ? readItemAnswerKeyAtPos(view.state, activeItemPos)
+      : null;
+
+  const writeActiveItemAnswerKey = (answerKey: any | null) => {
+    if (!view) return;
+    if (activeItemPos == null) return;
+
+    const node = view.state.doc.nodeAt(activeItemPos);
+    if (!node || node.type.name !== "question_item") return;
+
+    const tr = view.state.tr.setNodeMarkup(activeItemPos, undefined, {
+      ...node.attrs,
+      answerKey,
+    });
+
+    view.dispatch(tr);
+  };
+  // ----------------------------------------------------------------
+
   return (
     <div className="w-full mx-auto p-4 lg:pr-64">
       <div className="max-w-4xl mx-auto">
@@ -503,7 +698,9 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           <EditorToolbar
             view={view}
             metadata={meta}
-            onOpenMath={() => setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })}
+            onOpenMath={() =>
+              setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })
+            }
             onNew={handleNew}
             onRecover={handleRecover}
             onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
@@ -523,7 +720,9 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           <EditorToolbar
             view={view}
             metadata={meta}
-            onOpenMath={() => setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })}
+            onOpenMath={() =>
+              setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })
+            }
             onNew={handleNew}
             onRecover={handleRecover}
             onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
@@ -555,7 +754,9 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           }}
           onInsert={upsertMath}
           initialLatex={mathDialog.open ? mathDialog.latex : undefined}
-          title={mathDialog.open && mathDialog.mode === "edit" ? "Editar fórmula" : "Inserir fórmula"}
+          title={
+            mathDialog.open && mathDialog.mode === "edit" ? "Editar fórmula" : "Inserir fórmula"
+          }
         />
 
         <QuestionMetadataModal
@@ -571,6 +772,9 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           value={meta}
           onChange={setMeta}
           onSave={metaDialog.saveAfter ? () => void performSave() : undefined}
+          docKind={docKind}
+          itemAnswerKey={activeItemAnswerKey}
+          onItemAnswerKeyChange={writeActiveItemAnswerKey}
         />
       </div>
     </div>

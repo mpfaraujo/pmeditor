@@ -41,6 +41,11 @@ export default function SelecionarLayoutPage() {
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
 
+  // 0 = ProvaHeader original (default). 1..9 = ProvaHeaderLayout1..9
+  const [headerLayout, setHeaderLayout] = useState<number>(
+    (provaConfig as any).headerLayout ?? 0
+  );
+
   const handleContinuar = () => {
     updateProvaConfig({
       layoutType,
@@ -53,7 +58,8 @@ export default function SelecionarLayoutPage() {
       data,
       nota,
       logoUrl,
-    });
+      headerLayout,
+    } as any);
 
     router.push("/editor/prova/montar");
   };
@@ -89,6 +95,7 @@ export default function SelecionarLayoutPage() {
               <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <button
+                    type="button"
                     onClick={() => setLayoutType("prova")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "prova"
@@ -99,6 +106,7 @@ export default function SelecionarLayoutPage() {
                     <div className="font-semibold">Prova</div>
                   </button>
                   <button
+                    type="button"
                     onClick={() => setLayoutType("exercicio")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "exercicio"
@@ -106,14 +114,13 @@ export default function SelecionarLayoutPage() {
                         : "border-slate-200 bg-white"
                     }`}
                   >
-                    <div className="font-semibold">
-                      Lista de Exercício
-                    </div>
+                    <div className="font-semibold">Lista de Exercício</div>
                   </button>
                 </div>
 
                 <div className="space-y-2">
                   <button
+                    type="button"
                     onClick={() => setColumns(1)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       columns === 1
@@ -124,6 +131,7 @@ export default function SelecionarLayoutPage() {
                     1 Coluna
                   </button>
                   <button
+                    type="button"
                     onClick={() => setColumns(2)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       columns === 2
@@ -135,18 +143,42 @@ export default function SelecionarLayoutPage() {
                   </button>
                 </div>
 
+                {/* Header */}
+                <div className="space-y-2 pt-2">
+                  <Label>Modelo de cabeçalho</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {Array.from({ length: 10 }, (_, i) => i).map((i) => {
+                      const active = headerLayout === i;
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => setHeaderLayout(i)}
+                          className={[
+                            "h-7 w-7 rounded-full border text-xs font-semibold",
+                            "flex items-center justify-center select-none",
+                            active
+                              ? "border-blue-500 bg-blue-50 text-blue-700"
+                              : "border-slate-300 bg-white text-slate-700",
+                          ].join(" ")}
+                          aria-label={`Header layout ${i}`}
+                          title={i === 0 ? "Header original" : `Header layout ${i}`}
+                        >
+                          {i}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {/* Gabarito */}
                 <div className="flex items-center gap-2 pt-2">
                   <Checkbox
                     id="showGabarito"
                     checked={showGabarito}
-                    onCheckedChange={(v) =>
-                      setShowGabarito(Boolean(v))
-                    }
+                    onCheckedChange={(v) => setShowGabarito(Boolean(v))}
                   />
-                  <Label htmlFor="showGabarito">
-                    Mostrar gabarito
-                  </Label>
+                  <Label htmlFor="showGabarito">Mostrar gabarito</Label>
                 </div>
               </CardContent>
             </Card>
@@ -170,6 +202,7 @@ export default function SelecionarLayoutPage() {
                       <img
                         src={logoUrl}
                         className="max-h-full max-w-full object-contain"
+                        alt=""
                       />
                     ) : (
                       "Clique para adicionar logo"
@@ -180,34 +213,24 @@ export default function SelecionarLayoutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label>Nome</Label>
-                    <Input
-                      value={nome}
-                      onChange={(e) => setNome(e.target.value)}
-                    />
+                    <Input value={nome} onChange={(e) => setNome(e.target.value)} />
                   </div>
                   <div>
                     <Label>Turma</Label>
-                    <Input
-                      value={turma}
-                      onChange={(e) => setTurma(e.target.value)}
-                    />
+                    <Input value={turma} onChange={(e) => setTurma(e.target.value)} />
                   </div>
                   <div>
                     <Label>Professor</Label>
                     <Input
                       value={professor}
-                      onChange={(e) =>
-                        setProfessor(e.target.value)
-                      }
+                      onChange={(e) => setProfessor(e.target.value)}
                     />
                   </div>
                   <div>
                     <Label>Disciplina</Label>
                     <Input
                       value={disciplina}
-                      onChange={(e) =>
-                        setDisciplina(e.target.value)
-                      }
+                      onChange={(e) => setDisciplina(e.target.value)}
                     />
                   </div>
                   <div>
@@ -220,25 +243,15 @@ export default function SelecionarLayoutPage() {
                   </div>
                   <div>
                     <Label>Nota</Label>
-                    <Input
-                      value={nota}
-                      onChange={(e) => setNota(e.target.value)}
-                    />
+                    <Input value={nota} onChange={(e) => setNota(e.target.value)} />
                   </div>
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                  <Button
-                    variant="outline"
-                    onClick={handleVoltar}
-                    className="flex-1"
-                  >
+                  <Button variant="outline" onClick={handleVoltar} className="flex-1">
                     Cancelar
                   </Button>
-                  <Button
-                    onClick={handleContinuar}
-                    className="flex-1"
-                  >
+                  <Button onClick={handleContinuar} className="flex-1">
                     Continuar
                   </Button>
                 </div>
