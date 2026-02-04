@@ -38,6 +38,8 @@ export default function SelecionarLayoutPage() {
   const [data, setData] = useState(provaConfig.data);
   const [nota, setNota] = useState(provaConfig.nota);
 
+  const [instituicao, setInstituicao] = useState(provaConfig.instituicao);
+
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
 
@@ -57,6 +59,7 @@ export default function SelecionarLayoutPage() {
       disciplina,
       data,
       nota,
+      instituicao,
       logoUrl,
       headerLayout,
     } as any);
@@ -211,6 +214,14 @@ export default function SelecionarLayoutPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <Label>Instituição</Label>
+                    <Input
+                      value={instituicao}
+                      onChange={(e) => setInstituicao(e.target.value)}
+                    />
+                  </div>
+
                   <div>
                     <Label>Nome</Label>
                     <Input value={nome} onChange={(e) => setNome(e.target.value)} />
