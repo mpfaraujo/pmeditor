@@ -372,6 +372,7 @@ export default function MontarProvaPage() {
               numero={globalIndex + 1}
               totalMm={provaConfig.columns === 2 ? 85 : 180}
               boxMm={28}
+              variant={provaConfig.questionHeaderVariant ?? 0}
             />
             <span
               contentEditable

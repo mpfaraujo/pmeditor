@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { ImageUpload } from "@/components/editor/ImageUpload";
+import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
 
 type LayoutType = "prova" | "exercicio";
 type ColumnCount = 1 | 2;
@@ -48,6 +49,25 @@ export default function SelecionarLayoutPage() {
     (provaConfig as any).headerLayout ?? 0
   );
 
+  const headerOptions: DotPickerOption[] = Array.from({ length: 10 }, (_, i) => ({
+    value: i,
+    title: i === 0 ? "Header original" : `Header layout ${i}`,
+    ariaLabel: `Header layout ${i}`,
+    label: i,
+  }));
+  const [questionHeaderVariant, setQuestionHeaderVariant] = useState<number>(
+  (provaConfig as any).questionHeaderVariant ?? 0
+);
+
+  const decoratorOptions: DotPickerOption[] = Array.from({ length: 5 }, (_, i) => ({
+  value: i,
+  title: `Decorador ${i}`,
+  ariaLabel: `Decorador da questão ${i}`,
+  label: i,
+}));
+
+
+
   const handleContinuar = () => {
     updateProvaConfig({
       layoutType,
@@ -62,6 +82,7 @@ export default function SelecionarLayoutPage() {
       instituicao,
       logoUrl,
       headerLayout,
+      questionHeaderVariant
     } as any);
 
     router.push("/editor/prova/montar");
@@ -147,32 +168,23 @@ export default function SelecionarLayoutPage() {
                 </div>
 
                 {/* Header */}
-                <div className="space-y-2 pt-2">
+                <div className="space-y-2">
                   <Label>Modelo de cabeçalho</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {Array.from({ length: 10 }, (_, i) => i).map((i) => {
-                      const active = headerLayout === i;
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => setHeaderLayout(i)}
-                          className={[
-                            "h-7 w-7 rounded-full border text-xs font-semibold",
-                            "flex items-center justify-center select-none",
-                            active
-                              ? "border-blue-500 bg-blue-50 text-blue-700"
-                              : "border-slate-300 bg-white text-slate-700",
-                          ].join(" ")}
-                          aria-label={`Header layout ${i}`}
-                          title={i === 0 ? "Header original" : `Header layout ${i}`}
-                        >
-                          {i}
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <DotPicker
+                    value={headerLayout}
+                    options={headerOptions}
+                    onChange={(v) => setHeaderLayout(v)}
+                  />
                 </div>
+                {/* Decorador da questão */}
+                <div className="space-y-2">
+                  <Label>Decorador da questão</Label>
+                  <DotPicker
+                  value={questionHeaderVariant}
+                  options={decoratorOptions}
+                  onChange={setQuestionHeaderVariant}/>
+                </div> 
+               
 
                 {/* Gabarito */}
                 <div className="flex items-center gap-2 pt-2">
@@ -181,7 +193,7 @@ export default function SelecionarLayoutPage() {
                     checked={showGabarito}
                     onCheckedChange={(v) => setShowGabarito(Boolean(v))}
                   />
-                  <Label htmlFor="showGabarito">Mostrar gabarito</Label>
+                  <Label htmlFor="showGabarito">Mostrar gabaritos</Label>
                 </div>
               </CardContent>
             </Card>

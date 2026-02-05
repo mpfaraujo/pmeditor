@@ -42,6 +42,7 @@ export type ProvaConfig = {
 
   // header layout (0..5)
   headerLayout: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  questionHeaderVariant:0 | 1 | 2 | 3 | 4 
 };
 
 export type Selection =
@@ -83,6 +84,7 @@ const defaultProvaConfig: ProvaConfig = {
   instituicao: "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca",
 
   headerLayout: 0,
+  questionHeaderVariant: 0
 };
 
 const ProvaContext = createContext<ProvaContextType | undefined>(undefined);
