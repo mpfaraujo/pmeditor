@@ -84,10 +84,7 @@ export function EditorToolbar({
     let container: any | null = null;
     for (let d = $from.depth; d > 0; d--) {
       const n = $from.node(d);
-      if (
-        n.type === schema.nodes.question_item ||
-        n.type === schema.nodes.question
-      ) {
+      if (n.type === schema.nodes.question_item || n.type === schema.nodes.question) {
         container = n;
         break;
       }
@@ -129,9 +126,7 @@ export function EditorToolbar({
     });
     if (hasBaseText) return;
 
-    const baseText = schema.nodes.base_text.create(null, [
-      schema.nodes.paragraph.create(),
-    ]);
+    const baseText = schema.nodes.base_text.create(null, [schema.nodes.paragraph.create()]);
     view.dispatch(view.state.tr.insert(1, baseText));
     view.focus();
   };
@@ -177,20 +172,28 @@ export function EditorToolbar({
       (loadId as string | undefined) ??
       (window.prompt("ID para carregar:") ?? "").trim();
     if (!id) return;
-    const res = await getQuestion(id);
-    if (!res?.content) {
+
+    const res: any = await getQuestion(id);
+
+    // FIX: backend get.php responde { success:true, item:{ metadata, content, ... } }
+    // mantém compatibilidade se getQuestion já "achatar" para { metadata, content }
+    const item = (res && typeof res === "object" && "item" in res ? (res as any).item : res) as any;
+
+    const content = item?.content ?? null;
+    if (!content) {
       window.alert("Resposta sem content.");
       return;
     }
-    const node = schema.nodeFromJSON(res.content);
-    const tr = view.state.tr.replaceWith(
-      0,
-      view.state.doc.content.size,
-      node.content
-    );
+
+    const node = schema.nodeFromJSON(content);
+
+    const tr = view.state.tr.replaceWith(0, view.state.doc.content.size, node.content);
     view.dispatch(tr);
     view.focus();
-    if (res?.metadata && onLoadedMetadata) onLoadedMetadata(res.metadata);
+
+    const nextMeta = item?.metadata ?? null;
+    if (nextMeta && onLoadedMetadata) onLoadedMetadata(nextMeta);
+
     window.alert(`Carregado: ${id}`);
   };
 
@@ -215,8 +218,7 @@ export function EditorToolbar({
       const after = $pos.nodeAfter;
       const before = $pos.nodeBefore;
 
-      if (after && after.type === schema.nodes.image)
-        found = { pos: from, node: after };
+      if (after && after.type === schema.nodes.image) found = { pos: from, node: after };
       else if (before && before.type === schema.nodes.image)
         found = { pos: from - before.nodeSize, node: before };
     }

@@ -98,7 +98,10 @@ function buildPlugins(): Plugin[] {
       rules: [
         wrappingInputRule(/^\s*([-+*])\s$/, schema.nodes.bullet_list),
         wrappingInputRule(/^(\d+)\.\s$/, schema.nodes.ordered_list),
-        wrappingInputRule(/^(I{1,3}|IV|V|VI{0,3}|IX|X)\.\s$/i, schema.nodes.roman_list),
+        wrappingInputRule(
+          /^(I{1,3}|IV|V|VI{0,3}|IX|X)\.\s$/i,
+          schema.nodes.roman_list
+        ),
         wrappingInputRule(/^([a-z])\.\s$/, schema.nodes.alpha_list),
         wrappingInputRule(/^\(VF\)\s$/i, schema.nodes.assertive_list),
       ],
@@ -320,18 +323,14 @@ function addQuestionItem(v: EditorView) {
     insertPos = Number(cur.pos) + Number(cur.node.nodeSize);
   }
 
-  const item = schema.nodes.question_item.create(
-    { answerKey:null },
-    [
-      schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
-      // options opcional; não cria
-    ]
-  );
+  const item = schema.nodes.question_item.create({ answerKey: null }, [
+    schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
+    // options opcional; não cria
+  ]);
 
   v.dispatch(v.state.tr.insert(insertPos, item));
   v.focus();
 }
-
 
 function removeCurrentQuestionItem(v: EditorView) {
   if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
@@ -383,6 +382,12 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
   const [meta, setMeta] = useState<QuestionMetadataV1>(() => initial?.metadata ?? defaultMetadata());
   const metaRef = useRef(meta);
   useEffect(() => void (metaRef.current = meta), [meta]);
+
+  // FIX: quando abrir questão salva (initial chega depois), sincroniza meta
+  useEffect(() => {
+    if (initial?.metadata) setMeta(initial.metadata);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initial?.metadata]);
 
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
@@ -465,8 +470,9 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
     applyTipoToDoc(ev, (initial?.metadata ?? metaRef.current).tipo);
 
     return () => ev.destroy();
+    // FIX: recria o editor quando o conteúdo inicial mudar (abrir questão salva)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugins, initial?.metadata?.id]);
+  }, [plugins, initial?.content]);
 
   useEffect(() => {
     if (!view) return;
@@ -664,8 +670,8 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
 
   // --------- answerKey plumbing (question vs set_questions) ---------
   const docType = view?.state.doc.type.name;
-const docKind: "question" | "set_questions" =
-  view && isRootSetQuestions(view.state.doc) ? "set_questions" : "question";
+  const docKind: "question" | "set_questions" =
+    view && isRootSetQuestions(view.state.doc) ? "set_questions" : "question";
 
   const activeItemPos =
     docKind === "set_questions" && view ? findActiveQuestionItemPos(view.state) : null;
@@ -754,9 +760,7 @@ const docKind: "question" | "set_questions" =
           }}
           onInsert={upsertMath}
           initialLatex={mathDialog.open ? mathDialog.latex : undefined}
-          title={
-            mathDialog.open && mathDialog.mode === "edit" ? "Editar fórmula" : "Inserir fórmula"
-          }
+          title={mathDialog.open && mathDialog.mode === "edit" ? "Editar fórmula" : "Inserir fórmula"}
         />
 
         <QuestionMetadataModal
