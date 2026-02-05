@@ -5,7 +5,7 @@
  * Máxima economia de espaço, design premium minimalista
  */
 
-interface ProvaHeaderLayout10Props {
+interface ProvaHeaderLayout5Props {
   logoUrl: string | null;
   onLogoClick: () => void;
   isEditable?: boolean;
@@ -24,7 +24,7 @@ function formatDateBR(value: string) {
   return `${d}/${m}/${y.slice(2)}`;
 }
 
-export function ProvaHeaderLayout10({
+export function ProvaHeaderLayout5({
   logoUrl,
   onLogoClick,
   isEditable = true,
@@ -34,7 +34,7 @@ export function ProvaHeaderLayout10({
   disciplina,
   data,
   nota,
-}: ProvaHeaderLayout10Props) {
+}: ProvaHeaderLayout5Props) {
   return (
     <div className="w-[18cm] mb-4">
       {/* Linha superior: Logo + Instituição + Info rápida */}

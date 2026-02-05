@@ -5,7 +5,7 @@
  * Seções visuais: ALUNO | AVALIAÇÃO
  */
 
-interface ProvaHeaderLayout5Props {
+interface ProvaHeaderLayout10Props {
   logoUrl: string | null;
   onLogoClick: () => void;
   isEditable?: boolean;
@@ -24,7 +24,7 @@ function formatDateBR(value: string) {
   return `${d}/${m}/${y.slice(2)}`;
 }
 
-export function ProvaHeaderLayout5({
+export function ProvaHeaderLayout10({
   logoUrl,
   onLogoClick,
   isEditable = true,
@@ -34,7 +34,7 @@ export function ProvaHeaderLayout5({
   disciplina,
   data,
   nota,
-}: ProvaHeaderLayout5Props) {
+}: ProvaHeaderLayout10Props) {
   return (
     <div className="border-2 border-gray-800 w-[18cm] mb-4">
       <div className="grid grid-cols-12">
