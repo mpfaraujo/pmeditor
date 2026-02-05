@@ -71,11 +71,7 @@ export default function QuestaoHeaderSvg({
             strokeWidth={stroke}
           />
         </svg>
-        <span
-          contentEditable
-          suppressContentEditableWarning
-          className="questao-pontos-editavel"
-        />
+                   
       </div>
     );
   }
@@ -127,11 +123,7 @@ export default function QuestaoHeaderSvg({
             strokeWidth={stroke}
           />
         </svg>
-        <span
-          contentEditable
-          suppressContentEditableWarning
-          className="questao-pontos-editavel"
-        />
+          
       </div>
     );
   }
@@ -166,11 +158,7 @@ export default function QuestaoHeaderSvg({
             {numero}
           </text>
         </svg>
-        <span
-          contentEditable
-          suppressContentEditableWarning
-          className="questao-pontos-editavel"
-        />
+
       </div>
     );
   }
@@ -202,11 +190,7 @@ export default function QuestaoHeaderSvg({
             {numero}
           </text>
         </svg>
-        <span
-          contentEditable
-          suppressContentEditableWarning
-          className="questao-pontos-editavel"
-        />
+
       </div>
     );
   }
@@ -255,11 +239,7 @@ export default function QuestaoHeaderSvg({
             strokeDasharray="1 1"
           />
         </svg>
-        <span
-          contentEditable
-          suppressContentEditableWarning
-          className="questao-pontos-editavel"
-        />
+
       </div>
     );
   }

@@ -199,15 +199,17 @@
 }
 
 .questao-header-linha {
+  position: relative;
   display: flex;
   align-items: flex-end;
   margin-bottom: 0.2cm;
 }
 
+
 .pontos-editavel {
   position: absolute;
   right: -0.5cm;
-  top: -9px;
+  top: 1px;
   outline: none;
   min-width: 2.5cm;
   border: none;
