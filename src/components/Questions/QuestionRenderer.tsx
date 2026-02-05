@@ -211,28 +211,32 @@ function renderInline(node: PMNode): React.ReactNode {
   }
 
   if (node.type === "image") {
-    const widthPx = Number(node.attrs?.width ?? 0);
-    const align = node.attrs?.align as "left" | "center" | "right" | undefined;
+  const widthPx = Number(node.attrs?.width ?? 0);
+  const align = node.attrs?.align as "left" | "center" | "right" | undefined;
 
-    const style: React.CSSProperties = {
-      width: widthPx ? `${widthPx}px` : "auto",
-      height: "auto",
-      display: "block",
-    };
+  const isSmall = !!widthPx && widthPx <= 280; // ajuste depois se precisar
 
-    if (align === "center") {
-      style.marginLeft = "auto";
-      style.marginRight = "auto";
-    } else if (align === "right") {
-      style.marginLeft = "auto";
-      style.marginRight = "0";
-    } else {
-      style.marginLeft = "0";
-      style.marginRight = "auto";
-    }
+  const style: React.CSSProperties = {
+    width: widthPx ? `${widthPx}px` : "auto",
+    height: "auto",
+    display: isSmall ? "inline-block" : "block",
+    verticalAlign: isSmall ? "top" : undefined,
+  };
 
-    return <img src={node.attrs?.src} style={style} className="my-2" alt="" />;
+  if (align === "center") {
+    style.marginLeft = "auto";
+    style.marginRight = "auto";
+  } else if (align === "right") {
+    style.marginLeft = "auto";
+    style.marginRight = "0";
+  } else {
+    style.marginLeft = "0";
+    style.marginRight = isSmall ? "8px" : "auto";
   }
+
+  return <img src={node.attrs?.src} style={style} className="my-2" alt="" />;
+}
+
 
   if (node.type === "bullet_list") {
     return (
