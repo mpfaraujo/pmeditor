@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useProva } from "@/contexts/ProvaContext";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,9 @@ import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
 type LayoutType = "prova" | "exercicio";
 type ColumnCount = 1 | 2;
 
+
 export default function SelecionarLayoutPage() {
+  
   const router = useRouter();
   const { provaConfig, updateProvaConfig } = useProva();
 
@@ -91,6 +93,13 @@ export default function SelecionarLayoutPage() {
   const handleVoltar = () => {
     router.push("/editor/questoes");
   };
+const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">

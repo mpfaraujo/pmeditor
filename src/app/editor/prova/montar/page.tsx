@@ -313,14 +313,21 @@ export default function MontarProvaPage() {
     return out as QuestionData[];
   }, [orderedQuestions, selections]);
 
-  const { pages, refs } = usePagination({
-    config: {
-      pageHeight: PAGE_HEIGHT,
-      safetyMargin: SAFETY_PX,
-    },
-    questionCount: expandedQuestions.length,
-    dependencies: [expandedQuestions, logoUrl],
-  });
+const { pages, refs } = usePagination({
+  config: {
+    pageHeight: PAGE_HEIGHT,
+    safetyMargin: SAFETY_PX,
+    columns: provaConfig.columns, // <- ADICIONE ISTO
+  },
+  questionCount: expandedQuestions.length,
+  dependencies: [
+    expandedQuestions,
+    logoUrl,
+    provaConfig.columns,
+    provaConfig.layoutType,
+  ],
+});
+
 
   const respostas = useMemo(() => {
     const out: Record<number, Alt> = {};

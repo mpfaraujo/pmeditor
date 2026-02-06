@@ -12,6 +12,7 @@ export type PageLayout = {
 export interface PaginationConfig {
   pageHeight: number;
   safetyMargin: number;
+  columns: 1 | 2;
 }
 
 export interface MeasurementData {
@@ -23,12 +24,6 @@ export interface MeasurementData {
 /**
  * Calcula o espaço disponível em pixels para questões na primeira página
  * considerando a altura do cabeçalho
- *
- * @param firstPageElement - Elemento DOM da primeira página (com cabeçalho)
- * @param questionsContainerElement - Elemento DOM do container de questões
- * @param pageHeight - Altura total da página em pixels
- * @param safetyMargin - Margem de segurança em pixels
- * @returns Espaço disponível em pixels
  */
 export function calculateFirstPageCapacity(
   firstPageElement: HTMLElement,
@@ -44,12 +39,6 @@ export function calculateFirstPageCapacity(
 /**
  * Calcula o espaço disponível em pixels para questões nas páginas subsequentes
  * (sem cabeçalho)
- *
- * @param otherPageElement - Elemento DOM de uma página sem cabeçalho
- * @param questionsContainerElement - Elemento DOM do container de questões
- * @param pageHeight - Altura total da página em pixels
- * @param safetyMargin - Margem de segurança em pixels
- * @returns Espaço disponível em pixels
  */
 export function calculateOtherPageCapacity(
   otherPageElement: HTMLElement,
@@ -64,11 +53,10 @@ export function calculateOtherPageCapacity(
 
 /**
  * Mede a altura de cada questão incluindo suas margens
- *
- * @param measurementContainer - Elemento DOM que contém as questões renderizadas
- * @returns Array com a altura (em pixels) de cada questão
  */
-export function measureQuestionHeights(measurementContainer: HTMLElement): number[] {
+export function measureQuestionHeights(
+  measurementContainer: HTMLElement
+): number[] {
   const itemEls = Array.from(
     measurementContainer.querySelectorAll(".questao-item-wrapper")
   ) as HTMLDivElement[];
@@ -85,17 +73,15 @@ export function measureQuestionHeights(measurementContainer: HTMLElement): numbe
  * Distribui questões em páginas e colunas baseado nas alturas medidas
  * e na capacidade de cada página
  *
- * @param questionCount - Número total de questões
- * @param questionHeights - Array com a altura de cada questão
- * @param firstPageCapacity - Espaço disponível na primeira página
- * @param otherPageCapacity - Espaço disponível nas outras páginas
- * @returns Array de layouts de página, cada um com questões distribuídas em duas colunas
+ * columns=1 => só usa coluna1, coluna2 sempre vazia
+ * columns=2 => lógica padrão (coluna1 e coluna2)
  */
 export function distributeQuestionsAcrossPages(
   questionCount: number,
   questionHeights: number[],
   firstPageCapacity: number,
-  otherPageCapacity: number
+  otherPageCapacity: number,
+  columns: 1 | 2
 ): PageLayout[] {
   const newPages: PageLayout[] = [];
   let page: PageLayout = { coluna1: [], coluna2: [] };
@@ -104,19 +90,19 @@ export function distributeQuestionsAcrossPages(
   let used = 0;
   let pageIndex = 0;
 
-  const getPageCapacity = () => (pageIndex === 0 ? firstPageCapacity : otherPageCapacity);
+  const getPageCapacity = () =>
+    pageIndex === 0 ? firstPageCapacity : otherPageCapacity;
 
   for (let i = 0; i < questionCount; i++) {
     const h = questionHeights[i] ?? 0;
 
-    // Se a questão não cabe na coluna atual, tenta passar para a próxima coluna
     if (used + h > getPageCapacity()) {
-      if (col === "coluna1") {
-        // Muda para coluna 2
+      if (columns === 2 && col === "coluna1") {
+        // 2 colunas: tenta a coluna 2
         col = "coluna2";
         used = 0;
       } else {
-        // Coluna 2 está cheia, vai para a próxima página
+        // 1 coluna (ou coluna2 cheia): próxima página
         newPages.push(page);
         pageIndex++;
         page = { coluna1: [], coluna2: [] };
@@ -125,23 +111,16 @@ export function distributeQuestionsAcrossPages(
       }
     }
 
-    // Adiciona a questão à coluna atual
     page[col].push(i);
     used += h;
   }
 
-  // Adiciona a última página
   newPages.push(page);
   return newPages;
 }
 
 /**
  * Função principal que orquestra todo o processo de paginação
- *
- * @param config - Configuração de paginação (altura da página, margem de segurança)
- * @param refs - Referências aos elementos DOM necessários para medição
- * @param questionCount - Número total de questões
- * @returns Dados de medição e layout das páginas
  */
 export function calculatePageLayout(
   config: PaginationConfig,
@@ -154,7 +133,6 @@ export function calculatePageLayout(
   },
   questionCount: number
 ): PageLayout[] | null {
-  // Validação: todos os refs devem estar disponíveis
   if (
     !refs.firstPageRef ||
     !refs.firstQuestoesRef ||
@@ -165,7 +143,6 @@ export function calculatePageLayout(
     return null;
   }
 
-  // Calcula a capacidade de cada página
   const firstPageCapacity = calculateFirstPageCapacity(
     refs.firstPageRef,
     refs.firstQuestoesRef,
@@ -180,14 +157,13 @@ export function calculatePageLayout(
     config.safetyMargin
   );
 
-  // Mede as alturas das questões
   const questionHeights = measureQuestionHeights(refs.measureItemsRef);
 
-  // Distribui as questões entre as páginas
   return distributeQuestionsAcrossPages(
     questionCount,
     questionHeights,
     firstPageCapacity,
-    otherPageCapacity
+    otherPageCapacity,
+    config.columns
   );
 }
