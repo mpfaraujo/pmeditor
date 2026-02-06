@@ -315,6 +315,11 @@ export default function QuestionCard({
 
           {onSelect && (
             <Checkbox
+            className="
+    border-2 border-slate-400
+    data-[state=checked]:bg-slate-900
+    data-[state=checked]:border-slate-900
+  "
               checked={selected}
               onCheckedChange={(v) => onSelect(metadata.id, v === true)}
             />
