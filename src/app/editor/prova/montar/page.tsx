@@ -4,7 +4,7 @@
 import { useMemo, useState } from "react";
 import { useProva } from "@/contexts/ProvaContext";
 import { useRouter } from "next/navigation";
-import QuestionRenderer from "@/components/Questions/QuestionRenderer";
+import QuestionRenderer from "@/components/Questions/QuestionRendererProva";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,

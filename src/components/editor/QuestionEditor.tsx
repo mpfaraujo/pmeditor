@@ -24,6 +24,7 @@ import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePl
 import { createQuestion, proposeQuestion } from "@/lib/questions";
 import "../../app/prosemirror.css";
 
+import { ensureImageIds } from "./ensureImageIds";
 type QuestionEditorProps = {
   modal?: boolean;
   onSaved?: (info: { questionId: string; kind: "base" | "variant" }) => void;
@@ -511,10 +512,12 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
   const performSave = async () => {
     if (!view) return;
 
+    const doc = ensureImageIds(view.state.doc, view.state.schema);
+
     const payload = {
       // OBS: para set_questions, metadata.gabarito fica irrelevante; o válido está no doc (question_item.attrs.answerKey)
       metadata: { ...meta, updatedAt: new Date().toISOString() },
-      content: view.state.doc.toJSON(),
+      content: doc.toJSON(),
     };
 
     try {

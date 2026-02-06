@@ -26,7 +26,7 @@ const UPLOAD_TOKEN = "uso_exclusivo_para_o_editor_de_textos_proseMirror_editor_d
 interface ImageUploadProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onImageInsert: (url: string, widthCm: number) => void;
+  onImageInsert: (url: string, widthCm: number, id?: string) => void;
 }
 
 function clampInt(n: number, min: number, max: number) {
@@ -73,7 +73,7 @@ export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadPr
 
       if (data.success && data.url) {
         const widthCm = clampInt(parseInt(size, 10), 1, 8);
-        onImageInsert(data.url, widthCm);
+        onImageInsert(data.url, widthCm, crypto.randomUUID());
         onOpenChange(false);
         setFile(null);
       } else {

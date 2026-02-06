@@ -234,7 +234,7 @@ function renderInline(node: PMNode): React.ReactNode {
     style.marginRight = isSmall ? "8px" : "auto";
   }
 
-  return <img src={node.attrs?.src} style={style} className="my-2" alt="" />;
+  return <img src={node.attrs?.src} style={style} className="my-2" alt="" data-id={node.attrs?.id|| undefined} />;
 }
 
 

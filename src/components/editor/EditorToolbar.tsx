@@ -141,15 +141,17 @@ export function EditorToolbar({
     view.focus();
   };
 
-  const handleImageInsert = (url: string, widthCm: number) => {
-    const widthPx = cmToPx(widthCm);
-    const image = schema.nodes.image.create({
-      src: url,
-      width: widthPx.toString(),
-    });
-    view.dispatch(view.state.tr.replaceSelectionWith(image));
-    view.focus();
-  };
+const handleImageInsert = (url: string, widthCm: number, id?: string) => {
+  const widthPx = cmToPx(widthCm);
+  const image = schema.nodes.image.create({
+    id: id ?? null,
+    src: url,
+    width: widthPx.toString(),
+  });
+  view.dispatch(view.state.tr.replaceSelectionWith(image));
+  view.focus();
+};
+
 
   const handleSymbolInsert = (symbol: string) => {
     const text = schema.text(symbol);

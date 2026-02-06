@@ -157,6 +157,7 @@ image: {
   draggable: true,
   atom: true,
   attrs: {
+    id:{default : null},
     src: {},
     width: { default: null },  // px
     align: { default: null as null | "left" | "center" | "right" },
@@ -166,6 +167,8 @@ image: {
       tag: "img[src]",
       getAttrs(dom: Node | string) {
         const el = dom as HTMLImageElement;
+        const id = el.getAttribute("data-id");
+
 
         const dw = el.getAttribute("data-width");
         const wAttr = el.getAttribute("width");
@@ -177,9 +180,11 @@ image: {
         const align = da === "left" || da === "center" || da === "right" ? da : null;
 
         return {
+          id: id || null,
           src: el.getAttribute("src"),
           width,
           align,
+          
         };
       },
     },
@@ -206,6 +211,9 @@ image: {
       if (align === "left") styles.push("margin-left:0;margin-right:auto;");
       if (align === "right") styles.push("margin-left:auto;margin-right:0;");
     }
+    if (node.attrs.id) {
+  attrs["data-id"] = node.attrs.id;
+}
 
     if (styles.length) attrs["style"] = styles.join("");
 
