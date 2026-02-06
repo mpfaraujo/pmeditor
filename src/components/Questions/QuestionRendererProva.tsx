@@ -303,6 +303,7 @@ const align = (overrideAlign ?? baseAlign) as
 
          {id ? (
   <button
+    className="no-print"
     type="button"
     onClick={() =>
       setImageAlignOverrides((prev) => {
@@ -338,6 +339,7 @@ const align = (overrideAlign ?? baseAlign) as
          
           {id ? (
             <span
+            className="no-print"
               onPointerDown={onPointerDown}
               style={{
                 position: "absolute",
