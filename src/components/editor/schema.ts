@@ -5,13 +5,21 @@ const nodes: Record<string, NodeSpec> = {
     content: "question | set_questions",
   },
 
-  question: {
-    // ALTERAÇÃO PARA DISCURSIVA: options?
-    content: "base_text? statement options?",
-    toDOM(): DOMOutputSpec {
-      return ["div", { class: "question" }, 0];
+question: {
+  // ALTERAÇÃO PARA DISCURSIVA: options?
+  content: "base_text? statement options?",
+  attrs: {
+    tipo: {
+      default: null as null | "Múltipla Escolha" | "Certo/Errado" | "Discursiva",
     },
   },
+  toDOM(node): DOMOutputSpec {
+    const attrs: Record<string, any> = { class: "question" };
+    if (node.attrs?.tipo) attrs["data-tipo"] = node.attrs.tipo;
+    return ["div", attrs, 0];
+  },
+},
+
 
   base_text: {
     content: "block+",
@@ -45,13 +53,19 @@ const nodes: Record<string, NodeSpec> = {
     },
   },
   
-  set_questions: {
+set_questions: {
   // contexto obrigatório e compartilhado
   content: "base_text question_item+",
-  toDOM(): DOMOutputSpec {
-    return ["div", { class: "set-questions" }, 0];
+  attrs: {
+    mode: { default: null }, // "essay" | null
+  },
+  toDOM(node): DOMOutputSpec {
+    const attrs: Record<string, any> = { class: "set-questions" };
+    if (node.attrs?.mode) attrs["data-mode"] = node.attrs.mode;
+    return ["div", attrs, 0];
   },
 },
+
 
 question_item: {
   // uma pergunta sobre o mesmo contexto

@@ -141,7 +141,8 @@ export function QuestionMetadataModal({
               </SelectContent>
             </Select>
           </div>
-
+{value.tipo !== "Discursiva" && (
+  <>
           {/* Gabarito */}
           <div className="col-span-2 sm:col-span-1 space-y-2">
             <label className="text-sm font-medium">Gabarito</label>
@@ -187,6 +188,7 @@ export function QuestionMetadataModal({
               <Input disabled value="Discursiva (rubrica depois)" className="bg-muted" />
             )}
           </div>
+          </>)}
 
           {/* Origem */}
           <div className="col-span-2 sm:col-span-1 space-y-2">

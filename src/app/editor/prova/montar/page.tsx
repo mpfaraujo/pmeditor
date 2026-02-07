@@ -259,6 +259,18 @@ export default function MontarProvaPage() {
       const doc = safeParseDoc(q.content);
       const setNode = findSetNode(doc);
       const { baseText, items } = splitSetNode(setNode);
+      const isEssaySet =
+  (setNode as any)?.attrs?.mode === "essay" ||
+  !items.some((it) => (it.content ?? []).some((n) => n?.type === "options"));
+
+// PROVA: set discursivo (essay) NÃO expande em múltiplas questões numeradas.
+// Ele é renderizado como UMA questão (com subitens a), b), c)...), para controle de diagramação.
+
+  if (isEssaySet) {
+  out.push(q);
+  continue;
+}
+
 
       const baseDoc = buildBaseDoc(baseText);
       const selectedIdxs = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];

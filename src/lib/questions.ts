@@ -47,7 +47,34 @@ export async function createQuestion(payload: QuestionPayload) {
     },
     body: JSON.stringify(payload),
   });
-  return handle(res);
+
+  try {
+    return await handle(res);
+  } catch (e: any) {
+    if (e?.status === 409) {
+      const questionId =
+        payload?.metadata?.id ??
+        payload?.metadata?.questionId ??
+        payload?.metadata?.uuid;
+
+      if (!questionId) {
+        const err = new Error(
+          "409 (Base imutável): não foi possível determinar questionId para propose."
+        ) as Error & { status?: number; body?: any };
+        err.status = 409;
+        err.body = e?.body;
+        throw err;
+      }
+
+      return proposeQuestion({
+        questionId,
+        metadata: payload.metadata,
+        content: payload.content,
+      });
+    }
+
+    throw e;
+  }
 }
 
 export async function proposeQuestion(payload: ProposePayload) {
