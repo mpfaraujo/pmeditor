@@ -1,0 +1,34 @@
+
+
+<!-- 2. Folha com canto dobrado + marca de edição -->
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Folha -->
+  <path d="M 50 30 L 130 30 L 130 60 L 160 60 L 160 162 L 50 162 Z" fill="#ffffff" stroke="#2563eb" stroke-width="6"/>
+  <!-- Canto dobrado -->
+  <path d="M 130 30 L 130 60 L 160 60 Z" fill="#e0f2fe" stroke="#2563eb" stroke-width="6"/>
+  
+  <!-- Linhas da folha -->
+  <line x1="70" y1="80" x2="140" y2="80" stroke="#cbd5e1" stroke-width="4"/>
+  <line x1="70" y1="100" x2="140" y2="100" stroke="#cbd5e1" stroke-width="4"/>
+  <line x1="70" y1="120" x2="140" y2="120" stroke="#cbd5e1" stroke-width="4"/>
+  
+  <!-- Marca de edição (risquinho colorido destacado) -->
+  <line x1="70" y1="140" x2="120" y2="140" stroke="#f59e0b" stroke-width="6"/>
+</svg>
+
+<!-- 3. Folha minimalista com linha destacada -->
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Folha -->
+  <rect x="50" y="30" width="92" height="132" fill="#ffffff" stroke="#2563eb" stroke-width="6" rx="4"/>
+  
+  <!-- Linhas da folha -->
+  <line x1="70" y1="60" x2="122" y2="60" stroke="#cbd5e1" stroke-width="4"/>
+  <line x1="70" y1="80" x2="122" y2="80" stroke="#cbd5e1" stroke-width="4"/>
+  <line x1="70" y1="100" x2="122" y2="100" stroke="#cbd5e1" stroke-width="4"/>
+  
+  <!-- Linha destacada (editada) -->
+  <line x1="70" y1="120" x2="122" y2="120" stroke="#2563eb" stroke-width="6"/>
+  
+  <!-- Linhas normais abaixo -->
+  <line x1="70" y1="140" x2="100" y2="140" stroke="#cbd5e1" stroke-width="4"/>
+</svg>

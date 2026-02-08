@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="12.935418mm"
+   height="12.935419mm"
+   viewBox="0 0 12.935418 12.935419"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-98.532291,-142.03229)">
+    <g
+       id="g6">
+      <rect
+         style="fill:#ffcc00;stroke:#000000;stroke-width:0.499999;stroke-opacity:0.99777"
+         id="rect1"
+         width="12.435416"
+         height="12.435416"
+         x="98.782295"
+         y="142.28229"
+         rx="2"
+         ry="2" />
+      <path
+         style="fill:#ffcc00;fill-opacity:0.316611;stroke:#bababa;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.636566"
+         d="m 100.33672,145.32239 h 9.32656"
+         id="path2" />
+      <path
+         style="fill:#ffcc00;fill-opacity:0.316611;stroke:#bababa;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.636566"
+         d="m 100.33672,147.30678 h 9.32656"
+         id="path3" />
+      <path
+         style="fill:#ffcc00;fill-opacity:0.316611;stroke:#bababa;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.636566"
+         d="m 100.33672,149.29116 h 9.32656"
+         id="path4" />
+      <path
+         style="fill:#ffcc00;fill-opacity:0.316611;stroke:#bababa;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.636566"
+         d="m 100.33672,151.27555 h 9.32656"
+         id="path5" />
+      <path
+         style="fill:#ffcc00;fill-opacity:0.316611;stroke:#bababa;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.636566"
+         d="m 100.33672,153.25994 h 9.32656"
+         id="path6" />
+      <text
+         xml:space="preserve"
+         style="font-size:7.76111px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;stroke:none;stroke-width:0.499999;stroke-opacity:0.99777"
+         x="99.384346"
+         y="150.94051"
+         id="text2"><tspan
+           id="tspan2"
+           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.76111px;font-family:Calibri;-inkscape-font-specification:'Calibri Bold Italic';fill:#000000;stroke:none;stroke-width:0.5"
+           x="99.384346"
+           y="150.94051">MP</tspan></text>
+    </g>
+  </g>
+</svg>
