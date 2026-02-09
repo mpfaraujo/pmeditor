@@ -23,6 +23,7 @@ import { ProvaHeaderLayout7 } from "@/components/prova/headers/ProvaHeaderLayout
 import { ProvaHeaderLayout8 } from "@/components/prova/headers/ProvaHeaderLayout8";
 import { ProvaHeaderLayout9 } from "@/components/prova/headers/ProvaHeaderLayout9";
 import { ProvaHeaderLayout10 } from "@/components/prova/headers/ProvaHeaderLayout10";
+import "@/app/editor/prova/montar/prova.css";
 
 interface HeaderPreviewModalProps {
   open: boolean;
@@ -106,7 +107,8 @@ export function HeaderPreviewModal({
                         </p>
                       </div>
 
-                      <div className="bg-white border border-slate-200 rounded p-2 overflow-x-auto">
+                      {/* Container com CSS de prova para renderizar corretamente */}
+                      <div className="bg-white border border-slate-200 rounded p-3 overflow-x-auto" style={{ fontSize: "10pt", fontFamily: "Calibri, Arial, sans-serif" }}>
                         <div style={{ minWidth: "500px" }}>
                           <HeaderComp
                             logoUrl={logoUrl}
