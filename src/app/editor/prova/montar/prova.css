@@ -158,6 +158,13 @@
   min-width: 0;
 }
 
+/* Camada de medição: quando em 2 colunas, a coluna de medição
+   deve ter a mesma largura que a coluna real (8.5cm) para que
+   as alturas medidas sejam precisas */
+.questoes-container.columns-2 .coluna {
+  width: var(--col-width);
+}
+
 .coluna {
   width: var(--questoes-width);
   break-inside: avoid;
@@ -196,6 +203,11 @@
 /* Quebra controlada: quando ativada, permite que questões longas
    sejam divididas entre páginas para otimizar espaço */
 .questao-item-wrapper.allow-break {
+  break-inside: auto;
+}
+
+/* Quando a quebra está ativa, a coluna também precisa permitir quebra */
+.coluna:has(.allow-break) {
   break-inside: auto;
 }
 
@@ -329,6 +341,13 @@
     box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
+  }
+
+  /* Quebra controlada: quando ativada, permite overflow para que
+     o browser faça a quebra natural entre páginas */
+  .prova-page:has(.allow-break) {
+    overflow: visible !important;
+    height: auto !important;
   }
 
   .prova-header {
