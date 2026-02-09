@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import * as Icons from "lucide-react";
-import { TOOLBAR_GROUPS } from "./toolbar-config";
 import { useEffect, useState } from "react";
 
 interface DesktopSidebarProps {
@@ -34,267 +33,547 @@ export function DesktopSidebar({ onAction, optionsCount }: DesktopSidebarProps) 
   return (
     <div
       className={`
-        fixed right-0 top-0 h-screen bg-white border-l
+        fixed right-0 top-0 h-screen bg-gradient-to-b from-slate-50 to-slate-100 border-l border-slate-300
         transition-all duration-300 ease-in-out z-10
-        ${collapsed ? "w-16" : "w-60"}
+        ${collapsed ? "w-16" : "w-72"}
       `}
     >
-      {/* Toggle button */}
-      <div className="p-2 border-b flex justify-end">
+      {/* Header */}
+      <div className="p-2 border-b border-slate-300 bg-white flex justify-between items-center shadow-sm">
+        {!collapsed && (
+          <div className="text-xs font-bold text-slate-700 uppercase tracking-widest px-2">
+            Toolbar
+          </div>
+        )}
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? "Expandir" : "Recolher"}
+          className="hover:bg-slate-100"
         >
           {collapsed ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </Button>
       </div>
 
-      <div className="overflow-y-auto h-[calc(100vh-56px)] p-2">
-        {/* CONTROLES */}
-        <div className="mb-2">
+      <div className="overflow-y-auto h-[calc(100vh-56px)] p-3 space-y-4">
+        
+        {/* ===== SEÇÃO 1: ARQUIVO ===== */}
+        <div className="bg-white rounded-lg border border-slate-300 p-3 shadow-md">
           {!collapsed && (
-            <div className="text-xs font-semibold text-muted-foreground px-2 py-2">Config</div>
+            <div className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 px-1">
+              📁 Arquivo
+            </div>
           )}
 
           <div className="space-y-1">
-            {/* Tipo */}
-            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-1`}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
-                onClick={() => onAction("set-type-discursiva")}
-                title={collapsed ? "Discursiva" : undefined}
-              >
-                <Icons.FileText className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Discursiva</span>}
-              </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-blue-50 hover:text-blue-600`}
+              onClick={() => onAction("new")}
+              title={collapsed ? "Novo" : undefined}
+            >
+              <Icons.FilePlus2 className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Novo</span>}
+            </Button>
 
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-blue-50 hover:text-blue-600`}
+              onClick={() => onAction("load")}
+              title={collapsed ? "Abrir" : undefined}
+            >
+              <Icons.FolderOpen className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Abrir</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-green-50 hover:text-green-600`}
+              onClick={() => onAction("save")}
+              title={collapsed ? "Salvar" : undefined}
+            >
+              <Icons.Save className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Salvar</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("recover")}
+              title={collapsed ? "Recuperar" : undefined}
+            >
+              <Icons.RotateCcw className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Recuperar</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("metadata")}
+              title={collapsed ? "Informações" : undefined}
+            >
+              <Icons.Info className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Informações</span>}
+            </Button>
+          </div>
+        </div>
+
+        {/* ===== SEÇÃO 2: ESTRUTURA DA QUESTÃO ===== */}
+        <div className="bg-white rounded-lg border border-slate-300 p-3 shadow-md">
+          {!collapsed && (
+            <div className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 px-1">
+              ⚙️ Estrutura
+            </div>
+          )}
+
+          <div className="space-y-2">
+            {/* Texto Base */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-purple-50 hover:text-purple-600`}
+              onClick={() => onAction("basetext")}
+              title={collapsed ? "Texto-base" : undefined}
+            >
+              <Icons.FileText className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Texto-base</span>}
+            </Button>
+
+            {/* Tipo */}
+            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-2`}>
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-blue-50 hover:text-blue-600`}
                 onClick={() => onAction("set-type-multipla")}
                 title={collapsed ? "Múltipla" : undefined}
               >
                 <Icons.ListOrdered className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Múltipla</span>}
+                {!collapsed && <span className="ml-2 text-sm">Múltipla</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-green-50 hover:text-green-600`}
+                onClick={() => onAction("set-type-discursiva")}
+                title={collapsed ? "Discursiva" : undefined}
+              >
+                <Icons.PenTool className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Discursiva</span>}
               </Button>
             </div>
 
             {/* Largura */}
-            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-1`}>
+            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-2`}>
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
                 onClick={() => onAction("set-width-narrow")}
-                title={collapsed ? "8,5 cm" : undefined}
+                title={collapsed ? "Estreita" : undefined}
               >
                 <Icons.Columns2 className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">8,5 cm</span>}
+                {!collapsed && <span className="ml-2 text-sm">Estreita</span>}
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
                 onClick={() => onAction("set-width-wide")}
-                title={collapsed ? "18 cm" : undefined}
+                title={collapsed ? "Ampla" : undefined}
               >
-                <Icons.PanelLeft className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">18 cm</span>}
+                <Icons.Maximize2 className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Ampla</span>}
               </Button>
             </div>
 
-            {/* Set questions (novo) */}
-            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-1`}>
+            {/* Opções */}
+            <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} gap-2 px-1`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 hover:bg-slate-100"
+                onClick={() => onAction("dec-options")}
+                disabled={!canDec}
+                aria-label="Remover opção"
+                title="Remover opção"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+
+              {!collapsed && (
+                <div className="text-sm font-bold text-slate-700 px-2 min-w-[3rem] text-center">
+                  {clampedOptions}
+                </div>
+              )}
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 hover:bg-slate-100"
+                onClick={() => onAction("inc-options")}
+                disabled={!canInc}
+                aria-label="Adicionar opção"
+                title="Adicionar opção"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Conjuntos */}
+            <div className="space-y-2">
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-orange-50 hover:text-orange-600`}
                 onClick={() => onAction("convert-to-setquestions")}
                 title={collapsed ? "Conjunto" : undefined}
               >
                 <Icons.Layers className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Conjunto</span>}
+                {!collapsed && <span className="ml-2 text-sm">Criar Conjunto</span>}
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
+                className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-green-50 hover:text-green-600`}
                 onClick={() => onAction("add-question-item")}
                 title={collapsed ? "Adicionar pergunta" : undefined}
               >
                 <Icons.PlusSquare className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Pergunta</span>}
-              </Button>
-
-              {!collapsed && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 justify-start col-span-2"
-                  onClick={() => onAction("remove-question-item")}
-                >
-                  <Icons.MinusSquare className="h-4 w-4" />
-                  <span className="ml-2">Pergunta</span>
-                </Button>
-              )}
-
-              {collapsed && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 justify-center px-0"
-                  onClick={() => onAction("remove-question-item")}
-                  title="Remover pergunta"
-                >
-                  <Icons.MinusSquare className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-
-            {/* Opções (+ / -) */}
-            <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => onAction("dec-options")}
-                disabled={!canDec}
-                aria-label="Remover opção"
-                title="− opção"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-
-              {!collapsed && <div className="text-sm tabular-nums px-2">{clampedOptions} opções</div>}
-
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => onAction("inc-options")}
-                disabled={!canInc}
-                aria-label="Adicionar opção"
-                title="+ opção"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {/* Imagem (+ / - 1cm) */}
-            <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => onAction("img-w-dec")}
-                aria-label="Diminuir imagem"
-                title="Imagem −1cm"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-
-              {!collapsed && (
-                <div className="text-sm tabular-nums px-2 text-muted-foreground">Imagem</div>
-              )}
-
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => onAction("img-w-inc")}
-                aria-label="Aumentar imagem"
-                title="Imagem +1cm"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {/* Alinhamento */}
-            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-1`}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
-                onClick={() => onAction("align-left")}
-                title={collapsed ? "Esquerda" : undefined}
-              >
-                <Icons.AlignLeft className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Esquerda</span>}
+                {!collapsed && <span className="ml-2 text-sm">Adicionar Pergunta</span>}
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
-                onClick={() => onAction("align-center")}
-                title={collapsed ? "Centro" : undefined}
+                className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-red-50 hover:text-red-600`}
+                onClick={() => onAction("remove-question-item")}
+                title={collapsed ? "Remover pergunta" : undefined}
               >
-                <Icons.AlignCenter className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Centro</span>}
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
-                onClick={() => onAction("align-right")}
-                title={collapsed ? "Direita" : undefined}
-              >
-                <Icons.AlignRight className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Direita</span>}
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
-                onClick={() => onAction("align-justify")}
-                title={collapsed ? "Justificar" : undefined}
-              >
-                <Icons.AlignJustify className="h-4 w-4" />
-                {!collapsed && <span className="ml-2">Justificar</span>}
+                <Icons.MinusSquare className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Remover Pergunta</span>}
               </Button>
             </div>
           </div>
-
-          <Separator className="my-2" />
         </div>
 
-        {/* GRUPOS EXISTENTES */}
-        {TOOLBAR_GROUPS.map((group, idx) => (
-          <div key={group.id}>
+        {/* ===== SEÇÃO 3: EDIÇÃO ===== */}
+        <div className="bg-white rounded-lg border border-slate-300 p-3 shadow-md">
+          {!collapsed && (
+            <div className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 px-1">
+              ↩️ Editar
+            </div>
+          )}
+
+          <div className="space-y-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("undo")}
+              title={collapsed ? "Desfazer" : undefined}
+            >
+              <Icons.Undo className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Desfazer (Ctrl+Z)</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("redo")}
+              title={collapsed ? "Refazer" : undefined}
+            >
+              <Icons.Redo className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Refazer (Ctrl+Y)</span>}
+            </Button>
+          </div>
+        </div>
+
+        {/* ===== SEÇÃO 4: CONTEÚDO (Formatação) ===== */}
+        <div className="bg-white rounded-lg border border-slate-300 p-3 shadow-md">
+          {!collapsed && (
+            <div className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 px-1">
+              ✏️ Formatação
+            </div>
+          )}
+
+          <div className="space-y-2">
+            {/* Texto */}
+            <div className={`grid ${collapsed ? "grid-cols-1" : "grid-cols-2"} gap-2`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+                onClick={() => onAction("mark:strong")}
+                title={collapsed ? "Negrito" : undefined}
+              >
+                <Icons.Bold className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Negrito</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+                onClick={() => onAction("mark:em")}
+                title={collapsed ? "Itálico" : undefined}
+              >
+                <Icons.Italic className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Itálico</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+                onClick={() => onAction("mark:underline")}
+                title={collapsed ? "Sublinhado" : undefined}
+              >
+                <Icons.Underline className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Sublinhado</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+                onClick={() => onAction("mark:code")}
+                title={collapsed ? "Código" : undefined}
+              >
+                <Icons.Code className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Código</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+                onClick={() => onAction("mark:superscript")}
+                title={collapsed ? "Sobrescrito" : undefined}
+              >
+                <Icons.Superscript className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Sobrescrito</span>}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+                onClick={() => onAction("mark:subscript")}
+                title={collapsed ? "Subscrito" : undefined}
+              >
+                <Icons.Subscript className="h-4 w-4" />
+                {!collapsed && <span className="ml-2 text-sm">Subscrito</span>}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* ===== SEÇÃO 5: INSERÇÃO ===== */}
+        <div className="bg-white rounded-lg border border-slate-300 p-3 shadow-md">
+          {!collapsed && (
+            <div className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 px-1">
+              ➕ Inserir
+            </div>
+          )}
+
+          <div className="space-y-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("image")}
+              title={collapsed ? "Imagem" : undefined}
+            >
+              <Icons.Image className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Imagem</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("math")}
+              title={collapsed ? "Fórmula" : undefined}
+            >
+              <Icons.Sigma className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Fórmula</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("codeblock")}
+              title={collapsed ? "Código" : undefined}
+            >
+              <Icons.FileCode className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Bloco de Código</span>}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-full h-9 ${collapsed ? "justify-center px-0" : "justify-start"} hover:bg-slate-100`}
+              onClick={() => onAction("symbols")}
+              title={collapsed ? "Símbolos" : undefined}
+            >
+              <Icons.Omega className="h-4 w-4" />
+              {!collapsed && <span className="ml-2 text-sm">Símbolos</span>}
+            </Button>
+          </div>
+        </div>
+
+        {/* ===== SEÇÃO 6: ALINHAMENTO E IMAGEM ===== */}
+        <div className="bg-white rounded-lg border border-slate-300 p-3 shadow-md">
+          {!collapsed && (
+            <div className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 px-1">
+              📐 Layout
+            </div>
+          )}
+
+          <div className="space-y-3">
+            {/* Alinhamento */}
             {!collapsed && (
-              <div className="text-xs font-semibold text-muted-foreground px-2 py-2">
-                {group.label}
+              <div>
+                <div className="text-xs text-slate-600 font-semibold mb-2 px-1">Alinhamento</div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 justify-start hover:bg-slate-100"
+                    onClick={() => onAction("align-left")}
+                    title="Esquerda"
+                  >
+                    <Icons.AlignLeft className="h-4 w-4" />
+                    <span className="ml-2 text-sm">Esquerda</span>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 justify-start hover:bg-slate-100"
+                    onClick={() => onAction("align-center")}
+                    title="Centro"
+                  >
+                    <Icons.AlignCenter className="h-4 w-4" />
+                    <span className="ml-2 text-sm">Centro</span>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 justify-start hover:bg-slate-100"
+                    onClick={() => onAction("align-right")}
+                    title="Direita"
+                  >
+                    <Icons.AlignRight className="h-4 w-4" />
+                    <span className="ml-2 text-sm">Direita</span>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 justify-start hover:bg-slate-100"
+                    onClick={() => onAction("align-justify")}
+                    title="Justificar"
+                  >
+                    <Icons.AlignJustify className="h-4 w-4" />
+                    <span className="ml-2 text-sm">Justificar</span>
+                  </Button>
+                </div>
               </div>
             )}
 
-            <div className="space-y-0.25">
-              {group.items.map((item) => (
+            {collapsed && (
+              <div className="grid grid-cols-1 gap-2">
                 <Button
-                  key={item.id}
                   variant="ghost"
-                  size="sm"
-                  className={`w-full h-8 ${collapsed ? "justify-center px-0" : "justify-start"}`}
-                  onClick={() => onAction(item.action)}
-                  title={collapsed ? item.label : undefined}
+                  size="icon"
+                  className="h-9 w-9 hover:bg-slate-100"
+                  onClick={() => onAction("align-left")}
+                  title="Esquerda"
                 >
-                  {getIcon(item.icon)}
-                  {!collapsed && <span className="ml-2">{item.label}</span>}
+                  <Icons.AlignLeft className="h-4 w-4" />
                 </Button>
-              ))}
-            </div>
 
-            {idx < TOOLBAR_GROUPS.length - 1 && <Separator className="my-1" />}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 hover:bg-slate-100"
+                  onClick={() => onAction("align-center")}
+                  title="Centro"
+                >
+                  <Icons.AlignCenter className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 hover:bg-slate-100"
+                  onClick={() => onAction("align-right")}
+                  title="Direita"
+                >
+                  <Icons.AlignRight className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 hover:bg-slate-100"
+                  onClick={() => onAction("align-justify")}
+                  title="Justificar"
+                >
+                  <Icons.AlignJustify className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+
+            {/* Imagem */}
+            <div>
+              {!collapsed && (
+                <div className="text-xs text-slate-600 font-semibold mb-2 px-1">Tamanho de Imagem</div>
+              )}
+              <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} gap-2`}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 hover:bg-slate-100"
+                  onClick={() => onAction("img-w-dec")}
+                  aria-label="Diminuir imagem"
+                  title="Reduzir (−1 cm)"
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+
+                {!collapsed && (
+                  <div className="text-sm text-slate-600 px-2 font-semibold">Tamanho</div>
+                )}
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 hover:bg-slate-100"
+                  onClick={() => onAction("img-w-inc")}
+                  aria-label="Aumentar imagem"
+                  title="Aumentar (+1 cm)"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
