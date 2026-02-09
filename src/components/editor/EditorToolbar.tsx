@@ -385,11 +385,8 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
 
   return (
     <>
-      {isDesktop ? (
-        <DesktopSidebar onAction={handleAction} optionsCount={optionsCount} />
-      ) : (
-        <HorizontalToolbar onAction={handleAction} optionsCount={optionsCount} />
-      )}
+          <HorizontalToolbar onAction={handleAction} optionsCount={optionsCount} />
+
 
       <ImageUpload
         open={imageDialogOpen}

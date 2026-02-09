@@ -129,7 +129,7 @@ function buildPlugins(): Plugin[] {
 
 function defaultDoc() {
   return schema.node("doc", null, [
-    schema.node("question", { tipo: "Múltipla Escolha" }, [
+    schema.node("question", null, [
       schema.node("statement", null, [schema.node("paragraph")]),
       schema.node(
         "options",
@@ -259,85 +259,13 @@ function ensureOptionsCountInContainer(v: EditorView, container: ContainerHit, t
 }
 
 function applyTipoToDoc(v: EditorView, tipo: QuestionMetadataV1["tipo"]) {
-const container = findContainerAtSelection(v);
-if (!container) return;
+  const container = findContainerAtSelection(v);
+  if (!container) return;
 
-// 1) Ajusta options (comportamento atual)
-if (isDiscursiveTipo(tipo)) removeOptionsInContainer(v, container);
-else ensureOptionsCountInContainer(v, container, 5);
-
-// 1b) Marca question.attrs.tipo (somente quando o container é "question")
-if (container.kind === "question") {
-  const qNode = v.state.doc.nodeAt(container.pos);
-  if (qNode?.type?.name === "question") {
-    const trq = v.state.tr.setNodeMarkup(container.pos, undefined, {
-      ...(qNode.attrs ?? {}),
-      tipo,
-    });
-    v.dispatch(trq);
-  }
+  if (isDiscursiveTipo(tipo)) removeOptionsInContainer(v, container);
+  else ensureOptionsCountInContainer(v, container, 5);
 }
 
-// 2) Marca o set_questions para o renderer
-
-
-  // 2) Marca o set_questions para o renderer
-  // - Discursiva => mode="essay"
-  // - Outros     => remove mode (volta a comportamento padrão)
-  const { state } = v;
-
-  let setPos: number | null = null;
-
-  // tenta achar o set_questions envolvendo a seleção
-  state.doc.nodesBetween(state.selection.from, state.selection.to, (node, pos) => {
-    if (setPos == null && node.type.name === "set_questions") setPos = pos;
-  });
-
-  // fallback: primeiro set_questions do documento
-  if (setPos == null) {
-    state.doc.descendants((node, pos) => {
-      if (setPos == null && node.type.name === "set_questions") setPos = pos;
-    });
-  }
-
-  if (setPos == null) return;
-
-  const setNode = state.doc.nodeAt(setPos);
-  if (!setNode) return;
-
-  const tr = state.tr;
-
-  if (isDiscursiveTipo(tipo)) {
-    const nextAttrs = { ...(setNode.attrs ?? {}), mode: "essay" };
-    tr.setNodeMarkup(setPos, undefined, nextAttrs);
-    if (process.env.NODE_ENV !== "production") {
-  console.log(
-    "[applyTipoToDoc] set_questions.spec.attrs =",
-    v.state.schema.nodes.set_questions?.spec?.attrs
-  );
-  console.log("[applyTipoToDoc] found setPos =", setPos);
-  console.log("[applyTipoToDoc] current setNode.attrs =", setNode?.attrs);
-}
-
-  } else {
-    if (setNode.attrs && "mode" in setNode.attrs) {
-      const { mode, ...rest } = setNode.attrs;
-      tr.setNodeMarkup(setPos, undefined, rest);
-    }
-  }
-
-  if (tr.docChanged) v.dispatch(tr);
-  if (process.env.NODE_ENV !== "production") {
-  let after: any = null;
-  v.state.doc.descendants((n) => {
-    if (!after && n.type.name === "set_questions") after = n;
-  });
-  console.log("[applyTipoToDoc] after dispatch set_questions.attrs =", after?.attrs);
-}
-
-
-
-}
 /* ---------- set_questions helpers ---------- */
 
 function isRootSetQuestions(doc: any) {
@@ -345,8 +273,7 @@ function isRootSetQuestions(doc: any) {
   return !!root && schema.nodes.set_questions && root.type === schema.nodes.set_questions;
 }
 
-function ensureSetQuestionsRoot(v: EditorView, tipo?: string) {
-  
+function ensureSetQuestionsRoot(v: EditorView) {
   if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
 
   if (isRootSetQuestions(v.state.doc)) return;
@@ -373,11 +300,7 @@ function ensureSetQuestionsRoot(v: EditorView, tipo?: string) {
   if (options) itemChildren.push(options);
 
   const item = schema.nodes.question_item.create(null, itemChildren);
-  const setQuestions = schema.nodes.set_questions.create(
-  isDiscursiveTipo(tipo) ? { mode: "essay" } : null,
-  [baseTextNode, item]
-);
-
+  const setQuestions = schema.nodes.set_questions.create(null, [baseTextNode, item]);
 
   // FIX: troca o CONTEÚDO do doc (0..doc.content.size), sem offsets inventados
   const from = 0;
@@ -386,11 +309,10 @@ function ensureSetQuestionsRoot(v: EditorView, tipo?: string) {
   v.focus();
 }
 
-function addQuestionItem(v: EditorView, tipo?: string) {
+function addQuestionItem(v: EditorView) {
   if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
 
- ensureSetQuestionsRoot(v, undefined);
-
+  ensureSetQuestionsRoot(v);
 
   const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
   if (!root || root.type !== schema.nodes.set_questions) return;
@@ -589,27 +511,12 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
 
   const performSave = async () => {
     if (!view) return;
-      if ((performSave as any).__saving) return;
-        (performSave as any).__saving = true;
 
     const doc = ensureImageIds(view.state.doc, view.state.schema);
-    
-    
+
     const payload = {
-      metadata: (() => {
-  const m = {
-    ...meta,
-    updatedAt: new Date().toISOString(),
-  };
-
-  if (isDiscursiveTipo(meta.tipo)) {
-    delete (m as any).gabarito;
-  }
-
-  return m;
-})(),
-
-
+      // OBS: para set_questions, metadata.gabarito fica irrelevante; o válido está no doc (question_item.attrs.answerKey)
+      metadata: { ...meta, updatedAt: new Date().toISOString() },
       content: doc.toJSON(),
     };
 
@@ -682,14 +589,12 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
     switch (action) {
       case "convert-to-setquestions": {
         ensureSetQuestionsRoot(view);
-        applyTipoToDoc(view, metaRef.current.tipo);
         recompute(view);
         force((n) => n + 1);
         return;
       }
-
       case "add-question-item": {
-        addQuestionItem(view, metaRef.current.tipo);
+        addQuestionItem(view);
         recompute(view);
         force((n) => n + 1);
         return;
@@ -705,7 +610,6 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
         const nextTipo = "Discursiva" as QuestionMetadataV1["tipo"];
         setMeta((m) => ({ ...m, tipo: nextTipo, updatedAt: new Date().toISOString() }));
         applyTipoToDoc(view, nextTipo);
-        writeActiveItemAnswerKey(null);
         return;
       }
       case "set-type-multipla": {
@@ -796,10 +700,11 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
   };
   // ----------------------------------------------------------------
 
-  return (
-    <div className="w-full mx-auto p-4 lg:pr-64">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between gap-2 flex-wrap lg:hidden mb-4">
+    return (
+    <div className="w-full min-h-screen bg-[#d3d3d3] p-4">
+      <div className="w-full max-w-[210mm] mx-auto">
+        {/* Toolbar Única no Topo */}
+        <div className="mb-4 bg-white rounded-lg shadow-sm p-2">
           <EditorToolbar
             view={view}
             metadata={meta}
@@ -821,37 +726,14 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           )}
         </div>
 
-        <div className="hidden lg:block">
-          <EditorToolbar
-            view={view}
-            metadata={meta}
-            onOpenMath={() =>
-              setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })
-            }
-            onNew={handleNew}
-            onRecover={handleRecover}
-            onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
-            onSave={handleSave}
-            onAction={handleToolbarAction}
-            optionsCount={optionCount}
-          />
-
-          {textLines > LINE_LIMIT && (
-            <div className="text-xs px-2 py-1 rounded border bg-red-50 text-red-700 border-red-200 mb-4">
-              {textLines} linhas (limite {LINE_LIMIT})
-            </div>
-          )}
-        </div>
-
+        {/* Folha A4 Centralizada */}
         <div
           ref={editorRef}
-          className="border rounded-lg min-h-[400px] focus:outline-none w-full mx-auto"
-          style={{
-            maxWidth: `${editorMaxWidthCm}cm`,
-            ["--pm-width" as any]: `${editorMaxWidthCm}cm`,
-          }}
+          className="focus:outline-none shadow-2xl"
+          style={{ width: "210mm" }}
         />
 
+        {/* Modais Preservados Exatamente como estavam */}
         <MathInsert
           open={mathDialog.open}
           onOpenChange={(o) => {

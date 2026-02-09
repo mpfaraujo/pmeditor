@@ -1,11 +1,13 @@
 // toolbar-config.ts
 export const SYMBOLS = {
-  conjuntos: ["ℕ", "ℤ", "ℚ", "ℝ", "ℂ"],
+  conjuntos : ["ℕ", "ℤ", "ℚ", "ℝ", "ℂ", "∪", "∩", "∈", "∉", "⊂", "⊄", "⊆", "⊈"],
   gregas: ["α", "β", "γ", "δ", "ε", "π", "θ", "λ", "μ", "Σ", "Δ", "Ω"],
   matematica: ["±", "×", "÷", "≠", "≈", "≤", "≥", "∞", "√", "∫", "∂"],
   especiais: ["°", "ª", "º", "§", "¹", "²", "³"],
   setas: ["→", "←", "↑", "↓", "↔", "⇒", "⇔"],
 } as const;
+
+
 
 export type SymbolCategory = keyof typeof SYMBOLS;
 
