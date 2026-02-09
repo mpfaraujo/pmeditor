@@ -53,6 +53,7 @@ export function calculateOtherPageCapacity(
 
 /**
  * Mede a altura de cada questão incluindo suas margens
+ * Com validação para garantir que elementos estão renderizados
  */
 export function measureQuestionHeights(
   measurementContainer: HTMLElement
@@ -65,7 +66,11 @@ export function measureQuestionHeights(
     const cs = window.getComputedStyle(el);
     const mt = parseFloat(cs.marginTop || "0") || 0;
     const mb = parseFloat(cs.marginBottom || "0") || 0;
-    return el.offsetHeight + mt + mb;
+    const height = el.offsetHeight + mt + mb;
+    
+    // Validação: se a altura for 0, pode indicar que o elemento ainda não foi renderizado
+    // Retorna um valor mínimo conservador (10px) para evitar distribuição incorreta
+    return Math.max(height, 10);
   });
 }
 
@@ -121,6 +126,7 @@ export function distributeQuestionsAcrossPages(
 
 /**
  * Função principal que orquestra todo o processo de paginação
+ * Com validações extras para garantir medições corretas
  */
 export function calculatePageLayout(
   config: PaginationConfig,
@@ -143,6 +149,12 @@ export function calculatePageLayout(
     return null;
   }
 
+  // Validação: garantir que os elementos estão visíveis e têm dimensões
+  if (refs.firstPageRef.offsetHeight === 0 || refs.measureItemsRef.offsetHeight === 0) {
+    // Elementos ainda não foram renderizados, retorna null para tentar novamente
+    return null;
+  }
+
   const firstPageCapacity = calculateFirstPageCapacity(
     refs.firstPageRef,
     refs.firstQuestoesRef,
@@ -156,6 +168,12 @@ export function calculatePageLayout(
     config.pageHeight,
     config.safetyMargin
   );
+
+  // Validação: capacidades devem ser positivas
+  if (firstPageCapacity <= 0 || otherPageCapacity <= 0) {
+    // Capacidades inválidas, retorna null para tentar novamente
+    return null;
+  }
 
   const questionHeights = measureQuestionHeights(refs.measureItemsRef);
 

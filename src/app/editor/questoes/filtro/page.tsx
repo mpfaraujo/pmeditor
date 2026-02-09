@@ -19,6 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Search, Filter, Settings, User, School, Layout, Palette } from "lucide-react";
 import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
 import { ImageUpload } from "@/components/editor/ImageUpload";
+import { HeaderPreviewModal } from "@/components/ui/header-preview-modal";
 
 const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
 const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
@@ -68,6 +69,7 @@ export default function FiltroQuestoesPage() {
   const [questionHeaderVariant, setQuestionHeaderVariant] = useState<number>((provaConfig as any).questionHeaderVariant ?? 0);
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
 
   // Opções para DotPickers
   const headerOptions: DotPickerOption[] = Array.from({ length: 11 }, (_, i) => ({
@@ -78,11 +80,17 @@ export default function FiltroQuestoesPage() {
   }));
 
   const decoratorOptions: DotPickerOption[] = Array.from({ length: 5 }, (_, i) => ({
-    value: i,
-    title: `Decorador ${i}`,
-    ariaLabel: `Decorador da questão ${i}`,
-    label: i,
-  }));
+  value: i,
+  title: `Decorador ${i}`,
+  ariaLabel: `Decorador da questão ${i}`,
+  label: i,
+}));
+
+  // Estados para Filtro de Tipo de Questão
+  const [questionType, setQuestionType] = useState<string>("");
+  const [questionYear, setQuestionYear] = useState<string>("");
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 20 }, (_, i) => currentYear - i);
 
   // Carregar opções iniciais
   useEffect(() => {
@@ -170,6 +178,8 @@ export default function FiltroQuestoesPage() {
     if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos", t));
     if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades", d));
     if (filters.tags) q.set("tags", filters.tags);
+    if (questionType) q.set("tipo", questionType);
+    if (questionYear) q.set("ano", questionYear);
 
     router.push(`/editor/questoes?${q.toString()}`);
   };
@@ -297,6 +307,81 @@ export default function FiltroQuestoesPage() {
 
                     <Separator />
 
+                    {/* Tipo de Questão */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-bold text-slate-700">Tipo de Questão</Label>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            id="tipo-todos"
+                            name="tipo"
+                            value=""
+                            checked={questionType === ""}
+                            onChange={(e) => setQuestionType(e.target.value)}
+                            className="h-4 w-4"
+                          />
+                          <label htmlFor="tipo-todos" className="text-sm cursor-pointer">
+                            Todas
+                          </label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            id="tipo-original"
+                            name="tipo"
+                            value="Original"
+                            checked={questionType === "Original"}
+                            onChange={(e) => setQuestionType(e.target.value)}
+                            className="h-4 w-4"
+                          />
+                          <label htmlFor="tipo-original" className="text-sm cursor-pointer">
+                            Original
+                          </label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            id="tipo-concurso"
+                            name="tipo"
+                            value="Concurso"
+                            checked={questionType === "Concurso"}
+                            onChange={(e) => setQuestionType(e.target.value)}
+                            className="h-4 w-4"
+                          />
+                          <label htmlFor="tipo-concurso" className="text-sm cursor-pointer">
+                            Concurso
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Ano (se Concurso) */}
+                    {questionType === "Concurso" && (
+                      <div className="space-y-3">
+                        <Label htmlFor="year-select" className="text-sm font-bold text-slate-700">
+                          Ano do Concurso
+                        </Label>
+                        <select
+                          id="year-select"
+                          value={questionYear}
+                          onChange={(e) => setQuestionYear(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Todos os anos</option>
+                          {years.map((year) => (
+                            <option key={year} value={year.toString()}>
+                              {year}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
+                    <Separator />
+
                     {/* Tags */}
                     <div className="space-y-3 pb-4">
                       <Label className="text-sm font-bold text-slate-700">Tags / Busca Livre</Label>
@@ -406,6 +491,14 @@ export default function FiltroQuestoesPage() {
                         onChange={(v) => setQuestionHeaderVariant(v)}
                       />
                       <p className="text-[10px] text-slate-400">Estilo do número da questão (Classic, Modern, etc)</p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full mt-2"
+                        onClick={() => setPreviewModalOpen(true)}
+                      >
+                        Visualizar Cabeçalhos e Decoradores
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -433,6 +526,18 @@ export default function FiltroQuestoesPage() {
           setLogoUrl(url);
           setLogoDialogOpen(false);
         }}
+      />
+
+      <HeaderPreviewModal
+        open={previewModalOpen}
+        onOpenChange={setPreviewModalOpen}
+        selectedHeaderLayout={headerLayout}
+        onHeaderSelect={setHeaderLayout}
+        selectedDecorator={questionHeaderVariant}
+        onDecoratorSelect={setQuestionHeaderVariant}
+        logoUrl={logoUrl}
+        professor={professor}
+        instituicao={instituicao}
       />
     </div>
   );

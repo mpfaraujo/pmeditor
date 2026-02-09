@@ -54,19 +54,36 @@ export function usePagination({ config, questionCount, dependencies }: UsePagina
   const columns = config.columns;
 
   useEffect(() => {
-    const layout = calculatePageLayout(
-      { pageHeight, safetyMargin, columns },
-      {
-        firstPageRef: measureFirstPageRef.current,
-        firstQuestoesRef: measureFirstQuestoesRef.current,
-        otherPageRef: measureOtherPageRef.current,
-        otherQuestoesRef: measureOtherQuestoesRef.current,
-        measureItemsRef: measureItemsRef.current,
-      },
-      questionCount
-    );
+    let retryCount = 0;
+    const maxRetries = 3;
+    let timeoutId: NodeJS.Timeout | undefined;
 
-    if (layout) setPages(layout);
+    const attemptLayout = () => {
+      const layout = calculatePageLayout(
+        { pageHeight, safetyMargin, columns },
+        {
+          firstPageRef: measureFirstPageRef.current,
+          firstQuestoesRef: measureFirstQuestoesRef.current,
+          otherPageRef: measureOtherPageRef.current,
+          otherQuestoesRef: measureOtherQuestoesRef.current,
+          measureItemsRef: measureItemsRef.current,
+        },
+        questionCount
+      );
+
+      if (layout) {
+        setPages(layout);
+      } else if (retryCount < maxRetries) {
+        retryCount++;
+        timeoutId = setTimeout(attemptLayout, 50 * retryCount);
+      }
+    };
+
+    attemptLayout();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [depsKey, pageHeight, safetyMargin, columns, questionCount]);
 
   return {
