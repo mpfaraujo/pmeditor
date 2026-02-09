@@ -31,9 +31,17 @@ export function calculateFirstPageCapacity(
   pageHeight: number,
   safetyMargin: number
 ): number {
-  const firstPageTop = firstPageElement.getBoundingClientRect().top;
-  const questionsTop = questionsContainerElement.getBoundingClientRect().top;
-  return Math.max(0, pageHeight - (questionsTop - firstPageTop) - safetyMargin);
+  // Usamos offsetTop em vez de getBoundingClientRect para evitar problemas com scroll
+  // ou transformações de escala durante a medição
+  const questionsTop = questionsContainerElement.offsetTop;
+  const firstPageTop = firstPageElement.offsetTop;
+  
+  // A altura ocupada pelo cabeçalho e outros elementos acima do container de questões
+  const occupiedHeight = questionsTop - firstPageTop;
+  
+  // Aumentamos a margem de segurança na primeira página para 1.5x o padrão
+  // para acomodar variações de renderização de cabeçalhos complexos
+  return Math.max(0, pageHeight - occupiedHeight - (safetyMargin * 1.5));
 }
 
 /**
@@ -46,9 +54,12 @@ export function calculateOtherPageCapacity(
   pageHeight: number,
   safetyMargin: number
 ): number {
-  const otherPageTop = otherPageElement.getBoundingClientRect().top;
-  const questionsTop = questionsContainerElement.getBoundingClientRect().top;
-  return Math.max(0, pageHeight - (questionsTop - otherPageTop) - safetyMargin);
+  const questionsTop = questionsContainerElement.offsetTop;
+  const otherPageTop = otherPageElement.offsetTop;
+  
+  const occupiedHeight = questionsTop - otherPageTop;
+  
+  return Math.max(0, pageHeight - occupiedHeight - safetyMargin);
 }
 
 /**
@@ -101,11 +112,17 @@ export function distributeQuestionsAcrossPages(
   for (let i = 0; i < questionCount; i++) {
     const h = questionHeights[i] ?? 0;
 
-    if (used + h > getPageCapacity()) {
+    // Se a questão sozinha for maior que a capacidade da página, 
+    // ela vai estourar de qualquer jeito, mas tentamos mantê-la sozinha na página.
+    if (used > 0 && used + h > getPageCapacity()) {
       if (columns === 2 && col === "coluna1") {
         // 2 colunas: tenta a coluna 2
         col = "coluna2";
         used = 0;
+        
+        // Verificação extra: se após mudar de coluna a questão ainda estoura,
+        // e já havia algo na coluna 1, ela deve ir para a próxima página?
+        // Não, aqui apenas mudamos para a coluna 2.
       } else {
         // 1 coluna (ou coluna2 cheia): próxima página
         newPages.push(page);
