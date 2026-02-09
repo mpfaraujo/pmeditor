@@ -44,7 +44,7 @@ export default function Home() {
   />
 
   <ActionCard
-    href="/editor/questoes"
+    href="/editor/questoes/filtro"
     title="Banco de Questões"
     description="Filtre, navegue e selecione questões para montar provas."
     icon={<BookOpen className="h-6 w-6" />}

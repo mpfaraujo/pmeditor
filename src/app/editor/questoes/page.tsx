@@ -8,6 +8,7 @@ import { QuestionsFilterMobile } from "@/components/Questions/QuestionsFilterMob
 import { useProva } from "@/contexts/ProvaContext";
 import { listQuestions } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -61,7 +62,15 @@ export default function QuestoesPage() {
   const [editing, setEditing] = useState<QuestionItem | null>(null);
 
   useEffect(() => {
-    load({});
+    const searchParams = new URLSearchParams(window.location.search);
+    const filters: Partial<FilterValues> = {
+      disciplinas: searchParams.getAll("disciplinas"),
+      assuntos: searchParams.getAll("assuntos"),
+      tipos: searchParams.getAll("tipos"),
+      dificuldades: searchParams.getAll("dificuldades"),
+      tags: searchParams.get("tags") || "",
+    };
+    load(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -129,17 +138,13 @@ export default function QuestoesPage() {
 
   return (
     <div className="flex h-screen">
-      {/* Desktop */}
-      <div className="hidden md:block">
-        <QuestionsFilter onFilter={load} totalResults={totalResults} />
-      </div>
-
-      {/* Mobile */}
-      <div className="md:hidden">
-        <QuestionsFilterMobile onFilter={load} totalResults={totalResults} />
-      </div>
-
       <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-hidden">
+        <div className="w-full max-w-full md:max-w-[12cm] mx-auto mb-4">
+          <Button variant="ghost" size="sm" onClick={() => router.push("/editor/questoes/filtro")}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Voltar para Filtros
+          </Button>
+        </div>
         {loading && <div className="text-sm">Carregando…</div>}
         {!loading && items.length === 0 && (
           <div className="text-sm">Nenhuma questão encontrada.</div>
