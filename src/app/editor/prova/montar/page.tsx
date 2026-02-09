@@ -26,7 +26,7 @@ import Gabarito from "@/components/prova/Gabarito";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
-const SAFETY_PX = 180;
+const SAFETY_PX = 200; // Aumentado de 180 para 220 para evitar estouro de página
 
 type Alt = "A" | "B" | "C" | "D" | "E";
 
@@ -337,6 +337,8 @@ const { pages, refs } = usePagination({
     logoUrl,
     provaConfig.columns,
     provaConfig.layoutType,
+    (provaConfig as any).headerLayout,
+    (provaConfig as any).questionHeaderVariant,
   ],
 });
 

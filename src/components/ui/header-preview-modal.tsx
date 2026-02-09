@@ -23,7 +23,6 @@ import { ProvaHeaderLayout7 } from "@/components/prova/headers/ProvaHeaderLayout
 import { ProvaHeaderLayout8 } from "@/components/prova/headers/ProvaHeaderLayout8";
 import { ProvaHeaderLayout9 } from "@/components/prova/headers/ProvaHeaderLayout9";
 import { ProvaHeaderLayout10 } from "@/components/prova/headers/ProvaHeaderLayout10";
-import "@/app/editor/prova/montar/prova.css";
 
 interface HeaderPreviewModalProps {
   open: boolean;
@@ -51,6 +50,19 @@ const HEADER_COMPONENTS: Record<number, React.ComponentType<any>> = {
   10: ProvaHeaderLayout10,
 };
 
+const PROVA_STYLES = `
+  .prova-header { margin-bottom: 0.8cm; }
+  .header-grid { display: grid; grid-template-columns: 2cm 1fr 3cm; gap: 0.15cm; margin-bottom: 0.1cm; align-items: stretch; }
+  .header-grid-2 { display: grid; grid-template-columns: 1fr 1fr 2cm 2cm; gap: 0.15cm; margin-bottom: 0.1cm; align-items: stretch; }
+  .field-content { height: 26px; }
+  .field-text { display: block; min-height: 1em; line-height: 1.1; }
+  .logo-area { grid-row: 1 / 3; height: 100%; border-radius: 5px; }
+  .field-wrapper { position: relative; padding-top: 8px; }
+  .field-label { position: absolute; top: 0; left: 6px; font-size: 7pt; font-weight: normal; background: white; padding: 0 3px; z-index: 1; }
+  .field-content { border: 1px solid #000; border-radius: 5px; padding: 4px 6px; min-height: 22px; outline: none; width: 100%; box-sizing: border-box; }
+  .instituicao-footer { background: #666; color: white; text-align: center; padding: 5px; font-weight: bold; margin-top: 0.1cm; border-radius: 5px; }
+`;
+
 export function HeaderPreviewModal({
   open,
   onOpenChange,
@@ -65,165 +77,124 @@ export function HeaderPreviewModal({
   const HeaderComponent = HEADER_COMPONENTS[selectedHeaderLayout] || ProvaHeader;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle>Visualizar Cabeçalho e Decoradores</DialogTitle>
-          <DialogDescription>
-            Escolha o modelo de cabeçalho e o estilo de decorador que melhor se adequa à sua prova
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <style>{PROVA_STYLES}</style>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Configuração Visual da Prova</DialogTitle>
+            <DialogDescription>
+              Selecione o modelo de cabeçalho e o estilo dos decoradores de questão.
+            </DialogDescription>
+          </DialogHeader>
 
-        <Tabs defaultValue="headers" className="flex-1 flex flex-col overflow-hidden">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="headers">Cabeçalhos</TabsTrigger>
-            <TabsTrigger value="decorators">Decoradores de Questão</TabsTrigger>
-          </TabsList>
+          <Tabs defaultValue="headers" className="flex-1 flex flex-col overflow-hidden">
+            <TabsList className="grid w-full grid-cols-2 mb-4">
+              <TabsTrigger value="headers">Modelos de Cabeçalho</TabsTrigger>
+              <TabsTrigger value="decorators">Estilos de Questão</TabsTrigger>
+            </TabsList>
 
-          {/* TAB: CABEÇALHOS */}
-          <TabsContent value="headers" className="flex-1 overflow-hidden flex flex-col">
-            <ScrollArea className="flex-1 border rounded-lg p-4">
-              <div className="space-y-6 pr-4">
-                {Array.from({ length: 11 }, (_, i) => {
-                  const HeaderComp = HEADER_COMPONENTS[i] || ProvaHeader;
-                  const isSelected = i === selectedHeaderLayout;
+            {/* TAB: CABEÇALHOS */}
+            <TabsContent value="headers" className="flex-1 overflow-hidden flex flex-col space-y-4">
+              <div className="flex flex-wrap gap-2 justify-center p-2 bg-slate-50 rounded-lg border">
+                {Array.from({ length: 11 }, (_, i) => (
+                  <Button
+                    key={i}
+                    variant={selectedHeaderLayout === i ? "default" : "outline"}
+                    size="sm"
+                    className="w-10 h-10 font-bold"
+                    onClick={() => onHeaderSelect(i)}
+                  >
+                    {i}
+                  </Button>
+                ))}
+              </div>
 
-                  return (
-                    <div
-                      key={i}
-                      onClick={() => onHeaderSelect(i)}
-                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                        isSelected
-                          ? "border-blue-500 bg-blue-50"
-                          : "border-slate-200 hover:border-slate-300 bg-white"
-                      }`}
-                    >
-                      <div className="mb-3">
-                        <h3 className="font-semibold text-sm">
-                          {i === 0 ? "Cabeçalho Original" : `Cabeçalho Layout ${i}`}
-                        </h3>
-                        <p className="text-xs text-slate-500">
-                          {isSelected && "✓ Selecionado"}
-                        </p>
-                      </div>
+              <div className="flex-1 border rounded-xl bg-slate-100 p-8 overflow-auto flex items-center justify-center">
+                <div className="bg-white shadow-2xl p-8 w-full max-w-[21cm] min-h-[5cm]" style={{ fontSize: "10pt", fontFamily: "Calibri, Arial, sans-serif" }}>
+                  <div className="mb-4 text-center text-xs font-bold text-blue-600 uppercase tracking-widest border-b pb-2">
+                    Preview do Cabeçalho {selectedHeaderLayout}
+                  </div>
+                  <HeaderComponent
+                    logoUrl={logoUrl}
+                    onLogoClick={() => {}}
+                    isEditable={false}
+                    nome="Nome do Aluno"
+                    turma="Turma Exemplo"
+                    professor={professor || "Nome do Professor"}
+                    disciplina="Disciplina Exemplo"
+                    data="2026-02-09"
+                    nota="10,0"
+                  />
+                  <div className="mt-4 text-center text-[8pt] text-slate-400 italic">
+                    * A instituição exibida acima é a que você configurou no filtro.
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
 
-                      {/* Container com CSS de prova para renderizar corretamente */}
-                      <div className="bg-white border border-slate-200 rounded p-3 overflow-x-auto" style={{ fontSize: "10pt", fontFamily: "Calibri, Arial, sans-serif" }}>
-                        <div style={{ minWidth: "500px" }}>
-                          <HeaderComp
-                            logoUrl={logoUrl}
-                            onLogoClick={() => {}}
-                            isEditable={false}
-                            nome="Aluno Exemplo"
-                            turma="1º Ano"
-                            professor={professor || "Prof. Exemplo"}
-                            disciplina="Matemática"
-                            data="2026-02-09"
-                            nota="10"
-                          />
-                        </div>
+            {/* TAB: DECORADORES */}
+            <TabsContent value="decorators" className="flex-1 overflow-hidden flex flex-col space-y-4">
+              <div className="flex flex-wrap gap-2 justify-center p-2 bg-slate-50 rounded-lg border">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <Button
+                    key={i}
+                    variant={selectedDecorator === i ? "default" : "outline"}
+                    size="sm"
+                    className="px-4 h-10 font-bold"
+                    onClick={() => onDecoratorSelect(i)}
+                  >
+                    Estilo {i}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="flex-1 border rounded-xl bg-slate-100 p-8 overflow-auto flex flex-col items-center gap-6">
+                <div className="bg-white shadow-lg p-8 w-full max-w-[18cm] rounded-lg">
+                  <h4 className="text-sm font-bold mb-6 text-slate-500 border-b pb-2">Exemplo em 1 Coluna</h4>
+                  <div className="flex items-start gap-4">
+                    <QuestaoHeaderSvg numero={1} totalMm={180} boxMm={28} variant={selectedDecorator as any} />
+                    <div className="space-y-2 flex-1">
+                      <div className="h-3 bg-slate-100 rounded w-full"></div>
+                      <div className="h-3 bg-slate-100 rounded w-5/6"></div>
+                      <div className="h-3 bg-slate-100 rounded w-4/6"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 w-full max-w-[18cm]">
+                  <div className="bg-white shadow-lg p-6 rounded-lg">
+                    <h4 className="text-xs font-bold mb-4 text-slate-500 border-b pb-2 text-center">Coluna 1</h4>
+                    <div className="flex items-start gap-3">
+                      <QuestaoHeaderSvg numero={5} totalMm={85} boxMm={28} variant={selectedDecorator as any} />
+                      <div className="space-y-2 flex-1">
+                        <div className="h-2 bg-slate-100 rounded w-full"></div>
+                        <div className="h-2 bg-slate-100 rounded w-full"></div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </ScrollArea>
-          </TabsContent>
-
-          {/* TAB: DECORADORES */}
-          <TabsContent value="decorators" className="flex-1 overflow-hidden flex flex-col">
-            <ScrollArea className="flex-1 border rounded-lg p-4">
-              <div className="space-y-6 pr-4">
-                {Array.from({ length: 5 }, (_, i) => {
-                  const isSelected = i === selectedDecorator;
-                  const decoratorNames = [
-                    "Classic (Caixa com fundo cinza)",
-                    "Bracket (Colchete moderno)",
-                    "Badge (Círculo compacto)",
-                    "Minimal (Apenas número)",
-                    "Corner (Canto com linha pontilhada)",
-                  ];
-
-                  return (
-                    <div
-                      key={i}
-                      onClick={() => onDecoratorSelect(i)}
-                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                        isSelected
-                          ? "border-blue-500 bg-blue-50"
-                          : "border-slate-200 hover:border-slate-300 bg-white"
-                      }`}
-                    >
-                      <div className="mb-4">
-                        <h3 className="font-semibold text-sm">
-                          Decorador {i}
-                        </h3>
-                        <p className="text-xs text-slate-600">
-                          {decoratorNames[i]}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                          {isSelected && "✓ Selecionado"}
-                        </p>
-                      </div>
-
-                      <div className="bg-white border border-slate-200 rounded p-4 space-y-3">
-                        {/* Exemplo com 1 coluna */}
-                        <div>
-                          <p className="text-xs text-slate-500 mb-2">
-                            Exemplo (1 coluna):
-                          </p>
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0">
-                              <QuestaoHeaderSvg
-                                numero={1}
-                                totalMm={180}
-                                boxMm={28}
-                                variant={i as 0 | 1 | 2 | 3 | 4}
-                              />
-                            </div>
-                            <div className="text-xs text-slate-600 flex-1">
-                              Texto da questão começa aqui...
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Exemplo com 2 colunas */}
-                        <div>
-                          <p className="text-xs text-slate-500 mb-2">
-                            Exemplo (2 colunas):
-                          </p>
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0">
-                              <QuestaoHeaderSvg
-                                numero={5}
-                                totalMm={85}
-                                boxMm={28}
-                                variant={i as 0 | 1 | 2 | 3 | 4}
-                              />
-                            </div>
-                            <div className="text-xs text-slate-600 flex-1">
-                              Texto da questão em coluna...
-                            </div>
-                          </div>
-                        </div>
+                  </div>
+                  <div className="bg-white shadow-lg p-6 rounded-lg">
+                    <h4 className="text-xs font-bold mb-4 text-slate-500 border-b pb-2 text-center">Coluna 2</h4>
+                    <div className="flex items-start gap-3">
+                      <QuestaoHeaderSvg numero={6} totalMm={85} boxMm={28} variant={selectedDecorator as any} />
+                      <div className="space-y-2 flex-1">
+                        <div className="h-2 bg-slate-100 rounded w-full"></div>
+                        <div className="h-2 bg-slate-100 rounded w-full"></div>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                </div>
               </div>
-            </ScrollArea>
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+          </Tabs>
 
-        <div className="flex gap-2 justify-end pt-4 border-t">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancelar
-          </Button>
-          <Button onClick={() => onOpenChange(false)}>
-            Confirmar
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="flex justify-end pt-4 border-t">
+            <Button onClick={() => onOpenChange(false)} className="px-8">
+              Concluir Seleção
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
