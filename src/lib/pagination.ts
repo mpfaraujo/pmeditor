@@ -13,6 +13,7 @@ export interface PaginationConfig {
   pageHeight: number;
   safetyMargin: number;
   columns: 1 | 2;
+  allowPageBreak?: boolean;
 }
 
 export interface MeasurementData {
@@ -97,7 +98,8 @@ export function distributeQuestionsAcrossPages(
   questionHeights: number[],
   firstPageCapacity: number,
   otherPageCapacity: number,
-  columns: 1 | 2
+  columns: 1 | 2,
+  allowPageBreak: boolean = false
 ): PageLayout[] {
   const newPages: PageLayout[] = [];
   let page: PageLayout = { coluna1: [], coluna2: [] };
@@ -111,18 +113,47 @@ export function distributeQuestionsAcrossPages(
 
   for (let i = 0; i < questionCount; i++) {
     const h = questionHeights[i] ?? 0;
+    const cap = getPageCapacity();
 
-    // Se a questão sozinha for maior que a capacidade da página, 
-    // ela vai estourar de qualquer jeito, mas tentamos mantê-la sozinha na página.
-    if (used > 0 && used + h > getPageCapacity()) {
+    // Quando allowPageBreak está ativado e a questão é maior que a capacidade
+    // da página inteira, não tentamos mantê-la indivisivel.
+    // Colocamos ela na posição atual e o CSS (break-inside: auto)
+    // vai permitir que o browser quebre naturalmente entre páginas.
+    if (allowPageBreak && h > cap && used === 0) {
+      // Questão gigante no início da coluna: coloca e avança.
+      // O browser vai quebrar visualmente via CSS.
+      // Estimamos quantas "páginas" essa questão vai consumir
+      // e ajustamos o espaço restante.
+      page[col].push(i);
+      const overflow = h - cap;
+      if (overflow > 0) {
+        // A questão vai "vazar" para a próxima página/coluna.
+        // Calculamos o espaço consumido após a quebra.
+        const pagesConsumed = Math.ceil(overflow / otherPageCapacity);
+        // Avançamos para a próxima coluna/página
+        if (columns === 2 && col === "coluna1") {
+          col = "coluna2";
+          used = 0;
+        } else {
+          newPages.push(page);
+          pageIndex += pagesConsumed;
+          page = { coluna1: [], coluna2: [] };
+          col = "coluna1";
+          // Espaço residual consumido na última página
+          used = overflow - ((pagesConsumed - 1) * otherPageCapacity);
+          if (used < 0) used = 0;
+        }
+      } else {
+        used = h;
+      }
+      continue;
+    }
+
+    if (used > 0 && used + h > cap) {
       if (columns === 2 && col === "coluna1") {
         // 2 colunas: tenta a coluna 2
         col = "coluna2";
         used = 0;
-        
-        // Verificação extra: se após mudar de coluna a questão ainda estoura,
-        // e já havia algo na coluna 1, ela deve ir para a próxima página?
-        // Não, aqui apenas mudamos para a coluna 2.
       } else {
         // 1 coluna (ou coluna2 cheia): próxima página
         newPages.push(page);
@@ -199,6 +230,7 @@ export function calculatePageLayout(
     questionHeights,
     firstPageCapacity,
     otherPageCapacity,
-    config.columns
+    config.columns,
+    config.allowPageBreak ?? false
   );
 }

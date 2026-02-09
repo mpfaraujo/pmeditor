@@ -52,6 +52,7 @@ export function usePagination({ config, questionCount, dependencies }: UsePagina
   const pageHeight = config.pageHeight;
   const safetyMargin = config.safetyMargin;
   const columns = config.columns;
+  const allowPageBreak = config.allowPageBreak ?? false;
 
   useEffect(() => {
     let retryCount = 0;
@@ -60,7 +61,7 @@ export function usePagination({ config, questionCount, dependencies }: UsePagina
 
     const attemptLayout = () => {
       const layout = calculatePageLayout(
-        { pageHeight, safetyMargin, columns },
+        { pageHeight, safetyMargin, columns, allowPageBreak },
         {
           firstPageRef: measureFirstPageRef.current,
           firstQuestoesRef: measureFirstQuestoesRef.current,
@@ -84,7 +85,7 @@ export function usePagination({ config, questionCount, dependencies }: UsePagina
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [depsKey, pageHeight, safetyMargin, columns, questionCount]);
+  }, [depsKey, pageHeight, safetyMargin, columns, allowPageBreak, questionCount]);
 
   return {
     pages,

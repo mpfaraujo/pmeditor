@@ -13,6 +13,7 @@ import {
   Settings,
   CheckSquare,
   Square,
+  Scissors,
 } from "lucide-react";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 import { ReorderModal } from "@/components/prova/ReorderModal";
@@ -329,7 +330,8 @@ const { pages, refs } = usePagination({
   config: {
     pageHeight: PAGE_HEIGHT,
     safetyMargin: SAFETY_PX,
-    columns: provaConfig.columns, // <- ADICIONE ISTO
+    columns: provaConfig.columns,
+    allowPageBreak: provaConfig.allowPageBreak ?? false,
   },
   questionCount: expandedQuestions.length,
   dependencies: [
@@ -339,6 +341,7 @@ const { pages, refs } = usePagination({
     provaConfig.layoutType,
     (provaConfig as any).headerLayout,
     (provaConfig as any).questionHeaderVariant,
+    provaConfig.allowPageBreak,
   ],
 });
 
@@ -367,7 +370,7 @@ const { pages, refs } = usePagination({
       | undefined;
 
     return (
-      <div key={(question as any).metadata?.id ?? globalIndex} className="questao-item-wrapper">
+      <div key={(question as any).metadata?.id ?? globalIndex} className={`questao-item-wrapper${provaConfig.allowPageBreak ? ' allow-break' : ''}`}>
         {/* NOVO: cabeçalho + base_text antes do primeiro item numerado do set */}
         {setMeta?.isFirst && (
           <div className="mb-3 space-y-2">
@@ -455,6 +458,17 @@ const { pages, refs } = usePagination({
                 <Square className="h-4 w-4 mr-2" />
               )}
               Gabarito
+            </Button>
+
+            <Button
+              variant={provaConfig.allowPageBreak ? "default" : "outline"}
+              onClick={() =>
+                updateProvaConfig({ allowPageBreak: !provaConfig.allowPageBreak })
+              }
+              title="Permite que questões longas sejam divididas entre páginas para otimizar espaço"
+            >
+              <Scissors className="h-4 w-4 mr-2" />
+              Quebra
             </Button>
 
             <Button variant="outline" onClick={() => setReorderModalOpen(true)}>

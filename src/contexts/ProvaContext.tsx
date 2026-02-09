@@ -40,9 +40,12 @@ export type ProvaConfig = {
 
   instituicao: string;
 
-  // header layout (0..5)
+  // header layout (0..10)
   headerLayout: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-  questionHeaderVariant:0 | 1 | 2 | 3 | 4 
+  questionHeaderVariant: 0 | 1 | 2 | 3 | 4;
+
+  // quebra controlada: permite que questões longas sejam divididas entre páginas
+  allowPageBreak: boolean;
 };
 
 export type Selection =
@@ -84,7 +87,8 @@ const defaultProvaConfig: ProvaConfig = {
   instituicao: "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca",
 
   headerLayout: 0,
-  questionHeaderVariant: 0
+  questionHeaderVariant: 0,
+  allowPageBreak: false,
 };
 
 const ProvaContext = createContext<ProvaContextType | undefined>(undefined);

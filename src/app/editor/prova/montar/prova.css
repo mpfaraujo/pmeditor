@@ -193,6 +193,12 @@
   min-width: 0;
 }
 
+/* Quebra controlada: quando ativada, permite que questões longas
+   sejam divididas entre páginas para otimizar espaço */
+.questao-item-wrapper.allow-break {
+  break-inside: auto;
+}
+
 .questao-item {
   display: block;
   min-width: 0;
