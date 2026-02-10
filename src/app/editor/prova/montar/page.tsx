@@ -13,6 +13,7 @@ import {
   Settings,
   CheckSquare,
   Square,
+  Scissors,
 } from "lucide-react";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 import { ReorderModal } from "@/components/prova/ReorderModal";
@@ -23,10 +24,31 @@ import { ProvaLayout } from "@/components/prova/layouts/ProvaLayout";
 import { ExerciseLayout } from "@/components/prova/layouts/ExerciseLayout";
 import { QuestionData, ColumnLayout } from "@/types/layout";
 import Gabarito from "@/components/prova/Gabarito";
+
 import "./prova.css";
 
-const PAGE_HEIGHT = 1183;
-const SAFETY_PX = 200; // Aumentado de 180 para 220 para evitar estouro de página
+function pxPerCm(): number {
+  if (typeof document === "undefined") return 37.7952755906; // fallback ~96dpi
+  const el = document.createElement("div");
+  el.style.width = "10cm";
+  el.style.height = "1px";
+  el.style.position = "absolute";
+  el.style.left = "-10000px";
+  el.style.top = "-10000px";
+  el.style.visibility = "hidden";
+  el.style.pointerEvents = "none";
+  document.body.appendChild(el);
+  const px = el.getBoundingClientRect().width;
+  document.body.removeChild(el);
+  const perCm = px / 10;
+  return perCm > 0 ? perCm : 37.7952755906;
+}
+
+function a4PageHeightPx(marginCm: number): number {
+  const ppcm = pxPerCm();
+  const usableCm = 29.7 - 2 * marginCm;
+  return Math.floor(usableCm * ppcm);
+}
 
 type Alt = "A" | "B" | "C" | "D" | "E";
 
@@ -41,15 +63,13 @@ function extractAltFromMetadata(meta: any): Alt | null {
 
   const g = meta.gabarito;
 
-  // NOVO: formato real (AnswerKey)
   if (g && typeof g === "object") {
     const kind = (g.kind ?? "").toString();
     if (kind === "mcq") return parseAlt(g.correct);
-    if (kind === "tf") return parseAlt(g.correct); // "C" ou "E" (vai preencher só C/E)
+    if (kind === "tf") return parseAlt(g.correct);
     if (kind === "essay") return null;
   }
 
-  // compat legado (se existir)
   const direct = parseAlt(g);
   if (direct) return direct;
 
@@ -58,8 +78,6 @@ function extractAltFromMetadata(meta: any): Alt | null {
 
   return null;
 }
-
-/* ====================== set_questions helpers (somente leitura) ====================== */
 
 type PMNode = {
   type: string;
@@ -123,8 +141,6 @@ function buildItemDoc(item: PMNode | null): PMNode | null {
   return wrapAsQuestionDoc(nodes);
 }
 
-/* ====================== page ====================== */
-
 export default function MontarProvaPage() {
   const router = useRouter();
   const {
@@ -148,7 +164,6 @@ export default function MontarProvaPage() {
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
 
-  // NOVO: modal mínimo p/ escolher itens do set
   const [setPickerOpen, setSetPickerOpen] = useState(false);
   const [setPickerSetId, setSetPickerSetId] = useState<string>("");
   const [setPickerSelected, setSetPickerSelected] = useState<number[]>([]);
@@ -177,7 +192,6 @@ export default function MontarProvaPage() {
     router.push("/editor/prova/selecionar-layout");
   };
 
-  // Mantém o comportamento atual de reordenação (sets continuam “1 card” aqui)
   const orderedQuestions = useMemo(() => {
     return [...layout.coluna1, ...layout.coluna2];
   }, [layout]);
@@ -213,7 +227,11 @@ export default function MontarProvaPage() {
 
     const first = setCandidates[0];
     setSetPickerSetId(first.id);
-    setSetPickerSelected(first.selected.length ? first.selected : Array.from({ length: first.n }, (_, i) => i));
+    setSetPickerSelected(
+      first.selected.length
+        ? first.selected
+        : Array.from({ length: first.n }, (_, i) => i)
+    );
     setSetPickerOpen(true);
   };
 
@@ -239,7 +257,6 @@ export default function MontarProvaPage() {
     setSetPickerOpen(false);
   };
 
-  // NOVO: expande set_questions em question_item (para numeração global)
   const expandedQuestions = useMemo(() => {
     const out: any[] = [];
 
@@ -249,28 +266,23 @@ export default function MontarProvaPage() {
 
       const sel = selections.find((s) => s.id === id);
 
-      // Caso normal: question
       if (!sel || sel.kind === "question") {
         out.push(q);
         continue;
       }
 
-      // Caso set: expande itens selecionados (>=2)
       const doc = safeParseDoc(q.content);
       const setNode = findSetNode(doc);
       const { baseText, items } = splitSetNode(setNode);
+
       const isEssaySet =
-  (setNode as any)?.attrs?.mode === "essay" ||
-  !items.some((it) => (it.content ?? []).some((n) => n?.type === "options"));
+        (setNode as any)?.attrs?.mode === "essay" ||
+        !items.some((it) => (it.content ?? []).some((n) => n?.type === "options"));
 
-// PROVA: set discursivo (essay) NÃO expande em múltiplas questões numeradas.
-// Ele é renderizado como UMA questão (com subitens a), b), c)...), para controle de diagramação.
-
-  if (isEssaySet) {
-  out.push(q);
-  continue;
-}
-
+      if (isEssaySet) {
+        out.push(q);
+        continue;
+      }
 
       const baseDoc = buildBaseDoc(baseText);
       const selectedIdxs = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
@@ -278,7 +290,6 @@ export default function MontarProvaPage() {
         .filter((n) => Number.isInteger(n) && n >= 0 && n < items.length)
         .sort((a, b) => a - b);
 
-      // se por algum motivo ficar inválido, não quebra: cai no doc inteiro como 1 “questão”
       if (validIdxs.length < 2) {
         out.push(q);
         continue;
@@ -290,10 +301,8 @@ export default function MontarProvaPage() {
         const itemNode = items[itemIdx] ?? null;
         const itemDoc = buildItemDoc(itemNode);
 
-        // se não conseguir montar item, ignora esse item (sem quebrar)
         if (!itemDoc) return;
 
-        // tenta gabarito no attrs do item (se existir); fallback para meta do parent (se aplicável)
         const itemMetaGabarito =
           itemNode?.attrs?.gabarito ??
           itemNode?.attrs?.answerKey ??
@@ -304,9 +313,7 @@ export default function MontarProvaPage() {
           ...q,
           metadata: {
             ...(q.metadata ?? {}),
-            // id único p/ keys e para não colidir no React
             id: `${id}#${itemIdx + 1}`,
-            // gabarito específico do item, se existir
             ...(itemMetaGabarito ? { gabarito: itemMetaGabarito } : null),
           },
           content: itemDoc,
@@ -325,23 +332,24 @@ export default function MontarProvaPage() {
     return out as QuestionData[];
   }, [orderedQuestions, selections]);
 
-const { pages, refs } = usePagination({
-  config: {
-    pageHeight: PAGE_HEIGHT,
-    safetyMargin: SAFETY_PX,
-    columns: provaConfig.columns, // <- ADICIONE ISTO
-  },
-  questionCount: expandedQuestions.length,
-  dependencies: [
-    expandedQuestions,
-    logoUrl,
-    provaConfig.columns,
-    provaConfig.layoutType,
-    (provaConfig as any).headerLayout,
-    (provaConfig as any).questionHeaderVariant,
-  ],
-});
-
+  const { pages, refs } = usePagination({
+    config: {
+      pageHeight: a4PageHeightPx(1.5),
+      safetyMargin: Math.round(pxPerCm() * 0.5),
+      columns: provaConfig.columns,
+      allowPageBreak: provaConfig.allowPageBreak ?? false,
+    },
+    questionCount: expandedQuestions.length,
+    dependencies: [
+      expandedQuestions,
+      logoUrl,
+      provaConfig.columns,
+      provaConfig.layoutType,
+      (provaConfig as any).headerLayout,
+      (provaConfig as any).questionHeaderVariant,
+      provaConfig.allowPageBreak,
+    ],
+  });
 
   const respostas = useMemo(() => {
     const out: Record<number, Alt> = {};
@@ -354,7 +362,11 @@ const { pages, refs } = usePagination({
 
   const totalQuestoes = expandedQuestions.length;
 
-  const renderQuestion = (question: QuestionData | undefined, globalIndex: number) => {
+  const renderQuestion = (
+    question: QuestionData | undefined,
+    globalIndex: number,
+    frag?: { kind: "frag"; from: number; to: number; first: boolean }
+  ) => {
     if (!question) return null;
 
     const setMeta = (question as any).__set as
@@ -366,9 +378,37 @@ const { pages, refs } = usePagination({
         }
       | undefined;
 
+    const baseKey = (question as any).metadata?.id ?? globalIndex;
+    const fragKey =
+      frag?.kind === "frag"
+        ? `${baseKey}__frag_${frag.from}_${frag.to}_${frag.first ? 1 : 0}`
+        : `${baseKey}`;
+
+    const fragId =
+      frag?.kind === "frag"
+        ? `frag-${String(baseKey).replace(/[^a-zA-Z0-9_-]/g, "_")}-${frag.from}-${frag.to}-${frag.first ? 1 : 0}`
+        : null;
+
     return (
-      <div key={(question as any).metadata?.id ?? globalIndex} className="questao-item-wrapper">
-        {/* NOVO: cabeçalho + base_text antes do primeiro item numerado do set */}
+      <div
+        key={fragKey}
+        id={fragId ?? undefined}
+        className={`questao-item-wrapper${provaConfig.allowPageBreak ? " allow-break" : ""}`}
+      >
+        {fragId && frag && (
+          <style>{`
+            /* Caso 1: blocos são filhos diretos de .questao-conteudo */
+            #${fragId} .questao-conteudo > * { display: none; }
+            #${fragId} .questao-conteudo > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
+
+            /* Caso 2: .questao-conteudo tem 1 wrapper (ex: .question-readonly) e os blocos reais estão dentro dele */
+            #${fragId} .questao-conteudo > :first-child > * { display: none; }
+            #${fragId} .questao-conteudo > :first-child > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
+
+            ${frag.first ? "" : `#${fragId} .questao-header-linha { display: none; }`}
+          `}</style>
+        )}
+
         {setMeta?.isFirst && (
           <div className="mb-3 space-y-2">
             <div className="text-sm font-semibold">{setMeta.headerText}</div>
@@ -445,9 +485,7 @@ const { pages, refs } = usePagination({
 
             <Button
               variant="outline"
-              onClick={() =>
-                updateProvaConfig({ showGabarito: !provaConfig.showGabarito })
-              }
+              onClick={() => updateProvaConfig({ showGabarito: !provaConfig.showGabarito })}
             >
               {provaConfig.showGabarito ? (
                 <CheckSquare className="h-4 w-4 mr-2" />
@@ -455,6 +493,17 @@ const { pages, refs } = usePagination({
                 <Square className="h-4 w-4 mr-2" />
               )}
               Gabarito
+            </Button>
+
+            <Button
+              variant={provaConfig.allowPageBreak ? "default" : "outline"}
+              onClick={() =>
+                updateProvaConfig({ allowPageBreak: !provaConfig.allowPageBreak })
+              }
+              title="Permite que questões longas sejam divididas entre páginas para otimizar espaço"
+            >
+              <Scissors className="h-4 w-4 mr-2" />
+              Quebra
             </Button>
 
             <Button variant="outline" onClick={() => setReorderModalOpen(true)}>
@@ -470,7 +519,7 @@ const { pages, refs } = usePagination({
         </div>
 
         <LayoutComponent
-          pages={pages}
+          pages={pages as any}
           orderedQuestions={expandedQuestions as any}
           logoUrl={logoUrl}
           onLogoClick={() => setLogoDialogOpen(true)}
@@ -504,7 +553,6 @@ const { pages, refs } = usePagination({
         />
       </PaginatedA4>
 
-      {/* ===== Modal mínimo: escolher itens do set ===== */}
       {setPickerOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 print:hidden">
           <div className="w-[min(720px,calc(100vw-24px))] rounded-lg bg-white shadow-xl border p-4">
@@ -528,9 +576,7 @@ const { pages, refs } = usePagination({
             ) : (
               <>
                 <div className="flex flex-col gap-2 mb-3">
-                  <label className="text-xs text-muted-foreground">
-                    Conjunto
-                  </label>
+                  <label className="text-xs text-muted-foreground">Conjunto</label>
                   <select
                     className="border rounded-md h-9 px-2 text-sm"
                     value={setPickerSetId}
@@ -585,11 +631,10 @@ const { pages, refs } = usePagination({
 
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <div className="text-xs text-muted-foreground">
-                    Selecionados: <span className="font-medium">{setPickerSelected.length}</span>
+                    Selecionados:{" "}
+                    <span className="font-medium">{setPickerSelected.length}</span>
                     {!canSaveSetPicker && (
-                      <span className="ml-2 text-red-600">
-                        (mínimo 2)
-                      </span>
+                      <span className="ml-2 text-red-600">(mínimo 2)</span>
                     )}
                   </div>
 

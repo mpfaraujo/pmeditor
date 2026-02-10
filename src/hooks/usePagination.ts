@@ -1,7 +1,10 @@
 // src/hooks/usePagination.ts
 /**
  * Custom hook para gerenciar a paginação de provas
- * Encapsula a lógica de cálculo de layout e estado de páginas
+ * - Garante medição estável (fonts + imagens carregadas)
+ * - Agenda layout em rAF (evita medir DOM em transição)
+ * - Recalcula quando dependencies mudarem (chave estável)
+ * - Reexecuta paginação em beforeprint/afterprint (métrica print)
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -34,57 +37,207 @@ function stableStringify(value: any): string {
   });
 }
 
-export function usePagination({ config, questionCount, dependencies }: UsePaginationProps) {
-  // Refs para os elementos de medição
+async function waitForFonts(signal: AbortSignal) {
+  try {
+    // @ts-ignore
+    const fontsReady = (document as any).fonts?.ready;
+    if (fontsReady && typeof fontsReady.then === "function") {
+      await Promise.race([
+        fontsReady,
+        new Promise<void>((_, reject) => {
+          signal.addEventListener("abort", () => reject(new Error("aborted")), {
+            once: true,
+          });
+        }),
+      ]);
+    }
+  } catch {
+    // ignora
+  }
+}
+
+async function waitForImages(root: HTMLElement, signal: AbortSignal) {
+  const imgs = Array.from(root.querySelectorAll("img")) as HTMLImageElement[];
+  if (imgs.length === 0) return;
+
+  const waitOne = (img: HTMLImageElement) =>
+    new Promise<void>((resolve, reject) => {
+      if (signal.aborted) return reject(new Error("aborted"));
+
+      const done = () => resolve();
+
+      if (img.complete && img.naturalWidth > 0) {
+        const anyImg = img as any;
+        if (typeof anyImg.decode === "function") {
+          anyImg
+            .decode()
+            .then(() => resolve())
+            .catch(() => resolve());
+        } else {
+          resolve();
+        }
+        return;
+      }
+
+      const onAbort = () => reject(new Error("aborted"));
+      const onLoad = () => {
+        cleanup();
+        const anyImg = img as any;
+        if (typeof anyImg.decode === "function") {
+          anyImg
+            .decode()
+            .then(() => done())
+            .catch(() => done());
+        } else {
+          done();
+        }
+      };
+      const onError = () => {
+        cleanup();
+        done();
+      };
+
+      const cleanup = () => {
+        signal.removeEventListener("abort", onAbort);
+        img.removeEventListener("load", onLoad);
+        img.removeEventListener("error", onError);
+      };
+
+      signal.addEventListener("abort", onAbort, { once: true });
+      img.addEventListener("load", onLoad, { once: true });
+      img.addEventListener("error", onError, { once: true });
+    });
+
+  await Promise.all(imgs.map(waitOne)).catch(() => {});
+}
+
+function raf(signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    if (signal.aborted) return reject(new Error("aborted"));
+    const id = requestAnimationFrame(() => resolve());
+    signal.addEventListener(
+      "abort",
+      () => {
+        cancelAnimationFrame(id);
+        reject(new Error("aborted"));
+      },
+      { once: true }
+    );
+  });
+}
+
+export function usePagination({
+  config,
+  questionCount,
+  dependencies,
+}: UsePaginationProps) {
   const measureItemsRef = useRef<HTMLDivElement | null>(null);
   const measureFirstPageRef = useRef<HTMLDivElement | null>(null);
   const measureFirstQuestoesRef = useRef<HTMLDivElement | null>(null);
   const measureOtherPageRef = useRef<HTMLDivElement | null>(null);
   const measureOtherQuestoesRef = useRef<HTMLDivElement | null>(null);
 
-  // Estado das páginas calculadas
   const [pages, setPages] = useState<PageLayout[]>([]);
+  const [printEpoch, setPrintEpoch] = useState(0);
 
-  // Chave estável baseada no CONTEÚDO de dependencies (não na identidade do array)
   const depsKey = useMemo(() => stableStringify(dependencies), [dependencies]);
 
-  // Dependências primitivas do config (evita loop por identidade de objeto)
   const pageHeight = config.pageHeight;
   const safetyMargin = config.safetyMargin;
   const columns = config.columns;
+  const allowPageBreak = config.allowPageBreak ?? false;
 
+  // Reexecuta paginação ao entrar/sair de print (para pegar métrica real do print)
   useEffect(() => {
-    let retryCount = 0;
-    const maxRetries = 3;
-    let timeoutId: NodeJS.Timeout | undefined;
+    const onBeforePrint = () => setPrintEpoch((x) => x + 1);
+    const onAfterPrint = () => setPrintEpoch((x) => x + 1);
 
-    const attemptLayout = () => {
-      const layout = calculatePageLayout(
-        { pageHeight, safetyMargin, columns },
-        {
-          firstPageRef: measureFirstPageRef.current,
-          firstQuestoesRef: measureFirstQuestoesRef.current,
-          otherPageRef: measureOtherPageRef.current,
-          otherQuestoesRef: measureOtherQuestoesRef.current,
-          measureItemsRef: measureItemsRef.current,
-        },
-        questionCount
-      );
+    window.addEventListener("beforeprint", onBeforePrint);
+    window.addEventListener("afterprint", onAfterPrint);
 
-      if (layout) {
-        setPages(layout);
-      } else if (retryCount < maxRetries) {
-        retryCount++;
-        timeoutId = setTimeout(attemptLayout, 50 * retryCount);
-      }
+    const mql = window.matchMedia?.("print");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) onBeforePrint();
+      else onAfterPrint();
     };
 
-    attemptLayout();
+    if (mql) {
+      if ("addEventListener" in mql) mql.addEventListener("change", onChange);
+      else (mql as any).addListener(onChange);
+    }
 
     return () => {
-      if (timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener("beforeprint", onBeforePrint);
+      window.removeEventListener("afterprint", onAfterPrint);
+      if (mql) {
+        if ("removeEventListener" in mql)
+          mql.removeEventListener("change", onChange);
+        else (mql as any).removeListener(onChange);
+      }
     };
-  }, [depsKey, pageHeight, safetyMargin, columns, questionCount]);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    const run = async () => {
+      if (
+        !measureItemsRef.current ||
+        !measureFirstPageRef.current ||
+        !measureFirstQuestoesRef.current ||
+        !measureOtherPageRef.current ||
+        !measureOtherQuestoesRef.current
+      ) {
+        setPages([]);
+        return;
+      }
+
+      await waitForFonts(signal);
+      await waitForImages(measureItemsRef.current, signal);
+
+      await raf(signal);
+      await raf(signal);
+
+      const maxAttempts = 6;
+      for (let i = 0; i < maxAttempts; i++) {
+        if (signal.aborted) return;
+
+        const layout = calculatePageLayout(
+          { pageHeight, safetyMargin, columns, allowPageBreak },
+          {
+            firstPageRef: measureFirstPageRef.current,
+            firstQuestoesRef: measureFirstQuestoesRef.current,
+            otherPageRef: measureOtherPageRef.current,
+            otherQuestoesRef: measureOtherQuestoesRef.current,
+            measureItemsRef: measureItemsRef.current,
+          },
+          questionCount
+        );
+
+        if (layout) {
+          setPages(layout);
+          return;
+        }
+
+        await raf(signal);
+      }
+
+      setPages([]);
+    };
+
+    run().catch(() => {});
+
+    return () => controller.abort();
+  }, [
+    depsKey,
+    pageHeight,
+    safetyMargin,
+    columns,
+    allowPageBreak,
+    questionCount,
+    printEpoch,
+  ]);
 
   return {
     pages,

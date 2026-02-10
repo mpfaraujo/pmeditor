@@ -1,6 +1,6 @@
 @page {
   size: A4;
-  margin: 0;
+  margin: 1.5cm;
 }
 
 :root {
@@ -15,7 +15,7 @@
   min-height: 29.7cm;
   padding: 1.5cm;
   font-size: 10pt;
-  font-family: Calibri, Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .prova-header {
@@ -189,8 +189,18 @@
 
 .questao-item-wrapper {
   break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+
   margin-bottom: 0.5cm;
   min-width: 0;
+}
+
+/* quando allow-break estiver ligado, libera de verdade */
+.questao-item-wrapper.allow-break {
+  break-inside: auto;
+  page-break-inside: auto;
+  -webkit-column-break-inside: auto;
 }
 
 .questao-item {
@@ -198,13 +208,16 @@
   min-width: 0;
 }
 
+/* NÃO deixar quebrar imediatamente depois do cabeçalho */
 .questao-header-linha {
   position: relative;
   display: flex;
   align-items: flex-end;
   margin-bottom: 0.2cm;
-}
 
+  break-after: avoid;
+  page-break-after: avoid;
+}
 
 .pontos-editavel {
   position: absolute;
@@ -294,10 +307,17 @@
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
+    font-family: Arial, sans-serif !important;
   }
 
   .measure-layer {
     display: none !important;
+  }
+
+  /* garante que cada sheet comece em página nova (exceto a primeira) */
+  .a4-sheet:not(:first-of-type) {
+    break-before: page !important;
+    page-break-before: always !important;
   }
 
   .a4-sheet {
@@ -313,16 +333,18 @@
     page-break-after: auto !important;
   }
 
+  /* área útil = 21cm - 2*1.5cm = 18cm */
   .prova-page {
-    width: 21cm !important;
-    height: 29.7cm !important;
+    width: 18cm !important;
+    height: auto !important;
     min-height: 0 !important;
-    padding: 1.5cm !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
     box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
+    font-family: Arial, sans-serif !important;
   }
 
   .prova-header {
@@ -333,7 +355,8 @@
     flex: 1 1 auto !important;
     min-height: 0 !important;
   }
-  .no-print{
+
+  .no-print {
     display: none !important;
   }
 }
@@ -439,8 +462,71 @@
   -webkit-print-color-adjust: exact;
 }
 
-
 /* DEBUG */
 .prova-header .header-grid .logo-area {
   grid-row: auto !important;
-} 
+}
+
+/* =========================
+   PRINT FLOW (allowPageBreak)
+   ========================= */
+
+/* por padrão, só a tela aparece */
+.print-only {
+  display: none;
+}
+.screen-only {
+  display: block;
+}
+
+@media print {
+  .print-only {
+    display: block !important;
+  }
+  .screen-only {
+    display: none !important;
+  }
+
+  /* fluxo contínuo usa a MESMA área útil do @page */
+  .print-flow {
+    width: 18cm;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif !important;
+  }
+
+  .questoes-flow.columns-1 {
+    column-count: 1;
+    column-gap: 0;
+    column-fill: auto;
+  }
+
+  .questoes-flow.columns-2 {
+    column-count: 2;
+    column-gap: var(--col-gap);
+    column-fill: auto;
+    column-rule: 1px solid #000;
+  }
+
+  .questoes-flow > .questao-item-wrapper {
+    display: inline-block;
+    width: 100%;
+    break-inside: avoid;
+  }
+
+  .questoes-flow > .questao-item-wrapper.allow-break {
+    break-inside: auto;
+  }
+
+  .questao-item-wrapper {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    -webkit-column-break-inside: avoid !important;
+  }
+
+  .questao-header-linha {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+}
