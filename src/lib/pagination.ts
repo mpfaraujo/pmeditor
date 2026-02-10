@@ -1,12 +1,22 @@
 /**
  * Lógica de paginação para provas em formato A4
- * Responsável por calcular como as questões devem ser distribuídas
- * entre páginas considerando o espaço disponível
+ * - allowPageBreak=false: mantém comportamento atual (questão atômica)
+ * - allowPageBreak=true: permite fragmentar questão por blocos do DOM
  */
 
+export type LayoutItem =
+  | { kind: "full"; q: number }
+  | {
+      kind: "frag";
+      q: number;
+      from: number; // 1-based (nth-child)
+      to: number;   // 1-based (nth-child)
+      first: boolean;
+    };
+
 export type PageLayout = {
-  coluna1: number[];
-  coluna2: number[];
+  coluna1: LayoutItem[];
+  coluna2: LayoutItem[];
 };
 
 export interface PaginationConfig {
@@ -16,39 +26,18 @@ export interface PaginationConfig {
   allowPageBreak?: boolean;
 }
 
-export interface MeasurementData {
-  firstPageCapacity: number;
-  otherPageCapacity: number;
-  questionHeights: number[];
-}
-
-/**
- * Calcula o espaço disponível em pixels para questões na primeira página
- * considerando a altura do cabeçalho
- */
 export function calculateFirstPageCapacity(
   firstPageElement: HTMLElement,
   questionsContainerElement: HTMLElement,
   pageHeight: number,
   safetyMargin: number
 ): number {
-  // Usamos offsetTop em vez de getBoundingClientRect para evitar problemas com scroll
-  // ou transformações de escala durante a medição
   const questionsTop = questionsContainerElement.offsetTop;
   const firstPageTop = firstPageElement.offsetTop;
-  
-  // A altura ocupada pelo cabeçalho e outros elementos acima do container de questões
   const occupiedHeight = questionsTop - firstPageTop;
-  
-  // Aumentamos a margem de segurança na primeira página para 1.5x o padrão
-  // para acomodar variações de renderização de cabeçalhos complexos
-  return Math.max(0, pageHeight - occupiedHeight - (safetyMargin * 1.5));
+  return Math.max(0, pageHeight - occupiedHeight - safetyMargin * 1.5);
 }
 
-/**
- * Calcula o espaço disponível em pixels para questões nas páginas subsequentes
- * (sem cabeçalho)
- */
 export function calculateOtherPageCapacity(
   otherPageElement: HTMLElement,
   questionsContainerElement: HTMLElement,
@@ -57,41 +46,133 @@ export function calculateOtherPageCapacity(
 ): number {
   const questionsTop = questionsContainerElement.offsetTop;
   const otherPageTop = otherPageElement.offsetTop;
-  
   const occupiedHeight = questionsTop - otherPageTop;
-  
   return Math.max(0, pageHeight - occupiedHeight - safetyMargin);
 }
 
-/**
- * Mede a altura de cada questão incluindo suas margens
- * Com validação para garantir que elementos estão renderizados
- */
-export function measureQuestionHeights(
-  measurementContainer: HTMLElement
-): number[] {
+function px(n: number) {
+  return Math.max(0, n || 0);
+}
+
+function measureOuterHeight(el: HTMLElement): number {
+  const cs = window.getComputedStyle(el);
+  const mt = parseFloat(cs.marginTop || "0") || 0;
+  const mb = parseFloat(cs.marginBottom || "0") || 0;
+  return px(el.offsetHeight + mt + mb);
+}
+
+export function measureQuestionHeights(measurementContainer: HTMLElement): number[] {
   const itemEls = Array.from(
     measurementContainer.querySelectorAll(".questao-item-wrapper")
   ) as HTMLDivElement[];
 
-  return itemEls.map((el) => {
-    const cs = window.getComputedStyle(el);
-    const mt = parseFloat(cs.marginTop || "0") || 0;
-    const mb = parseFloat(cs.marginBottom || "0") || 0;
-    const height = el.offsetHeight + mt + mb;
-    
-    // Validação: se a altura for 0, pode indicar que o elemento ainda não foi renderizado
-    // Retorna um valor mínimo conservador (10px) para evitar distribuição incorreta
-    return Math.max(height, 10);
-  });
+  return itemEls.map((el) => Math.max(measureOuterHeight(el), 10));
+}
+
+type SplitInfo = {
+  prefixHeight: number;     // tudo antes do .questao-conteudo (inclui header)
+  blocksHeights: number[];  // alturas dos filhos diretos de .questao-conteudo (1:1 com nth-child)
+};
+
+function measureSplitInfo(measurementContainer: HTMLElement, index: number): SplitInfo | null {
+  const wrappers = Array.from(
+    measurementContainer.querySelectorAll(".questao-item-wrapper")
+  ) as HTMLElement[];
+
+  const wrapper = wrappers[index];
+  if (!wrapper) return null;
+
+  const content = wrapper.querySelector(".questao-conteudo") as HTMLElement | null;
+  if (!content) {
+    return { prefixHeight: measureOuterHeight(wrapper), blocksHeights: [] };
+  }
+
+  // blocos padrão: filhos diretos
+  let blockContainer: HTMLElement = content;
+  let blockEls = Array.from(blockContainer.children) as HTMLElement[];
+
+  // SE só tiver 1 wrapper interno, usar os filhos dele como blocos reais
+  if (blockEls.length === 1) {
+    const only = blockEls[0] as HTMLElement;
+    const innerChildren = Array.from(only.children) as HTMLElement[];
+    if (innerChildren.length >= 2) {
+      blockContainer = only;
+      blockEls = innerChildren;
+    }
+  }
+
+  const blocksHeights = blockEls.map((b) => Math.max(measureOuterHeight(b), 1));
+  const contentBlocksSum = blocksHeights.reduce((a, b) => a + b, 0);
+
+  const total = Math.max(measureOuterHeight(wrapper), 10);
+  const prefixHeight = Math.max(10, total - contentBlocksSum);
+
+  return { prefixHeight, blocksHeights };
+}
+
+
+function buildFragmentsForQuestion(
+  qIndex: number,
+  split: SplitInfo,
+  capFirstFrag: number,
+  capNextFrag: number
+): { items: LayoutItem[]; heights: number[] } | null {
+  const { prefixHeight, blocksHeights } = split;
+
+  // sem blocos -> não dá pra fatiar, mantém como full
+  if (!blocksHeights.length) return null;
+
+  const items: LayoutItem[] = [];
+  const heights: number[] = [];
+
+  let cursor = 0; // 0-based in blocksHeights
+  let first = true;
+
+  while (cursor < blocksHeights.length) {
+    const cap = first ? capFirstFrag : capNextFrag;
+
+    // prefix só na primeira parte
+    let used = first ? prefixHeight : 0;
+
+    // se nem o prefix cabe, não tem como fatiar com segurança
+    if (first && used >= cap) return null;
+
+    const start = cursor;
+    while (cursor < blocksHeights.length) {
+      const h = blocksHeights[cursor];
+      if (cursor === start) {
+        // pelo menos 1 bloco precisa caber
+        if (used + h > cap) {
+          // bloco sozinho não cabe -> não fragmenta (senão some)
+          return null;
+        }
+        used += h;
+        cursor++;
+        continue;
+      }
+
+      if (used + h > cap) break;
+      used += h;
+      cursor++;
+    }
+
+    const from = start + 1;      // 1-based
+    const to = cursor;          // 1-based (cursor já aponta pro próximo)
+    items.push({ kind: "frag", q: qIndex, from, to, first });
+    heights.push(used);
+
+    first = false;
+  }
+
+  return { items, heights };
 }
 
 /**
- * Distribui questões em páginas e colunas baseado nas alturas medidas
- * e na capacidade de cada página
- *
- * columns=1 => só usa coluna1, coluna2 sempre vazia
- * columns=2 => lógica padrão (coluna1 e coluna2)
+ * Distribuição:
+ * - allowPageBreak=false: igual ao atual
+ * - allowPageBreak=true:
+ *   - se uma questão estoura, tenta fragmentar por blocos de .questao-conteudo
+ *   - cada fragmento vira um LayoutItem que pode ir para a próxima coluna/página
  */
 export function distributeQuestionsAcrossPages(
   questionCount: number,
@@ -99,7 +180,8 @@ export function distributeQuestionsAcrossPages(
   firstPageCapacity: number,
   otherPageCapacity: number,
   columns: 1 | 2,
-  allowPageBreak: boolean = false
+  allowPageBreak: boolean,
+  measureItemsRef: HTMLElement
 ): PageLayout[] {
   const newPages: PageLayout[] = [];
   let page: PageLayout = { coluna1: [], coluna2: [] };
@@ -108,74 +190,98 @@ export function distributeQuestionsAcrossPages(
   let used = 0;
   let pageIndex = 0;
 
-  const getPageCapacity = () =>
-    pageIndex === 0 ? firstPageCapacity : otherPageCapacity;
+  const getCap = () => (pageIndex === 0 ? firstPageCapacity : otherPageCapacity);
+
+  const pushNewPage = () => {
+    newPages.push(page);
+    pageIndex++;
+    page = { coluna1: [], coluna2: [] };
+    col = "coluna1";
+    used = 0;
+  };
+
+  const nextColumnOrPage = () => {
+    if (columns === 2 && col === "coluna1") {
+      col = "coluna2";
+      used = 0;
+      return;
+    }
+    pushNewPage();
+  };
 
   for (let i = 0; i < questionCount; i++) {
-    const h = questionHeights[i] ?? 0;
-    const cap = getPageCapacity();
+    const fullH = questionHeights[i] ?? 0;
+    const cap = getCap();
 
-    // Quando allowPageBreak está ativado e a questão é maior que a capacidade
-    // da página inteira, não tentamos mantê-la indivisivel.
-    // Colocamos ela na posição atual e o CSS (break-inside: auto)
-    // vai permitir que o browser quebre naturalmente entre páginas.
-    if (allowPageBreak && h > cap && used === 0) {
-      // Questão gigante no início da coluna: coloca e avança.
-      // O browser vai quebrar visualmente via CSS.
-      // Estimamos quantas "páginas" essa questão vai consumir
-      // e ajustamos o espaço restante.
-      page[col].push(i);
-      const overflow = h - cap;
-      if (overflow > 0) {
-        // A questão vai "vazar" para a próxima página/coluna.
-        // Calculamos o espaço consumido após a quebra.
-        const pagesConsumed = Math.ceil(overflow / otherPageCapacity);
-        // Avançamos para a próxima coluna/página
-        if (columns === 2 && col === "coluna1") {
-          col = "coluna2";
-          used = 0;
-        } else {
-          newPages.push(page);
-          pageIndex += pagesConsumed;
-          page = { coluna1: [], coluna2: [] };
-          col = "coluna1";
-          // Espaço residual consumido na última página
-          used = overflow - ((pagesConsumed - 1) * otherPageCapacity);
-          if (used < 0) used = 0;
-        }
-      } else {
-        used = h;
-      }
+    // cabe inteira aqui
+    if (!(used > 0 && used + fullH > cap)) {
+      page[col].push({ kind: "full", q: i });
+      used += fullH;
       continue;
     }
 
-    if (used > 0 && used + h > cap) {
-      if (columns === 2 && col === "coluna1") {
-        // 2 colunas: tenta a coluna 2
-        col = "coluna2";
-        used = 0;
-      } else {
-        // 1 coluna (ou coluna2 cheia): próxima página
-        newPages.push(page);
-        pageIndex++;
-        page = { coluna1: [], coluna2: [] };
-        col = "coluna1";
-        used = 0;
-      }
+    // não cabe inteira -> tenta mover pra próxima coluna/página
+    // (mantém seu comportamento atual)
+    if (!allowPageBreak) {
+      nextColumnOrPage();
+      page[col].push({ kind: "full", q: i });
+      used += fullH;
+      continue;
     }
 
-    page[col].push(i);
-    used += h;
+    // allowPageBreak=true:
+    // 1) se já tem algo na coluna e não cabe, vai pra próxima coluna/página
+    if (used > 0) {
+      nextColumnOrPage();
+    }
+
+    // 2) agora estamos no topo de uma coluna vazia: se ainda não cabe, tenta fragmentar
+    const capHere = getCap();
+    if (fullH <= capHere) {
+      page[col].push({ kind: "full", q: i });
+      used += fullH;
+      continue;
+    }
+
+    const split = measureSplitInfo(measureItemsRef, i);
+    if (!split) {
+      page[col].push({ kind: "full", q: i });
+      used += fullH;
+      continue;
+    }
+
+    const frag = buildFragmentsForQuestion(i, split, capHere, otherPageCapacity);
+    if (!frag) {
+      // fallback seguro: coloca inteira (vai “estourar”, mas não some)
+      page[col].push({ kind: "full", q: i });
+      used += fullH;
+      continue;
+    }
+
+    // distribui fragmentos sequencialmente, respeitando colunas/páginas
+    for (let k = 0; k < frag.items.length; k++) {
+      const item = frag.items[k];
+      const h = frag.heights[k];
+      const capNow = getCap();
+
+      if (used > 0 && used + h > capNow) {
+        nextColumnOrPage();
+      }
+
+      page[col].push(item);
+      used += h;
+
+      // próximo fragmento sempre pode ir para próxima coluna/página
+      if (k < frag.items.length - 1) {
+        nextColumnOrPage();
+      }
+    }
   }
 
   newPages.push(page);
   return newPages;
 }
 
-/**
- * Função principal que orquestra todo o processo de paginação
- * Com validações extras para garantir medições corretas
- */
 export function calculatePageLayout(
   config: PaginationConfig,
   refs: {
@@ -197,9 +303,7 @@ export function calculatePageLayout(
     return null;
   }
 
-  // Validação: garantir que os elementos estão visíveis e têm dimensões
   if (refs.firstPageRef.offsetHeight === 0 || refs.measureItemsRef.offsetHeight === 0) {
-    // Elementos ainda não foram renderizados, retorna null para tentar novamente
     return null;
   }
 
@@ -217,11 +321,7 @@ export function calculatePageLayout(
     config.safetyMargin
   );
 
-  // Validação: capacidades devem ser positivas
-  if (firstPageCapacity <= 0 || otherPageCapacity <= 0) {
-    // Capacidades inválidas, retorna null para tentar novamente
-    return null;
-  }
+  if (firstPageCapacity <= 0 || otherPageCapacity <= 0) return null;
 
   const questionHeights = measureQuestionHeights(refs.measureItemsRef);
 
@@ -231,6 +331,7 @@ export function calculatePageLayout(
     firstPageCapacity,
     otherPageCapacity,
     config.columns,
-    config.allowPageBreak ?? false
+    !!config.allowPageBreak,
+    refs.measureItemsRef
   );
 }
