@@ -28,7 +28,7 @@ import Gabarito from "@/components/prova/Gabarito";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
-const SAFETY_PX = 120;
+const SAFETY_PX = 150;
 
 type Alt = "A" | "B" | "C" | "D" | "E";
 
@@ -166,10 +166,11 @@ export default function MontarProvaPage() {
     setLayout(newLayout);
     updateColumnLayout(newLayout);
   };
+  
 
-  const handlePrint = () => {
-    window.print();
-  };
+const handlePrint = () => {
+  window.print();
+};
 
   const handleEditarConfiguracao = () => {
     router.push("/editor/prova/selecionar-layout");
@@ -367,13 +368,17 @@ const { pages, refs } = usePagination({
     frag?: { kind: "frag"; from: number; to: number; first: boolean }
   ) => {
     if (!question) return null;
+    const printedIndex =
+  globalIndex -
+  expandedQuestions.slice(0, globalIndex).filter((q: any) => !!q?.__setBase).length;
+
 
     const isSetBase = !!(question as any).__setBase;
     const setBaseMeta = (question as any).__setBase as
       | { parentId: string; headerText: string }
       | undefined;
 
-    const baseKey = (question as any).metadata?.id ?? globalIndex;
+    const baseKey = (question as any).metadata?.id ?? printedIndex;
     const fragKey =
       frag?.kind === "frag"
         ? `${baseKey}__frag_${frag.from}_${frag.to}_${frag.first ? 1 : 0}`
@@ -430,7 +435,7 @@ const { pages, refs } = usePagination({
           <div className="questao-item">
             <div className="questao-header-linha">
               <QuestionHeaderSvg
-                numero={globalIndex + 1}
+                numero={printedIndex + 1}
                 totalMm={columns === 2 ? 85 : 180}
                 boxMm={28}
                 variant={provaConfig.questionHeaderVariant ?? 0}

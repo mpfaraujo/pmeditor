@@ -86,6 +86,7 @@ export function ProvaLayout({
   };
 
   const safePages = (pages.length ? pages : [{ coluna1: [], coluna2: [] }] as any) as any[];
+  
 
   return (
     <>

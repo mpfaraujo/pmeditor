@@ -84,11 +84,11 @@ const defaultProvaConfig: ProvaConfig = {
   data: "",
   nota: "",
 
-  instituicao: "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca",
+  instituicao: "",
 
   headerLayout: 0,
   questionHeaderVariant: 0,
-  allowPageBreak: false,
+  allowPageBreak: true,
 };
 
 const ProvaContext = createContext<ProvaContextType | undefined>(undefined);

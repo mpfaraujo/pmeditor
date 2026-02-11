@@ -4,7 +4,10 @@
  * - Garante medição estável (fonts + imagens carregadas)
  * - Agenda layout em rAF (evita medir DOM em transição)
  * - Recalcula quando dependencies mudarem (chave estável)
- * - Reexecuta paginação em beforeprint/afterprint (métrica print)
+ *
+ * IMPORTANTE:
+ * - NÃO zera pages quando a medição falha temporariamente
+ * - NÃO recalcula no beforeprint/afterprint (evita print capturar pages=[])
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -69,12 +72,9 @@ async function waitForImages(root: HTMLElement, signal: AbortSignal) {
       if (img.complete && img.naturalWidth > 0) {
         const anyImg = img as any;
         if (typeof anyImg.decode === "function") {
-          anyImg
-            .decode()
-            .then(() => resolve())
-            .catch(() => resolve());
+          anyImg.decode().then(done).catch(done);
         } else {
-          resolve();
+          done();
         }
         return;
       }
@@ -84,10 +84,7 @@ async function waitForImages(root: HTMLElement, signal: AbortSignal) {
         cleanup();
         const anyImg = img as any;
         if (typeof anyImg.decode === "function") {
-          anyImg
-            .decode()
-            .then(() => done())
-            .catch(() => done());
+          anyImg.decode().then(done).catch(done);
         } else {
           done();
         }
@@ -138,7 +135,6 @@ export function usePagination({
   const measureOtherQuestoesRef = useRef<HTMLDivElement | null>(null);
 
   const [pages, setPages] = useState<PageLayout[]>([]);
-  const [printEpoch, setPrintEpoch] = useState(0);
 
   const depsKey = useMemo(() => stableStringify(dependencies), [dependencies]);
 
@@ -146,36 +142,6 @@ export function usePagination({
   const safetyMargin = config.safetyMargin;
   const columns = config.columns;
   const allowPageBreak = config.allowPageBreak ?? false;
-
-  // Reexecuta paginação ao entrar/sair de print (para pegar métrica real do print)
-  useEffect(() => {
-    const onBeforePrint = () => setPrintEpoch((x) => x + 1);
-    const onAfterPrint = () => setPrintEpoch((x) => x + 1);
-
-    window.addEventListener("beforeprint", onBeforePrint);
-    window.addEventListener("afterprint", onAfterPrint);
-
-    const mql = window.matchMedia?.("print");
-    const onChange = (e: MediaQueryListEvent) => {
-      if (e.matches) onBeforePrint();
-      else onAfterPrint();
-    };
-
-    if (mql) {
-      if ("addEventListener" in mql) mql.addEventListener("change", onChange);
-      else (mql as any).addListener(onChange);
-    }
-
-    return () => {
-      window.removeEventListener("beforeprint", onBeforePrint);
-      window.removeEventListener("afterprint", onAfterPrint);
-      if (mql) {
-        if ("removeEventListener" in mql)
-          mql.removeEventListener("change", onChange);
-        else (mql as any).removeListener(onChange);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -189,7 +155,7 @@ export function usePagination({
         !measureOtherPageRef.current ||
         !measureOtherQuestoesRef.current
       ) {
-        setPages([]);
+        // NÃO zera pages
         return;
       }
 
@@ -203,19 +169,22 @@ export function usePagination({
       for (let i = 0; i < maxAttempts; i++) {
         if (signal.aborted) return;
 
-        const layout = calculatePageLayout(
-          { pageHeight, safetyMargin, columns, allowPageBreak },
-          {
-            firstPageRef: measureFirstPageRef.current,
-            firstQuestoesRef: measureFirstQuestoesRef.current,
-            otherPageRef: measureOtherPageRef.current,
-            otherQuestoesRef: measureOtherQuestoesRef.current,
-            measureItemsRef: measureItemsRef.current,
-          },
-          questionCount
-        );
+        const measuredPageHeight = measureFirstPageRef.current!.offsetHeight;
+const realPageHeight = measuredPageHeight > 0 ? measuredPageHeight : pageHeight;
 
-        if (layout) {
+const layout = calculatePageLayout(
+  { pageHeight: realPageHeight, safetyMargin, columns, allowPageBreak },
+  {
+    firstPageRef: measureFirstPageRef.current,
+    firstQuestoesRef: measureFirstQuestoesRef.current,
+    otherPageRef: measureOtherPageRef.current,
+    otherQuestoesRef: measureOtherQuestoesRef.current,
+    measureItemsRef: measureItemsRef.current,
+  },
+  questionCount
+);
+
+        if (layout && layout.length > 0) {
           setPages(layout);
           return;
         }
@@ -223,21 +192,13 @@ export function usePagination({
         await raf(signal);
       }
 
-      setPages([]);
+      // NÃO zera pages no fallback
     };
 
     run().catch(() => {});
 
     return () => controller.abort();
-  }, [
-    depsKey,
-    pageHeight,
-    safetyMargin,
-    columns,
-    allowPageBreak,
-    questionCount,
-    printEpoch,
-  ]);
+  }, [depsKey, pageHeight, safetyMargin, columns, allowPageBreak, questionCount]);
 
   return {
     pages,

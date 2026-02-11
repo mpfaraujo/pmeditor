@@ -239,6 +239,11 @@ export function distributeQuestionsAcrossPages(
   let col: "coluna1" | "coluna2" = "coluna1";
   let used = 0;
   let pageIndex = 0;
+  function isEmptyPage(p: PageLayout | null | undefined) {
+  if (!p) return true;
+  return (p.coluna1?.length ?? 0) === 0 && (p.coluna2?.length ?? 0) === 0;
+}
+
 
   const getCap = () => (pageIndex === 0 ? firstPageCapacity : otherPageCapacity);
 
@@ -322,8 +327,14 @@ export function distributeQuestionsAcrossPages(
     }
   }
 
-  newPages.push(page);
-  return newPages;
+newPages.push(page);
+
+// remove páginas vazias no início/fim (evita “cabeçalho sozinho”)
+while (newPages.length && isEmptyPage(newPages[0])) newPages.shift();
+while (newPages.length && isEmptyPage(newPages[newPages.length - 1])) newPages.pop();
+
+return newPages;
+
 }
 
 export function calculatePageLayout(
