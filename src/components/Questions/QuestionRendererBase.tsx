@@ -6,7 +6,6 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 import { essayPartLabel, shouldShowEssayPartLabels } from "@/lib/questionRules";
 
-
 type PMNode = {
   type: string;
   attrs?: any;
@@ -34,6 +33,35 @@ export default function QuestionRendererBase({ content, mode }: Props) {
     Record<string, "left" | "center" | "right">
   >({});
 
+  // ===== persistência simples (print precisa recuperar o resize) =====
+  const LS_W = "pm:imageWidthOverrides:v1";
+  const LS_A = "pm:imageAlignOverrides:v1";
+
+  React.useEffect(() => {
+    try {
+      const w = localStorage.getItem(LS_W);
+      if (w) setImageWidthOverrides(JSON.parse(w));
+    } catch {}
+    try {
+      const a = localStorage.getItem(LS_A);
+      if (a) setImageAlignOverrides(JSON.parse(a));
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(LS_W, JSON.stringify(imageWidthOverrides));
+    } catch {}
+  }, [imageWidthOverrides]);
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(LS_A, JSON.stringify(imageAlignOverrides));
+    } catch {}
+  }, [imageAlignOverrides]);
+  // ================================================================
+
   let doc: PMNode | null = null;
 
   try {
@@ -54,34 +82,34 @@ export default function QuestionRendererBase({ content, mode }: Props) {
   }
 
   // 2) set_questions aninhado em question (doc -> question -> set_questions)
- const nested = findNestedSetInQuestion(doc);
-if (nested) {
-  rendered.push(renderSetQuestions(nested.setNode, "set-nested", nested.questionNode?.attrs));
-  return <div className="question-readonly-root space-y-3">{rendered}</div>;
-}
-
+  const nested = findNestedSetInQuestion(doc);
+  if (nested) {
+    rendered.push(
+      renderSetQuestions(nested.setNode, "set-nested", nested.questionNode?.attrs)
+    );
+    return <div className="question-readonly-root space-y-3">{rendered}</div>;
+  }
 
   // 3) fallback: renderiza question(s) normais
-doc.content?.forEach((node, i) => {
-  if (node.type === "question") {
-    const isEssayQuestion = node.attrs?.tipo === "Discursiva";
+  doc.content?.forEach((node, i) => {
+    if (node.type === "question") {
+      const isEssayQuestion = node.attrs?.tipo === "Discursiva";
 
-    rendered.push(
-      <React.Fragment key={`q-${i}`}>
-        {isEssayQuestion ? (
-          <div className="question-readonly">
-            <div className="question-text space-y-2">
-              {renderQuestionLike(node.content ?? [], `q-${i}`)}
+      rendered.push(
+        <React.Fragment key={`q-${i}`}>
+          {isEssayQuestion ? (
+            <div className="question-readonly">
+              <div className="question-text space-y-2">
+                {renderQuestionLike(node.content ?? [], `q-${i}`)}
+              </div>
             </div>
-          </div>
-        ) : (
-          renderQuestionLike(node.content ?? [], `q-${i}`)
-        )}
-      </React.Fragment>
-    );
-  }
-});
-
+          ) : (
+            renderQuestionLike(node.content ?? [], `q-${i}`)
+          )}
+        </React.Fragment>
+      );
+    }
+  });
 
   if (rendered.length === 0) return null;
   return <div className="question-readonly-root space-y-3">{rendered}</div>;
@@ -92,13 +120,14 @@ doc.content?.forEach((node, i) => {
     return doc.content?.find((n) => n?.type === "set_questions") ?? null;
   }
 
-function findNestedSetInQuestion(doc: PMNode): { setNode: PMNode; questionNode: PMNode } | null {
-  const q = doc.content?.find((n) => n?.type === "question") ?? null;
-  const setNode = q?.content?.find((n) => n?.type === "set_questions") ?? null;
-  if (!q || !setNode) return null;
-  return { setNode, questionNode: q };
-}
-
+  function findNestedSetInQuestion(
+    doc: PMNode
+  ): { setNode: PMNode; questionNode: PMNode } | null {
+    const q = doc.content?.find((n) => n?.type === "question") ?? null;
+    const setNode = q?.content?.find((n) => n?.type === "set_questions") ?? null;
+    if (!q || !setNode) return null;
+    return { setNode, questionNode: q };
+  }
 
   function splitSetQuestions(setNode: PMNode): {
     baseTextNode: PMNode | null;
@@ -110,33 +139,79 @@ function findNestedSetInQuestion(doc: PMNode): { setNode: PMNode; questionNode: 
     return { baseTextNode, items };
   }
 
-function renderSetQuestions(
-  setNode: PMNode,
-  keyPrefix: string,
-  parentQuestionAttrs?: any
-): React.ReactNode {
-  const { baseTextNode, items } = splitSetQuestions(setNode);
-  if (process.env.NODE_ENV !== "production") {
-  console.log("[QR:set_questions] attrs =", setNode?.attrs);
-}
+  function renderSetQuestions(
+    setNode: PMNode,
+    keyPrefix: string,
+    parentQuestionAttrs?: any
+  ): React.ReactNode {
+    const { baseTextNode, items } = splitSetQuestions(setNode);
 
+    // Discursiva multipartes: só ativa se o set vier marcado explicitamente.
+    // Se não houver marcação, mantém o comportamento antigo (não quebra nada).
+    const ak = setNode?.attrs?.answerKey ?? parentQuestionAttrs?.answerKey;
 
-  // Discursiva multipartes: só ativa se o set vier marcado explicitamente.
-  // Se não houver marcação, mantém o comportamento antigo (não quebra nada).
-const ak = setNode?.attrs?.answerKey ?? parentQuestionAttrs?.answerKey;
+    const isEssaySet =
+      setNode?.attrs?.mode === "essay" ||
+      setNode?.attrs?.mode == null
+        ? !items.some((it) =>
+            (it.content ?? []).some((n) => n?.type === "options")
+          )
+        : false;
 
-const isEssaySet =
-  setNode?.attrs?.mode === "essay" ||
-  ((setNode?.attrs?.mode == null) &&
-    !items.some((it) => (it.content ?? []).some((n) => n?.type === "options")));
+    if (isEssaySet) {
+      const showLabels = shouldShowEssayPartLabels(items.length);
 
+      return (
+        <div key={keyPrefix} className="question-set-readonly space-y-3">
+          {baseTextNode ? (
+            <div className="question-readonly">
+              <div className="question-text space-y-2">
+                {renderBlock(baseTextNode, `${keyPrefix}-base`)}
+              </div>
+            </div>
+          ) : null}
 
+          {items.map((it, idx) => (
+            <div
+              key={`${keyPrefix}-essay-${idx}`}
+              className="flex items-start gap-2"
+            >
+              {showLabels ? (
+                <div className="font-semibold">{essayPartLabel(idx)}</div>
+              ) : null}
 
-  if (isEssaySet) {
-    const showLabels = shouldShowEssayPartLabels(items.length);
+              <div className="flex-1">
+                {renderQuestionLike(it.content ?? [], `${keyPrefix}-essay-${idx}`)}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
 
+    // Fallback: question_set com 1 question_item vira "questão normal"
+    // enunciado = base_text + statement/options do item, sem banner
+    if (items.length === 1) {
+      const it = items[0];
+      const mergedNodes: PMNode[] = [
+        ...(baseTextNode ? [baseTextNode] : []),
+        ...(it?.content ?? []),
+      ];
+
+      return (
+        <div key={keyPrefix} className="question-set-readonly space-y-3">
+          {renderQuestionLike(mergedNodes, `${keyPrefix}-single`)}
+        </div>
+      );
+    }
+
+    // comportamento antigo (set com 2+ itens)
     return (
       <div key={keyPrefix} className="question-set-readonly space-y-3">
+        <div className="text-sm font-semibold">
+          Use o texto a seguir para responder às próximas {items.length} questões.
+        </div>
+
         {baseTextNode ? (
           <div className="question-readonly">
             <div className="question-text space-y-2">
@@ -146,64 +221,13 @@ const isEssaySet =
         ) : null}
 
         {items.map((it, idx) => (
-          <div
-            key={`${keyPrefix}-essay-${idx}`}
-            className="flex items-start gap-2"
-          >
-            {showLabels ? (
-              <div className="font-semibold">{essayPartLabel(idx)}</div>
-            ) : null}
-
-            <div className="flex-1">
-              {renderQuestionLike(it.content ?? [], `${keyPrefix}-essay-${idx}`)}
-            </div>
+          <div key={`${keyPrefix}-it-${idx}`} className="question-set-item">
+            {renderQuestionLike(it.content ?? [], `${keyPrefix}-it-${idx}`)}
           </div>
         ))}
       </div>
     );
   }
-
-  // Fallback: question_set com 1 question_item vira "questão normal"
-  // enunciado = base_text + statement/options do item, sem banner
-  if (items.length === 1) {
-    const it = items[0];
-    const mergedNodes: PMNode[] = [
-      ...(baseTextNode ? [baseTextNode] : []),
-      ...(it?.content ?? []),
-    ];
-
-    return (
-      <div key={keyPrefix} className="question-set-readonly space-y-3">
-        {renderQuestionLike(mergedNodes, `${keyPrefix}-single`)}
-      </div>
-    );
-  }
-
-  // comportamento antigo (set com 2+ itens)
-  return (
-    <div key={keyPrefix} className="question-set-readonly space-y-3">
-      <div className="text-sm font-semibold">
-        Use o texto a seguir para responder às próximas {items.length} questões.
-      </div>
-
-      {baseTextNode ? (
-        <div className="question-readonly">
-          <div className="question-text space-y-2">
-            {renderBlock(baseTextNode, `${keyPrefix}-base`)}
-          </div>
-        </div>
-      ) : null}
-
-      {items.map((it, idx) => (
-        <div key={`${keyPrefix}-it-${idx}`} className="question-set-item">
-          {renderQuestionLike(it.content ?? [], `${keyPrefix}-it-${idx}`)}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-
 
   /* ---------------- question-like rendering ---------------- */
 
@@ -345,7 +369,7 @@ const isEssaySet =
         );
       }
 
-      // prova mode: resize + centralizar override
+      // prova mode: resize + centralizar override (persistido via localStorage)
       const id = node.attrs?.id as string | undefined;
       const baseWidthPx = Number(node.attrs?.width ?? 0);
       const widthPx = (id ? imageWidthOverrides[id] : undefined) ?? baseWidthPx;
@@ -411,9 +435,11 @@ const isEssaySet =
         <span
           style={{
             position: "relative",
-            display: align === "center" || align === "right" ? "table" : "inline-block",
+            display:
+              align === "center" || align === "right" ? "table" : "inline-block",
             marginLeft: align === "center" || align === "right" ? "auto" : undefined,
-            marginRight: align === "center" ? "auto" : align === "right" ? 0 : undefined,
+            marginRight:
+              align === "center" ? "auto" : align === "right" ? 0 : undefined,
           }}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

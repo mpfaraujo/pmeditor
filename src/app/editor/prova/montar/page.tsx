@@ -27,28 +27,8 @@ import Gabarito from "@/components/prova/Gabarito";
 
 import "./prova.css";
 
-function pxPerCm(): number {
-  if (typeof document === "undefined") return 37.7952755906; // fallback ~96dpi
-  const el = document.createElement("div");
-  el.style.width = "10cm";
-  el.style.height = "1px";
-  el.style.position = "absolute";
-  el.style.left = "-10000px";
-  el.style.top = "-10000px";
-  el.style.visibility = "hidden";
-  el.style.pointerEvents = "none";
-  document.body.appendChild(el);
-  const px = el.getBoundingClientRect().width;
-  document.body.removeChild(el);
-  const perCm = px / 10;
-  return perCm > 0 ? perCm : 37.7952755906;
-}
-
-function a4PageHeightPx(marginCm: number): number {
-  const ppcm = pxPerCm();
-  const usableCm = 29.7 - 2 * marginCm;
-  return Math.floor(usableCm * ppcm);
-}
+const PAGE_HEIGHT = 1183;
+const SAFETY_PX = 120;
 
 type Alt = "A" | "B" | "C" | "D" | "E";
 
@@ -142,6 +122,7 @@ function buildItemDoc(item: PMNode | null): PMNode | null {
 }
 
 export default function MontarProvaPage() {
+  
   const router = useRouter();
   const {
     selectedQuestions: initialQuestions,
@@ -151,6 +132,8 @@ export default function MontarProvaPage() {
     provaConfig,
     updateProvaConfig,
   } = useProva();
+  const columns = (Number(provaConfig.columns) === 2 ? 2 : 1) as 1 | 2;
+
 
   const [layout, setLayout] = useState<ColumnLayout>(() => {
     const mid = Math.ceil(initialQuestions.length / 2);
@@ -297,7 +280,25 @@ export default function MontarProvaPage() {
 
       const headerText = `Use o texto a seguir para responder às próximas ${validIdxs.length} questões.`;
 
-      validIdxs.forEach((itemIdx, localPos) => {
+      // ✅ NOVO: item sintético do texto base (fragmentável)
+      if (baseDoc) {
+        out.push({
+          ...q,
+          metadata: {
+            ...(q.metadata ?? {}),
+            id: `${id}#base`,
+            // sem gabarito
+          },
+          content: baseDoc,
+          __setBase: {
+            parentId: id,
+            headerText,
+          },
+        });
+      }
+
+      // itens do conjunto viram questões normais (sem carregar o base junto)
+      validIdxs.forEach((itemIdx) => {
         const itemNode = items[itemIdx] ?? null;
         const itemDoc = buildItemDoc(itemNode);
 
@@ -319,9 +320,6 @@ export default function MontarProvaPage() {
           content: itemDoc,
           __set: {
             parentId: id,
-            isFirst: localPos === 0,
-            headerText,
-            baseDoc,
           },
         };
 
@@ -332,35 +330,36 @@ export default function MontarProvaPage() {
     return out as QuestionData[];
   }, [orderedQuestions, selections]);
 
-  const { pages, refs } = usePagination({
-    config: {
-      pageHeight: a4PageHeightPx(1.5),
-      safetyMargin: Math.round(pxPerCm() * 0.5),
-      columns: provaConfig.columns,
-      allowPageBreak: provaConfig.allowPageBreak ?? false,
-    },
-    questionCount: expandedQuestions.length,
-    dependencies: [
-      expandedQuestions,
-      logoUrl,
-      provaConfig.columns,
-      provaConfig.layoutType,
-      (provaConfig as any).headerLayout,
-      (provaConfig as any).questionHeaderVariant,
-      provaConfig.allowPageBreak,
-    ],
-  });
+const { pages, refs } = usePagination({
+  config: {
+    pageHeight: PAGE_HEIGHT,
+    safetyMargin: SAFETY_PX,
+    columns,
+    allowPageBreak: true,
+  },
+  questionCount: expandedQuestions.length,
+  dependencies: [
+    expandedQuestions,
+    logoUrl,
+    columns,
+    provaConfig.layoutType,
+    (provaConfig as any).headerLayout,
+    (provaConfig as any).questionHeaderVariant,
+  ],
+});
+
 
   const respostas = useMemo(() => {
     const out: Record<number, Alt> = {};
     expandedQuestions.forEach((q: any, idx) => {
+      if ((q as any)?.__setBase) return; // ✅ base não entra no gabarito
       const alt = extractAltFromMetadata((q as any)?.metadata);
       if (alt) out[idx + 1] = alt;
     });
     return out;
   }, [expandedQuestions]);
 
-  const totalQuestoes = expandedQuestions.length;
+  const totalQuestoes = expandedQuestions.filter((q: any) => !(q as any)?.__setBase).length;
 
   const renderQuestion = (
     question: QuestionData | undefined,
@@ -369,13 +368,9 @@ export default function MontarProvaPage() {
   ) => {
     if (!question) return null;
 
-    const setMeta = (question as any).__set as
-      | {
-          parentId: string;
-          isFirst: boolean;
-          headerText: string;
-          baseDoc: any | null;
-        }
+    const isSetBase = !!(question as any).__setBase;
+    const setBaseMeta = (question as any).__setBase as
+      | { parentId: string; headerText: string }
       | undefined;
 
     const baseKey = (question as any).metadata?.id ?? globalIndex;
@@ -397,62 +392,68 @@ export default function MontarProvaPage() {
       >
         {fragId && frag && (
           <style>{`
-            /* Caso 1: blocos são filhos diretos de .questao-conteudo */
-            #${fragId} .questao-conteudo > * { display: none; }
-            #${fragId} .questao-conteudo > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
+  /* Se existir .question-text, NÃO pode esconder .questao-conteudo > * (senão mata o wrapper) */
+  #${fragId} .questao-conteudo:has(.question-text) .question-text > * { display: none; }
+  #${fragId} .questao-conteudo:has(.question-text) .question-text > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
 
-            /* Caso 2: .questao-conteudo tem 1 wrapper (ex: .question-readonly) e os blocos reais estão dentro dele */
-            #${fragId} .questao-conteudo > :first-child > * { display: none; }
-            #${fragId} .questao-conteudo > :first-child > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
+  /* Só aplica Caso 1/2 quando NÃO houver .question-text */
+  #${fragId} .questao-conteudo:not(:has(.question-text)) > * { display: none; }
+  #${fragId} .questao-conteudo:not(:has(.question-text)) > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
 
-            ${frag.first ? "" : `#${fragId} .questao-header-linha { display: none; }`}
-          `}</style>
+  #${fragId} .questao-conteudo:not(:has(.question-text)) > :first-child > * { display: none; }
+  #${fragId} .questao-conteudo:not(:has(.question-text)) > :first-child > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
+
+  ${frag.first ? "" : `#${fragId} .questao-header-linha { display: none; }`}
+`}</style>
+
         )}
 
-        {setMeta?.isFirst && (
-          <div className="mb-3 space-y-2">
-            <div className="text-sm font-semibold">{setMeta.headerText}</div>
-            {setMeta.baseDoc ? (
-              <div
-                className="
-                  questao-conteudo
-                  [&_p]:!m-0
-                  [&_p]:!p-0
-                  [&_img]:!my-0
-                "
-              >
-                <QuestionRenderer content={setMeta.baseDoc} />
-              </div>
-            ) : null}
+        {/* ✅ item do texto base: banner + conteúdo, sem cabeçalho de questão */}
+{isSetBase ? (
+  <div className="mb-3 space-y-2">
+    {( !frag || frag.first ) && (
+      <div className="text-sm font-semibold">{setBaseMeta?.headerText}</div>
+    )}
+
+    <div
+      className="
+        questao-conteudo
+        [&_p]:!m-0
+        [&_p]:!p-0
+        [&_img]:!my-0
+      "
+    >
+      <QuestionRenderer content={(question as any).content} />
+    </div>
+  </div>
+) : (
+          <div className="questao-item">
+            <div className="questao-header-linha">
+              <QuestionHeaderSvg
+                numero={globalIndex + 1}
+                totalMm={columns === 2 ? 85 : 180}
+                boxMm={28}
+                variant={provaConfig.questionHeaderVariant ?? 0}
+              />
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                className="pontos-editavel"
+              />
+            </div>
+
+            <div
+              className="
+                questao-conteudo
+                [&_p]:!m-0
+                [&_p]:!p-0
+                [&_img]:!my-0
+              "
+            >
+              <QuestionRenderer content={(question as any).content} />
+            </div>
           </div>
         )}
-
-        <div className="questao-item">
-          <div className="questao-header-linha">
-            <QuestionHeaderSvg
-              numero={globalIndex + 1}
-              totalMm={provaConfig.columns === 2 ? 85 : 180}
-              boxMm={28}
-              variant={provaConfig.questionHeaderVariant ?? 0}
-            />
-            <span
-              contentEditable
-              suppressContentEditableWarning
-              className="pontos-editavel"
-            />
-          </div>
-
-          <div
-            className="
-              questao-conteudo
-              [&_p]:!m-0
-              [&_p]:!p-0
-              [&_img]:!my-0
-            "
-          >
-            <QuestionRenderer content={(question as any).content} />
-          </div>
-        </div>
       </div>
     );
   };
@@ -495,17 +496,6 @@ export default function MontarProvaPage() {
               Gabarito
             </Button>
 
-            <Button
-              variant={provaConfig.allowPageBreak ? "default" : "outline"}
-              onClick={() =>
-                updateProvaConfig({ allowPageBreak: !provaConfig.allowPageBreak })
-              }
-              title="Permite que questões longas sejam divididas entre páginas para otimizar espaço"
-            >
-              <Scissors className="h-4 w-4 mr-2" />
-              Quebra
-            </Button>
-
             <Button variant="outline" onClick={() => setReorderModalOpen(true)}>
               <ListOrdered className="h-4 w-4 mr-2" />
               Reordenar
@@ -525,7 +515,7 @@ export default function MontarProvaPage() {
           onLogoClick={() => setLogoDialogOpen(true)}
           renderQuestion={renderQuestion as any}
           refs={refs}
-          columns={provaConfig.columns}
+          columns={columns}
         />
 
         {provaConfig.showGabarito && totalQuestoes > 0 && (

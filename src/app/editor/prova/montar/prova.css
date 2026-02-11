@@ -471,62 +471,17 @@
    PRINT FLOW (allowPageBreak)
    ========================= */
 
-/* por padrão, só a tela aparece */
-.print-only {
-  display: none;
-}
-.screen-only {
-  display: block;
-}
-
 @media print {
-  .print-only {
-    display: block !important;
-  }
-  .screen-only {
-    display: none !important;
-  }
-
-  /* fluxo contínuo usa a MESMA área útil do @page */
-  .print-flow {
-    width: 18cm;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif !important;
-  }
-
-  .questoes-flow.columns-1 {
-    column-count: 1;
-    column-gap: 0;
-    column-fill: auto;
-  }
-
-  .questoes-flow.columns-2 {
-    column-count: 2;
-    column-gap: var(--col-gap);
-    column-fill: auto;
-    column-rule: 1px solid #000;
-  }
-
-  .questoes-flow > .questao-item-wrapper {
-    display: inline-block;
-    width: 100%;
-    break-inside: avoid;
-  }
+ 
 
   .questoes-flow > .questao-item-wrapper.allow-break {
     break-inside: auto;
   }
 
-  .questao-item-wrapper {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-    -webkit-column-break-inside: avoid !important;
-  }
+  .questao-item-wrapper.allow-break {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+  -webkit-column-break-inside: auto !important;
+}
 
-  .questao-header-linha {
-    break-after: avoid !important;
-    page-break-after: avoid !important;
-  }
 }

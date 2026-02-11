@@ -28,7 +28,10 @@ export default function SelecionarLayoutPage() {
   const { provaConfig, updateProvaConfig } = useProva();
 
   const [layoutType, setLayoutType] = useState<LayoutType>(provaConfig.layoutType);
-  const [columns, setColumns] = useState<ColumnCount>(provaConfig.columns);
+const [columns, setColumns] = useState<ColumnCount>(
+  Number(provaConfig.columns) === 2 ? 2 : 1
+);
+
 
   const [showGabarito, setShowGabarito] = useState<boolean>(
     provaConfig.showGabarito

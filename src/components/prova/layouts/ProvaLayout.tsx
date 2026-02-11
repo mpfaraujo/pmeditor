@@ -5,6 +5,7 @@
  * Suporta 1 ou 2 colunas
  */
 
+import React from "react";
 import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ProvaHeader } from "../headers/ProvaHeader";
 import { useProva } from "@/contexts/ProvaContext";
@@ -33,7 +34,6 @@ export function ProvaLayout({
   columns,
 }: ProvaLayoutProps) {
   const { provaConfig } = useProva();
-  const allowPageBreak = !!provaConfig.allowPageBreak;
 
   const HeaderComponent = (() => {
     switch ((provaConfig as any).headerLayout) {
@@ -63,35 +63,39 @@ export function ProvaLayout({
     }
   })();
 
-const renderLayoutItem = (it: any) => {
-  if (typeof it === "number") {
-    return renderQuestion(orderedQuestions[it], it);
-  }
+  const renderLayoutItem = (it: any) => {
+    if (typeof it === "number") {
+      return renderQuestion(orderedQuestions[it], it);
+    }
 
-  if (it?.kind === "full") {
-    return renderQuestion(orderedQuestions[it.q], it.q);
-  }
+    if (it?.kind === "full") {
+      return renderQuestion(orderedQuestions[it.q], it.q);
+    }
 
-  if (it?.kind === "frag") {
-    const rq = renderQuestion as unknown as (
-      q: any,
-      idx: number,
-      frag: any
-    ) => React.ReactNode;
+    if (it?.kind === "frag") {
+      const rq = renderQuestion as unknown as (
+        q: any,
+        idx: number,
+        frag: any
+      ) => React.ReactNode;
 
-    return rq(orderedQuestions[it.q], it.q, it);
-  }
+      return rq(orderedQuestions[it.q], it.q, it);
+    }
 
-  return null;
-};
+    return null;
+  };
 
+  const safePages = (pages.length ? pages : [{ coluna1: [], coluna2: [] }] as any) as any[];
 
   return (
     <>
       {/* Camada invisível para medição (NÃO IMPRIMIR) */}
       <div className="measure-layer absolute -z-10 invisible pointer-events-none">
         {/* Template 1: com cabeçalho */}
-        <div className="prova-page mx-auto bg-white" ref={refs.measureFirstPageRef}>
+        <div
+          className="prova-page mx-auto bg-white"
+          ref={refs.measureFirstPageRef}
+        >
           <HeaderComponent
             logoUrl={logoUrl}
             onLogoClick={onLogoClick}
@@ -103,14 +107,20 @@ const renderLayoutItem = (it: any) => {
             data={provaConfig.data}
             nota={provaConfig.nota}
           />
-          <div className="questoes-container" ref={refs.measureFirstQuestoesRef}>
+          <div
+            className="questoes-container"
+            ref={refs.measureFirstQuestoesRef}
+          >
             <div className="coluna coluna-1" />
             {columns === 2 && <div className="coluna coluna-2" />}
           </div>
         </div>
 
         {/* Template 2: sem cabeçalho */}
-        <div className="prova-page mx-auto bg-white" ref={refs.measureOtherPageRef}>
+        <div
+          className="prova-page mx-auto bg-white"
+          ref={refs.measureOtherPageRef}
+        >
           <div className="questoes-container" ref={refs.measureOtherQuestoesRef}>
             <div className="coluna coluna-1" />
             {columns === 2 && <div className="coluna coluna-2" />}
@@ -123,72 +133,53 @@ const renderLayoutItem = (it: any) => {
             <div className="coluna coluna-1" ref={refs.measureItemsRef}>
               {orderedQuestions.map((q, idx) => renderQuestion(q, idx))}
             </div>
+
+            {/* CRÍTICO: precisa existir coluna-2 no DOM para ativar o :has(.coluna-2)
+                e medir a coluna-1 com 8.5cm quando columns=2 */}
+            {columns === 2 && <div className="coluna coluna-2" />}
           </div>
         </div>
       </div>
 
       {/* Renderização normal (tela): páginas virtuais */}
-      <div className={allowPageBreak ? "screen-only" : undefined}>
-        {(pages.length ? pages : [{ coluna1: [], coluna2: [] }] as any).map(
-          (p: any, pageIndex: number) => (
-            <div
-              key={pageIndex}
-              className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0"
-            >
-              <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
-                {pageIndex === 0 && (
-                  <HeaderComponent
-                    logoUrl={logoUrl}
-                    onLogoClick={onLogoClick}
-                    isEditable={true}
-                    nome={provaConfig.nome}
-                    turma={provaConfig.turma}
-                    professor={provaConfig.professor}
-                    disciplina={provaConfig.disciplina}
-                    data={provaConfig.data}
-                    nota={provaConfig.nota}
-                  />
-                )}
+      <div >
+        {safePages.map((p: any, pageIndex: number) => (
+          <div
+            key={pageIndex}
+            className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0"
+          >
+            <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
+              {pageIndex === 0 && (
+                <HeaderComponent
+                  logoUrl={logoUrl}
+                  onLogoClick={onLogoClick}
+                  isEditable={true}
+                  nome={provaConfig.nome}
+                  turma={provaConfig.turma}
+                  professor={provaConfig.professor}
+                  disciplina={provaConfig.disciplina}
+                  data={provaConfig.data}
+                  nota={provaConfig.nota}
+                />
+              )}
 
-                <div className="questoes-container">
-                  <div className="coluna coluna-1">
-                    {(p.coluna1 ?? []).map((it: any) => renderLayoutItem(it))}
-                  </div>
-
-                  {columns === 2 && (
-                    <div className="coluna coluna-2">
-                      {(p.coluna2 ?? []).map((it: any) => renderLayoutItem(it))}
-                    </div>
-                  )}
+              <div className="questoes-container">
+                <div className="coluna coluna-1">
+                  {(p.coluna1 ?? []).map((it: any) => renderLayoutItem(it))}
                 </div>
+
+                {columns === 2 && (
+                  <div className="coluna coluna-2">
+                    {(p.coluna2 ?? []).map((it: any) => renderLayoutItem(it))}
+                  </div>
+                )}
               </div>
             </div>
-          )
-        )}
+          </div>
+        ))}
       </div>
 
-      {/* Impressão com quebra real (fluxo contínuo): só aparece no print quando allowPageBreak=true */}
-      {allowPageBreak && (
-        <div className="print-only">
-          <div className="print-flow">
-            <HeaderComponent
-              logoUrl={logoUrl}
-              onLogoClick={onLogoClick}
-              isEditable={false}
-              nome={provaConfig.nome}
-              turma={provaConfig.turma}
-              professor={provaConfig.professor}
-              disciplina={provaConfig.disciplina}
-              data={provaConfig.data}
-              nota={provaConfig.nota}
-            />
-
-            <div className={`questoes-flow columns-${columns}`}>
-              {orderedQuestions.map((q, idx) => renderQuestion(q, idx))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Impressão com quebra real: usa pages/itens (inclui frag) */}
     </>
   );
 }

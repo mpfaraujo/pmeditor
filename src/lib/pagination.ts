@@ -10,7 +10,7 @@ export type LayoutItem =
       kind: "frag";
       q: number;
       from: number; // 1-based (nth-child)
-      to: number;   // 1-based (nth-child)
+      to: number; // 1-based (nth-child)
       first: boolean;
     };
 
@@ -35,7 +35,7 @@ export function calculateFirstPageCapacity(
   const questionsTop = questionsContainerElement.offsetTop;
   const firstPageTop = firstPageElement.offsetTop;
   const occupiedHeight = questionsTop - firstPageTop;
-  return Math.max(0, pageHeight - occupiedHeight - safetyMargin * 1.5);
+  return Math.max(0, pageHeight - occupiedHeight - safetyMargin );
 }
 
 export function calculateOtherPageCapacity(
@@ -60,6 +60,17 @@ function measureOuterHeight(el: HTMLElement): number {
   const mb = parseFloat(cs.marginBottom || "0") || 0;
   return px(el.offsetHeight + mt + mb);
 }
+function measureBlockHeight(el: HTMLElement): number {
+  return Math.max(Math.ceil(el.getBoundingClientRect().height), 1);
+}
+
+
+function measureMargins(el: HTMLElement): { mt: number; mb: number } {
+  const cs = window.getComputedStyle(el);
+  const mt = parseFloat(cs.marginTop || "0") || 0;
+  const mb = parseFloat(cs.marginBottom || "0") || 0;
+  return { mt, mb };
+}
 
 export function measureQuestionHeights(measurementContainer: HTMLElement): number[] {
   const itemEls = Array.from(
@@ -70,9 +81,55 @@ export function measureQuestionHeights(measurementContainer: HTMLElement): numbe
 }
 
 type SplitInfo = {
-  prefixHeight: number;     // tudo antes do .questao-conteudo (inclui header)
-  blocksHeights: number[];  // alturas dos filhos diretos de .questao-conteudo (1:1 com nth-child)
+  prefixHeight: number; // tudo antes do container de blocos (inclui header/banners)
+  suffixHeight: number; // margem/pós-conteúdo (ex.: margin-bottom do wrapper)
+  blocksHeights: number[]; // alturas dos blocos (1:1 com nth-child)
 };
+
+function pickBlockElementsFromWrapper(wrapper: HTMLElement): HTMLElement[] {
+  const conteudo = wrapper.querySelector(".questao-conteudo") as HTMLElement | null;
+  if (!conteudo) return [];
+
+  const qt = conteudo.querySelector(".question-text") as HTMLElement | null;
+  if (qt) {
+    const kids = Array.from(qt.children) as HTMLElement[];
+    if (kids.length >= 1) {
+      const blocks: HTMLElement[] = [...kids];
+
+      const options = conteudo.querySelector(".question-options") as HTMLElement | null;
+      if (options) blocks.push(options);
+
+      return blocks;
+    }
+  }
+
+  let blockContainer: HTMLElement = conteudo;
+  let blockEls = Array.from(blockContainer.children) as HTMLElement[];
+
+  if (blockEls.length === 1) {
+    const only = blockEls[0] as HTMLElement;
+    const innerChildren = Array.from(only.children) as HTMLElement[];
+    if (innerChildren.length >= 2) {
+      blockContainer = only;
+      blockEls = innerChildren;
+    } else {
+      const innerQT = only.querySelector(".question-text") as HTMLElement | null;
+      if (innerQT) {
+        const innerKids = Array.from(innerQT.children) as HTMLElement[];
+        if (innerKids.length >= 1) {
+          const blocks: HTMLElement[] = [...innerKids];
+
+          const options = conteudo.querySelector(".question-options") as HTMLElement | null;
+          if (options) blocks.push(options);
+
+          return blocks;
+        }
+      }
+    }
+  }
+
+  return blockEls;
+}
 
 function measureSplitInfo(measurementContainer: HTMLElement, index: number): SplitInfo | null {
   const wrappers = Array.from(
@@ -84,32 +141,25 @@ function measureSplitInfo(measurementContainer: HTMLElement, index: number): Spl
 
   const content = wrapper.querySelector(".questao-conteudo") as HTMLElement | null;
   if (!content) {
-    return { prefixHeight: measureOuterHeight(wrapper), blocksHeights: [] };
+    const total = Math.max(measureOuterHeight(wrapper), 10);
+    const { mb } = measureMargins(wrapper);
+    return { prefixHeight: total, suffixHeight: mb, blocksHeights: [] };
   }
 
-  // blocos padrão: filhos diretos
-  let blockContainer: HTMLElement = content;
-  let blockEls = Array.from(blockContainer.children) as HTMLElement[];
+  const blockEls = pickBlockElementsFromWrapper(wrapper);
+const blocksHeights = blockEls.map((b) => measureBlockHeight(b));
 
-  // SE só tiver 1 wrapper interno, usar os filhos dele como blocos reais
-  if (blockEls.length === 1) {
-    const only = blockEls[0] as HTMLElement;
-    const innerChildren = Array.from(only.children) as HTMLElement[];
-    if (innerChildren.length >= 2) {
-      blockContainer = only;
-      blockEls = innerChildren;
-    }
-  }
-
-  const blocksHeights = blockEls.map((b) => Math.max(measureOuterHeight(b), 1));
   const contentBlocksSum = blocksHeights.reduce((a, b) => a + b, 0);
 
   const total = Math.max(measureOuterHeight(wrapper), 10);
-  const prefixHeight = Math.max(10, total - contentBlocksSum);
+  const { mb } = measureMargins(wrapper);
 
-  return { prefixHeight, blocksHeights };
+  // Prefix = tudo que não é blocos; mas tira a margem-bottom do wrapper
+  // (para não “cobrar” essa margem em todo fragmento).
+  const prefixHeight = Math.max(0, total - contentBlocksSum - mb);
+
+  return { prefixHeight, suffixHeight: mb, blocksHeights };
 }
-
 
 function buildFragmentsForQuestion(
   qIndex: number,
@@ -117,49 +167,56 @@ function buildFragmentsForQuestion(
   capFirstFrag: number,
   capNextFrag: number
 ): { items: LayoutItem[]; heights: number[] } | null {
-  const { prefixHeight, blocksHeights } = split;
+  const FIT_EPS = 100; // px de tolerância pra não quebrar cedo por arredondamento
 
-  // sem blocos -> não dá pra fatiar, mantém como full
+  const { prefixHeight, suffixHeight, blocksHeights } = split;
+
   if (!blocksHeights.length) return null;
 
   const items: LayoutItem[] = [];
   const heights: number[] = [];
 
-  let cursor = 0; // 0-based in blocksHeights
+  let cursor = 0;
   let first = true;
 
   while (cursor < blocksHeights.length) {
     const cap = first ? capFirstFrag : capNextFrag;
 
-    // prefix só na primeira parte
     let used = first ? prefixHeight : 0;
 
-    // se nem o prefix cabe, não tem como fatiar com segurança
-    if (first && used >= cap) return null;
+   if (first && used >= cap + FIT_EPS) return null;
 
     const start = cursor;
+
     while (cursor < blocksHeights.length) {
       const h = blocksHeights[cursor];
+
       if (cursor === start) {
-        // pelo menos 1 bloco precisa caber
-        if (used + h > cap) {
-          // bloco sozinho não cabe -> não fragmenta (senão some)
-          return null;
-        }
+        if (used + h > cap + FIT_EPS) return null;
         used += h;
         cursor++;
         continue;
       }
 
-      if (used + h > cap) break;
+if (used + h > cap + FIT_EPS) break;
       used += h;
       cursor++;
     }
 
-    const from = start + 1;      // 1-based
-    const to = cursor;          // 1-based (cursor já aponta pro próximo)
+    const from = start + 1;
+    const to = cursor;
+
     items.push({ kind: "frag", q: qIndex, from, to, first });
-    heights.push(used);
+
+    // Só “cobra” o suffix no ÚLTIMO fragmento — e só até o limite que ainda cabe,
+    // para não quebrar mais cedo por causa de margem.
+    if (cursor >= blocksHeights.length) {
+      const room = Math.max(0, cap - used);
+      const suffixCounted = Math.min(Math.max(0, suffixHeight || 0), room);
+      heights.push(used + suffixCounted);
+    } else {
+      heights.push(used);
+    }
 
     first = false;
   }
@@ -167,13 +224,6 @@ function buildFragmentsForQuestion(
   return { items, heights };
 }
 
-/**
- * Distribuição:
- * - allowPageBreak=false: igual ao atual
- * - allowPageBreak=true:
- *   - se uma questão estoura, tenta fragmentar por blocos de .questao-conteudo
- *   - cada fragmento vira um LayoutItem que pode ir para a próxima coluna/página
- */
 export function distributeQuestionsAcrossPages(
   questionCount: number,
   questionHeights: number[],
@@ -213,15 +263,13 @@ export function distributeQuestionsAcrossPages(
     const fullH = questionHeights[i] ?? 0;
     const cap = getCap();
 
-    // cabe inteira aqui
-    if (!(used > 0 && used + fullH > cap)) {
+    // ✅ só entra como "full" se realmente couber
+    if (used + fullH <= cap) {
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
     }
 
-    // não cabe inteira -> tenta mover pra próxima coluna/página
-    // (mantém seu comportamento atual)
     if (!allowPageBreak) {
       nextColumnOrPage();
       page[col].push({ kind: "full", q: i });
@@ -229,13 +277,10 @@ export function distributeQuestionsAcrossPages(
       continue;
     }
 
-    // allowPageBreak=true:
-    // 1) se já tem algo na coluna e não cabe, vai pra próxima coluna/página
     if (used > 0) {
       nextColumnOrPage();
     }
 
-    // 2) agora estamos no topo de uma coluna vazia: se ainda não cabe, tenta fragmentar
     const capHere = getCap();
     if (fullH <= capHere) {
       page[col].push({ kind: "full", q: i });
@@ -250,15 +295,15 @@ export function distributeQuestionsAcrossPages(
       continue;
     }
 
-    const frag = buildFragmentsForQuestion(i, split, capHere, otherPageCapacity);
+    const capNextFrag = columns === 2 && col === "coluna1" ? capHere : otherPageCapacity;
+
+    const frag = buildFragmentsForQuestion(i, split, capHere, capNextFrag);
     if (!frag) {
-      // fallback seguro: coloca inteira (vai “estourar”, mas não some)
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
     }
 
-    // distribui fragmentos sequencialmente, respeitando colunas/páginas
     for (let k = 0; k < frag.items.length; k++) {
       const item = frag.items[k];
       const h = frag.heights[k];
@@ -271,7 +316,6 @@ export function distributeQuestionsAcrossPages(
       page[col].push(item);
       used += h;
 
-      // próximo fragmento sempre pode ir para próxima coluna/página
       if (k < frag.items.length - 1) {
         nextColumnOrPage();
       }
