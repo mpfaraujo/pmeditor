@@ -300,6 +300,18 @@
   font-size: 8pt;
   background: transparent;
 }
+/* Alinha letra da alternativa com conteúdo KaTeX */
+.question-options .flex.items-start > span:first-child {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.8em;
+  align-self: center;
+}
+
+.question-options .flex.items-start {
+  align-items: center;
+}
 
 @media print {
   html,
@@ -345,7 +357,7 @@
     display: block !important;
     font-family: Arial, sans-serif !important;
   }
-.questoes-container {
+  .questoes-container {
     display: flex !important;
     visibility: visible !important;
   }
@@ -470,5 +482,3 @@
 /* =========================
    PRINT FLOW (allowPageBreak)
    ========================= */
-
-

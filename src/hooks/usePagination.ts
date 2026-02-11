@@ -142,6 +142,8 @@ export function usePagination({
   const safetyMargin = config.safetyMargin;
   const columns = config.columns;
   const allowPageBreak = config.allowPageBreak ?? false;
+  const optimizeLayout = config.optimizeLayout ?? false;
+  const setBaseIndexes = config.setBaseIndexes ?? [];
 
   useEffect(() => {
     const controller = new AbortController();
@@ -169,20 +171,28 @@ export function usePagination({
       for (let i = 0; i < maxAttempts; i++) {
         if (signal.aborted) return;
 
+        // Usa altura real medida do DOM em vez da constante fixa
         const measuredPageHeight = measureFirstPageRef.current!.offsetHeight;
-const realPageHeight = measuredPageHeight > 0 ? measuredPageHeight : pageHeight;
+        const realPageHeight = measuredPageHeight > 0 ? measuredPageHeight : pageHeight;
 
-const layout = calculatePageLayout(
-  { pageHeight: realPageHeight, safetyMargin, columns, allowPageBreak },
-  {
-    firstPageRef: measureFirstPageRef.current,
-    firstQuestoesRef: measureFirstQuestoesRef.current,
-    otherPageRef: measureOtherPageRef.current,
-    otherQuestoesRef: measureOtherQuestoesRef.current,
-    measureItemsRef: measureItemsRef.current,
-  },
-  questionCount
-);
+        const layout = calculatePageLayout(
+          {
+            pageHeight: realPageHeight,
+            safetyMargin,
+            columns,
+            allowPageBreak,
+            optimizeLayout,
+            setBaseIndexes,
+          },
+          {
+            firstPageRef: measureFirstPageRef.current,
+            firstQuestoesRef: measureFirstQuestoesRef.current,
+            otherPageRef: measureOtherPageRef.current,
+            otherQuestoesRef: measureOtherQuestoesRef.current,
+            measureItemsRef: measureItemsRef.current,
+          },
+          questionCount
+        );
 
         if (layout && layout.length > 0) {
           setPages(layout);
@@ -198,7 +208,7 @@ const layout = calculatePageLayout(
     run().catch(() => {});
 
     return () => controller.abort();
-  }, [depsKey, pageHeight, safetyMargin, columns, allowPageBreak, questionCount]);
+  }, [depsKey, pageHeight, safetyMargin, columns, allowPageBreak, optimizeLayout, questionCount]);
 
   return {
     pages,

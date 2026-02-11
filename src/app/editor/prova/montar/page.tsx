@@ -28,7 +28,7 @@ import Gabarito from "@/components/prova/Gabarito";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
-const SAFETY_PX = 150;
+const SAFETY_PX = 120;
 
 type Alt = "A" | "B" | "C" | "D" | "E";
 
@@ -134,14 +134,13 @@ export default function MontarProvaPage() {
   } = useProva();
   const columns = (Number(provaConfig.columns) === 2 ? 2 : 1) as 1 | 2;
 
-
-  const [layout, setLayout] = useState<ColumnLayout>(() => {
-    const mid = Math.ceil(initialQuestions.length / 2);
-    return {
-      coluna1: initialQuestions.slice(0, mid),
-      coluna2: initialQuestions.slice(mid),
-    };
+  // Lista linear de questões (sem divisão coluna1/coluna2)
+  const [orderedList, setOrderedList] = useState<QuestionData[]>(() => {
+    return [...initialQuestions];
   });
+
+  // Flag: professor reordenou manualmente → desativa bin-packing
+  const [manualOrder, setManualOrder] = useState(false);
 
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
@@ -162,23 +161,39 @@ export default function MontarProvaPage() {
     );
   }
 
-  const handleReorder = (newLayout: ColumnLayout) => {
-    setLayout(newLayout);
-    updateColumnLayout(newLayout);
+  // ReorderModal: professor aplicou ordem manual
+  const handleReorderApply = (reordered: QuestionData[]) => {
+    setOrderedList(reordered);
+    setManualOrder(true);
+    // Mantém compatibilidade com updateColumnLayout do contexto
+    updateColumnLayout({
+      coluna1: reordered,
+      coluna2: [],
+    });
   };
-  
 
-const handlePrint = () => {
-  window.print();
-};
+  // ReorderModal: professor resetou → volta pro algoritmo
+  const handleReorderReset = () => {
+    setOrderedList([...initialQuestions]);
+    setManualOrder(false);
+    updateColumnLayout({
+      coluna1: initialQuestions,
+      coluna2: [],
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   const handleEditarConfiguracao = () => {
     router.push("/editor/prova/selecionar-layout");
   };
 
+  // orderedQuestions agora vem da lista linear
   const orderedQuestions = useMemo(() => {
-    return [...layout.coluna1, ...layout.coluna2];
-  }, [layout]);
+    return [...orderedList];
+  }, [orderedList]);
 
   const setCandidates = useMemo(() => {
     const out: { id: string; n: number; selected: number[] }[] = [];
@@ -281,7 +296,7 @@ const handlePrint = () => {
 
       const headerText = `Use o texto a seguir para responder às próximas ${validIdxs.length} questões.`;
 
-      // ✅ NOVO: item sintético do texto base (fragmentável)
+      // ✅ item sintético do texto base (fragmentável)
       if (baseDoc) {
         out.push({
           ...q,
@@ -331,12 +346,21 @@ const handlePrint = () => {
     return out as QuestionData[];
   }, [orderedQuestions, selections]);
 
+  // Calcula os índices de __setBase para o bin-packing
+  const setBaseIndexes = useMemo(() => {
+    return expandedQuestions
+      .map((q: any, i) => ((q as any)?.__setBase ? i : -1))
+      .filter((i) => i >= 0);
+  }, [expandedQuestions]);
+
 const { pages, refs } = usePagination({
   config: {
     pageHeight: PAGE_HEIGHT,
     safetyMargin: SAFETY_PX,
     columns,
     allowPageBreak: true,
+    optimizeLayout: !manualOrder,
+    setBaseIndexes,
   },
   questionCount: expandedQuestions.length,
   dependencies: [
@@ -346,19 +370,48 @@ const { pages, refs } = usePagination({
     provaConfig.layoutType,
     (provaConfig as any).headerLayout,
     (provaConfig as any).questionHeaderVariant,
+    manualOrder,
+    setBaseIndexes,
   ],
 });
 
 
+  // Mapa: índice original (q) → número impresso (1-based, ignorando setBase)
+  // Baseado na ordem real de aparição nos pages (após bin-packing)
+  const printNumberMap = useMemo(() => {
+    const map = new Map<number, number>();
+    let counter = 0;
+
+    for (const p of pages) {
+      for (const col of [(p as any).coluna1, (p as any).coluna2]) {
+        for (const it of (col ?? [])) {
+          const q = (it as any).q;
+          if (q === undefined || map.has(q)) continue;
+
+          const isBase = !!(expandedQuestions[q] as any)?.__setBase;
+          if (isBase) {
+            map.set(q, -1); // setBase não tem número
+          } else {
+            counter++;
+            map.set(q, counter);
+          }
+        }
+      }
+    }
+
+    return map;
+  }, [pages, expandedQuestions]);
+
   const respostas = useMemo(() => {
     const out: Record<number, Alt> = {};
     expandedQuestions.forEach((q: any, idx) => {
-      if ((q as any)?.__setBase) return; // ✅ base não entra no gabarito
+      if ((q as any)?.__setBase) return;
       const alt = extractAltFromMetadata((q as any)?.metadata);
-      if (alt) out[idx + 1] = alt;
+      const printNum = printNumberMap.get(idx);
+      if (alt && printNum && printNum > 0) out[printNum] = alt;
     });
     return out;
-  }, [expandedQuestions]);
+  }, [expandedQuestions, printNumberMap]);
 
   const totalQuestoes = expandedQuestions.filter((q: any) => !(q as any)?.__setBase).length;
 
@@ -368,9 +421,7 @@ const { pages, refs } = usePagination({
     frag?: { kind: "frag"; from: number; to: number; first: boolean }
   ) => {
     if (!question) return null;
-    const printedIndex =
-  globalIndex -
-  expandedQuestions.slice(0, globalIndex).filter((q: any) => !!q?.__setBase).length;
+    const printedIndex = (printNumberMap.get(globalIndex) ?? 1) - 1;
 
 
     const isSetBase = !!(question as any).__setBase;
@@ -504,6 +555,9 @@ const { pages, refs } = usePagination({
             <Button variant="outline" onClick={() => setReorderModalOpen(true)}>
               <ListOrdered className="h-4 w-4 mr-2" />
               Reordenar
+              {manualOrder && (
+                <span className="ml-1 text-[9px] text-amber-600">(manual)</span>
+              )}
             </Button>
 
             <Button onClick={handlePrint}>
@@ -543,8 +597,10 @@ const { pages, refs } = usePagination({
         <ReorderModal
           open={reorderModalOpen}
           onOpenChange={setReorderModalOpen}
-          layout={layout}
-          onReorder={handleReorder}
+          questions={expandedQuestions as any}
+          onApply={handleReorderApply}
+          onReset={handleReorderReset}
+          isManualOrder={manualOrder}
         />
       </PaginatedA4>
 
