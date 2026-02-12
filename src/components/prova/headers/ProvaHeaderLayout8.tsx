@@ -15,6 +15,7 @@ interface ProvaHeaderLayout8Props {
   disciplina?: string;
   data?: string;
   nota?: string;
+  instituicao?:string
 }
 
 function formatDateBR(value: string) {
@@ -34,14 +35,16 @@ export function ProvaHeaderLayout8({
   disciplina,
   data,
   nota,
+  instituicao
 }: ProvaHeaderLayout8Props) {
   return (
     <div className="w-[18cm] border border-gray-300 mb-4">
       {/* Header com instituição */}
       <div className="bg-gray-800 text-white py-1 px-3 flex items-center justify-between">
-        <p className="text-[10px] font-medium">
-          Centro Federal de Educação Tecnológica Celso Suckow da Fonseca
-        </p>
+    {/* Footer Instituição */}
+      <div className="instituicao-footer">
+        <span><p>{instituicao?? ""}</p></span>
+      </div>
         <div
           className={`w-8 h-8 flex items-center justify-center bg-white ${
             isEditable ? "cursor-pointer" : "cursor-default"

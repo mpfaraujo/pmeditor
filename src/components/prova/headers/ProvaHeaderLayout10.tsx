@@ -15,6 +15,7 @@ interface ProvaHeaderLayout10Props {
   disciplina?: string;
   data?: string;
   nota?: string;
+  instituicao?:string
 }
 
 function formatDateBR(value: string) {
@@ -34,13 +35,14 @@ export function ProvaHeaderLayout10({
   disciplina,
   data,
   nota,
+  instituicao
 }: ProvaHeaderLayout10Props) {
-  return (
-    <div className="border-2 border-gray-800 w-[18cm] mb-4">
-      <div className="grid grid-cols-12">
-        {/* Logo - ocupa 2 linhas */}
+ return (
+    <div className="mb-[1cm] px-1 py-1 rounded-[5px] border-1 border-gray-800 w-[18cm]">
+      {/* header-grid */}
+      <div className="grid grid-cols-[2cm_1fr_4cm] gap-[0.15cm] mb-[0.00cm] items-stretch">
         <div
-          className={`col-span-2 row-span-2 border-r-2 border-b-2 border-gray-800 flex items-center justify-center bg-gray-50 p-3 ${
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
           } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
@@ -52,91 +54,76 @@ export function ProvaHeaderLayout10({
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-sm font-bold">LOGO</span>
+            "LOGO"
           )}
         </div>
 
-        {/* Header Instituição */}
-        <div className="col-span-10 bg-gray-700 text-white py-1.5 px-3 border-b-2 border-gray-800">
-          <p className="text-xs font-medium">
-            Centro Federal de Educação Tecnológica Celso Suckow da Fonseca
-          </p>
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Nome
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">{nome ?? ""}</span>
+          </div>
+        </div>
+
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Turma
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">{turma ?? ""}</span>
+          </div>
         </div>
       </div>
 
-      {/* Conteúdo em duas colunas */}
-      <div className="grid grid-cols-12">
-        <div className="col-span-2"></div>
-
-        {/* Coluna ALUNO */}
-        <div className="col-span-5 p-2 border-r-2 border-gray-800">
-          <div className="bg-blue-50 px-2 py-0.5 mb-2 border-l-4 border-blue-600">
-            <h3 className="text-xs font-bold text-gray-700 uppercase">Aluno</h3>
+      {/* header-grid-2 */}
+      <div className="grid grid-cols-[1fr_1fr_3cm_3cm] gap-[0.15cm] mb-[0.05cm] items-stretch">
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Professor
           </div>
-          <div className="space-y-2">
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-0.5">
-                Nome
-              </label>
-              <div className="border-b-2 border-gray-800 h-6 flex items-end pb-0.5">
-                <span className="text-sm">{nome ?? ""}</span>
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-0.5">
-                Turma
-              </label>
-              <div className="border-b-2 border-gray-800 h-6 flex items-end pb-0.5">
-                <span className="text-sm">{turma ?? ""}</span>
-              </div>
-            </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">
+              {professor ?? ""}
+            </span>
           </div>
         </div>
 
-        {/* Coluna AVALIAÇÃO */}
-        <div className="col-span-5 p-2">
-          <div className="bg-green-50 px-2 py-0.5 mb-2 border-l-4 border-green-600">
-            <h3 className="text-xs font-bold text-gray-700 uppercase">
-              Avaliação
-            </h3>
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Disciplina
           </div>
-          <div className="space-y-2">
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-0.5">
-                  Data
-                </label>
-                <div className="border-b-2 border-gray-800 h-6 flex items-end pb-0.5">
-                  <span className="text-sm">{formatDateBR(data ?? "")}</span>
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-0.5">
-                  Nota
-                </label>
-                <div className="border-b-2 border-gray-800 h-6 flex items-end pb-0.5">
-                  <span className="text-sm">{nota ?? ""}</span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-0.5">
-                Disciplina
-              </label>
-              <div className="border-b-2 border-gray-800 h-6 flex items-end pb-0.5">
-                <span className="text-sm">{disciplina ?? ""}</span>
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-0.5">
-                Professor
-              </label>
-              <div className="border-b-2 border-gray-800 h-6 flex items-end pb-0.5">
-                <span className="text-sm">{professor ?? ""}</span>
-              </div>
-            </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">
+              {disciplina ?? ""}
+            </span>
           </div>
         </div>
+
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Data
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">
+              {formatDateBR(data ?? "")}
+            </span>
+          </div>
+        </div>
+
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Nota
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">{nota ?? ""}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-[#666] text-white text-center p-[3px] font-bold outline-none mt-[0.1cm] rounded-[5px] [print-color-adjust:exact] [-webkit-print-color-adjust:exact] focus:bg-[#555]">
+        {instituicao ?? ""}
       </div>
     </div>
   );

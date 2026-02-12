@@ -1,27 +1,21 @@
 // src/components/prova/headers/ProvaHeader.tsx
 
-/**
- * Cabeçalho de Prova
- * Inclui: Logo, Nome, Turma, Professor, Disciplina, Data, Nota
- */
-
 interface ProvaHeaderProps {
   logoUrl: string | null;
   onLogoClick: () => void;
   isEditable?: boolean;
 
-  // DADOS VINDOS DO CONTEXTO (provaConfig)
   nome?: string;
   turma?: string;
   professor?: string;
   disciplina?: string;
   data?: string;
   nota?: string;
+  instituicao?: string;
 }
 
 function formatDateBR(value: string) {
   if (!value) return "";
-  // espera YYYY-MM-DD
   const [y, m, d] = value.split("-");
   if (!y || !m || !d) return value;
   return `${d}/${m}/${y.slice(2)}`;
@@ -37,12 +31,14 @@ export function ProvaHeader({
   disciplina,
   data,
   nota,
+  instituicao,
 }: ProvaHeaderProps) {
   return (
-    <div className="prova-header">
-      <div className="header-grid">
+    <div className="mb-[0.8cm]">
+      {/* header-grid */}
+      <div className="grid grid-cols-[2cm_1fr_4cm] gap-[0.15cm] mb-[0.00cm] items-stretch">
         <div
-          className={`logo-area flex items-center justify-center text-xs font-bold ${
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
           } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
@@ -58,53 +54,72 @@ export function ProvaHeader({
           )}
         </div>
 
-        <div className="field-wrapper">
-          <div className="field-label">Nome</div>
-          <div className="field-content">
-            <span className="field-text">{nome ?? ""}</span>
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Nome
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">{nome ?? ""}</span>
           </div>
         </div>
 
-        <div className="field-wrapper">
-          <div className="field-label">Turma</div>
-          <div className="field-content">
-            <span className="field-text">{turma ?? ""}</span>
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Turma
           </div>
-        </div>
-      </div>
-
-      <div className="header-grid-2">
-        <div className="field-wrapper">
-          <div className="field-label">Professor</div>
-          <div className="field-content">
-            <span className="field-text">{professor ?? ""}</span>
-          </div>
-        </div>
-
-        <div className="field-wrapper">
-          <div className="field-label">Disciplina</div>
-          <div className="field-content">
-            <span className="field-text">{disciplina ?? ""}</span>
-          </div>
-        </div>
-
-        <div className="field-wrapper">
-          <div className="field-label">Data</div>
-          <div className="field-content">
-            <span className="field-text">{formatDateBR(data ?? "")}</span>
-          </div>
-        </div>
-
-        <div className="field-wrapper">
-          <div className="field-label">Nota</div>
-          <div className="field-content">
-            <span className="field-text">{nota ?? ""}</span>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">{turma ?? ""}</span>
           </div>
         </div>
       </div>
 
-      <div className="instituicao-footer">
-        Centro Federal de Educação Tecnológica Celso Suckow da Fonseca
+      {/* header-grid-2 */}
+      <div className="grid grid-cols-[1fr_1fr_3cm_3cm] gap-[0.15cm] mb-[0.05cm] items-stretch">
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Professor
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">
+              {professor ?? ""}
+            </span>
+          </div>
+        </div>
+
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Disciplina
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">
+              {disciplina ?? ""}
+            </span>
+          </div>
+        </div>
+
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Data
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">
+              {formatDateBR(data ?? "")}
+            </span>
+          </div>
+        </div>
+
+        <div className="relative pt-2">
+          <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
+            Nota
+          </div>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1em] leading-[1.1]">{nota ?? ""}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-[#666] text-white text-center p-[3px] font-bold outline-none mt-[0.1cm] rounded-[5px] [print-color-adjust:exact] [-webkit-print-color-adjust:exact] focus:bg-[#555]">
+        {instituicao ?? ""}
       </div>
     </div>
   );

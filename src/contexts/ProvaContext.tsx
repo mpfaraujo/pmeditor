@@ -37,7 +37,6 @@ export type ProvaConfig = {
   disciplina: string;
   data: string;
   nota: string;
-
   instituicao: string;
 
   // header layout (0..10)
@@ -83,7 +82,6 @@ const defaultProvaConfig: ProvaConfig = {
   disciplina: "",
   data: "",
   nota: "",
-
   instituicao: "",
 
   headerLayout: 0,

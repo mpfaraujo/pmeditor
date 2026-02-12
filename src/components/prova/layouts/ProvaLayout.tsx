@@ -107,6 +107,7 @@ export function ProvaLayout({
             disciplina={provaConfig.disciplina}
             data={provaConfig.data}
             nota={provaConfig.nota}
+            instituicao={provaConfig.instituicao}
           />
           <div
             className="questoes-container"
@@ -161,6 +162,7 @@ export function ProvaLayout({
                   disciplina={provaConfig.disciplina}
                   data={provaConfig.data}
                   nota={provaConfig.nota}
+                  instituicao={provaConfig.instituicao}
                 />
               )}
 

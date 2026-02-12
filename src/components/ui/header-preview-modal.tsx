@@ -125,6 +125,7 @@ export function HeaderPreviewModal({
                     disciplina="Disciplina Exemplo"
                     data="2026-02-09"
                     nota="10,0"
+                    instituicao={instituicao || "Instituição Exemplo"}
                   />
                   <div className="mt-4 text-center text-[8pt] text-slate-400 italic">
                     * A instituição exibida acima é a que você configurou no filtro.

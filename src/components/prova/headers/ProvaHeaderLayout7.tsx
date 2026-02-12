@@ -15,6 +15,7 @@ interface ProvaHeaderLayout7Props {
   disciplina?: string;
   data?: string;
   nota?: string;
+  instituicao?:string
 }
 
 function formatDateBR(value: string) {
@@ -34,6 +35,7 @@ export function ProvaHeaderLayout7({
   disciplina,
   data,
   nota,
+  instituicao
 }: ProvaHeaderLayout7Props) {
   return (
     <div className="w-[18cm] bg-white shadow-sm border border-gray-200 mb-4">
@@ -57,12 +59,10 @@ export function ProvaHeaderLayout7({
             </div>
           )}
         </div>
-        <div className="flex-1">
-          <p className="text-[10px] font-semibold text-gray-700 leading-tight">
-            Centro Federal de Educação Tecnológica
-          </p>
-          <p className="text-[9px] text-gray-500">Celso Suckow da Fonseca</p>
-        </div>
+    {/* Footer Instituição */}
+      <div className="instituicao-footer">
+        <span><p>{instituicao?? ""}</p></span>
+      </div>
       </div>
 
       {/* Campos organizados */}
