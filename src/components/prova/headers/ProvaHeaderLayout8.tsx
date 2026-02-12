@@ -7,6 +7,7 @@
 
 interface ProvaHeaderLayout8Props {
   logoUrl: string | null;
+  logoPlaceholder?: string;
   onLogoClick: () => void;
   isEditable?: boolean;
   nome?: string;
@@ -35,30 +36,30 @@ export function ProvaHeaderLayout8({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout8Props) {
   return (
     <div className="w-[18cm] border border-gray-300 mb-4">
       {/* Header com instituição */}
       <div className="bg-gray-800 text-white py-1 px-3 flex items-center justify-between">
     {/* Footer Instituição */}
-      <div className="instituicao-footer">
-        <span><p>{instituicao?? ""}</p></span>
-      </div>
         <div
-          className={`w-8 h-8 flex items-center justify-center bg-white ${
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          }`}
+          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
             <img
               src={logoUrl}
-              alt="Logo"
+              alt="Logo da instituição"
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-[8px] font-bold text-gray-800">LOGO</span>
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
           )}
         </div>
       </div>

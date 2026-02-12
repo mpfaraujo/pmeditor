@@ -48,6 +48,11 @@ const [columns, setColumns] = useState<ColumnCount>(
 
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
+  const [noLogo, setNoLogo] = useState<boolean>(!provaConfig.logoUrl);
+const [logoPlaceholder, setLogoPlaceholder] = useState<string>(
+  provaConfig.logoPlaceholder
+);
+
 
   // 0 = ProvaHeader original (default). 1..9 = ProvaHeaderLayout1..9
   const [headerLayout, setHeaderLayout] = useState<number>(
@@ -85,7 +90,8 @@ const [columns, setColumns] = useState<ColumnCount>(
       data,
       nota,
       instituicao,
-      logoUrl,
+      logoUrl:noLogo? null : logoUrl,
+      logoPlaceholder: noLogo ? logoPlaceholder : "",
       headerLayout,
       questionHeaderVariant
     } as any);
@@ -220,22 +226,51 @@ if (!mounted) return null;
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-3">
-                  <Label>Logo</Label>
-                  <div
-                    onClick={() => setLogoDialogOpen(true)}
-                    className="w-full h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer bg-slate-50"
-                  >
-                    {logoUrl ? (
-                      <img
-                        src={logoUrl}
-                        className="max-h-full max-w-full object-contain"
-                        alt=""
-                      />
-                    ) : (
-                      "Clique para adicionar logo"
-                    )}
-                  </div>
-                </div>
+  <div className="flex items-center justify-between">
+    <Label>Logo</Label>
+
+    <div className="flex items-center gap-2">
+      <Checkbox
+        id="noLogo"
+        checked={noLogo}
+        onCheckedChange={(v) => {
+          const checked = Boolean(v);
+          setNoLogo(checked);
+          if (checked) setLogoUrl(null);
+        }}
+      />
+      <Label htmlFor="noLogo">Sem logo</Label>
+    </div>
+  </div>
+
+  {!noLogo && (
+    <div
+      onClick={() => setLogoDialogOpen(true)}
+      className="w-full h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer bg-slate-50"
+    >
+      {logoUrl ? (
+        <img
+          src={logoUrl}
+          className="max-h-full max-w-full object-contain"
+          alt=""
+        />
+      ) : (
+        "Clique para adicionar logo"
+      )}
+    </div>
+  )}
+
+  {noLogo && (
+    <div className="space-y-2">
+      <Label>Texto no lugar da logo (opcional)</Label>
+      <Input
+        value={logoPlaceholder}
+        onChange={(e) => setLogoPlaceholder(e.target.value)}
+        placeholder="Ex.: ESCOLA / SECRETARIA / etc."
+      />
+    </div>
+  )}
+</div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
@@ -296,14 +331,16 @@ if (!mounted) return null;
         </div>
       </div>
 
-      <ImageUpload
-        open={logoDialogOpen}
-        onOpenChange={setLogoDialogOpen}
-        onImageInsert={(url) => {
-          setLogoUrl(url);
-          setLogoDialogOpen(false);
-        }}
-      />
+{!noLogo && (
+  <ImageUpload
+    open={logoDialogOpen}
+    onOpenChange={setLogoDialogOpen}
+    onImageInsert={(url) => {
+      setLogoUrl(url);
+      setLogoDialogOpen(false);
+    }}
+  />
+)}
     </div>
   );
 }

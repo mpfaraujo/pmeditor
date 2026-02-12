@@ -8,6 +8,7 @@
 
 interface ProvaHeaderLayout6Props {
   logoUrl: string | null;
+  logoPlaceholder?: string;
   onLogoClick: () => void;
   isEditable?: boolean;
   nome?: string;
@@ -36,7 +37,8 @@ export function ProvaHeaderLayout6({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout6Props) {
   return (
     <div className="border border-gray-300 w-[18cm] mb-4">
@@ -44,19 +46,21 @@ export function ProvaHeaderLayout6({
       <div className="flex items-end gap-3 p-2 border-b border-gray-300">
         {/* Logo pequena */}
         <div
-          className={`w-12 h-12 flex-shrink-0 flex items-center justify-center border border-gray-300 ${
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          }`}
+          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
             <img
               src={logoUrl}
-              alt="Logo"
+              alt="Logo da instituição"
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-[10px] font-semibold text-gray-400">LOGO</span>
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
           )}
         </div>
 

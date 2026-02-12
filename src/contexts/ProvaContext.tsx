@@ -38,6 +38,8 @@ export type ProvaConfig = {
   data: string;
   nota: string;
   instituicao: string;
+  logoPlaceholder: string;
+
 
   // header layout (0..10)
   headerLayout: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
@@ -87,6 +89,8 @@ const defaultProvaConfig: ProvaConfig = {
   headerLayout: 0,
   questionHeaderVariant: 0,
   allowPageBreak: true,
+  logoPlaceholder: "",
+
 };
 
 const ProvaContext = createContext<ProvaContextType | undefined>(undefined);

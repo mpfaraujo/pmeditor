@@ -12,6 +12,8 @@ interface ProvaHeaderProps {
   data?: string;
   nota?: string;
   instituicao?: string;
+  logoPlaceholder?: string;
+
 }
 
 function formatDateBR(value: string) {
@@ -32,11 +34,12 @@ export function ProvaHeader({
   data,
   nota,
   instituicao,
+  logoPlaceholder
 }: ProvaHeaderProps) {
   return (
     <div className="mb-[0.8cm]">
       {/* header-grid */}
-      <div className="grid grid-cols-[2cm_1fr_4cm] gap-[0.15cm] mb-[0.00cm] items-stretch">
+      <div className="grid grid-cols-[2.3cm_1fr_4cm] gap-[0.15cm] items-stretch">
         <div
           className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
@@ -50,7 +53,9 @@ export function ProvaHeader({
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            "LOGO"
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
           )}
         </div>
 
@@ -58,8 +63,8 @@ export function ProvaHeader({
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
             Nome
           </div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
-            <span className="block min-h-[1em] leading-[1.1]">{nome ?? ""}</span>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1.3em] leading-[1.1]">{nome ?? ""}</span>
           </div>
         </div>
 
@@ -67,8 +72,8 @@ export function ProvaHeader({
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
             Turma
           </div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
-            <span className="block min-h-[1em] leading-[1.1]">{turma ?? ""}</span>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+            <span className="block min-h-[1.3em] leading-[1.1]">{turma ?? ""}</span>
           </div>
         </div>
       </div>
@@ -79,7 +84,7 @@ export function ProvaHeader({
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
             Professor
           </div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+          <div className="border border-black rounded-[5px] py-[.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
             <span className="block min-h-[1em] leading-[1.1]">
               {professor ?? ""}
             </span>
@@ -90,7 +95,7 @@ export function ProvaHeader({
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
             Disciplina
           </div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+          <div className="border border-black rounded-[5px] py-[.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
             <span className="block min-h-[1em] leading-[1.1]">
               {disciplina ?? ""}
             </span>
@@ -101,7 +106,7 @@ export function ProvaHeader({
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
             Data
           </div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+          <div className="border border-black rounded-[5px] py-[.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
             <span className="block min-h-[1em] leading-[1.1]">
               {formatDateBR(data ?? "")}
             </span>
@@ -112,7 +117,7 @@ export function ProvaHeader({
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">
             Nota
           </div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
+          <div className="border border-black rounded-[5px] py-[.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9]">
             <span className="block min-h-[1em] leading-[1.1]">{nota ?? ""}</span>
           </div>
         </div>

@@ -15,7 +15,8 @@ interface ProvaHeaderLayout7Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string
+  instituicao?:string,
+  logoPlaceholder?: string;
 }
 
 function formatDateBR(value: string) {
@@ -35,28 +36,29 @@ export function ProvaHeaderLayout7({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout7Props) {
   return (
     <div className="w-[18cm] bg-white shadow-sm border border-gray-200 mb-4">
       {/* Header com logo e instituição */}
       <div className="flex items-center gap-3 px-3 py-1.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
         <div
-          className={`w-10 h-10 flex-shrink-0 flex items-center justify-center ${
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          }`}
+          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
             <img
               src={logoUrl}
-              alt="Logo"
+              alt="Logo da instituição"
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <div className="w-full h-full border border-gray-300 flex items-center justify-center">
-              <span className="text-[9px] font-semibold text-gray-400">LOGO</span>
-            </div>
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
           )}
         </div>
     {/* Footer Instituição */}

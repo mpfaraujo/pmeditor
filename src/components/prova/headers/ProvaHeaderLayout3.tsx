@@ -7,6 +7,7 @@
 
 interface ProvaHeaderLayout3Props {
   logoUrl: string | null;
+  logoPlaceholder?: string;
   onLogoClick: () => void;
   isEditable?: boolean;
   nome?: string;
@@ -15,7 +16,7 @@ interface ProvaHeaderLayout3Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string
+  instituicao?:string;
 }
 
 function formatDateBR(value: string) {
@@ -35,14 +36,15 @@ export function ProvaHeaderLayout3({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout3Props) {
   return (
     <div className="border-2 border-gray-800 w-[18cm] mb-4">
       <div className="grid grid-cols-12">
         {/* Logo */}
         <div
-          className={`col-span-2 border-r-2 border-gray-800 flex items-center justify-center bg-gray-50 p-4 min-h-[120px] ${
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
           } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
@@ -54,7 +56,9 @@ export function ProvaHeaderLayout3({
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-sm font-bold">LOGO</span>
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
           )}
         </div>
 

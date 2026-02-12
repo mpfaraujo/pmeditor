@@ -12,6 +12,7 @@ import { useProva } from "@/contexts/ProvaContext";
 
 interface ExerciseLayoutProps extends LayoutProps {
   columns: ColumnCount;
+  logoPlaceholder?: string;
 }
 
 export function ExerciseLayout({

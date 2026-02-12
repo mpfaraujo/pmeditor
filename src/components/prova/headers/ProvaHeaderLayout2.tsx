@@ -16,6 +16,7 @@ interface ProvaHeaderLayout2Props {
   data?: string;
   nota?: string;
   instituicao?:string
+  logoPlaceholder?: string;
 }
 
 function formatDateBR(value: string) {
@@ -35,16 +36,17 @@ export function ProvaHeaderLayout2({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout2Props) {
   return (
     <div className="border-2 border-gray-800 w-[18cm] mb-4">
       {/* Header com Logo e Instituição */}
       <div className="flex items-center gap-2 p-1.5 border-b-2 border-gray-800 bg-gray-700">
-        <div
-          className={`w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white ${
+                <div
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          } ${logoUrl ? "" : "border border-gray-800"}`}
+          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
@@ -54,7 +56,9 @@ export function ProvaHeaderLayout2({
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-xs font-bold">LOGO</span>
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
           )}
         </div>
         <p className="text-xs font-medium text-white flex-1">

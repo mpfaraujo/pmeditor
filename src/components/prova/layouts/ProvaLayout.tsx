@@ -22,12 +22,14 @@ import { ProvaHeaderLayout10 } from "../headers/ProvaHeaderLayout10";
 
 interface ProvaLayoutProps extends LayoutProps {
   columns: ColumnCount;
+  logoPlaceholder?: string;
 }
 
 export function ProvaLayout({
   pages,
   orderedQuestions,
   logoUrl,
+  logoPlaceholder,
   onLogoClick,
   renderQuestion,
   refs,
@@ -100,6 +102,7 @@ export function ProvaLayout({
           <HeaderComponent
             logoUrl={logoUrl}
             onLogoClick={onLogoClick}
+            logoPlaceholder={logoPlaceholder}
             isEditable={false}
             nome={provaConfig.nome}
             turma={provaConfig.turma}
@@ -163,6 +166,8 @@ export function ProvaLayout({
                   data={provaConfig.data}
                   nota={provaConfig.nota}
                   instituicao={provaConfig.instituicao}
+                  logoPlaceholder={logoPlaceholder}
+
                 />
               )}
 

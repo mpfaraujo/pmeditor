@@ -516,6 +516,9 @@ const { pages, refs } = usePagination({
 
   const LayoutComponent =
     provaConfig.layoutType === "exercicio" ? ExerciseLayout : ProvaLayout;
+    const logoPlaceholder = provaConfig.logoPlaceholder;
+
+
 
   return (
     <>
@@ -571,6 +574,7 @@ const { pages, refs } = usePagination({
           pages={pages as any}
           orderedQuestions={expandedQuestions as any}
           logoUrl={logoUrl}
+          logoPlaceholder={logoPlaceholder}
           onLogoClick={() => setLogoDialogOpen(true)}
           renderQuestion={renderQuestion as any}
           refs={refs}

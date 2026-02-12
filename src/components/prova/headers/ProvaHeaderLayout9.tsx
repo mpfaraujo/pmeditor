@@ -15,7 +15,8 @@ interface ProvaHeaderLayout9Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string
+  instituicao?:string;
+  logoPlaceholder?: string;
 }
 
 function formatDateBR(value: string) {
@@ -35,7 +36,8 @@ export function ProvaHeaderLayout9({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout9Props) {
   return (
     <div className="w-[18cm] flex border border-gray-300 mb-4">
@@ -47,22 +49,24 @@ export function ProvaHeaderLayout9({
         {/* Header */}
         <div className="flex items-center justify-between px-3 py-1.5 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center gap-2">
-            <div
-              className={`w-8 h-8 flex items-center justify-center border border-gray-300 bg-white ${
-                isEditable ? "cursor-pointer" : "cursor-default"
-              }`}
-              onClick={isEditable ? onLogoClick : undefined}
-            >
-              {logoUrl ? (
-                <img
-                  src={logoUrl}
-                  alt="Logo"
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <span className="text-[8px] font-bold text-gray-400">LOGO</span>
-              )}
-            </div>
+        <div
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
+            isEditable ? "cursor-pointer" : "cursor-default"
+          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
+          onClick={isEditable ? onLogoClick : undefined}
+        >
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt="Logo da instituição"
+              className="max-w-full max-h-full object-contain"
+            />
+          ) : (
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
+          )}
+        </div>
     {/* Footer Instituição */}
       <div className="instituicao-footer">
         <span><p>{instituicao?? ""}</p></span>

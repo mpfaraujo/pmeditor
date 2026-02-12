@@ -5,6 +5,8 @@
 
 interface ExerciseHeaderProps {
   logoUrl: string | null;
+  logoPlaceholder?: string;
+  
   onLogoClick: () => void;
   isEditable?: boolean;
 
@@ -34,6 +36,7 @@ export function ExerciseHeader({
   disciplina,
   turma,
   data,
+  logoPlaceholder
 }: ExerciseHeaderProps) {
   const metaLeft = [disciplina, turma].filter(Boolean).join(" • ");
   const metaRight = [professor, data ? formatDateBR(data) : ""].filter(Boolean).join(" • ");

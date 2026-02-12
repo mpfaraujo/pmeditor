@@ -16,6 +16,7 @@ interface ProvaHeaderLayout5Props {
   data?: string;
   nota?: string;
   instituicao?:string
+  logoPlaceholder?: string;
 }
 
 function formatDateBR(value: string) {
@@ -35,29 +36,32 @@ export function ProvaHeaderLayout5({
   disciplina,
   data,
   nota,
-  instituicao
+  instituicao,
+  logoPlaceholder
 }: ProvaHeaderLayout5Props) {
   return (
     <div className="w-[18cm] mb-4">
       {/* Linha superior: Logo + Instituição + Info rápida */}
       <div className="flex items-center justify-between border-b-2 border-gray-900 pb-1 mb-2">
         <div className="flex items-center gap-2">
-          <div
-            className={`w-10 h-10 flex items-center justify-center border border-gray-400 ${
-              isEditable ? "cursor-pointer" : "cursor-default"
-            }`}
-            onClick={isEditable ? onLogoClick : undefined}
-          >
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt="Logo"
-                className="max-w-full max-h-full object-contain"
-              />
-            ) : (
-              <span className="text-[10px] font-bold text-gray-400">LOGO</span>
-            )}
-          </div>
+        <div
+          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
+            isEditable ? "cursor-pointer" : "cursor-default"
+          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
+          onClick={isEditable ? onLogoClick : undefined}
+        >
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt="Logo da instituição"
+              className="max-w-full max-h-full object-contain"
+            />
+          ) : (
+              <span className="text-xs font-bold">
+    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+  </span>
+          )}
+        </div>
     {/* Footer Instituição */}
       <div className="instituicao-footer">
         <span><p>{instituicao?? ""}</p></span>
