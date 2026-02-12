@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -98,6 +100,19 @@ export function QuestionMetaBar({
       ...patch,
       updatedAt: new Date().toISOString(),
     });
+  };
+
+  // ===== Tags: buffer de texto para não reformatar a cada tecla =====
+  const [tagsText, setTagsText] = useState(() => tagsToString(value.tags));
+
+  useEffect(() => {
+    setTagsText(tagsToString(value.tags));
+  }, [value.tags]);
+
+  const commitTags = (raw: string) => {
+    const parsed = stringToTags(raw);
+    set({ tags: parsed });
+    setTagsText(tagsToString(parsed));
   };
 
   const setTipo = (t: QuestionType) => {
@@ -279,8 +294,15 @@ export function QuestionMetaBar({
           <Input
             className="h-7 w-full px-2 text-xs"
             placeholder="Tags (vírgula)"
-            value={tagsToString(value.tags)}
-            onChange={(e) => set({ tags: stringToTags(e.target.value) })}
+            value={tagsText}
+            onChange={(e) => setTagsText(e.target.value)}
+            onBlur={() => commitTags(tagsText)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                commitTags(tagsText);
+              }
+            }}
           />
         </div>
 

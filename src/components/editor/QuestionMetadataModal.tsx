@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -69,6 +71,20 @@ export function QuestionMetadataModal({
       updatedAt: new Date().toISOString(),
     });
   };
+
+  // ===== Tags: manter texto enquanto digita; converter para array só no commit =====
+  const [tagsText, setTagsText] = useState(() => tagsToString(value.tags));
+
+  useEffect(() => {
+    setTagsText(tagsToString(value.tags));
+  }, [value.tags]);
+
+  const commitTags = () => {
+    const parsed = stringToTags(tagsText);
+    set({ tags: parsed });
+    setTagsText(tagsToString(parsed));
+  };
+  // ============================================================================
 
   const setTipo = (t: QuestionType) => {
     set({
@@ -141,54 +157,60 @@ export function QuestionMetadataModal({
               </SelectContent>
             </Select>
           </div>
-{value.tipo !== "Discursiva" && (
-  <>
-          {/* Gabarito */}
-          <div className="col-span-2 sm:col-span-1 space-y-2">
-            <label className="text-sm font-medium">Gabarito</label>
 
-            {activeAnswerKey && activeAnswerKey.kind === "mcq" && (
-              <Select
-  value={activeAnswerKey.correct ?? ""}
-  onValueChange={(v) =>
-    writeAnswerKey({ kind: "mcq", correct: v as any })
-  }
->
-  <SelectTrigger>
-    <SelectValue placeholder="Selecione" />
-  </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="A">A</SelectItem>
-                  <SelectItem value="B">B</SelectItem>
-                  <SelectItem value="C">C</SelectItem>
-                  <SelectItem value="D">D</SelectItem>
-                  <SelectItem value="E">E</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
+          {value.tipo !== "Discursiva" && (
+            <>
+              {/* Gabarito */}
+              <div className="col-span-2 sm:col-span-1 space-y-2">
+                <label className="text-sm font-medium">Gabarito</label>
 
-            {activeAnswerKey && activeAnswerKey.kind === "tf" && (
-              <Select
-                value={activeAnswerKey.correct}
-                onValueChange={(v) =>
-                  writeAnswerKey({ kind: "tf", correct: v as any })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="C">Certo</SelectItem>
-                  <SelectItem value="E">Errado</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
+                {activeAnswerKey && activeAnswerKey.kind === "mcq" && (
+                  <Select
+                    value={(activeAnswerKey as any).correct ?? ""}
+                    onValueChange={(v) =>
+                      writeAnswerKey({ kind: "mcq", correct: v as any })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="A">A</SelectItem>
+                      <SelectItem value="B">B</SelectItem>
+                      <SelectItem value="C">C</SelectItem>
+                      <SelectItem value="D">D</SelectItem>
+                      <SelectItem value="E">E</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
 
-            {activeAnswerKey && activeAnswerKey.kind === "essay" && (
-              <Input disabled value="Discursiva (rubrica depois)" className="bg-muted" />
-            )}
-          </div>
-          </>)}
+                {activeAnswerKey && activeAnswerKey.kind === "tf" && (
+                  <Select
+                    value={(activeAnswerKey as any).correct}
+                    onValueChange={(v) =>
+                      writeAnswerKey({ kind: "tf", correct: v as any })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="C">Certo</SelectItem>
+                      <SelectItem value="E">Errado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+
+                {activeAnswerKey && activeAnswerKey.kind === "essay" && (
+                  <Input
+                    disabled
+                    value="Discursiva (rubrica depois)"
+                    className="bg-muted"
+                  />
+                )}
+              </div>
+            </>
+          )}
 
           {/* Origem */}
           <div className="col-span-2 sm:col-span-1 space-y-2">
@@ -197,7 +219,10 @@ export function QuestionMetadataModal({
               value={value.source?.kind ?? "original"}
               onValueChange={(v) =>
                 set({
-                  source: v === "original" ? { kind: "original" } : { kind: "concurso" },
+                  source:
+                    v === "original"
+                      ? { kind: "original" }
+                      : { kind: "concurso" },
                 })
               }
             >
@@ -233,11 +258,20 @@ export function QuestionMetadataModal({
 
           {/* Tags */}
           <div className="col-span-2 space-y-2">
-            <label className="text-sm font-medium">Tags (separadas por vírgula)</label>
+            <label className="text-sm font-medium">
+              Tags (separadas por vírgula)
+            </label>
             <Input
               placeholder="Ex: circunferência, distância, ponto"
-              value={tagsToString(value.tags)}
-              onChange={(e) => set({ tags: stringToTags(e.target.value) })}
+              value={tagsText}
+              onChange={(e) => setTagsText(e.target.value)}
+              onBlur={commitTags}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  commitTags();
+                }
+              }}
             />
           </div>
 
@@ -247,7 +281,7 @@ export function QuestionMetadataModal({
               <div className="col-span-2 space-y-2">
                 <label className="text-sm font-medium">Concurso</label>
                 <Input
-                  placeholder="Ex: Prefeitura de São Paulo"
+                  placeholder="Ex: ENEM"
                   value={value.source.concurso ?? ""}
                   onChange={(e) =>
                     set({ source: { ...value.source, concurso: e.target.value } })
@@ -258,9 +292,11 @@ export function QuestionMetadataModal({
               <div className="col-span-2 sm:col-span-1 space-y-2">
                 <label className="text-sm font-medium">Banca</label>
                 <Input
-                  placeholder="Ex: FCC"
+                  placeholder="Ex: INEP"
                   value={value.source.banca ?? ""}
-                  onChange={(e) => set({ source: { ...value.source, banca: e.target.value } })}
+                  onChange={(e) =>
+                    set({ source: { ...value.source, banca: e.target.value } })
+                  }
                 />
               </div>
 
@@ -286,7 +322,9 @@ export function QuestionMetadataModal({
                 <Input
                   placeholder="Ex: Tipo 1, CINZA, AMARELA, etc."
                   value={value.source.cargo ?? ""}
-                  onChange={(e) => set({ source: { ...value.source, cargo: e.target.value } })}
+                  onChange={(e) =>
+                    set({ source: { ...value.source, cargo: e.target.value } })
+                  }
                 />
               </div>
 
@@ -295,13 +333,17 @@ export function QuestionMetadataModal({
                 <Input
                   placeholder="Ex: 42"
                   value={value.source.numero ?? ""}
-                  onChange={(e) => set({ source: { ...value.source, numero: e.target.value } })}
+                  onChange={(e) =>
+                    set({ source: { ...value.source, numero: e.target.value } })
+                  }
                 />
               </div>
             </>
           )}
 
-          <div className="col-span-2 text-xs text-muted-foreground">ID: {value.id}</div>
+          <div className="col-span-2 text-xs text-muted-foreground">
+            ID: {value.id}
+          </div>
         </div>
 
         <DialogFooter>
