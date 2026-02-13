@@ -300,17 +300,21 @@
   font-size: 8pt;
   background: transparent;
 }
-/* Alinha letra da alternativa com conteúdo KaTeX */
-.question-options .flex.items-start > span:first-child {
+/* Opções: top por padrão, center quando tem math/imagem */
+.question-options .flex.items-start {
+  align-items: flex-start;
+}
+
+.question-options .flex.items-start:has(.math-inline, .katex, img) {
+  align-items: center;
+}
+
+.question-options .flex.items-start:has(.math-inline, .katex, img) > span:first-child {
   line-height: 1;
   display: inline-flex;
   align-items: center;
   min-height: 1.8em;
   align-self: center;
-}
-
-.question-options .flex.items-start {
-  align-items: center;
 }
 
 @media print {
