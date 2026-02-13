@@ -372,6 +372,17 @@ function readItemAnswerKeyAtPos(state: any, pos: number): any | null {
   return n.attrs?.answerKey ?? null;
 }
 
+function findAllQuestionItems(state: any): { pos: number; answerKey: any | null }[] {
+  const items: { pos: number; answerKey: any | null }[] = [];
+  state.doc.descendants((node: any, pos: number) => {
+    if (node.type.name === "question_item") {
+      items.push({ pos, answerKey: node.attrs?.answerKey ?? null });
+      return false;
+    }
+  });
+  return items;
+}
+
 /* ---------- component ---------- */
 
 export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps) {
@@ -684,6 +695,9 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
       ? readItemAnswerKeyAtPos(view.state, activeItemPos)
       : null;
 
+  const allItems =
+    docKind === "set_questions" && view ? findAllQuestionItems(view.state) : [];
+
   const writeActiveItemAnswerKey = (answerKey: any | null) => {
     if (!view) return;
     if (activeItemPos == null) return;
@@ -697,6 +711,15 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
     });
 
     view.dispatch(tr);
+  };
+
+  const writeItemAnswerKeyAtPos = (pos: number, answerKey: any | null) => {
+    if (!view) return;
+    const node = view.state.doc.nodeAt(pos);
+    if (!node || node.type.name !== "question_item") return;
+    view.dispatch(
+      view.state.tr.setNodeMarkup(pos, undefined, { ...node.attrs, answerKey })
+    );
   };
   // ----------------------------------------------------------------
 
@@ -760,6 +783,8 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
           docKind={docKind}
           itemAnswerKey={activeItemAnswerKey}
           onItemAnswerKeyChange={writeActiveItemAnswerKey}
+          allItems={allItems}
+          onItemAnswerKeyChangeAtPos={writeItemAnswerKeyAtPos}
         />
       </div>
     </div>

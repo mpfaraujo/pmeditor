@@ -18,7 +18,7 @@ export type QuestionType = "Múltipla Escolha" | "Certo/Errado" | "Discursiva";
 export type AnswerKey =
   | { kind: "mcq"; correct: "A" | "B" | "C" | "D" | "E" }
   | { kind: "tf"; correct: "C" | "E" }
-  | { kind: "essay"; rubric?: string };
+  | { kind: "essay"; rubric?: any };
 
 export interface QuestionMetadataV1 {
   schemaVersion: 1;
@@ -227,22 +227,11 @@ export function QuestionMetaBar({
             </Select>
           )}
 
-          {activeAnswerKey.kind === "essay" &&
-            (() => {
-              const g = activeAnswerKey as { kind: "essay"; rubric?: string };
-              return (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="h-7 w-full px-2 text-xs"
-                  onClick={() =>
-                    writeAnswerKey({ kind: "essay", rubric: g.rubric ?? "" })
-                  }
-                >
-                  Rubrica (depois)
-                </Button>
-              );
-            })()}
+          {activeAnswerKey.kind === "essay" && (
+            <span className="text-xs text-muted-foreground truncate">
+              {(activeAnswerKey as any).rubric ? "Resposta definida" : "Discursiva (editar no modal)"}
+            </span>
+          )}
         </div>
 
         {/* Origem */}

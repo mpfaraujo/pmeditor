@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { QuestionMetadataV1, normalizeGabaritoForTipo } from "./QuestionMetaBar";
+import { RichTextMiniEditor } from "./RichTextMiniEditor";
 
 type Difficulty = "Fácil" | "Média" | "Difícil";
 type QuestionType = "Múltipla Escolha" | "Certo/Errado" | "Discursiva";
@@ -41,15 +42,13 @@ interface QuestionMetadataModalProps {
   value: QuestionMetadataV1;
   onChange: (next: QuestionMetadataV1) => void;
   onSave?: () => void;
-  /**
-   * "question" -> usa metadata.gabarito
-   * "set_questions" -> usa question_item.attrs.answerKey (item ativo)
-   */
   docKind?: "question" | "set_questions";
-  /** answerKey do question_item ativo (somente quando docKind === "set_questions") */
   itemAnswerKey?: QuestionMetadataV1["gabarito"] | null;
-  /** gravação do answerKey do question_item ativo */
   onItemAnswerKeyChange?: (next: QuestionMetadataV1["gabarito"] | null) => void;
+  /** Todos os question_items (set_questions) */
+  allItems?: { pos: number; answerKey: any | null }[];
+  /** Gravar answerKey de um item específico por posição */
+  onItemAnswerKeyChangeAtPos?: (pos: number, answerKey: any | null) => void;
 }
 
 export function QuestionMetadataModal({
@@ -61,6 +60,8 @@ export function QuestionMetadataModal({
   docKind = "question",
   itemAnswerKey = null,
   onItemAnswerKeyChange,
+  allItems = [],
+  onItemAnswerKeyChangeAtPos,
 }: QuestionMetadataModalProps) {
   const tipo = value.tipo ?? "Múltipla Escolha";
 
@@ -101,7 +102,7 @@ export function QuestionMetadataModal({
   const activeAnswerKey =
     docKind === "set_questions"
       ? normalizeGabaritoForTipo(tipo, itemAnswerKey ?? undefined)
-      : value.gabarito;
+      : normalizeGabaritoForTipo(tipo, value.gabarito);
 
   const writeAnswerKey = (next: QuestionMetadataV1["gabarito"]) => {
     if (docKind === "set_questions") {
@@ -158,58 +159,48 @@ export function QuestionMetadataModal({
             </Select>
           </div>
 
-          {value.tipo !== "Discursiva" && (
-            <>
-              {/* Gabarito */}
-              <div className="col-span-2 sm:col-span-1 space-y-2">
-                <label className="text-sm font-medium">Gabarito</label>
+          {/* Gabarito (MCQ/TF) */}
+          {activeAnswerKey && activeAnswerKey.kind !== "essay" && (
+            <div className="col-span-2 sm:col-span-1 space-y-2">
+              <label className="text-sm font-medium">Gabarito</label>
 
-                {activeAnswerKey && activeAnswerKey.kind === "mcq" && (
-                  <Select
-                    value={(activeAnswerKey as any).correct ?? ""}
-                    onValueChange={(v) =>
-                      writeAnswerKey({ kind: "mcq", correct: v as any })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="A">A</SelectItem>
-                      <SelectItem value="B">B</SelectItem>
-                      <SelectItem value="C">C</SelectItem>
-                      <SelectItem value="D">D</SelectItem>
-                      <SelectItem value="E">E</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
+              {activeAnswerKey.kind === "mcq" && (
+                <Select
+                  value={(activeAnswerKey as any).correct ?? ""}
+                  onValueChange={(v) =>
+                    writeAnswerKey({ kind: "mcq", correct: v as any })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="A">A</SelectItem>
+                    <SelectItem value="B">B</SelectItem>
+                    <SelectItem value="C">C</SelectItem>
+                    <SelectItem value="D">D</SelectItem>
+                    <SelectItem value="E">E</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
 
-                {activeAnswerKey && activeAnswerKey.kind === "tf" && (
-                  <Select
-                    value={(activeAnswerKey as any).correct}
-                    onValueChange={(v) =>
-                      writeAnswerKey({ kind: "tf", correct: v as any })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="C">Certo</SelectItem>
-                      <SelectItem value="E">Errado</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-
-                {activeAnswerKey && activeAnswerKey.kind === "essay" && (
-                  <Input
-                    disabled
-                    value="Discursiva (rubrica depois)"
-                    className="bg-muted"
-                  />
-                )}
-              </div>
-            </>
+              {activeAnswerKey.kind === "tf" && (
+                <Select
+                  value={(activeAnswerKey as any).correct}
+                  onValueChange={(v) =>
+                    writeAnswerKey({ kind: "tf", correct: v as any })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="C">Certo</SelectItem>
+                    <SelectItem value="E">Errado</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
           )}
 
           {/* Origem */}
@@ -339,6 +330,41 @@ export function QuestionMetadataModal({
                 />
               </div>
             </>
+          )}
+
+          {/* Resposta-modelo — questão simples */}
+          {activeAnswerKey?.kind === "essay" && docKind === "question" && (
+            <div className="col-span-2 space-y-2">
+              <label className="text-sm font-medium">Resposta-modelo</label>
+              <RichTextMiniEditor
+                value={(activeAnswerKey as any).rubric}
+                onChange={(docJson) =>
+                  writeAnswerKey({ kind: "essay", rubric: docJson })
+                }
+              />
+            </div>
+          )}
+
+          {/* Resposta-modelo — cada item do set_questions */}
+          {activeAnswerKey?.kind === "essay" && docKind === "set_questions" && allItems.length > 0 && (
+            <div className="col-span-2 space-y-3">
+              <label className="text-sm font-medium">Respostas-modelo por item</label>
+              {allItems.map((item, idx) => {
+                const ak = normalizeGabaritoForTipo(tipo, item.answerKey ?? undefined);
+                if (ak.kind !== "essay") return null;
+                return (
+                  <div key={item.pos} className="space-y-1">
+                    <span className="text-xs text-muted-foreground">Item {idx + 1}</span>
+                    <RichTextMiniEditor
+                      value={(ak as any).rubric}
+                      onChange={(docJson) =>
+                        onItemAnswerKeyChangeAtPos?.(item.pos, { kind: "essay", rubric: docJson })
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
           )}
 
           <div className="col-span-2 text-xs text-muted-foreground">

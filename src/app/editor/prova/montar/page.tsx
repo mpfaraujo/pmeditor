@@ -24,6 +24,7 @@ import { ProvaLayout } from "@/components/prova/layouts/ProvaLayout";
 import { ExerciseLayout } from "@/components/prova/layouts/ExerciseLayout";
 import { QuestionData, ColumnLayout } from "@/types/layout";
 import Gabarito from "@/components/prova/Gabarito";
+import GabaritoDiscursivo from "@/components/prova/GabaritoDiscursivo";
 
 import "./prova.css";
 
@@ -57,6 +58,32 @@ function extractAltFromMetadata(meta: any): Alt | null {
   if (nested) return nested;
 
   return null;
+}
+
+function extractEssayRubric(meta: any): any | null {
+  if (!meta) return null;
+  const g = meta.gabarito;
+  if (!g || typeof g !== "object") return null;
+  if (g.kind !== "essay") return null;
+  if (!g.rubric || typeof g.rubric !== "object" || g.rubric.type !== "doc") return null;
+  return g.rubric;
+}
+
+/** Extrai rubrics dos question_items dentro do conteúdo de um set_questions */
+function extractItemRubrics(content: any): any[] {
+  const doc = typeof content === "string" ? JSON.parse(content) : content;
+  if (!doc || doc.type !== "doc") return [];
+  const setNode = doc.content?.find((n: any) => n?.type === "set_questions");
+  if (!setNode) return [];
+  const items = (setNode.content ?? []).filter((n: any) => n?.type === "question_item");
+  const rubrics: any[] = [];
+  for (const item of items) {
+    const ak = item.attrs?.answerKey;
+    if (ak && ak.kind === "essay" && ak.rubric && typeof ak.rubric === "object" && ak.rubric.type === "doc") {
+      rubrics.push(ak.rubric);
+    }
+  }
+  return rubrics;
 }
 
 type PMNode = {
@@ -413,6 +440,29 @@ const { pages, refs } = usePagination({
     return out;
   }, [expandedQuestions, printNumberMap]);
 
+  const respostasDiscursivas = useMemo(() => {
+    const out: Record<number, any[]> = {};
+    expandedQuestions.forEach((q: any, idx) => {
+      if ((q as any)?.__setBase) return;
+      const printNum = printNumberMap.get(idx);
+      if (!printNum || printNum <= 0) return;
+
+      // Questão simples com rubric no metadata
+      const rubric = extractEssayRubric((q as any)?.metadata);
+      if (rubric) {
+        out[printNum] = [rubric];
+        return;
+      }
+
+      // Set_questions: rubrics nos question_items
+      const itemRubrics = extractItemRubrics((q as any)?.content);
+      if (itemRubrics.length > 0) {
+        out[printNum] = itemRubrics;
+      }
+    });
+    return out;
+  }, [expandedQuestions, printNumberMap]);
+
   const totalQuestoes = expandedQuestions.filter((q: any) => !(q as any)?.__setBase).length;
 
   const renderQuestion = (
@@ -585,6 +635,11 @@ const { pages, refs } = usePagination({
           <div className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
             <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
               <Gabarito totalQuestoes={totalQuestoes} respostas={respostas} />
+              {Object.keys(respostasDiscursivas).length > 0 && (
+                <div className="mt-8">
+                  <GabaritoDiscursivo respostas={respostasDiscursivas} />
+                </div>
+              )}
             </div>
           </div>
         )}
