@@ -71,19 +71,23 @@ function extractEssayRubric(meta: any): any | null {
 
 /** Extrai rubrics dos question_items dentro do conteúdo de um set_questions */
 function extractItemRubrics(content: any): any[] {
-  const doc = typeof content === "string" ? JSON.parse(content) : content;
-  if (!doc || doc.type !== "doc") return [];
-  const setNode = doc.content?.find((n: any) => n?.type === "set_questions");
-  if (!setNode) return [];
-  const items = (setNode.content ?? []).filter((n: any) => n?.type === "question_item");
-  const rubrics: any[] = [];
-  for (const item of items) {
-    const ak = item.attrs?.answerKey;
-    if (ak && ak.kind === "essay" && ak.rubric && typeof ak.rubric === "object" && ak.rubric.type === "doc") {
-      rubrics.push(ak.rubric);
+  try {
+    const doc = typeof content === "string" ? JSON.parse(content) : content;
+    if (!doc || doc.type !== "doc") return [];
+    const setNode = doc.content?.find((n: any) => n?.type === "set_questions");
+    if (!setNode) return [];
+    const items = (setNode.content ?? []).filter((n: any) => n?.type === "question_item");
+    const rubrics: any[] = [];
+    for (const item of items) {
+      const ak = item.attrs?.answerKey;
+      if (ak && ak.kind === "essay" && ak.rubric && typeof ak.rubric === "object" && ak.rubric.type === "doc") {
+        rubrics.push(ak.rubric);
+      }
     }
+    return rubrics;
+  } catch {
+    return [];
   }
-  return rubrics;
 }
 
 type PMNode = {

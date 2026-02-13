@@ -6,6 +6,7 @@
 
 "use client";
 
+import React from "react";
 import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ExerciseHeader } from "../headers/ExerciseHeader";
 import { useProva } from "@/contexts/ProvaContext";
@@ -25,6 +26,28 @@ export function ExerciseLayout({
   columns,
 }: ExerciseLayoutProps) {
   const { provaConfig } = useProva();
+
+  const renderLayoutItem = (it: any) => {
+    if (typeof it === "number") {
+      return renderQuestion(orderedQuestions[it], it);
+    }
+
+    if (it?.kind === "full") {
+      return renderQuestion(orderedQuestions[it.q], it.q);
+    }
+
+    if (it?.kind === "frag") {
+      const rq = renderQuestion as unknown as (
+        q: any,
+        idx: number,
+        frag: any
+      ) => React.ReactNode;
+
+      return rq(orderedQuestions[it.q], it.q, it);
+    }
+
+    return null;
+  };
 
   return (
     <>
@@ -63,6 +86,10 @@ export function ExerciseLayout({
             <div className="coluna coluna-1" ref={refs.measureItemsRef}>
               {orderedQuestions.map((q, idx) => renderQuestion(q, idx))}
             </div>
+
+            {/* CRÍTICO: precisa existir coluna-2 no DOM para ativar o :has(.coluna-2)
+                e medir a coluna-1 com 8.5cm quando columns=2 */}
+            {columns === 2 && <div className="coluna coluna-2" />}
           </div>
         </div>
       </div>
@@ -89,12 +116,12 @@ export function ExerciseLayout({
             <div className={pageIndex === 0 ? "pt-6" : ""}>
               <div className="questoes-container">
                 <div className="coluna coluna-1">
-                  {p.coluna1.map((idx) => renderQuestion(orderedQuestions[idx], idx))}
+                  {(p.coluna1 ?? []).map((it: any) => renderLayoutItem(it))}
                 </div>
 
                 {columns === 2 && (
                   <div className="coluna coluna-2">
-                    {p.coluna2.map((idx) => renderQuestion(orderedQuestions[idx], idx))}
+                    {(p.coluna2 ?? []).map((it: any) => renderLayoutItem(it))}
                   </div>
                 )}
               </div>
