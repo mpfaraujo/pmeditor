@@ -39,7 +39,7 @@ export default function GabaritoDiscursivo({ respostas }: Props) {
   return (
     <div className="gabarito-discursivo-wrap">
       <div className="text-center font-bold text-base mb-4">
-        Gabarito — Questões Discursivas
+        Respostas — Questões Discursivas
       </div>
 
       <div className="space-y-4">

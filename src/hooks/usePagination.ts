@@ -143,7 +143,7 @@ export function usePagination({
   const columns = config.columns;
   const allowPageBreak = config.allowPageBreak ?? false;
   const optimizeLayout = config.optimizeLayout ?? false;
-  const setBaseIndexes = config.setBaseIndexes ?? [];
+  const setGroups = config.setGroups ?? [];
 
   useEffect(() => {
     const controller = new AbortController();
@@ -182,7 +182,7 @@ export function usePagination({
             columns,
             allowPageBreak,
             optimizeLayout,
-            setBaseIndexes,
+            setGroups,
           },
           {
             firstPageRef: measureFirstPageRef.current,

@@ -43,4 +43,10 @@ next-env.d.ts
 #zip files
 *.zip
 
+# Windows reserved names
+nul
+teste.yaml
+
 .vercel
+
+/php/

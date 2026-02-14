@@ -13,7 +13,6 @@ import {
   Settings,
   CheckSquare,
   Square,
-  Scissors,
 } from "lucide-react";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 import { ReorderModal } from "@/components/prova/ReorderModal";
@@ -177,9 +176,6 @@ export default function MontarProvaPage() {
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
 
-  const [setPickerOpen, setSetPickerOpen] = useState(false);
-  const [setPickerSetId, setSetPickerSetId] = useState<string>("");
-  const [setPickerSelected, setSetPickerSelected] = useState<number[]>([]);
 
   if (initialQuestions.length === 0) {
     return (
@@ -226,66 +222,6 @@ export default function MontarProvaPage() {
     return [...orderedList];
   }, [orderedList]);
 
-  const setCandidates = useMemo(() => {
-    const out: { id: string; n: number; selected: number[] }[] = [];
-
-    for (const q of orderedQuestions as any[]) {
-      const id = q?.metadata?.id;
-      if (!id) continue;
-
-      const sel = selections.find((s) => s.id === id);
-      if (!sel || sel.kind !== "set") continue;
-
-      const doc = safeParseDoc(q.content);
-      const setNode = findSetNode(doc);
-      const { items } = splitSetNode(setNode);
-      const n = items.length;
-
-      const chosen = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
-      const valid = chosen
-        .filter((x) => Number.isInteger(x) && x >= 0 && x < n)
-        .sort((a, b) => a - b);
-
-      out.push({ id, n, selected: valid });
-    }
-
-    return out;
-  }, [orderedQuestions, selections]);
-
-  const openSetPicker = () => {
-    if (setCandidates.length === 0) return;
-
-    const first = setCandidates[0];
-    setSetPickerSetId(first.id);
-    setSetPickerSelected(
-      first.selected.length
-        ? first.selected
-        : Array.from({ length: first.n }, (_, i) => i)
-    );
-    setSetPickerOpen(true);
-  };
-
-  const currentSetCandidate = useMemo(() => {
-    return setCandidates.find((x) => x.id === setPickerSetId) ?? null;
-  }, [setCandidates, setPickerSetId]);
-
-  const toggleSetItem = (idx: number) => {
-    setSetPickerSelected((prev) => {
-      const has = prev.includes(idx);
-      if (has) return prev.filter((x) => x !== idx).sort((a, b) => a - b);
-      return [...prev, idx].sort((a, b) => a - b);
-    });
-  };
-
-  const canSaveSetPicker = setPickerSelected.length >= 2;
-
-  const saveSetPicker = () => {
-    if (!setPickerSetId) return;
-    if (!canSaveSetPicker) return;
-
-    setSetSelection(setPickerSetId, setPickerSelected);
-    setSetPickerOpen(false);
-  };
 
   const expandedQuestions = useMemo(() => {
     const out: any[] = [];
@@ -377,11 +313,30 @@ export default function MontarProvaPage() {
     return out as QuestionData[];
   }, [orderedQuestions, selections]);
 
-  // Calcula os índices de __setBase para o bin-packing
-  const setBaseIndexes = useMemo(() => {
-    return expandedQuestions
-      .map((q: any, i) => ((q as any)?.__setBase ? i : -1))
-      .filter((i) => i >= 0);
+  // Monta grupos explícitos de set (base + itens) pelo parentId
+  const setGroups = useMemo(() => {
+    const baseMap = new Map<string, number>(); // parentId → baseIndex
+    const itemMap = new Map<string, number[]>(); // parentId → itemIndexes[]
+
+    expandedQuestions.forEach((q: any, i) => {
+      const baseInfo = (q as any)?.__setBase;
+      if (baseInfo?.parentId) {
+        baseMap.set(baseInfo.parentId, i);
+        if (!itemMap.has(baseInfo.parentId)) itemMap.set(baseInfo.parentId, []);
+      }
+      const setInfo = (q as any)?.__set;
+      if (setInfo?.parentId) {
+        const arr = itemMap.get(setInfo.parentId) ?? [];
+        arr.push(i);
+        itemMap.set(setInfo.parentId, arr);
+      }
+    });
+
+    const groups: { baseIndex: number; itemIndexes: number[] }[] = [];
+    for (const [parentId, baseIndex] of baseMap) {
+      groups.push({ baseIndex, itemIndexes: itemMap.get(parentId) ?? [] });
+    }
+    return groups;
   }, [expandedQuestions]);
 
 const { pages, refs } = usePagination({
@@ -391,7 +346,7 @@ const { pages, refs } = usePagination({
     columns,
     allowPageBreak: true,
     optimizeLayout: !manualOrder,
-    setBaseIndexes,
+    setGroups,
   },
   questionCount: expandedQuestions.length,
   dependencies: [
@@ -402,7 +357,7 @@ const { pages, refs } = usePagination({
     (provaConfig as any).headerLayout,
     (provaConfig as any).questionHeaderVariant,
     manualOrder,
-    setBaseIndexes,
+    setGroups,
   ],
 });
 
@@ -591,11 +546,6 @@ const { pages, refs } = usePagination({
           </div>
 
           <div className="flex gap-2">
-            {setCandidates.length > 0 && (
-              <Button variant="outline" onClick={openSetPicker}>
-                Itens do conjunto
-              </Button>
-            )}
 
             <Button
               variant="outline"
@@ -667,105 +617,6 @@ const { pages, refs } = usePagination({
         />
       </PaginatedA4>
 
-      {setPickerOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 print:hidden">
-          <div className="w-[min(720px,calc(100vw-24px))] rounded-lg bg-white shadow-xl border p-4">
-            <div className="flex items-start justify-between gap-4 mb-3">
-              <div className="min-w-0">
-                <div className="text-base font-semibold">Selecionar itens do conjunto</div>
-                <div className="text-xs text-muted-foreground">
-                  Regra: selecione no mínimo 2 itens.
-                </div>
-              </div>
-
-              <Button variant="outline" onClick={() => setSetPickerOpen(false)}>
-                Fechar
-              </Button>
-            </div>
-
-            {setCandidates.length === 0 ? (
-              <div className="text-sm text-muted-foreground">
-                Nenhum conjunto selecionado na prova.
-              </div>
-            ) : (
-              <>
-                <div className="flex flex-col gap-2 mb-3">
-                  <label className="text-xs text-muted-foreground">Conjunto</label>
-                  <select
-                    className="border rounded-md h-9 px-2 text-sm"
-                    value={setPickerSetId}
-                    onChange={(e) => {
-                      const nextId = e.target.value;
-                      setSetPickerSetId(nextId);
-
-                      const cand = setCandidates.find((x) => x.id === nextId);
-                      if (!cand) return;
-
-                      setSetPickerSelected(
-                        cand.selected.length
-                          ? cand.selected
-                          : Array.from({ length: cand.n }, (_, i) => i)
-                      );
-                    }}
-                  >
-                    {setCandidates.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.id} ({c.n} itens)
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="border rounded-md p-3 max-h-[50vh] overflow-auto">
-                  {currentSetCandidate ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                      {Array.from({ length: currentSetCandidate.n }, (_, i) => {
-                        const checked = setPickerSelected.includes(i);
-                        return (
-                          <label
-                            key={i}
-                            className="flex items-center gap-2 text-sm border rounded-md px-2 py-2 cursor-pointer select-none"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={checked}
-                              onChange={() => toggleSetItem(i)}
-                            />
-                            <span>Item {i + 1}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="text-sm text-muted-foreground">
-                      Selecione um conjunto.
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <div className="text-xs text-muted-foreground">
-                    Selecionados:{" "}
-                    <span className="font-medium">{setPickerSelected.length}</span>
-                    {!canSaveSetPicker && (
-                      <span className="ml-2 text-red-600">(mínimo 2)</span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" onClick={() => setSetPickerOpen(false)}>
-                      Cancelar
-                    </Button>
-                    <Button onClick={saveSetPicker} disabled={!canSaveSetPicker}>
-                      Aplicar
-                    </Button>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useProva } from "@/contexts/ProvaContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,6 +27,14 @@ export default function SelecionarLayoutPage() {
   
   const router = useRouter();
   const { provaConfig, updateProvaConfig } = useProva();
+  const {
+    isLoggedIn,
+    defaultProfessor,
+    defaultDisciplina,
+    defaultInstituicao,
+    defaultLogoUrl,
+    user,
+  } = useAuth();
 
   const [layoutType, setLayoutType] = useState<LayoutType>(provaConfig.layoutType);
 const [columns, setColumns] = useState<ColumnCount>(
@@ -107,6 +116,19 @@ const [mounted, setMounted] = useState(false);
 useEffect(() => {
   setMounted(true);
 }, []);
+
+// auto-preencher com defaults do perfil (só campos vazios)
+useEffect(() => {
+  if (!mounted || !isLoggedIn) return;
+  if (!professor && defaultProfessor) setProfessor(defaultProfessor);
+  if (!disciplina && defaultDisciplina) setDisciplina(defaultDisciplina);
+  if (!instituicao && defaultInstituicao) setInstituicao(defaultInstituicao);
+  if (!logoUrl && defaultLogoUrl) {
+    setLogoUrl(defaultLogoUrl);
+    setNoLogo(false);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [mounted, isLoggedIn]);
 
 if (!mounted) return null;
 

@@ -21,14 +21,20 @@ export type PageLayout = {
   coluna2: LayoutItem[];
 };
 
+/** Grupo explícito: texto base + seus itens (por parentId) */
+export type SetGroupDef = {
+  baseIndex: number;
+  itemIndexes: number[];
+};
+
 export interface PaginationConfig {
   pageHeight: number;
   safetyMargin: number;
   columns: 1 | 2;
   allowPageBreak?: boolean;
   optimizeLayout?: boolean;
-  /** Índices das questões que são __setBase (texto base de conjunto) */
-  setBaseIndexes?: number[];
+  /** Grupos explícitos de set_questions (base + itens pelo parentId) */
+  setGroups?: SetGroupDef[];
 }
 
 export function calculateFirstPageCapacity(
@@ -378,35 +384,25 @@ type QuestionGroup = {
 function buildGroups(
   questionCount: number,
   questionHeights: number[],
-  setBaseIndexes: number[]
+  setGroups: SetGroupDef[]
 ): QuestionGroup[] {
-  const setBaseSet = new Set(setBaseIndexes);
   const consumed = new Set<number>();
   const groups: QuestionGroup[] = [];
+
+  // Mapeia baseIndex → SetGroupDef para lookup rápido
+  const baseMap = new Map<number, SetGroupDef>();
+  for (const sg of setGroups) {
+    baseMap.set(sg.baseIndex, sg);
+  }
 
   for (let i = 0; i < questionCount; i++) {
     if (consumed.has(i)) continue;
 
-    if (setBaseSet.has(i)) {
-      // Coleta o base + todos os itens sequenciais seguintes
-      // (itens do set vêm imediatamente após o base em expandedQuestions)
-      const indexes = [i];
-      consumed.add(i);
-
-      let j = i + 1;
-      while (j < questionCount && !setBaseSet.has(j)) {
-        // Verifica se o próximo é um item "livre" ou parte deste set.
-        // Na estrutura atual, após um __setBase vêm os itens do set,
-        // e só para quando encontra outro __setBase ou uma questão sem __set.
-        // Usamos a heurística: itens do set não são __setBase e vêm em sequência.
-        // O page.tsx garante essa ordem em expandedQuestions.
-        indexes.push(j);
-        consumed.add(j);
-        j++;
-
-        // Se encontrou outro setBase ou acabou, para
-        if (j < questionCount && setBaseSet.has(j)) break;
-      }
+    const sg = baseMap.get(i);
+    if (sg) {
+      // Grupo explícito: base + itens pelo parentId
+      const indexes = [sg.baseIndex, ...sg.itemIndexes];
+      for (const idx of indexes) consumed.add(idx);
 
       const totalHeight = indexes.reduce((sum, idx) => sum + (questionHeights[idx] ?? 0), 0);
       groups.push({ indexes, totalHeight, isSet: true });
@@ -431,19 +427,19 @@ export function distributeQuestionsOptimized(
   columns: 1 | 2,
   allowPageBreak: boolean,
   measureItemsRef: HTMLElement,
-  setBaseIndexes: number[]
+  setGroups: SetGroupDef[]
 ): PageLayout[] {
-  const groups = buildGroups(questionCount, questionHeights, setBaseIndexes);
+  const groups = buildGroups(questionCount, questionHeights, setGroups);
 
   // Separa sets (ordem fixa) e livres (otimizáveis)
-  const setGroups = groups.filter((g) => g.isSet);
+  const fixedGroups = groups.filter((g) => g.isSet);
   const freeGroups = groups.filter((g) => !g.isSet);
 
   // Ordena livres por altura decrescente (FFD)
   freeGroups.sort((a, b) => b.totalHeight - a.totalHeight);
 
   // Ordem final: sets primeiro (na ordem original), depois livres (por altura desc)
-  const orderedGroups = [...setGroups, ...freeGroups];
+  const orderedGroups = [...fixedGroups, ...freeGroups];
 
   // --- Alocação em slots ---
   // Estrutura de páginas com espaço restante por coluna
@@ -512,31 +508,47 @@ export function distributeQuestionsOptimized(
     }
 
     // Grupo de set — coloca sequencialmente (sem reordenar internamente)
-    // Cada item do grupo é colocado no próximo slot disponível,
-    // mas tenta manter juntos na mesma coluna quando possível.
+    // Quando o set muda de coluna/página, fecha o espaço restante da coluna
+    // anterior pra que questões livres não entrem no meio do set.
+    let setCol: "coluna1" | "coluna2" = "coluna1";
+    let setPageIdx = pages.length - 1;
+
     for (const qIdx of group.indexes) {
       const h = questionHeights[qIdx] ?? 0;
 
-      // Tenta o último slot usado (continuidade)
       const lastPage = pages[pages.length - 1];
+      const lastPageIdx = pages.length - 1;
 
-      // Tenta coluna1 da última página
-      if (tryPlaceInSlot(lastPage.coluna1, qIdx, h)) continue;
+      // Tenta coluna atual da última página
+      if (tryPlaceInSlot(lastPage[setCol], qIdx, h)) continue;
 
-      // Tenta coluna2 da última página
-      if (columns === 2 && tryPlaceInSlot(lastPage.coluna2, qIdx, h)) continue;
+      // Não coube — precisa mudar de coluna ou página
+      // Fecha o espaço restante da coluna atual pra proteger o set
+      lastPage[setCol].remaining = 0;
+
+      if (columns === 2 && setCol === "coluna1") {
+        // Tenta coluna2 da mesma página
+        setCol = "coluna2";
+        if (tryPlaceInSlot(lastPage.coluna2, qIdx, h)) continue;
+
+        // Não coube na col2 também — fecha e cria nova página
+        lastPage.coluna2.remaining = 0;
+      }
 
       // Tenta fragmentação se permitido e necessário
       if (allowPageBreak && h > otherPageCapacity) {
         placeWithFragmentation(qIdx, h);
+        setCol = "coluna1";
         continue;
       }
 
       // Cria nova página e coloca lá
       const newP = newPage(pages.length);
       pages.push(newP);
+      setCol = "coluna1";
       tryPlaceInSlot(newP.coluna1, qIdx, h);
     }
+
   }
 
   /**
@@ -692,7 +704,7 @@ export function calculatePageLayout(
       config.columns,
       !!config.allowPageBreak,
       refs.measureItemsRef,
-      config.setBaseIndexes ?? []
+      config.setGroups ?? []
     );
   }
 

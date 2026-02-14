@@ -2,9 +2,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PlusCircle, BookOpen, FileText, Settings } from "lucide-react";
+import { PlusCircle, BookOpen, FileText, ClipboardCopy, Settings } from "lucide-react";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ActionCard } from "@/components/dashboard/ActionCard";
+import { ProtectedActionCard } from "@/components/dashboard/ProtectedActionCard";
+import { LoginButton } from "@/components/auth/LoginButton";
 
 const SHOW_METRICS = false;
 
@@ -21,6 +23,7 @@ export default function Home() {
               Banco de questões e montagem de provas.
             </p>
           </div>
+          <LoginButton />
         </div>
       </header>
 
@@ -35,7 +38,7 @@ export default function Home() {
         <Separator className="my-8" />
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-  <ActionCard
+  <ProtectedActionCard
     href="/editor"
     title="Nova Questão"
     description="Crie uma nova questão no editor."
@@ -49,6 +52,14 @@ export default function Home() {
     description="Filtre, navegue e selecione questões para montar provas."
     icon={<BookOpen className="h-6 w-6" />}
     accent="purple"
+  />
+
+  <ActionCard
+    href="/template"
+    title="Modelo de Questão"
+    description="Copie o modelo para pré-preencher as informações da questão."
+    icon={<ClipboardCopy className="h-6 w-6" />}
+    accent="green"
   />
 </div>
 

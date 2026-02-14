@@ -17,17 +17,19 @@ import katex from "katex";
 import { EditorToolbar } from "./EditorToolbar";
 import { MathInsert } from "./MathInsert";
 import { QuestionMetadataModal } from "./QuestionMetadataModal";
-import { QuestionMetadataV1, normalizeGabaritoForTipo } from "./QuestionMetaBar";
+import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from "./QuestionMetaBar";
 import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
 
 import { createQuestion, proposeQuestion } from "@/lib/questions";
+import { useAuth } from "@/contexts/AuthContext";
 import "../../app/prosemirror.css";
 
 import { ensureImageIds } from "./ensureImageIds";
 type QuestionEditorProps = {
   modal?: boolean;
   onSaved?: (info: { questionId: string; kind: "base" | "variant" }) => void;
+  onNewRequest?: () => void;
   initial?: {
     metadata: QuestionMetadataV1;
     content: any;
@@ -385,19 +387,38 @@ function findAllQuestionItems(state: any): { pos: number; answerKey: any | null 
 
 /* ---------- component ---------- */
 
-export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps) {
+export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: QuestionEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
+  const { user, isLoggedIn, defaultDisciplina } = useAuth();
 
   const [view, setView] = useState<EditorView | null>(null);
   const [, force] = useState(0);
 
-  const [meta, setMeta] = useState<QuestionMetadataV1>(() => initial?.metadata ?? defaultMetadata());
+  const [meta, setMeta] = useState<QuestionMetadataV1>(() => {
+    const m = defaultMetadata();
+    if (user) {
+      m.author = { id: user.googleId, name: user.nome };
+      if (defaultDisciplina) m.disciplina = defaultDisciplina;
+    }
+    if (initial?.metadata) {
+      // Merge: initial sobrescreve defaults, mas mantém campos obrigatórios
+      const merged = { ...m, ...initial.metadata, id: initial.metadata.id || m.id, createdAt: initial.metadata.createdAt || m.createdAt, updatedAt: initial.metadata.updatedAt || m.updatedAt, schemaVersion: 1 as const };
+      // Se o tipo veio do YAML mas o gabarito não, normaliza pro tipo correto
+      if (initial.metadata.tipo && !initial.metadata.gabarito) {
+        merged.gabarito = normalizeGabaritoForTipo(merged.tipo as QuestionType, m.gabarito);
+      }
+      return merged;
+    }
+    return m;
+  });
   const metaRef = useRef(meta);
   useEffect(() => void (metaRef.current = meta), [meta]);
 
   // FIX: quando abrir questão salva (initial chega depois), sincroniza meta
   useEffect(() => {
-    if (initial?.metadata) setMeta(initial.metadata);
+    if (initial?.metadata) {
+      setMeta((prev) => ({ ...prev, ...initial.metadata, id: initial.metadata.id || prev.id, createdAt: initial.metadata.createdAt || prev.createdAt, updatedAt: initial.metadata.updatedAt || prev.updatedAt, schemaVersion: 1 }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initial?.metadata]);
 
@@ -552,6 +573,10 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
   };
 
   const handleSave = () => {
+    if (!isLoggedIn) {
+      window.alert("Faça login para salvar questões.");
+      return;
+    }
     if (!hasEssentialMetadata(meta)) setMetaDialog({ open: true, saveAfter: true });
     else void performSave();
   };
@@ -563,10 +588,17 @@ export function QuestionEditor({ modal, onSaved, initial }: QuestionEditorProps)
       localStorage.removeItem("pmeditor:last");
     } catch {}
 
+    if (onNewRequest) { onNewRequest(); return; }
+
     view.updateState(EditorState.create({ doc: defaultDoc(), plugins }));
     view.focus();
 
-    setMeta(defaultMetadata());
+    const newMeta = defaultMetadata();
+    if (user) {
+      newMeta.author = { id: user.googleId, name: user.nome };
+      if (defaultDisciplina) newMeta.disciplina = defaultDisciplina;
+    }
+    setMeta(newMeta);
     setMathDialog({ open: false });
     setMetaDialog({ open: false, saveAfter: false });
 
