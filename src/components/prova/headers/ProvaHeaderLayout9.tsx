@@ -59,7 +59,7 @@ export function ProvaHeaderLayout9({
             <img
               src={logoUrl}
               alt="Logo da instituição"
-              className="max-w-[2cm] max-h-[2cm] object-contain"
+              className="object-contain" style={{ maxWidth: 'min(100%, 2cm)', maxHeight: 'min(100%, 2cm)' }}
             />
           ) : (
               <span className="text-xs font-bold">
