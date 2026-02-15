@@ -6,7 +6,8 @@ import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { parseYamlMeta, generateYamlTemplate } from "@/lib/yamlMeta";
 import type { QuestionMetadataV1 } from "@/components/editor/QuestionMetaBar";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, SkipForward, Copy, Check, X } from "lucide-react";
+import { ArrowRight, SkipForward, Copy, Check, X, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 type Step = "yaml" | "editor";
 
@@ -59,9 +60,18 @@ function EditorContent() {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto">
-          <h1 className="text-3xl font-bold text-center mb-8">
-            Editor de Questões
-          </h1>
+          <div className="mb-8">
+            <Link
+              href="/minha-area"
+              className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Minha Área
+            </Link>
+            <h1 className="text-3xl font-bold text-center">
+              Editor de Questões
+            </h1>
+          </div>
           <QuestionEditor
             initial={
               initialMeta
@@ -86,6 +96,13 @@ function EditorContent() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur">
         <div className="mx-auto max-w-3xl px-4 py-4">
+          <Link
+            href="/minha-area"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Minha Área
+          </Link>
           <h1 className="text-2xl font-semibold tracking-tight">
             Nova Questão
           </h1>
