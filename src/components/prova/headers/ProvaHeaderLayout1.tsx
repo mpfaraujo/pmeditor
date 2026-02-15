@@ -44,7 +44,7 @@ export function ProvaHeaderLayout1({
       <div className="grid grid-cols-12">
         {/* Logo Sidebar */}
         <div
-          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
+          className={`logo-area col-span-2 flex items-center justify-center text-xs font-bold border-r-2 border-gray-800 p-1 ${
             isEditable ? "cursor-pointer" : "cursor-default"
           } ${logoUrl ? "" : "border-2 border-gray-800"}`}
           onClick={isEditable ? onLogoClick : undefined}
