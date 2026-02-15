@@ -5,11 +5,15 @@ import type {
   AnswerKey,
 } from "@/components/editor/QuestionMetaBar";
 
-const VALID_TIPOS: QuestionType[] = [
-  "Múltipla Escolha",
-  "Certo/Errado",
-  "Discursiva",
-];
+/** Mapa de nomes aceitos no YAML → QuestionType interno */
+const TIPO_MAP: Record<string, QuestionType> = {
+  "múltipla escolha": "Múltipla Escolha",
+  "v/f": "Certo/Errado",
+  "vf": "Certo/Errado",
+  "verdadeiro/falso": "Certo/Errado",
+  "certo/errado": "Certo/Errado",
+  "discursiva": "Discursiva",
+};
 const VALID_DIFICULDADES: Difficulty[] = ["Fácil", "Média", "Difícil"];
 const MCQ_LETTERS = ["A", "B", "C", "D", "E"] as const;
 const TF_LETTERS = ["C", "E"] as const;
@@ -57,6 +61,10 @@ function parseGabarito(
     return { kind: "tf", correct: v as "C" | "E" };
   }
 
+  // V/F → C/E
+  if (v === "V") return { kind: "tf", correct: "C" };
+  if (v === "F") return { kind: "tf", correct: "E" };
+
   return undefined;
 }
 
@@ -90,9 +98,7 @@ export function parseYamlMeta(
 
     switch (key) {
       case "tipo": {
-        const match = VALID_TIPOS.find(
-          (t) => t.toLowerCase() === val.toLowerCase()
-        );
+        const match = TIPO_MAP[val.toLowerCase()];
         if (match) result.tipo = match;
         break;
       }
@@ -103,12 +109,16 @@ export function parseYamlMeta(
         if (match) result.dificuldade = match;
         break;
       }
-      case "disciplina":
-        if (val && val !== '""' && val !== "''") result.disciplina = val;
+      case "disciplina": {
+        const d = val.replace(/^["']|["']$/g, "").trim();
+        if (d) result.disciplina = d;
         break;
-      case "assunto":
-        if (val && val !== '""' && val !== "''") result.assunto = val;
+      }
+      case "assunto": {
+        const a = val.replace(/^["']|["']$/g, "").trim();
+        if (a) result.assunto = a;
         break;
+      }
       case "gabarito": {
         const gab = parseGabarito(val, result.tipo);
         if (gab) result.gabarito = gab;
@@ -124,18 +134,22 @@ export function parseYamlMeta(
         if (val === "original" || val === "concurso") source.kind = val;
         break;
       }
-      case "concurso":
-        if (val && val !== '""') {
+      case "concurso": {
+        const c = val.replace(/^["']|["']$/g, "").trim();
+        if (c) {
           hasSource = true;
-          source.concurso = val;
+          source.concurso = c;
         }
         break;
-      case "banca":
-        if (val && val !== '""') {
+      }
+      case "banca": {
+        const b = val.replace(/^["']|["']$/g, "").trim();
+        if (b) {
           hasSource = true;
-          source.banca = val;
+          source.banca = b;
         }
         break;
+      }
       case "ano": {
         const n = parseInt(val, 10);
         if (!isNaN(n)) {
@@ -144,24 +158,30 @@ export function parseYamlMeta(
         }
         break;
       }
-      case "cargo":
-        if (val && val !== '""') {
+      case "cargo": {
+        const cg = val.replace(/^["']|["']$/g, "").trim();
+        if (cg) {
           hasSource = true;
-          source.cargo = val;
+          source.cargo = cg;
         }
         break;
-      case "prova":
-        if (val && val !== '""') {
+      }
+      case "prova": {
+        const p = val.replace(/^["']|["']$/g, "").trim();
+        if (p) {
           hasSource = true;
-          source.prova = val;
+          source.prova = p;
         }
         break;
-      case "numero":
-        if (val && val !== '""') {
+      }
+      case "numero": {
+        const num = val.replace(/^["']|["']$/g, "").trim();
+        if (num) {
           hasSource = true;
-          source.numero = val;
+          source.numero = num;
         }
         break;
+      }
     }
   }
 
@@ -180,23 +200,21 @@ export function parseYamlMeta(
 export function generateYamlTemplate(defaults?: {
   disciplina?: string;
 }): string {
-  const disc = defaults?.disciplina
-    ? `"${defaults.disciplina}"`
-    : '""';
+  const disc = defaults?.disciplina ?? "";
 
   return `---
-tipo: Múltipla Escolha        # Múltipla Escolha | Certo/Errado | Discursiva
+tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
 dificuldade: Média             # Fácil | Média | Difícil
-disciplina: ${disc.padEnd(20)}# Ex: Matemática
-assunto: ""                    # Ex: Álgebra Linear
-gabarito: A                    # Letra: A-E ou C/E (deixe vazio se for discursiva)
+disciplina: ${disc.padEnd(22)}# Ex: Matemática
+assunto:                       # Ex: Álgebra Linear
+gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
 tags: []                       # Ex: [ENEM, 2024, geometria]
 
 # Fonte (opcional — preencher se for questão de concurso)
 fonte: original                # original | concurso
-concurso: ""
-banca: ""
+concurso:
+banca:
 ano:
-numero: ""
+numero:
 ---`;
 }

@@ -1,0 +1,148 @@
+{
+  "Aritmética": {
+    "subareas": [
+      "Múltiplos e Divisores",
+      "Problemas sobre as 4 Operações",
+      "Sistema de Numeração e Métrico Decimal",
+      "Expressões Numéricas",
+      "Potenciação",
+      "Radiciação",
+      "Grandezas Proporcionais",
+      "Razões e Proporções",
+      "Porcentagem",
+      "Matemática Financeira",
+      "Progressão Aritmética",
+      "Progressão Geométrica",
+      "Médias (Aritmética, Geométrica, Harmônica, Ponderada)"
+    ]
+  },
+  "Álgebra": {
+    "subareas": [
+      "Conjuntos",
+      "Conjuntos Numéricos",
+      "Expressões e Frações Algébricas",
+      "Fatoração e Produtos Notáveis",
+      "Polinômios",
+      "Equação do Primeiro Grau",
+      "Equação do Segundo Grau",
+      "Equação do Terceiro Grau",
+      "Equações Redutíveis ao Segundo Grau",
+      "Equações Polinomiais",
+      "Equações Modulares",
+      "Sistemas Lineares",
+      "Matrizes",
+      "Determinantes",
+      "Números Complexos",
+      "Inequação do Primeiro Grau",
+      "Inequação do Segundo Grau",
+      "Inequações Produto/Quociente",
+      "Inequações Modulares",
+      "Indução Finita",
+      "Binômio de Newton",
+      "Fatorial"
+    ]
+  },
+  "Funções": {
+    "subareas": [
+      "Função Afim",
+      "Função Quadrática",
+      "Função Exponencial",
+      "Função Logarítmica",
+      "Função Modular",
+      "Função Composta",
+      "Função Inversa",
+      "Função Injetora, Sobrejetora ou Bijetora",
+      "Funções Definidas por Várias Sentenças",
+      "Função Polinomial",
+      "Gráficos",
+      "Paridade",
+      "Relações Binárias"
+    ]
+  },
+  "Análise Matemática": {
+    "subareas": [
+      "Limites",
+      "Derivadas e Integrais"
+    ]
+  },
+  "Geometria Plana": {
+    "subareas": [
+      "Fundamentos",
+      "Polígonos",
+      "Polígonos Regulares",
+      "Quadriláteros Notáveis",
+      "Congruência de Triângulos",
+      "Semelhança de Triângulos",
+      "Relações Métricas no Triângulo Retângulo",
+      "Relações Métricas em Triângulos Quaisquer",
+      "Pontos Notáveis do Triângulo",
+      "Segmentos Proporcionais",
+      "Circunferência e Círculo",
+      "Arcos na Circunferência",
+      "Potência de Ponto",
+      "Área das Figuras Planas"
+    ]
+  },
+  "Geometria Analítica": {
+    "subareas": [
+      "Fundamentos",
+      "Reta",
+      "Circunferência",
+      "Cônicas",
+      "Lugar Geométrico"
+    ]
+  },
+  "Geometria Espacial": {
+    "subareas": [
+      "Fundamentos",
+      "Retas e Planos",
+      "Diedros e Triedros",
+      "Prismas",
+      "Pirâmides",
+      "Cilindros",
+      "Cones",
+      "Esfera",
+      "Troncos",
+      "Sólidos Inscritos e Circunscritos",
+      "Superfície Poliédrica e Poliedros"
+    ]
+  },
+  "Trigonometria": {
+    "subareas": [
+      "Razões Trigonométricas no Triângulo Retângulo",
+      "Arcos na Circunferência",
+      "Redução ao Primeiro Quadrante",
+      "Soma de Arcos",
+      "Arco Duplo",
+      "Lei dos Senos",
+      "Lei dos Cossenos",
+      "Outras Relações Trigonométricas",
+      "Funções Trigonométricas",
+      "Funções Trigonométricas Inversas",
+      "Equações Trigonométricas",
+      "Inequações Trigonométricas"
+    ]
+  },
+  "Estatística e Probabilidade": {
+    "subareas": [
+      "Estatística",
+      "Probabilidades"
+    ]
+  },
+  "Lógica Matemática": {
+    "subareas": [
+      "Noções de Lógica Matemática"
+    ]
+  },
+  "Vetores": {
+    "subareas": [
+      "Vetores"
+    ]
+  },
+  "Miscelânea": {
+    "subareas": [
+      "Outros",
+      "Miscelânea"
+    ]
+  }
+}

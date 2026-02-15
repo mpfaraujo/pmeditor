@@ -1,0 +1,201 @@
+{
+  "Aritmética": {
+    "subareas": [
+      "Múltiplos e Divisores",
+      "MMC e MDC",
+      "Divisibilidade",
+      "Problemas sobre as 4 Operações",
+      "Sistema de Numeração e Métrico Decimal",
+      "Notação Científica",
+      "Expressões Numéricas",
+      "Potenciação",
+      "Radiciação",
+      "Grandezas Proporcionais",
+      "Razões e Proporções",
+      "Regra de Três",
+      "Porcentagem",
+      "Matemática Financeira",
+      "Juros Simples",
+      "Juros Compostos",
+      "Progressão Aritmética",
+      "Progressão Geométrica",
+      "Médias"
+    ]
+  },
+  "Álgebra": {
+    "subareas": [
+      "Conjuntos",
+      "Conjuntos Numéricos",
+      "Expressões e Frações Algébricas",
+      "Fatoração e Produtos Notáveis",
+      "Polinômios",
+      "Equação do Primeiro Grau",
+      "Equação do Segundo Grau",
+      "Equação do Terceiro Grau",
+      "Equações Redutíveis ao Segundo Grau",
+      "Equações Polinomiais",
+      "Equações Modulares",
+      "Equações Irracionais",
+      "Equações Exponenciais",
+      "Sistemas Lineares",
+      "Matrizes",
+      "Determinantes",
+      "Números Complexos",
+      "Inequação do Primeiro Grau",
+      "Inequação do Segundo Grau",
+      "Inequações Produto e Quociente",
+      "Inequações Modulares",
+      "Indução Finita"
+    ]
+  },
+  "Funções": {
+    "subareas": [
+      "Domínio, Imagem e Contradomínio",
+      "Função Afim",
+      "Função Quadrática",
+      "Função Exponencial",
+      "Função Logarítmica",
+      "Função Modular",
+      "Função Composta",
+      "Função Inversa",
+      "Função Injetora, Sobrejetora e Bijetora",
+      "Funções Definidas por Várias Sentenças",
+      "Função Polinomial",
+      "Função Raiz Quadrada",
+      "Gráficos e Transformações",
+      "Paridade",
+      "Relações Binárias"
+    ]
+  },
+  "Análise Combinatória": {
+    "subareas": [
+      "Princípio Fundamental da Contagem",
+      "Fatorial",
+      "Permutações Simples",
+      "Permutações com Repetição",
+      "Permutações Circulares",
+      "Arranjos",
+      "Combinações",
+      "Binômio de Newton"
+    ]
+  },
+  "Estatística": {
+    "subareas": [
+      "Tabelas e Gráficos Estatísticos",
+      "Distribuição de Frequências",
+      "Medidas de Tendência Central",
+      "Medidas de Dispersão",
+      "Medidas de Posição",
+      "Amostragem"
+    ]
+  },
+  "Probabilidade": {
+    "subareas": [
+      "Espaço Amostral e Eventos",
+      "Probabilidade Simples",
+      "Probabilidade Condicional",
+      "Probabilidade da União e Intersecção",
+      "Eventos Independentes",
+      "Distribuição Binomial"
+    ]
+  },
+  "Geometria Plana": {
+    "subareas": [
+      "Fundamentos",
+      "Ângulos",
+      "Polígonos",
+      "Polígonos Regulares",
+      "Quadriláteros Notáveis",
+      "Teorema de Tales",
+      "Teorema de Pitágoras",
+      "Congruência de Triângulos",
+      "Semelhança de Triângulos",
+      "Relações Métricas no Triângulo Retângulo",
+      "Relações Métricas em Triângulos Quaisquer",
+      "Pontos Notáveis do Triângulo",
+      "Segmentos Proporcionais",
+      "Circunferência e Círculo",
+      "Ângulos na Circunferência",
+      "Potência de Ponto",
+      "Inscrição e Circunscrição",
+      "Área das Figuras Planas",
+      "Transformações Geométricas"
+    ]
+  },
+  "Geometria Analítica": {
+    "subareas": [
+      "Distância entre Pontos",
+      "Ponto Médio",
+      "Reta",
+      "Posições Relativas",
+      "Circunferência",
+      "Elipse",
+      "Hipérbole",
+      "Parábola",
+      "Lugar Geométrico"
+    ]
+  },
+  "Geometria Espacial": {
+    "subareas": [
+      "Fundamentos",
+      "Retas e Planos",
+      "Diedros e Triedros",
+      "Prismas",
+      "Pirâmides",
+      "Cilindros",
+      "Cones",
+      "Esfera",
+      "Troncos",
+      "Sólidos Inscritos e Circunscritos",
+      "Superfície Poliédrica e Poliedros",
+      "Planificação de Sólidos"
+    ]
+  },
+  "Trigonometria": {
+    "subareas": [
+      "Razões Trigonométricas no Triângulo Retângulo",
+      "Círculo Trigonométrico",
+      "Arcos e Medidas de Arcos",
+      "Redução ao Primeiro Quadrante",
+      "Soma de Arcos",
+      "Arco Duplo",
+      "Arco Metade",
+      "Lei dos Senos",
+      "Lei dos Cossenos",
+      "Outras Relações Trigonométricas",
+      "Funções Trigonométricas",
+      "Funções Trigonométricas Inversas",
+      "Equações Trigonométricas",
+      "Inequações Trigonométricas"
+    ]
+  },
+  "Lógica Matemática": {
+    "subareas": [
+      "Proposições e Conectivos",
+      "Tabela-Verdade",
+      "Equivalências e Negações",
+      "Argumentação e Validade",
+      "Diagramas Lógicos",
+      "Sequências Lógicas"
+    ]
+  },
+  "Vetores": {
+    "subareas": [
+      "Operações com Vetores",
+      "Produto Escalar",
+      "Produto Vetorial"
+    ]
+  },
+  "Análise Matemática": {
+    "subareas": [
+      "Limites",
+      "Derivadas",
+      "Integrais"
+    ]
+  },
+  "Miscelânea": {
+    "subareas": [
+      "Outros"
+    ]
+  }
+}

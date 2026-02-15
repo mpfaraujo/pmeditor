@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PlusCircle, BookOpen, FileText, ClipboardCopy, Settings } from "lucide-react";
+import { PlusCircle, BookOpen, FileText, ClipboardCopy, Settings, User } from "lucide-react";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ActionCard } from "@/components/dashboard/ActionCard";
 import { ProtectedActionCard } from "@/components/dashboard/ProtectedActionCard";
@@ -60,6 +60,14 @@ export default function Home() {
     description="Copie o modelo para pré-preencher as informações da questão."
     icon={<ClipboardCopy className="h-6 w-6" />}
     accent="green"
+  />
+
+  <ProtectedActionCard
+    href="/minha-area"
+    title="Minha Área"
+    description="Perfil, turmas, questões salvas e provas."
+    icon={<User className="h-6 w-6" />}
+    accent="gray"
   />
 </div>
 

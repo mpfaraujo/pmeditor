@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { Suspense, useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { parseYamlMeta, generateYamlTemplate } from "@/lib/yamlMeta";
 import type { QuestionMetadataV1 } from "@/components/editor/QuestionMetaBar";
@@ -9,12 +10,27 @@ import { ArrowRight, SkipForward, Copy, Check, X } from "lucide-react";
 
 type Step = "yaml" | "editor";
 
-export default function EditorPage() {
-  const [step, setStep] = useState<Step>("yaml");
+function EditorContent() {
+  const searchParams = useSearchParams();
+  const skipYaml = searchParams.get("skipYaml") === "1";
+
+  const [step, setStep] = useState<Step>(skipYaml ? "editor" : "yaml");
   const [yamlText, setYamlText] = useState("");
   const [initialMeta, setInitialMeta] =
     useState<Partial<QuestionMetadataV1> | null>(null);
   const [copied, setCopied] = useState(false);
+
+  // Ler metadados do sessionStorage (vindo do Minha Área)
+  useEffect(() => {
+    if (!skipYaml) return;
+    try {
+      const stored = sessionStorage.getItem("pm_yaml_meta");
+      if (stored) {
+        setInitialMeta(JSON.parse(stored));
+        sessionStorage.removeItem("pm_yaml_meta");
+      }
+    } catch {}
+  }, [skipYaml]);
 
   const template = generateYamlTemplate();
 
@@ -187,6 +203,20 @@ export default function EditorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-pulse text-slate-400">Carregando...</div>
+        </div>
+      }
+    >
+      <EditorContent />
+    </Suspense>
   );
 }
 

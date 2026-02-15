@@ -30,7 +30,7 @@ type ParsedQuestion = {
   options?: Array<{ letter: string; text: string }>;
 };
 
-type ParsedLatexQuestion = {
+export type ParsedLatexQuestion = {
   statementLatex: string;
   options?: Array<{ letter: string; latex: string; correct?: boolean }>;
 };
@@ -537,7 +537,7 @@ function stripLatexQuestionCommand(stmt: string) {
     .trim();
 }
 
-function parseQuestionFromLatexText(input: string): ParsedLatexQuestion | null {
+export function parseQuestionFromLatexText(input: string): ParsedLatexQuestion | null {
   let src = input ?? "";
   src = stripLatexComments(src);
   src = src.replace(/\r\n/g, "\n");
@@ -545,7 +545,13 @@ function parseQuestionFromLatexText(input: string): ParsedLatexQuestion | null {
   src = replaceIncludeGraphicsWithPlaceholder(src);
 
   const mBegin = src.match(/\\begin\{(choices|oneparchoices)\}/);
-  if (!mBegin) return null;
+
+  // Sem choices → questão discursiva (só enunciado)
+  if (!mBegin) {
+    const stmtPart = stripLatexQuestionCommand(src.trim());
+    if (!stmtPart) return null;
+    return { statementLatex: stmtPart };
+  }
 
   const env = mBegin[1];
   const beginIdx = mBegin.index ?? 0;
@@ -965,7 +971,7 @@ function buildQuestionNode(schema: Schema, parsed: ParsedQuestion): PMNode {
   return question.create(null, [statementNode, options.create(null, optionNodes)]);
 }
 
-function buildQuestionNodeLatex(schema: Schema, parsed: ParsedLatexQuestion): PMNode {
+export function buildQuestionNodeLatex(schema: Schema, parsed: ParsedLatexQuestion): PMNode {
   const question = ensureNode(schema, "question");
   const statement = ensureNode(schema, "statement");
 
@@ -988,7 +994,7 @@ function buildQuestionNodeLatex(schema: Schema, parsed: ParsedLatexQuestion): PM
 
 /* ---------------- AnswerKey (LaTeX exam) ---------------- */
 
-function extractLatexAnswerKey(parsed: ParsedLatexQuestion) {
+export function extractLatexAnswerKey(parsed: ParsedLatexQuestion) {
   const correct = parsed.options?.find((o) => o.correct)?.letter;
   if (!correct) return null;
   return { kind: "mcq", correct };

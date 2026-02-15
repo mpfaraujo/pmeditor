@@ -64,7 +64,7 @@ export function LoginButton() {
     return (
       <div className="flex items-center gap-2">
         <Link
-          href="/perfil"
+          href="/minha-area"
           className="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-100 transition-colors"
         >
           {user.avatarUrl ? (
