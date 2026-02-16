@@ -15,6 +15,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Filter } from "lucide-react";
+import { normalizeAssunto, normalizeDisciplina, groupAssuntosByArea } from "@/data/assuntos";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface FilterOptions {
   disciplinas: string[];
@@ -75,9 +82,12 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
       const data = await res.json();
 
       if (data.success) {
+        const rawAssuntos: string[] = data.assuntos || [];
+        const rawDisciplinas: string[] = data.disciplinas || [];
+        const normalized = [...new Set(rawAssuntos.map(normalizeAssunto))].filter(Boolean).sort();
         setOptions({
-          disciplinas: data.disciplinas || [],
-          assuntos: data.assuntos || [],
+          disciplinas: [...new Set(rawDisciplinas.map(normalizeDisciplina))].filter(Boolean).sort(),
+          assuntos: normalized,
           tipos: data.tipos || [],
           dificuldades: data.dificuldades || [],
         });
@@ -94,6 +104,17 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
         ? current.filter(v => v !== value)
         : [...current, value];
       return { ...prev, [key]: updated };
+    });
+  };
+
+  const toggleAreaAssuntos = (areaAssuntos: string[]) => {
+    setFilters(prev => {
+      const allSelected = areaAssuntos.every(a => prev.assuntos.includes(a));
+      const without = prev.assuntos.filter(a => !areaAssuntos.includes(a));
+      return {
+        ...prev,
+        assuntos: allSelected ? without : [...without, ...areaAssuntos],
+      };
     });
   };
 
@@ -157,25 +178,53 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
               </div>
             </div>
 
-            {/* Assuntos */}
+            {/* Assuntos agrupados por área (só aparece com disciplina selecionada) */}
             {filters.disciplinas.length > 0 && options.assuntos.length > 0 && (
               <div>
                 <Label className="text-xs font-medium mb-1.5 block">Assunto</Label>
-                <div className="space-y-1">
-                  {options.assuntos.map(ass => (
-                    <div key={ass} className="flex items-center gap-1.5">
-                      <Checkbox
-                        id={`mobile-ass-${ass}`}
-                        checked={filters.assuntos.includes(ass)}
-                        onCheckedChange={() => toggleFilter("assuntos", ass)}
-                        className="h-3.5 w-3.5"
-                      />
-                      <label htmlFor={`mobile-ass-${ass}`} className="text-xs cursor-pointer leading-tight">
-                        {ass}
-                      </label>
-                    </div>
-                  ))}
-                </div>
+                <Accordion type="multiple" className="w-full">
+                  {groupAssuntosByArea(options.assuntos).map(({ area, assuntos }) => {
+                    const selectedCount = assuntos.filter(a => filters.assuntos.includes(a)).length;
+                    const allSelected = selectedCount === assuntos.length;
+                    const someSelected = selectedCount > 0 && !allSelected;
+                    return (
+                      <AccordionItem key={area} value={area} className="border-b-0">
+                        <AccordionTrigger
+                          className="py-1.5 text-xs font-medium hover:no-underline"
+                          prefix={
+                            <Checkbox
+                              checked={allSelected ? true : someSelected ? "indeterminate" : false}
+                              onCheckedChange={() => toggleAreaAssuntos(assuntos)}
+                              className="h-3.5 w-3.5"
+                            />
+                          }
+                        >
+                          {area}
+                          {selectedCount > 0 && (
+                            <span className="text-[10px] text-blue-600">({selectedCount})</span>
+                          )}
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-1 pt-0">
+                          <div className="space-y-1 pl-6">
+                            {assuntos.map(ass => (
+                              <div key={ass} className="flex items-center gap-1.5">
+                                <Checkbox
+                                  id={`mobile-ass-${ass}`}
+                                  checked={filters.assuntos.includes(ass)}
+                                  onCheckedChange={() => toggleFilter("assuntos", ass)}
+                                  className="h-3.5 w-3.5"
+                                />
+                                <label htmlFor={`mobile-ass-${ass}`} className="text-xs cursor-pointer leading-tight">
+                                  {ass}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
               </div>
             )}
 

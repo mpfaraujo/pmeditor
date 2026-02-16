@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { schema } from "@/components/editor/schema";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
@@ -11,6 +11,7 @@ import {
 } from "@/components/editor/plugins/smartPastePlugin";
 import { normalizeGabaritoForTipo, type QuestionMetadataV1 } from "@/components/editor/QuestionMetaBar";
 import { ChevronLeft, ChevronRight, SkipForward, FileText } from "lucide-react";
+import { AssuntoCombobox } from "@/components/editor/AssuntoCombobox";
 
 type ImportItem = {
   latex: string;
@@ -42,27 +43,43 @@ function buildInitial(
   batch: BatchConfig,
   author?: { id?: string; name?: string },
 ): { metadata: QuestionMetadataV1; content: any } {
-  const parsed = parseQuestionFromLatexText(item.latex);
+  const fallbackContent = {
+    type: "doc",
+    content: [
+      {
+        type: "question",
+        content: [
+          {
+            type: "statement",
+            content: [{ type: "paragraph", content: [{ type: "text", text: item.latex }] }],
+          },
+        ],
+      },
+    ],
+  };
+
+  let parsed;
+  try {
+    const t0 = performance.now();
+    parsed = parseQuestionFromLatexText(item.latex);
+    const t1 = performance.now();
+    console.log("[importar] parse ms =", (t1 - t0).toFixed(1), "tipo =", JSON.stringify(item.tipo));
+  } catch (e) {
+    console.error("[importar] parseQuestionFromLatexText FAILED", e);
+    parsed = null;
+  }
 
   let content: any;
   if (parsed) {
-    const node = buildQuestionNodeLatex(schema, parsed);
-    content = { type: "doc", content: [node.toJSON()] };
+    try {
+      const node = buildQuestionNodeLatex(schema, parsed);
+      content = { type: "doc", content: [node.toJSON()] };
+    } catch (e) {
+      console.error("[importar] buildQuestionNodeLatex FAILED", e);
+      content = fallbackContent;
+    }
   } else {
-    content = {
-      type: "doc",
-      content: [
-        {
-          type: "question",
-          content: [
-            {
-              type: "statement",
-              content: [{ type: "paragraph", content: [{ type: "text", text: item.latex }] }],
-            },
-          ],
-        },
-      ],
-    };
+    content = fallbackContent;
   }
 
   const now = new Date().toISOString();
@@ -157,13 +174,11 @@ function BatchConfigForm({
         {/* Assunto */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Assunto</label>
-          <input
-            type="text"
+          <AssuntoCombobox
             value={assunto}
-            onChange={(e) => setAssunto(e.target.value)}
+            onChange={setAssunto}
             placeholder="Ex: Álgebra Linear, Trigonometria..."
             className="w-full border rounded px-3 py-2"
-            autoFocus
           />
         </div>
 
@@ -292,6 +307,14 @@ export default function ImportarPage() {
       });
   }, []);
 
+  // useMemo ANTES de qualquer return condicional (Rules of Hooks)
+  const item = queue.length > 0 && currentIdx < queue.length ? queue[currentIdx] : null;
+  const initial = useMemo(() => {
+    if (!item || !batchConfig) return null;
+    const author = user ? { id: user.googleId, name: user.nome } : undefined;
+    return buildInitial(item, batchConfig, author);
+  }, [item, batchConfig, user]);
+
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -355,10 +378,6 @@ export default function ImportarPage() {
   }
 
   // Etapa 3: editor
-  const item = queue[currentIdx];
-  const author = user ? { id: user.googleId, name: user.nome } : undefined;
-  const initial = buildInitial(item, batchConfig, author);
-
   const handleNext = () => {
     setCurrentIdx((i) => i + 1);
     setEditorKey((k) => k + 1);
@@ -384,12 +403,12 @@ export default function ImportarPage() {
             </span>
 
             <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">
-              {item.tipo}
+              {item!.tipo}
             </span>
 
-            {item.gabarito && (
+            {item!.gabarito && (
               <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">
-                Gab: {item.gabarito}
+                Gab: {item!.gabarito}
               </span>
             )}
 
@@ -441,7 +460,7 @@ export default function ImportarPage() {
         {showLatex && (
           <div className="max-w-[210mm] mx-auto px-4 pb-3">
             <pre className="text-xs bg-gray-50 border rounded p-3 max-h-48 overflow-auto whitespace-pre-wrap">
-              {item.latex}
+              {item!.latex}
             </pre>
           </div>
         )}
@@ -450,7 +469,7 @@ export default function ImportarPage() {
       {/* Editor */}
       <QuestionEditor
         key={editorKey}
-        initial={initial}
+        initial={initial!}
         onSaved={handleNext}
       />
     </div>

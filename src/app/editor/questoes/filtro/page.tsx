@@ -20,6 +20,13 @@ import { ArrowLeft, Search, Filter, Settings, User, School, Layout, Palette } fr
 import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 import { HeaderPreviewModal } from "@/components/ui/header-preview-modal";
+import { normalizeAssunto, normalizeDisciplina, groupAssuntosByArea } from "@/data/assuntos";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
 const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
@@ -62,14 +69,23 @@ export default function FiltroQuestoesPage() {
   const [totalResults, setTotalResults] = useState(0);
   const [loadingCount, setLoadingCount] = useState(false);
 
-  // Estados para Contexto da Prova
-  const [professor, setProfessor] = useState(provaConfig.professor);
-  const [instituicao, setInstituicao] = useState(provaConfig.instituicao);
-  const [headerLayout, setHeaderLayout] = useState<number>((provaConfig as any).headerLayout ?? 0);
-  const [questionHeaderVariant, setQuestionHeaderVariant] = useState<number>((provaConfig as any).questionHeaderVariant ?? 0);
-  const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
+  // Estados para Contexto da Prova (iniciam vazios pra evitar hydration mismatch)
+  const [professor, setProfessor] = useState("");
+  const [instituicao, setInstituicao] = useState("");
+  const [headerLayout, setHeaderLayout] = useState<number>(0);
+  const [questionHeaderVariant, setQuestionHeaderVariant] = useState<number>(0);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
+
+  // Sincroniza com ProvaContext após hidratação
+  useEffect(() => {
+    setProfessor(provaConfig.professor);
+    setInstituicao(provaConfig.instituicao);
+    setHeaderLayout((provaConfig as any).headerLayout ?? 0);
+    setQuestionHeaderVariant((provaConfig as any).questionHeaderVariant ?? 0);
+    setLogoUrl(provaConfig.logoUrl);
+  }, [provaConfig]);
 
   // Opções para DotPickers
   const headerOptions: DotPickerOption[] = Array.from({ length: 11 }, (_, i) => ({
@@ -114,9 +130,12 @@ export default function FiltroQuestoesPage() {
       const data = await res.json();
 
       if (data.success) {
+        const rawAssuntos: string[] = data.assuntos || [];
+        const rawDisciplinas: string[] = data.disciplinas || [];
+        const normalized = [...new Set(rawAssuntos.map(normalizeAssunto))].filter(Boolean).sort();
         setOptions({
-          disciplinas: data.disciplinas || [],
-          assuntos: data.assuntos || [],
+          disciplinas: [...new Set(rawDisciplinas.map(normalizeDisciplina))].filter(Boolean).sort(),
+          assuntos: normalized,
           tipos: data.tipos || [],
           dificuldades: data.dificuldades || [],
         });
@@ -158,6 +177,17 @@ export default function FiltroQuestoesPage() {
         ? current.filter(v => v !== value)
         : [...current, value];
       return { ...prev, [key]: updated };
+    });
+  };
+
+  const toggleAreaAssuntos = (areaAssuntos: string[]) => {
+    setFilters(prev => {
+      const allSelected = areaAssuntos.every(a => prev.assuntos.includes(a));
+      const without = prev.assuntos.filter(a => !areaAssuntos.includes(a));
+      return {
+        ...prev,
+        assuntos: allSelected ? without : [...without, ...areaAssuntos],
+      };
     });
   };
 
@@ -242,24 +272,51 @@ export default function FiltroQuestoesPage() {
 
                     <Separator />
 
-                    {/* Assuntos */}
-                    {options.assuntos.length > 0 && (
+                    {/* Assuntos agrupados por área (só aparece com disciplina selecionada) */}
+                    {filters.disciplinas.length > 0 && options.assuntos.length > 0 && (
                       <div className="space-y-3">
                         <Label className="text-sm font-bold text-slate-700">Assunto</Label>
-                        <div className="grid grid-cols-1 gap-2">
-                          {options.assuntos.map(ass => (
-                            <div key={ass} className="flex items-center gap-2">
-                              <Checkbox
-                                id={`ass-${ass}`}
-                                checked={filters.assuntos.includes(ass)}
-                                onCheckedChange={() => toggleFilter("assuntos", ass)}
-                              />
-                              <label htmlFor={`ass-${ass}`} className="text-sm cursor-pointer leading-none">
-                                {ass}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
+                        <Accordion type="multiple" className="w-full">
+                          {groupAssuntosByArea(options.assuntos).map(({ area, assuntos }) => {
+                            const selectedCount = assuntos.filter(a => filters.assuntos.includes(a)).length;
+                            const allSelected = selectedCount === assuntos.length;
+                            const someSelected = selectedCount > 0 && !allSelected;
+                            return (
+                              <AccordionItem key={area} value={area} className="border-b-0">
+                                <AccordionTrigger
+                                  className="py-2 text-sm font-medium hover:no-underline"
+                                  prefix={
+                                    <Checkbox
+                                      checked={allSelected ? true : someSelected ? "indeterminate" : false}
+                                      onCheckedChange={() => toggleAreaAssuntos(assuntos)}
+                                    />
+                                  }
+                                >
+                                  {area}
+                                  {selectedCount > 0 && (
+                                    <span className="text-xs text-blue-600">({selectedCount})</span>
+                                  )}
+                                </AccordionTrigger>
+                                <AccordionContent className="pb-2 pt-0">
+                                  <div className="grid grid-cols-1 gap-2 pl-7">
+                                    {assuntos.map(ass => (
+                                      <div key={ass} className="flex items-center gap-2">
+                                        <Checkbox
+                                          id={`ass-${ass}`}
+                                          checked={filters.assuntos.includes(ass)}
+                                          onCheckedChange={() => toggleFilter("assuntos", ass)}
+                                        />
+                                        <label htmlFor={`ass-${ass}`} className="text-sm cursor-pointer leading-none">
+                                          {ass}
+                                        </label>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            );
+                          })}
+                        </Accordion>
                       </div>
                     )}
 

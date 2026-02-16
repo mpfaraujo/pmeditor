@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { AssuntoCombobox } from "./AssuntoCombobox";
 import {
   Select,
   SelectContent,
@@ -270,11 +271,11 @@ export function QuestionMetaBar({
 
         {/* Assunto */}
         <div className="col-span-2 sm:col-span-1">
-          <Input
+          <AssuntoCombobox
             className="h-7 w-full px-2 text-xs"
             placeholder="Assunto"
             value={value.assunto ?? ""}
-            onChange={(e) => set({ assunto: e.target.value })}
+            onChange={(v) => set({ assunto: v })}
           />
         </div>
 

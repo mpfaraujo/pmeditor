@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { QuestionMetadataV1, normalizeGabaritoForTipo } from "./QuestionMetaBar";
 import { RichTextMiniEditor } from "./RichTextMiniEditor";
+import { AssuntoCombobox } from "./AssuntoCombobox";
 
 type Difficulty = "Fácil" | "Média" | "Difícil";
 type QuestionType = "Múltipla Escolha" | "Certo/Errado" | "Discursiva";
@@ -240,10 +241,10 @@ export function QuestionMetadataModal({
           {/* Assunto */}
           <div className="col-span-2 sm:col-span-1 space-y-2">
             <label className="text-sm font-medium">Assunto</label>
-            <Input
+            <AssuntoCombobox
               placeholder="Ex: Geometria Analítica"
               value={value.assunto ?? ""}
-              onChange={(e) => set({ assunto: e.target.value })}
+              onChange={(v) => set({ assunto: v })}
             />
           </div>
 
