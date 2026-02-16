@@ -15,7 +15,7 @@ interface ProvaHeaderLayout9Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string;
+  instituicao?: string;
   logoPlaceholder?: string;
 }
 
@@ -37,41 +37,41 @@ export function ProvaHeaderLayout9({
   data,
   nota,
   instituicao,
-  logoPlaceholder
+  logoPlaceholder,
 }: ProvaHeaderLayout9Props) {
   return (
     <div className="w-[18cm] flex border border-gray-300 mb-4">
       {/* Barra lateral com accent */}
-      <div className="w-3 bg-gradient-to-b from-blue-600 to-blue-800"></div>
+      <div className="w-3 bg-gradient-to-b from-blue-600 to-blue-800 shrink-0"></div>
 
       {/* Conteúdo principal */}
-      <div className="flex-1">
-        {/* Header */}
-        <div className="flex items-center justify-between px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-          <div className="flex items-center gap-2">
-        <div
-          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
-            isEditable ? "cursor-pointer" : "cursor-default"
-          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
-          onClick={isEditable ? onLogoClick : undefined}
-        >
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt="Logo da instituição"
-              className="object-contain" style={{ maxWidth: 'min(100%, 2cm)', maxHeight: 'min(100%, 2cm)' }}
-            />
-          ) : (
+      <div className="flex-1 min-w-0">
+        {/* Header: logo + instituição + data/nota */}
+        <div className="grid grid-cols-[1.5cm_1fr_auto] items-center px-3 py-1.5 bg-gray-50 border-b border-gray-200">
+          <div
+            className={`flex items-center justify-center shrink-0 ${
+              isEditable ? "cursor-pointer" : "cursor-default"
+            } ${logoUrl ? "" : "text-[8px] text-gray-400"}`}
+            onClick={isEditable ? onLogoClick : undefined}
+          >
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt="Logo da instituição"
+                className="object-contain"
+                style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }}
+              />
+            ) : (
               <span className="text-xs font-bold">
-    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
-  </span>
-          )}
-        </div>
-    {/* Footer Instituição */}
-      <div className="instituicao-footer">
-        <span><p>{instituicao?? ""}</p></span>
-      </div>
+                {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+              </span>
+            )}
           </div>
+
+          <div className="instituicao-footer px-2">
+            <span><p>{instituicao ?? ""}</p></span>
+          </div>
+
           <div className="flex items-center gap-3">
             <div className="text-right">
               <p className="text-[9px] text-gray-500">Data</p>
@@ -88,38 +88,38 @@ export function ProvaHeaderLayout9({
         <div className="px-3 py-2 space-y-1.5">
           {/* Nome */}
           <div className="flex items-baseline gap-2">
-            <span className="text-[10px] font-semibold text-gray-500 uppercase w-16 flex-shrink-0">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase w-16 shrink-0">
               Aluno:
             </span>
-            <span className="text-xs text-gray-900 flex-1 border-b border-dotted border-gray-300">
-              {nome || "—"}
+            <span className="text-xs text-gray-900 flex-1 border-b border-dotted border-gray-300 min-h-[14px]">
+              {nome || ""}
             </span>
           </div>
 
-          {/* Professor e Disciplina */}
+          {/* Professor, Disciplina, Turma */}
           <div className="flex gap-4">
             <div className="flex items-baseline gap-2 flex-1">
-              <span className="text-[10px] font-semibold text-gray-500 uppercase w-16 flex-shrink-0">
+              <span className="text-[10px] font-semibold text-gray-500 uppercase w-16 shrink-0">
                 Professor:
               </span>
               <span className="text-xs text-gray-900 flex-1 border-b border-dotted border-gray-300">
-                {professor || "—"}
+                {professor || ""}
               </span>
             </div>
             <div className="flex items-baseline gap-2 flex-1">
-              <span className="text-[10px] font-semibold text-gray-500 uppercase w-16 flex-shrink-0">
+              <span className="text-[10px] font-semibold text-gray-500 uppercase w-16 shrink-0">
                 Disciplina:
               </span>
               <span className="text-xs text-gray-900 flex-1 border-b border-dotted border-gray-300">
-                {disciplina || "—"}
+                {disciplina || ""}
               </span>
             </div>
-            <div className="flex items-baseline gap-2 w-20">
-              <span className="text-[10px] font-semibold text-gray-500 uppercase flex-shrink-0">
+            <div className="flex items-baseline gap-2 w-[3cm]">
+              <span className="text-[10px] font-semibold text-gray-500 uppercase shrink-0">
                 Turma:
               </span>
               <span className="text-xs text-gray-900 flex-1 border-b border-dotted border-gray-300">
-                {turma || "—"}
+                {turma || ""}
               </span>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 /**
  * Layout 7 - Clean Card Style
- * Design moderno tipo card, campos agrupados visualmente, sem bordas pesadas
+ * Design limpo, campos agrupados visualmente, sem bordas arredondadas
  */
 
 interface ProvaHeaderLayout7Props {
@@ -15,7 +15,7 @@ interface ProvaHeaderLayout7Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string,
+  instituicao?: string;
   logoPlaceholder?: string;
 }
 
@@ -37,92 +37,94 @@ export function ProvaHeaderLayout7({
   data,
   nota,
   instituicao,
-  logoPlaceholder
+  logoPlaceholder,
 }: ProvaHeaderLayout7Props) {
   return (
-    <div className="w-[18cm] bg-white shadow-sm border border-gray-200 mb-4">
+    <div className="w-[18cm] border border-gray-200 mb-4">
       {/* Header com logo e instituição */}
-      <div className="flex items-center gap-3 px-3 py-1.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+      <div className="grid grid-cols-[1.5cm_1fr] border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
         <div
-          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
+          className={`flex items-center justify-center p-1 ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
+          } ${logoUrl ? "" : "text-[8px] text-gray-400"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
             <img
               src={logoUrl}
               alt="Logo da instituição"
-              className="object-contain" style={{ maxWidth: 'min(100%, 2cm)', maxHeight: 'min(100%, 2cm)' }}
+              className="object-contain"
+              style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }}
             />
           ) : (
-              <span className="text-xs font-bold">
-    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
-  </span>
+            <span className="text-xs font-bold">
+              {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+            </span>
           )}
         </div>
-    {/* Footer Instituição */}
-      <div className="instituicao-footer">
-        <span><p>{instituicao?? ""}</p></span>
-      </div>
+        <div className="flex items-center px-2 py-1.5">
+          <div className="instituicao-footer">
+            <span><p>{instituicao ?? ""}</p></span>
+          </div>
+        </div>
       </div>
 
       {/* Campos organizados */}
-      <div className="p-3 space-y-2">
+      <div className="p-2 space-y-1.5">
         {/* Linha 1: Nome completo */}
         <div>
           <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
             Aluno
           </label>
-          <div className="mt-0.5 text-sm font-medium text-gray-900 border-b border-gray-300 pb-0.5">
-            {nome || "—"}
+          <div className="mt-0.5 text-sm font-medium text-gray-900 border-b border-gray-300 pb-0.5 min-h-[16px]">
+            {nome || ""}
           </div>
         </div>
 
         {/* Linha 2: Grade com campos menores */}
-        <div className="grid grid-cols-12 gap-3">
-          <div className="col-span-2">
+        <div className="grid grid-cols-[2.5cm_1fr_1fr_2.5cm_1.5cm] gap-2">
+          <div>
             <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
               Turma
             </label>
-            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
-              {turma || "—"}
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5 min-h-[14px]">
+              {turma || ""}
             </div>
           </div>
 
-          <div className="col-span-5">
+          <div>
             <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
               Professor
             </label>
-            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
-              {professor || "—"}
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5 min-h-[14px]">
+              {professor || ""}
             </div>
           </div>
 
-          <div className="col-span-3">
+          <div>
             <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
               Disciplina
             </label>
-            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
-              {disciplina || "—"}
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5 min-h-[14px]">
+              {disciplina || ""}
             </div>
           </div>
 
-          <div className="col-span-1">
+          <div>
             <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
               Data
             </label>
-            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
-              {formatDateBR(data ?? "") || "—"}
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5 min-h-[14px]">
+              {formatDateBR(data ?? "")}
             </div>
           </div>
 
-          <div className="col-span-1">
+          <div>
             <label className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
               Nota
             </label>
-            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5">
-              {nota || "—"}
+            <div className="mt-0.5 text-xs font-medium text-gray-900 border-b border-gray-300 pb-0.5 min-h-[14px]">
+              {nota || ""}
             </div>
           </div>
         </div>

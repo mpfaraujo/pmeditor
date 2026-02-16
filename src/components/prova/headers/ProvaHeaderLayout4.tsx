@@ -40,9 +40,9 @@ export function ProvaHeaderLayout4({
   logoPlaceholder
 }: ProvaHeaderLayout4Props) {
   return (
-    <div className="border-2 border-gray-800 w-[18cm] mb-4">
+    <div className="border-0 border-gray-800 w-[18cm] mb-4">
       {/* Header Instituição */}
-    <div className="instituicao-footer">
+    <div className="bg-gray-400 text-white px-3 text-center">
         <span><p className="text-sm font-medium">{instituicao?? ""}</p></span>
       </div>
 

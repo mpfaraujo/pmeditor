@@ -14,6 +14,18 @@ type ImportItem = {
   gabarito: string | null;
 };
 
+function sanitizeLatexForImport(latex: string): string {
+  // R\$ → R$ (escapes de moeda fora de math travam parsers/regex do smartPaste)
+  // No arquivo .tex, "R\$" são 3 chars: R, \, $
+  // Na regex JS, \\ matcha \ literal, \$ matcha $ literal
+  latex = latex.replace(/R\\\$/g, "R$");
+  // \% → % , \_ → _ , \& → & (escapes comuns em texto fora de math)
+  latex = latex.replace(/\\%/g, "%");
+  latex = latex.replace(/\\_/g, "_");
+  latex = latex.replace(/\\&/g, "&");
+  return latex;
+}
+
 function main() {
   const args = process.argv.slice(2);
   if (!args.length) {
@@ -71,7 +83,8 @@ function main() {
 
     // Reconstrói o LaTeX da questão com \question na frente
     // (necessário pro parseQuestionFromLatexText funcionar)
-    const latex = "\\question " + chunk;
+    let latex = "\\question " + chunk;
+    latex = sanitizeLatexForImport(latex);
 
     queue.push({ latex, tipo, gabarito });
   }

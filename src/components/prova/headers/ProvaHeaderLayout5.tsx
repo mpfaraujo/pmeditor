@@ -15,7 +15,7 @@ interface ProvaHeaderLayout5Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string
+  instituicao?: string;
   logoPlaceholder?: string;
 }
 
@@ -37,37 +37,37 @@ export function ProvaHeaderLayout5({
   data,
   nota,
   instituicao,
-  logoPlaceholder
+  logoPlaceholder,
 }: ProvaHeaderLayout5Props) {
   return (
     <div className="w-[18cm] mb-4">
       {/* Linha superior: Logo + Instituição + Info rápida */}
       <div className="flex items-center justify-between border-b-2 border-gray-900 pb-1 mb-2">
         <div className="flex items-center gap-2">
-        <div
-          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
-            isEditable ? "cursor-pointer" : "cursor-default"
-          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
-          onClick={isEditable ? onLogoClick : undefined}
-        >
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt="Logo da instituição"
-              className="object-contain" style={{ maxWidth: 'min(100%, 2cm)', maxHeight: 'min(100%, 2cm)' }}
-            />
-          ) : (
+          <div
+            className={`flex items-center justify-center shrink-0 w-[1.5cm] h-[1.5cm] ${
+              isEditable ? "cursor-pointer" : "cursor-default"
+            } ${logoUrl ? "" : "border border-gray-400 text-[8px]"}`}
+            onClick={isEditable ? onLogoClick : undefined}
+          >
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt="Logo da instituição"
+                className="object-contain"
+                style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }}
+              />
+            ) : (
               <span className="text-xs font-bold">
-    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
-  </span>
-          )}
+                {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+              </span>
+            )}
+          </div>
+          <div className="instituicao-footer">
+            <span><p>{instituicao ?? ""}</p></span>
+          </div>
         </div>
-    {/* Footer Instituição */}
-      <div className="instituicao-footer">
-        <span><p>{instituicao?? ""}</p></span>
-      </div>
-        </div>
-        
+
         <div className="flex items-center gap-4 text-right">
           <div>
             <p className="text-[9px] text-gray-500 uppercase">Turma</p>
@@ -88,16 +88,16 @@ export function ProvaHeaderLayout5({
       <div className="space-y-1">
         <div className="flex gap-1">
           <span className="text-[10px] font-semibold text-gray-600 w-16">Aluno:</span>
-          <span className="text-xs text-gray-900 flex-1">{nome || "—"}</span>
+          <span className="text-xs text-gray-900 flex-1 border-b border-gray-300">{nome || ""}</span>
         </div>
         <div className="flex gap-4">
           <div className="flex gap-1 flex-1">
             <span className="text-[10px] font-semibold text-gray-600 w-16">Professor:</span>
-            <span className="text-xs text-gray-900 flex-1">{professor || "—"}</span>
+            <span className="text-xs text-gray-900 flex-1 border-b border-gray-300">{professor || ""}</span>
           </div>
           <div className="flex gap-1 flex-1">
             <span className="text-[10px] font-semibold text-gray-600 w-20">Disciplina:</span>
-            <span className="text-xs text-gray-900 flex-1">{disciplina || "—"}</span>
+            <span className="text-xs text-gray-900 flex-1 border-b border-gray-300">{disciplina || ""}</span>
           </div>
         </div>
       </div>

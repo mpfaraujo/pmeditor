@@ -129,7 +129,7 @@ export function ProvaHeaderLayout1({
       </div>
 
       {/* Footer Instituição */}
-      <div className="instituicao-footer">
+      <div className="bg-gray-400 text-center text-white">
         <span><p>{instituicao?? ""}</p></span>
       </div>
     </div>

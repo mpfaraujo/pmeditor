@@ -123,7 +123,7 @@ export function ProvaHeaderLayout3({
 
       {/* Footer Instituição */}
 
-    <div className="instituicao-footer">
+    <div className="bg-gray-400 text-white px-3 flex items-center justify-between">
         <span><p className="text-sm font-medium">{instituicao?? ""}</p></span>
       </div>
     </div>

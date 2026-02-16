@@ -594,6 +594,8 @@ export function parseQuestionFromLatexText(input: string): ParsedLatexQuestion |
     const next = hits[i + 1];
     const body = choicesPart
       .slice(cur.end, next ? next.idx : choicesPart.length)
+      .replace(/\n/g, " ")
+      .replace(/\s+/g, " ")
       .trim();
     options.push({
       letter: letterFor(i),
@@ -621,6 +623,11 @@ function skipSpaces(s: string, i: number) {
   return j;
 }
 
+function isCurrency$(s: string, idx: number) {
+  // R$ (real brasileiro) — $ não é delimitador math
+  return idx > 0 && s[idx - 1] === "R";
+}
+
 function findNextLatexTokenIndex(s: string, from: number) {
   const tokens = [
     "$$",
@@ -635,9 +642,18 @@ function findNextLatexTokenIndex(s: string, from: number) {
   ];
   let best = -1;
   for (const t of tokens) {
-    const idx = s.indexOf(t, from);
-    if (idx === -1) continue;
-    if (best === -1 || idx < best) best = idx;
+    let searchFrom = from;
+    while (true) {
+      const idx = s.indexOf(t, searchFrom);
+      if (idx === -1) break;
+      // Pula $ de moeda (R$)
+      if (t === "$" && !t.startsWith("$$") && isCurrency$(s, idx)) {
+        searchFrom = idx + 1;
+        continue;
+      }
+      if (best === -1 || idx < best) best = idx;
+      break;
+    }
   }
   return best;
 }
@@ -687,7 +703,7 @@ function parseInlineLatex(
   };
 
   while (i < s.length) {
-    if (s.startsWith("$$", i)) {
+    if (s.startsWith("$$", i) && !isCurrency$(s, i)) {
       const r = readUntil(i + 2, "$$");
       if (r) {
         nodes.push(mathInline.create({ latex: r.content.trim() }));
@@ -714,7 +730,7 @@ function parseInlineLatex(
       }
     }
 
-    if (s[i] === "$") {
+    if (s[i] === "$" && !isCurrency$(s, i)) {
       const r = readUntil(i + 1, "$");
       if (r) {
         nodes.push(mathInline.create({ latex: r.content.trim() }));
@@ -775,6 +791,12 @@ function parseInlineLatex(
     }
 
     const next = findNextLatexTokenIndex(s, i);
+    if (next === i) {
+      // Token sem par (ex: $ sozinho) — trata como texto literal e avança
+      pushText(s[i], active);
+      i++;
+      continue;
+    }
     const chunk = next === -1 ? s.slice(i) : s.slice(i, next);
     pushText(chunk, active);
     i = next === -1 ? s.length : next;

@@ -1,9 +1,8 @@
 // src/components/prova/headers/ProvaHeaderLayout6.tsx
 
 /**
- * Layout 6 - Horizontal Minimalista
- * Uma única linha horizontal com todos os campos, logo pequena à esquerda
- * Instituição em rodapé fino e elegante
+ * Layout 6 - Horizontal Minimalista Compacto
+ * Duas linhas finas: logo+nome+turma | professor+disciplina+data+nota
  */
 
 interface ProvaHeaderLayout6Props {
@@ -17,7 +16,7 @@ interface ProvaHeaderLayout6Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string
+  instituicao?: string;
 }
 
 function formatDateBR(value: string) {
@@ -38,96 +37,80 @@ export function ProvaHeaderLayout6({
   data,
   nota,
   instituicao,
-  logoPlaceholder
+  logoPlaceholder,
 }: ProvaHeaderLayout6Props) {
   return (
-    <div className="border border-gray-300 w-[18cm] mb-4">
-      {/* Linha única com todos os campos */}
-      <div className="flex items-end gap-3 p-2 border-b border-gray-300">
-        {/* Logo pequena */}
+    <div className="border border-gray-300 w-[18cm] mb-4 text-[10px]">
+      {/* Linha 1: Logo + Nome + Turma */}
+      <div className="grid grid-cols-[1.5cm_1fr_2.5cm] gap-2 px-2 py-1 border-b border-gray-300 items-end">
+        {/* Logo */}
         <div
-          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
+          className={`flex items-center justify-center shrink-0 ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
+          } ${logoUrl ? "" : "border border-gray-400 text-[8px]"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
             <img
               src={logoUrl}
               alt="Logo da instituição"
-              className="object-contain" style={{ maxWidth: 'min(100%, 2cm)', maxHeight: 'min(100%, 2cm)' }}
+              className="object-contain"
+              style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }}
             />
           ) : (
-              <span className="text-xs font-bold">
-    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
-  </span>
+            <span>{logoPlaceholder?.trim() ? logoPlaceholder : ""}</span>
           )}
         </div>
 
-        {/* Nome */}
-        <div className="flex-1">
-          <label className="block text-[10px] font-medium text-gray-500 mb-0.5">
-            Nome
-          </label>
-          <div className="border-b border-gray-400 h-5 flex items-end">
-            <span className="text-xs">{nome ?? ""}</span>
+        <div className="flex items-end gap-1">
+          <span className="text-gray-400 shrink-0">Nome:</span>
+          <div className="flex-1 border-b border-gray-400 min-h-[14px]">
+            <span>{nome ?? ""}</span>
           </div>
         </div>
 
-        {/* Turma */}
-        <div className="w-16">
-          <label className="block text-[10px] font-medium text-gray-500 mb-0.5">
-            Turma
-          </label>
-          <div className="border-b border-gray-400 h-5 flex items-end">
-            <span className="text-xs">{turma ?? ""}</span>
-          </div>
-        </div>
-
-        {/* Professor */}
-        <div className="w-32">
-          <label className="block text-[10px] font-medium text-gray-500 mb-0.5">
-            Professor
-          </label>
-          <div className="border-b border-gray-400 h-5 flex items-end">
-            <span className="text-xs">{professor ?? ""}</span>
-          </div>
-        </div>
-
-        {/* Disciplina */}
-        <div className="w-28">
-          <label className="block text-[10px] font-medium text-gray-500 mb-0.5">
-            Disciplina
-          </label>
-          <div className="border-b border-gray-400 h-5 flex items-end">
-            <span className="text-xs">{disciplina ?? ""}</span>
-          </div>
-        </div>
-
-        {/* Data */}
-        <div className="w-20">
-          <label className="block text-[10px] font-medium text-gray-500 mb-0.5">
-            Data
-          </label>
-          <div className="border-b border-gray-400 h-5 flex items-end">
-            <span className="text-xs">{formatDateBR(data ?? "")}</span>
-          </div>
-        </div>
-
-        {/* Nota */}
-        <div className="w-12">
-          <label className="block text-[10px] font-medium text-gray-500 mb-0.5">
-            Nota
-          </label>
-          <div className="border-b border-gray-400 h-5 flex items-end">
-            <span className="text-xs">{nota ?? ""}</span>
+        <div className="flex items-end gap-1">
+          <span className="text-gray-400 shrink-0">Turma:</span>
+          <div className="flex-1 border-b border-gray-400 min-h-[14px]">
+            <span>{turma ?? ""}</span>
           </div>
         </div>
       </div>
 
-    {/* Footer Instituição */}
+      {/* Linha 2: Professor + Disciplina + Data + Nota */}
+      <div className="grid grid-cols-[1fr_1fr_2.5cm_1.5cm] gap-2 px-2 py-1 border-b border-gray-300 items-end">
+        <div className="flex items-end gap-1">
+          <span className="text-gray-400 shrink-0">Prof.:</span>
+          <div className="flex-1 border-b border-gray-400 min-h-[14px]">
+            <span>{professor ?? ""}</span>
+          </div>
+        </div>
+
+        <div className="flex items-end gap-1">
+          <span className="text-gray-400 shrink-0">Disc.:</span>
+          <div className="flex-1 border-b border-gray-400 min-h-[14px]">
+            <span>{disciplina ?? ""}</span>
+          </div>
+        </div>
+
+        <div className="flex items-end gap-1">
+          <span className="text-gray-400 shrink-0">Data:</span>
+          <div className="flex-1 border-b border-gray-400 min-h-[14px]">
+            <span>{formatDateBR(data ?? "")}</span>
+          </div>
+        </div>
+
+        <div className="flex items-end gap-1">
+          <span className="text-gray-400 shrink-0">Nota:</span>
+          <div className="flex-1 border-b border-gray-400 min-h-[14px]">
+            <span>{nota ?? ""}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer Instituição */}
       <div className="instituicao-footer">
-        <span><p>{instituicao?? ""}</p></span>
+        <span><p>{instituicao ?? ""}</p></span>
       </div>
     </div>
   );

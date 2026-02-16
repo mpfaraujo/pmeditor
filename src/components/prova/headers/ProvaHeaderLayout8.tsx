@@ -42,7 +42,7 @@ export function ProvaHeaderLayout8({
   return (
     <div className="w-[18cm] border border-gray-300 mb-4">
       {/* Header com instituição */}
-      <div className="bg-gray-800 text-white py-1 px-3 flex items-center justify-between">
+      <div className="bg-gray-400 text-white py-1 px-3 flex items-center justify-between">
     {/* Footer Instituição */}
         <div
           className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
@@ -77,7 +77,7 @@ export function ProvaHeaderLayout8({
         </div>
 
         {/* Linha 2 */}
-        <div className="grid grid-cols-12 bg-gray-50">
+        <div className="grid grid-cols-12 bg-gray-0">
           <div className="col-span-2 px-2 py-1 bg-gray-100 border-r border-gray-200">
             <span className="text-[10px] font-semibold text-gray-600">Professor:</span>
           </div>

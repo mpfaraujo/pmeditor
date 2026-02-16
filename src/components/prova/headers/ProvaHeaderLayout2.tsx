@@ -15,7 +15,7 @@ interface ProvaHeaderLayout2Props {
   disciplina?: string;
   data?: string;
   nota?: string;
-  instituicao?:string
+  instituicao?: string;
   logoPlaceholder?: string;
 }
 
@@ -37,65 +37,58 @@ export function ProvaHeaderLayout2({
   data,
   nota,
   instituicao,
-  logoPlaceholder
+  logoPlaceholder,
 }: ProvaHeaderLayout2Props) {
   return (
     <div className="border-2 border-gray-800 w-[18cm] mb-4">
       {/* Header com Logo e Instituição */}
-      <div className="flex items-center gap-2 p-1.5 border-b-2 border-gray-800 bg-gray-700">
-                <div
-          className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${
+      <div className="grid grid-cols-[2cm_1fr] border-b-2 border-gray-800 bg-gray-400">
+        <div
+          className={`flex items-center justify-center p-1 ${
             isEditable ? "cursor-pointer" : "cursor-default"
-          } ${logoUrl ? "" : "border-2 border-gray-800"}`}
+          } ${logoUrl ? "" : ""}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
             <img
               src={logoUrl}
               alt="Logo da instituição"
-              className="object-contain" style={{ maxWidth: 'min(100%, 2cm)', maxHeight: 'min(100%, 2cm)' }}
+              className="object-contain"
+              style={{ maxWidth: "min(100%, 2cm)", maxHeight: "min(100%, 2cm)" }}
             />
           ) : (
-              <span className="text-xs font-bold">
-    {logoPlaceholder?.trim() ? logoPlaceholder : ""}
-  </span>
+            <span className="text-xs font-bold text-white">
+              {logoPlaceholder?.trim() ? logoPlaceholder : ""}
+            </span>
           )}
         </div>
-        <p className="text-xs font-medium text-white flex-1">
-{instituicao?? ""}
-        </p>
+        <div className="flex items-center px-2 py-1">
+          <p className="text-xs font-medium text-white">{instituicao ?? ""}</p>
+        </div>
       </div>
 
       {/* Linha 1: Nome + Turma + Data + Nota */}
-      <div className="grid grid-cols-12 gap-2 p-1.5 border-b-2 border-gray-800">
-        <div className="col-span-5">
-          <label className="block text-xs font-medium text-gray-600 mb-0.5">
-            Nome
-          </label>
+      <div className="grid grid-cols-[1fr_3cm_2.5cm_2cm] gap-2 p-1.5 border-b-2 border-gray-800">
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-0.5">Nome</label>
           <div className="border-b-2 border-gray-800 h-5 flex items-end pb-0.5">
             <span className="text-xs">{nome ?? ""}</span>
           </div>
         </div>
-        <div className="col-span-3">
-          <label className="block text-xs font-medium text-gray-600 mb-0.5">
-            Turma
-          </label>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-0.5">Turma</label>
           <div className="border-b-2 border-gray-800 h-5 flex items-end pb-0.5">
             <span className="text-xs">{turma ?? ""}</span>
           </div>
         </div>
-        <div className="col-span-2">
-          <label className="block text-xs font-medium text-gray-600 mb-0.5">
-            Data
-          </label>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-0.5">Data</label>
           <div className="border-b-2 border-gray-800 h-5 flex items-end pb-0.5">
             <span className="text-xs">{formatDateBR(data ?? "")}</span>
           </div>
         </div>
-        <div className="col-span-2">
-          <label className="block text-xs font-medium text-gray-600 mb-0.5">
-            Nota
-          </label>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-0.5">Nota</label>
           <div className="border-b-2 border-gray-800 h-5 flex items-end pb-0.5">
             <span className="text-xs">{nota ?? ""}</span>
           </div>
@@ -105,17 +98,13 @@ export function ProvaHeaderLayout2({
       {/* Linha 2: Professor + Disciplina */}
       <div className="grid grid-cols-2 gap-2 p-1.5">
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-0.5">
-            Professor
-          </label>
+          <label className="block text-xs font-medium text-gray-600 mb-0.5">Professor</label>
           <div className="border-b-2 border-gray-800 h-5 flex items-end pb-0.5">
             <span className="text-xs">{professor ?? ""}</span>
           </div>
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-0.5">
-            Disciplina
-          </label>
+          <label className="block text-xs font-medium text-gray-600 mb-0.5">Disciplina</label>
           <div className="border-b-2 border-gray-800 h-5 flex items-end pb-0.5">
             <span className="text-xs">{disciplina ?? ""}</span>
           </div>
