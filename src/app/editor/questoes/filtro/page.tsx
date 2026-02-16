@@ -68,6 +68,8 @@ export default function FiltroQuestoesPage() {
 
   const [totalResults, setTotalResults] = useState(0);
   const [loadingCount, setLoadingCount] = useState(false);
+  // Mapa: assunto normalizado → todos os brutos originais do banco
+  const [assuntoRawMap, setAssuntoRawMap] = useState<Record<string, string[]>>({});
 
   // Estados para Contexto da Prova (iniciam vazios pra evitar hydration mismatch)
   const [professor, setProfessor] = useState("");
@@ -132,7 +134,18 @@ export default function FiltroQuestoesPage() {
       if (data.success) {
         const rawAssuntos: string[] = data.assuntos || [];
         const rawDisciplinas: string[] = data.disciplinas || [];
-        const normalized = [...new Set(rawAssuntos.map(normalizeAssunto))].filter(Boolean).sort();
+
+        // Construir mapa normalizado → brutos[]
+        const rawMap: Record<string, string[]> = {};
+        for (const raw of rawAssuntos) {
+          const norm = normalizeAssunto(raw);
+          if (!norm) continue;
+          if (!rawMap[norm]) rawMap[norm] = [];
+          if (!rawMap[norm].includes(raw)) rawMap[norm].push(raw);
+        }
+        setAssuntoRawMap(rawMap);
+
+        const normalized = Object.keys(rawMap).sort();
         setOptions({
           disciplinas: [...new Set(rawDisciplinas.map(normalizeDisciplina))].filter(Boolean).sort(),
           assuntos: normalized,
@@ -145,15 +158,27 @@ export default function FiltroQuestoesPage() {
     }
   };
 
+  // Expande assuntos normalizados selecionados para todos os brutos originais do banco
+  const expandAssuntos = (normalized: string[]): string[] => {
+    const all: string[] = [];
+    for (const n of normalized) {
+      const raws = assuntoRawMap[n];
+      if (raws) raws.forEach(r => { if (!all.includes(r)) all.push(r); });
+      else if (!all.includes(n)) all.push(n);
+    }
+    return all;
+  };
+
   const updateCount = async () => {
     setLoadingCount(true);
     try {
       const q = new URLSearchParams();
       q.set("page", "1");
       q.set("limit", "1"); // Só queremos o total
-      
+
       if (filters.disciplinas.length) filters.disciplinas.forEach(d => q.append("disciplinas[]", d));
-      if (filters.assuntos.length) filters.assuntos.forEach(a => q.append("assuntos[]", a));
+      const rawAssuntos = expandAssuntos(filters.assuntos);
+      if (rawAssuntos.length) rawAssuntos.forEach(a => q.append("assuntos[]", a));
       if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos[]", t));
       if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades[]", d));
       if (filters.tags) q.set("tags", filters.tags);
@@ -204,7 +229,8 @@ export default function FiltroQuestoesPage() {
     // Construir query params para a página de questões
     const q = new URLSearchParams();
     if (filters.disciplinas.length) filters.disciplinas.forEach(d => q.append("disciplinas", d));
-    if (filters.assuntos.length) filters.assuntos.forEach(a => q.append("assuntos", a));
+    const rawAssuntosNav = expandAssuntos(filters.assuntos);
+    if (rawAssuntosNav.length) rawAssuntosNav.forEach(a => q.append("assuntos", a));
     if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos", t));
     if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades", d));
     if (filters.tags) q.set("tags", filters.tags);
