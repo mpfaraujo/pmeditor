@@ -119,30 +119,24 @@ export function LogoPicker({
         ) : logos.length > 0 ? (
           <div className="space-y-2">
             <p className="text-sm font-medium">Logos disponíveis</p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="flex flex-wrap gap-2">
               {logos.map((logo) => (
                 <button
                   key={logo.url}
                   type="button"
+                  title={logo.instituicao || "Logo"}
                   onClick={() => handleSelect(logo.url)}
-                  className="group flex flex-col items-center gap-1 rounded-lg border p-2 hover:border-primary hover:bg-accent transition-colors cursor-pointer"
+                  className="group relative h-10 w-10 flex-shrink-0 rounded border p-1 hover:border-primary hover:bg-accent transition-colors cursor-pointer"
                 >
-                  <div className="relative h-16 w-full flex items-center justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={logo.url}
-                      alt={logo.instituicao || "Logo"}
-                      className="max-h-16 max-w-full object-contain"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 rounded">
-                      <Check className="h-6 w-6 text-primary" />
-                    </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={logo.url}
+                    alt={logo.instituicao || "Logo"}
+                    className="h-full w-full object-contain"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 rounded">
+                    <Check className="h-4 w-4 text-primary" />
                   </div>
-                  {logo.instituicao && (
-                    <span className="text-xs text-muted-foreground text-center line-clamp-2 leading-tight">
-                      {logo.instituicao}
-                    </span>
-                  )}
                 </button>
               ))}
             </div>

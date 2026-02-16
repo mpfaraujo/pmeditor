@@ -285,7 +285,7 @@ export default function FiltroQuestoesPage() {
                               <AccordionItem key={area} value={area} className="border-b-0">
                                 <AccordionTrigger
                                   className="py-2 text-sm font-medium hover:no-underline"
-                                  prefix={
+                                  prefixContent={
                                     <Checkbox
                                       checked={allSelected ? true : someSelected ? "indeterminate" : false}
                                       onCheckedChange={() => toggleAreaAssuntos(assuntos)}

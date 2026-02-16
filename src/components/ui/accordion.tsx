@@ -28,15 +28,15 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
-  prefix,
+  prefixContent,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
   /** Conteúdo renderizado dentro do Header mas FORA do button (evita button-in-button) */
-  prefix?: React.ReactNode
+  prefixContent?: React.ReactNode
 }) {
   return (
     <AccordionPrimitive.Header className="flex items-center gap-1.5">
-      {prefix}
+      {prefixContent}
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(

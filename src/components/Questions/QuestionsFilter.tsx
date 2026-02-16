@@ -171,7 +171,7 @@ export function QuestionsFilter({ onFilter, totalResults }: QuestionsFilterProps
                     <AccordionItem key={area} value={area} className="border-b-0">
                       <AccordionTrigger
                         className="py-1.5 text-xs font-medium hover:no-underline"
-                        prefix={
+                        prefixContent={
                           <Checkbox
                             checked={allSelected ? true : someSelected ? "indeterminate" : false}
                             onCheckedChange={() => toggleAreaAssuntos(assuntos)}
