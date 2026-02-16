@@ -14,7 +14,7 @@ import {
   CheckSquare,
   Square,
 } from "lucide-react";
-import { ImageUpload } from "@/components/editor/ImageUpload";
+import { LogoPicker } from "@/components/editor/LogoPicker";
 import { ReorderModal } from "@/components/prova/ReorderModal";
 import QuestionHeaderSvg from "@/components/prova/QuestaoHeaderSvg";
 import PaginatedA4 from "@/components/prova/PaginatedA4";
@@ -598,10 +598,10 @@ const { pages, refs } = usePagination({
           </div>
         )}
 
-        <ImageUpload
+        <LogoPicker
           open={logoDialogOpen}
           onOpenChange={setLogoDialogOpen}
-          onImageInsert={(url) => {
+          onLogoSelect={(url) => {
             setLogoUrl(url);
             updateProvaConfig({ logoUrl: url });
           }}

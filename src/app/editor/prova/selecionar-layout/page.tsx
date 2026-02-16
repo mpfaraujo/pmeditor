@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
-import { ImageUpload } from "@/components/editor/ImageUpload";
+import { LogoPicker } from "@/components/editor/LogoPicker";
 import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
 
 type LayoutType = "prova" | "exercicio";
@@ -354,13 +354,13 @@ if (!mounted) return null;
       </div>
 
 {!noLogo && (
-  <ImageUpload
+  <LogoPicker
     open={logoDialogOpen}
     onOpenChange={setLogoDialogOpen}
-    onImageInsert={(url) => {
+    onLogoSelect={(url) => {
       setLogoUrl(url);
-      setLogoDialogOpen(false);
     }}
+    instituicao={instituicao}
   />
 )}
     </div>

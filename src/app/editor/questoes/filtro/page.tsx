@@ -18,7 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Search, Filter, Settings, User, School, Layout, Palette } from "lucide-react";
 import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
-import { ImageUpload } from "@/components/editor/ImageUpload";
+import { LogoPicker } from "@/components/editor/LogoPicker";
 import { HeaderPreviewModal } from "@/components/ui/header-preview-modal";
 import { normalizeAssunto, normalizeDisciplina, groupAssuntosByArea } from "@/data/assuntos";
 import {
@@ -576,13 +576,13 @@ export default function FiltroQuestoesPage() {
         </div>
       </div>
 
-      <ImageUpload
+      <LogoPicker
         open={logoDialogOpen}
         onOpenChange={setLogoDialogOpen}
-        onImageInsert={(url) => {
+        onLogoSelect={(url) => {
           setLogoUrl(url);
-          setLogoDialogOpen(false);
         }}
+        instituicao={instituicao}
       />
 
       <HeaderPreviewModal

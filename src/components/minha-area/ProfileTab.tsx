@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ImageUpload } from "@/components/editor/ImageUpload";
+import { LogoPicker } from "@/components/editor/LogoPicker";
 import { Plus, Trash2, X } from "lucide-react";
 import type { Institution } from "@/types/user";
 
@@ -212,15 +212,16 @@ export function ProfileTab() {
 
       {/* Dialog de upload de logo */}
       {logoDialogOpen !== null && (
-        <ImageUpload
+        <LogoPicker
           open
           onOpenChange={(open) => {
             if (!open) setLogoDialogOpen(null);
           }}
-          onImageInsert={(url) => {
+          onLogoSelect={(url) => {
             updateInstituicao(logoDialogOpen, { logoUrl: url });
             setLogoDialogOpen(null);
           }}
+          instituicao={instituicoes[logoDialogOpen]?.nome}
         />
       )}
     </div>
