@@ -108,6 +108,10 @@ export async function listQuestions(params?: {
   tipos?: string[];
   dificuldades?: string[];
   tags?: string;
+
+  sourceKind?: string;
+  concursos?: string[];
+  anos?: string[];
 }) {
   const q = new URLSearchParams();
   q.set("page", String(params?.page ?? 1));
@@ -130,6 +134,15 @@ export async function listQuestions(params?: {
   }
   if (params?.tags) {
     q.set("tags", params.tags);
+  }
+  if (params?.sourceKind) {
+    q.set("source_kind", params.sourceKind);
+  }
+  if (params?.concursos?.length) {
+    params.concursos.forEach((c) => q.append("concursos[]", c));
+  }
+  if (params?.anos?.length) {
+    params.anos.forEach((a) => q.append("anos[]", a));
   }
 
   const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, {

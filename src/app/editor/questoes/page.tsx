@@ -44,6 +44,9 @@ type FilterValues = {
   tipos: string[];
   dificuldades: string[];
   tags: string;
+  sourceKind: string;
+  concursos: string[];
+  anos: string[];
 };
 
 export default function QuestoesPage() {
@@ -67,6 +70,9 @@ export default function QuestoesPage() {
       tipos: searchParams.getAll("tipos"),
       dificuldades: searchParams.getAll("dificuldades"),
       tags: searchParams.get("tags") || "",
+      sourceKind: searchParams.get("source_kind") || "",
+      concursos: searchParams.getAll("concursos"),
+      anos: searchParams.getAll("anos"),
     };
     load(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,6 +93,9 @@ export default function QuestoesPage() {
       if (filters.tipos?.length) params.tipos = filters.tipos;
       if (filters.dificuldades?.length) params.dificuldades = filters.dificuldades;
       if (filters.tags) params.tags = filters.tags;
+      if (filters.sourceKind) params.sourceKind = filters.sourceKind;
+      if (filters.concursos?.length) params.concursos = filters.concursos;
+      if (filters.anos?.length) params.anos = filters.anos;
 
       const res: any = await listQuestions(params);
       const list = Array.isArray(res)

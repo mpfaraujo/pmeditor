@@ -420,8 +420,12 @@ POST https://mpfaraujo.com.br/guardafiguras/api/upload.php
 
 7. **author no create.php:** O campo `author` e um objeto `{id, name}`. O PHP precisa fazer `json_encode()` antes de salvar no VARCHAR, senao vira "Array". Ja corrigido no `create.php`.
 
-## TODO / Em progresso
+## Planos futuros
 
-- [ ] Marcador `(gabarito)` no smartPaste (LaTeX e Word)
-- [x] Modelo de informacoes (frontmatter) para pre-preencher metadados da questao
-- [ ] Manter texto base + itens do set_questions juntos na paginacao (tentativa anterior revertida — precisa de abordagem nova)
+- [ ] Sistema de curtidas e flags para questoes (plano em `C:\Users\mpfar\.claude\plans\keen-leaping-lampson.md`)
+- [ ] Turmas — professor cadastra turmas com filtros de assuntos pre-definidos, facilitando busca de questoes relevantes
+- [ ] Provas salvas — salvar/recuperar provas e listas de exercicio (precisa de endpoint + UI de salvar/carregar em varias paginas)
+
+### Refatoracoes propostas
+
+Detalhes em `memory/refatoracoes.md` — aplicar oportunisticamente quando for mexer no codigo relevante.

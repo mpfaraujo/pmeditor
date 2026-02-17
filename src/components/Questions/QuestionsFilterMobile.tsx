@@ -36,6 +36,9 @@ interface FilterValues {
   tipos: string[];
   dificuldades: string[];
   tags: string;
+  sourceKind: string;
+  concursos: string[];
+  anos: string[];
 }
 
 interface QuestionsFilterMobileProps {
@@ -61,7 +64,13 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
     tipos: [],
     dificuldades: [],
     tags: "",
+    sourceKind: "",
+    concursos: [],
+    anos: [],
   });
+
+  const [availableConcursos, setAvailableConcursos] = useState<string[]>([]);
+  const [availableAnos, setAvailableAnos] = useState<string[]>([]);
 
   useEffect(() => {
     loadFilterOptions();
@@ -70,6 +79,23 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
   useEffect(() => {
     loadFilterOptions(filters.disciplinas);
   }, [filters.disciplinas]);
+
+  // Recarregar anos quando concursos mudam
+  useEffect(() => {
+    if (filters.concursos.length === 0) return;
+    const loadAnos = async () => {
+      try {
+        const params = new URLSearchParams();
+        filters.concursos.forEach(c => params.append("concursos[]", c));
+        const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
+          headers: { "X-Questions-Token": TOKEN },
+        });
+        const data = await res.json();
+        if (data.success) setAvailableAnos(data.anos || []);
+      } catch {}
+    };
+    loadAnos();
+  }, [filters.concursos]);
 
   const loadFilterOptions = async (disciplinas: string[] = []) => {
     try {
@@ -91,13 +117,15 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
           tipos: data.tipos || [],
           dificuldades: data.dificuldades || [],
         });
+        setAvailableConcursos(data.concursos || []);
+        setAvailableAnos(data.anos || []);
       }
     } catch (err) {
       console.error("Erro ao carregar filtros:", err);
     }
   };
 
-  const toggleFilter = (key: keyof Omit<FilterValues, "tags">, value: string) => {
+  const toggleFilter = (key: keyof Pick<FilterValues, "disciplinas" | "assuntos" | "tipos" | "dificuldades">, value: string) => {
     setFilters(prev => {
       const current = prev[key];
       const updated = current.includes(value)
@@ -130,6 +158,9 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
       tipos: [],
       dificuldades: [],
       tags: "",
+      sourceKind: "",
+      concursos: [],
+      anos: [],
     };
     setFilters(cleared);
     onFilter(cleared);
@@ -267,6 +298,99 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
                 ))}
               </div>
             </div>
+
+            {/* Origem */}
+            <div>
+              <Label className="text-xs font-medium mb-1.5 block">Origem</Label>
+              <div className="space-y-1">
+                {[
+                  { value: "", label: "Todas" },
+                  { value: "original", label: "Original" },
+                  { value: "concurso", label: "Concurso" },
+                ].map(opt => (
+                  <div key={opt.value} className="flex items-center gap-1.5">
+                    <input
+                      type="radio"
+                      id={`mobile-origem-${opt.value || "todas"}`}
+                      name="mobile-origem"
+                      value={opt.value}
+                      checked={filters.sourceKind === opt.value}
+                      onChange={() => setFilters(prev => ({
+                        ...prev,
+                        sourceKind: opt.value,
+                        concursos: opt.value === "concurso" ? prev.concursos : [],
+                        anos: opt.value === "concurso" ? prev.anos : [],
+                      }))}
+                      className="h-3 w-3"
+                    />
+                    <label htmlFor={`mobile-origem-${opt.value || "todas"}`} className="text-xs cursor-pointer leading-tight">
+                      {opt.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Concurso + Ano (se Concurso) */}
+            {filters.sourceKind === "concurso" && availableConcursos.length > 0 && (
+              <>
+                <div>
+                  <Label className="text-xs font-medium mb-1.5 block">Concurso</Label>
+                  <div className="space-y-1">
+                    {availableConcursos.map(conc => (
+                      <div key={conc} className="flex items-center gap-1.5">
+                        <Checkbox
+                          id={`mobile-conc-${conc}`}
+                          checked={filters.concursos.includes(conc)}
+                          onCheckedChange={() => {
+                            setFilters(prev => ({
+                              ...prev,
+                              concursos: prev.concursos.includes(conc)
+                                ? prev.concursos.filter(c => c !== conc)
+                                : [...prev.concursos, conc],
+                              anos: [],
+                            }));
+                          }}
+                          className="h-3.5 w-3.5"
+                        />
+                        <label htmlFor={`mobile-conc-${conc}`} className="text-xs cursor-pointer leading-tight">
+                          {conc}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {availableAnos.length > 0 && (
+                  <div>
+                    <Label className="text-xs font-medium mb-1.5 block">Ano</Label>
+                    <div className="space-y-1">
+                      {availableAnos.map(ano => (
+                        <div key={ano} className="flex items-center gap-1.5">
+                          <Checkbox
+                            id={`mobile-ano-${ano}`}
+                            checked={filters.anos.includes(String(ano))}
+                            onCheckedChange={() => {
+                              const s = String(ano);
+                              setFilters(prev => ({
+                                ...prev,
+                                anos: prev.anos.includes(s)
+                                  ? prev.anos.filter(a => a !== s)
+                                  : [...prev.anos, s],
+                              }));
+                            }}
+                            className="h-3.5 w-3.5"
+                          />
+                          <label htmlFor={`mobile-ano-${ano}`} className="text-xs cursor-pointer leading-tight">
+                            {ano}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
 
             {/* Tags */}
             <div>

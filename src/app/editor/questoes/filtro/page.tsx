@@ -104,11 +104,12 @@ export default function FiltroQuestoesPage() {
   label: i,
 }));
 
-  // Estados para Filtro de Tipo de Questão
-  const [questionType, setQuestionType] = useState<string>("");
-  const [questionYear, setQuestionYear] = useState<string>("");
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 20 }, (_, i) => currentYear - i);
+  // Estados para Filtro de Origem
+  const [sourceKind, setSourceKind] = useState<string>("");
+  const [selectedConcursos, setSelectedConcursos] = useState<string[]>([]);
+  const [selectedAnos, setSelectedAnos] = useState<string[]>([]);
+  const [availableConcursos, setAvailableConcursos] = useState<string[]>([]);
+  const [availableAnos, setAvailableAnos] = useState<string[]>([]);
 
   // Carregar opções iniciais
   useEffect(() => {
@@ -119,7 +120,8 @@ export default function FiltroQuestoesPage() {
   useEffect(() => {
     loadFilterOptions(filters.disciplinas);
     updateCount();
-  }, [filters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters, sourceKind, selectedConcursos, selectedAnos]);
 
   const loadFilterOptions = async (disciplinas: string[] = []) => {
     try {
@@ -152,11 +154,33 @@ export default function FiltroQuestoesPage() {
           tipos: data.tipos || [],
           dificuldades: data.dificuldades || [],
         });
+
+        setAvailableConcursos(data.concursos || []);
+        setAvailableAnos(data.anos || []);
       }
     } catch (err) {
       console.error("Erro ao carregar filtros:", err);
     }
   };
+
+  // Recarregar anos quando concurso selecionado muda
+  useEffect(() => {
+    if (selectedConcursos.length === 0) return;
+    const loadAnos = async () => {
+      try {
+        const params = new URLSearchParams();
+        selectedConcursos.forEach(c => params.append("concursos[]", c));
+        const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
+          headers: { "X-Questions-Token": TOKEN },
+        });
+        const data = await res.json();
+        if (data.success) {
+          setAvailableAnos(data.anos || []);
+        }
+      } catch {}
+    };
+    loadAnos();
+  }, [selectedConcursos]);
 
   // Expande assuntos normalizados selecionados para todos os brutos originais do banco
   const expandAssuntos = (normalized: string[]): string[] => {
@@ -182,6 +206,9 @@ export default function FiltroQuestoesPage() {
       if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos[]", t));
       if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades[]", d));
       if (filters.tags) q.set("tags", filters.tags);
+      if (sourceKind) q.set("source_kind", sourceKind);
+      if (selectedConcursos.length) selectedConcursos.forEach(c => q.append("concursos[]", c));
+      if (selectedAnos.length) selectedAnos.forEach(a => q.append("anos[]", a));
 
       const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, {
         headers: { "X-Questions-Token": TOKEN },
@@ -234,8 +261,9 @@ export default function FiltroQuestoesPage() {
     if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos", t));
     if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades", d));
     if (filters.tags) q.set("tags", filters.tags);
-    if (questionType) q.set("tipo", questionType);
-    if (questionYear) q.set("ano", questionYear);
+    if (sourceKind) q.set("source_kind", sourceKind);
+    if (selectedConcursos.length) selectedConcursos.forEach(c => q.append("concursos", c));
+    if (selectedAnos.length) selectedAnos.forEach(a => q.append("anos", a));
 
     router.push(`/editor/questoes?${q.toString()}`);
   };
@@ -390,77 +418,110 @@ export default function FiltroQuestoesPage() {
 
                     <Separator />
 
-                    {/* Tipo de Questão */}
+                    {/* Origem */}
                     <div className="space-y-3">
-                      <Label className="text-sm font-bold text-slate-700">Tipo de Questão</Label>
+                      <Label className="text-sm font-bold text-slate-700">Origem</Label>
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <input
                             type="radio"
-                            id="tipo-todos"
-                            name="tipo"
+                            id="origem-todas"
+                            name="origem"
                             value=""
-                            checked={questionType === ""}
-                            onChange={(e) => setQuestionType(e.target.value)}
+                            checked={sourceKind === ""}
+                            onChange={() => { setSourceKind(""); setSelectedConcursos([]); setSelectedAnos([]); }}
                             className="h-4 w-4"
                           />
-                          <label htmlFor="tipo-todos" className="text-sm cursor-pointer">
+                          <label htmlFor="origem-todas" className="text-sm cursor-pointer">
                             Todas
                           </label>
                         </div>
                         <div className="flex items-center gap-2">
                           <input
                             type="radio"
-                            id="tipo-original"
-                            name="tipo"
-                            value="Original"
-                            checked={questionType === "Original"}
-                            onChange={(e) => setQuestionType(e.target.value)}
+                            id="origem-original"
+                            name="origem"
+                            value="original"
+                            checked={sourceKind === "original"}
+                            onChange={() => { setSourceKind("original"); setSelectedConcursos([]); setSelectedAnos([]); }}
                             className="h-4 w-4"
                           />
-                          <label htmlFor="tipo-original" className="text-sm cursor-pointer">
+                          <label htmlFor="origem-original" className="text-sm cursor-pointer">
                             Original
                           </label>
                         </div>
                         <div className="flex items-center gap-2">
                           <input
                             type="radio"
-                            id="tipo-concurso"
-                            name="tipo"
-                            value="Concurso"
-                            checked={questionType === "Concurso"}
-                            onChange={(e) => setQuestionType(e.target.value)}
+                            id="origem-concurso"
+                            name="origem"
+                            value="concurso"
+                            checked={sourceKind === "concurso"}
+                            onChange={() => { setSourceKind("concurso"); }}
                             className="h-4 w-4"
                           />
-                          <label htmlFor="tipo-concurso" className="text-sm cursor-pointer">
+                          <label htmlFor="origem-concurso" className="text-sm cursor-pointer">
                             Concurso
                           </label>
                         </div>
                       </div>
                     </div>
 
-                    <Separator />
+                    {/* Concurso + Ano (se Concurso) */}
+                    {sourceKind === "concurso" && availableConcursos.length > 0 && (
+                      <>
+                        <div className="space-y-3">
+                          <Label className="text-sm font-bold text-slate-700">Concurso</Label>
+                          <div className="space-y-1">
+                            {availableConcursos.map(conc => (
+                              <div key={conc} className="flex items-center gap-2">
+                                <Checkbox
+                                  id={`conc-${conc}`}
+                                  checked={selectedConcursos.includes(conc)}
+                                  onCheckedChange={() => {
+                                    setSelectedConcursos(prev =>
+                                      prev.includes(conc)
+                                        ? prev.filter(c => c !== conc)
+                                        : [...prev, conc]
+                                    );
+                                    setSelectedAnos([]);
+                                  }}
+                                />
+                                <label htmlFor={`conc-${conc}`} className="text-sm cursor-pointer leading-none">
+                                  {conc}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
 
-                    {/* Ano (se Concurso) */}
-                    {questionType === "Concurso" && (
-                      <div className="space-y-3">
-                        <Label htmlFor="year-select" className="text-sm font-bold text-slate-700">
-                          Ano do Concurso
-                        </Label>
-                        <select
-                          id="year-select"
-                          value={questionYear}
-                          onChange={(e) => setQuestionYear(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="">Todos os anos</option>
-                          {years.map((year) => (
-                            <option key={year} value={year.toString()}>
-                              {year}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                        {availableAnos.length > 0 && (
+                          <div className="space-y-3">
+                            <Label className="text-sm font-bold text-slate-700">Ano</Label>
+                            <div className="space-y-1">
+                              {availableAnos.map(ano => (
+                                <div key={ano} className="flex items-center gap-2">
+                                  <Checkbox
+                                    id={`ano-${ano}`}
+                                    checked={selectedAnos.includes(String(ano))}
+                                    onCheckedChange={() => {
+                                      const s = String(ano);
+                                      setSelectedAnos(prev =>
+                                        prev.includes(s)
+                                          ? prev.filter(a => a !== s)
+                                          : [...prev, s]
+                                      );
+                                    }}
+                                  />
+                                  <label htmlFor={`ano-${ano}`} className="text-sm cursor-pointer leading-none">
+                                    {ano}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </>
                     )}
 
                     <Separator />
