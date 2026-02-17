@@ -13,8 +13,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import type { CarouselApi } from "@/components/ui/carousel";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
@@ -50,7 +48,7 @@ type FilterValues = {
 
 export default function QuestoesPage() {
   const router = useRouter();
-  const { addQuestion, removeQuestion, isSelected, selectedCount } = useProva();
+  const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll } = useProva();
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -138,7 +136,7 @@ export default function QuestoesPage() {
 
   return (
     <div className="flex h-screen">
-      <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-hidden">
+      <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto overflow-x-hidden">
         <div className="w-full max-w-full md:max-w-[12cm] mx-auto mb-4">
           <Button variant="ghost" size="sm" onClick={() => router.push("/editor/questoes/filtro")}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -186,7 +184,32 @@ export default function QuestoesPage() {
                 >
                   Montar Prova ({selectedCount})
                 </Button>
+                {hasSelection && (
+                  <Button size="sm" variant="ghost" onClick={clearAll} className="text-xs text-muted-foreground">
+                    Limpar
+                  </Button>
+                )}
               </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
+              <button
+                onClick={() => api?.scrollPrev()}
+                disabled={currentIndex === 0}
+                style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex === 0 ? 0.3 : 1 }}
+              >
+                ‹ Anterior
+              </button>
+              <span style={{ fontSize: 13, fontWeight: 500, minWidth: 60, textAlign: "center" as const }}>
+                {currentIndex + 1} / {items.length}
+              </span>
+              <button
+                onClick={() => api?.scrollNext()}
+                disabled={currentIndex >= items.length - 1}
+                style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= items.length - 1 ? 0.3 : 1 }}
+              >
+                Próxima ›
+              </button>
             </div>
 
             <Carousel opts={{ align: "center" }} className="w-full" setApi={setApi}>
@@ -207,11 +230,6 @@ export default function QuestoesPage() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-
-              <div className="hidden md:block">
-                <CarouselPrevious className="left-0" />
-                <CarouselNext className="right-0" />
-              </div>
             </Carousel>
           </div>
         )}

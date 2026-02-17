@@ -2,28 +2,100 @@
 // scripts/parse-tex.ts
 // Uso: pnpm tsx scripts/parse-tex.ts caminho/arquivo.tex
 //
-// Lê um .tex (pacote exam) e gera src/data/import-queue.json
-// com cada questão separada, tipo detectado e gabarito extraído.
+// Lê um .tex (pacote exam) e gera public/data/import-queue.json
+// com cada questão separada, tipo detectado, gabarito extraído,
+// e metadados YAML (se houver bloco \begin{verbatim}---...---\end{verbatim}).
 
 import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { resolve, dirname } from "path";
+
+type YamlMeta = {
+  tipo?: string;
+  dificuldade?: string;
+  disciplina?: string;
+  assunto?: string;
+  gabarito?: string;
+  tags?: string[];
+  fonte?: string;
+  concurso?: string;
+  banca?: string;
+  ano?: number;
+  numero?: string;
+  cargo?: string;
+  prova?: string;
+};
 
 type ImportItem = {
   latex: string;
   tipo: "Múltipla Escolha" | "Discursiva";
   gabarito: string | null;
+  meta?: YamlMeta;
 };
 
 function sanitizeLatexForImport(latex: string): string {
-  // R\$ → R$ (escapes de moeda fora de math travam parsers/regex do smartPaste)
-  // No arquivo .tex, "R\$" são 3 chars: R, \, $
-  // Na regex JS, \\ matcha \ literal, \$ matcha $ literal
   latex = latex.replace(/R\\\$/g, "R$");
-  // \% → % , \_ → _ , \& → & (escapes comuns em texto fora de math)
   latex = latex.replace(/\\%/g, "%");
   latex = latex.replace(/\\_/g, "_");
   latex = latex.replace(/\\&/g, "&");
   return latex;
+}
+
+/** Parseia frontmatter YAML simples entre --- delimitadores */
+function parseYamlBlock(block: string): YamlMeta {
+  const result: YamlMeta = {};
+
+  for (const line of block.split("\n")) {
+    const stripped = line.replace(/#.*$/, "").trim();
+    if (!stripped) continue;
+
+    const colonIdx = stripped.indexOf(":");
+    if (colonIdx === -1) continue;
+
+    const key = stripped.slice(0, colonIdx).trim().toLowerCase();
+    const val = stripped.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, "");
+
+    if (!val && key !== "tags") continue;
+
+    switch (key) {
+      case "tipo": result.tipo = val; break;
+      case "dificuldade": result.dificuldade = val; break;
+      case "disciplina": result.disciplina = val; break;
+      case "assunto": result.assunto = val; break;
+      case "gabarito": result.gabarito = val; break;
+      case "fonte": result.fonte = val; break;
+      case "concurso": result.concurso = val; break;
+      case "banca": result.banca = val; break;
+      case "cargo": result.cargo = val; break;
+      case "prova": result.prova = val; break;
+      case "numero": result.numero = val; break;
+      case "ano": {
+        const n = parseInt(val, 10);
+        if (!isNaN(n)) result.ano = n;
+        break;
+      }
+      case "tags": {
+        let s = val;
+        if (s.startsWith("[") && s.endsWith("]")) s = s.slice(1, -1);
+        result.tags = s.split(",").map(t => t.trim().replace(/^["']|["']$/g, "")).filter(Boolean);
+        break;
+      }
+    }
+  }
+
+  return result;
+}
+
+/** Extrai o bloco YAML de dentro de \begin{verbatim}---...---\end{verbatim} */
+function extractVerbatimYaml(text: string): YamlMeta | null {
+  // Pega o ÚLTIMO verbatim no trecho (pode haver \section* antes)
+  const re = /\\begin\{verbatim\}\s*\n?\s*---\s*\n([\s\S]*?)\n\s*---\s*\n?\s*\\end\{verbatim\}/g;
+  let lastMatch: RegExpExecArray | null = null;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) {
+    lastMatch = m;
+  }
+  if (!lastMatch) return null;
+  return parseYamlBlock(lastMatch[1]);
 }
 
 function main() {
@@ -36,23 +108,51 @@ function main() {
   const filePath = resolve(args[0]);
   const src = readFileSync(filePath, "utf-8");
 
-  // Separa por \question — cada ocorrência inicia uma nova questão
-  const chunks = src.split(/\\question\b/).slice(1); // ignora tudo antes do primeiro \question
+  // Encontra todas as posições de \question no texto
+  const questionRe = /\\question\b/g;
+  const positions: number[] = [];
+  let qm: RegExpExecArray | null;
+  while ((qm = questionRe.exec(src))) {
+    positions.push(qm.index);
+  }
 
-  if (!chunks.length) {
+  if (!positions.length) {
     console.error("Nenhuma \\question encontrada no arquivo.");
     process.exit(1);
   }
 
   const queue: ImportItem[] = [];
 
-  for (const raw of chunks) {
-    // Remove parâmetro opcional [pontos] logo após \question
-    const chunk = raw.replace(/^\s*\[[^\]]*\]\s*/, "").trim();
+  for (let i = 0; i < positions.length; i++) {
+    const qStart = positions[i];
+    const qEnd = i + 1 < positions.length ? positions[i + 1] : src.length;
+
+    // Texto antes deste \question (entre o \question anterior e este)
+    const prevStart = i > 0 ? positions[i - 1] : 0;
+    const textBefore = src.slice(prevStart, qStart);
+
+    // Extrai YAML do verbatim que aparece antes deste \question
+    const meta = extractVerbatimYaml(textBefore);
+
+    // Texto da questão: do \question até o próximo \question (ou fim)
+    // Remove o \begin{verbatim}...---...\end{verbatim} que pertence à PRÓXIMA questão
+    let questionText = src.slice(qStart, qEnd);
+    // Remove verbatim/yaml que esteja no final (pertence à próxima questão)
+    questionText = questionText.replace(
+      /\\begin\{verbatim\}\s*\n?\s*---[\s\S]*?---\s*\n?\s*\\end\{verbatim\}\s*$/,
+      ""
+    );
+    // Remove \section* que possa estar no final (pertence à próxima questão)
+    questionText = questionText.replace(/\\section\*?\{[^}]*\}\s*$/, "");
+    questionText = questionText.trim();
+
+    // Remove \question e parâmetro opcional [pontos]
+    const chunk = questionText
+      .replace(/^\\question\s*(\[[^\]]*\])?\s*/, "")
+      .trim();
     if (!chunk) continue;
 
     const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(chunk);
-    const hasParts = /\\begin\{parts\}/.test(chunk);
 
     let tipo: ImportItem["tipo"];
     let gabarito: string | null = null;
@@ -60,7 +160,7 @@ function main() {
     if (hasChoices) {
       tipo = "Múltipla Escolha";
 
-      // Conta posição do \correctchoice pra determinar a letra
+      // Gabarito do \correctchoice
       const choicesMatch = chunk.match(
         /\\begin\{(?:choices|oneparchoices)\}([\s\S]*?)\\end\{(?:choices|oneparchoices)\}/
       );
@@ -81,27 +181,37 @@ function main() {
       tipo = "Discursiva";
     }
 
-    // Reconstrói o LaTeX da questão com \question na frente
-    // (necessário pro parseQuestionFromLatexText funcionar)
+    // Gabarito do YAML tem prioridade se não veio do \correctchoice
+    if (!gabarito && meta?.gabarito) {
+      gabarito = meta.gabarito.toUpperCase();
+    }
+
+    // Tipo do YAML pode sobrescrever
+    if (meta?.tipo) {
+      const t = meta.tipo.toLowerCase();
+      if (t.includes("múltipla") || t.includes("multipla")) tipo = "Múltipla Escolha";
+      else if (t.includes("discursiva")) tipo = "Discursiva";
+    }
+
     let latex = "\\question " + chunk;
     latex = sanitizeLatexForImport(latex);
 
-    queue.push({ latex, tipo, gabarito });
+    queue.push({ latex, tipo, gabarito, ...(meta ? { meta } : {}) });
   }
 
-  // Salva em public/data/import-queue.json (acessível via fetch estático)
+  // Salva em public/data/import-queue.json
   const outPath = resolve(__dirname, "../public/data/import-queue.json");
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, JSON.stringify(queue, null, 2), "utf-8");
 
   console.log(`✓ ${queue.length} questões extraídas → public/data/import-queue.json`);
 
-  // Resumo
   for (let i = 0; i < queue.length; i++) {
     const q = queue[i];
-    const preview = q.latex.slice(0, 60).replace(/\n/g, " ");
+    const assunto = q.meta?.assunto || "—";
+    const preview = q.latex.slice(0, 50).replace(/\n/g, " ");
     console.log(
-      `  ${i + 1}. [${q.tipo}] gab=${q.gabarito ?? "—"} | ${preview}...`
+      `  ${i + 1}. [${q.tipo}] gab=${q.gabarito ?? "—"} assunto=${assunto} | ${preview}...`
     );
   }
 }

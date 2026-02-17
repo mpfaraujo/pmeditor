@@ -427,7 +427,7 @@ const { pages, refs } = usePagination({
   const renderQuestion = (
     question: QuestionData | undefined,
     globalIndex: number,
-    frag?: { kind: "frag"; from: number; to: number; first: boolean }
+    frag?: { kind: "frag"; from: number; to: number; first: boolean; textBlockCount?: number }
   ) => {
     if (!question) return null;
     const printedIndex = (printNumberMap.get(globalIndex) ?? 1) - 1;
@@ -449,28 +449,68 @@ const { pages, refs } = usePagination({
         ? `frag-${String(baseKey).replace(/[^a-zA-Z0-9_-]/g, "_")}-${frag.from}-${frag.to}-${frag.first ? 1 : 0}`
         : null;
 
+    // Gera CSS de fragmentação considerando opções expandidas
+    const fragCss = (() => {
+      if (!fragId || !frag) return null;
+      const N = frag.textBlockCount; // undefined = sem opções expandidas
+      const { from, to } = frag;
+      const base = `#${fragId}`;
+
+      let css = "";
+
+      if (N != null && (from > N || to > N)) {
+        // Opções foram expandidas: índices abrangem .question-text (1..N) + .question-options > * (N+1..)
+        // Calcula ranges para cada container
+        const textFrom = Math.max(from, 1);
+        const textTo = Math.min(to, N);
+        const hasText = textFrom <= N;
+        const optFrom = Math.max(from - N, 1);
+        const optTo = to - N;
+        const hasOpts = optTo >= 1;
+
+        // question-text: esconde tudo, mostra range (ou esconde totalmente)
+        if (hasText) {
+          css += `${base} .question-text > * { display: none; }\n`;
+          css += `${base} .question-text > *:nth-child(n+${textFrom}):nth-child(-n+${textTo}) { display: block; }\n`;
+        } else {
+          css += `${base} .question-text { display: none; }\n`;
+        }
+
+        // question-options: esconde tudo, mostra range (ou esconde totalmente)
+        css += `${base} .question-options > * { display: none; }\n`;
+        if (hasOpts) {
+          css += `${base} .question-options { display: block; }\n`;
+          css += `${base} .question-options > *:nth-child(n+${optFrom}):nth-child(-n+${optTo}) { display: block; }\n`;
+        } else {
+          css += `${base} .question-options { display: none; }\n`;
+        }
+      } else {
+        // Sem opções expandidas: lógica original (só .question-text)
+        css += `${base} .questao-conteudo:has(.question-text) .question-text > * { display: none; }\n`;
+        css += `${base} .questao-conteudo:has(.question-text) .question-text > *:nth-child(n+${from}):nth-child(-n+${to}) { display: block; }\n`;
+
+        // Fallback sem .question-text
+        css += `${base} .questao-conteudo:not(:has(.question-text)) > * { display: none; }\n`;
+        css += `${base} .questao-conteudo:not(:has(.question-text)) > *:nth-child(n+${from}):nth-child(-n+${to}) { display: block; }\n`;
+        css += `${base} .questao-conteudo:not(:has(.question-text)) > :first-child > * { display: none; }\n`;
+        css += `${base} .questao-conteudo:not(:has(.question-text)) > :first-child > *:nth-child(n+${from}):nth-child(-n+${to}) { display: block; }\n`;
+      }
+
+      if (!frag.first) {
+        css += `${base} .questao-header-linha { display: none; }\n`;
+      }
+
+      return css;
+    })();
+
     return (
       <div
         key={fragKey}
         id={fragId ?? undefined}
         className={`questao-item-wrapper${provaConfig.allowPageBreak ? " allow-break" : ""}`}
       >
-        {fragId && frag && (
-          <style>{`
-  /* Se existir .question-text, NÃO pode esconder .questao-conteudo > * (senão mata o wrapper) */
-  #${fragId} .questao-conteudo:has(.question-text) .question-text > * { display: none; }
-  #${fragId} .questao-conteudo:has(.question-text) .question-text > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
-
-  /* Só aplica Caso 1/2 quando NÃO houver .question-text */
-  #${fragId} .questao-conteudo:not(:has(.question-text)) > * { display: none; }
-  #${fragId} .questao-conteudo:not(:has(.question-text)) > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
-
-  #${fragId} .questao-conteudo:not(:has(.question-text)) > :first-child > * { display: none; }
-  #${fragId} .questao-conteudo:not(:has(.question-text)) > :first-child > *:nth-child(n+${frag.from}):nth-child(-n+${frag.to}) { display: block; }
-
-  ${frag.first ? "" : `#${fragId} .questao-header-linha { display: none; }`}
-`}</style>
-
+        {fragCss && (
+          <style>{fragCss}</style>
         )}
 
         {/* ✅ item do texto base: banner + conteúdo, sem cabeçalho de questão */}

@@ -13,10 +13,27 @@ import { normalizeGabaritoForTipo, type QuestionMetadataV1 } from "@/components/
 import { ChevronLeft, ChevronRight, SkipForward, FileText } from "lucide-react";
 import { AssuntoCombobox } from "@/components/editor/AssuntoCombobox";
 
+type YamlMeta = {
+  tipo?: string;
+  dificuldade?: string;
+  disciplina?: string;
+  assunto?: string;
+  gabarito?: string;
+  tags?: string[];
+  fonte?: string;
+  concurso?: string;
+  banca?: string;
+  ano?: number;
+  numero?: string;
+  cargo?: string;
+  prova?: string;
+};
+
 type ImportItem = {
   latex: string;
   tipo: "Múltipla Escolha" | "Discursiva";
   gabarito: string | null;
+  meta?: YamlMeta;
 };
 
 /** Configuração aplicada a todas as questões do lote */
@@ -90,18 +107,40 @@ function buildInitial(
       ? { kind: "mcq" as const, correct: item.gabarito as "A" | "B" | "C" | "D" | "E" }
       : null;
 
+  // YAML por questão sobrescreve batchConfig quando disponível
+  const m = item.meta;
+
+  const VALID_DIFICULDADES = ["Fácil", "Média", "Difícil"] as const;
+  const dificuldade = (
+    m?.dificuldade && VALID_DIFICULDADES.find(d => d.toLowerCase() === m.dificuldade!.toLowerCase())
+  ) || batch.dificuldade;
+
+  const source = m?.concurso || m?.banca || m?.ano || m?.fonte
+    ? {
+        kind: (m.fonte === "original" ? "original" : "concurso") as "original" | "concurso",
+        concurso: m.concurso || batch.source.concurso,
+        banca: m.banca || batch.source.banca,
+        ano: m.ano || batch.source.ano,
+        cargo: m.cargo || batch.source.cargo,
+        numero: m.numero || undefined,
+        prova: m.prova || undefined,
+      }
+    : { ...batch.source };
+
+  const tags = m?.tags?.length ? [...m.tags] : batch.tags.length ? [...batch.tags] : [];
+
   const metadata: QuestionMetadataV1 = {
     schemaVersion: 1,
     id: newId(),
     createdAt: now,
     updatedAt: now,
     tipo: item.tipo,
-    disciplina: "Matemática",
-    assunto: batch.assunto || undefined,
-    dificuldade: batch.dificuldade,
+    disciplina: m?.disciplina || "Matemática",
+    assunto: m?.assunto || batch.assunto || undefined,
+    dificuldade,
     gabarito: gabarito ?? normalizeGabaritoForTipo(item.tipo as any),
-    tags: batch.tags.length ? [...batch.tags] : [],
-    source: batch.source,
+    tags,
+    source,
     author,
   };
 
@@ -412,9 +451,15 @@ export default function ImportarPage() {
               </span>
             )}
 
-            {batchConfig.assunto && (
+            {(item!.meta?.assunto || batchConfig.assunto) && (
               <span className="text-xs px-2 py-0.5 rounded bg-purple-100 text-purple-700">
-                {batchConfig.assunto}
+                {item!.meta?.assunto || batchConfig.assunto}
+              </span>
+            )}
+
+            {item!.meta?.numero && (
+              <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+                #{item!.meta.numero}
               </span>
             )}
           </div>

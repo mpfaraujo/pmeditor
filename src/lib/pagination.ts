@@ -14,6 +14,8 @@ export type LayoutItem =
       from: number; // 1-based (nth-child)
       to: number; // 1-based (nth-child)
       first: boolean;
+      /** Quantos blocos vêm de .question-text (o resto são opções individuais) */
+      textBlockCount?: number;
     };
 
 export type PageLayout = {
@@ -95,22 +97,45 @@ type SplitInfo = {
   prefixHeight: number; // tudo antes do container de blocos (inclui header/banners)
   suffixHeight: number; // margem/pós-conteúdo (ex.: margin-bottom do wrapper)
   blocksHeights: number[]; // alturas dos blocos (1:1 com nth-child)
+  textBlockCount?: number; // quantos blocos são de .question-text (o resto são opções)
 };
 
-function pickBlockElementsFromWrapper(wrapper: HTMLElement): HTMLElement[] {
+type PickResult = { blocks: HTMLElement[]; textBlockCount?: number };
+
+/**
+ * expandOptions=false (padrão): .question-options é 1 bloco atômico
+ * expandOptions=true (fallback): cada opção vira bloco separado
+ */
+function pickBlockElementsFromWrapper(
+  wrapper: HTMLElement,
+  expandOptions = false
+): PickResult {
   const conteudo = wrapper.querySelector(".questao-conteudo") as HTMLElement | null;
-  if (!conteudo) return [];
+  if (!conteudo) return { blocks: [] };
+
+  function appendOptions(blocks: HTMLElement[], root: HTMLElement): number | undefined {
+    const options = root.querySelector(".question-options") as HTMLElement | null;
+    if (!options) return undefined;
+
+    if (expandOptions) {
+      const optKids = Array.from(options.children) as HTMLElement[];
+      if (optKids.length > 1) {
+        const textCount = blocks.length;
+        blocks.push(...optKids);
+        return textCount;
+      }
+    }
+    blocks.push(options);
+    return undefined;
+  }
 
   const qt = conteudo.querySelector(".question-text") as HTMLElement | null;
   if (qt) {
     const kids = Array.from(qt.children) as HTMLElement[];
     if (kids.length >= 1) {
       const blocks: HTMLElement[] = [...kids];
-
-      const options = conteudo.querySelector(".question-options") as HTMLElement | null;
-      if (options) blocks.push(options);
-
-      return blocks;
+      const textBlockCount = appendOptions(blocks, conteudo);
+      return { blocks, textBlockCount };
     }
   }
 
@@ -129,20 +154,21 @@ function pickBlockElementsFromWrapper(wrapper: HTMLElement): HTMLElement[] {
         const innerKids = Array.from(innerQT.children) as HTMLElement[];
         if (innerKids.length >= 1) {
           const blocks: HTMLElement[] = [...innerKids];
-
-          const options = conteudo.querySelector(".question-options") as HTMLElement | null;
-          if (options) blocks.push(options);
-
-          return blocks;
+          const textBlockCount = appendOptions(blocks, conteudo);
+          return { blocks, textBlockCount };
         }
       }
     }
   }
 
-  return blockEls;
+  return { blocks: blockEls };
 }
 
-function measureSplitInfo(measurementContainer: HTMLElement, index: number): SplitInfo | null {
+function measureSplitInfo(
+  measurementContainer: HTMLElement,
+  index: number,
+  expandOptions = false
+): SplitInfo | null {
   const wrappers = Array.from(
     measurementContainer.querySelectorAll(".questao-item-wrapper")
   ) as HTMLElement[];
@@ -157,7 +183,7 @@ function measureSplitInfo(measurementContainer: HTMLElement, index: number): Spl
     return { prefixHeight: total, suffixHeight: mb, blocksHeights: [] };
   }
 
-  const blockEls = pickBlockElementsFromWrapper(wrapper);
+  const { blocks: blockEls, textBlockCount } = pickBlockElementsFromWrapper(wrapper, expandOptions);
   const blocksHeights = blockEls.map((b) => measureBlockHeight(b));
 
   const contentBlocksSum = blocksHeights.reduce((a, b) => a + b, 0);
@@ -169,7 +195,7 @@ function measureSplitInfo(measurementContainer: HTMLElement, index: number): Spl
   // (para não "cobrar" essa margem em todo fragmento).
   const prefixHeight = Math.max(0, total - contentBlocksSum - mb);
 
-  return { prefixHeight, suffixHeight: mb, blocksHeights };
+  return { prefixHeight, suffixHeight: mb, blocksHeights, textBlockCount };
 }
 
 function buildFragmentsForQuestion(
@@ -180,7 +206,7 @@ function buildFragmentsForQuestion(
 ): { items: LayoutItem[]; heights: number[] } | null {
   const FIT_EPS = 100; // px de tolerância pra não quebrar cedo por arredondamento
 
-  const { prefixHeight, suffixHeight, blocksHeights } = split;
+  const { prefixHeight, suffixHeight, blocksHeights, textBlockCount } = split;
 
   if (!blocksHeights.length) return null;
 
@@ -217,7 +243,7 @@ if (used + h > cap + FIT_EPS) break;
     const from = start + 1;
     const to = cursor;
 
-    items.push({ kind: "frag", q: qIndex, from, to, first });
+    items.push({ kind: "frag", q: qIndex, from, to, first, textBlockCount });
 
     // Só "cobra" o suffix no ÚLTIMO fragmento — e só até o limite que ainda cabe,
     // para não quebrar mais cedo por causa de margem.
@@ -297,28 +323,47 @@ export function distributeQuestionsAcrossPages(
       continue;
     }
 
-    if (used > 0) {
+    // Tenta fragmentar aproveitando o espaço restante na coluna atual
+    const remaining = cap - used;
+    const capFirstFrag = remaining > 0 ? remaining : getCap();
+
+    // Se não há espaço restante, avança para coluna/página limpa
+    if (remaining <= 0 && used > 0) {
       nextColumnOrPage();
     }
 
-    const capHere = getCap();
-    if (fullH <= capHere) {
+    const capHere = remaining > 0 ? remaining : getCap();
+
+    // Se cabe inteira numa coluna limpa, coloca como full
+    if (used === 0 && fullH <= capHere) {
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
     }
 
-    const split = measureSplitInfo(measureItemsRef, i);
+    let split = measureSplitInfo(measureItemsRef, i);
     if (!split) {
+      if (used > 0) nextColumnOrPage();
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
     }
 
-    const capNextFrag = columns === 2 && col === "coluna1" ? capHere : otherPageCapacity;
+    // capNextFrag: capacidade do próximo slot (coluna2 mesma pag, ou nova pag)
+    const capNextFrag = columns === 2 && col === "coluna1" ? getCap() : otherPageCapacity;
 
-    const frag = buildFragmentsForQuestion(i, split, capHere, capNextFrag);
+    let frag = buildFragmentsForQuestion(i, split, capHere, capNextFrag);
+
+    // Fallback: se não fragmentou, tenta expandindo opções individuais
     if (!frag) {
+      const splitExpanded = measureSplitInfo(measureItemsRef, i, true);
+      if (splitExpanded) {
+        frag = buildFragmentsForQuestion(i, splitExpanded, capHere, capNextFrag);
+      }
+    }
+
+    if (!frag) {
+      if (used > 0) nextColumnOrPage();
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
@@ -327,18 +372,14 @@ export function distributeQuestionsAcrossPages(
     for (let k = 0; k < frag.items.length; k++) {
       const item = frag.items[k];
       const h = frag.heights[k];
-      const capNow = getCap();
 
-      if (used > 0 && used + h > capNow) {
+      if (k > 0) {
+        // Fragmentos seguintes: avança coluna/página
         nextColumnOrPage();
       }
 
       page[col].push(item);
       used += h;
-
-      if (k < frag.items.length - 1) {
-        nextColumnOrPage();
-      }
     }
   }
 
@@ -556,7 +597,7 @@ export function distributeQuestionsOptimized(
    * Usa a mesma lógica de buildFragmentsForQuestion.
    */
   function placeWithFragmentation(qIndex: number, fullH: number): void {
-    const split = measureSplitInfo(measureItemsRef, qIndex);
+    let split = measureSplitInfo(measureItemsRef, qIndex);
     if (!split) {
       // Fallback: coloca inteira numa nova página
       const newP = newPage(pages.length);
@@ -585,8 +626,20 @@ export function distributeQuestionsOptimized(
       capHere = targetPage.coluna1.remaining;
     }
 
-    const capNext = otherPageCapacity;
-    const frag = buildFragmentsForQuestion(qIndex, split, capHere, capNext);
+    // capNext = capacidade mínima dos próximos slots possíveis (garante que cada frag cabe)
+    const capNext = columns === 2 && targetCol === "coluna1"
+      ? Math.min(targetPage.coluna2.remaining, otherPageCapacity)
+      : otherPageCapacity;
+
+    let frag = buildFragmentsForQuestion(qIndex, split, capHere, capNext);
+
+    // Fallback: se não fragmentou, tenta expandindo opções individuais
+    if (!frag) {
+      const splitExpanded = measureSplitInfo(measureItemsRef, qIndex, true);
+      if (splitExpanded) {
+        frag = buildFragmentsForQuestion(qIndex, splitExpanded, capHere, capNext);
+      }
+    }
 
     if (!frag) {
       // Fallback
