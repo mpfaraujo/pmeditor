@@ -13,6 +13,7 @@ import { splitListItem, liftListItem, sinkListItem } from "prosemirror-schema-li
 
 import "katex/dist/katex.min.css";
 import katex from "katex";
+import "katex/contrib/mhchem";
 
 import { EditorToolbar } from "./EditorToolbar";
 import { MathInsert } from "./MathInsert";

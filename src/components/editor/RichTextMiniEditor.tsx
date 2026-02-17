@@ -12,6 +12,7 @@ import { wrapInList } from "prosemirror-schema-list";
 
 import katex from "katex";
 import "katex/dist/katex.min.css";
+import "katex/contrib/mhchem";
 
 import { miniSchema } from "./miniSchema";
 import { placeholderPlugin } from "./placeholder-plugin";
