@@ -106,6 +106,7 @@ export default function FiltroQuestoesPage() {
 
   // Estados para Filtro de Origem
   const [sourceKind, setSourceKind] = useState<string>("");
+  const [rootType, setRootType] = useState<string>("");
   const [selectedConcursos, setSelectedConcursos] = useState<string[]>([]);
   const [selectedAnos, setSelectedAnos] = useState<string[]>([]);
   const [availableConcursos, setAvailableConcursos] = useState<string[]>([]);
@@ -121,7 +122,7 @@ export default function FiltroQuestoesPage() {
     loadFilterOptions(filters.disciplinas);
     updateCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, sourceKind, selectedConcursos, selectedAnos]);
+  }, [filters, sourceKind, rootType, selectedConcursos, selectedAnos]);
 
   const loadFilterOptions = async (disciplinas: string[] = []) => {
     try {
@@ -207,6 +208,7 @@ export default function FiltroQuestoesPage() {
       if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades[]", d));
       if (filters.tags) q.set("tags", filters.tags);
       if (sourceKind) q.set("source_kind", sourceKind);
+      if (rootType) q.set("root_type", rootType);
       if (selectedConcursos.length) selectedConcursos.forEach(c => q.append("concursos[]", c));
       if (selectedAnos.length) selectedAnos.forEach(a => q.append("anos[]", a));
 
@@ -262,6 +264,7 @@ export default function FiltroQuestoesPage() {
     if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades", d));
     if (filters.tags) q.set("tags", filters.tags);
     if (sourceKind) q.set("source_kind", sourceKind);
+    if (rootType) q.set("root_type", rootType);
     if (selectedConcursos.length) selectedConcursos.forEach(c => q.append("concursos", c));
     if (selectedAnos.length) selectedAnos.forEach(a => q.append("anos", a));
 
@@ -389,6 +392,35 @@ export default function FiltroQuestoesPage() {
                             />
                             <label htmlFor={`tipo-${tipo}`} className="text-sm cursor-pointer leading-none">
                               {tipo}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Estrutura */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-bold text-slate-700">Estrutura</Label>
+                      <div className="space-y-2">
+                        {[
+                          { value: "", label: "Todas" },
+                          { value: "question", label: "Individual" },
+                          { value: "set_questions", label: "Conjunto (texto base)" },
+                        ].map(opt => (
+                          <div key={opt.value} className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              id={`estrutura-${opt.value || "todas"}`}
+                              name="estrutura"
+                              value={opt.value}
+                              checked={rootType === opt.value}
+                              onChange={() => setRootType(opt.value)}
+                              className="h-4 w-4"
+                            />
+                            <label htmlFor={`estrutura-${opt.value || "todas"}`} className="text-sm cursor-pointer">
+                              {opt.label}
                             </label>
                           </div>
                         ))}

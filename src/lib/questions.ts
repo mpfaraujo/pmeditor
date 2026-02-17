@@ -110,6 +110,7 @@ export async function listQuestions(params?: {
   tags?: string;
 
   sourceKind?: string;
+  rootType?: string;
   concursos?: string[];
   anos?: string[];
 }) {
@@ -137,6 +138,9 @@ export async function listQuestions(params?: {
   }
   if (params?.sourceKind) {
     q.set("source_kind", params.sourceKind);
+  }
+  if (params?.rootType) {
+    q.set("root_type", params.rootType);
   }
   if (params?.concursos?.length) {
     params.concursos.forEach((c) => q.append("concursos[]", c));

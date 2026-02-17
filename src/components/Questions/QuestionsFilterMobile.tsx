@@ -37,6 +37,7 @@ interface FilterValues {
   dificuldades: string[];
   tags: string;
   sourceKind: string;
+  rootType: string;
   concursos: string[];
   anos: string[];
 }
@@ -65,6 +66,7 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
     dificuldades: [],
     tags: "",
     sourceKind: "",
+    rootType: "",
     concursos: [],
     anos: [],
   });
@@ -159,6 +161,7 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
       dificuldades: [],
       tags: "",
       sourceKind: "",
+      rootType: "",
       concursos: [],
       anos: [],
     };
@@ -273,6 +276,33 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
                     />
                     <label htmlFor={`mobile-tipo-${tipo}`} className="text-xs cursor-pointer leading-tight">
                       {tipo}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Estrutura */}
+            <div>
+              <Label className="text-xs font-medium mb-1.5 block">Estrutura</Label>
+              <div className="space-y-1">
+                {[
+                  { value: "", label: "Todas" },
+                  { value: "question", label: "Individual" },
+                  { value: "set_questions", label: "Conjunto" },
+                ].map(opt => (
+                  <div key={opt.value} className="flex items-center gap-1.5">
+                    <input
+                      type="radio"
+                      id={`mobile-estrutura-${opt.value || "todas"}`}
+                      name="mobile-estrutura"
+                      value={opt.value}
+                      checked={filters.rootType === opt.value}
+                      onChange={() => setFilters(prev => ({ ...prev, rootType: opt.value }))}
+                      className="h-3 w-3"
+                    />
+                    <label htmlFor={`mobile-estrutura-${opt.value || "todas"}`} className="text-xs cursor-pointer leading-tight">
+                      {opt.label}
                     </label>
                   </div>
                 ))}
