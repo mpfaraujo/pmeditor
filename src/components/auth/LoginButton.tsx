@@ -41,17 +41,31 @@ export function LoginButton() {
   useEffect(() => {
     if (!gsiReady || isLoggedIn || !btnRef.current || !GOOGLE_CLIENT_ID) return;
 
-    window.google?.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleCredentialResponse,
-    });
+    // Polling para garantir que window.google está disponível
+    const checkGoogle = () => {
+      if (!window.google || !btnRef.current) return;
 
-    window.google?.accounts.id.renderButton(btnRef.current, {
-      theme: "outline",
-      size: "medium",
-      text: "signin_with",
-      locale: "pt-BR",
-    });
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+
+      window.google.accounts.id.renderButton(btnRef.current, {
+        theme: "outline",
+        size: "medium",
+        text: "signin_with",
+        locale: "pt-BR",
+      });
+    };
+
+    // Tentar imediatamente
+    if (window.google) {
+      checkGoogle();
+    } else {
+      // Tentar novamente após pequeno delay
+      const timer = setTimeout(checkGoogle, 100);
+      return () => clearTimeout(timer);
+    }
   }, [gsiReady, isLoggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) {
@@ -100,7 +114,7 @@ export function LoginButton() {
     <>
       <Script
         src="https://accounts.google.com/gsi/client"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         onLoad={() => setGsiReady(true)}
       />
       <div ref={btnRef} />
