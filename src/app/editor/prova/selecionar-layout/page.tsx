@@ -46,12 +46,10 @@ const [columns, setColumns] = useState<ColumnCount>(
     provaConfig.showGabarito
   );
 
-  const [nome, setNome] = useState(provaConfig.nome);
   const [turma, setTurma] = useState(provaConfig.turma);
   const [professor, setProfessor] = useState(provaConfig.professor);
   const [disciplina, setDisciplina] = useState(provaConfig.disciplina);
   const [data, setData] = useState(provaConfig.data);
-  const [nota, setNota] = useState(provaConfig.nota);
 
   const [instituicao, setInstituicao] = useState(provaConfig.instituicao);
 
@@ -92,12 +90,10 @@ const [logoPlaceholder, setLogoPlaceholder] = useState<string>(
       layoutType,
       columns,
       showGabarito,
-      nome,
       turma,
       professor,
       disciplina,
       data,
-      nota,
       instituicao,
       logoUrl:noLogo? null : logoUrl,
       logoPlaceholder: noLogo ? logoPlaceholder : "",
@@ -304,10 +300,6 @@ if (!mounted) return null;
                   </div>
 
                   <div>
-                    <Label>Nome</Label>
-                    <Input value={nome} onChange={(e) => setNome(e.target.value)} />
-                  </div>
-                  <div>
                     <Label>Turma</Label>
                     <Input value={turma} onChange={(e) => setTurma(e.target.value)} />
                   </div>
@@ -332,10 +324,6 @@ if (!mounted) return null;
                       value={data}
                       onChange={(e) => setData(e.target.value)}
                     />
-                  </div>
-                  <div>
-                    <Label>Nota</Label>
-                    <Input value={nota} onChange={(e) => setNota(e.target.value)} />
                   </div>
                 </div>
 

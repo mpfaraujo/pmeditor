@@ -27,6 +27,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { listTurmas, type Turma } from "@/lib/turmas";
+import { useToast } from "@/hooks/use-toast";
 
 const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
 const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
@@ -112,10 +121,25 @@ export default function FiltroQuestoesPage() {
   const [availableConcursos, setAvailableConcursos] = useState<string[]>([]);
   const [availableAnos, setAvailableAnos] = useState<string[]>([]);
 
-  // Carregar opções iniciais
+  // Estados para Turmas
+  const [turmas, setTurmas] = useState<Turma[]>([]);
+  const [selectedTurmaId, setSelectedTurmaId] = useState<string>("none");
+  const { toast } = useToast();
+
+  // Carregar opções iniciais e turmas
   useEffect(() => {
     loadFilterOptions();
+    loadTurmas();
   }, []);
+
+  const loadTurmas = async () => {
+    try {
+      const data = await listTurmas();
+      setTurmas(data);
+    } catch (err) {
+      console.error("Erro ao carregar turmas:", err);
+    }
+  };
 
   // Recarregar assuntos e atualizar contagem quando filtros mudam
   useEffect(() => {
@@ -245,6 +269,39 @@ export default function FiltroQuestoesPage() {
     });
   };
 
+  const handleTurmaSelect = (id: string) => {
+    setSelectedTurmaId(id);
+    if (!id || id === "none") {
+      // Limpar nome da turma ao selecionar "Nenhuma"
+      updateProvaConfig({ turma: "" });
+      return;
+    }
+
+    const turma = turmas.find(t => t.id === Number(id));
+    if (!turma) return;
+
+    // Aplicar filtros da turma
+    setFilters({
+      disciplinas: turma.filtros.disciplinas || [],
+      assuntos: turma.filtros.assuntos || [],
+      tipos: turma.filtros.tipos || [],
+      dificuldades: turma.filtros.dificuldades || [],
+      tags: turma.filtros.tags || "",
+    });
+    setSourceKind(turma.filtros.sourceKind || "");
+    setRootType(turma.filtros.rootType || "");
+    setSelectedConcursos(turma.filtros.concursos || []);
+    setSelectedAnos(turma.filtros.anos || []);
+
+    // Salvar nome da turma no contexto da prova
+    updateProvaConfig({ turma: turma.nome });
+
+    toast({
+      title: "Filtros aplicados",
+      description: `Filtros da turma "${turma.nome}" aplicados com sucesso`,
+    });
+  };
+
   const handleVerQuestoes = () => {
     // Salvar contexto no ProvaContext
     updateProvaConfig({
@@ -308,6 +365,34 @@ export default function FiltroQuestoesPage() {
               <CardContent className="space-y-6">
                 <ScrollArea className="h-[60vh] pr-4">
                   <div className="space-y-6">
+                    {/* Seletor de Turma */}
+                    {turmas.length > 0 && (
+                      <>
+                        <div className="space-y-3">
+                          <Label className="text-sm font-bold text-slate-700">Carregar Filtros de Turma</Label>
+                          <Select value={selectedTurmaId} onValueChange={handleTurmaSelect}>
+                            <SelectTrigger className="h-9">
+                              <SelectValue placeholder="Selecione uma turma..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="none">Nenhuma (filtros manuais)</SelectItem>
+                              {turmas.map(t => (
+                                <SelectItem key={t.id} value={String(t.id)}>
+                                  {t.nome}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {selectedTurmaId && (
+                            <p className="text-xs text-muted-foreground">
+                              Filtros da turma aplicados. Você pode ajustá-los antes de continuar.
+                            </p>
+                          )}
+                        </div>
+                        <Separator />
+                      </>
+                    )}
+
                     {/* Disciplinas */}
                     <div className="space-y-3">
                       <Label className="text-sm font-bold text-slate-700">Disciplina</Label>

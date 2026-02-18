@@ -104,12 +104,12 @@ export function ProvaLayout({
             onLogoClick={onLogoClick}
             logoPlaceholder={logoPlaceholder}
             isEditable={false}
-            nome={provaConfig.nome}
+            nome=""
             turma={provaConfig.turma}
             professor={provaConfig.professor}
             disciplina={provaConfig.disciplina}
             data={provaConfig.data}
-            nota={provaConfig.nota}
+            nota=""
             instituicao={provaConfig.instituicao}
           />
           <div
@@ -159,12 +159,12 @@ export function ProvaLayout({
                   logoUrl={logoUrl}
                   onLogoClick={onLogoClick}
                   isEditable={true}
-                  nome={provaConfig.nome}
+                  nome=""
                   turma={provaConfig.turma}
                   professor={provaConfig.professor}
                   disciplina={provaConfig.disciplina}
                   data={provaConfig.data}
-                  nota={provaConfig.nota}
+                  nota=""
                   instituicao={provaConfig.instituicao}
                   logoPlaceholder={logoPlaceholder}
 

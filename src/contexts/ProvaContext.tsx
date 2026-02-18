@@ -31,12 +31,10 @@ export type ProvaConfig = {
   showGabarito: boolean;
 
   // campos do cabeçalho
-  nome: string;
   turma: string;
   professor: string;
   disciplina: string;
   data: string;
-  nota: string;
   instituicao: string;
   logoPlaceholder: string;
 
@@ -78,12 +76,10 @@ const defaultProvaConfig: ProvaConfig = {
   logoUrl: null,
   showGabarito: false,
 
-  nome: "",
   turma: "",
   professor: "",
   disciplina: "",
   data: "",
-  nota: "",
   instituicao: "",
 
   headerLayout: 0,
