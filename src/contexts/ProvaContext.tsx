@@ -178,11 +178,45 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // EXISTENTE (idêntico)
+  // EXISTENTE + validação de limite (max 100 questões)
   const addQuestion = (question: QuestionData) => {
     setSelectedQuestions((prev) => {
       const exists = prev.find((q) => q.metadata?.id === question.metadata?.id);
       if (exists) return prev;
+
+      // Calcular quantos items essa questão vai adicionar
+      const doc = safeParseDoc(question.content);
+      let itemsToAdd = 1;
+
+      if (isSetDoc(doc)) {
+        itemsToAdd = getSetItemCount(doc);
+        // Se for set, mas tiver < 2 items, conta como 1
+        if (itemsToAdd < 2) itemsToAdd = 1;
+      }
+
+      // Calcular total atual
+      const currentTotal = prev.reduce((acc, q) => {
+        const qDoc = safeParseDoc(q.content);
+        if (isSetDoc(qDoc)) {
+          const n = getSetItemCount(qDoc);
+          return acc + (n >= 2 ? n : 1);
+        }
+        return acc + 1;
+      }, 0);
+
+      // Verificar se vai ultrapassar 100
+      if (currentTotal + itemsToAdd > 100) {
+        if (typeof window !== "undefined") {
+          alert(
+            `Limite atingido: você pode selecionar no máximo 100 questões por prova.\n\n` +
+            `Atualmente: ${currentTotal} questões\n` +
+            `Tentando adicionar: ${itemsToAdd} questão(ões)\n` +
+            `Total seria: ${currentTotal + itemsToAdd}`
+          );
+        }
+        return prev;
+      }
+
       return [...prev, question];
     });
   };

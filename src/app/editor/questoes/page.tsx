@@ -85,33 +85,44 @@ export default function QuestoesPage() {
   const load = async (filters: Partial<FilterValues>) => {
     setLoading(true);
     try {
-      const params: any = {
-        page: 1,
-        limit: 100,
+      const baseParams: any = {
         includeContent: true,
         includeBase: true,
       };
 
-      if (filters.disciplinas?.length) params.disciplinas = filters.disciplinas;
-      if (filters.assuntos?.length) params.assuntos = filters.assuntos;
-      if (filters.tipos?.length) params.tipos = filters.tipos;
-      if (filters.dificuldades?.length) params.dificuldades = filters.dificuldades;
-      if (filters.tags) params.tags = filters.tags;
-      if (filters.sourceKind) params.sourceKind = filters.sourceKind;
-      if (filters.rootType) params.rootType = filters.rootType;
-      if (filters.concursos?.length) params.concursos = filters.concursos;
-      if (filters.anos?.length) params.anos = filters.anos;
-      if (filters.myQuestions) params.myQuestions = true;
+      if (filters.disciplinas?.length) baseParams.disciplinas = filters.disciplinas;
+      if (filters.assuntos?.length) baseParams.assuntos = filters.assuntos;
+      if (filters.tipos?.length) baseParams.tipos = filters.tipos;
+      if (filters.dificuldades?.length) baseParams.dificuldades = filters.dificuldades;
+      if (filters.tags) baseParams.tags = filters.tags;
+      if (filters.sourceKind) baseParams.sourceKind = filters.sourceKind;
+      if (filters.rootType) baseParams.rootType = filters.rootType;
+      if (filters.concursos?.length) baseParams.concursos = filters.concursos;
+      if (filters.anos?.length) baseParams.anos = filters.anos;
+      if (filters.myQuestions) baseParams.myQuestions = true;
 
-      const res: any = await listQuestions(params);
-      const list = Array.isArray(res)
-        ? res
-        : Array.isArray(res?.items)
-        ? res.items
-        : [];
+      // Buscar primeira página para saber o total
+      const firstPage: any = await listQuestions({ ...baseParams, page: 1, limit: 100 });
+      const total = firstPage?.total ?? 0;
+      let allItems = Array.isArray(firstPage?.items) ? firstPage.items : [];
 
-      setItems(list);
-      setTotalResults(res?.total ?? list.length);
+      // Se tem mais páginas, buscar todas em paralelo
+      if (total > 100) {
+        const totalPages = Math.ceil(total / 100);
+        const promises = [];
+        for (let page = 2; page <= totalPages; page++) {
+          promises.push(listQuestions({ ...baseParams, page, limit: 100 }));
+        }
+        const results = await Promise.all(promises);
+        results.forEach((res: any) => {
+          if (Array.isArray(res?.items)) {
+            allItems = [...allItems, ...res.items];
+          }
+        });
+      }
+
+      setItems(allItems);
+      setTotalResults(total);
       setCurrentIndex(0);
     } finally {
       setLoading(false);
