@@ -13,9 +13,11 @@ import {
   Settings,
   CheckSquare,
   Square,
+  Save,
 } from "lucide-react";
 import { LogoPicker } from "@/components/editor/LogoPicker";
 import { ReorderModal } from "@/components/prova/ReorderModal";
+import { SalvarProvaDialog } from "@/components/prova/SalvarProvaDialog";
 import QuestionHeaderSvg from "@/components/prova/QuestaoHeaderSvg";
 import PaginatedA4 from "@/components/prova/PaginatedA4";
 import { usePagination } from "@/hooks/usePagination";
@@ -175,6 +177,7 @@ export default function MontarProvaPage() {
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
+  const [salvarDialogOpen, setSalvarDialogOpen] = useState(false);
 
 
   if (initialQuestions.length === 0) {
@@ -607,6 +610,15 @@ const { pages, refs } = usePagination({
               )}
             </Button>
 
+            <Button
+              variant="outline"
+              onClick={() => setSalvarDialogOpen(true)}
+              disabled={initialQuestions.length === 0}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Salvar Prova
+            </Button>
+
             <Button onClick={handlePrint}>
               <Printer className="h-4 w-4 mr-2" />
               Imprimir
@@ -654,6 +666,15 @@ const { pages, refs } = usePagination({
           onApply={handleReorderApply}
           onReset={handleReorderReset}
           isManualOrder={manualOrder}
+        />
+
+        <SalvarProvaDialog
+          open={salvarDialogOpen}
+          onOpenChange={setSalvarDialogOpen}
+          selections={selections}
+          onSaved={(prova) => {
+            setSalvarDialogOpen(false);
+          }}
         />
       </PaginatedA4>
 

@@ -64,6 +64,7 @@ type ProvaContextType = {
   selections: Selection[];
   selectedCount: number;
   setSetSelection: (setId: string, itemIndexes: number[]) => void;
+  clearSetSelections: () => void;
 
   provaConfig: ProvaConfig;
   updateProvaConfig: (config: Partial<ProvaConfig>) => void;
@@ -127,12 +128,24 @@ function normalizeHeaderLayout(v: any): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 
 }
 
 const LS_KEY = "provaConfig_v1";
+const LS_QUESTIONS_KEY = "provaQuestions_v1";
+const LS_SET_SELECTIONS_KEY = "provaSetSelections_v1";
 
 /* ---------------- provider ---------------- */
 
 export function ProvaProvider({ children }: { children: ReactNode }) {
-  // EXISTENTE
-  const [selectedQuestions, setSelectedQuestions] = useState<QuestionData[]>([]);
+  // EXISTENTE - agora com persistência
+  const [selectedQuestions, setSelectedQuestions] = useState<QuestionData[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = window.localStorage.getItem(LS_QUESTIONS_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
   const [provaConfig, setProvaConfig] = useState<ProvaConfig>(() => {
     if (typeof window === "undefined") return defaultProvaConfig;
     try {
@@ -150,15 +163,25 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // NOVO: guarda seleção de itens por setId
+  // NOVO: guarda seleção de itens por setId - agora com persistência
   const [setSelectionsById, setSetSelectionsById] = useState<
     Record<string, number[]>
-  >({});
+  >(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      const raw = window.localStorage.getItem(LS_SET_SELECTIONS_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return typeof parsed === "object" && parsed !== null ? parsed : {};
+    } catch {
+      return {};
+    }
+  });
 
   // EXISTENTE (idêntico)
   const addQuestion = (question: QuestionData) => {
     setSelectedQuestions((prev) => {
-      const exists = prev.find((q) => q.metadata.id === question.metadata.id);
+      const exists = prev.find((q) => q.metadata?.id === question.metadata?.id);
       if (exists) return prev;
       return [...prev, question];
     });
@@ -166,7 +189,7 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
 
   // EXISTENTE + limpeza do map (não afeta comportamento antigo)
   const removeQuestion = (id: string) => {
-    setSelectedQuestions((prev) => prev.filter((q) => q.metadata.id !== id));
+    setSelectedQuestions((prev) => prev.filter((q) => q.metadata?.id !== id));
     setSetSelectionsById((prev) => {
       if (!(id in prev)) return prev;
       const next = { ...prev };
@@ -183,7 +206,7 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
 
   // EXISTENTE (idêntico)
   const isSelected = (id: string) => {
-    return selectedQuestions.some((q) => q.metadata.id === id);
+    return selectedQuestions.some((q) => q.metadata?.id === id);
   };
 
   // EXISTENTE (idêntico)
@@ -201,6 +224,11 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
     if (uniqSorted.length < 2) return;
 
     setSetSelectionsById((prev) => ({ ...prev, [setId]: uniqSorted }));
+  };
+
+  // NOVO: limpar apenas set selections (útil ao carregar prova salva)
+  const clearSetSelections = () => {
+    setSetSelectionsById({});
   };
 
   // EXISTENTE (+ normalização do headerLayout)
@@ -235,6 +263,32 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
       // ignore
     }
   }, [provaConfig]);
+
+  // persistência das questões selecionadas
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(
+        LS_QUESTIONS_KEY,
+        JSON.stringify(selectedQuestions)
+      );
+    } catch {
+      // ignore
+    }
+  }, [selectedQuestions]);
+
+  // persistência das seleções de sets
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(
+        LS_SET_SELECTIONS_KEY,
+        JSON.stringify(setSelectionsById)
+      );
+    } catch {
+      // ignore
+    }
+  }, [setSelectionsById]);
 
   // NOVO: selections derivado + respeita setSelectionsById
   const selections = useMemo<Selection[]>(() => {
@@ -294,6 +348,7 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
         selections,
         selectedCount,
         setSetSelection,
+        clearSetSelections,
 
         provaConfig,
         updateProvaConfig,
