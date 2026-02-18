@@ -94,7 +94,7 @@ type MathDialogState =
 
 /* ---------- plugins ---------- */
 
-function buildPlugins(): Plugin[] {
+function buildPlugins(onYamlMetadata?: (meta: any) => void): Plugin[] {
   return [
     history(),
     placeholderPlugin({ paragraph: "Digite aqui..." }),
@@ -115,6 +115,7 @@ function buildPlugins(): Plugin[] {
       uploadToken: "uso_exclusivo_para_o_editor_de_textos_proseMirror_editor_de_questoes",
       maxImageWidthCm: 8,
       stripAllHtmlImages: false,
+      onYamlMetadata,
     }),
     keymap({
       Enter: splitListItem(schema.nodes.list_item),
@@ -430,7 +431,28 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
   const [optionCount, setOptionCount] = useState(5);
   const [editorMaxWidthCm, setEditorMaxWidthCm] = useState<8.5 | 18>(8.5);
 
-  const plugins = useMemo(buildPlugins, []);
+  // Callback para aplicar metadados YAML extraídos do paste
+  const handleYamlMetadata = (yamlMeta: any) => {
+    setMeta((prev) => {
+      const merged = { ...prev };
+
+      // Aplica campos do YAML, preservando os obrigatórios
+      if (yamlMeta.tipo) merged.tipo = yamlMeta.tipo;
+      if (yamlMeta.dificuldade) merged.dificuldade = yamlMeta.dificuldade;
+      if (yamlMeta.disciplina) merged.disciplina = yamlMeta.disciplina;
+      if (yamlMeta.assunto) merged.assunto = yamlMeta.assunto;
+      if (yamlMeta.tags) merged.tags = yamlMeta.tags;
+      if (yamlMeta.gabarito) merged.gabarito = yamlMeta.gabarito;
+      if (yamlMeta.source) merged.source = { ...prev.source, ...yamlMeta.source };
+
+      // Atualiza timestamp
+      merged.updatedAt = new Date().toISOString();
+
+      return merged;
+    });
+  };
+
+  const plugins = useMemo(() => buildPlugins(handleYamlMetadata), []);
 
   const recompute = (v: EditorView) => {
     requestAnimationFrame(() => {

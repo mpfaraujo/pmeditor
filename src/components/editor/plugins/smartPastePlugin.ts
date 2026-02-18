@@ -11,6 +11,7 @@ import type { EditorView } from "prosemirror-view";
 import type { Schema, Node as PMNode, Mark } from "prosemirror-model";
 
 import { schema as appSchema } from "../schema";
+import { parseYamlMeta } from "@/lib/yamlMeta";
 
 export const smartPastePluginKey = new PluginKey("smartPastePlugin");
 
@@ -23,6 +24,9 @@ export type SmartPasteConfig = {
 
   // default: 8cm como limite máximo para imagens inseridas automaticamente
   maxImageWidthCm?: number;
+
+  // Callback para notificar quando YAML metadata for extraído do paste
+  onYamlMetadata?: (meta: any) => void;
 };
 
 type ParsedQuestion = {
@@ -1088,16 +1092,30 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
       handlePaste(view: EditorView, event: ClipboardEvent) {
         const textRaw = extractClipboardText(event);
 
+        // Remove comentários LaTeX antes de processar YAML (para detectar YAML após comentários)
+        const textWithoutComments = isProbablyLatexSource(textRaw)
+          ? stripLatexComments(textRaw)
+          : textRaw;
+
+        // Extrai YAML se houver e remove do texto
+        const yamlMeta = parseYamlMeta(textWithoutComments);
+        const textWithoutYaml = yamlMeta ? removeYamlFrontmatter(textWithoutComments) : textWithoutComments;
+
+        // Notifica callback se YAML foi extraído
+        if (yamlMeta && cfg.onYamlMetadata) {
+          cfg.onYamlMetadata(yamlMeta);
+        }
+
         const latexParsed =
-          textRaw && isProbablyLatexSource(textRaw)
-            ? parseQuestionFromLatexText(textRaw)
+          textWithoutYaml && isProbablyLatexSource(textWithoutYaml)
+            ? parseQuestionFromLatexText(textWithoutYaml)
             : null;
 
         const textForTextParse = latexParsed
           ? ""
-          : looksLikePdfText(textRaw)
-            ? normalizePdfText(textRaw)
-            : textRaw;
+          : looksLikePdfText(textWithoutYaml)
+            ? normalizePdfText(textWithoutYaml)
+            : textWithoutYaml;
 
         const parsed = latexParsed
           ? null
@@ -1112,10 +1130,10 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
         if (latexParsed) {
           event.preventDefault();
 
-          const answerKey = extractLatexAnswerKey(latexParsed);
+          const answerKey = yamlMeta?.gabarito ?? extractLatexAnswerKey(latexParsed);
           const questionNode = buildQuestionNodeLatex(getRuntimeSchema(view), latexParsed);
 
-          replaceDocWithSingleQuestion(view, questionNode, { answerKey });
+          replaceDocWithSingleQuestion(view, questionNode, { answerKey, ...yamlMeta });
 
           if (images.length) {
             (async () => {
@@ -1159,6 +1177,19 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
       },
     },
   });
+}
+
+/* ---------------- YAML frontmatter ---------------- */
+
+/** Remove o bloco YAML frontmatter (---...---) do início do texto */
+function removeYamlFrontmatter(text: string): string {
+  const trimmed = text.trim();
+  if (!trimmed.startsWith("---")) return text;
+
+  const endIdx = trimmed.indexOf("---", 3);
+  if (endIdx === -1) return text;
+
+  return trimmed.slice(endIdx + 3).trim();
 }
 
 /* ---------------- LaTeX detection ---------------- */
