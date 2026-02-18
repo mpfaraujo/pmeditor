@@ -628,8 +628,10 @@ function skipSpaces(s: string, i: number) {
 }
 
 function isCurrency$(s: string, idx: number) {
-  // R$ (real brasileiro) — $ não é delimitador math
-  return idx > 0 && s[idx - 1] === "R";
+  // R$ ou R\$ (real brasileiro) — $ não é delimitador math
+  if (idx > 0 && s[idx - 1] === "R") return true;
+  if (idx > 1 && s[idx - 2] === "R" && s[idx - 1] === "\\") return true;
+  return false;
 }
 
 function findNextLatexTokenIndex(s: string, from: number) {
