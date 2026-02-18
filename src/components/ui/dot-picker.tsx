@@ -60,6 +60,7 @@ export function DotPicker({
             )}
             aria-label={opt.ariaLabel ?? `Opção ${opt.value}`}
             title={opt.title}
+            suppressHydrationWarning
           >
             {opt.label ?? opt.value}
           </button>

@@ -1,744 +1,279 @@
-\documentclass[12pt]{exam}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[brazil]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage{graphicx}
-\usepackage{enumitem}
+% ================= QUESTÕES 14 A 24 — FUVEST 2020 =================
 
-\begin{document}
-
-\title{CPAEN/2023 -- Matemática (Questões 1 a 22)}
-\date{}
-\maketitle
-
-\begin{questions}
-\section*{Análise Combinatória}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Fácil
 disciplina: Matemática
-assunto: Análise Combinatória
-gabarito: C                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Matemática Financeira
+gabarito: B
+tags: [porcentagem, inflação, aumento real, variação percentual]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 1
----
-\end{verbatim}
-
-\question
-A camisa de um grande clube de futebol carioca e mundial é formada por sete listras verticais (frente da camisa) das cores preta e branca, conforme a figura 1.
-
-A empresa que confecciona a camisa oferece modelos com diferentes maneiras de disposição das cores das listras, e o clube exige que sempre exista a cor preta entre brancas e/ou a cor branca entre pretas, conforme apresentado na figura 1 (camisa original) e nas figuras 2, 3 e 4.
-
-Considerando apenas a frente da camisa e cumprindo a exigência do clube, quantos modelos de camisa podem ser confeccionados pela empresa?
-
-\begin{choices}
-\choice 126
-\choice 122
-\choice 114
-\choice 112
-\choice 64
-\end{choices}
-
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Análise Combinatória
-gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 2
----
-\end{verbatim}
-
-\question
-Um jogador, cansado de ganhar pouco dinheiro em jogos on-line, resolveu investir seus 20 mil reais aplicando em até 4 investimentos distintos possíveis: Poupança, Mercado de Ações, Títulos do Tesouro Nacional e Mercado Imobiliário. Considere que cada aplicação deve ser realizada em unidades de mil reais.
-
-Assinale a opção que apresenta a quantidade de maneiras distintas de distribuir os 20 mil reais entre os investimentos.
-
-\begin{choices}
-\choice 1771
-\choice 4772
-\choice 10626
-\choice 13781
-\choice 15852
-\end{choices}
-
-\section*{Logaritmos}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Logaritmos
-gabarito: B                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 3
----
-\end{verbatim}
-
-\question
-Sabendo que o valor de $\log 630 = a$ e $\log 1524 = b$, assinale a opção que apresenta o valor de $\log 1260$ em função de $a$ e $b$.
-
-\begin{choices}
-\choice $\dfrac{ab+b-1}{ab-a+1}$
-\choice $\dfrac{2ab+2a-1}{ab+b+1}$
-\choice $\dfrac{b+3-ab}{ab-1}$
-\choice $\dfrac{2a-b-2-ab}{ab-1}$
-\choice $\dfrac{1+a+b}{2+a}$
-\end{choices}
-
-\section*{Progressões}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Progressões
-gabarito: E                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 4
----
-\end{verbatim}
-
-\question
-Dois aspirantes A e B correm em uma pequena pista circular, e os tempos em cada volta completa são registrados em segundos (s).
-
-O aspirante A completou a 1ª volta em 7s, as duas primeiras voltas em 20s, as três primeiras voltas em 33s, as quatro primeiras voltas em 46s e assim sucessivamente, mantendo a regularidade.
-
-O aspirante B completou a 1ª volta em 15s, as duas primeiras voltas em 34s, as três primeiras voltas em 53s, as quatro primeiras voltas em 72s e assim sucessivamente, mantendo também a regularidade.
-
-Considere que os aspirantes começaram a corrida no mesmo instante e no mesmo ponto de partida. Calcule em quantos segundos, após a partida, os aspirantes se encontrarão pela 4ª vez no ponto de partida.
-
-\begin{choices}
-\choice 779
-\choice 798
-\choice 805
-\choice 806
-\choice 813
-\end{choices}
-
-\section*{Funções Polinomiais}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Funções Polinomiais / Interpolação
-gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 5
----
-\end{verbatim}
-
-\question
-Seja $f$ uma função polinomial, na variável $x$, de menor grau possível e coeficientes reais, tal que $f(1)=2$, $f(4)=3$, $f(3)=4$ e $f(2)=1$.
-
-Assim, é correto afirmar que $f$:
-
-\begin{choices}
-\choice possui ponto de inflexão em $x=\dfrac{5}{2}$
-\choice possui um ponto de máximo absoluto em $x=3$
-\choice possui um ponto de mínimo absoluto em $x=1$
-\choice não é contínua em $x=1$
-\choice não possui máximo absoluto em $x\in[2,\infty)$
-\end{choices}
-
-\section*{Cálculo Integral}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Integrais
-gabarito: B                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 6
----
-\end{verbatim}
-
-\question
-Seja $F$ uma função definida por
-\[
-F(x)=\int_{0}^{x} f(t)\,dt,\quad x\ge 0,
-\]
-onde
-\[
-f(t)=
-\begin{cases}
-t, & 0\le t<1,\\
-t^{2}-1, & t\ge 1.
-\end{cases}
-\]
-Assinale a opção que apresenta o valor de $F(3)$.
-
-\begin{choices}
-\choice $\dfrac{9}{2}$
-\choice $\dfrac{43}{6}$
-\choice $3$
-\choice $-9$
-\choice $\dfrac{13}{3}$
-\end{choices}
-
-\section*{Trigonometria}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Trigonometria (Somas)
-gabarito: D                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 7
----
-\end{verbatim}
-
-\question
-O valor da soma $\displaystyle \sum_{k=1}^{2023}\tg(k)\cdot \tg(k+1)$ é igual a:
-
-\begin{choices}
-\choice $\dfrac{\tg(2023)}{\tg(1)}+2023$
-\choice $\dfrac{\tg(2023)}{\tg(1)}-2023$
-\choice $\dfrac{\tg(2024)}{\tg(1)}+2024$
-\choice $\dfrac{\tg(2024)}{\tg(1)}-2024$
-\choice $\tg(2023)-\tg(2024)$
-\end{choices}
-
-\section*{Geometria Analítica (Cônicas)}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Geometria Analítica (Cônicas)
-gabarito:                     # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023, Anulada]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 8
----
-\end{verbatim}
-
-\question
-Uma hipérbole tem os eixos transverso e conjugado contidos nos eixos coordenados e contém os pontos médios dos lados do quadrilátero, cujos vértices são as intersecções da elipse, de equação $9x^{2}+y^{2}=36$, com os eixos coordenados. Sabendo que as coordenadas de um dos focos da hipérbole é $(1,0)$, assinale a opção que apresenta uma das equações das assíntotas dessa hipérbole.
-
-\begin{choices}
-\choice $y=\sqrt{3}\,x$
-\choice $y=-\sqrt{13}\,x$
-\choice $y=-2\sqrt{3}\,x$
-\choice $y=13x$
-\choice $y=3x$
-\end{choices}
-
-\section*{Números Complexos (I)}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Números Complexos
-gabarito: C                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 9
----
-\end{verbatim}
-
-\question
-Sejam $i$ a unidade imaginária e o complexo $Z$ que satisfaz a igualdade $4|Z| = |Z-1-2i|$.
-
-A soma dos números reais que satisfazem a igualdade é igual a:
-
-\begin{choices}
-\choice $-2$
-\choice $-1$
-\choice $-\dfrac{2}{15}$
-\choice $-\dfrac{1}{45}$
-\choice $-\dfrac{1}{5}$
-\end{choices}
-
-\section*{Geometria Plana}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Geometria Plana (Medianas / Áreas)
-gabarito: E                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 10
----
-\end{verbatim}
-
-\question
-Considere um triângulo $T_1$ de área $w$. Os comprimentos das medianas de $T_1$ são os comprimentos dos lados de um novo triângulo $T_2$; os comprimentos das medianas de $T_2$ são os comprimentos dos lados de um novo triângulo $T_3$ e assim sucessivamente.
-
-Sendo assim, se $w=3$, é correto afirmar que a soma de todas as áreas dos $T_n$, com $n\to\infty$, é um:
-
-\begin{choices}
-\choice número racional não inteiro.
-\choice quadrado perfeito.
-\choice número primo.
-\choice número irracional.
-\choice número par.
-\end{choices}
-
-\section*{Otimização}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Otimização (Geometria Espacial)
-gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 11
----
-\end{verbatim}
-
-\question
-Um cilindro circular reto de raio $r$ e altura $h$ possui volume igual a $300\,\text{cm}^3$. Sabendo que o cilindro possui menor área total possível, a altura $h$, em cm, é aproximadamente igual a:
-
-\begin{choices}
-\choice 7,25
-\choice 6,90
-\choice 6,15
-\choice 3,63
-\choice 2,00
-\end{choices}
-
-\section*{Exponenciais / Logaritmos e Otimização}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Equações Exponenciais / Logaritmos
-gabarito: C                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 12
----
-\end{verbatim}
-
-\question
-Analise os gráficos a seguir.
-
-Seja um número real positivo $x$, tal que $\dfrac{40}{x}=4^{x}$ e, utilizando os dados dos gráficos das funções definidas por $y=x\cdot e^{x}$ e $y=\ln(x)$, é correto afirmar que o valor de $x$ é aproximadamente igual a:
-
-\begin{choices}
-\choice 1,60
-\choice 1,96
-\choice 2,13
-\choice 2,24
-\choice 2,52
-\end{choices}
-
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Otimização (Mínimos)
-gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
-numero: 13
----
-\end{verbatim}
-
-\question
-Se $x>0$, seja $f(x)=5x^{2}+Ax^{-5}$, em que $A$ é uma constante positiva. Assinale a opção que apresenta o menor valor de $A$ tal que $f(x)\ge 24$, $\forall x>0$.
-
-\begin{choices}
-\choice $\dfrac{2^{11}\cdot 3^{3}}{7^{3}}\sqrt{\dfrac{6}{7}}$
-\choice $\dfrac{2^{3}\cdot 3^{11}}{7^{11}}\sqrt{\dfrac{7}{6}}$
-\choice $2^{8}$
-\choice $\dfrac{2^{7}\cdot 3^{11}}{7^{11}}\sqrt{\dfrac{2}{3}}$
-\choice $\dfrac{2^{8}\cdot 3^{-7}}{7^{-3}}\sqrt{\dfrac{3}{2}}$
-\end{choices}
-
-\section*{Lógica Proposicional}
-\begin{verbatim}
----
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
-disciplina: Matemática
-assunto: Lógica Proposicional
-gabarito: B                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
-
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 14
 ---
-\end{verbatim}
-
 \question
-Na Escola Naval, um oficial afirmou que: ``Se todos os navios estão fundeados, então hoje é dia de licença pagamento ou os nautas não estão de serviço''.
-
-Assinale a opção que apresenta a afirmativa que equivale à afirmação do oficial.
-
+Se, em 15 anos, o salário mínimo teve um aumento nominal de 300\% e a inflação foi de 100\%, é correto afirmar que o aumento real do salário mínimo, nesse período, foi de
 \begin{choices}
-\choice Se todos os navios não estão fundeados, então hoje não é dia de licença pagamento ou os nautas estão de serviço.
-\choice Se hoje não é dia de licença pagamento e os nautas estão de serviço, então há navio que não está fundeado.
-\choice Se hoje é dia de licença pagamento ou os nautas não estão de serviço, então todos os navios estão fundeados.
-\choice Se hoje não é dia de licença pagamento ou os nautas estão de serviço, então há navio que não está fundeado.
-\choice Se hoje é dia de licença pagamento e os nautas estão de serviço, então há navio que não está fundeado.
+\choice 50\%.
+\correctchoice 100\%.
+\choice 150\%.
+\choice 200\%.
+\choice 250\%.
 \end{choices}
 
-\section*{Geometria Espacial}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
 assunto: Geometria Espacial
-gabarito: B                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+gabarito: C
+tags: [comprimento de arco, circunferência, soma, aproximação]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 15
 ---
-\end{verbatim}
-
 \question
-Analise a figura a seguir.
-
-Seja o paralelepípedo reto retângulo $ABCDEFGH$ com medidas $AB=4\text{ cm}$, $AD=8\text{ cm}$ e $AE=5\text{ cm}$, conforme a figura. Considerando o ponto $P$ como o centro do paralelepípedo, é correto afirmar que a distância, em cm, de $P$ ao plano $BDE$ é igual a:
-
+O cilindro de papelão central de uma fita crepe tem raio externo de 3 cm. A fita tem espessura de 0,01 cm e dá 100 voltas completas. Considerando que, a cada volta, o raio externo do rolo é aumentado no valor da espessura da fita, o comprimento total da fita é de, aproximadamente,
+(Considere $\pi \approx 3{,}14$.)
 \begin{choices}
-\choice $\dfrac{10}{\sqrt{189}}$
-\choice $\dfrac{20}{\sqrt{189}}$
-\choice $\dfrac{35}{2\sqrt{105}}$
-\choice $\dfrac{30}{\sqrt{189}}$
-\choice $\dfrac{35}{\sqrt{105}}$
+\choice 9,4 m.
+\choice 11,0 m.
+\correctchoice 18,8 m.
+\choice 22,0 m.
+\choice 25,1 m.
 \end{choices}
 
-\section*{Geometria Analítica (Sistemas)}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
-assunto: Geometria Analítica (Sistemas)
-gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Geometria Plana
+gabarito: C
+tags: [paralelogramo, área, seno, ângulo]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 16
 ---
-\end{verbatim}
-
 \question
-Considere que um jogador do jogo eletrônico \emph{Call of Duty Warzone}, sabedor de matemática, foi questionado por seus amigos sobre quantas unidades de área da região do campo de batalha devem ser vasculhadas para encontrar os últimos inimigos a serem derrubados para que, assim, eles vençam a partida.
+Um objeto é formado por 4 hastes rígidas conectadas em seus extremos por articulações, cujos centros são os vértices de um paralelogramo. As hastes movimentam-se de tal forma que o paralelogramo permanece sempre no mesmo plano. A cada configuração desse objeto, associa-se $\theta$, a medida do menor ângulo interno do paralelogramo. A área da região delimitada pelo paralelogramo quando $\theta = 90^\circ$ é $A$.
 
-Supondo que a região do campo de batalha seja totalmente plana, o valor da área que deve ser vasculhada é igual ao valor da área do polígono convexo cujos vértices são os pares cartesianos da solução do sistema
-\[
-\begin{cases}
-x^{2}=13x+4y\\
-y^{2}=4x+13y
-\end{cases}
-\]
-Assinale a opção que apresenta o valor da área dessa região.
-
+Para que a área da região delimitada pelo paralelogramo seja $\dfrac{A}{2}$, o valor de $\theta$ é, necessariamente, igual a
 \begin{choices}
-\choice 255
-\choice 260
-\choice 265
-\choice 270
-\choice 275
+\choice $15^\circ$.
+\choice $22{,}5^\circ$.
+\correctchoice $30^\circ$.
+\choice $45^\circ$.
+\choice $60^\circ$.
 \end{choices}
 
-\section*{Geometria Espacial (Volumes)}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Fácil
 disciplina: Matemática
-assunto: Geometria Espacial (Volumes)
-gabarito: D                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Geometria Espacial
+gabarito: A
+tags: [esfera, paralelepípedo, diagonal espacial, raio]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 17
 ---
-\end{verbatim}
-
 \question
-Na partida de futebol entre Alemanha e Japão na Copa do Mundo de 2022, no lance que originou o segundo gol do Japão, por 1,88\,mm, a bola não passou totalmente pela linha de fundo (linha branca), como mostram as figuras 1, 2 e 3.
-
-Sabe-se que a parte da bola sobre a linha branca equivale a uma calota esférica de altura 1,88\,mm e volume $V_c$. Considerando a bola de futebol uma esfera de raio 70\,cm e volume $V$, assinale a opção que apresenta corretamente a relação entre $V$ e $V_c$.
-
+A menor esfera na qual um paralelepípedo reto-retângulo de medidas $7\,\text{cm} \times 4\,\text{cm} \times 4\,\text{cm}$ está inscrito tem diâmetro de
 \begin{choices}
-\choice $0,1\%\ \text{de }V < V_c < 1\%\ \text{de }V$
-\choice $0,01\%\ \text{de }V < V_c < 0,1\%\ \text{de }V$
-\choice $0,001\%\ \text{de }V < V_c < 0,01\%\ \text{de }V$
-\choice $0,0001\%\ \text{de }V < V_c < 0,001\%\ \text{de }V$
-\choice $V_c < 0,0001\%$
+\correctchoice 9 cm.
+\choice 10 cm.
+\choice 11 cm.
+\choice 12 cm.
+\choice 15 cm.
 \end{choices}
 
-\section*{Limites}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Difícil             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
-assunto: Limites
-gabarito: E                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Função Quadrática
+gabarito: D
+tags: [máximo, receita, modelagem, função do segundo grau]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 18
 ---
-\end{verbatim}
-
 \question
-Assinale a opção que apresenta o resultado de
-\[
-\lim_{x\to+\infty}\left(\frac{3x+9}{4x+1}\right)^{4x+4}.
-\]
-
+A dona de uma lanchonete observou que, vendendo um combo a R\$ 10,00, 200 deles são vendidos por dia, e que, para cada redução de R\$ 1,00 nesse preço, ela vende 100 combos a mais. Nessas condições, qual é a máxima arrecadação diária que ela espera obter com a venda desse combo?
 \begin{choices}
-\choice $+\infty$
-\choice $-\infty$
-\choice $e^{-1}$
-\choice $e^{-\frac{3}{4}}$
-\choice $0$
+\choice R\$ 2.000,00
+\choice R\$ 3.200,00
+\choice R\$ 3.600,00
+\correctchoice R\$ 4.000,00
+\choice R\$ 4.800,00
 \end{choices}
 
-\section*{Geometria Espacial (Reta e Plano)}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
-assunto: Geometria Espacial (Reta e Plano)
-gabarito:                     # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023, Anulada]                       # Ex: [ENEM, 2024, geometria]
+assunto: Teoria dos Números
+gabarito: C
+tags: [função totiente, máximo divisor comum, aritmética]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 19
 ---
-\end{verbatim}
-
 \question
-Seja a reta $r$ oblíqua a um plano $\varphi$ pelo ponto $A$. Considere que a reta $s\subset\varphi$ é a projeção ortogonal de $r$ sobre $\varphi$ e a reta $t\subset\varphi$ que passa por $A$. Se $\theta$ é o ângulo entre $r$ e $s$, e $\beta$ é o ângulo entre $r$ e $t$, assinale a opção que apresenta a correta relação entre esses ângulos.
+A função $\varphi$ de Euler determina, para cada número natural $n$, a quantidade de números naturais menores do que $n$ cujo máximo divisor comum com $n$ é igual a 1. Por exemplo, $\varphi(6)=2$, pois os números menores do que 6 com tal propriedade são 1 e 5.
 
+Qual o valor máximo de $\varphi(n)$, para $n$ de 20 a 25?
 \begin{choices}
-\choice $\theta<\beta$
-\choice $\theta=\beta$
-\choice $\beta<\theta$
-\choice $\theta=2\beta$
-\choice $2\beta<\theta$
+\choice 19
+\choice 20
+\correctchoice 22
+\choice 24
+\choice 25
 \end{choices}
 
-\section*{Matrizes e Determinantes}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
-assunto: Matrizes e Determinantes
-gabarito: B                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Polinômios
+gabarito: B
+tags: [identidade polinomial, comparação de coeficientes, expansão]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 20
 ---
-\end{verbatim}
-
 \question
-Sejam as matrizes $A$ e $B$, ambas de ordem $4\times 4$, com $\det A=-1$ e $\det B=2$. Calcule o determinante da matriz $X$ sabendo que
-\[
-A^{-1}\cdot B^{T}\cdot X = 2A^{T}
-\]
-e assinale a opção correta.
-
+Se $3x^{2}-9x+7 = (x-a)^{3} - (x-b)^{3}$, para todo número real $x$, o valor de $a+b$ é
 \begin{choices}
-\choice $-8$
-\choice $8$
-\choice $-16$
-\choice $16$
-\choice $32$
+\choice 3.
+\correctchoice 5.
+\choice 6.
+\choice 9.
+\choice 12.
 \end{choices}
 
-\section*{Números Complexos (II)}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
-assunto: Números Complexos (Equações)
-gabarito: E                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Sistemas Lineares
+gabarito: D
+tags: [equações lineares, modelagem algébrica]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 21
 ---
-\end{verbatim}
-
 \question
-Considere que parte real e imaginária de um número complexo $z$ sejam denotadas, respectivamente, por $\Re(z)$ e $\Im(z)$.
+Uma agência de turismo vendeu um total de 78 passagens para os destinos: Lisboa, Paris e Roma. Sabe-se que o número de passagens vendidas para Paris foi o dobro do número de passagens vendidas para os outros dois destinos conjuntamente. Sabe-se também que, para Roma, foram vendidas duas passagens a mais que a metade das vendidas para Lisboa.
 
-Sejam $z_1$ e $z_2$ números complexos que satisfazem a equação
-\[
-z^{2} + (1-i)z - 3i = 0,
-\]
-onde $i$ é a unidade imaginária. Sobre $z_1$ e $z_2$, é correto afirmar que:
-
+Qual foi o total de passagens vendidas, conjuntamente, para Paris e Roma?
 \begin{choices}
-\choice $\Im(z_1+z_2)=0$
-\choice $\Re(z_1+z_2)=0$
-\choice $\Im(z_1)\cdot \Im(z_2)$ é um número irracional.
-\choice $\Re(z_1)\cdot \Re(z_2)$ é um número irracional.
-\choice $\Im(z_1+z_2)+\Re(z_1+z_2)=0$
+\choice 26
+\choice 38
+\choice 42
+\correctchoice 62
+\choice 68
 \end{choices}
 
-\section*{Trigonometria e Área}
-\begin{verbatim}
 ---
-tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
-dificuldade: Média             # Fácil | Média | Difícil
+tipo: Múltipla Escolha
+dificuldade: Média
 disciplina: Matemática
-assunto: Trigonometria / Geometria (Área)
-gabarito: C                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: [Escola Naval, 2023]                       # Ex: [ENEM, 2024, geometria]
+assunto: Geometria Analítica
+gabarito: B
+tags: [circunferência, distância aos eixos, sistema]
 
-# Fonte (opcional — preencher se for questão de concurso)
-fonte: concurso                # original | concurso
-concurso: Escola Naval
-banca: Marinha do Brasil
-ano: 2023
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
 numero: 22
 ---
-\end{verbatim}
-
 \question
-Considere que um navio de guerra da Marinha do Brasil danificou o radar de um navio inimigo com um tiro de canhão 50\,mm.
-
-O radar do navio inimigo passou a detectar apenas numa região angular que é solução de
-\[
-\sen(x)+\cos(x)\ge \frac{\sqrt{2}}{2},
-\]
-sendo $x$ real.
-
-Se o radar do navio inimigo tem um poder de alcance que está dentro da região da circunferência $x^{2}+y^{2}=R^{2}$, com $R\le 100\,\text{km}$, assinale a opção que apresenta a área total de alcance desse radar em que não será possível detectar o navio de guerra da Marinha do Brasil.
-
+Um ponto $(x,y)$ do plano cartesiano pertence ao conjunto $F$ se é equidistante dos eixos $OX$ e $OY$ e pertence ao círculo de equação
+$x^{2}+y^{2}-2x-6y+2=0$.
+É correto afirmar que $F$
 \begin{choices}
-\choice $\dfrac{\pi}{3}R^{2}\ \text{km}^{2}$
-\choice $\dfrac{\pi}{12}R^{2}\ \text{km}^{2}$
-\choice $\dfrac{2\pi}{3}R^{2}\ \text{km}^{2}$
-\choice $\dfrac{3\pi}{4}R^{2}\ \text{km}^{2}$
-\choice $\dfrac{5\pi}{6}R^{2}\ \text{km}^{2}$
+\choice é um conjunto vazio.
+\correctchoice tem exatamente 2 pontos, um no primeiro quadrante e outro no segundo quadrante.
+\choice tem exatamente 2 pontos, ambos no primeiro quadrante.
+\choice tem exatamente 3 pontos, sendo dois no primeiro quadrante e outro no segundo quadrante.
+\choice tem exatamente 4 pontos, sendo dois no primeiro quadrante e dois no segundo quadrante.
 \end{choices}
 
-\end{questions}
+---
+tipo: Múltipla Escolha
+dificuldade: Fácil
+disciplina: Matemática
+assunto: Média Ponderada
+gabarito: D
+tags: [pluviometria, média ponderada, proporção, área]
 
-\end{document}
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
+numero: 23
+---
+\question
+Uma cidade é dividida em dois Setores: o Setor Sul, com área de $10\,\text{km}^2$, e o Setor Norte, com área de $30\,\text{km}^2$. Após um final de semana, foram divulgados os seguintes totais pluviométricos:
+
+sábado: Sul 7 mm, Norte 11 mm  
+domingo: Sul 9 mm, Norte 17 mm
+
+É correto afirmar que o total pluviométrico desse final de semana na cidade inteira foi de
+\begin{choices}
+\choice 15 mm.
+\choice 17 mm.
+\choice 22 mm.
+\correctchoice 25 mm.
+\choice 28 mm.
+\end{choices}
+
+---
+tipo: Múltipla Escolha
+dificuldade: Média
+disciplina: Matemática
+assunto: Equações
+gabarito: A
+tags: [equação, segmentos colineares, resolução algébrica]
+
+fonte: concurso
+concurso: FUVEST
+banca: FUVEST
+ano: 2020
+numero: 24
+---
+\question
+As possíveis soluções, em polegadas (inches), para o problema matemático proposto no quadrinho, no caso em que os pontos $A$, $B$ e $C$ estão em uma mesma reta, são
+\begin{choices}
+\correctchoice $\dfrac{10}{3}$ e $10$.
+\choice $\dfrac{10}{3}$, $5$ e $10$.
+\choice $\dfrac{5}{3}$, $\dfrac{10}{3}$ e $10$.
+\choice $\dfrac{5}{3}$ e $10$.
+\choice $\dfrac{10}{3}$ e $5$.
+\end{choices}

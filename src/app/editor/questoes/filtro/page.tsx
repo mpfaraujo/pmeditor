@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useProva } from "@/contexts/ProvaContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,6 +59,7 @@ interface FilterValues {
 export default function FiltroQuestoesPage() {
   const router = useRouter();
   const { provaConfig, updateProvaConfig } = useProva();
+  const { isLoggedIn } = useAuth();
 
   // Estados para Filtros
   const [options, setOptions] = useState<FilterOptions>({
@@ -75,6 +77,7 @@ export default function FiltroQuestoesPage() {
     tags: "",
   });
 
+  const [myQuestions, setMyQuestions] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
   const [loadingCount, setLoadingCount] = useState(false);
   // Mapa: assunto normalizado → todos os brutos originais do banco
@@ -129,10 +132,14 @@ export default function FiltroQuestoesPage() {
   // Carregar opções iniciais e turmas
   useEffect(() => {
     loadFilterOptions();
-    loadTurmas();
-  }, []);
+    if (isLoggedIn) {
+      loadTurmas();
+    }
+  }, [isLoggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadTurmas = async () => {
+    if (!isLoggedIn) return; // Só carrega se estiver logado
+
     try {
       const data = await listTurmas();
       setTurmas(data);
@@ -146,7 +153,7 @@ export default function FiltroQuestoesPage() {
     loadFilterOptions(filters.disciplinas);
     updateCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, sourceKind, rootType, selectedConcursos, selectedAnos]);
+  }, [filters, sourceKind, rootType, selectedConcursos, selectedAnos, myQuestions]);
 
   const loadFilterOptions = async (disciplinas: string[] = []) => {
     try {
@@ -235,10 +242,19 @@ export default function FiltroQuestoesPage() {
       if (rootType) q.set("root_type", rootType);
       if (selectedConcursos.length) selectedConcursos.forEach(c => q.append("concursos[]", c));
       if (selectedAnos.length) selectedAnos.forEach(a => q.append("anos[]", a));
+      if (myQuestions) q.set("myQuestions", "1");
 
-      const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, {
-        headers: { "X-Questions-Token": TOKEN },
-      });
+      const headers: Record<string, string> = {};
+      if (myQuestions) {
+        const sessionToken = localStorage.getItem("pmeditor:session");
+        if (sessionToken) {
+          headers["X-Session-Token"] = sessionToken;
+        }
+      } else {
+        headers["X-Questions-Token"] = TOKEN;
+      }
+
+      const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, { headers });
       const data = await res.json();
       setTotalResults(data.total ?? 0);
     } catch (err) {
@@ -324,6 +340,7 @@ export default function FiltroQuestoesPage() {
     if (rootType) q.set("root_type", rootType);
     if (selectedConcursos.length) selectedConcursos.forEach(c => q.append("concursos", c));
     if (selectedAnos.length) selectedAnos.forEach(a => q.append("anos", a));
+    if (myQuestions) q.set("myQuestions", "1");
 
     router.push(`/editor/questoes?${q.toString()}`);
   };
@@ -383,12 +400,27 @@ export default function FiltroQuestoesPage() {
                               ))}
                             </SelectContent>
                           </Select>
-                          {selectedTurmaId && (
+                          {selectedTurmaId && selectedTurmaId !== "none" && (
                             <p className="text-xs text-muted-foreground">
                               Filtros da turma aplicados. Você pode ajustá-los antes de continuar.
                             </p>
                           )}
                         </div>
+
+                        <div className="flex items-center gap-2 py-2">
+                          <Checkbox
+                            id="myQuestions"
+                            checked={myQuestions}
+                            onCheckedChange={(checked) => setMyQuestions(checked === true)}
+                          />
+                          <Label
+                            htmlFor="myQuestions"
+                            className="text-sm font-medium cursor-pointer"
+                          >
+                            Apenas minhas questões
+                          </Label>
+                        </div>
+
                         <Separator />
                       </>
                     )}

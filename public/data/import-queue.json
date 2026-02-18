@@ -1,6 +1,6 @@
 [
   {
-    "latex": "\\question Se, em 15 anos, o salário mínimo teve um aumento nominal de 300% e a inflação foi de 100%, é correto afirmar que o aumento real do salário mínimo, nesse período, foi de\n\\begin{choices}\n\\choice 50%.\n\\correctchoice 100%.\n\\choice 150%.\n\\choice 200%.\n\\choice 250%.\n\\end{choices}",
+    "latex": "\\question Se, em 15 anos, o salário mínimo teve um aumento nominal de 300\\% e a inflação foi de 100\\%, é correto afirmar que o aumento real do salário mínimo, nesse período, foi de\n\\begin{choices}\n\\choice 50\\%.\n\\correctchoice 100\\%.\n\\choice 150\\%.\n\\choice 200\\%.\n\\choice 250\\%.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
@@ -92,7 +92,7 @@
     }
   },
   {
-    "latex": "\\question A dona de uma lanchonete observou que, vendendo um combo a R$ 10,00, 200 deles são vendidos por dia, e que, para cada redução de R$ 1,00 nesse preço, ela vende 100 combos a mais. Nessas condições, qual é a máxima arrecadação diária que ela espera obter com a venda desse combo?\n\\begin{choices}\n\\choice R$ 2.000,00\n\\choice R$ 3.200,00\n\\choice R$ 3.600,00\n\\correctchoice R$ 4.000,00\n\\choice R$ 4.800,00\n\\end{choices}",
+    "latex": "\\question A dona de uma lanchonete observou que, vendendo um combo a R\\$ 10,00, 200 deles são vendidos por dia, e que, para cada redução de R\\$ 1,00 nesse preço, ela vende 100 combos a mais. Nessas condições, qual é a máxima arrecadação diária que ela espera obter com a venda desse combo?\n\\begin{choices}\n\\choice R\\$ 2.000,00\n\\choice R\\$ 3.200,00\n\\choice R\\$ 3.600,00\n\\correctchoice R\\$ 4.000,00\n\\choice R\\$ 4.800,00\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "D",
     "meta": {

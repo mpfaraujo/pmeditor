@@ -48,6 +48,7 @@ type FilterValues = {
   rootType: string;
   concursos: string[];
   anos: string[];
+  myQuestions?: boolean;
 };
 
 export default function QuestoesPage() {
@@ -75,6 +76,7 @@ export default function QuestoesPage() {
       rootType: searchParams.get("root_type") || "",
       concursos: searchParams.getAll("concursos"),
       anos: searchParams.getAll("anos"),
+      myQuestions: searchParams.get("myQuestions") === "1",
     };
     load(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,6 +101,7 @@ export default function QuestoesPage() {
       if (filters.rootType) params.rootType = filters.rootType;
       if (filters.concursos?.length) params.concursos = filters.concursos;
       if (filters.anos?.length) params.anos = filters.anos;
+      if (filters.myQuestions) params.myQuestions = true;
 
       const res: any = await listQuestions(params);
       const list = Array.isArray(res)

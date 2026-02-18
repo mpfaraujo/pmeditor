@@ -113,6 +113,7 @@ export async function listQuestions(params?: {
   rootType?: string;
   concursos?: string[];
   anos?: string[];
+  myQuestions?: boolean; // Filtrar apenas questões do usuário logado
 }) {
   const q = new URLSearchParams();
   q.set("page", String(params?.page ?? 1));
@@ -148,9 +149,22 @@ export async function listQuestions(params?: {
   if (params?.anos?.length) {
     params.anos.forEach((a) => q.append("anos[]", a));
   }
+  if (params?.myQuestions) {
+    q.set("myQuestions", "1");
+  }
 
-  const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, {
-    headers: { "X-Questions-Token": TOKEN },
-  });
+  const headers: Record<string, string> = {};
+
+  // Se for filtro de "minhas questões", usa session token
+  if (params?.myQuestions) {
+    const sessionToken = typeof window !== "undefined" ? localStorage.getItem("pmeditor:session") : null;
+    if (sessionToken) {
+      headers["X-Session-Token"] = sessionToken;
+    }
+  } else {
+    headers["X-Questions-Token"] = TOKEN;
+  }
+
+  const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, { headers });
   return handle(res);
 }

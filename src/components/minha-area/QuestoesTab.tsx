@@ -1,54 +1,84 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   FileText,
   PlusCircle,
-  Copy,
-  Check,
-  X,
-  ArrowRight,
-  ChevronDown,
-  ChevronUp,
+  Edit,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { parseYamlMeta, generateYamlTemplate } from "@/lib/yamlMeta";
+import { listQuestions } from "@/lib/questions";
+import { useToast } from "@/hooks/use-toast";
+
+interface Question {
+  id: string;
+  tipo: string;
+  disciplina: string;
+  assunto: string;
+  dificuldade: string;
+  createdAt: string;
+  updatedAt: string;
+  tags: string[] | null;
+}
 
 export function QuestoesTab() {
   const router = useRouter();
-  const [yamlOpen, setYamlOpen] = useState(false);
-  const [yamlText, setYamlText] = useState("");
-  const [copied, setCopied] = useState(false);
+  const { toast } = useToast();
 
-  const template = generateYamlTemplate();
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
-  const parsed = useMemo(() => {
-    if (!yamlText.trim()) return null;
-    return parseYamlMeta(yamlText);
-  }, [yamlText]);
+  const limit = 10;
+  const totalPages = Math.ceil(total / limit);
 
-  const handleCopyTemplate = async () => {
-    await navigator.clipboard.writeText(template);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  useEffect(() => {
+    loadQuestions();
+  }, [page]);
 
-  const handleOpenEditor = () => {
-    if (parsed) {
-      sessionStorage.setItem("pm_yaml_meta", JSON.stringify(parsed));
+  const loadQuestions = async () => {
+    setLoading(true);
+    try {
+      const data = await listQuestions({
+        page,
+        limit,
+        myQuestions: true,
+        includeContent: false,
+      });
+
+      setQuestions(data.items || []);
+      setTotal(data.total || 0);
+    } catch (err) {
+      console.error("Erro ao carregar questões:", err);
+      toast({
+        title: "Erro ao carregar questões",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
-    router.push("/editor?skipYaml=1");
   };
 
-  const handleOpenEditorBlank = () => {
-    router.push("/editor?skipYaml=1");
+  const handleEdit = (id: string) => {
+    router.push(`/editor?id=${id}`);
   };
 
-  return (
-    <div className="space-y-4">
-      {/* Estado vazio */}
+  if (loading && questions.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-pulse text-slate-400">Carregando...</div>
+      </div>
+    );
+  }
+
+  if (questions.length === 0 && !loading) {
+    return (
       <Card>
         <CardContent className="py-12 text-center">
           <FileText className="mx-auto h-12 w-12 text-slate-300" />
@@ -56,141 +86,117 @@ export function QuestoesTab() {
             Nenhuma questão criada
           </h3>
           <p className="mt-1 text-sm text-slate-400">
-            Suas questões salvas aparecerão aqui.
+            Crie sua primeira questão para começar
           </p>
-
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button onClick={handleOpenEditorBlank} variant="outline" className="gap-2">
-              <PlusCircle className="h-4 w-4" />
-              Nova Questão em Branco
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setYamlOpen(!yamlOpen)}
-              className="gap-1.5 text-muted-foreground"
-            >
-              {yamlOpen ? (
-                <ChevronUp className="h-4 w-4" />
-              ) : (
-                <ChevronDown className="h-4 w-4" />
-              )}
-              Preencher informações antes
-            </Button>
-          </div>
+          <Button onClick={() => router.push("/editor")} className="mt-6 gap-2">
+            <PlusCircle className="h-4 w-4" />
+            Nova Questão
+          </Button>
         </CardContent>
       </Card>
+    );
+  }
 
-      {/* Seção YAML colapsável */}
-      {yamlOpen && (
-        <Card>
-          <CardContent className="pt-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
-                Cole o modelo preenchido ou edite diretamente abaixo.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCopyTemplate}
-                className="gap-1.5 shrink-0"
-              >
-                {copied ? (
-                  <>
-                    <Check className="h-3.5 w-3.5" /> Copiado!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-3.5 w-3.5" /> Copiar modelo
-                  </>
-                )}
-              </Button>
-            </div>
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          {total} {total === 1 ? "questão" : "questões"} criada{total === 1 ? "" : "s"}
+        </p>
+        <Button onClick={() => router.push("/editor")} size="sm" className="gap-2">
+          <PlusCircle className="h-4 w-4" />
+          Nova Questão
+        </Button>
+      </div>
 
-            <textarea
-              value={yamlText}
-              onChange={(e) => setYamlText(e.target.value)}
-              placeholder={template}
-              className="w-full h-56 rounded-lg border border-slate-300 bg-white text-slate-800 font-mono text-sm p-4 resize-y placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              spellCheck={false}
-            />
-
-            {/* Preview dos campos */}
-            {yamlText.trim() && (
-              <div className="rounded-lg border bg-white p-4 space-y-2">
-                <h3 className="text-sm font-semibold flex items-center gap-2">
-                  {parsed ? (
-                    <Check className="h-4 w-4 text-green-600" />
-                  ) : (
-                    <X className="h-4 w-4 text-red-500" />
-                  )}
-                  {parsed
-                    ? "Campos reconhecidos"
-                    : "Não foi possível ler — verifique se o texto começa e termina com ---"}
-                </h3>
-                {parsed && (
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-                    {parsed.tipo && <Field label="Tipo" value={parsed.tipo} />}
-                    {parsed.dificuldade && (
-                      <Field label="Dificuldade" value={parsed.dificuldade} />
-                    )}
-                    {parsed.disciplina && (
-                      <Field label="Disciplina" value={parsed.disciplina} />
-                    )}
-                    {parsed.assunto && (
-                      <Field label="Assunto" value={parsed.assunto} />
-                    )}
-                    {parsed.gabarito && (
-                      <Field
-                        label="Gabarito"
-                        value={
-                          parsed.gabarito.kind === "mcq"
-                            ? parsed.gabarito.correct
-                            : parsed.gabarito.kind === "tf"
-                              ? parsed.gabarito.correct
-                              : "Discursiva"
+      {/* Lista de questões */}
+      <div className="space-y-3">
+        {questions.map((q) => (
+          <Card key={q.id} className="hover:shadow-md transition-shadow">
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline">{q.tipo}</Badge>
+                    {q.dificuldade && (
+                      <Badge
+                        variant={
+                          q.dificuldade === "Fácil"
+                            ? "secondary"
+                            : q.dificuldade === "Média"
+                              ? "default"
+                              : "destructive"
                         }
-                      />
-                    )}
-                    {parsed.tags && parsed.tags.length > 0 && (
-                      <Field label="Tags" value={parsed.tags.join(", ")} />
-                    )}
-                    {parsed.source?.concurso && (
-                      <Field label="Concurso" value={parsed.source.concurso} />
-                    )}
-                    {parsed.source?.banca && (
-                      <Field label="Banca" value={parsed.source.banca} />
-                    )}
-                    {parsed.source?.ano && (
-                      <Field label="Ano" value={String(parsed.source.ano)} />
+                      >
+                        {q.dificuldade}
+                      </Badge>
                     )}
                   </div>
-                )}
-              </div>
-            )}
 
-            {/* Botão continuar */}
-            <div className="flex justify-end">
-              <Button
-                onClick={handleOpenEditor}
-                disabled={yamlText.trim() !== "" && !parsed}
-                className="gap-2"
-              >
-                Abrir Editor <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+                  <p className="text-sm font-medium text-slate-700">
+                    {q.disciplina} {q.assunto && `• ${q.assunto}`}
+                  </p>
+
+                  {q.tags && q.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {q.tags.slice(0, 3).map((tag, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                      {q.tags.length > 3 && (
+                        <Badge variant="secondary" className="text-xs">
+                          +{q.tags.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Atualizada em {new Date(q.updatedAt).toLocaleDateString("pt-BR")}
+                  </p>
+                </div>
+
+                <div className="flex gap-2 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleEdit(q.id)}
+                    title="Editar"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Paginação */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1 || loading}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            Página {page} de {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages || loading}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       )}
     </div>
-  );
-}
-
-function Field({ label, value }: { label: string; value: string }) {
-  return (
-    <>
-      <span className="text-muted-foreground">{label}:</span>
-      <span className="font-medium">{value}</span>
-    </>
   );
 }

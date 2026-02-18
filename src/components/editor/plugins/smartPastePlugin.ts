@@ -662,6 +662,15 @@ function findNextLatexTokenIndex(s: string, from: number) {
   return best;
 }
 
+/** Remove escapes LaTeX comuns do texto (após parse) */
+function unescapeLatex(text: string): string {
+  return text
+    .replace(/R\\\$/g, "R$")
+    .replace(/\\%/g, "%")
+    .replace(/\\_/g, "_")
+    .replace(/\\&/g, "&");
+}
+
 function parseInlineLatex(
   schema: Schema,
   input: string,
@@ -674,7 +683,9 @@ function parseInlineLatex(
 
   const textNode = (s: string, marks: Mark[]) => {
     if (!s) return null;
-    return schema.text(s, marks.length ? marks : undefined);
+    // Remove escapes LaTeX antes de criar o text node
+    const unescaped = unescapeLatex(s);
+    return schema.text(unescaped, marks.length ? marks : undefined);
   };
 
   const nodes: PMNode[] = [];

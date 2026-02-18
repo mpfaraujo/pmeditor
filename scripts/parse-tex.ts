@@ -32,14 +32,6 @@ type ImportItem = {
   meta?: YamlMeta;
 };
 
-function sanitizeLatexForImport(latex: string): string {
-  latex = latex.replace(/R\\\$/g, "R$");
-  latex = latex.replace(/\\%/g, "%");
-  latex = latex.replace(/\\_/g, "_");
-  latex = latex.replace(/\\&/g, "&");
-  return latex;
-}
-
 /** Parseia frontmatter YAML simples entre --- delimitadores */
 function parseYamlBlock(block: string): YamlMeta {
   const result: YamlMeta = {};
@@ -217,8 +209,8 @@ function main() {
 
     // Monta o LaTeX: apenas \question + conteúdo (sem YAML)
     // O YAML já foi extraído para item.meta, não precisa duplicar no latex
-    let latex = "\\question " + chunk;
-    latex = sanitizeLatexForImport(latex);
+    // IMPORTANTE: Não sanitizar aqui porque o LaTeX ainda será parseado em /admin/importar
+    const latex = "\\question " + chunk;
 
     queue.push({ latex, tipo, gabarito, ...(meta ? { meta } : {}) });
   }
