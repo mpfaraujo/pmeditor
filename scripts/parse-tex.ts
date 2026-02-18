@@ -85,17 +85,36 @@ function parseYamlBlock(block: string): YamlMeta {
   return result;
 }
 
-/** Extrai o bloco YAML de dentro de \begin{verbatim}---...---\end{verbatim} */
-function extractVerbatimYaml(text: string): YamlMeta | null {
-  // Pega o ÚLTIMO verbatim no trecho (pode haver \section* antes)
-  const re = /\\begin\{verbatim\}\s*\n?\s*---\s*\n([\s\S]*?)\n\s*---\s*\n?\s*\\end\{verbatim\}/g;
-  let lastMatch: RegExpExecArray | null = null;
+/** Extrai o bloco YAML de dentro de \begin{verbatim}---...---\end{verbatim} OU direto ---...--- */
+function extractVerbatimYaml(text: string): { meta: YamlMeta | null; yamlText: string | null } {
+  // Primeiro tenta pegar YAML direto (sem verbatim): ---...---
+  // Usa regex global para pegar TODOS os blocos e depois pega o último
+  const directRe = /---\s*\n([\s\S]*?)\n\s*---/g;
+  let lastDirectMatch: RegExpExecArray | null = null;
   let m: RegExpExecArray | null;
-  while ((m = re.exec(text))) {
+  while ((m = directRe.exec(text))) {
+    lastDirectMatch = m;
+  }
+
+  if (lastDirectMatch) {
+    return {
+      meta: parseYamlBlock(lastDirectMatch[1]),
+      yamlText: lastDirectMatch[0].trim(), // Retorna o bloco completo com ---
+    };
+  }
+
+  // Se não encontrou YAML direto, tenta dentro de verbatim
+  const verbatimRe = /\\begin\{verbatim\}\s*\n?\s*---\s*\n([\s\S]*?)\n\s*---\s*\n?\s*\\end\{verbatim\}/g;
+  let lastMatch: RegExpExecArray | null = null;
+  while ((m = verbatimRe.exec(text))) {
     lastMatch = m;
   }
-  if (!lastMatch) return null;
-  return parseYamlBlock(lastMatch[1]);
+  if (!lastMatch) return { meta: null, yamlText: null };
+
+  return {
+    meta: parseYamlBlock(lastMatch[1]),
+    yamlText: `---\n${lastMatch[1]}\n---`, // Extrai só o YAML, sem o verbatim
+  };
 }
 
 function main() {
@@ -132,7 +151,7 @@ function main() {
     const textBefore = src.slice(prevStart, qStart);
 
     // Extrai YAML do verbatim que aparece antes deste \question
-    const meta = extractVerbatimYaml(textBefore);
+    const { meta } = extractVerbatimYaml(textBefore);
 
     // Texto da questão: do \question até o próximo \question (ou fim)
     // Remove o \begin{verbatim}...---...\end{verbatim} que pertence à PRÓXIMA questão
@@ -142,6 +161,9 @@ function main() {
       /\\begin\{verbatim\}\s*\n?\s*---[\s\S]*?---\s*\n?\s*\\end\{verbatim\}\s*$/,
       ""
     );
+    // Remove YAML direto que esteja no final (pertence à próxima questão)
+    // IMPORTANTE: Sem flag 'm' para casar com fim da STRING, não fim de linha
+    questionText = questionText.replace(/\n\s*---\s*\n[\s\S]*?---\s*$/, "");
     // Remove \section* que possa estar no final (pertence à próxima questão)
     questionText = questionText.replace(/\\section\*?\{[^}]*\}\s*$/, "");
     questionText = questionText.trim();
@@ -193,6 +215,8 @@ function main() {
       else if (t.includes("discursiva")) tipo = "Discursiva";
     }
 
+    // Monta o LaTeX: apenas \question + conteúdo (sem YAML)
+    // O YAML já foi extraído para item.meta, não precisa duplicar no latex
     let latex = "\\question " + chunk;
     latex = sanitizeLatexForImport(latex);
 

@@ -1,464 +1,249 @@
 [
   {
-    "latex": "\\question A camisa de um grande clube de futebol carioca e mundial é formada por sete listras verticais (frente da camisa) das cores preta e branca, conforme a figura 1.\n\nA empresa que confecciona a camisa oferece modelos com diferentes maneiras de disposição das cores das listras, e o clube exige que sempre exista a cor preta entre brancas e/ou a cor branca entre pretas, conforme apresentado na figura 1 (camisa original) e nas figuras 2, 3 e 4.\n\nConsiderando apenas a frente da camisa e cumprindo a exigência do clube, quantos modelos de camisa podem ser confeccionados pela empresa?\n\n\\begin{choices}\n\\choice 126\n\\choice 122\n\\choice 114\n\\choice 112\n\\choice 64\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Análise Combinatória",
-      "gabarito": "C",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "1"
-    }
-  },
-  {
-    "latex": "\\question Um jogador, cansado de ganhar pouco dinheiro em jogos on-line, resolveu investir seus 20 mil reais aplicando em até 4 investimentos distintos possíveis: Poupança, Mercado de Ações, Títulos do Tesouro Nacional e Mercado Imobiliário. Considere que cada aplicação deve ser realizada em unidades de mil reais.\n\nAssinale a opção que apresenta a quantidade de maneiras distintas de distribuir os 20 mil reais entre os investimentos.\n\n\\begin{choices}\n\\choice 1771\n\\choice 4772\n\\choice 10626\n\\choice 13781\n\\choice 15852\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Análise Combinatória",
-      "gabarito": "A",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "2"
-    }
-  },
-  {
-    "latex": "\\question Sabendo que o valor de $\\log 630 = a$ e $\\log 1524 = b$, assinale a opção que apresenta o valor de $\\log 1260$ em função de $a$ e $b$.\n\n\\begin{choices}\n\\choice $\\dfrac{ab+b-1}{ab-a+1}$\n\\choice $\\dfrac{2ab+2a-1}{ab+b+1}$\n\\choice $\\dfrac{b+3-ab}{ab-1}$\n\\choice $\\dfrac{2a-b-2-ab}{ab-1}$\n\\choice $\\dfrac{1+a+b}{2+a}$\n\\end{choices}",
+    "latex": "\\question Se, em 15 anos, o salário mínimo teve um aumento nominal de 300% e a inflação foi de 100%, é correto afirmar que o aumento real do salário mínimo, nesse período, foi de\n\\begin{choices}\n\\choice 50%.\n\\correctchoice 100%.\n\\choice 150%.\n\\choice 200%.\n\\choice 250%.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
+      "dificuldade": "Fácil",
       "disciplina": "Matemática",
-      "assunto": "Logaritmos",
+      "assunto": "Matemática Financeira",
       "gabarito": "B",
       "tags": [
-        "Escola Naval",
-        "2023"
+        "porcentagem",
+        "inflação",
+        "aumento real",
+        "variação percentual"
       ],
       "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "3"
-    }
-  },
-  {
-    "latex": "\\question Dois aspirantes A e B correm em uma pequena pista circular, e os tempos em cada volta completa são registrados em segundos (s).\n\nO aspirante A completou a 1ª volta em 7s, as duas primeiras voltas em 20s, as três primeiras voltas em 33s, as quatro primeiras voltas em 46s e assim sucessivamente, mantendo a regularidade.\n\nO aspirante B completou a 1ª volta em 15s, as duas primeiras voltas em 34s, as três primeiras voltas em 53s, as quatro primeiras voltas em 72s e assim sucessivamente, mantendo também a regularidade.\n\nConsidere que os aspirantes começaram a corrida no mesmo instante e no mesmo ponto de partida. Calcule em quantos segundos, após a partida, os aspirantes se encontrarão pela 4ª vez no ponto de partida.\n\n\\begin{choices}\n\\choice 779\n\\choice 798\n\\choice 805\n\\choice 806\n\\choice 813\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Progressões",
-      "gabarito": "E",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "4"
-    }
-  },
-  {
-    "latex": "\\question Seja $f$ uma função polinomial, na variável $x$, de menor grau possível e coeficientes reais, tal que $f(1)=2$, $f(4)=3$, $f(3)=4$ e $f(2)=1$.\n\nAssim, é correto afirmar que $f$:\n\n\\begin{choices}\n\\choice possui ponto de inflexão em $x=\\dfrac{5}{2}$\n\\choice possui um ponto de máximo absoluto em $x=3$\n\\choice possui um ponto de mínimo absoluto em $x=1$\n\\choice não é contínua em $x=1$\n\\choice não possui máximo absoluto em $x\\in[2,\\infty)$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Funções Polinomiais / Interpolação",
-      "gabarito": "A",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "5"
-    }
-  },
-  {
-    "latex": "\\question Seja $F$ uma função definida por\n\\[\nF(x)=\\int_{0}^{x} f(t)\\,dt,\\quad x\\ge 0,\n\\]\nonde\n\\[\nf(t)=\n\\begin{cases}\nt, & 0\\le t<1,\\\\\nt^{2}-1, & t\\ge 1.\n\\end{cases}\n\\]\nAssinale a opção que apresenta o valor de $F(3)$.\n\n\\begin{choices}\n\\choice $\\dfrac{9}{2}$\n\\choice $\\dfrac{43}{6}$\n\\choice $3$\n\\choice $-9$\n\\choice $\\dfrac{13}{3}$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Integrais",
-      "gabarito": "B",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "6"
-    }
-  },
-  {
-    "latex": "\\question O valor da soma $\\displaystyle \\sum_{k=1}^{2023}\\tg(k)\\cdot \\tg(k+1)$ é igual a:\n\n\\begin{choices}\n\\choice $\\dfrac{\\tg(2023)}{\\tg(1)}+2023$\n\\choice $\\dfrac{\\tg(2023)}{\\tg(1)}-2023$\n\\choice $\\dfrac{\\tg(2024)}{\\tg(1)}+2024$\n\\choice $\\dfrac{\\tg(2024)}{\\tg(1)}-2024$\n\\choice $\\tg(2023)-\\tg(2024)$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Trigonometria (Somas)",
-      "gabarito": "D",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "7"
-    }
-  },
-  {
-    "latex": "\\question Uma hipérbole tem os eixos transverso e conjugado contidos nos eixos coordenados e contém os pontos médios dos lados do quadrilátero, cujos vértices são as intersecções da elipse, de equação $9x^{2}+y^{2}=36$, com os eixos coordenados. Sabendo que as coordenadas de um dos focos da hipérbole é $(1,0)$, assinale a opção que apresenta uma das equações das assíntotas dessa hipérbole.\n\n\\begin{choices}\n\\choice $y=\\sqrt{3}\\,x$\n\\choice $y=-\\sqrt{13}\\,x$\n\\choice $y=-2\\sqrt{3}\\,x$\n\\choice $y=13x$\n\\choice $y=3x$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": null,
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Analítica (Cônicas)",
-      "tags": [
-        "Escola Naval",
-        "2023",
-        "Anulada"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "8"
-    }
-  },
-  {
-    "latex": "\\question Sejam $i$ a unidade imaginária e o complexo $Z$ que satisfaz a igualdade $4|Z| = |Z-1-2i|$.\n\nA soma dos números reais que satisfazem a igualdade é igual a:\n\n\\begin{choices}\n\\choice $-2$\n\\choice $-1$\n\\choice $-\\dfrac{2}{15}$\n\\choice $-\\dfrac{1}{45}$\n\\choice $-\\dfrac{1}{5}$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Números Complexos",
-      "gabarito": "C",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "9"
-    }
-  },
-  {
-    "latex": "\\question Considere um triângulo $T_1$ de área $w$. Os comprimentos das medianas de $T_1$ são os comprimentos dos lados de um novo triângulo $T_2$; os comprimentos das medianas de $T_2$ são os comprimentos dos lados de um novo triângulo $T_3$ e assim sucessivamente.\n\nSendo assim, se $w=3$, é correto afirmar que a soma de todas as áreas dos $T_n$, com $n\\to\\infty$, é um:\n\n\\begin{choices}\n\\choice número racional não inteiro.\n\\choice quadrado perfeito.\n\\choice número primo.\n\\choice número irracional.\n\\choice número par.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Plana (Medianas / Áreas)",
-      "gabarito": "E",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "10"
-    }
-  },
-  {
-    "latex": "\\question Um cilindro circular reto de raio $r$ e altura $h$ possui volume igual a $300\\,\\text{cm}^3$. Sabendo que o cilindro possui menor área total possível, a altura $h$, em cm, é aproximadamente igual a:\n\n\\begin{choices}\n\\choice 7,25\n\\choice 6,90\n\\choice 6,15\n\\choice 3,63\n\\choice 2,00\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Otimização (Geometria Espacial)",
-      "gabarito": "A",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "11"
-    }
-  },
-  {
-    "latex": "\\question Analise os gráficos a seguir.\n\nSeja um número real positivo $x$, tal que $\\dfrac{40}{x}=4^{x}$ e, utilizando os dados dos gráficos das funções definidas por $y=x\\cdot e^{x}$ e $y=\\ln(x)$, é correto afirmar que o valor de $x$ é aproximadamente igual a:\n\n\\begin{choices}\n\\choice 1,60\n\\choice 1,96\n\\choice 2,13\n\\choice 2,24\n\\choice 2,52\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Equações Exponenciais / Logaritmos",
-      "gabarito": "C",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "12"
-    }
-  },
-  {
-    "latex": "\\question Se $x>0$, seja $f(x)=5x^{2}+Ax^{-5}$, em que $A$ é uma constante positiva. Assinale a opção que apresenta o menor valor de $A$ tal que $f(x)\\ge 24$, $\\forall x>0$.\n\n\\begin{choices}\n\\choice $\\dfrac{2^{11}\\cdot 3^{3}}{7^{3}}\\sqrt{\\dfrac{6}{7}}$\n\\choice $\\dfrac{2^{3}\\cdot 3^{11}}{7^{11}}\\sqrt{\\dfrac{7}{6}}$\n\\choice $2^{8}$\n\\choice $\\dfrac{2^{7}\\cdot 3^{11}}{7^{11}}\\sqrt{\\dfrac{2}{3}}$\n\\choice $\\dfrac{2^{8}\\cdot 3^{-7}}{7^{-3}}\\sqrt{\\dfrac{3}{2}}$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Otimização (Mínimos)",
-      "gabarito": "A",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "13"
-    }
-  },
-  {
-    "latex": "\\question Na Escola Naval, um oficial afirmou que: ``Se todos os navios estão fundeados, então hoje é dia de licença pagamento ou os nautas não estão de serviço''.\n\nAssinale a opção que apresenta a afirmativa que equivale à afirmação do oficial.\n\n\\begin{choices}\n\\choice Se todos os navios não estão fundeados, então hoje não é dia de licença pagamento ou os nautas estão de serviço.\n\\choice Se hoje não é dia de licença pagamento e os nautas estão de serviço, então há navio que não está fundeado.\n\\choice Se hoje é dia de licença pagamento ou os nautas não estão de serviço, então todos os navios estão fundeados.\n\\choice Se hoje não é dia de licença pagamento ou os nautas estão de serviço, então há navio que não está fundeado.\n\\choice Se hoje é dia de licença pagamento e os nautas estão de serviço, então há navio que não está fundeado.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Lógica Proposicional",
-      "gabarito": "B",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
       "numero": "14"
     }
   },
   {
-    "latex": "\\question Analise a figura a seguir.\n\nSeja o paralelepípedo reto retângulo $ABCDEFGH$ com medidas $AB=4\\text{ cm}$, $AD=8\\text{ cm}$ e $AE=5\\text{ cm}$, conforme a figura. Considerando o ponto $P$ como o centro do paralelepípedo, é correto afirmar que a distância, em cm, de $P$ ao plano $BDE$ é igual a:\n\n\\begin{choices}\n\\choice $\\dfrac{10}{\\sqrt{189}}$\n\\choice $\\dfrac{20}{\\sqrt{189}}$\n\\choice $\\dfrac{35}{2\\sqrt{105}}$\n\\choice $\\dfrac{30}{\\sqrt{189}}$\n\\choice $\\dfrac{35}{\\sqrt{105}}$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Espacial",
-      "gabarito": "B",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "15"
-    }
-  },
-  {
-    "latex": "\\question Considere que um jogador do jogo eletrônico \\emph{Call of Duty Warzone}, sabedor de matemática, foi questionado por seus amigos sobre quantas unidades de área da região do campo de batalha devem ser vasculhadas para encontrar os últimos inimigos a serem derrubados para que, assim, eles vençam a partida.\n\nSupondo que a região do campo de batalha seja totalmente plana, o valor da área que deve ser vasculhada é igual ao valor da área do polígono convexo cujos vértices são os pares cartesianos da solução do sistema\n\\[\n\\begin{cases}\nx^{2}=13x+4y\\\\\ny^{2}=4x+13y\n\\end{cases}\n\\]\nAssinale a opção que apresenta o valor da área dessa região.\n\n\\begin{choices}\n\\choice 255\n\\choice 260\n\\choice 265\n\\choice 270\n\\choice 275\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Analítica (Sistemas)",
-      "gabarito": "A",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "16"
-    }
-  },
-  {
-    "latex": "\\question Na partida de futebol entre Alemanha e Japão na Copa do Mundo de 2022, no lance que originou o segundo gol do Japão, por 1,88\\,mm, a bola não passou totalmente pela linha de fundo (linha branca), como mostram as figuras 1, 2 e 3.\n\nSabe-se que a parte da bola sobre a linha branca equivale a uma calota esférica de altura 1,88\\,mm e volume $V_c$. Considerando a bola de futebol uma esfera de raio 70\\,cm e volume $V$, assinale a opção que apresenta corretamente a relação entre $V$ e $V_c$.\n\n\\begin{choices}\n\\choice $0,1%\\ \\text{de }V < V_c < 1%\\ \\text{de }V$\n\\choice $0,01%\\ \\text{de }V < V_c < 0,1%\\ \\text{de }V$\n\\choice $0,001%\\ \\text{de }V < V_c < 0,01%\\ \\text{de }V$\n\\choice $0,0001%\\ \\text{de }V < V_c < 0,001%\\ \\text{de }V$\n\\choice $V_c < 0,0001%$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Espacial (Volumes)",
-      "gabarito": "D",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "17"
-    }
-  },
-  {
-    "latex": "\\question Assinale a opção que apresenta o resultado de\n\\[\n\\lim_{x\\to+\\infty}\\left(\\frac{3x+9}{4x+1}\\right)^{4x+4}.\n\\]\n\n\\begin{choices}\n\\choice $+\\infty$\n\\choice $-\\infty$\n\\choice $e^{-1}$\n\\choice $e^{-\\frac{3}{4}}$\n\\choice $0$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Limites",
-      "gabarito": "E",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "18"
-    }
-  },
-  {
-    "latex": "\\question Seja a reta $r$ oblíqua a um plano $\\varphi$ pelo ponto $A$. Considere que a reta $s\\subset\\varphi$ é a projeção ortogonal de $r$ sobre $\\varphi$ e a reta $t\\subset\\varphi$ que passa por $A$. Se $\\theta$ é o ângulo entre $r$ e $s$, e $\\beta$ é o ângulo entre $r$ e $t$, assinale a opção que apresenta a correta relação entre esses ângulos.\n\n\\begin{choices}\n\\choice $\\theta<\\beta$\n\\choice $\\theta=\\beta$\n\\choice $\\beta<\\theta$\n\\choice $\\theta=2\\beta$\n\\choice $2\\beta<\\theta$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": null,
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Espacial (Reta e Plano)",
-      "tags": [
-        "Escola Naval",
-        "2023",
-        "Anulada"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "19"
-    }
-  },
-  {
-    "latex": "\\question Sejam as matrizes $A$ e $B$, ambas de ordem $4\\times 4$, com $\\det A=-1$ e $\\det B=2$. Calcule o determinante da matriz $X$ sabendo que\n\\[\nA^{-1}\\cdot B^{T}\\cdot X = 2A^{T}\n\\]\ne assinale a opção correta.\n\n\\begin{choices}\n\\choice $-8$\n\\choice $8$\n\\choice $-16$\n\\choice $16$\n\\choice $32$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Matrizes e Determinantes",
-      "gabarito": "B",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "20"
-    }
-  },
-  {
-    "latex": "\\question Considere que parte real e imaginária de um número complexo $z$ sejam denotadas, respectivamente, por $\\Re(z)$ e $\\Im(z)$.\n\nSejam $z_1$ e $z_2$ números complexos que satisfazem a equação\n\\[\nz^{2} + (1-i)z - 3i = 0,\n\\]\nonde $i$ é a unidade imaginária. Sobre $z_1$ e $z_2$, é correto afirmar que:\n\n\\begin{choices}\n\\choice $\\Im(z_1+z_2)=0$\n\\choice $\\Re(z_1+z_2)=0$\n\\choice $\\Im(z_1)\\cdot \\Im(z_2)$ é um número irracional.\n\\choice $\\Re(z_1)\\cdot \\Re(z_2)$ é um número irracional.\n\\choice $\\Im(z_1+z_2)+\\Re(z_1+z_2)=0$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Números Complexos (Equações)",
-      "gabarito": "E",
-      "tags": [
-        "Escola Naval",
-        "2023"
-      ],
-      "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
-      "numero": "21"
-    }
-  },
-  {
-    "latex": "\\question Considere que um navio de guerra da Marinha do Brasil danificou o radar de um navio inimigo com um tiro de canhão 50\\,mm.\n\nO radar do navio inimigo passou a detectar apenas numa região angular que é solução de\n\\[\n\\sen(x)+\\cos(x)\\ge \\frac{\\sqrt{2}}{2},\n\\]\nsendo $x$ real.\n\nSe o radar do navio inimigo tem um poder de alcance que está dentro da região da circunferência $x^{2}+y^{2}=R^{2}$, com $R\\le 100\\,\\text{km}$, assinale a opção que apresenta a área total de alcance desse radar em que não será possível detectar o navio de guerra da Marinha do Brasil.\n\n\\begin{choices}\n\\choice $\\dfrac{\\pi}{3}R^{2}\\ \\text{km}^{2}$\n\\choice $\\dfrac{\\pi}{12}R^{2}\\ \\text{km}^{2}$\n\\choice $\\dfrac{2\\pi}{3}R^{2}\\ \\text{km}^{2}$\n\\choice $\\dfrac{3\\pi}{4}R^{2}\\ \\text{km}^{2}$\n\\choice $\\dfrac{5\\pi}{6}R^{2}\\ \\text{km}^{2}$\n\\end{choices}\n\n\\end{questions}\n\n\\end{document}",
+    "latex": "\\question O cilindro de papelão central de uma fita crepe tem raio externo de 3 cm. A fita tem espessura de 0,01 cm e dá 100 voltas completas. Considerando que, a cada volta, o raio externo do rolo é aumentado no valor da espessura da fita, o comprimento total da fita é de, aproximadamente,\n(Considere $\\pi \\approx 3{,}14$.)\n\\begin{choices}\n\\choice 9,4 m.\n\\choice 11,0 m.\n\\correctchoice 18,8 m.\n\\choice 22,0 m.\n\\choice 25,1 m.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Trigonometria / Geometria (Área)",
+      "assunto": "Geometria Espacial",
       "gabarito": "C",
       "tags": [
-        "Escola Naval",
-        "2023"
+        "comprimento de arco",
+        "circunferência",
+        "soma",
+        "aproximação"
       ],
       "fonte": "concurso",
-      "concurso": "Escola Naval",
-      "banca": "Marinha do Brasil",
-      "ano": 2023,
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "15"
+    }
+  },
+  {
+    "latex": "\\question Um objeto é formado por 4 hastes rígidas conectadas em seus extremos por articulações, cujos centros são os vértices de um paralelogramo. As hastes movimentam-se de tal forma que o paralelogramo permanece sempre no mesmo plano. A cada configuração desse objeto, associa-se $\\theta$, a medida do menor ângulo interno do paralelogramo. A área da região delimitada pelo paralelogramo quando $\\theta = 90^\\circ$ é $A$.\n\nPara que a área da região delimitada pelo paralelogramo seja $\\dfrac{A}{2}$, o valor de $\\theta$ é, necessariamente, igual a\n\\begin{choices}\n\\choice $15^\\circ$.\n\\choice $22{,}5^\\circ$.\n\\correctchoice $30^\\circ$.\n\\choice $45^\\circ$.\n\\choice $60^\\circ$.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Plana",
+      "gabarito": "C",
+      "tags": [
+        "paralelogramo",
+        "área",
+        "seno",
+        "ângulo"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "16"
+    }
+  },
+  {
+    "latex": "\\question A menor esfera na qual um paralelepípedo reto-retângulo de medidas $7\\,\\text{cm} \\times 4\\,\\text{cm} \\times 4\\,\\text{cm}$ está inscrito tem diâmetro de\n\\begin{choices}\n\\correctchoice 9 cm.\n\\choice 10 cm.\n\\choice 11 cm.\n\\choice 12 cm.\n\\choice 15 cm.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Espacial",
+      "gabarito": "A",
+      "tags": [
+        "esfera",
+        "paralelepípedo",
+        "diagonal espacial",
+        "raio"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "17"
+    }
+  },
+  {
+    "latex": "\\question A dona de uma lanchonete observou que, vendendo um combo a R$ 10,00, 200 deles são vendidos por dia, e que, para cada redução de R$ 1,00 nesse preço, ela vende 100 combos a mais. Nessas condições, qual é a máxima arrecadação diária que ela espera obter com a venda desse combo?\n\\begin{choices}\n\\choice R$ 2.000,00\n\\choice R$ 3.200,00\n\\choice R$ 3.600,00\n\\correctchoice R$ 4.000,00\n\\choice R$ 4.800,00\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Quadrática",
+      "gabarito": "D",
+      "tags": [
+        "máximo",
+        "receita",
+        "modelagem",
+        "função do segundo grau"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "18"
+    }
+  },
+  {
+    "latex": "\\question A função $\\varphi$ de Euler determina, para cada número natural $n$, a quantidade de números naturais menores do que $n$ cujo máximo divisor comum com $n$ é igual a 1. Por exemplo, $\\varphi(6)=2$, pois os números menores do que 6 com tal propriedade são 1 e 5.\n\nQual o valor máximo de $\\varphi(n)$, para $n$ de 20 a 25?\n\\begin{choices}\n\\choice 19\n\\choice 20\n\\correctchoice 22\n\\choice 24\n\\choice 25\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Teoria dos Números",
+      "gabarito": "C",
+      "tags": [
+        "função totiente",
+        "máximo divisor comum",
+        "aritmética"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "19"
+    }
+  },
+  {
+    "latex": "\\question Se $3x^{2}-9x+7 = (x-a)^{3} - (x-b)^{3}$, para todo número real $x$, o valor de $a+b$ é\n\\begin{choices}\n\\choice 3.\n\\correctchoice 5.\n\\choice 6.\n\\choice 9.\n\\choice 12.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Polinômios",
+      "gabarito": "B",
+      "tags": [
+        "identidade polinomial",
+        "comparação de coeficientes",
+        "expansão"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "20"
+    }
+  },
+  {
+    "latex": "\\question Uma agência de turismo vendeu um total de 78 passagens para os destinos: Lisboa, Paris e Roma. Sabe-se que o número de passagens vendidas para Paris foi o dobro do número de passagens vendidas para os outros dois destinos conjuntamente. Sabe-se também que, para Roma, foram vendidas duas passagens a mais que a metade das vendidas para Lisboa.\n\nQual foi o total de passagens vendidas, conjuntamente, para Paris e Roma?\n\\begin{choices}\n\\choice 26\n\\choice 38\n\\choice 42\n\\correctchoice 62\n\\choice 68\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Sistemas Lineares",
+      "gabarito": "D",
+      "tags": [
+        "equações lineares",
+        "modelagem algébrica"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "21"
+    }
+  },
+  {
+    "latex": "\\question Um ponto $(x,y)$ do plano cartesiano pertence ao conjunto $F$ se é equidistante dos eixos $OX$ e $OY$ e pertence ao círculo de equação\n$x^{2}+y^{2}-2x-6y+2=0$.\nÉ correto afirmar que $F$\n\\begin{choices}\n\\choice é um conjunto vazio.\n\\correctchoice tem exatamente 2 pontos, um no primeiro quadrante e outro no segundo quadrante.\n\\choice tem exatamente 2 pontos, ambos no primeiro quadrante.\n\\choice tem exatamente 3 pontos, sendo dois no primeiro quadrante e outro no segundo quadrante.\n\\choice tem exatamente 4 pontos, sendo dois no primeiro quadrante e dois no segundo quadrante.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Analítica",
+      "gabarito": "B",
+      "tags": [
+        "circunferência",
+        "distância aos eixos",
+        "sistema"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
       "numero": "22"
+    }
+  },
+  {
+    "latex": "\\question Uma cidade é dividida em dois Setores: o Setor Sul, com área de $10\\,\\text{km}^2$, e o Setor Norte, com área de $30\\,\\text{km}^2$. Após um final de semana, foram divulgados os seguintes totais pluviométricos:\n\nsábado: Sul 7 mm, Norte 11 mm  \ndomingo: Sul 9 mm, Norte 17 mm\n\nÉ correto afirmar que o total pluviométrico desse final de semana na cidade inteira foi de\n\\begin{choices}\n\\choice 15 mm.\n\\choice 17 mm.\n\\choice 22 mm.\n\\correctchoice 25 mm.\n\\choice 28 mm.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Média Ponderada",
+      "gabarito": "D",
+      "tags": [
+        "pluviometria",
+        "média ponderada",
+        "proporção",
+        "área"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "23"
+    }
+  },
+  {
+    "latex": "\\question As possíveis soluções, em polegadas (inches), para o problema matemático proposto no quadrinho, no caso em que os pontos $A$, $B$ e $C$ estão em uma mesma reta, são\n\\begin{choices}\n\\correctchoice $\\dfrac{10}{3}$ e $10$.\n\\choice $\\dfrac{10}{3}$, $5$ e $10$.\n\\choice $\\dfrac{5}{3}$, $\\dfrac{10}{3}$ e $10$.\n\\choice $\\dfrac{5}{3}$ e $10$.\n\\choice $\\dfrac{10}{3}$ e $5$.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Equações",
+      "gabarito": "A",
+      "tags": [
+        "equação",
+        "segmentos colineares",
+        "resolução algébrica"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2020,
+      "numero": "24"
     }
   }
 ]
