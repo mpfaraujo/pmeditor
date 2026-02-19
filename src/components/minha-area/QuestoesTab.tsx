@@ -88,7 +88,7 @@ export function QuestoesTab() {
           <p className="mt-1 text-sm text-slate-400">
             Crie sua primeira questão para começar
           </p>
-          <Button onClick={() => router.push("/editor")} className="mt-6 gap-2">
+          <Button onClick={() => router.push("/editor")} className="mt-6 gap-2 btn-primary">
             <PlusCircle className="h-4 w-4" />
             Nova Questão
           </Button>
@@ -103,7 +103,7 @@ export function QuestoesTab() {
         <p className="text-sm text-muted-foreground">
           {total} {total === 1 ? "questão" : "questões"} criada{total === 1 ? "" : "s"}
         </p>
-        <Button onClick={() => router.push("/editor")} size="sm" className="gap-2">
+        <Button onClick={() => router.push("/editor")} size="sm" className="gap-2 btn-primary">
           <PlusCircle className="h-4 w-4" />
           Nova Questão
         </Button>

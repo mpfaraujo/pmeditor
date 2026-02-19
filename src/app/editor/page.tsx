@@ -58,17 +58,17 @@ function EditorContent() {
 
   if (step === "editor") {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="container mx-auto">
+      <div className="min-h-screen stripe-grid-bg py-8">
+        <div className="container mx-auto animate-fade-in-up">
           <div className="mb-8">
             <Link
               href="/minha-area"
-              className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
+              className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 transition-colors mb-3"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Minha Área
             </Link>
-            <h1 className="text-3xl font-bold text-center">
+            <h1 className="text-4xl font-bold text-center text-slate-800">
               Editor de Questões
             </h1>
           </div>
@@ -93,27 +93,27 @@ function EditorContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur">
-        <div className="mx-auto max-w-3xl px-4 py-4">
+    <div className="min-h-screen stripe-grid-bg">
+      <header className="sticky top-0 z-40 border-b glass">
+        <div className="mx-auto max-w-3xl px-4 py-4 animate-fade-in-up">
           <Link
             href="/minha-area"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
+            className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 transition-colors mb-2"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Minha Área
           </Link>
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-3xl font-bold text-slate-800">
             Nova Questão
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-slate-600">
             Preencha as informações da questão no modelo abaixo e cole aqui, ou
             pule direto para o editor.
           </p>
         </div>
       </header>
 
-      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6">
+      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6 animate-fade-in-up">
         {/* Botão copiar modelo */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
@@ -149,7 +149,7 @@ function EditorContent() {
 
         {/* Preview dos campos parseados */}
         {yamlText.trim() && (
-          <div className="rounded-lg border bg-white p-4 space-y-2">
+          <div className="stripe-card-gradient p-4 space-y-2">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               {parsed ? (
                 <Check className="h-4 w-4 text-green-600" />
@@ -213,7 +213,7 @@ function EditorContent() {
           <Button
             onClick={handleContinue}
             disabled={!parsed}
-            className="gap-2"
+            className="gap-2 btn-primary"
           >
             Continuar <ArrowRight className="h-4 w-4" />
           </Button>

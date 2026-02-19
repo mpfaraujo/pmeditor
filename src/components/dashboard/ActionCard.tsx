@@ -12,24 +12,24 @@ export function ActionCard(props: {
 }) {
   const accent =
     props.accent === "blue"
-      ? "group-hover:border-blue-200 group-hover:bg-blue-50/40"
+      ? "hover:border-blue-300"
       : props.accent === "green"
-      ? "group-hover:border-emerald-200 group-hover:bg-emerald-50/40"
+      ? "hover:border-emerald-300"
       : props.accent === "purple"
-      ? "group-hover:border-violet-200 group-hover:bg-violet-50/40"
-      : "group-hover:border-slate-200 group-hover:bg-slate-50/40";
+      ? "hover:border-purple-300"
+      : "hover:border-slate-300";
 
   const iconBg =
     props.accent === "blue"
-      ? "bg-blue-100 text-blue-700"
+      ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
       : props.accent === "green"
-      ? "bg-emerald-100 text-emerald-700"
+      ? "bg-gradient-to-br from-emerald-500 to-teal-500 text-white"
       : props.accent === "purple"
-      ? "bg-violet-100 text-violet-700"
-      : "bg-slate-100 text-slate-700";
+      ? "bg-gradient-to-br from-purple-500 to-pink-500 text-white"
+      : "bg-gradient-to-br from-slate-500 to-gray-500 text-white";
 
   return (
-    <Link href={props.href} className={`group block rounded-xl border bg-white shadow-sm transition-all hover:shadow-md ${accent}`}>
+    <Link href={props.href} className={`group block stripe-card hover-lift ${accent}`}>
       <div className="p-6">
         <div className="flex items-start gap-4">
           <div className={`h-12 w-12 rounded-xl ${iconBg} flex items-center justify-center`}>

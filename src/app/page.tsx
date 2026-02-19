@@ -12,15 +12,16 @@ const SHOW_METRICS = false;
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+    <main className="min-h-screen stripe-grid-bg">
+      {/* Faixa de marca amarela */}
+      <header className="brand-header sticky top-0 z-40">
+        <div className="mx-auto max-w-6xl px-4 flex items-center justify-between animate-fade-in-up">
           <div className="min-w-0">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Editor de Questões
+            <h1 className="text-3xl font-bold text-slate-800">
+              ProvaMarela
             </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Banco de questões e montagem de provas.
+            <p className="mt-1 text-sm text-slate-700">
+              Editor de questões e montagem de provas
             </p>
           </div>
           <LoginButton />

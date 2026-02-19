@@ -17,22 +17,22 @@ export default function TemplatePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur">
-        <div className="mx-auto max-w-3xl px-4 py-4">
-          <h1 className="text-2xl font-semibold tracking-tight">
+    <main className="min-h-screen stripe-grid-bg">
+      <header className="sticky top-0 z-40 border-b glass">
+        <div className="mx-auto max-w-3xl px-4 py-4 animate-fade-in-up">
+          <h1 className="text-3xl font-bold text-slate-800">
             Modelo de Informações da Questão
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-slate-600">
             Copie o modelo abaixo, preencha num editor de texto e cole ao criar
             a questão.
           </p>
         </div>
       </header>
 
-      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6">
+      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6 animate-fade-in-up">
         {/* Template */}
-        <div className="relative rounded-lg border bg-white overflow-hidden">
+        <div className="relative stripe-card-gradient overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2 border-b bg-slate-50">
             <span className="text-xs text-muted-foreground">Modelo</span>
             <Button
@@ -58,7 +58,7 @@ export default function TemplatePage() {
         </div>
 
         {/* Instruções */}
-        <div className="rounded-lg border bg-white p-6 space-y-4">
+        <div className="stripe-card p-6 space-y-4">
           <h2 className="text-lg font-semibold">Como usar</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
             <li>
@@ -128,7 +128,7 @@ export default function TemplatePage() {
         {/* CTA */}
         <div className="flex justify-center">
           <Link href="/editor">
-            <Button size="lg" className="gap-2">
+            <Button size="lg" className="gap-2 btn-primary">
               Ir para o editor <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

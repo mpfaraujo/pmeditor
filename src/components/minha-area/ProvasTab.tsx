@@ -61,23 +61,15 @@ export function ProvasTab() {
     setLoadingProva(prova.id);
 
     try {
-      console.log("🔍 [handleCarregar] Iniciando...");
-      console.log("📋 Prova:", prova);
-      console.log("📊 Selections:", prova.selections);
-
       // 1. Buscar questões completas (IDs estão em prova.selections)
       const questionIds = prova.selections.map(s => s.id);
-      console.log("🔑 Question IDs:", questionIds);
-
       const promises = questionIds.map(id => getQuestion(id));
       const questions = await Promise.all(promises);
-      console.log("📦 Questions buscadas:", questions);
 
       // Extrair .item de cada questão (API retorna { success, item })
       const validQuestions = questions
         .filter(q => q !== null)
         .map(q => (q as any).item || q);
-      console.log("✅ Valid questions:", validQuestions.length, validQuestions);
 
       if (validQuestions.length === 0) {
         toast({
@@ -90,34 +82,25 @@ export function ProvasTab() {
       }
 
       // 2. Restaurar no ProvaContext (setar todas de uma vez)
-      // Não precisa de clearAll() - updateColumnLayout já substitui tudo
-      console.log("📝 Chamando updateColumnLayout com", validQuestions.length, "questões");
       updateColumnLayout({
         coluna1: validQuestions as any,
         coluna2: [],
       });
 
-      // 💾 IMPORTANTE: Salvar direto no localStorage ANTES de redirecionar
-      // (para garantir que não perde ao trocar de página)
-      console.log("💾 Salvando questões no localStorage...");
+      // Salvar direto no localStorage antes de redirecionar
       localStorage.setItem("provaQuestions_v1", JSON.stringify(validQuestions));
 
       // 3. Restaurar selections (para sets com itemIndexes)
-      console.log("🎯 Limpando set selections antigas...");
       clearSetSelections();
 
-      console.log("🎯 Restaurando selections...");
       const newSetSelections: Record<string, number[]> = {};
       prova.selections.forEach(sel => {
         if (sel.kind === "set") {
-          console.log("📌 Set selection:", sel.id, sel.itemIndexes);
           setSetSelection(sel.id, sel.itemIndexes);
           newSetSelections[sel.id] = sel.itemIndexes;
         }
       });
 
-      // 💾 Salvar set selections no localStorage também
-      console.log("💾 Salvando set selections no localStorage...");
       localStorage.setItem("provaSetSelections_v1", JSON.stringify(newSetSelections));
 
       toast({
@@ -125,12 +108,11 @@ export function ProvasTab() {
         description: `Prova "${prova.nome}" carregada com sucesso`,
       });
 
-      // 4. Redirecionar para montagem (após tudo estar salvo)
-      console.log("🚀 Redirecionando para selecionar-layout");
+      // 4. Redirecionar para montagem
       router.push("/editor/prova/selecionar-layout");
 
     } catch (err: any) {
-      console.error("❌ Erro ao carregar prova:", err);
+      console.error("Erro ao carregar prova:", err);
       toast({
         title: "Erro ao carregar prova",
         description: err.message,
@@ -195,7 +177,7 @@ export function ProvasTab() {
           <p className="mt-1 text-sm text-slate-400">
             Suas provas montadas aparecerão aqui.
           </p>
-          <Button asChild className="mt-6">
+          <Button asChild className="mt-6 btn-primary">
             <Link href="/editor/questoes/filtro">
               <BookOpen className="h-4 w-4 mr-2" />
               Montar Prova
@@ -211,7 +193,7 @@ export function ProvasTab() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Provas Salvas</h3>
-          <Button asChild>
+          <Button asChild className="btn-primary">
             <Link href="/editor/questoes/filtro">
               <BookOpen className="h-4 w-4 mr-2" />
               Montar Prova

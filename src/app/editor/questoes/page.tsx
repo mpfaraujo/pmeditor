@@ -161,10 +161,10 @@ export default function QuestoesPage() {
   const hasSelection = selectedCount > 0;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen stripe-grid-bg">
       <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto overflow-x-hidden">
-        <div className="w-full max-w-full md:max-w-[12cm] mx-auto mb-4">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/editor/questoes/filtro")}>
+        <div className="w-full max-w-full md:max-w-[12cm] mx-auto mb-4 animate-fade-in-up">
+          <Button variant="ghost" size="sm" onClick={() => router.push("/editor/questoes/filtro")} className="hover:bg-white/60">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar para Filtros
           </Button>
@@ -206,7 +206,7 @@ export default function QuestoesPage() {
                 <Button
                   onClick={handleMontarProva}
                   disabled={!hasSelection}
-                  className={!hasSelection ? "opacity-0 pointer-events-none" : ""}
+                  className={!hasSelection ? "opacity-0 pointer-events-none" : "btn-primary"}
                 >
                   Montar Prova ({selectedCount})
                 </Button>
@@ -220,7 +220,10 @@ export default function QuestoesPage() {
 
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
               <button
-                onClick={() => api?.scrollPrev()}
+                onClick={() => {
+                  setCurrentIndex(currentIndex - 1);
+                  api?.scrollTo(currentIndex - 1);
+                }}
                 disabled={currentIndex === 0}
                 style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex === 0 ? 0.3 : 1 }}
               >
@@ -230,7 +233,10 @@ export default function QuestoesPage() {
                 {currentIndex + 1} / {items.length}
               </span>
               <button
-                onClick={() => api?.scrollNext()}
+                onClick={() => {
+                  setCurrentIndex(currentIndex + 1);
+                  api?.scrollTo(currentIndex + 1);
+                }}
                 disabled={currentIndex >= items.length - 1}
                 style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= items.length - 1 ? 0.3 : 1 }}
               >
@@ -238,10 +244,10 @@ export default function QuestoesPage() {
               </button>
             </div>
 
-            <Carousel opts={{ align: "center" }} className="w-full" setApi={setApi}>
+            <Carousel opts={{ align: "start", duration: 60, watchResize: false, watchSlides: false }} className="w-full" setApi={setApi}>
               <CarouselContent>
-                {items.map((q, idx) => (
-  <CarouselItem key={`${q.metadata.id}-${idx}`}>
+                {items.map((q) => (
+                  <CarouselItem key={q.metadata.id}>
                     <div className="w-full md:w-[10cm] mx-auto px-2">
                       <QuestionCard
                         metadata={q.metadata}
