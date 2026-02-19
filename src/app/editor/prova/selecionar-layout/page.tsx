@@ -129,14 +129,14 @@ useEffect(() => {
 if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
+    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <Button variant="ghost" onClick={handleVoltar} className="mb-4">
+        <div className="mb-8 animate-fade-in-up">
+          <Button variant="ghost" onClick={handleVoltar} className="mb-4 hover:bg-white/60">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar
           </Button>
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-4xl font-bold text-slate-800">
             Configurar Prova
           </h1>
           <p className="text-slate-600 mt-2">
@@ -144,10 +144,10 @@ if (!mounted) return null;
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up">
           {/* Layout */}
           <div className="lg:col-span-1">
-            <Card className="h-full">
+            <Card className="h-full stripe-card hover-lift">
               <CardHeader>
                 <CardTitle>Layout</CardTitle>
                 <CardDescription>Formato e colunas</CardDescription>
@@ -237,7 +237,7 @@ if (!mounted) return null;
 
           {/* Dados */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="stripe-card hover-lift">
               <CardHeader>
                 <CardTitle>Dados da Prova</CardTitle>
                 <CardDescription>Cabeçalho</CardDescription>
@@ -331,7 +331,7 @@ if (!mounted) return null;
                   <Button variant="outline" onClick={handleVoltar} className="flex-1">
                     Cancelar
                   </Button>
-                  <Button onClick={handleContinuar} className="flex-1">
+                  <Button onClick={handleContinuar} className="flex-1 btn-primary">
                     Continuar
                   </Button>
                 </div>

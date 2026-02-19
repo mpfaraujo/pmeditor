@@ -96,7 +96,7 @@ export function TurmasTab() {
             Organize filtros de questões por turma
           </p>
         </div>
-        <Button onClick={handleCreate}>
+        <Button onClick={handleCreate} className="btn-primary">
           <Plus className="h-4 w-4 mr-2" />
           Nova Turma
         </Button>
@@ -112,7 +112,7 @@ export function TurmasTab() {
             <p className="mt-1 text-sm text-slate-400">
               Crie turmas para organizar filtros de questões
             </p>
-            <Button onClick={handleCreate} className="mt-6">
+            <Button onClick={handleCreate} className="mt-6 btn-primary">
               <Plus className="h-4 w-4 mr-2" />
               Criar Primeira Turma
             </Button>

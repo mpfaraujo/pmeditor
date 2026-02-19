@@ -575,14 +575,14 @@ const { pages, refs } = usePagination({
   return (
     <>
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
-        <div className="print:hidden fixed top-4 left-4 right-4 z-50 flex gap-2 justify-between bg-white p-4 border rounded-lg shadow-lg">
+        <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex gap-2 justify-between brand-header border-b px-4">
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => router.push("/editor/questoes")}>
+            <Button variant="outline" onClick={() => router.push("/editor/questoes")} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar
             </Button>
 
-            <Button variant="outline" onClick={handleEditarConfiguracao}>
+            <Button variant="outline" onClick={handleEditarConfiguracao} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
               <Settings className="h-4 w-4 mr-2" />
               Configuração
             </Button>
@@ -593,6 +593,7 @@ const { pages, refs } = usePagination({
             <Button
               variant="outline"
               onClick={() => updateProvaConfig({ showGabarito: !provaConfig.showGabarito })}
+              className="bg-amber-50 hover:bg-amber-100 border-amber-200"
             >
               {provaConfig.showGabarito ? (
                 <CheckSquare className="h-4 w-4 mr-2" />
@@ -602,7 +603,7 @@ const { pages, refs } = usePagination({
               Gabarito
             </Button>
 
-            <Button variant="outline" onClick={() => setReorderModalOpen(true)}>
+            <Button variant="outline" onClick={() => setReorderModalOpen(true)} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
               <ListOrdered className="h-4 w-4 mr-2" />
               Reordenar
               {manualOrder && (
@@ -614,12 +615,13 @@ const { pages, refs } = usePagination({
               variant="outline"
               onClick={() => setSalvarDialogOpen(true)}
               disabled={initialQuestions.length === 0}
+              className="bg-amber-50 hover:bg-amber-100 border-amber-200"
             >
               <Save className="h-4 w-4 mr-2" />
               Salvar Prova
             </Button>
 
-            <Button onClick={handlePrint}>
+            <Button onClick={handlePrint} className="btn-primary">
               <Printer className="h-4 w-4 mr-2" />
               Imprimir
             </Button>

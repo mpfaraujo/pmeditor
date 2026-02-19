@@ -123,3 +123,182 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ========================================
+   🟡 ProvaMarela - Identidade Visual
+   ======================================== */
+
+:root {
+  /* 🎨 Amarelo de Marca */
+  --yellow-brand: #E6C76A;        /* Principal */
+  --yellow-light: #F4E3A4;        /* Claro */
+  --yellow-hover: #D4B24F;        /* Hover */
+
+  /* 🔵 Azul Estrutural */
+  --blue-structure: #1F3A44;      /* Principal */
+  --blue-hover: #274E59;          /* Hover */
+  --blue-light: #2F5563;          /* Claro (ícones) */
+
+  /* ⚪ Neutros */
+  --white: #FFFFFF;
+  --bg-app: #F8F6EF;              /* Fundo do app */
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --border-color: rgba(0, 0, 0, 0.08);
+
+  /* Sombras profissionais */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Fundo do app (sem grid) */
+.stripe-grid-bg {
+  background-color: var(--bg-app);
+}
+
+/* Cards totalmente brancos */
+.stripe-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+}
+
+.stripe-card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+.stripe-card-gradient {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stripe-card-gradient:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+.stripe-card-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--yellow-brand);
+}
+
+/* Faixa de marca amarela (header) */
+.brand-header {
+  background: var(--yellow-brand);
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+/* Hover Effects */
+.hover-lift {
+  @apply transition-all duration-200;
+  @apply hover:shadow-lg;
+}
+
+/* Botão primário azul estrutural */
+.btn-primary {
+  background: var(--blue-structure);
+  color: var(--white);
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: var(--blue-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Botão de marca (amarelo) */
+.btn-brand {
+  background: var(--yellow-brand);
+  color: var(--blue-structure);
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-brand:hover {
+  background: var(--yellow-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Badge com cor */
+.badge-gold {
+  background-color: var(--gold-light);
+  color: var(--brown-dark);
+  border-color: var(--gold);
+}
+.badge-bronze {
+  background-color: #F4D6A8;
+  color: var(--brown-medium);
+  border-color: var(--bronze);
+}
+.badge-earth {
+  background-color: #E8D4B8;
+  color: var(--brown-dark);
+  border-color: var(--brown-light);
+}
+.badge-terracotta {
+  background-color: #F5DEB3;
+  color: var(--brown-dark);
+  border-color: var(--terracotta);
+}
+
+/* Animações suaves */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}

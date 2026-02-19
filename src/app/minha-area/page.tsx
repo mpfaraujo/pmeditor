@@ -36,50 +36,75 @@ function MinhaAreaContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-8">
-          <Button variant="ghost" onClick={() => router.push("/")} className="mb-4">
+    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header ProvaMarela */}
+        <div className="mb-8 animate-fade-in-up">
+          <Button
+            variant="ghost"
+            onClick={() => router.push("/")}
+            className="mb-6 hover:bg-white/80 transition-all"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar
           </Button>
-          <h1 className="text-3xl font-bold text-slate-900">Minha Área</h1>
-          <p className="text-slate-600 mt-2">{user?.email}</p>
+
+          <div className="stripe-card-gradient p-8 mb-6">
+            <h1 className="text-4xl font-bold text-slate-800">
+              Minha Área
+            </h1>
+            <p className="text-slate-600 mt-2 text-lg">{user?.email}</p>
+          </div>
         </div>
 
-        <Tabs defaultValue={defaultTab}>
-          <TabsList className="w-full">
-            <TabsTrigger value="perfil" className="gap-1.5">
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">Perfil</span>
-            </TabsTrigger>
-            <TabsTrigger value="turmas" className="gap-1.5">
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Turmas</span>
-            </TabsTrigger>
-            <TabsTrigger value="questoes" className="gap-1.5">
-              <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">Questões</span>
-            </TabsTrigger>
-            <TabsTrigger value="provas" className="gap-1.5">
-              <ClipboardList className="h-4 w-4" />
-              <span className="hidden sm:inline">Provas</span>
-            </TabsTrigger>
-          </TabsList>
+        {/* Tabs com identidade ProvaMarela */}
+        <Tabs defaultValue={defaultTab} className="space-y-6">
+          <div className="glass rounded-xl p-2">
+            <TabsList className="w-full bg-transparent gap-2">
+              <TabsTrigger
+                value="perfil"
+                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+              >
+                <User className="h-4 w-4" />
+                <span className="hidden sm:inline">Perfil</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="turmas"
+                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+              >
+                <Users className="h-4 w-4" />
+                <span className="hidden sm:inline">Turmas</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="questoes"
+                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+              >
+                <FileText className="h-4 w-4" />
+                <span className="hidden sm:inline">Questões</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="provas"
+                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+              >
+                <ClipboardList className="h-4 w-4" />
+                <span className="hidden sm:inline">Provas</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="perfil" className="mt-6">
+          <TabsContent value="perfil" className="mt-6 animate-fade-in-up">
             <ProfileTab />
           </TabsContent>
 
-          <TabsContent value="turmas" className="mt-6">
+          <TabsContent value="turmas" className="mt-6 animate-fade-in-up">
             <TurmasTab />
           </TabsContent>
 
-          <TabsContent value="questoes" className="mt-6">
+          <TabsContent value="questoes" className="mt-6 animate-fade-in-up">
             <QuestoesTab />
           </TabsContent>
 
-          <TabsContent value="provas" className="mt-6">
+          <TabsContent value="provas" className="mt-6 animate-fade-in-up">
             <ProvasTab />
           </TabsContent>
         </Tabs>

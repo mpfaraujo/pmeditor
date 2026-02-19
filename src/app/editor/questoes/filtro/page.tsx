@@ -346,22 +346,22 @@ export default function FiltroQuestoesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between animate-fade-in-up">
           <div>
-            <Button variant="ghost" onClick={() => router.push("/")} className="mb-2 -ml-2">
+            <Button variant="ghost" onClick={() => router.push("/")} className="mb-2 -ml-2 hover:bg-white/60">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar para o Início
             </Button>
-            <h1 className="text-3xl font-bold text-slate-900">Preparar Prova</h1>
-            <p className="text-slate-600">Configure os filtros e o cabeçalho antes de selecionar as questões</p>
+            <h1 className="text-4xl font-bold text-slate-800">Preparar Prova</h1>
+            <p className="text-slate-600 mt-2">Configure os filtros e o cabeçalho antes de selecionar as questões</p>
           </div>
           <div className="hidden md:block">
-             <Button 
-              size="lg" 
+             <Button
+              size="lg"
               onClick={handleVerQuestoes}
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+              className="btn-primary text-white shadow-lg hover:shadow-xl transition-all"
             >
               Ver {loadingCount ? "..." : totalResults} Questões
             </Button>
@@ -370,11 +370,11 @@ export default function FiltroQuestoesPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Coluna de Filtros */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="shadow-sm border-slate-200">
+          <div className="lg:col-span-1 space-y-6 animate-fade-in-up">
+            <Card className="stripe-card hover-lift">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Filter className="h-5 w-5 text-blue-500" />
+                  <Filter className="h-5 w-5 text-purple-600" />
                   Filtros de Questões
                 </CardTitle>
                 <CardDescription>Refine sua busca no banco</CardDescription>
@@ -695,11 +695,11 @@ export default function FiltroQuestoesPage() {
           </div>
 
           {/* Coluna de Configuração de Contexto */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="shadow-sm border-slate-200">
+          <div className="lg:col-span-2 space-y-6 animate-fade-in-up">
+            <Card className="stripe-card hover-lift">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Settings className="h-5 w-5 text-blue-500" />
+                  <Settings className="h-5 w-5 text-blue-600" />
                   Configuração do Cabeçalho
                 </CardTitle>
                 <CardDescription>Estes dados aparecerão na prova impressa</CardDescription>
@@ -800,9 +800,9 @@ export default function FiltroQuestoesPage() {
 
             {/* Botão Mobile */}
             <div className="md:hidden pt-4">
-              <Button 
-                size="lg" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-14 text-lg font-bold"
+              <Button
+                size="lg"
+                className="w-full btn-primary text-white h-14 text-lg font-bold shadow-lg"
                 onClick={handleVerQuestoes}
               >
                 Ver {loadingCount ? "..." : totalResults} Questões
