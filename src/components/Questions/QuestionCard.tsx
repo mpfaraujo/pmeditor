@@ -289,7 +289,19 @@ export default function QuestionCard({
               })()}
 
             {metadata.dificuldade && <div>Dificuldade: {metadata.dificuldade}</div>}
-            {metadata.source?.kind && <div>Origem: {metadata.source.kind}</div>}
+            {metadata.source?.kind && (
+              <div>
+                Origem:{" "}
+                {metadata.source.kind === "concurso"
+                  ? (metadata.source as any).concurso || "Concurso"
+                  : metadata.source.kind === "original"
+                  ? "Original"
+                  : metadata.source.kind}
+                {metadata.source.kind === "concurso" && (metadata.source as any).ano && (
+                  <> ({(metadata.source as any).ano})</>
+                )}
+              </div>
+            )}
             {metadata.tags && metadata.tags.length > 0 && (
               <div>Tags: {metadata.tags.join(", ")}</div>
             )}
