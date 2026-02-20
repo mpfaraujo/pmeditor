@@ -46,16 +46,6 @@ type QuestionCardProps = {
   onVersionChange?: (versionData: QuestionVersion) => void;
 };
 
-function Dot({ className, title }: { className: string; title: string }) {
-  return (
-    <span
-      title={title}
-      aria-label={title}
-      className={`h-2.5 w-2.5 rounded-full ring-1 ring-border ${className}`}
-    />
-  );
-}
-
 /* ---------------- helpers (somente leitura) ---------------- */
 
 function safeParseDoc(content: any): PMNode | null {
@@ -253,39 +243,6 @@ export default function QuestionCard({
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <Dot
-              className={isEdited ? "bg-amber-400" : "bg-slate-300"}
-              title={
-                isEdited
-                  ? `Editada (${variantsCount} variante${
-                      variantsCount === 1 ? "" : "s"
-                    })`
-                  : "Original"
-              }
-            />
-
-            {isShowingVariant && (
-              <Dot className="bg-blue-500" title="Variante ativa (exibindo variante)" />
-            )}
-
-            {isEdited && (
-              <span className="text-[11px] text-muted-foreground">
-                {variantsCount} variante{variantsCount === 1 ? "" : "s"}
-              </span>
-            )}
-
-            {isEdited && onVersionChange && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setHistoryModalOpen(true)}
-                className="text-xs text-blue-600 hover:text-blue-800 h-auto py-1 px-2"
-              >
-                Ver histórico ({variantsCount + 1} versões)
-              </Button>
-            )}
-          </div>
 
           <div className="text-xs text-muted-foreground space-y-1">
             {metadata.disciplina && <div>{metadata.disciplina}</div>}
@@ -332,23 +289,20 @@ export default function QuestionCard({
         </div>
 
         <div className="flex items-start gap-2">
-          {hasBase && isEdited && (
+          {isEdited && onVersionChange && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setView((v) => (v === "active" ? "base" : "active"))}
+              onClick={() => setHistoryModalOpen(true)}
+              className="text-xs text-blue-600 hover:text-blue-800"
             >
-              {view === "active" ? "Ver original" : "Ver editada"}
+              Ver histórico ({variantsCount + 1})
             </Button>
           )}
 
           {onSelect && (
             <Checkbox
-            className="
-    border-2 border-slate-400
-    data-[state=checked]:bg-slate-900
-    data-[state=checked]:border-slate-900
-  "
+              className="border-2 border-slate-400 data-[state=checked]:bg-slate-900 data-[state=checked]:border-slate-900"
               checked={selected}
               onCheckedChange={(v) => onSelect(metadata.id, v === true)}
             />

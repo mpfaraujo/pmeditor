@@ -184,8 +184,6 @@ export default function QuestoesPage() {
     setEditorOpen(true);
   };
 
-  const hasSelection = selectedCount > 0;
-
   // Filtrar questões se toggle ativo
   const displayItems = useMemo(() => {
     if (!showOnlySelected) return items;
@@ -197,6 +195,13 @@ export default function QuestoesPage() {
     setCurrentIndex(0);
     api?.scrollTo(0);
   }, [showOnlySelected, api]);
+
+  // Desmarcar toggle quando zera seleções (evita ficar travado)
+  useEffect(() => {
+    if (selectedCount === 0 && showOnlySelected) {
+      setShowOnlySelected(false);
+    }
+  }, [selectedCount, showOnlySelected]);
 
   return (
     <div className="flex h-screen stripe-grid-bg">
@@ -214,61 +219,50 @@ export default function QuestoesPage() {
 
         {!loading && items.length > 0 && (
           <div className="w-full max-w-full md:max-w-[12cm] mx-auto">
-            <div className="flex items-start justify-between gap-4 mb-3 min-h-[52px]">
-              <div className="min-w-0">
-                <div className="text-sm text-muted-foreground mb-2">
-                  Questão {currentIndex + 1} de {displayItems.length}
+            {/* Toolbar */}
+            <div className="flex flex-col gap-2 mb-3">
+              {/* Linha 1: Toggle + Botões de ação */}
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="show-only-selected"
+                    checked={showOnlySelected}
+                    onCheckedChange={(checked) => setShowOnlySelected(checked === true)}
+                  />
+                  <label
+                    htmlFor="show-only-selected"
+                    className="text-sm font-medium leading-none cursor-pointer"
+                  >
+                    Mostrar apenas selecionadas ({selectedCount})
+                  </label>
                 </div>
 
-                <div className="flex items-center gap-6 text-xs text-muted-foreground flex-wrap">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300 ring-1 ring-border" />
-                    <span>Original</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-amber-400 ring-1 ring-border" />
-                    <span>Editada</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500 ring-1 ring-border" />
-                    <span>Variante ativa</span>
-                  </div>
-                </div>
+                <div className="shrink-0 flex items-center gap-2">
+                  <Button size="sm" variant="secondary" onClick={handleEditAtual}>
+                    Editar
+                  </Button>
 
-                {hasSelection && (
-                  <div className="flex items-center gap-2 mt-3">
-                    <Checkbox
-                      id="show-only-selected"
-                      checked={showOnlySelected}
-                      onCheckedChange={(checked) => setShowOnlySelected(checked === true)}
-                    />
-                    <label
-                      htmlFor="show-only-selected"
-                      className="text-sm font-medium leading-none cursor-pointer"
-                    >
-                      Mostrar apenas selecionadas ({selectedCount})
-                    </label>
-                  </div>
-                )}
+                  <Button
+                    onClick={handleMontarProva}
+                    disabled={selectedCount === 0}
+                    className="btn-primary"
+                  >
+                    Montar Prova ({selectedCount})
+                  </Button>
+                </div>
               </div>
 
-              <div className="shrink-0 flex items-center gap-2">
-                <Button size="sm" variant="secondary" onClick={handleEditAtual}>
-                  Editar
-                </Button>
-
+              {/* Linha 2: Limpar */}
+              <div>
                 <Button
-                  onClick={handleMontarProva}
-                  disabled={!hasSelection}
-                  className={!hasSelection ? "opacity-0 pointer-events-none" : "btn-primary"}
+                  size="sm"
+                  variant="ghost"
+                  onClick={clearAll}
+                  disabled={selectedCount === 0}
+                  className="text-xs text-muted-foreground"
                 >
-                  Montar Prova ({selectedCount})
+                  Limpar
                 </Button>
-                {hasSelection && (
-                  <Button size="sm" variant="ghost" onClick={clearAll} className="text-xs text-muted-foreground">
-                    Limpar
-                  </Button>
-                )}
               </div>
             </div>
 
