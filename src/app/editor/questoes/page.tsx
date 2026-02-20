@@ -52,6 +52,8 @@ type FilterValues = {
   myQuestions?: boolean;
 };
 
+const ITEMS_PER_PAGE = 30;
+
 export default function QuestoesPage() {
   const router = useRouter();
   const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll } = useProva();
@@ -59,6 +61,7 @@ export default function QuestoesPage() {
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
 
@@ -80,11 +83,11 @@ export default function QuestoesPage() {
       anos: searchParams.getAll("anos"),
       myQuestions: searchParams.get("myQuestions") === "1",
     };
-    load(filters);
+    load(filters, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const load = async (filters: Partial<FilterValues>) => {
+  const load = async (filters: Partial<FilterValues>, page: number = 1) => {
     setLoading(true);
     try {
       const baseParams: any = {
@@ -103,29 +106,21 @@ export default function QuestoesPage() {
       if (filters.anos?.length) baseParams.anos = filters.anos;
       if (filters.myQuestions) baseParams.myQuestions = true;
 
-      // Buscar primeira página para saber o total
-      const firstPage: any = await listQuestions({ ...baseParams, page: 1, limit: 100 });
-      const total = firstPage?.total ?? 0;
-      let allItems = Array.isArray(firstPage?.items) ? firstPage.items : [];
+      // Buscar APENAS a página solicitada
+      const response: any = await listQuestions({
+        ...baseParams,
+        page,
+        limit: ITEMS_PER_PAGE
+      });
 
-      // Se tem mais páginas, buscar todas em paralelo
-      if (total > 100) {
-        const totalPages = Math.ceil(total / 100);
-        const promises = [];
-        for (let page = 2; page <= totalPages; page++) {
-          promises.push(listQuestions({ ...baseParams, page, limit: 100 }));
-        }
-        const results = await Promise.all(promises);
-        results.forEach((res: any) => {
-          if (Array.isArray(res?.items)) {
-            allItems = [...allItems, ...res.items];
-          }
-        });
-      }
+      const total = response?.total ?? 0;
+      const items = Array.isArray(response?.items) ? response.items : [];
 
-      setItems(allItems);
+      setItems(items);
       setTotalResults(total);
+      setCurrentPage(page);
       setCurrentIndex(0);
+      api?.scrollTo(0);
     } finally {
       setLoading(false);
     }
@@ -182,6 +177,45 @@ export default function QuestoesPage() {
     if (!q) return;
     setEditing(q);
     setEditorOpen(true);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const filters: Partial<FilterValues> = {
+        disciplinas: searchParams.getAll("disciplinas"),
+        assuntos: searchParams.getAll("assuntos"),
+        tipos: searchParams.getAll("tipos"),
+        dificuldades: searchParams.getAll("dificuldades"),
+        tags: searchParams.get("tags") || "",
+        sourceKind: searchParams.get("source_kind") || "",
+        rootType: searchParams.get("root_type") || "",
+        concursos: searchParams.getAll("concursos"),
+        anos: searchParams.getAll("anos"),
+        myQuestions: searchParams.get("myQuestions") === "1",
+      };
+      load(filters, currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE);
+    if (currentPage < totalPages) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const filters: Partial<FilterValues> = {
+        disciplinas: searchParams.getAll("disciplinas"),
+        assuntos: searchParams.getAll("assuntos"),
+        tipos: searchParams.getAll("tipos"),
+        dificuldades: searchParams.getAll("dificuldades"),
+        tags: searchParams.get("tags") || "",
+        sourceKind: searchParams.get("source_kind") || "",
+        rootType: searchParams.get("root_type") || "",
+        concursos: searchParams.getAll("concursos"),
+        anos: searchParams.getAll("anos"),
+        myQuestions: searchParams.get("myQuestions") === "1",
+      };
+      load(filters, currentPage + 1);
+    }
   };
 
   // Filtrar questões se toggle ativo
@@ -266,6 +300,32 @@ export default function QuestoesPage() {
               </div>
             </div>
 
+            {/* Paginação entre páginas de resultados */}
+            {totalResults > ITEMS_PER_PAGE && (
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  title="Página anterior"
+                  className="px-2 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50"
+                >
+                  ‹
+                </button>
+                <span className="text-xs text-muted-foreground px-2">
+                  {currentPage} / {Math.ceil(totalResults / ITEMS_PER_PAGE)}
+                </span>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage >= Math.ceil(totalResults / ITEMS_PER_PAGE)}
+                  title="Próxima página"
+                  className="px-2 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50"
+                >
+                  ›
+                </button>
+              </div>
+            )}
+
+            {/* Navegação dentro do carrossel */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
               <button
                 onClick={() => {
