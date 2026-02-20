@@ -2,6 +2,7 @@
 "use client";
 
 import QuestionRendererBase from "./QuestionRendererBase";
+import type { OptionPermutation } from "@/lib/GeraTiposDeProva";
 
 type PMNode = {
   type: string;
@@ -17,8 +18,9 @@ type Props = {
     textBlocks?: number[];
     options?: number[];
   };
+  permutation?: OptionPermutation | null;
 };
 
-export default function QuestionRendererProva({ content, fragmentRender }: Props) {
-  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} />;
+export default function QuestionRendererProva({ content, fragmentRender, permutation }: Props) {
+  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} permutation={permutation} />;
 }

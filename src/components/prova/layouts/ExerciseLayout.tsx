@@ -11,10 +11,14 @@ import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ExerciseHeader } from "../headers/ExerciseHeader";
 import { ProvaFooter } from "../ProvaFooter";
 import { useProva } from "@/contexts/ProvaContext";
+import type { QuestionPermutation } from "@/lib/GeraTiposDeProva";
 
 interface ExerciseLayoutProps extends LayoutProps {
   columns: ColumnCount;
   logoPlaceholder?: string;
+  tipoAtual?: number;
+  numTipos?: number;
+  permutations?: QuestionPermutation[] | null;
 }
 
 export function ExerciseLayout({
@@ -25,6 +29,9 @@ export function ExerciseLayout({
   renderQuestion,
   refs,
   columns,
+  tipoAtual,
+  numTipos,
+  permutations,
 }: ExerciseLayoutProps) {
   const { provaConfig } = useProva();
 
@@ -133,6 +140,8 @@ export function ExerciseLayout({
               currentPage={pageIndex + 1}
               totalPages={pages.length || 1}
               spacerHeight={p.remainingHeight ?? 0}
+              tipoAtual={tipoAtual}
+              numTipos={numTipos}
             />
           </div>
         </div>

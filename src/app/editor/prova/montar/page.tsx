@@ -3,6 +3,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useProva } from "@/contexts/ProvaContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import QuestionRenderer from "@/components/Questions/QuestionRendererProva";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,13 @@ import { ExerciseLayout } from "@/components/prova/layouts/ExerciseLayout";
 import { QuestionData, ColumnLayout } from "@/types/layout";
 import Gabarito from "@/components/prova/Gabarito";
 import GabaritoDiscursivo from "@/components/prova/GabaritoDiscursivo";
+import {
+  gerarTiposDeProva,
+  aplicarPermutacaoGabarito,
+  hashQuestionId,
+  type ProvaTypeConfig,
+  type Alt as AltGera,
+} from "@/lib/GeraTiposDeProva";
 
 import "./prova.css";
 
@@ -154,8 +162,9 @@ function buildItemDoc(item: PMNode | null): PMNode | null {
 }
 
 export default function MontarProvaPage() {
-  
+
   const router = useRouter();
+  const { user } = useAuth();
   const {
     selectedQuestions: initialQuestions,
     selections,
@@ -179,6 +188,11 @@ export default function MontarProvaPage() {
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
   const [salvarDialogOpen, setSalvarDialogOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  // Estados para tipos de prova
+  const [numTipos, setNumTipos] = useState<number>(2);
+  const [tiposGerados, setTiposGerados] = useState<ProvaTypeConfig[] | null>(null);
+  const [tipoAtual, setTipoAtual] = useState<number>(1);
 
   useEffect(() => {
     setIsMounted(true);
@@ -211,6 +225,22 @@ export default function MontarProvaPage() {
 
   const handleEditarConfiguracao = () => {
     router.push("/editor/prova/selecionar-layout");
+  };
+
+  // Handlers de tipos de prova
+  const handleGerarTipos = () => {
+    // Usa hash do googleId do usuário como seed base
+    // Visitantes (não logados) usam seed 0
+    const userSeed = user?.googleId ? hashQuestionId(user.googleId) : 0;
+
+    const tipos = gerarTiposDeProva(orderedList, numTipos, userSeed);
+    setTiposGerados(tipos);
+    setTipoAtual(1);
+  };
+
+  const handleReiniciarTipos = () => {
+    setTiposGerados(null);
+    setTipoAtual(1);
   };
 
   // orderedQuestions agora vem da lista linear
@@ -394,6 +424,16 @@ const { pages, refs } = usePagination({
     return out;
   }, [expandedQuestions, printNumberMap]);
 
+  // Respostas permutadas conforme tipo de prova selecionado
+  const respostasPermutadas = useMemo(() => {
+    if (!tiposGerados || tipoAtual === 1) return respostas;
+
+    const tipoConfig = tiposGerados[tipoAtual - 1];
+    if (!tipoConfig) return respostas;
+
+    return aplicarPermutacaoGabarito(respostas, tipoConfig.permutations, orderedList);
+  }, [respostas, tiposGerados, tipoAtual, orderedList]);
+
   const respostasDiscursivas = useMemo(() => {
     const out: Record<number, any[]> = {};
     expandedQuestions.forEach((q: any, idx) => {
@@ -438,6 +478,12 @@ const { pages, refs } = usePagination({
       frag?.kind === "frag"
         ? `${baseKey}__frag_${frag.from}_${frag.to}_${frag.first ? 1 : 0}`
         : `${baseKey}`;
+
+    // Buscar permutação para esta questão
+    const questionId = (question as any).metadata?.id;
+    const permutation = tiposGerados && questionId
+      ? tiposGerados[tipoAtual - 1]?.permutations.find(p => p.questionId === questionId)?.permutation ?? null
+      : null;
 
     // Calcula quais blocos/opções renderizar (TypeScript, não CSS!)
     const fragmentRender = (() => {
@@ -491,7 +537,7 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} />
     </div>
   </div>
 ) : (
@@ -520,7 +566,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} />
             </div>
           </div>
         )}
@@ -598,6 +644,46 @@ const { pages, refs } = usePagination({
               Salvar Prova
             </Button>
 
+            {/* Tipos de prova */}
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-md">
+              {!tiposGerados && (
+                <>
+                  <label className="text-xs font-medium text-purple-700">Gerar</label>
+                  <input
+                    type="number"
+                    min={2}
+                    max={6}
+                    value={numTipos}
+                    onChange={(e) => setNumTipos(parseInt(e.target.value) || 2)}
+                    className="w-12 px-1.5 py-0.5 border rounded text-center text-xs"
+                  />
+                  <span className="text-xs text-purple-700">tipos</span>
+                  <Button onClick={handleGerarTipos} variant="ghost" size="sm" className="h-6 text-xs px-2">
+                    OK
+                  </Button>
+                </>
+              )}
+
+              {tiposGerados && (
+                <>
+                  <select
+                    value={tipoAtual}
+                    onChange={(e) => setTipoAtual(parseInt(e.target.value))}
+                    className="px-2 py-0.5 border rounded text-xs font-medium"
+                  >
+                    {Array.from({ length: numTipos }, (_, i) => i + 1).map(n => (
+                      <option key={n} value={n}>
+                        Tipo {n} {n === 1 ? "(Original)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                  <Button onClick={handleReiniciarTipos} variant="ghost" size="sm" className="h-6 text-xs px-2">
+                    Reiniciar
+                  </Button>
+                </>
+              )}
+            </div>
+
             <Button onClick={handlePrint} className="btn-primary">
               <Printer className="h-4 w-4 mr-2" />
               Imprimir
@@ -614,12 +700,19 @@ const { pages, refs } = usePagination({
           renderQuestion={renderQuestion as any}
           refs={refs}
           columns={columns}
+          tipoAtual={tipoAtual}
+          numTipos={tiposGerados ? numTipos : undefined}
+          permutations={tiposGerados?.[tipoAtual - 1]?.permutations ?? null}
         />
 
         {provaConfig.showGabarito && totalQuestoes > 0 && (
           <div className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
             <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
-              <Gabarito totalQuestoes={totalQuestoes} respostas={respostas} />
+              <Gabarito
+                totalQuestoes={totalQuestoes}
+                respostas={respostasPermutadas}
+                titulo={tiposGerados ? `GABARITO - TIPO ${tipoAtual}` : "QUESTÕES / RESPOSTAS"}
+              />
               {Object.keys(respostasDiscursivas).length > 0 && (
                 <div className="mt-8">
                   <GabaritoDiscursivo respostas={respostasDiscursivas} />

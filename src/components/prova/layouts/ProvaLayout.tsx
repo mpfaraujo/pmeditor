@@ -20,10 +20,14 @@ import { ProvaHeaderLayout7 } from "../headers/ProvaHeaderLayout7";
 import { ProvaHeaderLayout8 } from "../headers/ProvaHeaderLayout8";
 import { ProvaHeaderLayout9 } from "../headers/ProvaHeaderLayout9";
 import { ProvaHeaderLayout10 } from "../headers/ProvaHeaderLayout10";
+import type { QuestionPermutation } from "@/lib/GeraTiposDeProva";
 
 interface ProvaLayoutProps extends LayoutProps {
   columns: ColumnCount;
   logoPlaceholder?: string;
+  tipoAtual?: number;
+  numTipos?: number;
+  permutations?: QuestionPermutation[] | null;
 }
 
 export function ProvaLayout({
@@ -35,6 +39,9 @@ export function ProvaLayout({
   renderQuestion,
   refs,
   columns,
+  tipoAtual,
+  numTipos,
+  permutations,
 }: ProvaLayoutProps) {
   const { provaConfig } = useProva();
 
@@ -189,6 +196,8 @@ export function ProvaLayout({
                 currentPage={pageIndex + 1}
                 totalPages={safePages.length}
                 spacerHeight={p.remainingHeight ?? 0}
+                tipoAtual={tipoAtual}
+                numTipos={numTipos}
               />
             </div>
           </div>

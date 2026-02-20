@@ -6,6 +6,7 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 import "katex/contrib/mhchem";
 import { essayPartLabel, shouldShowEssayPartLabels } from "@/lib/questionRules";
+import type { OptionPermutation } from "@/lib/GeraTiposDeProva";
 
 type PMNode = {
   type: string;
@@ -23,9 +24,11 @@ type Props = {
     textBlocks?: number[];  // quais blocos de texto renderizar
     options?: number[];     // quais opções renderizar
   };
+  // Permutação de alternativas (tipos de prova)
+  permutation?: OptionPermutation | null;
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, permutation }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -315,8 +318,36 @@ export default function QuestionRendererBase({ content, mode, fragmentRender }: 
   }
 
   function renderOptions(node: PMNode, keyPrefix: string): React.ReactNode[] {
+    // Aplicar permutação se fornecida
+    let options = node.content ?? [];
+
+    if (permutation && options.length > 0) {
+      // Clonar e aplicar nova letra a cada opção
+      const permutedOptions = options.map((opt) => {
+        const originalLetter = opt.attrs?.letter ?? "A";
+        const newLetter = permutation[originalLetter] ?? originalLetter;
+
+        return {
+          ...opt,
+          attrs: {
+            ...opt.attrs,
+            letter: newLetter,
+          },
+        };
+      });
+
+      // Ordenar por nova letra (A, B, C, D, E)
+      permutedOptions.sort((a, b) => {
+        const letterA = a.attrs?.letter ?? "A";
+        const letterB = b.attrs?.letter ?? "B";
+        return letterA.localeCompare(letterB);
+      });
+
+      options = permutedOptions;
+    }
+
     return (
-      node.content?.map((opt, i) => {
+      options.map((opt, i) => {
         const letter = opt.attrs?.letter ?? "?";
         return (
           <div key={`${keyPrefix}-opt-${i}`} className="flex items-start gap-2">
@@ -324,7 +355,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender }: 
             <div className="flex-1">{renderInline(opt)}</div>
           </div>
         );
-      }) ?? []
+      })
     );
   }
 
