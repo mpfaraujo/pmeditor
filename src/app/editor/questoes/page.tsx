@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import QuestionCard from "@/components/Questions/QuestionCard";
 import { QuestionsFilter } from "@/components/Questions/QuestionsFilter";
@@ -8,6 +8,7 @@ import { QuestionsFilterMobile } from "@/components/Questions/QuestionsFilterMob
 import { useProva } from "@/contexts/ProvaContext";
 import { listQuestions, QuestionVersion } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft } from "lucide-react";
 import {
   Carousel,
@@ -63,6 +64,7 @@ export default function QuestoesPage() {
 
   const [editorOpen, setEditorOpen] = useState(false);
   const [editing, setEditing] = useState<QuestionItem | null>(null);
+  const [showOnlySelected, setShowOnlySelected] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -184,6 +186,18 @@ export default function QuestoesPage() {
 
   const hasSelection = selectedCount > 0;
 
+  // Filtrar questões se toggle ativo
+  const displayItems = useMemo(() => {
+    if (!showOnlySelected) return items;
+    return items.filter((q) => isSelected(q.metadata.id));
+  }, [items, showOnlySelected, isSelected]);
+
+  // Reset index quando toggle muda
+  useEffect(() => {
+    setCurrentIndex(0);
+    api?.scrollTo(0);
+  }, [showOnlySelected, api]);
+
   return (
     <div className="flex h-screen stripe-grid-bg">
       <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto overflow-x-hidden">
@@ -203,7 +217,7 @@ export default function QuestoesPage() {
             <div className="flex items-start justify-between gap-4 mb-3 min-h-[52px]">
               <div className="min-w-0">
                 <div className="text-sm text-muted-foreground mb-2">
-                  Questão {currentIndex + 1} de {items.length}
+                  Questão {currentIndex + 1} de {displayItems.length}
                 </div>
 
                 <div className="flex items-center gap-6 text-xs text-muted-foreground flex-wrap">
@@ -220,6 +234,22 @@ export default function QuestoesPage() {
                     <span>Variante ativa</span>
                   </div>
                 </div>
+
+                {hasSelection && (
+                  <div className="flex items-center gap-2 mt-3">
+                    <Checkbox
+                      id="show-only-selected"
+                      checked={showOnlySelected}
+                      onCheckedChange={(checked) => setShowOnlySelected(checked === true)}
+                    />
+                    <label
+                      htmlFor="show-only-selected"
+                      className="text-sm font-medium leading-none cursor-pointer"
+                    >
+                      Mostrar apenas selecionadas ({selectedCount})
+                    </label>
+                  </div>
+                )}
               </div>
 
               <div className="shrink-0 flex items-center gap-2">
@@ -254,15 +284,15 @@ export default function QuestoesPage() {
                 ‹ Anterior
               </button>
               <span style={{ fontSize: 13, fontWeight: 500, minWidth: 60, textAlign: "center" as const }}>
-                {currentIndex + 1} / {items.length}
+                {currentIndex + 1} / {displayItems.length}
               </span>
               <button
                 onClick={() => {
                   setCurrentIndex(currentIndex + 1);
                   api?.scrollTo(currentIndex + 1);
                 }}
-                disabled={currentIndex >= items.length - 1}
-                style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= items.length - 1 ? 0.3 : 1 }}
+                disabled={currentIndex >= displayItems.length - 1}
+                style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= displayItems.length - 1 ? 0.3 : 1 }}
               >
                 Próxima ›
               </button>
@@ -270,7 +300,7 @@ export default function QuestoesPage() {
 
             <Carousel opts={{ align: "start", duration: 60, watchResize: false, watchSlides: false }} className="w-full" setApi={setApi}>
               <CarouselContent>
-                {items.map((q) => (
+                {displayItems.map((q) => (
                   <CarouselItem key={q.metadata.id}>
                     <div className="w-full md:w-[10cm] mx-auto px-2">
                       <QuestionCard
