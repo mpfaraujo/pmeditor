@@ -204,6 +204,17 @@ function VersionTimelineItem({
         >
           {relativeTime}
         </div>
+        {version.changeDescription ? (
+          <div className="text-xs mt-1 text-slate-700">
+            {version.changeDescription}
+          </div>
+        ) : (
+          version.kind === "variant" && (
+            <div className="text-xs mt-1 text-muted-foreground italic">
+              (sem descrição)
+            </div>
+          )
+        )}
       </div>
     </div>
   );

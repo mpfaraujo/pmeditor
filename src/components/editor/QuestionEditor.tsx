@@ -21,6 +21,9 @@ import { QuestionMetadataModal } from "./QuestionMetadataModal";
 import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from "./QuestionMetaBar";
 import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 import { createQuestion, proposeQuestion } from "@/lib/questions";
 import { useAuth } from "@/contexts/AuthContext";
@@ -392,6 +395,11 @@ function findAllQuestionItems(state: any): { pos: number; answerKey: any | null 
 export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: QuestionEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const { user, isLoggedIn, defaultDisciplina } = useAuth();
+  const [changeDescription, setChangeDescription] = useState("");
+  const [changeDescriptionModal, setChangeDescriptionModal] = useState<{
+    open: boolean;
+    payload?: { metadata: any; content: any };
+  }>({ open: false });
 
   const [view, setView] = useState<EditorView | null>(null);
   const [, force] = useState(0);
@@ -578,20 +586,36 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
     try {
       await createQuestion(payload);
       setMeta(payload.metadata);
+      setChangeDescription(""); // Limpar após salvar
       onSaved?.({ questionId: meta.id, kind: "base" });
       if (!modal) window.alert("Salvo.");
     } catch (e: any) {
       if (e?.status === 409) {
-        await proposeQuestion({
-          questionId: meta.id,
-          metadata: payload.metadata,
-          content: payload.content,
-        });
-        onSaved?.({ questionId: meta.id, kind: "variant" });
-        if (!modal) window.alert("Salvo como variante.");
+        // Base imutável - precisa criar variante
+        // Abrir modal pedindo descrição da mudança
+        setChangeDescriptionModal({ open: true, payload });
         return;
       }
       if (!modal) window.alert("Erro ao salvar.");
+    }
+  };
+
+  const confirmVariantSave = async () => {
+    if (!changeDescriptionModal.payload) return;
+
+    try {
+      await proposeQuestion({
+        questionId: meta.id,
+        metadata: changeDescriptionModal.payload.metadata,
+        content: changeDescriptionModal.payload.content,
+        changeDescription: changeDescription.trim() || undefined,
+      });
+      onSaved?.({ questionId: meta.id, kind: "variant" });
+      setChangeDescription(""); // Limpar após salvar
+      setChangeDescriptionModal({ open: false });
+      if (!modal) window.alert("Salvo como variante.");
+    } catch (e) {
+      if (!modal) window.alert("Erro ao salvar variante.");
     }
   };
 
@@ -624,6 +648,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
     setMeta(newMeta);
     setMathDialog({ open: false });
     setMetaDialog({ open: false, saveAfter: false });
+    setChangeDescription(""); // Limpar descrição ao criar nova questão
 
     setEditorMaxWidthCm(8.5);
 
@@ -841,6 +866,58 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           allItems={allItems}
           onItemAnswerKeyChangeAtPos={writeItemAnswerKeyAtPos}
         />
+
+        {/* Modal de Descrição de Mudança (ao criar variante) */}
+        <Dialog
+          open={changeDescriptionModal.open}
+          onOpenChange={(open) => {
+            if (!open) {
+              setChangeDescriptionModal({ open: false });
+              setChangeDescription("");
+            }
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Descrever mudança</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <p className="text-sm text-muted-foreground">
+                Esta questão já existe no banco. Você está criando uma nova versão editada.
+              </p>
+              <div>
+                <label htmlFor="change-desc" className="block text-sm font-medium mb-2">
+                  O que você mudou nesta questão? <span className="text-red-600">*</span>
+                </label>
+                <Textarea
+                  id="change-desc"
+                  value={changeDescription}
+                  onChange={(e) => setChangeDescription(e.target.value)}
+                  placeholder="ex: corrigiu gabarito de B para A&#10;ex: ajustou texto da alternativa C para maior clareza&#10;ex: corrigiu erro de digitação no enunciado"
+                  rows={4}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setChangeDescriptionModal({ open: false });
+                  setChangeDescription("");
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={confirmVariantSave}
+                disabled={!changeDescription.trim()}
+              >
+                Salvar variante
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
