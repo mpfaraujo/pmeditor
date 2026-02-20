@@ -1,7 +1,7 @@
 // src/app/editor/prova/montar/page.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useProva } from "@/contexts/ProvaContext";
 import { useRouter } from "next/navigation";
 import QuestionRenderer from "@/components/Questions/QuestionRendererProva";
@@ -178,18 +178,11 @@ export default function MontarProvaPage() {
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
   const [salvarDialogOpen, setSalvarDialogOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-
-  if (initialQuestions.length === 0) {
-    return (
-      <div className="p-8 text-center">
-        <p className="text-muted-foreground mb-4">Nenhuma questão selecionada</p>
-        <Button onClick={() => router.push("/editor/questoes")}>
-          Voltar para seleção
-        </Button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // ReorderModal: professor aplicou ordem manual
   const handleReorderApply = (reordered: QuestionData[]) => {
@@ -347,7 +340,6 @@ const { pages, refs } = usePagination({
     pageHeight: PAGE_HEIGHT,
     safetyMargin: SAFETY_PX,
     columns,
-    allowPageBreak: true,
     optimizeLayout: !manualOrder,
     setGroups,
   },
@@ -447,75 +439,43 @@ const { pages, refs } = usePagination({
         ? `${baseKey}__frag_${frag.from}_${frag.to}_${frag.first ? 1 : 0}`
         : `${baseKey}`;
 
-    const fragId =
-      frag?.kind === "frag"
-        ? `frag-${String(baseKey).replace(/[^a-zA-Z0-9_-]/g, "_")}-${frag.from}-${frag.to}-${frag.first ? 1 : 0}`
-        : null;
+    // Calcula quais blocos/opções renderizar (TypeScript, não CSS!)
+    const fragmentRender = (() => {
+      if (!frag) return undefined;
 
-    // Gera CSS de fragmentação considerando opções expandidas
-    const fragCss = (() => {
-      if (!fragId || !frag) return null;
-      const N = frag.textBlockCount; // undefined = sem opções expandidas
+      const N = frag.textBlockCount;
       const { from, to } = frag;
-      const base = `#${fragId}`;
-
-      let css = "";
 
       if (N != null && (from > N || to > N)) {
         // Opções foram expandidas: índices abrangem .question-text (1..N) + .question-options > * (N+1..)
-        // Calcula ranges para cada container
         const textFrom = Math.max(from, 1);
         const textTo = Math.min(to, N);
         const hasText = textFrom <= N;
+
         const optFrom = Math.max(from - N, 1);
         const optTo = to - N;
         const hasOpts = optTo >= 1;
 
-        // question-text: esconde tudo, mostra range (ou esconde totalmente)
-        if (hasText) {
-          css += `${base} .question-text > * { display: none; }\n`;
-          css += `${base} .question-text > *:nth-child(n+${textFrom}):nth-child(-n+${textTo}) { display: block; }\n`;
-        } else {
-          css += `${base} .question-text { display: none; }\n`;
-        }
-
-        // question-options: esconde tudo, mostra range (ou esconde totalmente)
-        css += `${base} .question-options > * { display: none; }\n`;
-        if (hasOpts) {
-          css += `${base} .question-options { display: block; }\n`;
-          css += `${base} .question-options > *:nth-child(n+${optFrom}):nth-child(-n+${optTo}) { display: block; }\n`;
-        } else {
-          css += `${base} .question-options { display: none; }\n`;
-        }
+        return {
+          textBlocks: hasText ? Array.from({ length: textTo - textFrom + 1 }, (_, i) => textFrom + i) : [],
+          options: hasOpts ? Array.from({ length: optTo - optFrom + 1 }, (_, i) => optFrom + i) : [],
+        };
       } else {
-        // Sem opções expandidas: lógica original (só .question-text)
-        css += `${base} .questao-conteudo:has(.question-text) .question-text > * { display: none; }\n`;
-        css += `${base} .questao-conteudo:has(.question-text) .question-text > *:nth-child(n+${from}):nth-child(-n+${to}) { display: block; }\n`;
-
-        // Fallback sem .question-text
-        css += `${base} .questao-conteudo:not(:has(.question-text)) > * { display: none; }\n`;
-        css += `${base} .questao-conteudo:not(:has(.question-text)) > *:nth-child(n+${from}):nth-child(-n+${to}) { display: block; }\n`;
-        css += `${base} .questao-conteudo:not(:has(.question-text)) > :first-child > * { display: none; }\n`;
-        css += `${base} .questao-conteudo:not(:has(.question-text)) > :first-child > *:nth-child(n+${from}):nth-child(-n+${to}) { display: block; }\n`;
+        // Sem opções expandidas: só renderiza no primeiro fragmento
+        if (frag.first) {
+          return undefined; // renderiza tudo
+        } else {
+          return { textBlocks: [], options: [] }; // renderiza nada
+        }
       }
-
-      if (!frag.first) {
-        css += `${base} .questao-header-linha { display: none; }\n`;
-      }
-
-      return css;
     })();
 
     return (
       <div
         key={fragKey}
-        id={fragId ?? undefined}
-        className={`questao-item-wrapper${provaConfig.allowPageBreak ? " allow-break" : ""}`}
+        className="questao-item-wrapper allow-break"
+        data-frag-info={frag ? `from=${frag.from} to=${frag.to} N=${frag.textBlockCount ?? 'none'} first=${frag.first}` : undefined}
       >
-        {fragCss && (
-          <style>{fragCss}</style>
-        )}
-
         {/* ✅ item do texto base: banner + conteúdo, sem cabeçalho de questão */}
 {isSetBase ? (
   <div className="mb-3 space-y-2">
@@ -531,24 +491,26 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} />
     </div>
   </div>
 ) : (
           <div className="questao-item">
-            <div className="questao-header-linha">
-              <QuestionHeaderSvg
-                numero={printedIndex + 1}
-                totalMm={columns === 2 ? 85 : 180}
-                boxMm={28}
-                variant={provaConfig.questionHeaderVariant ?? 0}
-              />
-              <span
-                contentEditable
-                suppressContentEditableWarning
-                className="pontos-editavel"
-              />
-            </div>
+            {(!frag || frag.first) && (
+              <div className="questao-header-linha">
+                <QuestionHeaderSvg
+                  numero={printedIndex + 1}
+                  totalMm={columns === 2 ? 85 : 180}
+                  boxMm={28}
+                  variant={provaConfig.questionHeaderVariant ?? 0}
+                />
+                <span
+                  contentEditable
+                  suppressContentEditableWarning
+                  className="pontos-editavel"
+                />
+              </div>
+            )}
 
             <div
               className="
@@ -558,7 +520,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} />
             </div>
           </div>
         )}
@@ -570,7 +532,22 @@ const { pages, refs } = usePagination({
     provaConfig.layoutType === "exercicio" ? ExerciseLayout : ProvaLayout;
     const logoPlaceholder = provaConfig.logoPlaceholder;
 
+  // Evita hidratação incompatível - só renderiza após montar no cliente
+  if (!isMounted) {
+    return null;
+  }
 
+  // Estado vazio
+  if (initialQuestions.length === 0) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-muted-foreground mb-4">Nenhuma questão selecionada</p>
+        <Button onClick={() => router.push("/editor/questoes")}>
+          Voltar para seleção
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>

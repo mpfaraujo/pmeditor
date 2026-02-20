@@ -18,9 +18,14 @@ type PMNode = {
 type Props = {
   content: PMNode | string;
   mode: "default" | "prova";
+  // Parâmetros de fragmentação (opcional) - índices 1-based
+  fragmentRender?: {
+    textBlocks?: number[];  // quais blocos de texto renderizar
+    options?: number[];     // quais opções renderizar
+  };
 };
 
-export default function QuestionRendererBase({ content, mode }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -233,22 +238,33 @@ export default function QuestionRendererBase({ content, mode }: Props) {
   /* ---------------- question-like rendering ---------------- */
 
   function renderQuestionLike(nodes: PMNode[], keyPrefix: string): React.ReactNode {
-    const blocks: React.ReactNode[] = [];
-    const options: React.ReactNode[] = [];
+    const allBlocks: React.ReactNode[] = [];
+    const allOptions: React.ReactNode[] = [];
 
     nodes.forEach((qNode, j) => {
       if (qNode.type === "base_text" || qNode.type === "statement") {
-        blocks.push(...renderBlock(qNode, `${keyPrefix}-blk-${j}`));
+        allBlocks.push(...renderBlock(qNode, `${keyPrefix}-blk-${j}`));
       }
 
       if (qNode.type === "options") {
-        options.push(...renderOptions(qNode, `${keyPrefix}-opts-${j}`));
+        allOptions.push(...renderOptions(qNode, `${keyPrefix}-opts-${j}`));
       }
     });
 
+    // Aplicar filtro de fragmentação (índices 1-based)
+    const blocks = fragmentRender?.textBlocks
+      ? allBlocks.filter((_, idx) => fragmentRender.textBlocks!.includes(idx + 1))
+      : allBlocks;
+
+    const options = fragmentRender?.options
+      ? allOptions.filter((_, idx) => fragmentRender.options!.includes(idx + 1))
+      : allOptions;
+
     return (
       <div className="question-readonly">
-        <div className="question-text space-y-2">{blocks}</div>
+        {blocks.length > 0 && (
+          <div className="question-text space-y-2">{blocks}</div>
+        )}
 
         {options.length > 0 && (
           <div className="question-options mt-3 space-y-1">{options}</div>

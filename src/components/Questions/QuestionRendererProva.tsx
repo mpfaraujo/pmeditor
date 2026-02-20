@@ -13,8 +13,12 @@ type PMNode = {
 
 type Props = {
   content: PMNode | string;
+  fragmentRender?: {
+    textBlocks?: number[];
+    options?: number[];
+  };
 };
 
-export default function QuestionRendererProva({ content }: Props) {
-  return <QuestionRendererBase content={content} mode="prova" />;
+export default function QuestionRendererProva({ content, fragmentRender }: Props) {
+  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} />;
 }

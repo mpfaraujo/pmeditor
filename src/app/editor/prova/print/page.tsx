@@ -83,7 +83,7 @@ export default function ProvaPrintPage() {
     return (
       <div
         key={(question as any).metadata?.id ?? globalIndex}
-        className={`questao-item-wrapper${provaConfig?.allowPageBreak ? " allow-break" : ""}`}
+        className="questao-item-wrapper allow-break"
       >
         {setMeta?.isFirst && (
           <div className="mb-3 space-y-2">

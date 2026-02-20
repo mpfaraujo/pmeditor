@@ -8,6 +8,7 @@
 import React from "react";
 import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ProvaHeader } from "../headers/ProvaHeader";
+import { ProvaFooter } from "../ProvaFooter";
 import { useProva } from "@/contexts/ProvaContext";
 import { ProvaHeaderLayout1 } from "../headers/ProvaHeaderLayout1";
 import { ProvaHeaderLayout2 } from "../headers/ProvaHeaderLayout2";
@@ -182,6 +183,13 @@ export function ProvaLayout({
                   </div>
                 )}
               </div>
+
+              <ProvaFooter
+                disciplina={provaConfig.disciplina}
+                currentPage={pageIndex + 1}
+                totalPages={safePages.length}
+                spacerHeight={p.remainingHeight ?? 0}
+              />
             </div>
           </div>
         ))}

@@ -141,7 +141,6 @@ export function usePagination({
   const pageHeight = config.pageHeight;
   const safetyMargin = config.safetyMargin;
   const columns = config.columns;
-  const allowPageBreak = config.allowPageBreak ?? false;
   const optimizeLayout = config.optimizeLayout ?? false;
   const setGroups = config.setGroups ?? [];
 
@@ -150,6 +149,20 @@ export function usePagination({
     const { signal } = controller;
 
     const run = async () => {
+      // Espera até os refs estarem prontos (máx 2 segundos)
+      const startTime = Date.now();
+      while (
+        (!measureItemsRef.current ||
+        !measureFirstPageRef.current ||
+        !measureFirstQuestoesRef.current ||
+        !measureOtherPageRef.current ||
+        !measureOtherQuestoesRef.current) &&
+        Date.now() - startTime < 2000
+      ) {
+        if (signal.aborted) return;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
       if (
         !measureItemsRef.current ||
         !measureFirstPageRef.current ||
@@ -157,7 +170,6 @@ export function usePagination({
         !measureOtherPageRef.current ||
         !measureOtherQuestoesRef.current
       ) {
-        // NÃO zera pages
         return;
       }
 
@@ -180,7 +192,6 @@ export function usePagination({
             pageHeight: realPageHeight,
             safetyMargin,
             columns,
-            allowPageBreak,
             optimizeLayout,
             setGroups,
           },
@@ -208,7 +219,8 @@ export function usePagination({
     run().catch(() => {});
 
     return () => controller.abort();
-  }, [depsKey, pageHeight, safetyMargin, columns, allowPageBreak, optimizeLayout, questionCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depsKey, pageHeight, safetyMargin, columns, optimizeLayout, questionCount]);
 
   return {
     pages,

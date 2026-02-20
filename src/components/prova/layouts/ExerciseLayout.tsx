@@ -9,6 +9,7 @@
 import React from "react";
 import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ExerciseHeader } from "../headers/ExerciseHeader";
+import { ProvaFooter } from "../ProvaFooter";
 import { useProva } from "@/contexts/ProvaContext";
 
 interface ExerciseLayoutProps extends LayoutProps {
@@ -95,7 +96,7 @@ export function ExerciseLayout({
       </div>
 
       {/* Renderização das páginas */}
-      {(pages.length ? pages : [{ coluna1: [], coluna2: [] }]).map((p, pageIndex) => (
+      {(pages.length ? pages : [{ coluna1: [], coluna2: [], remainingHeight: 0 }] as any).map((p: any, pageIndex: number) => (
         <div key={pageIndex} className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
           <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
             {pageIndex === 0 && (
@@ -126,6 +127,13 @@ export function ExerciseLayout({
                 )}
               </div>
             </div>
+
+            <ProvaFooter
+              disciplina={provaConfig.disciplina}
+              currentPage={pageIndex + 1}
+              totalPages={pages.length || 1}
+              spacerHeight={p.remainingHeight ?? 0}
+            />
           </div>
         </div>
       ))}

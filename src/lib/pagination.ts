@@ -1,7 +1,6 @@
 /**
  * Lógica de paginação para provas em formato A4
- * - allowPageBreak=false: mantém comportamento atual (questão atômica)
- * - allowPageBreak=true: permite fragmentar questão por blocos do DOM
+ * - Permite fragmentar questão por blocos do DOM quando não cabe inteira
  * - optimizeLayout=true: bin-packing (First Fit Decreasing) para otimizar espaço
  * - optimizeLayout=false: distribuição linear sequencial (comportamento original)
  */
@@ -21,6 +20,8 @@ export type LayoutItem =
 export type PageLayout = {
   coluna1: LayoutItem[];
   coluna2: LayoutItem[];
+  /** Espaço restante na página (px) — usado para posicionar o footer */
+  remainingHeight: number;
 };
 
 /** Grupo explícito: texto base + seus itens (por parentId) */
@@ -33,11 +34,13 @@ export interface PaginationConfig {
   pageHeight: number;
   safetyMargin: number;
   columns: 1 | 2;
-  allowPageBreak?: boolean;
   optimizeLayout?: boolean;
   /** Grupos explícitos de set_questions (base + itens pelo parentId) */
   setGroups?: SetGroupDef[];
 }
+
+// Altura reservada para o footer (margin + padding + texto): ~1.1cm = 31px
+const FOOTER_HEIGHT = 35;
 
 export function calculateFirstPageCapacity(
   firstPageElement: HTMLElement,
@@ -48,7 +51,7 @@ export function calculateFirstPageCapacity(
   const questionsTop = questionsContainerElement.offsetTop;
   const firstPageTop = firstPageElement.offsetTop;
   const occupiedHeight = questionsTop - firstPageTop;
-  return Math.max(0, pageHeight - occupiedHeight - safetyMargin );
+  return Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT);
 }
 
 export function calculateOtherPageCapacity(
@@ -60,7 +63,7 @@ export function calculateOtherPageCapacity(
   const questionsTop = questionsContainerElement.offsetTop;
   const otherPageTop = otherPageElement.offsetTop;
   const occupiedHeight = questionsTop - otherPageTop;
-  return Math.max(0, pageHeight - occupiedHeight - safetyMargin);
+  return Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT);
 }
 
 function px(n: number) {
@@ -204,11 +207,17 @@ function buildFragmentsForQuestion(
   capFirstFrag: number,
   capNextFrag: number
 ): { items: LayoutItem[]; heights: number[] } | null {
-  const FIT_EPS = 100; // px de tolerância pra não quebrar cedo por arredondamento
+  const FIT_EPS = 10; // px de tolerância pra não quebrar cedo por arredondamento
 
   const { prefixHeight, suffixHeight, blocksHeights, textBlockCount } = split;
 
   if (!blocksHeights.length) return null;
+
+  // Se não tem textBlockCount (opções não expandidas), não fragmenta
+  // Retorna null para forçar fallback com opções expandidas
+  if (textBlockCount === undefined && blocksHeights.length > 1) {
+    return null;
+  }
 
   const items: LayoutItem[] = [];
   const heights: number[] = [];
@@ -271,14 +280,15 @@ export function distributeQuestionsAcrossPages(
   firstPageCapacity: number,
   otherPageCapacity: number,
   columns: 1 | 2,
-  allowPageBreak: boolean,
   measureItemsRef: HTMLElement
 ): PageLayout[] {
   const newPages: PageLayout[] = [];
-  let page: PageLayout = { coluna1: [], coluna2: [] };
+  let page: PageLayout = { coluna1: [], coluna2: [], remainingHeight: 0 };
 
   let col: "coluna1" | "coluna2" = "coluna1";
   let used = 0;
+  let usedCol1 = 0;
+  let usedCol2 = 0;
   let pageIndex = 0;
   function isEmptyPage(p: PageLayout | null | undefined) {
   if (!p) return true;
@@ -289,19 +299,27 @@ export function distributeQuestionsAcrossPages(
   const getCap = () => (pageIndex === 0 ? firstPageCapacity : otherPageCapacity);
 
   const pushNewPage = () => {
+    const cap = getCap();
+    const maxUsed = columns === 2 ? Math.max(usedCol1, usedCol2) : usedCol1;
+    page.remainingHeight = Math.max(0, cap - maxUsed);
     newPages.push(page);
     pageIndex++;
-    page = { coluna1: [], coluna2: [] };
+    page = { coluna1: [], coluna2: [], remainingHeight: 0 };
     col = "coluna1";
     used = 0;
+    usedCol1 = 0;
+    usedCol2 = 0;
   };
 
   const nextColumnOrPage = () => {
     if (columns === 2 && col === "coluna1") {
+      usedCol1 = used;
       col = "coluna2";
       used = 0;
       return;
     }
+    if (col === "coluna1") usedCol1 = used;
+    else usedCol2 = used;
     pushNewPage();
   };
 
@@ -311,13 +329,6 @@ export function distributeQuestionsAcrossPages(
 
     // ✅ só entra como "full" se realmente couber
     if (used + fullH <= cap) {
-      page[col].push({ kind: "full", q: i });
-      used += fullH;
-      continue;
-    }
-
-    if (!allowPageBreak) {
-      nextColumnOrPage();
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
@@ -383,6 +394,12 @@ export function distributeQuestionsAcrossPages(
     }
   }
 
+// Fecha a última página com remaining calculado
+if (col === "coluna1") usedCol1 = used;
+else usedCol2 = used;
+const capFinal = getCap();
+const maxUsedFinal = columns === 2 ? Math.max(usedCol1, usedCol2) : usedCol1;
+page.remainingHeight = Math.max(0, capFinal - maxUsedFinal);
 newPages.push(page);
 
 // remove páginas vazias no início/fim (evita "cabeçalho sozinho")
@@ -401,7 +418,7 @@ return newPages;
    - Questões __setBase + seus itens sequenciais formam um "grupo"
      que deve permanecer junto e na ordem interna.
    - Questões livres podem ser reposicionadas para otimizar espaço.
-   - Fragmentação (allowPageBreak) continua funcionando.
+   - Fragmentação continua funcionando quando questão não cabe inteira.
    ============================================================ */
 
 /** Um "slot" é uma coluna de uma página com espaço restante */
@@ -466,7 +483,6 @@ export function distributeQuestionsOptimized(
   firstPageCapacity: number,
   otherPageCapacity: number,
   columns: 1 | 2,
-  allowPageBreak: boolean,
   measureItemsRef: HTMLElement,
   setGroups: SetGroupDef[]
 ): PageLayout[] {
@@ -485,8 +501,8 @@ export function distributeQuestionsOptimized(
   // --- Alocação em slots ---
   // Estrutura de páginas com espaço restante por coluna
   type PageSlots = {
-    coluna1: { items: LayoutItem[]; remaining: number };
-    coluna2: { items: LayoutItem[]; remaining: number };
+    coluna1: { items: LayoutItem[]; remaining: number; usedHeight: number };
+    coluna2: { items: LayoutItem[]; remaining: number; usedHeight: number };
   };
 
   const pages: PageSlots[] = [];
@@ -494,8 +510,8 @@ export function distributeQuestionsOptimized(
   function newPage(idx: number): PageSlots {
     const cap = idx === 0 ? firstPageCapacity : otherPageCapacity;
     return {
-      coluna1: { items: [], remaining: cap },
-      coluna2: { items: [], remaining: cap },
+      coluna1: { items: [], remaining: cap, usedHeight: 0 },
+      coluna2: { items: [], remaining: cap, usedHeight: 0 },
     };
   }
 
@@ -514,6 +530,7 @@ export function distributeQuestionsOptimized(
     if (height <= slot.remaining) {
       slot.items.push({ kind: "full", q: qIndex });
       slot.remaining -= height;
+      slot.usedHeight += height;
       return true;
     }
     return false;
@@ -536,7 +553,7 @@ export function distributeQuestionsOptimized(
       }
 
       // Não coube em nenhum slot — tenta fragmentação
-      if (allowPageBreak && h > otherPageCapacity) {
+      if (h > otherPageCapacity) {
         placeWithFragmentation(qIdx, h);
         return;
       }
@@ -576,8 +593,8 @@ export function distributeQuestionsOptimized(
         lastPage.coluna2.remaining = 0;
       }
 
-      // Tenta fragmentação se permitido e necessário
-      if (allowPageBreak && h > otherPageCapacity) {
+      // Tenta fragmentação se necessário
+      if (h > otherPageCapacity) {
         placeWithFragmentation(qIdx, h);
         setCol = "coluna1";
         continue;
@@ -626,10 +643,8 @@ export function distributeQuestionsOptimized(
       capHere = targetPage.coluna1.remaining;
     }
 
-    // capNext = capacidade mínima dos próximos slots possíveis (garante que cada frag cabe)
-    const capNext = columns === 2 && targetCol === "coluna1"
-      ? Math.min(targetPage.coluna2.remaining, otherPageCapacity)
-      : otherPageCapacity;
+    // capNext = capacidade garantida do próximo fragmento (sempre pode ir pra nova página)
+    const capNext = otherPageCapacity;
 
     let frag = buildFragmentsForQuestion(qIndex, split, capHere, capNext);
 
@@ -646,6 +661,7 @@ export function distributeQuestionsOptimized(
       const slot = targetCol === "coluna1" ? targetPage.coluna1 : targetPage.coluna2;
       slot.items.push({ kind: "full", q: qIndex });
       slot.remaining -= fullH;
+      slot.usedHeight += fullH;
       return;
     }
 
@@ -657,6 +673,7 @@ export function distributeQuestionsOptimized(
         const slot = targetCol === "coluna1" ? targetPage.coluna1 : targetPage.coluna2;
         slot.items.push(item);
         slot.remaining -= h;
+        slot.usedHeight += h;
       } else {
         // Fragmentos seguintes: tenta coluna2 ou nova página
         let placed = false;
@@ -667,6 +684,7 @@ export function distributeQuestionsOptimized(
           if (lastP.coluna2.remaining >= h) {
             lastP.coluna2.items.push(item);
             lastP.coluna2.remaining -= h;
+            lastP.coluna2.usedHeight += h;
             placed = true;
           }
         }
@@ -676,6 +694,7 @@ export function distributeQuestionsOptimized(
           pages.push(newP);
           newP.coluna1.items.push(item);
           newP.coluna1.remaining -= h;
+          newP.coluna1.usedHeight += h;
         }
       }
     }
@@ -693,12 +712,19 @@ export function distributeQuestionsOptimized(
 
   const result: PageLayout[] = pages
     .filter((p) => !isEmptyPage(p))
-    .map((p) => ({
-      coluna1: p.coluna1.items,
-      coluna2: p.coluna2.items,
-    }));
+    .map((p, idx) => {
+      const cap = idx === 0 ? firstPageCapacity : otherPageCapacity;
+      const maxUsed = columns === 2
+        ? Math.max(p.coluna1.usedHeight, p.coluna2.usedHeight)
+        : p.coluna1.usedHeight;
+      return {
+        coluna1: p.coluna1.items,
+        coluna2: p.coluna2.items,
+        remainingHeight: Math.max(0, cap - maxUsed),
+      };
+    });
 
-  return result.length > 0 ? result : [{ coluna1: [], coluna2: [] }];
+  return result.length > 0 ? result : [{ coluna1: [], coluna2: [], remainingHeight: 0 }];
 }
 
 /* ============================================================
@@ -748,26 +774,36 @@ export function calculatePageLayout(
 
   const questionHeights = measureQuestionHeights(refs.measureItemsRef);
 
+  // Reserva que foi descontada da capacidade (safety + footer)
+  // Adicionamos de volta ao remainingHeight pra que o spacer preencha
+  // todo o espaço entre o conteúdo e o footer real
+  const reserved = config.safetyMargin + FOOTER_HEIGHT;
+
+  const adjustRemaining = (pages: PageLayout[]) => {
+    for (const p of pages) {
+      p.remainingHeight += reserved;
+    }
+    return pages;
+  };
+
   if (config.optimizeLayout) {
-    return distributeQuestionsOptimized(
+    return adjustRemaining(distributeQuestionsOptimized(
       questionCount,
       questionHeights,
       firstPageCapacity,
       otherPageCapacity,
       config.columns,
-      !!config.allowPageBreak,
       refs.measureItemsRef,
       config.setGroups ?? []
-    );
+    ));
   }
 
-  return distributeQuestionsAcrossPages(
+  return adjustRemaining(distributeQuestionsAcrossPages(
     questionCount,
     questionHeights,
     firstPageCapacity,
     otherPageCapacity,
     config.columns,
-    !!config.allowPageBreak,
     refs.measureItemsRef
-  );
+  ));
 }

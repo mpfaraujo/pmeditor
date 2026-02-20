@@ -1,29 +1,51 @@
 [
   {
-    "latex": "\\question Se, em 15 anos, o salário mínimo teve um aumento nominal de 300\\% e a inflação foi de 100\\%, é correto afirmar que o aumento real do salário mínimo, nesse período, foi de\n\\begin{choices}\n\\choice 50\\%.\n\\correctchoice 100\\%.\n\\choice 150\\%.\n\\choice 200\\%.\n\\choice 250\\%.\n\\end{choices}",
+    "latex": "\\question Um dono de restaurante assim descreveu a evolução do faturamento quinzenal de seu negócio, ao longo dos dez primeiros meses após a inauguração: “Até o final dos três primeiros meses, tivemos uma velocidade de crescimento mais ou menos constante, quando então sofremos uma queda abrupta, com o faturamento caindo à metade do que tinha sido atingido. Em seguida, voltamos a crescer, igualando, um mês e meio depois dessa queda, o faturamento obtido ao final do terceiro mês. Agora, ao final do décimo mês, estamos estabilizando o faturamento em um patamar 50\\% acima do faturamento obtido ao final do terceiro mês”.\n\nConsiderando que, na ordenada, o faturamento quinzenal está representado em unidades desconhecidas, porém uniformemente espaçadas, qual dos gráficos é compatível com a descrição do comerciante?\n\n\\begin{choices}\n\\choice (A)\n\\choice (B)\n\\correctchoice (C)\n\\choice (D)\n\\choice (E)\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
+      "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Matemática Financeira",
-      "gabarito": "B",
+      "assunto": "Interpretação de Gráficos",
+      "gabarito": "C",
       "tags": [
-        "porcentagem",
-        "inflação",
-        "aumento real",
-        "variação percentual"
+        "função",
+        "crescimento",
+        "variação",
+        "análise gráfica"
       ],
       "fonte": "concurso",
       "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "14"
+      "ano": 2019,
+      "numero": "49"
     }
   },
   {
-    "latex": "\\question O cilindro de papelão central de uma fita crepe tem raio externo de 3 cm. A fita tem espessura de 0,01 cm e dá 100 voltas completas. Considerando que, a cada volta, o raio externo do rolo é aumentado no valor da espessura da fita, o comprimento total da fita é de, aproximadamente,\n(Considere $\\pi \\approx 3{,}14$.)\n\\begin{choices}\n\\choice 9,4 m.\n\\choice 11,0 m.\n\\correctchoice 18,8 m.\n\\choice 22,0 m.\n\\choice 25,1 m.\n\\end{choices}",
+    "latex": "\\question Forma-se uma pilha de folhas de papel, em que cada folha tem $0{,}1$ mm de espessura. A pilha é formada da seguinte maneira: coloca-se uma folha na primeira vez e, em cada uma das vezes seguintes, tantas quantas já houverem sido colocadas anteriormente. Depois de 33 dessas operações, a altura da pilha terá a ordem de grandeza\n\n\\begin{choices}\n\\choice da altura de um poste.\n\\choice da altura de um prédio de 30 andares.\n\\choice do comprimento da Av. Paulista.\n\\correctchoice da distância da cidade de São Paulo (SP) à cidade do Rio de Janeiro (RJ).\n\\choice do diâmetro da Terra.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "assunto": "Progressão Geométrica",
+      "gabarito": "D",
+      "tags": [
+        "potência de 2",
+        "crescimento exponencial",
+        "ordem de grandeza"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "50"
+    }
+  },
+  {
+    "latex": "\\question A figura mostra uma escada maciça de quatro degraus, todos eles com formato de um paralelepípedo reto-retângulo. A base de cada degrau é um retângulo de dimensões $20$ cm por $50$ cm, e a diferença de altura entre o piso e o primeiro degrau e entre os degraus consecutivos é de $10$ cm. Se essa escada for prolongada para ter 20 degraus, mantendo o mesmo padrão, seu volume será igual a\n\n\\begin{choices}\n\\choice $2{,}1\\ \\text{m}^3$\n\\choice $2{,}3\\ \\text{m}^3$\n\\correctchoice $3{,}0\\ \\text{m}^3$\n\\choice $4{,}2\\ \\text{m}^3$\n\\choice $6{,}0\\ \\text{m}^3$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
@@ -33,217 +55,103 @@
       "assunto": "Geometria Espacial",
       "gabarito": "C",
       "tags": [
-        "comprimento de arco",
-        "circunferência",
+        "volume",
         "soma",
-        "aproximação"
+        "paralelepípedo"
       ],
       "fonte": "concurso",
       "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "15"
+      "ano": 2019,
+      "numero": "51"
     }
   },
   {
-    "latex": "\\question Um objeto é formado por 4 hastes rígidas conectadas em seus extremos por articulações, cujos centros são os vértices de um paralelogramo. As hastes movimentam-se de tal forma que o paralelogramo permanece sempre no mesmo plano. A cada configuração desse objeto, associa-se $\\theta$, a medida do menor ângulo interno do paralelogramo. A área da região delimitada pelo paralelogramo quando $\\theta = 90^\\circ$ é $A$.\n\nPara que a área da região delimitada pelo paralelogramo seja $\\dfrac{A}{2}$, o valor de $\\theta$ é, necessariamente, igual a\n\\begin{choices}\n\\choice $15^\\circ$.\n\\choice $22{,}5^\\circ$.\n\\correctchoice $30^\\circ$.\n\\choice $45^\\circ$.\n\\choice $60^\\circ$.\n\\end{choices}",
+    "latex": "\\question Uma empresa estuda cobrir um vão entre dois prédios (com formato de paralelepípedos reto-retângulos) que têm paredes laterais paralelas, instalando uma lona na forma de um quadrilátero, com pontas presas nos pontos $A$, $B$, $C$ e $D$, conforme indicação da figura.\n\nSabendo que a lateral de um prédio tem $80$ m de altura e $28$ m de largura, que a lateral do outro prédio tem $60$ m de altura e $20$ m de largura e que essas duas paredes laterais distam $15$ m uma da outra, a área total dessa lona seria de\n\n\\begin{choices}\n\\choice $300\\ \\text{m}^2$\n\\choice $360\\ \\text{m}^2$\n\\choice $600\\ \\text{m}^2$\n\\correctchoice $720\\ \\text{m}^2$\n\\choice $1.200\\ \\text{m}^2$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C",
+    "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Espacial",
+      "gabarito": "D",
+      "tags": [
+        "área",
+        "geometria espacial",
+        "quadrilátero"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "52"
+    }
+  },
+  {
+    "latex": "\\question Se $\\log_2 y = -\\dfrac{1}{2} + \\dfrac{2}{3}\\log_2 x$, para $x>0$, então\n\n\\begin{choices}\n\\choice $y=\\dfrac{\\sqrt{x^{2}}}{\\sqrt{2}}$\n\\choice $y=\\sqrt{\\dfrac{x^{3}}{2}}$\n\\choice $y=-\\dfrac{1}{\\sqrt{2}}+\\sqrt{x^{2}}$\n\\choice $y=\\sqrt{2}\\,\\sqrt{x^{2}}$\n\\correctchoice $y=\\sqrt{2}\\,x^{3}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Logarítmica",
+      "gabarito": "E",
+      "tags": [
+        "logaritmo",
+        "mudança de base",
+        "exponencial"
+      ],
+      "fonte": "concurso",
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "53"
+    }
+  },
+  {
+    "latex": "\\question Um triângulo retângulo com vértices denominados $A$, $B$ e $C$ apoia-se sobre uma linha horizontal, que corresponde ao solo, e gira sem escorregar no sentido horário. Isto é, se a posição inicial é aquela mostrada na figura, o movimento começa com uma rotação em torno do vértice $C$ até o vértice $A$ tocar o solo, após o que passa a ser uma rotação em torno de $A$, até o vértice $B$ tocar o solo, e assim por diante.\n\nUsando as dimensões indicadas na figura ($BA=1$ e $CB=2$), qual é o comprimento da trajetória percorrida pelo vértice $B$, desde a posição mostrada, até a aresta $CB$ apoiar-se no solo novamente?\n\n\\begin{choices}\n\\correctchoice $\\dfrac{3}{2}\\pi$\n\\choice $\\dfrac{3+\\sqrt{3}}{3}\\pi$\n\\choice $\\dfrac{13}{6}\\pi$\n\\choice $\\dfrac{3+\\sqrt{3}}{2}\\pi$\n\\choice $\\dfrac{8+2\\sqrt{3}}{3}\\pi$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
       "disciplina": "Matemática",
       "assunto": "Geometria Plana",
-      "gabarito": "C",
-      "tags": [
-        "paralelogramo",
-        "área",
-        "seno",
-        "ângulo"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "16"
-    }
-  },
-  {
-    "latex": "\\question A menor esfera na qual um paralelepípedo reto-retângulo de medidas $7\\,\\text{cm} \\times 4\\,\\text{cm} \\times 4\\,\\text{cm}$ está inscrito tem diâmetro de\n\\begin{choices}\n\\correctchoice 9 cm.\n\\choice 10 cm.\n\\choice 11 cm.\n\\choice 12 cm.\n\\choice 15 cm.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Espacial",
       "gabarito": "A",
       "tags": [
-        "esfera",
-        "paralelepípedo",
-        "diagonal espacial",
-        "raio"
+        "rotação",
+        "arco de circunferência",
+        "trajetória"
       ],
       "fonte": "concurso",
       "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "17"
+      "ano": 2019,
+      "numero": "54"
     }
   },
   {
-    "latex": "\\question A dona de uma lanchonete observou que, vendendo um combo a R\\$ 10,00, 200 deles são vendidos por dia, e que, para cada redução de R\\$ 1,00 nesse preço, ela vende 100 combos a mais. Nessas condições, qual é a máxima arrecadação diária que ela espera obter com a venda desse combo?\n\\begin{choices}\n\\choice R\\$ 2.000,00\n\\choice R\\$ 3.200,00\n\\choice R\\$ 3.600,00\n\\correctchoice R\\$ 4.000,00\n\\choice R\\$ 4.800,00\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Quadrática",
-      "gabarito": "D",
-      "tags": [
-        "máximo",
-        "receita",
-        "modelagem",
-        "função do segundo grau"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "18"
-    }
-  },
-  {
-    "latex": "\\question A função $\\varphi$ de Euler determina, para cada número natural $n$, a quantidade de números naturais menores do que $n$ cujo máximo divisor comum com $n$ é igual a 1. Por exemplo, $\\varphi(6)=2$, pois os números menores do que 6 com tal propriedade são 1 e 5.\n\nQual o valor máximo de $\\varphi(n)$, para $n$ de 20 a 25?\n\\begin{choices}\n\\choice 19\n\\choice 20\n\\correctchoice 22\n\\choice 24\n\\choice 25\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Teoria dos Números",
-      "gabarito": "C",
-      "tags": [
-        "função totiente",
-        "máximo divisor comum",
-        "aritmética"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "19"
-    }
-  },
-  {
-    "latex": "\\question Se $3x^{2}-9x+7 = (x-a)^{3} - (x-b)^{3}$, para todo número real $x$, o valor de $a+b$ é\n\\begin{choices}\n\\choice 3.\n\\correctchoice 5.\n\\choice 6.\n\\choice 9.\n\\choice 12.\n\\end{choices}",
+    "latex": "\\question Uma seta aponta para a posição zero no instante inicial. A cada rodada, ela poderá ficar no mesmo lugar ou mover-se uma unidade para a direita ou mover-se uma unidade para a esquerda, cada uma dessas três possibilidades com igual probabilidade.\n\nQual é a probabilidade de que, após 5 rodadas, a seta volte à posição inicial?\n\n\\begin{choices}\n\\choice $\\dfrac{1}{9}$\n\\correctchoice $\\dfrac{17}{81}$\n\\choice $\\dfrac{1}{3}$\n\\choice $\\dfrac{51}{125}$\n\\choice $\\dfrac{125}{243}$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Polinômios",
+      "assunto": "Probabilidade",
       "gabarito": "B",
       "tags": [
-        "identidade polinomial",
-        "comparação de coeficientes",
-        "expansão"
+        "probabilidade",
+        "caminhada aleatória",
+        "combinatória"
       ],
       "fonte": "concurso",
       "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "20"
-    }
-  },
-  {
-    "latex": "\\question Uma agência de turismo vendeu um total de 78 passagens para os destinos: Lisboa, Paris e Roma. Sabe-se que o número de passagens vendidas para Paris foi o dobro do número de passagens vendidas para os outros dois destinos conjuntamente. Sabe-se também que, para Roma, foram vendidas duas passagens a mais que a metade das vendidas para Lisboa.\n\nQual foi o total de passagens vendidas, conjuntamente, para Paris e Roma?\n\\begin{choices}\n\\choice 26\n\\choice 38\n\\choice 42\n\\correctchoice 62\n\\choice 68\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Sistemas Lineares",
-      "gabarito": "D",
-      "tags": [
-        "equações lineares",
-        "modelagem algébrica"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "21"
-    }
-  },
-  {
-    "latex": "\\question Um ponto $(x,y)$ do plano cartesiano pertence ao conjunto $F$ se é equidistante dos eixos $OX$ e $OY$ e pertence ao círculo de equação\n$x^{2}+y^{2}-2x-6y+2=0$.\nÉ correto afirmar que $F$\n\\begin{choices}\n\\choice é um conjunto vazio.\n\\correctchoice tem exatamente 2 pontos, um no primeiro quadrante e outro no segundo quadrante.\n\\choice tem exatamente 2 pontos, ambos no primeiro quadrante.\n\\choice tem exatamente 3 pontos, sendo dois no primeiro quadrante e outro no segundo quadrante.\n\\choice tem exatamente 4 pontos, sendo dois no primeiro quadrante e dois no segundo quadrante.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Analítica",
-      "gabarito": "B",
-      "tags": [
-        "circunferência",
-        "distância aos eixos",
-        "sistema"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "22"
-    }
-  },
-  {
-    "latex": "\\question Uma cidade é dividida em dois Setores: o Setor Sul, com área de $10\\,\\text{km}^2$, e o Setor Norte, com área de $30\\,\\text{km}^2$. Após um final de semana, foram divulgados os seguintes totais pluviométricos:\n\nsábado: Sul 7 mm, Norte 11 mm  \ndomingo: Sul 9 mm, Norte 17 mm\n\nÉ correto afirmar que o total pluviométrico desse final de semana na cidade inteira foi de\n\\begin{choices}\n\\choice 15 mm.\n\\choice 17 mm.\n\\choice 22 mm.\n\\correctchoice 25 mm.\n\\choice 28 mm.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Média Ponderada",
-      "gabarito": "D",
-      "tags": [
-        "pluviometria",
-        "média ponderada",
-        "proporção",
-        "área"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "23"
-    }
-  },
-  {
-    "latex": "\\question As possíveis soluções, em polegadas (inches), para o problema matemático proposto no quadrinho, no caso em que os pontos $A$, $B$ e $C$ estão em uma mesma reta, são\n\\begin{choices}\n\\correctchoice $\\dfrac{10}{3}$ e $10$.\n\\choice $\\dfrac{10}{3}$, $5$ e $10$.\n\\choice $\\dfrac{5}{3}$, $\\dfrac{10}{3}$ e $10$.\n\\choice $\\dfrac{5}{3}$ e $10$.\n\\choice $\\dfrac{10}{3}$ e $5$.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Equações",
-      "gabarito": "A",
-      "tags": [
-        "equação",
-        "segmentos colineares",
-        "resolução algébrica"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2020,
-      "numero": "24"
+      "ano": 2019,
+      "numero": "55"
     }
   }
 ]

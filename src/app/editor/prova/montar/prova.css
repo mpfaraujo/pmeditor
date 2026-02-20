@@ -22,6 +22,26 @@
   margin-bottom: 0.8cm;
 }
 
+.prova-footer {
+  padding-top: 0.3cm;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9pt;
+  color: #333;
+}
+
+.footer-editavel {
+  outline: none;
+  min-width: 3cm;
+  text-align: center;
+}
+
+.footer-editavel:focus {
+  background: #f9f9f9;
+  border-bottom: 1px dashed #aaa;
+}
+
 /* ====== FIX LISTAS (ANTES ESTAVA NO SELETOR ERRADO) ====== */
 .questao-conteudo ul,
 .questao-conteudo ol,
@@ -349,17 +369,29 @@
     page-break-after: auto !important;
   }
 
-  /* área útil = 21cm - 2*1.5cm = 18cm */
+  /* área útil = 21cm - 2*1.5cm = 18cm x 26.7cm */
   .prova-page {
     width: 18cm !important;
-    height: auto !important;
+    height: 26.7cm !important;
     min-height: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     box-shadow: none !important;
-    display: block !important;
+    position: relative !important;
     font-family: Arial, sans-serif !important;
+  }
+
+  /* Na impressão: spacer escondido, footer absoluto no final */
+  .prova-footer-spacer {
+    display: none !important;
+  }
+
+  .prova-footer {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
   }
   .questoes-container {
     display: flex !important;
