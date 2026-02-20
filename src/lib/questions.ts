@@ -168,3 +168,33 @@ export async function listQuestions(params?: {
   const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, { headers });
   return handle(res);
 }
+
+export type QuestionVersion = {
+  kind: "base" | "variant";
+  id: string;
+  updatedAt: string;
+  author: string | null;
+  metadata: any;
+  content?: any;
+};
+
+export type VersionHistoryResponse = {
+  success: true;
+  questionId: string;
+  total: number;
+  variants: QuestionVersion[];
+};
+
+export async function getQuestionVariants(
+  questionId: string,
+  includeContent = true
+): Promise<VersionHistoryResponse> {
+  const params = new URLSearchParams({ questionId });
+  if (includeContent) params.set("includeContent", "1");
+
+  const res = await fetch(`${BASE_URL}/variants.php?${params}`, {
+    headers: { "X-Questions-Token": TOKEN },
+  });
+
+  return handle(res);
+}

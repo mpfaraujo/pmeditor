@@ -6,7 +6,7 @@ import QuestionCard from "@/components/Questions/QuestionCard";
 import { QuestionsFilter } from "@/components/Questions/QuestionsFilter";
 import { QuestionsFilterMobile } from "@/components/Questions/QuestionsFilterMobile";
 import { useProva } from "@/contexts/ProvaContext";
-import { listQuestions } from "@/lib/questions";
+import { listQuestions, QuestionVersion } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import {
@@ -147,6 +147,30 @@ export default function QuestoesPage() {
     checked ? addQuestion(q) : removeQuestion(id);
   };
 
+  const handleVersionChange = (questionId: string, versionData: QuestionVersion) => {
+    const questionData: QuestionItem = {
+      metadata: versionData.metadata,
+      content: versionData.content,
+      base: undefined,
+      variantsCount: items.find(q => q.metadata.id === questionId)?.variantsCount ?? 0,
+      active: {
+        kind: versionData.kind,
+        id: versionData.id,
+      },
+    };
+
+    // Substituir no contexto (remove e adiciona novamente com nova versão)
+    removeQuestion(questionId);
+    addQuestion(questionData);
+
+    // Atualizar lista local para refletir mudança
+    setItems(prev =>
+      prev.map(item =>
+        item.metadata.id === questionId ? questionData : item
+      )
+    );
+  };
+
   const handleMontarProva = () => {
     router.push("/editor/prova/selecionar-layout");
   };
@@ -257,6 +281,7 @@ export default function QuestoesPage() {
                         active={q.active}
                         selected={isSelected(q.metadata.id)}
                         onSelect={toggleSelect}
+                        onVersionChange={(versionData) => handleVersionChange(q.metadata.id, versionData)}
                       />
                     </div>
                   </CarouselItem>

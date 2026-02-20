@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import QuestionRenderer from "./QuestionRenderer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { VersionHistoryModal } from "./VersionHistoryModal";
+import { QuestionVersion } from "@/lib/questions";
 
 type PMNode = {
   type: string;
@@ -40,6 +42,8 @@ type QuestionCardProps = {
 
   variantsCount?: number;
   active?: { kind: "base" | "variant"; id: string };
+
+  onVersionChange?: (versionData: QuestionVersion) => void;
 };
 
 function Dot({ className, title }: { className: string; title: string }) {
@@ -197,12 +201,14 @@ export default function QuestionCard({
   onSelect,
   variantsCount = 0,
   active,
+  onVersionChange,
 }: QuestionCardProps) {
   const isEdited = variantsCount > 0;
   const hasBase = !!base?.content;
 
   const [view, setView] = useState<"active" | "base">("active");
   const [itemIndex, setItemIndex] = useState(0);
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
 
   const isShowingVariant = active?.kind === "variant" && view === "active";
 
@@ -267,6 +273,17 @@ export default function QuestionCard({
               <span className="text-[11px] text-muted-foreground">
                 {variantsCount} variante{variantsCount === 1 ? "" : "s"}
               </span>
+            )}
+
+            {isEdited && onVersionChange && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setHistoryModalOpen(true)}
+                className="text-xs text-blue-600 hover:text-blue-800 h-auto py-1 px-2"
+              >
+                Ver histórico ({variantsCount + 1} versões)
+              </Button>
             )}
           </div>
 
@@ -431,6 +448,19 @@ export default function QuestionCard({
           </>
         )}
       </div>
+
+      {/* Modal de histórico de versões */}
+      {onVersionChange && (
+        <VersionHistoryModal
+          open={historyModalOpen}
+          onOpenChange={setHistoryModalOpen}
+          questionId={metadata.id}
+          currentVersionId={active?.id ?? null}
+          onVersionSelect={(versionData) => {
+            onVersionChange(versionData);
+          }}
+        />
+      )}
     </div>
   );
 }
