@@ -139,6 +139,33 @@ paragraph: {
     },
   },
 
+  roman_list: {
+    content: "list_item+",
+    group: "block",
+    parseDOM: [{ tag: "ol.roman-list" }],
+    toDOM(): DOMOutputSpec {
+      return ["ol", { class: "roman-list" }, 0];
+    },
+  },
+
+  alpha_list: {
+    content: "list_item+",
+    group: "block",
+    parseDOM: [{ tag: "ol.alpha-list" }],
+    toDOM(): DOMOutputSpec {
+      return ["ol", { class: "alpha-list" }, 0];
+    },
+  },
+
+  assertive_list: {
+    content: "list_item+",
+    group: "block",
+    parseDOM: [{ tag: "ul.assertive-list" }],
+    toDOM(): DOMOutputSpec {
+      return ["ul", { class: "assertive-list" }, 0];
+    },
+  },
+
   list_item: {
     content: "paragraph block*",
     defining: true,

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, User, Users, FileText, ClipboardList } from "lucide-react";
+import { ArrowLeft, User, Users, FileText, ClipboardList, ShieldCheck } from "lucide-react";
 import { ProfileTab } from "@/components/minha-area/ProfileTab";
 import { TurmasTab } from "@/components/minha-area/TurmasTab";
 import { QuestoesTab } from "@/components/minha-area/QuestoesTab";
@@ -14,7 +14,7 @@ import { ProvasTab } from "@/components/minha-area/ProvasTab";
 function MinhaAreaContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, isLoggedIn, loading } = useAuth();
+  const { user, isLoggedIn, isAdmin, loading } = useAuth();
 
   const defaultTab = searchParams.get("tab") ?? "perfil";
 
@@ -56,6 +56,24 @@ function MinhaAreaContent() {
             <p className="text-slate-600 mt-2 text-lg">{user?.email}</p>
           </div>
         </div>
+
+        {/* Área admin — só visível para admins */}
+        {isAdmin && (
+          <div className="mb-6 p-4 border border-amber-200 bg-amber-50 rounded-xl flex items-center justify-between">
+            <div className="flex items-center gap-2 text-amber-800">
+              <ShieldCheck className="h-4 w-4" />
+              <span className="text-sm font-medium">Administrador</span>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-amber-300 text-amber-800 hover:bg-amber-100"
+              onClick={() => router.push("/admin/gerenciar")}
+            >
+              Gerenciar Questões
+            </Button>
+          </div>
+        )}
 
         {/* Tabs com identidade ProvaMarela */}
         <Tabs defaultValue={defaultTab} className="space-y-6">

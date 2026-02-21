@@ -174,3 +174,45 @@ export async function getQuestionVariants(
 
   return handle(res);
 }
+
+function getSessionToken(): string {
+  return typeof window !== "undefined"
+    ? (localStorage.getItem("pmeditor:session") ?? "")
+    : "";
+}
+
+export async function deleteQuestion(id: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/delete.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Session-Token": getSessionToken(),
+    },
+    body: JSON.stringify({ id }),
+  });
+  await handle(res);
+}
+
+export async function deleteVariant(id: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/delete-variant.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Session-Token": getSessionToken(),
+    },
+    body: JSON.stringify({ id }),
+  });
+  await handle(res);
+}
+
+export async function promoteVariant(variantId: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/promote-variant.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Session-Token": getSessionToken(),
+    },
+    body: JSON.stringify({ variantId }),
+  });
+  await handle(res);
+}

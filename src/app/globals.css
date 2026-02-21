@@ -302,3 +302,35 @@
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
+
+/* ===== LISTAS CUSTOMIZADAS (usadas no card e na prova) ===== */
+ol.roman-list {
+  list-style-type: upper-roman;
+}
+
+ol.roman-list > li,
+ol.alpha-list > li,
+ul.assertive-list > li {
+  text-align: justify;
+}
+
+ol.alpha-list {
+  list-style-type: lower-alpha;
+}
+
+ul.assertive-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul.assertive-list > li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+ul.assertive-list > li::before {
+  content: "(\00a0\00a0)";
+  flex-shrink: 0;
+  font-family: monospace;
+}

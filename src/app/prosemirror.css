@@ -181,26 +181,20 @@
 }
 
 .ProseMirror ul.assertive-list > li {
-  position: relative;
-  padding-left: 3rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
   margin: 0.25rem 0;
-  display: block;
   line-height: 1.5;
 }
 
 .ProseMirror ul.assertive-list > li::before {
-  content: "(\00a0)";
-  position: absolute;
-  left: 0.5rem;
-  top: 0.25em;
-  font-weight: normal;
+  content: "(\00a0\00a0)";
   font-family: monospace;
-  letter-spacing: 0.5em;
 }
 
 .ProseMirror ul.assertive-list > li p {
   margin: 0;
-  display: inline;
 }
 
 /* ===== BLOCOS DE CÓDIGO ===== */

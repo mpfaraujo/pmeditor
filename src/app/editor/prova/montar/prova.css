@@ -66,6 +66,54 @@
   list-style-type: decimal;
 }
 
+/* Listas customizadas */
+.questao-conteudo ol.roman-list,
+.question-readonly ol.roman-list,
+.question-text ol.roman-list {
+  list-style-type: upper-roman;
+}
+
+.questao-conteudo ol.roman-list > li,
+.question-readonly ol.roman-list > li,
+.question-text ol.roman-list > li,
+.questao-conteudo ol.alpha-list > li,
+.question-readonly ol.alpha-list > li,
+.question-text ol.alpha-list > li,
+.questao-conteudo ul.assertive-list > li,
+.question-readonly ul.assertive-list > li,
+.question-text ul.assertive-list > li {
+  text-align: justify;
+}
+
+.questao-conteudo ol.alpha-list,
+.question-readonly ol.alpha-list,
+.question-text ol.alpha-list {
+  list-style-type: lower-alpha;
+}
+
+.questao-conteudo ul.assertive-list,
+.question-readonly ul.assertive-list,
+.question-text ul.assertive-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.questao-conteudo ul.assertive-list > li,
+.question-readonly ul.assertive-list > li,
+.question-text ul.assertive-list > li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.questao-conteudo ul.assertive-list > li::before,
+.question-readonly ul.assertive-list > li::before,
+.question-text ul.assertive-list > li::before {
+  content: "(\00a0\00a0)";
+  flex-shrink: 0;
+  font-family: monospace;
+}
+
 .questao-conteudo li,
 .question-readonly li,
 .question-text li {

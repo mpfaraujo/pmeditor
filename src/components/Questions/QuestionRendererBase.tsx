@@ -300,7 +300,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
           );
         }
 
-        if (child.type === "bullet_list" || child.type === "ordered_list") {
+        if (child.type === "bullet_list" || child.type === "ordered_list" || child.type === "roman_list" || child.type === "alpha_list" || child.type === "assertive_list") {
           return (
             <div key={key} className="leading-snug">
               {renderInline(child)}
@@ -575,6 +575,36 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
             <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
           ))}
         </ol>
+      );
+    }
+
+    if (node.type === "roman_list") {
+      return (
+        <ol className="roman-list">
+          {node.content?.map((li, i) => (
+            <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
+          ))}
+        </ol>
+      );
+    }
+
+    if (node.type === "alpha_list") {
+      return (
+        <ol className="alpha-list">
+          {node.content?.map((li, i) => (
+            <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
+          ))}
+        </ol>
+      );
+    }
+
+    if (node.type === "assertive_list") {
+      return (
+        <ul className="assertive-list">
+          {node.content?.map((li, i) => (
+            <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
+          ))}
+        </ul>
       );
     }
 

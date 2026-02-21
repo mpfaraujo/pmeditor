@@ -106,6 +106,7 @@ src/
 │   ├── pagination.ts                     # Algoritmo de paginacao (core)
 │   ├── questions.ts                      # API calls (CRUD questoes)
 │   ├── questionRules.ts                  # Regras de validacao
+│   ├── GeraTiposDeProva.ts               # Geracao de tipos de prova (permutacao de alternativas)
 │   ├── yamlMeta.ts                      # Parser de modelo de informacoes + gerador de template
 │   └── utils.ts                          # Utilitarios (cn, etc.)
 │
@@ -244,6 +245,98 @@ type Selection =
 ```
 
 O contexto mantem `selections[]` e `selectedQuestions[]`. Para `set_questions`, o usuario pode escolher quais `question_item` incluir (minimo 2).
+
+## Tipos de Prova (lib/GeraTiposDeProva.ts)
+
+Sistema para gerar tipos diferentes de prova (Tipo 1, 2, 3...) permutando apenas as alternativas das questões de múltipla escolha. Objetivo: evitar cola entre alunos da mesma turma.
+
+### Funcionamento
+
+**Tipo 1:** Sempre ordem original (referência para o professor)
+**Tipos 2-N:** Alternativas permutadas deterministicamente
+
+**Questões afetadas:**
+- ✅ Múltipla Escolha (MCQ): alternativas permutadas
+- ❌ Certo/Errado (TF): mantém ordem original
+- ❌ Discursivas (Essay): mantém ordem original
+
+### Seed único por professor
+
+```typescript
+seed = hash(user.googleId) + tipoNumber * 1000 + hash(questionId)
+```
+
+**Características:**
+- Cada professor tem permutações únicas (evita cola entre turmas diferentes)
+- Permutações reprodutíveis (gerar novamente = mesmas permutações)
+- Visitantes (não logados) usam seed 0
+- Não precisa salvar tipos no banco (regenera automaticamente)
+
+### Tipos principais
+
+```typescript
+export type OptionPermutation = {
+  [originalLetter: string]: string; // A→C, B→A, C→E, D→B, E→D
+};
+
+export type QuestionPermutation = {
+  questionId: string;
+  permutation: OptionPermutation;
+};
+
+export type ProvaTypeConfig = {
+  tipoNumber: number;         // 1, 2, 3, 4...
+  permutations: QuestionPermutation[];  // Uma permutação por questão MCQ
+};
+```
+
+### Funções principais
+
+**`gerarTiposDeProva(questoes, numTipos, provaSeed)`**
+- Gera array de configs (1 por tipo)
+- Tipo 1 = permutação identidade
+- Tipos 2-N = shuffle com seed determinístico
+
+**`aplicarPermutacaoGabarito(respostas, permutations, questoes)`**
+- Atualiza gabarito com permutações aplicadas
+- Exemplo: se A era correta e virou C, retorna C
+
+**`hashQuestionId(id)`**
+- Hash simples de string para número
+- Usado para seed único por questão
+- Exportada para uso em outras partes (ex: hash do userId)
+
+### UI (em montar/page.tsx)
+
+```tsx
+[Input: Gerar __ tipos] [Dropdown: Tipo 1 ▼] [Botão: Reiniciar]
+         (2-6)
+```
+
+- Input numérico desabilitado após gerar tipos (reiniciar para mudar)
+- Dropdown aparece após gerar tipos
+- Visualização mostra apenas o tipo selecionado
+- Impressão imprime apenas o tipo selecionado
+- Gabarito mostra "GABARITO - TIPO X"
+- Footer mostra "Tipo X" (editável, só aparece com 2+ tipos)
+
+### Fluxo de aplicação
+
+1. **QuestionRendererBase:** Recebe `permutation` como prop
+2. **renderOptions:** Aplica permutação aos nodes de options:
+   - Mapeia cada option para nova letra
+   - Ordena por nova letra (A, B, C, D, E)
+3. **QuestionRendererProva:** Passa permutation para Base
+4. **Layouts:** ProvaLayout e ExerciseLayout aceitam `tipoAtual` e `numTipos`
+
+### Normalização de tipos
+
+Comparação case-insensitive e sem acentos para identificar MCQ:
+
+```typescript
+const normalizar = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+// Aceita: "Múltipla Escolha", "Multipla Escolha", "MULTIPLA ESCOLHA"
+```
 
 ## Paginacao (lib/pagination.ts)
 

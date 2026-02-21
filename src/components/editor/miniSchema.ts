@@ -151,6 +151,27 @@ export const miniSchema = new Schema({
       toDOM(node) { return ["ol", { start: node.attrs.order }, 0] as const; },
     },
 
+    roman_list: {
+      content: "list_item+",
+      group: "block",
+      parseDOM: [{ tag: "ol.roman-list" }],
+      toDOM() { return ["ol", { class: "roman-list" }, 0] as const; },
+    },
+
+    alpha_list: {
+      content: "list_item+",
+      group: "block",
+      parseDOM: [{ tag: "ol.alpha-list" }],
+      toDOM() { return ["ol", { class: "alpha-list" }, 0] as const; },
+    },
+
+    assertive_list: {
+      content: "list_item+",
+      group: "block",
+      parseDOM: [{ tag: "ul.assertive-list" }],
+      toDOM() { return ["ul", { class: "assertive-list" }, 0] as const; },
+    },
+
     list_item: {
       content: "paragraph block*",
       defining: true,
