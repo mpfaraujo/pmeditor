@@ -22,6 +22,9 @@ export type PageLayout = {
   coluna2: LayoutItem[];
   /** Espaço restante na página (px) — usado para posicionar o footer */
   remainingHeight: number;
+  /** Espaço livre por coluna — usado para limitar spacers arrastáveis */
+  col1Remaining?: number;
+  col2Remaining?: number;
 };
 
 /** Grupo explícito: texto base + seus itens (por parentId) */
@@ -37,6 +40,8 @@ export interface PaginationConfig {
   optimizeLayout?: boolean;
   /** Grupos explícitos de set_questions (base + itens pelo parentId) */
   setGroups?: SetGroupDef[];
+  /** Spacers arrastáveis: "q${i}" → px extras adicionados à altura da questão i */
+  spacers?: Map<string, number>;
 }
 
 // Altura reservada para o footer (margin + padding + texto): ~1.1cm = 31px
@@ -48,9 +53,9 @@ export function calculateFirstPageCapacity(
   pageHeight: number,
   safetyMargin: number
 ): number {
-  const questionsTop = questionsContainerElement.offsetTop;
-  const firstPageTop = firstPageElement.offsetTop;
-  const occupiedHeight = questionsTop - firstPageTop;
+  const pageRect = firstPageElement.getBoundingClientRect();
+  const questionsRect = questionsContainerElement.getBoundingClientRect();
+  const occupiedHeight = questionsRect.top - pageRect.top;
   return Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT);
 }
 
@@ -60,9 +65,9 @@ export function calculateOtherPageCapacity(
   pageHeight: number,
   safetyMargin: number
 ): number {
-  const questionsTop = questionsContainerElement.offsetTop;
-  const otherPageTop = otherPageElement.offsetTop;
-  const occupiedHeight = questionsTop - otherPageTop;
+  const pageRect = otherPageElement.getBoundingClientRect();
+  const questionsRect = questionsContainerElement.getBoundingClientRect();
+  const occupiedHeight = questionsRect.top - pageRect.top;
   return Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT);
 }
 
@@ -302,6 +307,8 @@ export function distributeQuestionsAcrossPages(
     const cap = getCap();
     const maxUsed = columns === 2 ? Math.max(usedCol1, usedCol2) : usedCol1;
     page.remainingHeight = Math.max(0, cap - maxUsed);
+    page.col1Remaining = Math.max(0, cap - usedCol1);
+    page.col2Remaining = columns === 2 ? Math.max(0, cap - usedCol2) : 0;
     newPages.push(page);
     pageIndex++;
     page = { coluna1: [], coluna2: [], remainingHeight: 0 };
@@ -400,6 +407,8 @@ else usedCol2 = used;
 const capFinal = getCap();
 const maxUsedFinal = columns === 2 ? Math.max(usedCol1, usedCol2) : usedCol1;
 page.remainingHeight = Math.max(0, capFinal - maxUsedFinal);
+page.col1Remaining = Math.max(0, capFinal - usedCol1);
+page.col2Remaining = columns === 2 ? Math.max(0, capFinal - usedCol2) : 0;
 newPages.push(page);
 
 // remove páginas vazias no início/fim (evita "cabeçalho sozinho")
@@ -721,6 +730,8 @@ export function distributeQuestionsOptimized(
         coluna1: p.coluna1.items,
         coluna2: p.coluna2.items,
         remainingHeight: Math.max(0, cap - maxUsed),
+        col1Remaining: Math.max(0, p.coluna1.remaining),
+        col2Remaining: Math.max(0, p.coluna2.remaining),
       };
     });
 
@@ -772,7 +783,10 @@ export function calculatePageLayout(
 
   if (firstPageCapacity <= 0 || otherPageCapacity <= 0) return null;
 
-  const questionHeights = measureQuestionHeights(refs.measureItemsRef);
+  const rawHeights = measureQuestionHeights(refs.measureItemsRef);
+  const questionHeights = config.spacers
+    ? rawHeights.map((h, i) => h + (config.spacers!.get(`q${i}`) ?? 0))
+    : rawHeights;
 
   // Reserva que foi descontada da capacidade (safety + footer)
   // Adicionamos de volta ao remainingHeight pra que o spacer preencha

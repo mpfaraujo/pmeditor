@@ -12,10 +12,25 @@
 
 .prova-page {
   width: 21cm;
-  min-height: 29.7cm;
+  height: 29.7cm;
   padding: 1.5cm;
   font-size: 10pt;
   font-family: Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Tela: footer absoluto no fundo (igual à impressão) */
+.prova-footer-spacer {
+  display: none;
+}
+
+.prova-footer {
+  position: absolute;
+  bottom: 1.5cm;
+  left: 1.5cm;
+  right: 1.5cm;
 }
 
 .prova-header {

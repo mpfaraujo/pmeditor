@@ -21,6 +21,7 @@ import { ProvaHeaderLayout8 } from "../headers/ProvaHeaderLayout8";
 import { ProvaHeaderLayout9 } from "../headers/ProvaHeaderLayout9";
 import { ProvaHeaderLayout10 } from "../headers/ProvaHeaderLayout10";
 import type { QuestionPermutation } from "@/lib/GeraTiposDeProva";
+import { SpacerHandle } from "../SpacerHandle";
 
 interface ProvaLayoutProps extends LayoutProps {
   columns: ColumnCount;
@@ -28,6 +29,10 @@ interface ProvaLayoutProps extends LayoutProps {
   tipoAtual?: number;
   numTipos?: number;
   permutations?: QuestionPermutation[] | null;
+  spacers?: Map<string, number>;
+  committedSpacers?: Map<string, number>;
+  onSpacerChange?: (key: string, h: number) => void;
+  onSpacerCommit?: (key: string, h: number) => void;
 }
 
 export function ProvaLayout({
@@ -42,6 +47,10 @@ export function ProvaLayout({
   tipoAtual,
   numTipos,
   permutations,
+  spacers,
+  committedSpacers,
+  onSpacerChange,
+  onSpacerCommit,
 }: ProvaLayoutProps) {
   const { provaConfig } = useProva();
 
@@ -94,6 +103,11 @@ export function ProvaLayout({
 
     return null;
   };
+
+  const qKey = (it: any) => `q${typeof it === "number" ? it : it?.q ?? 0}`;
+  const colTotal = (items: any[]) =>
+    items.slice(0, -1).reduce((sum: number, it: any) =>
+      sum + (spacers?.get(qKey(it)) ?? 0), 0);
 
   const safePages = (pages.length ? pages : [{ coluna1: [], coluna2: [] }] as any) as any[];
   
@@ -181,12 +195,48 @@ export function ProvaLayout({
 
               <div className="questoes-container">
                 <div className="coluna coluna-1">
-                  {(p.coluna1 ?? []).map((it: any) => renderLayoutItem(it))}
+                  {(p.coluna1 ?? []).map((it: any, idx: number) => {
+                    const items = p.coluna1 ?? [];
+                    const key = qKey(it);
+                    const maxH = Math.max(0, p.col1Remaining ?? 0) + (committedSpacers?.get(key) ?? 0);
+                    return (
+                      <React.Fragment key={idx}>
+                        {renderLayoutItem(it)}
+                        {onSpacerChange && idx < items.length - 1 && (
+                          <SpacerHandle
+                            spacerKey={key}
+                            currentHeight={spacers?.get(key) ?? 0}
+                            maxHeight={maxH}
+                            onChange={onSpacerChange}
+                            onCommit={onSpacerCommit}
+                          />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
 
                 {columns === 2 && (
                   <div className="coluna coluna-2">
-                    {(p.coluna2 ?? []).map((it: any) => renderLayoutItem(it))}
+                    {(p.coluna2 ?? []).map((it: any, idx: number) => {
+                      const items = p.coluna2 ?? [];
+                      const key = qKey(it);
+                      const maxH = Math.max(0, p.col2Remaining ?? 0) + (committedSpacers?.get(key) ?? 0);
+                      return (
+                        <React.Fragment key={idx}>
+                          {renderLayoutItem(it)}
+                          {onSpacerChange && idx < items.length - 1 && (
+                            <SpacerHandle
+                              spacerKey={key}
+                              currentHeight={spacers?.get(key) ?? 0}
+                              maxHeight={maxH}
+                              onChange={onSpacerChange}
+                              onCommit={onSpacerCommit}
+                            />
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -195,7 +245,10 @@ export function ProvaLayout({
                 disciplina={provaConfig.disciplina}
                 currentPage={pageIndex + 1}
                 totalPages={safePages.length}
-                spacerHeight={p.remainingHeight ?? 0}
+                spacerHeight={Math.max(0, (p.remainingHeight ?? 0) - Math.max(
+                  colTotal(p.coluna1 ?? []),
+                  colTotal(p.coluna2 ?? [])
+                ))}
                 tipoAtual={tipoAtual}
                 numTipos={numTipos}
               />

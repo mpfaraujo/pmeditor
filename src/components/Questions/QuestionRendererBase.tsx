@@ -26,9 +26,13 @@ type Props = {
   };
   // Permutação de alternativas (tipos de prova)
   permutation?: OptionPermutation | null;
+  /** Larguras comprometidas vindas do pai (sobrepõe localStorage na renderização) */
+  imageWidthProp?: Record<string, number>;
+  /** Chamado no pointerup com (id, novaLargura) para acionar re-paginação */
+  onImageResizeCommit?: (id: string, width: number) => void;
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender, permutation }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, permutation, imageWidthProp, onImageResizeCommit }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -36,6 +40,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     id: string;
     startX: number;
     startW: number;
+    lastW: number;
   } | null>(null);
 
   const [imageAlignOverrides, setImageAlignOverrides] = React.useState<
@@ -420,7 +425,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
       // prova mode: resize + centralizar override (persistido via localStorage)
       const id = node.attrs?.id as string | undefined;
       const baseWidthPx = Number(node.attrs?.width ?? 0);
-      const widthPx = (id ? imageWidthOverrides[id] : undefined) ?? baseWidthPx;
+      const widthPx = (id ? (imageWidthProp?.[id] ?? imageWidthOverrides[id]) : undefined) ?? baseWidthPx;
 
       const baseAlign = node.attrs?.align as "left" | "center" | "right" | undefined;
       const overrideAlign = id ? imageAlignOverrides[id] : undefined;
@@ -454,11 +459,8 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
         if (!id) return;
         e.preventDefault();
         (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-        dragRef.current = {
-          id,
-          startX: e.clientX,
-          startW: widthPx || baseWidthPx || 0,
-        };
+        const startW = widthPx || baseWidthPx || 0;
+        dragRef.current = { id, startX: e.clientX, startW, lastW: startW };
       };
 
       const onPointerMove = (e: React.PointerEvent) => {
@@ -466,17 +468,20 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
         if (!d) return;
         const dx = e.clientX - d.startX;
         const next = Math.max(40, Math.round(d.startW + dx));
+        d.lastW = next;
         setImageWidthOverrides((prev) =>
           prev[d.id] === next ? prev : { ...prev, [d.id]: next }
         );
       };
 
       const onPointerUp = (e: React.PointerEvent) => {
-        if (!dragRef.current) return;
+        const d = dragRef.current;
+        if (!d) return;
         dragRef.current = null;
         try {
           (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
         } catch {}
+        onImageResizeCommit?.(d.id, d.lastW);
       };
 
       return (

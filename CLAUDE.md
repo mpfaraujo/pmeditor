@@ -513,6 +513,8 @@ POST https://mpfaraujo.com.br/guardafiguras/api/upload.php
 
 7. **author no create.php:** O campo `author` e um objeto `{id, name}`. O PHP precisa fazer `json_encode()` antes de salvar no VARCHAR, senao vira "Array". Ja corrigido no `create.php`.
 
+8. **`position: relative` no `.prova-page` quebra medicao de paginacao:** As funcoes `calculateFirstPageCapacity` e `calculateOtherPageCapacity` em `pagination.ts` dependem de medir distancias entre elementos. Usam `getBoundingClientRect()` (coordenadas de viewport), que e robusto a qualquer CSS de posicionamento. Nao usar `offsetTop` pois muda conforme o `offsetParent` do elemento.
+
 ## Planos futuros
 
 - [ ] Sistema de curtidas e flags para questoes (plano em `C:\Users\mpfar\.claude\plans\keen-leaping-lampson.md`)

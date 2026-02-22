@@ -91,6 +91,7 @@ export function ReorderModal({
 }: ReorderModalProps) {
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [labelMap, setLabelMap] = useState<Map<string, string>>(new Map());
+  const [reorderEnabled, setReorderEnabled] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -173,6 +174,21 @@ export function ReorderModal({
           )}
         </DialogHeader>
 
+        {/* Toggle de reordenação manual */}
+        <label className="flex items-start gap-2 text-[11px] cursor-pointer select-none py-1">
+          <input
+            type="checkbox"
+            className="mt-0.5 shrink-0"
+            checked={reorderEnabled}
+            onChange={e => setReorderEnabled(e.target.checked)}
+          />
+          <span className={reorderEnabled ? "text-amber-700" : "text-gray-500"}>
+            {reorderEnabled
+              ? "⚠️ Reordenação manual ativada — pode quebrar o layout automático. Use com cuidado."
+              : "Ativar reordenação manual (por conta e risco do professor)"}
+          </span>
+        </label>
+
         <div className="flex-1 overflow-y-auto space-y-1 pr-1 min-h-0">
           {blocks.length === 0 ? (
             <div className="text-xs text-gray-400 italic p-4 text-center">
@@ -193,10 +209,10 @@ export function ReorderModal({
                     className="flex items-center gap-1 px-2 py-1 border rounded text-[11px] bg-white hover:bg-gray-50"
                   >
                     <div className="flex gap-0.5">
-                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveUp(index)} disabled={index === 0} title="Mover para cima">
+                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveUp(index)} disabled={!reorderEnabled || index === 0} title="Mover para cima">
                         <ChevronUp className="h-3 w-3" />
                       </Button>
-                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveDown(index)} disabled={index === blocks.length - 1} title="Mover para baixo">
+                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveDown(index)} disabled={!reorderEnabled || index === blocks.length - 1} title="Mover para baixo">
                         <ChevronDown className="h-3 w-3" />
                       </Button>
                     </div>
@@ -226,10 +242,10 @@ export function ReorderModal({
                   {/* Cabeçalho do grupo */}
                   <div className="flex items-center gap-1 px-2 py-1 text-[11px]">
                     <div className="flex gap-0.5">
-                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveUp(index)} disabled={index === 0} title="Mover grupo para cima">
+                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveUp(index)} disabled={!reorderEnabled || index === 0} title="Mover grupo para cima">
                         <ChevronUp className="h-3 w-3" />
                       </Button>
-                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveDown(index)} disabled={index === blocks.length - 1} title="Mover grupo para baixo">
+                      <Button variant="outline" size="icon" className="h-5 w-5" onClick={() => moveDown(index)} disabled={!reorderEnabled || index === blocks.length - 1} title="Mover grupo para baixo">
                         <ChevronDown className="h-3 w-3" />
                       </Button>
                     </div>

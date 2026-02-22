@@ -19,8 +19,10 @@ type Props = {
     options?: number[];
   };
   permutation?: OptionPermutation | null;
+  imageWidthProp?: Record<string, number>;
+  onImageResizeCommit?: (id: string, width: number) => void;
 };
 
-export default function QuestionRendererProva({ content, fragmentRender, permutation }: Props) {
-  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} permutation={permutation} />;
+export default function QuestionRendererProva({ content, fragmentRender, permutation, imageWidthProp, onImageResizeCommit }: Props) {
+  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={imageWidthProp} onImageResizeCommit={onImageResizeCommit} />;
 }

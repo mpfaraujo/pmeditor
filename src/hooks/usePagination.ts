@@ -143,6 +143,7 @@ export function usePagination({
   const columns = config.columns;
   const optimizeLayout = config.optimizeLayout ?? false;
   const setGroups = config.setGroups ?? [];
+  const spacers = config.spacers;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -194,6 +195,7 @@ export function usePagination({
             columns,
             optimizeLayout,
             setGroups,
+            spacers,
           },
           {
             firstPageRef: measureFirstPageRef.current,

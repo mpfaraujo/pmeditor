@@ -15,6 +15,7 @@ import {
   CheckSquare,
   Square,
   Save,
+  RefreshCw,
 } from "lucide-react";
 import { LogoPicker } from "@/components/editor/LogoPicker";
 import { ReorderModal } from "@/components/prova/ReorderModal";
@@ -38,7 +39,7 @@ import {
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
-const SAFETY_PX = 120;
+const SAFETY_PX = 100;
 
 type Alt = "A" | "B" | "C" | "D" | "E";
 
@@ -194,6 +195,38 @@ export default function MontarProvaPage() {
   const [tiposGerados, setTiposGerados] = useState<ProvaTypeConfig[] | null>(null);
   const [tipoAtual, setTipoAtual] = useState<number>(1);
 
+  // Spacers arrastáveis entre questões
+  // spacers: visual em tempo real (pointermove)
+  // committedSpacers: dispara re-paginação (pointerup)
+  const [spacers, setSpacers] = useState<Map<string, number>>(new Map());
+  const [committedSpacers, setCommittedSpacers] = useState<Map<string, number>>(new Map());
+
+  const handleSpacerChange = (key: string, h: number) =>
+    setSpacers(prev => new Map(prev).set(key, h));
+
+  const handleSpacerCommit = (key: string, h: number) =>
+    setCommittedSpacers(prev => new Map(prev).set(key, h));
+
+  // Serializar committedSpacers para dependências do usePagination
+  const committedSpacersKey = useMemo(() =>
+    JSON.stringify([...committedSpacers.entries()].sort()),
+    [committedSpacers]
+  );
+
+  // Larguras de imagens comprometidas (dispara re-paginação no pointerup)
+  const [committedImageWidths, setCommittedImageWidths] = useState<Record<string, number>>({});
+
+  const handleImageResizeCommit = (id: string, width: number) =>
+    setCommittedImageWidths(prev => ({ ...prev, [id]: width }));
+
+  const committedImageWidthsKey = useMemo(() =>
+    JSON.stringify(committedImageWidths),
+    [committedImageWidths]
+  );
+
+  // Versão manual de re-paginação (imagem resize não re-pagina automaticamente)
+  const [repaginateVersion, setRepaginateVersion] = useState(0);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -339,6 +372,17 @@ export default function MontarProvaPage() {
     return out as QuestionData[];
   }, [orderedQuestions, selections]);
 
+  // Reset dos spacers ao mudar o conjunto de questões (IDs mudam → spacers zerados)
+  const expandedQuestionsKey = useMemo(() =>
+    expandedQuestions.map((q: any) => q.metadata?.id ?? "").join(","),
+    [expandedQuestions]
+  );
+  useEffect(() => {
+    setSpacers(new Map());
+    setCommittedSpacers(new Map());
+    setCommittedImageWidths({});
+  }, [expandedQuestionsKey]);
+
   // Monta grupos explícitos de set (base + itens) pelo parentId
   const setGroups = useMemo(() => {
     const baseMap = new Map<string, number>(); // parentId → baseIndex
@@ -372,6 +416,7 @@ const { pages, refs } = usePagination({
     columns,
     optimizeLayout: !manualOrder,
     setGroups,
+    spacers: committedSpacers,
   },
   questionCount: expandedQuestions.length,
   dependencies: [
@@ -383,9 +428,10 @@ const { pages, refs } = usePagination({
     (provaConfig as any).questionHeaderVariant,
     manualOrder,
     setGroups,
+    committedSpacersKey,
+    repaginateVersion,
   ],
 });
-
 
   // Mapa: índice original (q) → número impresso (1-based, ignorando setBase)
   // Baseado na ordem real de aparição nos pages (após bin-packing)
@@ -537,7 +583,7 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} />
     </div>
   </div>
 ) : (
@@ -566,7 +612,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} />
             </div>
           </div>
         )}
@@ -684,6 +730,18 @@ const { pages, refs } = usePagination({
               )}
             </div>
 
+            {Object.keys(committedImageWidths).length > 0 && (
+              <Button
+                variant="outline"
+                onClick={() => setRepaginateVersion(v => v + 1)}
+                className="bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700"
+                title="Re-paginar com os tamanhos de imagem atuais"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Repaginar
+              </Button>
+            )}
+
             <Button onClick={handlePrint} className="btn-primary">
               <Printer className="h-4 w-4 mr-2" />
               Imprimir
@@ -703,6 +761,10 @@ const { pages, refs } = usePagination({
           tipoAtual={tipoAtual}
           numTipos={tiposGerados ? numTipos : undefined}
           permutations={tiposGerados?.[tipoAtual - 1]?.permutations ?? null}
+          spacers={spacers}
+          committedSpacers={committedSpacers}
+          onSpacerChange={handleSpacerChange}
+          onSpacerCommit={handleSpacerCommit}
         />
 
         {provaConfig.showGabarito && totalQuestoes > 0 && (
