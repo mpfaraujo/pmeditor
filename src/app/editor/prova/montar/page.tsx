@@ -27,7 +27,7 @@ import { ProvaLayout } from "@/components/prova/layouts/ProvaLayout";
 import { ExerciseLayout } from "@/components/prova/layouts/ExerciseLayout";
 import { QuestionData, ColumnLayout } from "@/types/layout";
 import Gabarito from "@/components/prova/Gabarito";
-import GabaritoDiscursivo from "@/components/prova/GabaritoDiscursivo";
+import GabaritoDiscursivoPages from "@/components/prova/GabaritoDiscursivoPages";
 import {
   gerarTiposDeProva,
   aplicarPermutacaoGabarito,
@@ -780,20 +780,22 @@ const { pages, refs } = usePagination({
         />
 
         {provaConfig.showGabarito && totalQuestoes > 0 && (
-          <div className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
-            <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
-              <Gabarito
-                totalQuestoes={totalQuestoes}
-                respostas={respostasPermutadas}
-                titulo={tiposGerados ? `GABARITO - TIPO ${tipoAtual}` : "QUESTÕES / RESPOSTAS"}
-              />
-              {Object.keys(respostasDiscursivas).length > 0 && (
-                <div className="mt-8">
-                  <GabaritoDiscursivo respostas={respostasDiscursivas} />
+          <>
+            {Object.keys(respostasPermutadas).length > 0 && (
+              <div className="a4-sheet bg-gray-100 print:bg-white py-20 print:py-0">
+                <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
+                  <Gabarito
+                    totalQuestoes={totalQuestoes}
+                    respostas={respostasPermutadas}
+                    titulo={tiposGerados ? `GABARITO - TIPO ${tipoAtual}` : "QUESTÕES / RESPOSTAS"}
+                  />
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            )}
+            {Object.keys(respostasDiscursivas).length > 0 && (
+              <GabaritoDiscursivoPages respostas={respostasDiscursivas} />
+            )}
+          </>
         )}
 
         <LogoPicker
