@@ -30,9 +30,13 @@ type Props = {
   imageWidthProp?: Record<string, number>;
   /** Chamado no pointerup com (id, novaLargura) para acionar re-paginação */
   onImageResizeCommit?: (id: string, width: number) => void;
+  /** Renderiza alternativas em linha (estilo oneparchoices do LaTeX) */
+  inlineOptions?: boolean;
+  /** Chamado ao clicar no botão de alternar modo de opções */
+  onToggleInlineOptions?: () => void;
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender, permutation, imageWidthProp, onImageResizeCommit }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, permutation, imageWidthProp, onImageResizeCommit, inlineOptions, onToggleInlineOptions }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -275,7 +279,37 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
         )}
 
         {options.length > 0 && (
-          <div className="question-options mt-3 space-y-1">{options}</div>
+          <div className="relative">
+            {mode === "prova" && onToggleInlineOptions && (
+              <button
+                type="button"
+                className="no-print"
+                onClick={onToggleInlineOptions}
+                title={inlineOptions ? "Voltar para modo coluna" : "Modo linha (oneparchoices)"}
+                style={{
+                  position: "absolute",
+                  right: -6,
+                  top: -2,
+                  width: 18,
+                  height: 18,
+                  fontSize: 11,
+                  lineHeight: "18px",
+                  textAlign: "center",
+                  borderRadius: 4,
+                  background: inlineOptions ? "rgba(59,130,246,0.15)" : "rgba(0,0,0,0.08)",
+                  cursor: "pointer",
+                  border: "none",
+                  userSelect: "none",
+                  color: inlineOptions ? "#2563eb" : undefined,
+                }}
+              >
+                {inlineOptions ? "↕" : "↔"}
+              </button>
+            )}
+            <div className={`question-options mt-3${inlineOptions ? " flex flex-row flex-wrap justify-between items-baseline" : " space-y-1"}`}>
+              {options}
+            </div>
+          </div>
         )}
       </div>
     );
@@ -355,9 +389,13 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
       options.map((opt, i) => {
         const letter = opt.attrs?.letter ?? "?";
         return (
-          <div key={`${keyPrefix}-opt-${i}`} className="flex items-start gap-2">
+          <div key={`${keyPrefix}-opt-${i}`} className={inlineOptions ? "flex items-baseline gap-1" : "flex items-start gap-2"}>
             <span>({letter})</span>
-            <div className="flex-1">{renderInline(opt)}</div>
+            {inlineOptions ? (
+              <span>{renderInline(opt)}</span>
+            ) : (
+              <div className="flex-1">{renderInline(opt)}</div>
+            )}
           </div>
         );
       })

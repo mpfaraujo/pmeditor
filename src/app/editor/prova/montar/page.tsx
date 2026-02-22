@@ -227,6 +227,17 @@ export default function MontarProvaPage() {
   // Versão manual de re-paginação (imagem resize não re-pagina automaticamente)
   const [repaginateVersion, setRepaginateVersion] = useState(0);
 
+  // Questões com opções em linha (oneparchoices)
+  const [inlineOptionsSet, setInlineOptionsSet] = useState<Set<string>>(new Set());
+
+  const handleToggleInlineOptions = (id: string) =>
+    setInlineOptionsSet(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -381,6 +392,7 @@ export default function MontarProvaPage() {
     setSpacers(new Map());
     setCommittedSpacers(new Map());
     setCommittedImageWidths({});
+    setInlineOptionsSet(new Set());
   }, [expandedQuestionsKey]);
 
   // Monta grupos explícitos de set (base + itens) pelo parentId
@@ -583,7 +595,7 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
     </div>
   </div>
 ) : (
@@ -612,7 +624,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
             </div>
           </div>
         )}
@@ -730,7 +742,7 @@ const { pages, refs } = usePagination({
               )}
             </div>
 
-            {Object.keys(committedImageWidths).length > 0 && (
+            {(Object.keys(committedImageWidths).length > 0 || inlineOptionsSet.size > 0) && (
               <Button
                 variant="outline"
                 onClick={() => setRepaginateVersion(v => v + 1)}
