@@ -4,6 +4,7 @@ import type {
   Difficulty,
   AnswerKey,
 } from "@/components/editor/QuestionMetaBar";
+import { normalizeAssunto } from "@/data/assuntos";
 
 /** Mapa de nomes aceitos no YAML → QuestionType interno */
 const TIPO_MAP: Record<string, QuestionType> = {
@@ -116,7 +117,7 @@ export function parseYamlMeta(
       }
       case "assunto": {
         const a = val.replace(/^["']|["']$/g, "").trim();
-        if (a) result.assunto = a;
+        if (a) result.assunto = normalizeAssunto(a) || a;
         break;
       }
       case "gabarito": {

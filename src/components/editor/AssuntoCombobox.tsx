@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { ASSUNTOS_CANONICOS } from "@/data/assuntos";
+import { ASSUNTOS_CANONICOS, normalizeAssunto } from "@/data/assuntos";
 import { cn } from "@/lib/utils";
 
 interface AssuntoComboboxProps {
@@ -56,6 +56,15 @@ export function AssuntoCombobox({
     if (!open) setOpen(true);
   };
 
+  const handleBlur = () => {
+    const normalized = normalizeAssunto(inputValue);
+    if (normalized && normalized !== inputValue) {
+      setInputValue(normalized);
+      onChange(normalized);
+    }
+    setOpen(false);
+  };
+
   return (
     <div ref={wrapperRef} className="relative">
       <input
@@ -63,6 +72,7 @@ export function AssuntoCombobox({
         type="text"
         value={inputValue}
         onChange={handleInputChange}
+        onBlur={handleBlur}
         onFocus={() => setOpen(true)}
         placeholder={placeholder}
         className={cn(

@@ -1,175 +1,237 @@
 [
   {
-    "latex": "\\question Em uma urna, há bolas amarelas, brancas e vermelhas. Sabe-se que:\n\nI. A probabilidade de retirar uma bola vermelha dessa urna é o dobro da probabilidade de retirar uma bola amarela.\n\nII. Se forem retiradas 4 bolas amarelas dessa urna, a probabilidade de retirar uma bola vermelha passa a ser $\\dfrac{1}{2}$.\n\nIII. Se forem retiradas 12 bolas vermelhas dessa urna, a probabilidade de retirar uma bola branca passa a ser $\\dfrac{1}{2}$.\n\nA quantidade de bolas brancas na urna é\n\n\\begin{choices}\n\\choice 8\n\\choice 10\n\\correctchoice 12\n\\choice 14\n\\choice 16\n\\end{choices}",
+    "latex": "\\question De 1869 até hoje, ocorreram as seguintes mudanças de moeda no Brasil: (1) em 1942, foi criado o cruzeiro, cada cruzeiro valendo mil réis; (2) em 1967, foi criado o cruzeiro novo, cada cruzeiro novo valendo mil cruzeiros; em 1970, o cruzeiro novo voltou a se chamar apenas cruzeiro; (3) em 1986, foi criado o cruzado, cada cruzado valendo mil cruzeiros; (4) em 1989, foi criado o cruzado novo, cada um valendo mil cruzados; em 1990, o cruzado novo passou a se chamar novamente cruzeiro; (5) em 1993, foi criado o cruzeiro real, cada um valendo mil cruzeiros; (6) em 1994, foi criado o real, cada um valendo 2.750 cruzeiros reais.\n\nQuando morreu, em 1869, Brás Cubas possuía 300 contos. Se esse valor tivesse ficado até hoje em uma conta bancária, sem receber juros e sem pagar taxas, e se, a cada mudança de moeda, o depósito tivesse sido normalmente convertido para a nova moeda, o saldo hipotético dessa conta seria, aproximadamente, de um décimo de\n\n\\begin{choices}\n    \\choice real.\n    \\choice milésimo de real.\n    \\choice milionésimo de real.\n    \\choice bilionésimo de real.\n    \\choice trilionésimo de real.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Probabilidade",
+      "assunto": "Problemas sobre as 4 Operações",
       "gabarito": "C",
       "tags": [
-        "probabilidade",
-        "urna",
-        "sistema_de_equações"
+        "moeda",
+        "conversão",
+        "Brás Cubas",
+        "histórico"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "24"
+      "ano": 2016,
+      "numero": "01"
     }
   },
   {
-    "latex": "\\question Sejam $f:\\mathbb{R}\\to\\mathbb{R}$ e $g:\\mathbb{R}\\to\\mathbb{R}$ definidas por\n\\[\nf(x)=\\frac{1}{5}x \\quad \\text{e} \\quad g(x)=10x.\n\\]\nO gráfico da função composta $g\\circ f$ é:\n\n\\begin{choices}\n\\choice (A)\n\\choice (B)\n\\choice (C)\n\\correctchoice (D)\n\\choice (E)\n\\end{choices}",
+    "latex": "\\question Os pontos A, B e C são colineares, $AB=5$, $BC=2$ e B está entre A e C. Os pontos C e D pertencem a uma circunferência com centro em A. Traça-se uma reta $r$ perpendicular ao segmento $\\overline{BD}$ passando pelo seu ponto médio. Chama-se de P a interseção de $r$ com $\\overline{AD}$. Então, $AP+BP$ vale\n\n\\begin{choices}\n    \\choice 4\n    \\choice 5\n    \\choice 6\n    \\choice 7\n    \\choice 8\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Função composta",
+      "assunto": "Geometria Plana",
       "gabarito": "D",
       "tags": [
-        "função_composta",
-        "gráfico",
-        "função_afim"
+        "pontos",
+        "colineares",
+        "circunferência",
+        "mediatriz",
+        "triângulo"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "25"
+      "ano": 2016,
+      "numero": "02"
     }
   },
   {
-    "latex": "\\question Doze pontos são assinalados sobre quatro segmentos de reta de forma que três pontos sobre três segmentos distintos nunca são colineares, como na figura.\n\nO número de triângulos distintos que podem ser desenhados com os vértices nos pontos assinalados é\n\n\\begin{choices}\n\\choice 200\n\\correctchoice 204\n\\choice 208\n\\choice 212\n\\choice 220\n\\end{choices}",
+    "latex": "\\question Um veículo viaja entre dois povoados da Serra da Mantiqueira, percorrendo a primeira terça parte do trajeto à velocidade média de $60~km/h$, a terça parte seguinte a $40~km/h$ e o restante do percurso a $20~km/h$. O valor que melhor aproxima a velocidade média do veículo nessa viagem, em $km/h$, é\n\n\\begin{choices}\n    \\choice 32,5\n    \\choice 35\n    \\choice 37,5\n    \\choice 40\n    \\choice 42,5\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
+      "dificuldade": "Fácil",
       "disciplina": "Matemática",
-      "assunto": "Contagem",
-      "gabarito": "B",
+      "assunto": "Médias",
+      "gabarito": "C",
       "tags": [
-        "triângulos",
-        "combinação",
-        "geometria_plana"
+        "velocidade média",
+        "trajetos",
+        "harmônica"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "26"
+      "ano": 2016,
+      "numero": "03"
     }
   },
   {
-    "latex": "\\question Dentre os candidatos que fizeram provas de matemática, português e inglês num concurso, 20 obtiveram nota mínima para aprovação nas três disciplinas. Além disso, sabe-se que:\n\nI. 14 não obtiveram nota mínima em matemática;\nII. 16 não obtiveram nota mínima em português;\nIII. 12 não obtiveram nota mínima em inglês;\nIV. 5 não obtiveram nota mínima em matemática e em português;\nV. 3 não obtiveram nota mínima em matemática e em inglês;\nVI. 7 não obtiveram nota mínima em português e em inglês;\nVII. 2 não obtiveram nota mínima em português, matemática e inglês.\n\nA quantidade de candidatos que participaram do concurso foi\n\n\\begin{choices}\n\\choice 44\n\\choice 46\n\\choice 47\n\\correctchoice 48\n\\choice 49\n\\end{choices}",
+    "latex": "\\question A igualdade correta para quaisquer $a$ e $b$, números reais maiores do que zero, é\n\n\\begin{choices}\n    \\choice $\\sqrt[3]{a^{3}+b^{3}}=a+b$\n    \\choice $\\frac{1}{a-\\sqrt{a^{2}+b^{2}}}=-\\frac{1}{b}$\n    \\choice $(\\sqrt{a}-\\sqrt{b})^{2}=a-b$\n    \\choice $\\frac{1}{a+b}=\\frac{1}{a}+\\frac{1}{b}$\n    \\choice $\\frac{a^{3}-b^{3}}{a^{2}+ab+b^{2}}=a-b$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D",
+    "gabarito": "E",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
+      "dificuldade": "Fácil",
       "disciplina": "Matemática",
-      "assunto": "Inclusão-exclusão",
-      "gabarito": "D",
+      "assunto": "Fatoração e Produtos Notáveis",
+      "gabarito": "E",
       "tags": [
-        "conjuntos",
-        "princípio_da_inclusão_exclusão"
+        "identidades",
+        "álgebra",
+        "raízes"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "27"
+      "ano": 2016,
+      "numero": "04"
     }
   },
   {
-    "latex": "\\question Sejam $D_f$ e $D_g$ os maiores subconjuntos de $\\mathbb{R}$ nos quais estão definidas, respectivamente, as funções reais\n\\[\nf(x)=\\frac{1}{\\ln x} \\quad \\text{e} \\quad g(x)=\\frac{1}{\\ln(1-x)}.\n\\]\nConsidere, ainda, $I_f$ e $I_g$ as imagens de $f$ e de $g$, respectivamente.\n\nNessas condições,\n\n\\begin{choices}\n\\choice $D_f=D_g$ e $I_f=I_g$\n\\choice tanto $D_f$ e $D_g$ quanto $I_f$ e $I_g$ diferem em apenas um ponto\n\\correctchoice $D_f$ e $D_g$ diferem em apenas um ponto, $I_f$ e $I_g$ diferem em mais de um ponto\n\\choice $D_f$ e $D_g$ diferem em mais de um ponto, $I_f$ e $I_g$ diferem em apenas um ponto\n\\choice tanto $D_f$ e $D_g$ quanto $I_f$ e $I_g$ diferem em mais de um ponto\n\\end{choices}",
+    "latex": "\\question Em um experimento probabilístico, Joana retirará aleatoriamente 2 bolas de uma caixa contendo bolas azuis e bolas vermelhas. Ao montar-se o experimento, colocam-se 6 bolas azuis na caixa. Quantas bolas vermelhas devem ser acrescentadas para que a probabilidade de Joana obter 2 azuis seja $1/3$?\n\n\\begin{choices}\n    \\choice 2\n    \\choice 4\n    \\choice 6\n    \\choice 8\n    \\choice 10\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Domínio e imagem",
+      "assunto": "Probabilidade Simples",
       "gabarito": "C",
       "tags": [
-        "função_logarítmica",
-        "domínio",
-        "imagem"
+        "bolas",
+        "caixa",
+        "retirada sem reposição"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "28"
+      "ano": 2016,
+      "numero": "05"
     }
   },
   {
-    "latex": "\\question Prolongando-se os lados de um octógono convexo $ABCDEFGH$, obtém-se um polígono estrelado, conforme a figura.\n\nA soma indicada vale\n\n\\begin{choices}\n\\choice $1800^\\circ$\n\\correctchoice $3600^\\circ$\n\\choice $5400^\\circ$\n\\choice $7200^\\circ$\n\\choice $9000^\\circ$\n\\end{choices}",
+    "latex": "\\question No plano cartesiano, um círculo de centro $P=(a,b)$ tangencia as retas de equações $y=x$ e $x=0$. Se P pertence à parábola de equação $y=x^{2}$ e $a>0$, a ordenada $b$ do ponto P é igual a\n\n\\begin{choices}\n    \\choice $2+2\\sqrt{2}$\n    \\choice $3+2\\sqrt{2}$\n    \\choice $4+2\\sqrt{2}$\n    \\choice $5+2\\sqrt{2}$\n    \\choice $6+2\\sqrt{2}$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
+      "dificuldade": "Difícil",
       "disciplina": "Matemática",
-      "assunto": "Geometria",
+      "assunto": "Geometria Analítica",
       "gabarito": "B",
       "tags": [
-        "ângulos",
-        "polígono_estrelado"
+        "círculo",
+        "tangência",
+        "parábola",
+        "plano cartesiano"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "29"
+      "ano": 2016,
+      "numero": "06"
     }
   },
   {
-    "latex": "\\question Admitindo que a linha pontilhada represente o gráfico da função $f(x)=a\\sin x$ e que a linha contínua represente o gráfico da função $g(x)=b\\sin(x+c)$, segue que\n\n\\begin{choices}\n\\correctchoice $0<a<1$ e $0<b<1$\n\\choice $a>1$ e $b<1$\n\\choice $a=1$ e $b>1$\n\\choice $0<a<1$ e $b>1$\n\\choice $0<a<1$ e $b=1$\n\\end{choices}",
+    "latex": "\\question Em uma classe com 14 alunos, 8 são mulheres e 6 são homens. A média das notas das mulheres no final do semestre ficou 1 ponto acima da média da classe. A soma das notas dos homens foi metade da soma das notas das mulheres. Então, a média das notas dos homens ficou mais próxima de\n\n\\begin{choices}\n    \\choice 4,3\n    \\choice 4,5\n    \\choice 4,7\n    \\choice 4,9\n    \\choice 5,1\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A",
+    "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Função trigonométrica",
-      "gabarito": "A",
+      "assunto": "Medidas de Tendência Central",
+      "gabarito": "C",
       "tags": [
-        "seno",
-        "parâmetro",
-        "gráfico"
+        "notas",
+        "média aritmética",
+        "alunos"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "30"
+      "ano": 2016,
+      "numero": "07"
     }
   },
   {
-    "latex": "\\question Maria quer comprar uma TV que está sendo vendida por R\\$ 1.500,00 à vista ou em 3 parcelas mensais sem juros de R\\$ 500,00. O banco oferece uma aplicação que rende 1\\% ao mês.\n\nSe Maria pagar a primeira parcela e aplicar o restante, conseguirá pagar as duas parcelas seguintes exatamente.\n\nQuanto Maria reservou para essa compra?\n\n\\begin{choices}\n\\choice 1.450,20\n\\choice 1.480,20\n\\choice 1.485,20\n\\choice 1.495,20\n\\correctchoice 1.490,20\n\\end{choices}",
+    "latex": "\\question No quadrilátero plano ABCD, os ângulos $A\\hat{B}C$ e $A\\hat{D}C$ são retos, $AB=AD=1$, $BC=CD=2$ e BD é uma diagonal. O cosseno do ângulo $B\\hat{C}D$ vale\n\n\\begin{choices}\n    \\choice $\\frac{\\sqrt{3}}{5}$\n    \\choice $\\frac{2}{5}$\n    \\choice $\\frac{3}{5}$\n    \\choice $\\frac{2\\sqrt{3}}{5}$\n    \\choice $\\frac{4}{5}$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "E",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Juros compostos",
+      "assunto": "Área das Figuras Planas",
       "gabarito": "E",
       "tags": [
-        "juros_compostos",
-        "aplicação_financeira"
+        "quadrilátero",
+        "ângulos retos",
+        "cosseno",
+        "diagonal"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
       "banca": "FUVEST",
-      "ano": 2018,
-      "numero": "31"
+      "ano": 2016,
+      "numero": "08"
+    }
+  },
+  {
+    "latex": "\\question Use as propriedades do logaritmo para simplificar a expressão\n\\[ S=\\frac{1}{2\\cdot \\log_{2}2016}+\\frac{1}{5\\cdot \\log_{3}2016}+\\frac{1}{10\\cdot \\log_{7}2016} \\]\nO valor de $S$ é\n\n\\begin{choices}\n    \\choice $1/2$\n    \\choice $1/10$\n    \\choice $1/5$\n    \\choice $1/3$\n    \\choice $1/7$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Logarítmica",
+      "gabarito": "B",
+      "tags": [
+        "simplificação",
+        "mudança de base"
+      ],
+      "fonte": "concurso",
+      "banca": "FUVEST",
+      "ano": 2016,
+      "numero": "09"
+    }
+  },
+  {
+    "latex": "\\question Cada aresta do tetraedro regular ABCD mede 10. Por um ponto P na aresta $\\overline{AC}$ passa o plano $\\alpha$ paralelo às arestas $\\overline{AB}$ e $\\overline{CD}$. Dado que $AP=3$, o quadrilátero determinado pelas interseções de $\\alpha$ com as arestas do tetraedro tem área igual a\n\n\\begin{choices}\n    \\choice 21\n    \\choice $\\frac{21\\sqrt{2}}{2}$\n    \\choice 30\n    \\choice $\\frac{30}{2}$\n    \\choice $\\frac{30\\sqrt{3}}{2}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Espacial",
+      "gabarito": "A",
+      "tags": [
+        "tetraedro regular",
+        "seção plana",
+        "área"
+      ],
+      "fonte": "concurso",
+      "banca": "FUVEST",
+      "ano": 2016,
+      "numero": "10"
+    }
+  },
+  {
+    "latex": "\\question Dispõe-se de 2 litros de uma solução aquosa de soda cáustica que apresenta pH 9. O volume de água, em litros, que deve ser adicionado a esses 2 litros para que a solução resultante apresente pH 8 é\n\n\\begin{choices}\n    \\choice 2\n    \\choice 18\n    \\choice 6\n    \\choice 10\n    \\choice 14\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Outros",
+      "gabarito": "B",
+      "tags": [
+        "pH",
+        "diluição",
+        "soda cáustica"
+      ],
+      "fonte": "concurso",
+      "banca": "FUVEST",
+      "ano": 2016,
+      "numero": "11"
     }
   }
 ]
