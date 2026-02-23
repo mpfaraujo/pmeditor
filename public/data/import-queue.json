@@ -1,51 +1,6 @@
 [
   {
-    "latex": "\\question De 1869 até hoje, ocorreram as seguintes mudanças de moeda no Brasil: (1) em 1942, foi criado o cruzeiro, cada cruzeiro valendo mil réis; (2) em 1967, foi criado o cruzeiro novo, cada cruzeiro novo valendo mil cruzeiros; em 1970, o cruzeiro novo voltou a se chamar apenas cruzeiro; (3) em 1986, foi criado o cruzado, cada cruzado valendo mil cruzeiros; (4) em 1989, foi criado o cruzado novo, cada um valendo mil cruzados; em 1990, o cruzado novo passou a se chamar novamente cruzeiro; (5) em 1993, foi criado o cruzeiro real, cada um valendo mil cruzeiros; (6) em 1994, foi criado o real, cada um valendo 2.750 cruzeiros reais.\n\nQuando morreu, em 1869, Brás Cubas possuía 300 contos. Se esse valor tivesse ficado até hoje em uma conta bancária, sem receber juros e sem pagar taxas, e se, a cada mudança de moeda, o depósito tivesse sido normalmente convertido para a nova moeda, o saldo hipotético dessa conta seria, aproximadamente, de um décimo de\n\n\\begin{choices}\n    \\choice real.\n    \\choice milésimo de real.\n    \\choice milionésimo de real.\n    \\choice bilionésimo de real.\n    \\choice trilionésimo de real.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
-      "gabarito": "C",
-      "tags": [
-        "moeda",
-        "conversão",
-        "Brás Cubas",
-        "histórico"
-      ],
-      "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "01"
-    }
-  },
-  {
-    "latex": "\\question Os pontos A, B e C são colineares, $AB=5$, $BC=2$ e B está entre A e C. Os pontos C e D pertencem a uma circunferência com centro em A. Traça-se uma reta $r$ perpendicular ao segmento $\\overline{BD}$ passando pelo seu ponto médio. Chama-se de P a interseção de $r$ com $\\overline{AD}$. Então, $AP+BP$ vale\n\n\\begin{choices}\n    \\choice 4\n    \\choice 5\n    \\choice 6\n    \\choice 7\n    \\choice 8\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Plana",
-      "gabarito": "D",
-      "tags": [
-        "pontos",
-        "colineares",
-        "circunferência",
-        "mediatriz",
-        "triângulo"
-      ],
-      "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "02"
-    }
-  },
-  {
-    "latex": "\\question Um veículo viaja entre dois povoados da Serra da Mantiqueira, percorrendo a primeira terça parte do trajeto à velocidade média de $60~km/h$, a terça parte seguinte a $40~km/h$ e o restante do percurso a $20~km/h$. O valor que melhor aproxima a velocidade média do veículo nessa viagem, em $km/h$, é\n\n\\begin{choices}\n    \\choice 32,5\n    \\choice 35\n    \\choice 37,5\n    \\choice 40\n    \\choice 42,5\n\\end{choices}",
+    "latex": "\\question Observe no gráfico a distribuição de frequências das notas de matemática de 20 alunos de uma turma.\n\n\nA média aritmética das notas de matemática de todos os alunos dessa turma é:\n\\begin{choices}\n    \\choice 6,2\n    \\choice 6,4\n    \\choice 6,6\n    \\choice 6,8\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
@@ -55,183 +10,147 @@
       "assunto": "Médias",
       "gabarito": "C",
       "tags": [
-        "velocidade média",
-        "trajetos",
-        "harmônica"
+        "gráfico",
+        "estatística",
+        "notas",
+        "frequência"
       ],
       "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "03"
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "28"
     }
   },
   {
-    "latex": "\\question A igualdade correta para quaisquer $a$ e $b$, números reais maiores do que zero, é\n\n\\begin{choices}\n    \\choice $\\sqrt[3]{a^{3}+b^{3}}=a+b$\n    \\choice $\\frac{1}{a-\\sqrt{a^{2}+b^{2}}}=-\\frac{1}{b}$\n    \\choice $(\\sqrt{a}-\\sqrt{b})^{2}=a-b$\n    \\choice $\\frac{1}{a+b}=\\frac{1}{a}+\\frac{1}{b}$\n    \\choice $\\frac{a^{3}-b^{3}}{a^{2}+ab+b^{2}}=a-b$\n\\end{choices}",
+    "latex": "\\question A parábola representada a seguir intersecta os eixos coordenados nos pontos $A(1,0),$ $B(-1,0)$ e $C(0,-1)$.\n\n\nEssa parábola é o gráfico da função quadrática f definida pela seguinte sentença:\n\\begin{choices}\n    \\choice $f(x)=x^{2}-1$\n    \\choice $f(x)=x^{2}+1$\n    \\choice $f(x)=-x^{2}-1$\n    \\choice $f(x)=-x^{2}+1$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E",
+    "gabarito": "A",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Fácil",
       "disciplina": "Matemática",
-      "assunto": "Fatoração e Produtos Notáveis",
-      "gabarito": "E",
+      "assunto": "Função Quadrática",
+      "gabarito": "A",
       "tags": [
-        "identidades",
-        "álgebra",
-        "raízes"
-      ],
-      "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "04"
-    }
-  },
-  {
-    "latex": "\\question Em um experimento probabilístico, Joana retirará aleatoriamente 2 bolas de uma caixa contendo bolas azuis e bolas vermelhas. Ao montar-se o experimento, colocam-se 6 bolas azuis na caixa. Quantas bolas vermelhas devem ser acrescentadas para que a probabilidade de Joana obter 2 azuis seja $1/3$?\n\n\\begin{choices}\n    \\choice 2\n    \\choice 4\n    \\choice 6\n    \\choice 8\n    \\choice 10\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Simples",
-      "gabarito": "C",
-      "tags": [
-        "bolas",
-        "caixa",
-        "retirada sem reposição"
-      ],
-      "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "05"
-    }
-  },
-  {
-    "latex": "\\question No plano cartesiano, um círculo de centro $P=(a,b)$ tangencia as retas de equações $y=x$ e $x=0$. Se P pertence à parábola de equação $y=x^{2}$ e $a>0$, a ordenada $b$ do ponto P é igual a\n\n\\begin{choices}\n    \\choice $2+2\\sqrt{2}$\n    \\choice $3+2\\sqrt{2}$\n    \\choice $4+2\\sqrt{2}$\n    \\choice $5+2\\sqrt{2}$\n    \\choice $6+2\\sqrt{2}$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Analítica",
-      "gabarito": "B",
-      "tags": [
-        "círculo",
-        "tangência",
         "parábola",
-        "plano cartesiano"
+        "eixos coordenados",
+        "pontos de interseção",
+        "gráfico"
       ],
       "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "06"
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "29"
     }
   },
   {
-    "latex": "\\question Em uma classe com 14 alunos, 8 são mulheres e 6 são homens. A média das notas das mulheres no final do semestre ficou 1 ponto acima da média da classe. A soma das notas dos homens foi metade da soma das notas das mulheres. Então, a média das notas dos homens ficou mais próxima de\n\n\\begin{choices}\n    \\choice 4,3\n    \\choice 4,5\n    \\choice 4,7\n    \\choice 4,9\n    \\choice 5,1\n\\end{choices}",
+    "latex": "\\question Um lojista comprou 625 camisas e vendeu cada uma delas por x reais. O custo de sua compra foi igual ao valor exato da venda de 500 camisas.\nCom a venda de todas as camisas, o percentual de lucro obtido pelo lojista, em relação ao custo, foi:\n\\begin{choices}\n    \\choice 15\\%\n    \\choice 20\\%\n    \\choice 25\\%\n    \\choice 30\\%\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Medidas de Tendência Central",
+      "assunto": "Porcentagem",
       "gabarito": "C",
       "tags": [
-        "notas",
-        "média aritmética",
-        "alunos"
+        "lucro",
+        "custo",
+        "venda",
+        "lojista"
       ],
       "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "07"
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "30"
     }
   },
   {
-    "latex": "\\question No quadrilátero plano ABCD, os ângulos $A\\hat{B}C$ e $A\\hat{D}C$ são retos, $AB=AD=1$, $BC=CD=2$ e BD é uma diagonal. O cosseno do ângulo $B\\hat{C}D$ vale\n\n\\begin{choices}\n    \\choice $\\frac{\\sqrt{3}}{5}$\n    \\choice $\\frac{2}{5}$\n    \\choice $\\frac{3}{5}$\n    \\choice $\\frac{2\\sqrt{3}}{5}$\n    \\choice $\\frac{4}{5}$\n\\end{choices}",
+    "latex": "\\question Considere o seno e o cosseno de um ângulo $\\alpha$ do segundo quadrante do círculo trigonométrico representado a seguir.\n\n\nSe sen $\\alpha = \\frac{3}{4}$, o valor de cos $\\alpha$ é:\n\\begin{choices}\n    \\choice $\\frac{\\sqrt{7}}{4}$\n    \\choice $\\frac{1}{4}$\n    \\choice $-\\frac{\\sqrt{7}}{4}$\n    \\choice $-\\frac{1}{4}$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Trigonometria",
+      "gabarito": "C",
+      "tags": [
+        "seno",
+        "cosseno",
+        "círculo trigonométrico",
+        "segundo quadrante"
+      ],
+      "fonte": "concurso",
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "31"
+    }
+  },
+  {
+    "latex": "\\question Observe na figura o retângulo PQRS com lados $\\overline{PQ}=8$ cm e $\\overline{PS}=3$ cm. O ponto T é a interseção do lado RS com o segmento PU, sendo $\\overline{TS}=5$ cm. O ponto U, que define o triângulo RUT, pertence à reta QR.\n\n\nA área do triângulo RUT, em $cm^{2}$, é igual a:\n\\begin{choices}\n    \\choice $\\frac{27}{10}$\n    \\choice $\\frac{25}{7}$\n    \\choice $\\frac{13}{10}$\n    \\choice $\\frac{11}{7}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
       "disciplina": "Matemática",
       "assunto": "Área das Figuras Planas",
-      "gabarito": "E",
-      "tags": [
-        "quadrilátero",
-        "ângulos retos",
-        "cosseno",
-        "diagonal"
-      ],
-      "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "08"
-    }
-  },
-  {
-    "latex": "\\question Use as propriedades do logaritmo para simplificar a expressão\n\\[ S=\\frac{1}{2\\cdot \\log_{2}2016}+\\frac{1}{5\\cdot \\log_{3}2016}+\\frac{1}{10\\cdot \\log_{7}2016} \\]\nO valor de $S$ é\n\n\\begin{choices}\n    \\choice $1/2$\n    \\choice $1/10$\n    \\choice $1/5$\n    \\choice $1/3$\n    \\choice $1/7$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Logarítmica",
-      "gabarito": "B",
-      "tags": [
-        "simplificação",
-        "mudança de base"
-      ],
-      "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "09"
-    }
-  },
-  {
-    "latex": "\\question Cada aresta do tetraedro regular ABCD mede 10. Por um ponto P na aresta $\\overline{AC}$ passa o plano $\\alpha$ paralelo às arestas $\\overline{AB}$ e $\\overline{CD}$. Dado que $AP=3$, o quadrilátero determinado pelas interseções de $\\alpha$ com as arestas do tetraedro tem área igual a\n\n\\begin{choices}\n    \\choice 21\n    \\choice $\\frac{21\\sqrt{2}}{2}$\n    \\choice 30\n    \\choice $\\frac{30}{2}$\n    \\choice $\\frac{30\\sqrt{3}}{2}$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Espacial",
       "gabarito": "A",
       "tags": [
-        "tetraedro regular",
-        "seção plana",
-        "área"
+        "retângulo",
+        "triângulo",
+        "área",
+        "geometria plana"
       ],
       "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "10"
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "32"
     }
   },
   {
-    "latex": "\\question Dispõe-se de 2 litros de uma solução aquosa de soda cáustica que apresenta pH 9. O volume de água, em litros, que deve ser adicionado a esses 2 litros para que a solução resultante apresente pH 8 é\n\n\\begin{choices}\n    \\choice 2\n    \\choice 18\n    \\choice 6\n    \\choice 10\n    \\choice 14\n\\end{choices}",
+    "latex": "\\question O tetraedro ABCD tem altura AD e base ABC inscrita em um círculo de diâmetro AB, conforme mostra a ilustração. Sabe-se que todo triângulo inscrito em um círculo, que tem um dos lados igual ao diâmetro, é um triângulo retângulo.\n\n\nConsidere que $\\overline{AC}=6$ cm, $\\overline{BC}=8$ cm e $\\overline{BD}=10\\sqrt{2}$.\nO volume desse tetraedro, em $cm^{3}$, é igual a:\n\\begin{choices}\n    \\choice 240\n    \\choice 120\n    \\choice 90\n    \\choice 80\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Outros",
-      "gabarito": "B",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Espacial",
+      "gabarito": "D",
       "tags": [
-        "pH",
-        "diluição",
-        "soda cáustica"
+        "tetraedro",
+        "volume",
+        "triângulo retângulo",
+        "círculo inscrito"
       ],
       "fonte": "concurso",
-      "banca": "FUVEST",
-      "ano": 2016,
-      "numero": "11"
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "33"
+    }
+  },
+  {
+    "latex": "\\question Em um grupo de 40 pessoas adultas, 18 têm mais de 50 anos e 25 têm curso superior. Dentre aquelas com mais de 50, há 8 que não têm curso superior.\nSe uma pessoa escolhida ao acaso tem curso superior, a probabilidade de ela ter mais de 50 anos é:\n\\begin{choices}\n    \\choice $\\frac{3}{4}$\n    \\choice $\\frac{1}{4}$\n    \\choice $\\frac{3}{5}$\n    \\choice $\\frac{2}{5}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Probabilidade Condicional",
+      "gabarito": "D",
+      "tags": [
+        "curso superior",
+        "idade",
+        "probabilidade",
+        "grupo de pessoas"
+      ],
+      "fonte": "concurso",
+      "banca": "UERJ",
+      "ano": 2025,
+      "numero": "34"
     }
   }
 ]

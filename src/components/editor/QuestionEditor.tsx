@@ -25,7 +25,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
-import { createQuestion, proposeQuestion } from "@/lib/questions";
+import { createQuestion, proposeQuestion, updateQuestion } from "@/lib/questions";
 import { useAuth } from "@/contexts/AuthContext";
 import "../../app/prosemirror.css";
 
@@ -394,7 +394,7 @@ function findAllQuestionItems(state: any): { pos: number; answerKey: any | null 
 
 export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: QuestionEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
-  const { user, isLoggedIn, defaultDisciplina } = useAuth();
+  const { user, isLoggedIn, defaultDisciplina, isAdmin } = useAuth();
   const [changeDescription, setChangeDescription] = useState("");
   const [changeDescriptionModal, setChangeDescriptionModal] = useState<{
     open: boolean;
@@ -591,8 +591,19 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
       if (!modal) window.alert("Salvo.");
     } catch (e: any) {
       if (e?.status === 409) {
+        if (isAdmin) {
+          // Admin sobrescreve a base diretamente, sem precisar descrever mudança
+          try {
+            await updateQuestion(payload);
+            setMeta(payload.metadata);
+            onSaved?.({ questionId: meta.id, kind: "base" });
+            if (!modal) window.alert("Salvo.");
+          } catch {
+            if (!modal) window.alert("Erro ao salvar.");
+          }
+          return;
+        }
         // Base imutável - precisa criar variante
-        // Abrir modal pedindo descrição da mudança
         setChangeDescriptionModal({ open: true, payload });
         return;
       }

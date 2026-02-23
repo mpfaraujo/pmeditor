@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -8,9 +8,11 @@ import {
   getQuestionVariants,
   deleteQuestion,
   deleteVariant,
+  deleteVariants,
   promoteVariant,
   QuestionVersion,
 } from "@/lib/questions";
+import { Checkbox } from "@/components/ui/checkbox";
 import QuestionCard from "@/components/Questions/QuestionCard";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
 import { Button } from "@/components/ui/button";
@@ -48,6 +50,20 @@ type QuestionItem = {
   content: any;
 };
 
+function norm(s: string | undefined | null): string {
+  return (s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function dedupeByNorm(values: (string | undefined | null)[]): string[] {
+  const seen = new Map<string, string>();
+  for (const v of values) {
+    if (!v) continue;
+    const key = norm(v);
+    if (!seen.has(key)) seen.set(key, v);
+  }
+  return [...seen.values()].sort((a, b) => a.localeCompare(b, "pt-BR", { sensitivity: "base" }));
+}
+
 type ConfirmAction =
   | { type: "question"; id: string; label: string }
   | { type: "variant"; id: string; questionId: string; label: string }
@@ -73,6 +89,15 @@ export default function AdminGerenciarPage() {
   const [confirmAction, setConfirmAction] = useState<ConfirmAction>(null);
   const [deleting, setDeleting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [checkedVariantIds, setCheckedVariantIds] = useState<Set<string>>(new Set());
+
+  // Filtros avançados
+  const [filterHasVariant, setFilterHasVariant] = useState(false);
+  const [filterDisciplinas, setFilterDisciplinas] = useState<string[]>([]);
+  const [filterBancas, setFilterBancas] = useState<string[]>([]);
+  const [filterAnos, setFilterAnos] = useState<string[]>([]);
+  const [filterDificuldades, setFilterDificuldades] = useState<string[]>([]);
+  const [filterTags, setFilterTags] = useState("");
 
   const [editingQuestion, setEditingQuestion] = useState<QuestionItem | null>(null);
   const [promotingVariantId, setPromotingVariantId] = useState<string | null>(null);
@@ -84,32 +109,96 @@ export default function AdminGerenciarPage() {
   useEffect(() => {
     if (authLoading || !isAdmin) return;
     setLoadingQuestions(true);
-    listQuestions({ limit: 100, includeContent: true })
+    listQuestions({ limit: 500, includeContent: true })
       .then((data) => setQuestions(data.items ?? []))
       .catch((err) => setErrorMsg(err?.message ?? "Erro ao carregar questões."))
       .finally(() => setLoadingQuestions(false));
   }, [authLoading, isAdmin]);
 
+  const TIPOS_CANONICOS = ["Múltipla Escolha", "Certo/Errado", "Discursiva"];
+  const DIFICULDADES_CANONICAS = ["Fácil", "Média", "Difícil"];
+
+  const tiposNormSet = useMemo(
+    () => new Set(questions.map((q) => norm(q.tipo))),
+    [questions]
+  );
+  const dificuldadesNormSet = useMemo(
+    () => new Set(questions.map((q) => norm(q.dificuldade))),
+    [questions]
+  );
+
+  const availableTipos = TIPOS_CANONICOS.filter((t) => tiposNormSet.has(norm(t)));
+  const availableDificuldades = DIFICULDADES_CANONICAS.filter((d) => dificuldadesNormSet.has(norm(d)));
+  const availableDisciplinas = useMemo(
+    () => dedupeByNorm(questions.map((q) => q.disciplina)),
+    [questions]
+  );
+  const availableBancas = useMemo(
+    () => dedupeByNorm(questions.map((q) => q.metadata?.source?.banca)),
+    [questions]
+  );
+  const availableAnos = useMemo(
+    () =>
+      [...new Set(questions.map((q) => String(q.metadata?.source?.ano ?? "")).filter(Boolean))]
+        .sort((a, b) => Number(b) - Number(a)),
+    [questions]
+  );
+  const availableTags = useMemo(
+    () => [...new Set(questions.flatMap((q) => q.tags ?? []))].sort(),
+    [questions]
+  );
+
+  const hasActiveFilters =
+    !!search || !!filterTipo || filterHasVariant ||
+    filterDisciplinas.length > 0 || filterBancas.length > 0 ||
+    filterAnos.length > 0 || filterDificuldades.length > 0 || !!filterTags;
+
+  function clearFilters() {
+    setSearch("");
+    setFilterTipo("");
+    setFilterHasVariant(false);
+    setFilterDisciplinas([]);
+    setFilterBancas([]);
+    setFilterAnos([]);
+    setFilterDificuldades([]);
+    setFilterTags("");
+  }
+
+  function toggleMulti<T>(setter: React.Dispatch<React.SetStateAction<T[]>>, value: T) {
+    setter((prev) => prev.includes(value) ? prev.filter((x) => x !== value) : [...prev, value]);
+  }
+
   const filtered = useMemo(() => {
     let result = questions;
-    if (filterTipo) {
-      result = result.filter((q) => q.tipo === filterTipo);
+    if (filterTipo) result = result.filter((q) => norm(q.tipo) === norm(filterTipo));
+    if (filterHasVariant) result = result.filter((q) => (q.variantsCount ?? 0) > 0);
+    if (filterDisciplinas.length) {
+      const ns = filterDisciplinas.map(norm);
+      result = result.filter((q) => ns.includes(norm(q.disciplina)));
+    }
+    if (filterBancas.length) {
+      const ns = filterBancas.map(norm);
+      result = result.filter((q) => ns.includes(norm(q.metadata?.source?.banca)));
+    }
+    if (filterAnos.length) result = result.filter((q) => filterAnos.includes(String(q.metadata?.source?.ano ?? "")));
+    if (filterDificuldades.length) {
+      const ns = filterDificuldades.map(norm);
+      result = result.filter((q) => ns.includes(norm(q.dificuldade)));
+    }
+    if (filterTags.trim()) {
+      const tag = filterTags.trim().toLowerCase();
+      result = result.filter((item) => (item.tags ?? []).some((t) => t.toLowerCase().includes(tag)));
     }
     const q = search.trim().toLowerCase();
-    if (!q) return result;
-    return result.filter((item) => {
-      const fields = [
-        item.disciplina,
-        item.assunto,
-        ...(item.tags ?? []),
-        item.author,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return fields.includes(q);
-    });
-  }, [questions, search, filterTipo]);
+    if (q) {
+      result = result.filter((item) => {
+        const fields = [item.disciplina, item.assunto, ...(item.tags ?? []), item.author]
+          .filter(Boolean).join(" ").toLowerCase();
+        return fields.includes(q);
+      });
+    }
+    return result;
+  }, [questions, search, filterTipo, filterHasVariant, filterDisciplinas, filterBancas, filterAnos, filterDificuldades, filterTags]);
 
   async function toggleVariants(questionId: string) {
     if (expandedIds.has(questionId)) {
@@ -207,6 +296,46 @@ export default function AdminGerenciarPage() {
     });
   }
 
+  function toggleVariantCheck(variantId: string) {
+    setCheckedVariantIds((prev) => {
+      const next = new Set(prev);
+      next.has(variantId) ? next.delete(variantId) : next.add(variantId);
+      return next;
+    });
+  }
+
+  async function handleDeleteChecked(questionId: string) {
+    const ids = [...checkedVariantIds].filter((id) =>
+      (variantsMap[questionId] ?? []).some((v) => v.id === id)
+    );
+    if (ids.length === 0) return;
+    setDeleting(true);
+    setErrorMsg("");
+    try {
+      await deleteVariants(ids);
+      setVariantsMap((prev) => ({
+        ...prev,
+        [questionId]: (prev[questionId] ?? []).filter((v) => !ids.includes(v.id)),
+      }));
+      setQuestions((prev) =>
+        prev.map((q) =>
+          q.id === questionId
+            ? { ...q, variantsCount: Math.max(0, (q.variantsCount ?? 0) - ids.length) }
+            : q
+        )
+      );
+      setCheckedVariantIds((prev) => {
+        const next = new Set(prev);
+        ids.forEach((id) => next.delete(id));
+        return next;
+      });
+    } catch (err: any) {
+      setErrorMsg(err?.message ?? "Erro ao deletar versões.");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   async function handlePromote(variantId: string, questionId: string) {
     setPromotingVariantId(variantId);
     setErrorMsg("");
@@ -286,42 +415,140 @@ export default function AdminGerenciarPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-6 flex gap-6">
         {/* Sidebar: filtros */}
-        <aside className="w-64 flex-shrink-0 space-y-4">
-          <div className="stripe-card-gradient p-4 space-y-4">
-            <h2 className="text-sm font-semibold text-slate-700">Filtros</h2>
+        <aside className="w-72 flex-shrink-0">
+          <div className="stripe-card-gradient p-4 space-y-4 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-slate-700">Filtros</h2>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-slate-400 hover:text-red-500 transition-colors"
+                >
+                  Limpar tudo
+                </button>
+              )}
+            </div>
 
+            {/* Busca livre */}
             <div className="space-y-1">
-              <label className="text-xs text-slate-500 font-medium">
-                Busca livre
-              </label>
+              <label className="text-xs text-slate-500 font-medium">Busca livre</label>
               <Input
-                placeholder="Disciplina, assunto, tags..."
+                placeholder="Disciplina, assunto, autor..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="h-8 text-sm"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs text-slate-500 font-medium">Tipo</label>
-              <div className="flex flex-col gap-1">
-                {["", "Multipla Escolha", "Certo/Errado", "Discursiva"].map(
-                  (tipo) => (
+            {/* Tem variante */}
+            <div>
+              <button
+                onClick={() => setFilterHasVariant((v) => !v)}
+                className={`w-full text-left text-sm px-2 py-1.5 rounded transition-colors flex items-center gap-2 ${
+                  filterHasVariant ? "bg-amber-100 text-amber-800 font-medium" : "hover:bg-slate-100 text-slate-600"
+                }`}
+              >
+                <span className={`w-3 h-3 rounded-full border flex-shrink-0 ${filterHasVariant ? "bg-amber-500 border-amber-500" : "border-slate-300"}`} />
+                Com variantes pendentes
+              </button>
+            </div>
+
+            {/* Tipo */}
+            {availableTipos.length > 0 && (
+              <FilterSection label="Tipo">
+                {availableTipos.map((tipo) => (
+                  <FilterChip
+                    key={tipo}
+                    label={tipo}
+                    active={filterTipo === tipo}
+                    onClick={() => setFilterTipo((prev) => prev === tipo ? "" : tipo)}
+                  />
+                ))}
+              </FilterSection>
+            )}
+
+            {/* Dificuldade */}
+            {availableDificuldades.length > 0 && (
+              <FilterSection label="Dificuldade">
+                {availableDificuldades.map((d) => (
+                  <FilterChip
+                    key={d}
+                    label={d}
+                    active={filterDificuldades.includes(d)}
+                    onClick={() => toggleMulti(setFilterDificuldades, d)}
+                  />
+                ))}
+              </FilterSection>
+            )}
+
+            {/* Disciplina */}
+            {availableDisciplinas.length > 0 && (
+              <FilterSection label="Disciplina">
+                <div className="max-h-36 overflow-y-auto space-y-0.5 pr-1">
+                  {availableDisciplinas.map((d) => (
+                    <FilterChip
+                      key={d}
+                      label={d}
+                      active={filterDisciplinas.includes(d)}
+                      onClick={() => toggleMulti(setFilterDisciplinas, d)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+            )}
+
+            {/* Banca */}
+            {availableBancas.length > 0 && (
+              <FilterSection label="Banca">
+                <div className="max-h-36 overflow-y-auto space-y-0.5 pr-1">
+                  {availableBancas.map((b) => (
+                    <FilterChip
+                      key={b}
+                      label={b}
+                      active={filterBancas.includes(b)}
+                      onClick={() => toggleMulti(setFilterBancas, b)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+            )}
+
+            {/* Ano */}
+            {availableAnos.length > 0 && (
+              <FilterSection label="Ano">
+                <div className="flex flex-wrap gap-1">
+                  {availableAnos.map((a) => (
                     <button
-                      key={tipo}
-                      onClick={() => setFilterTipo(tipo)}
-                      className={`text-left text-sm px-2 py-1 rounded transition-colors ${
-                        filterTipo === tipo
-                          ? "bg-slate-800 text-white"
-                          : "hover:bg-slate-100 text-slate-600"
+                      key={a}
+                      onClick={() => toggleMulti(setFilterAnos, a)}
+                      className={`text-xs px-2 py-0.5 rounded border transition-colors ${
+                        filterAnos.includes(a)
+                          ? "bg-slate-800 text-white border-slate-800"
+                          : "border-slate-200 text-slate-600 hover:border-slate-400"
                       }`}
                     >
-                      {tipo === "" ? "Todos" : tipo}
+                      {a}
                     </button>
-                  )
-                )}
-              </div>
-            </div>
+                  ))}
+                </div>
+              </FilterSection>
+            )}
+
+            {/* Tags */}
+            {availableTags.length > 0 && (
+              <FilterSection label="Tags">
+                <div className="max-h-28 overflow-y-auto space-y-0.5 pr-1">
+                  {availableTags.map((t) => (
+                    <FilterChip
+                      key={t}
+                      label={t}
+                      active={filterTags === t}
+                      onClick={() => setFilterTags((prev) => prev === t ? "" : t)}
+                    />
+                  ))}
+                </div>
+              </FilterSection>
+            )}
 
             <div className="pt-2 border-t border-slate-200 text-xs text-slate-400">
               {filtered.length} de {questions.length} questões
@@ -410,9 +637,27 @@ export default function AdminGerenciarPage() {
                     {/* Painel de versões */}
                     {isExpanded && (
                       <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
-                        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-                          Versões
-                        </h3>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                            Versões
+                          </h3>
+                          {(() => {
+                            const selectedHere = (variantsMap[item.id] ?? [])
+                              .filter((v) => v.kind === "variant" && checkedVariantIds.has(v.id));
+                            return selectedHere.length > 0 ? (
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                className="h-6 text-xs gap-1"
+                                disabled={deleting}
+                                onClick={() => handleDeleteChecked(item.id)}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                                Deletar selecionadas ({selectedHere.length})
+                              </Button>
+                            ) : null;
+                          })()}
+                        </div>
                         {loadingV ? (
                           <div className="flex justify-center py-4">
                             <Loader2 className="animate-spin h-4 w-4 text-slate-400" />
@@ -425,14 +670,11 @@ export default function AdminGerenciarPage() {
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="text-left text-xs text-slate-400 border-b border-slate-200">
-                                <th className="pb-2 pr-4 font-medium">
-                                  Versão
-                                </th>
+                                <th className="pb-2 pr-2 w-6" />
+                                <th className="pb-2 pr-4 font-medium">Versão</th>
                                 <th className="pb-2 pr-4 font-medium">Data</th>
                                 <th className="pb-2 pr-4 font-medium">Autor</th>
-                                <th className="pb-2 pr-4 font-medium">
-                                  Descrição
-                                </th>
+                                <th className="pb-2 pr-4 font-medium">Descrição</th>
                                 <th className="pb-2 font-medium" />
                               </tr>
                             </thead>
@@ -442,6 +684,14 @@ export default function AdminGerenciarPage() {
                                   key={v.id}
                                   className="border-b border-slate-100 last:border-0"
                                 >
+                                  <td className="py-2 pr-2">
+                                    {v.kind === "variant" && (
+                                      <Checkbox
+                                        checked={checkedVariantIds.has(v.id)}
+                                        onCheckedChange={() => toggleVariantCheck(v.id)}
+                                      />
+                                    )}
+                                  </td>
                                   <td className="py-2 pr-4 font-medium text-slate-700">
                                     {v.kind === "base" ? "Base" : `v${idx}`}
                                   </td>
@@ -650,5 +900,27 @@ export default function AdminGerenciarPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+function FilterSection({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-1.5">
+      <p className="text-xs font-medium text-slate-500">{label}</p>
+      {children}
+    </div>
+  );
+}
+
+function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full text-left text-xs px-2 py-1 rounded transition-colors ${
+        active ? "bg-slate-800 text-white" : "hover:bg-slate-100 text-slate-600"
+      }`}
+    >
+      {label}
+    </button>
   );
 }

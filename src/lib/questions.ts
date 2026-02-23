@@ -205,6 +205,30 @@ export async function deleteVariant(id: string): Promise<void> {
   await handle(res);
 }
 
+export async function deleteVariants(ids: string[]): Promise<void> {
+  const res = await fetch(`${BASE_URL}/delete-variant.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Session-Token": getSessionToken(),
+    },
+    body: JSON.stringify({ ids }),
+  });
+  await handle(res);
+}
+
+export async function updateQuestion(payload: QuestionPayload): Promise<void> {
+  const res = await fetch(`${BASE_URL}/update.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Session-Token": getSessionToken(),
+    },
+    body: JSON.stringify(payload),
+  });
+  await handle(res);
+}
+
 export async function promoteVariant(variantId: string): Promise<void> {
   const res = await fetch(`${BASE_URL}/promote-variant.php`, {
     method: "POST",
