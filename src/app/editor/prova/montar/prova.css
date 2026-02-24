@@ -472,6 +472,83 @@
 
 }
 
+/* =====================================================
+   FIREFOX ONLY — bloco 1: @-moz-document url-prefix()
+   Corrige overflow:hidden e break-after redundante.
+   ===================================================== */
+@-moz-document url-prefix() {
+  @media print {
+    .prova-page {
+      overflow: visible !important;
+      /* Gecko calcula a área de conteúdo de @page diferente do Blink:
+         A4 (29.7cm) - 2×1.5cm de margem dá 26.7cm no Chrome, mas ~27.5cm no Firefox.
+         min-height = 27.5cm ancora bottom:0 do footer no fundo físico da página.
+         ATENÇÃO: 27.6cm já gera página em branco extra — 27.5cm é o limite. */
+      min-height: 27.5cm !important;
+    }
+
+    /* break-after:page em todos os sheets é redundante (break-before já separa).
+       No Firefox o break-after no último sheet gera página em branco extra. */
+    .a4-sheet {
+      break-after: auto !important;
+      page-break-after: auto !important;
+    }
+  }
+}
+
+/* =====================================================
+   FIREFOX ONLY — bloco 2: @supports (-moz-appearance: none)
+   Chrome/Edge/Safari não suportam -moz-appearance,
+   então este bloco é avaliado como false nesses browsers.
+   Corrige bordas e footer que @-moz-document não aplica.
+   ===================================================== */
+@media print {
+  @supports (-moz-appearance: none) {
+
+    /* Firefox print: Tailwind border-black usa variável CSS para cor que não resolve
+       no contexto de print do Gecko. Shorthand explícito (style+color+width) corrige.
+       border-radius NÃO é removido — Firefox renderiza bordas arredondadas normalmente. */
+    .prova-page [class~="border-black"] {
+      border: 0.5mm solid #000 !important;
+    }
+
+    .prova-page [class~="border-gray-800"] {
+      border-style: solid !important;
+      border-color: #1f2937 !important;
+    }
+
+    /* Linha divisória do footer: shorthand border-top com unidade física.
+       Propriedades individuais podem não sobrescrever o shorthand do base CSS. */
+    .prova-footer {
+      position: absolute !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      border-top: 0.5mm solid #000 !important;
+    }
+
+    /* Linha separadora de colunas: remove :has() (pode não ser suportado em
+       versões mais antigas do Firefox). Aplica border-left físico no ::before. */
+    .questoes-container::before {
+      border-left: 0.5mm solid #000 !important;
+    }
+
+    /* Gabarito: bordas 1px definidas em CSS próprio também não renderizam no Gecko. */
+    .gabarito-block {
+      border: 0.5mm solid #000 !important;
+    }
+
+    .gabarito-line {
+      border-top: 0.5mm solid #000 !important;
+    }
+
+    .gabarito-num {
+      border-right: 0.5mm solid #000 !important;
+    }
+
+  }
+}
+
 /* =======================
    GABARITO (bolinhas)
    ======================= */

@@ -230,6 +230,26 @@ export default function ProvaPrintPage() {
         .questoes-flow > .questao-item-wrapper.allow-break {
           break-inside: auto;
         }
+
+        /* =====================================================
+           FIREFOX ONLY
+           inline-block ignora break-inside em CSS columns no
+           Gecko; block + overflow:hidden resolve.
+           -moz-appearance é propriedade exclusiva do Firefox.
+           ===================================================== */
+        @supports (-moz-appearance: none) {
+          .questoes-flow > .questao-item-wrapper {
+            display: block;
+            overflow: hidden;
+            page-break-inside: avoid;
+            -moz-column-break-inside: avoid;
+          }
+          .questoes-flow > .questao-item-wrapper.allow-break {
+            overflow: visible;
+            page-break-inside: auto;
+            -moz-column-break-inside: auto;
+          }
+        }
       `}</style>
 
       <div className="print-controls">
