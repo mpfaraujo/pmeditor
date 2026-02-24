@@ -656,7 +656,7 @@ const { pages, refs } = usePagination({
   return (
     <>
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
-        <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex gap-2 justify-between brand-header border-b px-4">
+        <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center gap-x-2 gap-y-2 justify-between border-b px-4 py-3" style={{ background: 'var(--yellow-brand)' }}>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => router.push("/editor/questoes")} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -760,6 +760,8 @@ const { pages, refs } = usePagination({
             </Button>
           </div>
         </div>
+
+        <div className="print:hidden h-[104px] lg:h-[60px]" />
 
         <LayoutComponent
           pages={pages as any}
