@@ -505,6 +505,22 @@
 @media print {
   @supports (-moz-appearance: none) {
 
+    /* ExerciseLayout: a measure-layer (display:none) precede os .a4-sheet no DOM,
+       fazendo todos serem :not(:first-child) e receberem break-before:page — o Gecko
+       cria uma página em branco antes do conteúdo.
+       Fix: mesma especificidade (0,2,0) que a regra original + posição posterior → ganha.
+       Passo 1: cancela break-before em todos os não-primeiros-filhos.
+       Passo 2: re-aplica break-before só quando a4-sheet segue outro a4-sheet. */
+    .a4-sheet:not(:first-child) {
+      break-before: auto !important;
+      page-break-before: auto !important;
+    }
+
+    .a4-sheet + .a4-sheet {
+      break-before: page !important;
+      page-break-before: always !important;
+    }
+
     /* Firefox print: Tailwind border-black usa variável CSS para cor que não resolve
        no contexto de print do Gecko. Shorthand explícito (style+color+width) corrige.
        border-radius NÃO é removido — Firefox renderiza bordas arredondadas normalmente. */
@@ -515,6 +531,13 @@
     .prova-page [class~="border-gray-800"] {
       border-style: solid !important;
       border-color: #1f2937 !important;
+    }
+
+    /* Layout10: wrapper externo usa border-1 (1px) + border-gray-800 + rounded.
+       1px com border-radius dispara o bug dos cantos no Gecko — troca por unidade física.
+       Seletor combinado evita afetar border-b-2/border-r-2 dos outros layouts. */
+    .prova-page [class~="border-1"][class~="border-gray-800"] {
+      border: 0.5mm solid #1f2937 !important;
     }
 
     /* Linha divisória do footer: shorthand border-top com unidade física.
@@ -545,6 +568,7 @@
     .gabarito-num {
       border-right: 0.5mm solid #000 !important;
     }
+
 
   }
 }

@@ -10,10 +10,13 @@ interface ProvaFooterProps {
   tipoAtual?: number;
   /** Total de tipos gerados */
   numTipos?: number;
+  layoutType?: "prova" | "exercicio";
 }
 
-export function ProvaFooter({ disciplina, currentPage, totalPages, spacerHeight = 0, tipoAtual, numTipos }: ProvaFooterProps) {
-  const prefix = disciplina ? `Prova de ${disciplina}` : "Prova";
+export function ProvaFooter({ disciplina, currentPage, totalPages, spacerHeight = 0, tipoAtual, numTipos, layoutType = "prova" }: ProvaFooterProps) {
+  const prefix = layoutType === "exercicio"
+    ? (disciplina ? `Lista de Exercícios - ${disciplina}` : "Lista de Exercícios")
+    : (disciplina ? `Prova de ${disciplina}` : "Prova");
   const tipoTexto = (numTipos && numTipos > 1) ? `Tipo ${tipoAtual}` : "";
 
   return (

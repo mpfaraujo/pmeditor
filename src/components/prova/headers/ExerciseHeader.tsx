@@ -77,7 +77,7 @@ export function ExerciseHeader({
           </div>
         </div>
 
-        <div className="mt-1 h-px bg-gray-800 w-full" />
+        <div className="mt-1 w-full border-t border-black" />
       </div>
     </div>
   );

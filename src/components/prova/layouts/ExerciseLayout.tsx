@@ -186,6 +186,7 @@ export function ExerciseLayout({
             </div>
 
             <ProvaFooter
+              layoutType="exercicio"
               disciplina={provaConfig.disciplina}
               currentPage={pageIndex + 1}
               totalPages={pages.length || 1}
