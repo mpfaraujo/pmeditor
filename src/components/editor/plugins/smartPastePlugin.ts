@@ -1140,10 +1140,18 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
         const html = extractClipboardHTML(event);
         if (!images.length) images.push(...extractDataImageFilesFromHTML(html));
 
-        // Se o doc já tem conteúdo, não reestrutura como questão nova — cola normalmente
-        const docHasContent = view.state.doc.textContent.trim() !== "";
+        // Determina o "container relevante": question_item em que o cursor está (se houver)
+        // ou o doc inteiro. Só reestrutura se esse container estiver vazio.
+        const { $from: $chk } = view.state.selection;
+        let curItemDepth: number | null = null;
+        for (let d = $chk.depth; d > 0; d--) {
+          if ($chk.node(d).type.name === "question_item") { curItemDepth = d; break; }
+        }
+        const relevantEmpty = curItemDepth !== null
+          ? $chk.node(curItemDepth).textContent.trim() === ""
+          : view.state.doc.textContent.trim() === "";
 
-        if (latexParsed && !docHasContent) {
+        if (latexParsed && relevantEmpty) {
           event.preventDefault();
 
           const answerKey = yamlMeta?.gabarito ?? extractLatexAnswerKey(latexParsed);
@@ -1162,7 +1170,7 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
           return true;
         }
 
-        if (parsed && !docHasContent) {
+        if (parsed && relevantEmpty) {
           event.preventDefault();
           const questionNode = buildQuestionNode(getRuntimeSchema(view), parsed);
           replaceDocWithSingleQuestion(view, questionNode);
