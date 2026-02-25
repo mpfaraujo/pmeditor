@@ -1140,7 +1140,10 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
         const html = extractClipboardHTML(event);
         if (!images.length) images.push(...extractDataImageFilesFromHTML(html));
 
-        if (latexParsed) {
+        // Se o doc já tem conteúdo, não reestrutura como questão nova — cola normalmente
+        const docHasContent = view.state.doc.textContent.trim() !== "";
+
+        if (latexParsed && !docHasContent) {
           event.preventDefault();
 
           const answerKey = yamlMeta?.gabarito ?? extractLatexAnswerKey(latexParsed);
@@ -1159,7 +1162,7 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
           return true;
         }
 
-        if (parsed) {
+        if (parsed && !docHasContent) {
           event.preventDefault();
           const questionNode = buildQuestionNode(getRuntimeSchema(view), parsed);
           replaceDocWithSingleQuestion(view, questionNode);

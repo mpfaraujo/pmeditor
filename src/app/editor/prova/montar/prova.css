@@ -145,6 +145,55 @@
 }
 /* ====== FIM FIX LISTAS ====== */
 
+/* ====== POEMA ====== */
+.questao-conteudo .poem,
+.question-readonly .poem,
+.question-text .poem {
+  text-align: center;
+  margin: 0.3em 0;
+}
+
+.questao-conteudo .verse,
+.question-readonly .verse,
+.question-text .verse {
+  display: block;
+  line-height: 1.6;
+  min-height: 1.2em;
+}
+
+.questao-conteudo .poem[data-numbered="true"],
+.question-readonly .poem[data-numbered="true"],
+.question-text .poem[data-numbered="true"] {
+  padding-left: 2em;
+  position: relative;
+}
+
+.questao-conteudo .poem[data-numbered="true"] .verse,
+.question-readonly .poem[data-numbered="true"] .verse,
+.question-text .poem[data-numbered="true"] .verse {
+  position: relative;
+}
+
+.questao-conteudo .poem[data-numbered="true"] .verse[data-line-num]::before,
+.question-readonly .poem[data-numbered="true"] .verse[data-line-num]::before,
+.question-text .poem[data-numbered="true"] .verse[data-line-num]::before {
+  content: attr(data-line-num);
+  position: absolute;
+  left: -2em;
+  font-size: 0.8em;
+  color: #555;
+  line-height: inherit;
+}
+
+/* ====== CRÉDITOS ====== */
+.questao-conteudo .credits,
+.question-readonly .credits,
+.question-text .credits {
+  font-size: 0.78em;
+  margin-top: 0.3em;
+  text-align: right !important;
+}
+
 .header-grid {
   display: grid;
   grid-template-columns: 2cm 1fr 3cm;

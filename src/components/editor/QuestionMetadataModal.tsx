@@ -37,6 +37,25 @@ function stringToTags(s: string) {
     .filter(Boolean);
 }
 
+/** Input de tags com estado local — evita re-render por item */
+function ItemTagsInput({ initialTags, onCommit }: { initialTags: string[]; onCommit: (tags: string[]) => void }) {
+  const [text, setText] = useState(() => tagsToString(initialTags));
+  const commit = () => {
+    const parsed = stringToTags(text);
+    setText(tagsToString(parsed));
+    onCommit(parsed);
+  };
+  return (
+    <Input
+      placeholder="Tags (separadas por vírgula)"
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); commit(); } }}
+    />
+  );
+}
+
 interface QuestionMetadataModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -47,9 +66,11 @@ interface QuestionMetadataModalProps {
   itemAnswerKey?: QuestionMetadataV1["gabarito"] | null;
   onItemAnswerKeyChange?: (next: QuestionMetadataV1["gabarito"] | null) => void;
   /** Todos os question_items (set_questions) */
-  allItems?: { pos: number; answerKey: any | null }[];
+  allItems?: { pos: number; answerKey: any | null; assunto: string | null; tags: string[] | null }[];
   /** Gravar answerKey de um item específico por posição */
   onItemAnswerKeyChangeAtPos?: (pos: number, answerKey: any | null) => void;
+  /** Gravar assunto/tags de um item específico por posição */
+  onItemMetaChangeAtPos?: (pos: number, patch: { assunto?: string | null; tags?: string[] | null }) => void;
 }
 
 export function QuestionMetadataModal({
@@ -63,6 +84,7 @@ export function QuestionMetadataModal({
   onItemAnswerKeyChange,
   allItems = [],
   onItemAnswerKeyChangeAtPos,
+  onItemMetaChangeAtPos,
 }: QuestionMetadataModalProps) {
   const tipo = value.tipo ?? "Múltipla Escolha";
 
@@ -238,34 +260,38 @@ export function QuestionMetadataModal({
             />
           </div>
 
-          {/* Assunto */}
-          <div className="col-span-2 sm:col-span-1 space-y-2">
-            <label className="text-sm font-medium">Assunto</label>
-            <AssuntoCombobox
-              placeholder="Ex: Geometria Analítica"
-              value={value.assunto ?? ""}
-              onChange={(v) => set({ assunto: v })}
-            />
-          </div>
+          {/* Assunto — só em questão individual */}
+          {docKind !== "set_questions" && (
+            <div className="col-span-2 sm:col-span-1 space-y-2">
+              <label className="text-sm font-medium">Assunto</label>
+              <AssuntoCombobox
+                placeholder="Ex: Geometria Analítica"
+                value={value.assunto ?? ""}
+                onChange={(v) => set({ assunto: v })}
+              />
+            </div>
+          )}
 
-          {/* Tags */}
-          <div className="col-span-2 space-y-2">
-            <label className="text-sm font-medium">
-              Tags (separadas por vírgula)
-            </label>
-            <Input
-              placeholder="Ex: circunferência, distância, ponto"
-              value={tagsText}
-              onChange={(e) => setTagsText(e.target.value)}
-              onBlur={commitTags}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  commitTags();
-                }
-              }}
-            />
-          </div>
+          {/* Tags — só em questão individual */}
+          {docKind !== "set_questions" && (
+            <div className="col-span-2 space-y-2">
+              <label className="text-sm font-medium">
+                Tags (separadas por vírgula)
+              </label>
+              <Input
+                placeholder="Ex: circunferência, distância, ponto"
+                value={tagsText}
+                onChange={(e) => setTagsText(e.target.value)}
+                onBlur={commitTags}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    commitTags();
+                  }
+                }}
+              />
+            </div>
+          )}
 
           {/* Campos de Concurso (condicional) */}
           {value.source?.kind === "concurso" && (
@@ -346,22 +372,67 @@ export function QuestionMetadataModal({
             </div>
           )}
 
-          {/* Resposta-modelo — cada item do set_questions */}
-          {activeAnswerKey?.kind === "essay" && docKind === "set_questions" && allItems.length > 0 && (
+          {/* Por item (set_questions): assunto, tags e gabarito/rubric */}
+          {docKind === "set_questions" && allItems.length > 0 && (
             <div className="col-span-2 space-y-3">
-              <label className="text-sm font-medium">Respostas-modelo por item</label>
+              <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide text-xs">Por item</label>
               {allItems.map((item, idx) => {
                 const ak = normalizeGabaritoForTipo(tipo, item.answerKey ?? undefined);
-                if (ak.kind !== "essay") return null;
                 return (
-                  <div key={item.pos} className="space-y-1">
-                    <span className="text-xs text-muted-foreground">Item {idx + 1}</span>
-                    <RichTextMiniEditor
-                      value={(ak as any).rubric}
-                      onChange={(docJson) =>
-                        onItemAnswerKeyChangeAtPos?.(item.pos, { kind: "essay", rubric: docJson })
-                      }
+                  <div key={item.pos} className="border rounded-md p-3 space-y-2 bg-muted/30">
+                    <span className="text-xs font-semibold text-muted-foreground">Item {idx + 1}</span>
+                    <AssuntoCombobox
+                      placeholder="Assunto"
+                      value={item.assunto ?? ""}
+                      onChange={(v) => onItemMetaChangeAtPos?.(item.pos, { assunto: v })}
                     />
+                    <ItemTagsInput
+                      initialTags={item.tags ?? []}
+                      onCommit={(tags) => onItemMetaChangeAtPos?.(item.pos, { tags })}
+                    />
+                    {ak.kind === "mcq" && (
+                      <Select
+                        value={(ak as any).correct ?? ""}
+                        onValueChange={(v) =>
+                          onItemAnswerKeyChangeAtPos?.(item.pos, { kind: "mcq", correct: v as any })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Gabarito" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="A">A</SelectItem>
+                          <SelectItem value="B">B</SelectItem>
+                          <SelectItem value="C">C</SelectItem>
+                          <SelectItem value="D">D</SelectItem>
+                          <SelectItem value="E">E</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                    {ak.kind === "tf" && (
+                      <Select
+                        value={(ak as any).correct ?? ""}
+                        onValueChange={(v) =>
+                          onItemAnswerKeyChangeAtPos?.(item.pos, { kind: "tf", correct: v as any })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Gabarito" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="C">Certo</SelectItem>
+                          <SelectItem value="E">Errado</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                    {ak.kind === "essay" && (
+                      <RichTextMiniEditor
+                        value={(ak as any).rubric}
+                        onChange={(docJson) =>
+                          onItemAnswerKeyChangeAtPos?.(item.pos, { kind: "essay", rubric: docJson })
+                        }
+                      />
+                    )}
                   </div>
                 );
               })}

@@ -8,7 +8,6 @@ import { undo as undoCommand, redo as redoCommand } from "prosemirror-history";
 import { schema } from "./schema";
 import { ImageUpload } from "./ImageUpload";
 import { SymbolPicker } from "./toolbar/SymbolPicker";
-import { DesktopSidebar } from "./toolbar/DesktopSidebar";
 import { HorizontalToolbar } from "./toolbar/HorizontalToolbar";
 import { createQuestion, getQuestion } from "@/lib/questions";
 
@@ -114,6 +113,93 @@ export function EditorToolbar({
     const codeBlock = schema.nodes.code_block.create();
     view.dispatch(view.state.tr.replaceSelectionWith(codeBlock));
     view.focus();
+  };
+
+  const handleInsertPoem = () => {
+    const { $from, $to } = view.state.selection;
+
+    // Seleção dentro de um único bloco ou cursor: converte o textblock atual em poem+verse
+    const sharedDepth = $from.sharedDepth($to.pos);
+    if (sharedDepth >= $from.depth) {
+      for (let d = $from.depth; d > 0; d--) {
+        const n = $from.node(d);
+        if (n.isTextblock) {
+          const blockStart = $from.before(d);
+          const verse = schema.nodes.verse.create(null, n.content);
+          const poem = schema.nodes.poem.create(null, [verse]);
+          view.dispatch(view.state.tr.replaceWith(blockStart, blockStart + n.nodeSize, poem));
+          view.focus();
+          return;
+        }
+      }
+    } else {
+      // Seleção abrange múltiplos blocos: cada bloco vira um verse
+      const parentStart = $from.start(sharedDepth);
+      const parent = $from.node(sharedDepth);
+      const verses: any[] = [];
+      let rangeStart = -1;
+      let rangeEnd = -1;
+
+      parent.forEach((child: any, offset: number) => {
+        if (!child.isBlock) return;
+        const childStart = parentStart + offset;
+        const childEnd = childStart + child.nodeSize;
+        if (childEnd <= $from.pos || childStart >= $to.pos) return;
+        if (rangeStart === -1) rangeStart = childStart;
+        rangeEnd = childEnd;
+        verses.push(schema.nodes.verse.create(null, child.content));
+      });
+
+      if (verses.length > 0 && rangeStart !== -1) {
+        const poem = schema.nodes.poem.create(null, verses);
+        view.dispatch(view.state.tr.replaceWith(rangeStart, rangeEnd, poem));
+        view.focus();
+        return;
+      }
+    }
+
+    // Fallback: insere poem vazio
+    const verse = schema.nodes.verse.create();
+    const poem = schema.nodes.poem.create(null, [verse]);
+    view.dispatch(view.state.tr.replaceSelectionWith(poem));
+    view.focus();
+  };
+
+  const handleInsertCredits = () => {
+    const { $from } = view.state.selection;
+    // Converte o textblock atual em credits
+    for (let d = $from.depth; d > 0; d--) {
+      const n = $from.node(d);
+      if (n.isTextblock) {
+        const blockStart = $from.before(d);
+        const credits = schema.nodes.credits.create(null, n.content);
+        view.dispatch(view.state.tr.replaceWith(blockStart, blockStart + n.nodeSize, credits));
+        view.focus();
+        return;
+      }
+    }
+    // Fallback: insere credits vazio
+    const credits = schema.nodes.credits.create();
+    view.dispatch(view.state.tr.replaceSelectionWith(credits));
+    view.focus();
+  };
+
+  const handleToggleNumbered = () => {
+    const $from = view.state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      if (node.type === schema.nodes.poem) {
+        const pos = $from.before(d);
+        view.dispatch(
+          view.state.tr.setNodeMarkup(pos, undefined, {
+            ...node.attrs,
+            numbered: !node.attrs.numbered,
+          })
+        );
+        view.focus();
+        return;
+      }
+    }
   };
 
   const handleInsertBaseText = () => {
@@ -379,6 +465,15 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
         break;
       case "symbols":
         setSymbolPickerOpen(true);
+        break;
+      case "insert-poem":
+        handleInsertPoem();
+        break;
+      case "insert-credits":
+        handleInsertCredits();
+        break;
+      case "toggle-numbered":
+        handleToggleNumbered();
         break;
     }
   };

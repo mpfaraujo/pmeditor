@@ -21,6 +21,7 @@ import { QuestionMetadataModal } from "./QuestionMetadataModal";
 import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from "./QuestionMetaBar";
 import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
+import { verseNumberingPlugin } from "@/components/editor/plugins/verseNumberingPlugin";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -129,6 +130,7 @@ function buildPlugins(onYamlMetadata?: (meta: any) => void): Plugin[] {
     }),
     keymap({ "Mod-z": undo, "Mod-y": redo }),
     keymap(baseKeymap),
+    verseNumberingPlugin,
   ];
 }
 
@@ -379,15 +381,27 @@ function readItemAnswerKeyAtPos(state: any, pos: number): any | null {
   return n.attrs?.answerKey ?? null;
 }
 
-function findAllQuestionItems(state: any): { pos: number; answerKey: any | null }[] {
-  const items: { pos: number; answerKey: any | null }[] = [];
+function findAllQuestionItems(state: any): { pos: number; answerKey: any | null; assunto: string | null; tags: string[] | null }[] {
+  const items: { pos: number; answerKey: any | null; assunto: string | null; tags: string[] | null }[] = [];
   state.doc.descendants((node: any, pos: number) => {
     if (node.type.name === "question_item") {
-      items.push({ pos, answerKey: node.attrs?.answerKey ?? null });
+      items.push({
+        pos,
+        answerKey: node.attrs?.answerKey ?? null,
+        assunto: node.attrs?.assunto ?? null,
+        tags: node.attrs?.tags ?? null,
+      });
       return false;
     }
   });
   return items;
+}
+
+function writeItemMetaAtPos(v: EditorView, pos: number, patch: { assunto?: string | null; tags?: string[] | null }) {
+  const node = v.state.doc.nodeAt(pos);
+  if (!node || node.type.name !== "question_item") return;
+  const tr = v.state.tr.setNodeMarkup(pos, undefined, { ...node.attrs, ...patch });
+  v.dispatch(tr);
 }
 
 /* ---------- component ---------- */
@@ -439,6 +453,9 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
   const [optionCount, setOptionCount] = useState(5);
   const [editorMaxWidthCm, setEditorMaxWidthCm] = useState<8.5 | 18>(8.5);
 
+  // Itens por-item do YAML aguardando aplicação no view (set_questions)
+  const [pendingYamlItems, setPendingYamlItems] = useState<any[] | null>(null);
+
   // Callback para aplicar metadados YAML extraídos do paste
   const handleYamlMetadata = (yamlMeta: any) => {
     setMeta((prev) => {
@@ -458,7 +475,40 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
 
       return merged;
     });
+
+    // Guarda itens por-item para aplicar no view após re-render
+    if (yamlMeta.items?.length) {
+      setPendingYamlItems(yamlMeta.items);
+    }
   };
+
+  // Aplica dados por-item do YAML nos question_items quando o view estiver pronto
+  useEffect(() => {
+    if (!pendingYamlItems || !view) return;
+    if (!isRootSetQuestions(view.state.doc)) return;
+
+    const items = findAllQuestionItems(view.state);
+    let tr = view.state.tr;
+    let changed = false;
+
+    pendingYamlItems.forEach((itemData: any, idx: number) => {
+      if (idx >= items.length) return;
+      const item = items[idx];
+      const node = view.state.doc.nodeAt(item.pos);
+      if (!node || node.type.name !== "question_item") return;
+
+      const newAttrs: any = { ...node.attrs };
+      if (itemData.assunto != null) newAttrs.assunto = itemData.assunto;
+      if (itemData.tags != null) newAttrs.tags = itemData.tags;
+      if (itemData.gabarito != null) newAttrs.answerKey = itemData.gabarito;
+
+      tr = tr.setNodeMarkup(item.pos, undefined, newAttrs);
+      changed = true;
+    });
+
+    if (changed) view.dispatch(tr);
+    setPendingYamlItems(null);
+  }, [pendingYamlItems, view]);
 
   const plugins = useMemo(() => buildPlugins(handleYamlMetadata), []);
 
@@ -812,6 +862,11 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
       view.state.tr.setNodeMarkup(pos, undefined, { ...node.attrs, answerKey })
     );
   };
+
+  const handleItemMetaChangeAtPos = (pos: number, patch: { assunto?: string | null; tags?: string[] | null }) => {
+    if (!view) return;
+    writeItemMetaAtPos(view, pos, patch);
+  };
   // ----------------------------------------------------------------
 
     return (
@@ -876,6 +931,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           onItemAnswerKeyChange={writeActiveItemAnswerKey}
           allItems={allItems}
           onItemAnswerKeyChangeAtPos={writeItemAnswerKeyAtPos}
+          onItemMetaChangeAtPos={handleItemMetaChangeAtPos}
         />
 
         {/* Modal de Descrição de Mudança (ao criar variante) */}

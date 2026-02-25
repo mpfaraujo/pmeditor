@@ -3,13 +3,55 @@
 import { Suspense, useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
-import { parseYamlMeta, generateYamlTemplate } from "@/lib/yamlMeta";
+import { parseYamlMeta, generateYamlTemplate, type YamlItemMeta } from "@/lib/yamlMeta";
 import type { QuestionMetadataV1 } from "@/components/editor/QuestionMetaBar";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, SkipForward, Copy, Check, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 type Step = "yaml" | "editor";
+
+/** Monta o JSON de um doc set_questions com N question_items pré-preenchidos */
+function buildSetQuestionsDoc(items: YamlItemMeta[], tipo?: string): object {
+  const emptyPara = { type: "paragraph", attrs: { textAlign: null } };
+  const isTF = tipo === "Certo/Errado";
+  const isEssay = tipo === "Discursiva";
+
+  const optionLetters = isTF ? ["C", "E"] : ["A", "B", "C", "D", "E"];
+  const defaultOptions = isEssay ? null : {
+    type: "options",
+    content: optionLetters.map((letter) => ({
+      type: "option",
+      attrs: { letter },
+      content: [emptyPara],
+    })),
+  };
+
+  const questionItems = items.map((item) => ({
+    type: "question_item",
+    attrs: {
+      answerKey: item.gabarito ?? null,
+      assunto: item.assunto ?? null,
+      tags: item.tags ?? null,
+    },
+    content: [
+      { type: "statement", content: [emptyPara] },
+      ...(defaultOptions ? [defaultOptions] : []),
+    ],
+  }));
+
+  return {
+    type: "doc",
+    content: [{
+      type: "set_questions",
+      attrs: { mode: isEssay ? "essay" : null },
+      content: [
+        { type: "base_text", content: [emptyPara] },
+        ...questionItems,
+      ],
+    }],
+  };
+}
 
 function EditorContent() {
   const searchParams = useSearchParams();
@@ -19,6 +61,7 @@ function EditorContent() {
   const [yamlText, setYamlText] = useState("");
   const [initialMeta, setInitialMeta] =
     useState<Partial<QuestionMetadataV1> | null>(null);
+  const [initialContent, setInitialContent] = useState<object | null>(null);
   const [copied, setCopied] = useState(false);
 
   // Ler metadados do sessionStorage (vindo do Minha Área)
@@ -42,11 +85,17 @@ function EditorContent() {
 
   const handleContinue = () => {
     setInitialMeta(parsed);
+    if (parsed?.items?.length) {
+      setInitialContent(buildSetQuestionsDoc(parsed.items, parsed.tipo));
+    } else {
+      setInitialContent(null);
+    }
     setStep("editor");
   };
 
   const handleSkip = () => {
     setInitialMeta(null);
+    setInitialContent(null);
     setStep("editor");
   };
 
@@ -77,13 +126,14 @@ function EditorContent() {
               initialMeta
                 ? {
                     metadata: initialMeta as QuestionMetadataV1,
-                    content: undefined as any,
+                    content: initialContent ?? undefined,
                   }
                 : undefined
             }
             onNewRequest={() => {
               setYamlText("");
               setInitialMeta(null);
+              setInitialContent(null);
               setStep("yaml");
             }}
           />
@@ -149,7 +199,7 @@ function EditorContent() {
 
         {/* Preview dos campos parseados */}
         {yamlText.trim() && (
-          <div className="stripe-card-gradient p-4 space-y-2">
+          <div className="stripe-card-gradient p-4 space-y-3">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               {parsed ? (
                 <Check className="h-4 w-4 text-green-600" />
@@ -157,49 +207,80 @@ function EditorContent() {
                 <X className="h-4 w-4 text-red-500" />
               )}
               {parsed
-                ? "Campos reconhecidos"
+                ? parsed.items?.length
+                  ? `Conjunto de questões reconhecido (${parsed.items.length} ${parsed.items.length === 1 ? "item" : "itens"})`
+                  : "Campos reconhecidos"
                 : "Não foi possível ler os campos — verifique se o texto começa e termina com ---"}
             </h3>
             {parsed && (
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-                {parsed.tipo && <Field label="Tipo" value={parsed.tipo} />}
-                {parsed.dificuldade && (
-                  <Field label="Dificuldade" value={parsed.dificuldade} />
-                )}
-                {parsed.disciplina && (
-                  <Field label="Disciplina" value={parsed.disciplina} />
-                )}
-                {parsed.assunto && (
-                  <Field label="Assunto" value={parsed.assunto} />
-                )}
-                {parsed.gabarito && (
-                  <Field
-                    label="Gabarito"
-                    value={
-                      parsed.gabarito.kind === "mcq"
-                        ? parsed.gabarito.correct
-                        : parsed.gabarito.kind === "tf"
+              <>
+                {/* Campos compartilhados */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                  {parsed.tipo && <Field label="Tipo" value={parsed.tipo} />}
+                  {parsed.dificuldade && (
+                    <Field label="Dificuldade" value={parsed.dificuldade} />
+                  )}
+                  {parsed.disciplina && (
+                    <Field label="Disciplina" value={parsed.disciplina} />
+                  )}
+                  {/* assunto/gabarito/tags só em questão individual */}
+                  {!parsed.items?.length && parsed.assunto && (
+                    <Field label="Assunto" value={parsed.assunto} />
+                  )}
+                  {!parsed.items?.length && parsed.gabarito && (
+                    <Field
+                      label="Gabarito"
+                      value={
+                        parsed.gabarito.kind === "mcq"
                           ? parsed.gabarito.correct
-                          : "Discursiva"
-                    }
-                  />
+                          : parsed.gabarito.kind === "tf"
+                            ? parsed.gabarito.correct
+                            : "Discursiva"
+                      }
+                    />
+                  )}
+                  {!parsed.items?.length && parsed.tags && parsed.tags.length > 0 && (
+                    <Field label="Tags" value={parsed.tags.join(", ")} />
+                  )}
+                  {parsed.source?.kind && (
+                    <Field label="Fonte" value={parsed.source.kind} />
+                  )}
+                  {parsed.source?.concurso && (
+                    <Field label="Concurso" value={parsed.source.concurso} />
+                  )}
+                  {parsed.source?.banca && (
+                    <Field label="Banca" value={parsed.source.banca} />
+                  )}
+                  {parsed.source?.ano && (
+                    <Field label="Ano" value={String(parsed.source.ano)} />
+                  )}
+                </div>
+
+                {/* Itens do conjunto */}
+                {parsed.items && parsed.items.length > 0 && (
+                  <div className="space-y-1 border-t pt-2">
+                    {parsed.items.map((item, idx) => (
+                      <div key={idx} className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-sm border-l-2 border-slate-300 pl-2">
+                        <span className="col-span-2 text-xs text-muted-foreground font-medium">Item {idx + 1}</span>
+                        {item.assunto && <Field label="Assunto" value={item.assunto} />}
+                        {item.tags && item.tags.length > 0 && <Field label="Tags" value={item.tags.join(", ")} />}
+                        {item.gabarito && (
+                          <Field
+                            label="Gabarito"
+                            value={
+                              item.gabarito.kind === "mcq"
+                                ? item.gabarito.correct
+                                : item.gabarito.kind === "tf"
+                                  ? item.gabarito.correct
+                                  : "Discursiva"
+                            }
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 )}
-                {parsed.tags && parsed.tags.length > 0 && (
-                  <Field label="Tags" value={parsed.tags.join(", ")} />
-                )}
-                {parsed.source?.kind && (
-                  <Field label="Fonte" value={parsed.source.kind} />
-                )}
-                {parsed.source?.concurso && (
-                  <Field label="Concurso" value={parsed.source.concurso} />
-                )}
-                {parsed.source?.banca && (
-                  <Field label="Banca" value={parsed.source.banca} />
-                )}
-                {parsed.source?.ano && (
-                  <Field label="Ano" value={String(parsed.source.ano)} />
-                )}
-              </div>
+              </>
             )}
           </div>
         )}

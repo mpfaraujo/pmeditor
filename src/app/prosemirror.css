@@ -197,6 +197,44 @@
   margin: 0;
 }
 
+/* ===== POEMA ===== */
+.poem {
+  text-align: center;
+  margin: 0.5em 0;
+}
+
+.verse {
+  display: block;
+  line-height: 1.6;
+  min-height: 1.2em; /* verso vazio = separador de estrofe */
+}
+
+/* Numeração de 5 em 5 (via plugin JS — data-line-num nos versos múltiplos de 5 não-vazios) */
+.poem[data-numbered="true"] {
+  padding-left: 2.5em;
+  position: relative;
+}
+
+.poem[data-numbered="true"] .verse {
+  position: relative;
+}
+
+.poem[data-numbered="true"] .verse[data-line-num]::before {
+  content: attr(data-line-num);
+  position: absolute;
+  left: -2.5em;
+  font-size: 0.8em;
+  color: #555;
+  line-height: inherit;
+}
+
+/* ===== CRÉDITOS ===== */
+.credits {
+  font-size: 0.78em;
+  margin-top: 0.4em;
+  text-align: right;
+}
+
 /* ===== BLOCOS DE CÓDIGO ===== */
 .ProseMirror pre {
   background: #f5f5f5;

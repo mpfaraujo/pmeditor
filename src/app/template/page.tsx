@@ -4,14 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, ArrowRight } from "lucide-react";
-import { generateYamlTemplate } from "@/lib/yamlMeta";
+import { generateYamlTemplate, generateYamlSetTemplate } from "@/lib/yamlMeta";
+
+type Tab = "individual" | "conjunto";
 
 export default function TemplatePage() {
+  const [tab, setTab] = useState<Tab>("individual");
   const [copied, setCopied] = useState(false);
   const template = generateYamlTemplate();
+  const setTemplate = generateYamlSetTemplate();
+
+  const activeTemplate = tab === "individual" ? template : setTemplate;
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(template);
+    await navigator.clipboard.writeText(activeTemplate);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -31,10 +37,32 @@ export default function TemplatePage() {
       </header>
 
       <div className="mx-auto max-w-3xl px-4 py-8 space-y-6 animate-fade-in-up">
-        {/* Template */}
+        {/* Template com tabs */}
         <div className="relative stripe-card-gradient overflow-hidden">
+          {/* Tabs */}
           <div className="flex items-center justify-between px-4 py-2 border-b bg-slate-50">
-            <span className="text-xs text-muted-foreground">Modelo</span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => { setTab("individual"); setCopied(false); }}
+                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                  tab === "individual"
+                    ? "bg-white border border-slate-200 text-slate-800 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Questão individual
+              </button>
+              <button
+                onClick={() => { setTab("conjunto"); setCopied(false); }}
+                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                  tab === "conjunto"
+                    ? "bg-white border border-slate-200 text-slate-800 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Conjunto de questões
+              </button>
+            </div>
             <Button
               variant="outline"
               size="sm"
@@ -53,7 +81,7 @@ export default function TemplatePage() {
             </Button>
           </div>
           <pre className="p-4 text-sm leading-relaxed overflow-x-auto font-mono whitespace-pre text-slate-700">
-            {template}
+            {activeTemplate}
           </pre>
         </div>
 
@@ -99,9 +127,7 @@ export default function TemplatePage() {
                   </td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-1.5 pr-4 font-mono text-xs">
-                    dificuldade
-                  </td>
+                  <td className="py-1.5 pr-4 font-mono text-xs">dificuldade</td>
                   <td className="py-1.5">Fácil, Média, Difícil</td>
                 </tr>
                 <tr className="border-b">
@@ -118,6 +144,18 @@ export default function TemplatePage() {
                   <td className="py-1.5 pr-4 font-mono text-xs">fonte</td>
                   <td className="py-1.5">
                     original ou concurso (preencha os demais campos se concurso)
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-1.5 pr-4 font-mono text-xs">gabarito<em>N</em></td>
+                  <td className="py-1.5">
+                    Gabarito do item N (apenas conjunto — ex: gabarito1, gabarito2)
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-1.5 pr-4 font-mono text-xs">assunto<em>N</em></td>
+                  <td className="py-1.5">
+                    Assunto do item N (apenas conjunto — ex: assunto1, assunto2)
                   </td>
                 </tr>
               </tbody>

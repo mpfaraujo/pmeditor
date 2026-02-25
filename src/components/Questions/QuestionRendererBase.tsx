@@ -347,6 +347,44 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
           );
         }
 
+        if (child.type === "poem") {
+          const numbered = !!child.attrs?.numbered;
+          const verses = child.content ?? [];
+          // Conta só versos não-vazios para numeração
+          let nonEmptyCount = 0;
+          const verseElements = verses.map((verse, vi) => {
+            const isEmpty = !verse.content || verse.content.length === 0;
+            if (!isEmpty) nonEmptyCount++;
+            const lineNum = numbered && !isEmpty && nonEmptyCount % 5 === 0 ? nonEmptyCount : undefined;
+            return (
+              <div
+                key={vi}
+                className="verse"
+                {...(lineNum ? { "data-line-num": String(lineNum) } : {})}
+              >
+                {renderInline(verse)}
+              </div>
+            );
+          });
+          return (
+            <div
+              key={key}
+              className="poem"
+              {...(numbered ? { "data-numbered": "true" } : {})}
+            >
+              {verseElements}
+            </div>
+          );
+        }
+
+        if (child.type === "credits") {
+          return (
+            <p key={key} className="credits">
+              {renderInline(child)}
+            </p>
+          );
+        }
+
         return (
           <div key={key} className="leading-snug">
             {renderInline(child)}

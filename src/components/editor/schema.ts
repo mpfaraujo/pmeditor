@@ -72,6 +72,8 @@ question_item: {
   content: "statement options?",
   attrs: {
     answerKey: { default: null },
+    assunto: { default: null as string | null },
+    tags: { default: null as string[] | null },
   },
   toDOM(): DOMOutputSpec {
     return ["div", { class: "question-item" }, 0];
@@ -287,6 +289,48 @@ image: {
     parseDOM: [{ tag: "td" }],
     toDOM(): DOMOutputSpec {
       return ["td", 0];
+    },
+  },
+
+  poem: {
+    content: "verse+",
+    group: "block",
+    attrs: {
+      numbered: { default: false },
+    },
+    parseDOM: [
+      {
+        tag: "div.poem",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { numbered: el.getAttribute("data-numbered") === "true" };
+        },
+      },
+    ],
+    toDOM(node): DOMOutputSpec {
+      const attrs: Record<string, string> = { class: "poem" };
+      if (node.attrs.numbered) attrs["data-numbered"] = "true";
+      return ["div", attrs, 0];
+    },
+  },
+
+  verse: {
+    // Linha individual de poema — só válido dentro de poem
+    content: "inline*",
+    parseDOM: [{ tag: "div.verse" }],
+    toDOM(): DOMOutputSpec {
+      return ["div", { class: "verse" }, 0];
+    },
+  },
+
+  credits: {
+    // Créditos de texto — usável em qq contexto de bloco
+    content: "inline*",
+    group: "block",
+    marks: "strong em",
+    parseDOM: [{ tag: "p.credits" }],
+    toDOM(): DOMOutputSpec {
+      return ["p", { class: "credits" }, 0];
     },
   },
 

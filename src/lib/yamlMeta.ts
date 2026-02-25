@@ -69,19 +69,34 @@ function parseGabarito(
   return undefined;
 }
 
+/** Metadados por item em um conjunto de questões */
+export type YamlItemMeta = {
+  assunto?: string;
+  tags?: string[];
+  gabarito?: AnswerKey;
+};
+
+/** Resultado do parseYamlMeta — compatível com Partial<QuestionMetadataV1> + itens opcionais */
+export type ParsedYamlMeta = Partial<QuestionMetadataV1> & {
+  /** Dados por item (assuntoN / tagsN / gabaritoN), indexados a partir de 0 */
+  items?: YamlItemMeta[];
+};
+
 /**
  * Parseia frontmatter YAML simples (key: value) para metadados parciais.
+ * Suporta campos por item com sufixo numérico: assunto1, tags2, gabarito3, etc.
  * Retorna null se o texto não contiver frontmatter válido.
  */
 export function parseYamlMeta(
   text: string
-): Partial<QuestionMetadataV1> | null {
+): ParsedYamlMeta | null {
   const block = extractFrontmatter(text);
   if (!block) return null;
 
-  const result: Partial<QuestionMetadataV1> = {};
+  const result: ParsedYamlMeta = {};
   const source: NonNullable<QuestionMetadataV1["source"]> = {};
   let hasSource = false;
+  const itemsMap: Record<number, YamlItemMeta> = {};
 
   for (const line of block.split("\n")) {
     // Ignora comentários e linhas vazias
@@ -96,6 +111,27 @@ export function parseYamlMeta(
 
     // Ignora valores vazios (exceto tags que pode ser [])
     if (!val && key !== "tags") continue;
+
+    // Verifica se é campo por item (assunto1, tags2, gabarito3, ...)
+    const itemMatch = key.match(/^(assunto|tags|gabarito)(\d+)$/);
+    if (itemMatch) {
+      const field = itemMatch[1];
+      const idx = parseInt(itemMatch[2], 10) - 1; // converte para 0-based
+      if (idx >= 0) {
+        if (!itemsMap[idx]) itemsMap[idx] = {};
+        if (field === "assunto") {
+          const a = val.replace(/^["']|["']$/g, "").trim();
+          if (a) itemsMap[idx].assunto = normalizeAssunto(a) || a;
+        } else if (field === "tags") {
+          const tags = parseTags(val);
+          if (tags.length) itemsMap[idx].tags = tags;
+        } else if (field === "gabarito") {
+          const gab = parseGabarito(val, result.tipo);
+          if (gab) itemsMap[idx].gabarito = gab;
+        }
+      }
+      continue;
+    }
 
     switch (key) {
       case "tipo": {
@@ -188,6 +224,14 @@ export function parseYamlMeta(
 
   if (hasSource) result.source = source;
 
+  // Converte itemsMap para array ordenado por índice
+  const itemKeys = Object.keys(itemsMap).map(Number).sort((a, b) => a - b);
+  if (itemKeys.length > 0) {
+    const maxIdx = itemKeys[itemKeys.length - 1];
+    const items: YamlItemMeta[] = Array.from({ length: maxIdx + 1 }, (_, i) => itemsMap[i] ?? {});
+    result.items = items;
+  }
+
   // Retorna null se nada foi parseado
   const keys = Object.keys(result);
   if (keys.length === 0) return null;
@@ -196,7 +240,7 @@ export function parseYamlMeta(
 }
 
 /**
- * Gera o template YAML modelo.
+ * Gera o template YAML modelo para questão individual.
  */
 export function generateYamlTemplate(defaults?: {
   disciplina?: string;
@@ -217,5 +261,38 @@ concurso:
 banca:
 ano:
 numero:
+---`;
+}
+
+/**
+ * Gera o template YAML modelo para conjunto de questões (set_questions).
+ * assunto/tags/gabarito são por item (sufixo numérico).
+ * Campos compartilhados (disciplina, banca, etc.) ficam no topo sem sufixo.
+ */
+export function generateYamlSetTemplate(defaults?: {
+  disciplina?: string;
+}): string {
+  const disc = defaults?.disciplina ?? "";
+
+  return `---
+tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
+dificuldade: Média             # Fácil | Média | Difícil
+disciplina: ${disc.padEnd(22)}# Ex: Língua Portuguesa
+
+# Fonte compartilhada (opcional)
+fonte: original                # original | concurso
+concurso:
+banca:
+ano:
+numero:
+
+# Por item — copie e cole os blocos abaixo para quantos itens quiser
+assunto1:                      # Ex: Interpretação de texto
+tags1: []                      # Ex: [inferência, sentido]
+gabarito1: A
+
+assunto2:                      # Ex: Figuras de linguagem
+tags2: []
+gabarito2: B
 ---`;
 }
