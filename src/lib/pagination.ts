@@ -56,7 +56,7 @@ export function calculateFirstPageCapacity(
   const pageRect = firstPageElement.getBoundingClientRect();
   const questionsRect = questionsContainerElement.getBoundingClientRect();
   const occupiedHeight = questionsRect.top - pageRect.top;
-  return Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT);
+  return Math.floor(Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT));
 }
 
 export function calculateOtherPageCapacity(
@@ -68,7 +68,7 @@ export function calculateOtherPageCapacity(
   const pageRect = otherPageElement.getBoundingClientRect();
   const questionsRect = questionsContainerElement.getBoundingClientRect();
   const occupiedHeight = questionsRect.top - pageRect.top;
-  return Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT);
+  return Math.floor(Math.max(0, pageHeight - occupiedHeight - safetyMargin - FOOTER_HEIGHT));
 }
 
 function px(n: number) {
@@ -79,7 +79,7 @@ function measureOuterHeight(el: HTMLElement): number {
   const cs = window.getComputedStyle(el);
   const mt = parseFloat(cs.marginTop || "0") || 0;
   const mb = parseFloat(cs.marginBottom || "0") || 0;
-  return px(el.offsetHeight + mt + mb);
+  return Math.ceil(px(el.offsetHeight + mt + mb));
 }
 function measureBlockHeight(el: HTMLElement): number {
   return Math.max(Math.ceil(el.getBoundingClientRect().height), 1);
