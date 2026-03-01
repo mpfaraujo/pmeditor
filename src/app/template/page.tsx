@@ -131,6 +131,16 @@ export default function TemplatePage() {
                   <td className="py-1.5">Fácil, Média, Difícil</td>
                 </tr>
                 <tr className="border-b">
+                  <td className="py-1.5 pr-4 font-mono text-xs">disciplina<br/>assunto</td>
+                  <td className="py-1.5">
+                    Use os nomes exatos da{" "}
+                    <Link href="/editor/assuntos/consulta" className="text-blue-600 underline" target="_blank">
+                      lista de assuntos por disciplina
+                    </Link>
+                    {" "}para evitar erros de cadastro.
+                  </td>
+                </tr>
+                <tr className="border-b">
                   <td className="py-1.5 pr-4 font-mono text-xs">gabarito</td>
                   <td className="py-1.5">
                     Letra: A–E ou C/E (deixe vazio se for discursiva)
@@ -138,7 +148,7 @@ export default function TemplatePage() {
                 </tr>
                 <tr className="border-b">
                   <td className="py-1.5 pr-4 font-mono text-xs">tags</td>
-                  <td className="py-1.5">[tag1, tag2] ou tag1, tag2</td>
+                  <td className="py-1.5">Palavras-chave livres que não cabem nos outros campos (não use aqui: banca, ano, assunto)</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-1.5 pr-4 font-mono text-xs">fonte</td>

@@ -1,78 +1,522 @@
-// src/app/page.tsx
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { PlusCircle, BookOpen, FileText, ClipboardCopy, Settings, User } from "lucide-react";
-import { StatCard } from "@/components/dashboard/StatCard";
-import { ActionCard } from "@/components/dashboard/ActionCard";
-import { ProtectedActionCard } from "@/components/dashboard/ProtectedActionCard";
-import { LoginButton } from "@/components/auth/LoginButton";
+"use client";
 
-const SHOW_METRICS = false;
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+// ─── Tipos ────────────────────────────────────────────────────────────────────
+
+type Step =
+  | { kind: "hero" }
+  | {
+      kind: "feature";
+      label: string;
+      title: string;
+      desc: string;
+      href?: string;
+      hrefLabel?: string;
+    }
+  | { kind: "cta" };
+
+// ─── Steps ────────────────────────────────────────────────────────────────────
+
+const STEPS: Step[] = [
+  { kind: "hero" },
+  {
+    kind: "feature",
+    label: "Passo 1 — Modelo",
+    title: "Preencha as informações da questão",
+    desc: "Copie um template simples com disciplina, assunto, tipo e gabarito. Preencha no bloco de notas e cole no editor — as informações já chegam preenchidas automaticamente.",
+    href: "/template",
+    hrefLabel: "Ver modelo de informações",
+  },
+  {
+    kind: "feature",
+    label: "Passo 2 — Tipos de questão",
+    title: "Quatro formatos de questão",
+    desc: "Questões objetivas (múltipla escolha ou certo/errado), questões discursivas com gabarito comentado, conjuntos de itens objetivos com texto base compartilhado — e conjuntos discursivos com partes a), b), c), cada uma com sua resposta.",
+  },
+  {
+    kind: "feature",
+    label: "Passo 3 — Editor",
+    title: "Digite ou cole a questão",
+    desc: "O editor aceita texto puro, LaTeX, Word e PDF. Alternativas, fórmulas matemáticas e imagens são reconhecidas automaticamente ao colar.",
+    href: "/editor",
+    hrefLabel: "Abrir editor",
+  },
+  {
+    kind: "feature",
+    label: "Passo 4 — Banco",
+    title: "Organize por disciplina e assunto",
+    desc: "Cada questão fica salva com seus metadados. Filtre por disciplina, assunto, banca ou ano — e encontre o que precisa em segundos.",
+    href: "/editor/questoes/filtro",
+    hrefLabel: "Ver banco de questões",
+  },
+  {
+    kind: "feature",
+    label: "Passo 5 — Prova",
+    title: "Monte a prova em minutos",
+    desc: "Selecione as questões, escolha o layout e o cabeçalho. Gere tipos diferentes com alternativas embaralhadas para evitar cola entre alunos.",
+  },
+  {
+    kind: "feature",
+    label: "Passo 6 — Impressão",
+    title: "Imprima com gabarito",
+    desc: "Visualize a prova em A4 antes de imprimir. O gabarito é gerado automaticamente — inclusive para múltiplos tipos de prova.",
+  },
+  { kind: "cta" },
+];
+
+const N = STEPS.length;
+
+// ─── SVGs placeholder — substitua pelos seus ─────────────────────────────────
+
+function SvgHero() {
+  return (
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="90" fill="#1e293b" />
+      <text x="100" y="118" textAnchor="middle" fill="#fbbf24" fontSize="48" fontWeight="bold" fontFamily="sans-serif">PM</text>
+    </svg>
+  );
+}
+
+function SvgModelo() {
+  const lines: [string, string][] = [
+    ["---", "#475569"],
+    ["tipo: Múltipla Escolha", "#e2e8f0"],
+    ["dificuldade: Média", "#e2e8f0"],
+    ["disciplina: Matemática", "#86efac"],
+    ["assunto: Geometria Plana", "#86efac"],
+    ["gabarito: B", "#f9a8d4"],
+    ["tags: [resolução gráfica]", "#fde68a"],
+    ["---", "#475569"],
+  ];
+  return (
+    <svg viewBox="0 0 480 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="260" rx="12" fill="#0f172a" />
+      <rect width="480" height="36" rx="12" fill="#1e293b" />
+      <rect x="0" y="24" width="480" height="12" fill="#1e293b" />
+      <circle cx="20" cy="18" r="6" fill="#ef4444" />
+      <circle cx="40" cy="18" r="6" fill="#f59e0b" />
+      <circle cx="60" cy="18" r="6" fill="#22c55e" />
+      {lines.map(([text, color], i) => (
+        <text key={i} x="20" y={58 + i * 24} fill={color} fontSize="13" fontFamily="monospace">{text}</text>
+      ))}
+    </svg>
+  );
+}
+
+function SvgTipos() {
+  // 4 painéis: x = 4, 126, 248, 370 — largura 118, altura 292
+  const P = [4, 126, 248, 370];
+  const W = 118;
+  const H = 292;
+  return (
+    <svg viewBox="0 0 492 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      {/* ── 1: Objetiva simples ── */}
+      <rect x={P[0]} y="4" width={W} height={H} rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x={P[0] + W/2} y="22" textAnchor="middle" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif">OBJETIVA</text>
+      <rect x={P[0]+8} y="30" width={W-16} height="5" rx="2" fill="#334155" />
+      <rect x={P[0]+8} y="40" width={W-26} height="5" rx="2" fill="#334155" />
+      <rect x={P[0]+8} y="50" width={W-20} height="5" rx="2" fill="#334155" />
+      {[["A",68,false],["B",88,true],["C",108,false],["D",128,false],["E",148,false]].map(([l,y,c])=>(
+        <g key={String(l)}>
+          <circle cx={P[0]+16} cy={Number(y)} r="8" fill={c?"#fbbf24":"transparent"} stroke={c?"#fbbf24":"#334155"} />
+          <text x={P[0]+16} y={Number(y)+3} textAnchor="middle" fill={c?"#0f172a":"#475569"} fontSize="8" fontFamily="sans-serif" fontWeight="700">{String(l)}</text>
+          <rect x={P[0]+28} y={Number(y)-4} width={[68,76,58,70,62][["A","B","C","D","E"].indexOf(String(l))]} height="7" rx="3" fill={c?"#292524":"#1e293b"} />
+        </g>
+      ))}
+
+      {/* ── 2: Conjunto objetiva ── */}
+      <rect x={P[1]} y="4" width={W} height={H} rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x={P[1]+W/2} y="22" textAnchor="middle" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif">CONJ. OBJETIVA</text>
+      {/* texto base */}
+      <rect x={P[1]+8} y="28" width={W-16} height="38" rx="5" fill="#1e293b" />
+      <text x={P[1]+14} y="40" fill="#64748b" fontSize="6.5" fontFamily="sans-serif">Texto base</text>
+      <rect x={P[1]+14} y="44" width={W-28} height="4" rx="2" fill="#334155" />
+      <rect x={P[1]+14} y="52" width={W-36} height="4" rx="2" fill="#334155" />
+      {/* 3 itens MCQ */}
+      {[0,1,2].map(i=>(
+        <g key={i}>
+          <rect x={P[1]+8} y={76+i*72} width={W-16} height="64" rx="5" fill="#1e293b" />
+          <text x={P[1]+14} y={90+i*72} fill="#fbbf24" fontSize="7.5" fontFamily="sans-serif" fontWeight="700">{i+1}.</text>
+          <rect x={P[1]+26} y={84+i*72} width={W-40} height="4" rx="2" fill="#334155" />
+          <rect x={P[1]+26} y={92+i*72} width={W-52} height="4" rx="2" fill="#334155" />
+          {["A","B","C"].map((l,j)=>(
+            <g key={l}>
+              <text x={P[1]+14} y={104+i*72+j*10} fill="#475569" fontSize="6.5" fontFamily="sans-serif">{l})</text>
+              <rect x={P[1]+24} y={98+i*72+j*10} width={[56,68,48][j]} height="5" rx="2" fill="#0f172a" stroke="#334155" />
+            </g>
+          ))}
+        </g>
+      ))}
+
+      {/* ── 3: Discursiva simples ── */}
+      <rect x={P[2]} y="4" width={W} height={H} rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x={P[2]+W/2} y="22" textAnchor="middle" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif">DISCURSIVA</text>
+      <rect x={P[2]+8} y="30" width={W-16} height="5" rx="2" fill="#334155" />
+      <rect x={P[2]+8} y="40" width={W-26} height="5" rx="2" fill="#334155" />
+      <rect x={P[2]+8} y="50" width={W-20} height="5" rx="2" fill="#334155" />
+      <text x={P[2]+8} y="74" fill="#475569" fontSize="7" fontFamily="sans-serif">Resposta:</text>
+      {[84,96,108,120,132,144,156,168,180].map(y=>(
+        <line key={y} x1={P[2]+8} y1={y} x2={P[2]+W-8} y2={y} stroke="#1e293b" strokeWidth="1.2" />
+      ))}
+      {/* gabarito comentado */}
+      <rect x={P[2]+8} y="200" width={W-16} height="64" rx="5" fill="#1e293b" stroke="#334155" strokeDasharray="3 2" />
+      <text x={P[2]+14} y="214" fill="#64748b" fontSize="6.5" fontFamily="sans-serif">Gabarito comentado</text>
+      <rect x={P[2]+14} y="220" width={W-30} height="4" rx="2" fill="#334155" />
+      <rect x={P[2]+14} y="228" width={W-38} height="4" rx="2" fill="#334155" />
+      <rect x={P[2]+14} y="236" width={W-34} height="4" rx="2" fill="#334155" />
+      <rect x={P[2]+14} y="244" width={W-42} height="4" rx="2" fill="#334155" />
+
+      {/* ── 4: Conjunto discursiva ── */}
+      <rect x={P[3]} y="4" width={W} height={H} rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x={P[3]+W/2} y="22" textAnchor="middle" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif">CONJ. DISCURSIVA</text>
+      {/* texto base */}
+      <rect x={P[3]+8} y="28" width={W-16} height="38" rx="5" fill="#1e293b" />
+      <text x={P[3]+14} y="40" fill="#64748b" fontSize="6.5" fontFamily="sans-serif">Texto base</text>
+      <rect x={P[3]+14} y="44" width={W-28} height="4" rx="2" fill="#334155" />
+      <rect x={P[3]+14} y="52" width={W-36} height="4" rx="2" fill="#334155" />
+      {/* partes a) b) c) */}
+      {["a","b","c"].map((l,i)=>(
+        <g key={l}>
+          <rect x={P[3]+8} y={76+i*72} width={W-16} height="64" rx="5" fill="#1e293b" />
+          <text x={P[3]+14} y={90+i*72} fill="#fbbf24" fontSize="8" fontFamily="sans-serif" fontWeight="700">{l})</text>
+          <rect x={P[3]+26} y={84+i*72} width={W-40} height="4" rx="2" fill="#334155" />
+          <rect x={P[3]+26} y={92+i*72} width={W-52} height="4" rx="2" fill="#334155" />
+          <text x={P[3]+14} y={106+i*72} fill="#475569" fontSize="6" fontFamily="sans-serif">Resposta:</text>
+          {[110,118,126].map(dy=>(
+            <line key={dy} x1={P[3]+14} y1={dy+i*72} x2={P[3]+W-10} y2={dy+i*72} stroke="#334155" strokeWidth="1" />
+          ))}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function SvgEditor() {
+  const alts: [string, number, boolean][] = [
+    ["A) Alternativa incorreta", 160, false],
+    ["B) Alternativa correta", 192, true],
+    ["C) Alternativa incorreta", 224, false],
+    ["D) Alternativa incorreta", 256, false],
+  ];
+  return (
+    <svg viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="300" rx="12" fill="#f8fafc" stroke="#e2e8f0" />
+      <rect width="480" height="40" rx="12" fill="#f1f5f9" />
+      <rect x="0" y="28" width="480" height="12" fill="#f1f5f9" />
+      {[16, 34, 52].map((x) => <circle key={x} cx={x} cy={20} r={6} fill="#cbd5e1" />)}
+      {[76, 100, 124, 148].map((x) => (
+        <rect key={x} x={x} y={14} width={16} height={12} rx="3" fill="#e2e8f0" />
+      ))}
+      <rect x="16" y="52" width="448" height="232" rx="8" fill="white" stroke="#e2e8f0" />
+      <rect x="28" y="68" width="380" height="8" rx="4" fill="#334155" />
+      <rect x="28" y="84" width="320" height="8" rx="4" fill="#334155" />
+      <rect x="28" y="100" width="350" height="8" rx="4" fill="#334155" />
+      {alts.map(([label, y, correct]) => (
+        <g key={y}>
+          <rect x="28" y={y - 4} width="420" height="24" rx="6"
+            fill={correct ? "#f0fdf4" : "transparent"}
+            stroke={correct ? "#86efac" : "transparent"} />
+          <text x="36" y={y + 12} fill={correct ? "#15803d" : "#64748b"} fontSize="11" fontFamily="sans-serif">{label}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function SvgBanco() {
+  const rows: [string, string, string][] = [
+    ["Matemática", "Geometria Plana", "ENEM"],
+    ["Português", "Interpretação de Texto", "FUVEST"],
+    ["Física", "Mecânica", "ENEM"],
+    ["Biologia", "Genética", "UEL"],
+  ];
+  return (
+    <svg viewBox="0 0 480 290" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="290" rx="12" fill="#f8fafc" stroke="#e2e8f0" />
+      <rect x="16" y="12" width="320" height="28" rx="8" fill="white" stroke="#e2e8f0" />
+      <text x="30" y="30" fill="#94a3b8" fontSize="11" fontFamily="sans-serif">Buscar questões...</text>
+      {["Matemática", "ENEM", "2023"].map((t, i) => (
+        <g key={t}>
+          <rect x={16 + i * 88} y="50" width={80} height="20" rx="10" fill="#eff6ff" stroke="#bfdbfe" />
+          <text x={16 + i * 88 + 40} y="64" textAnchor="middle" fill="#3b82f6" fontSize="9" fontFamily="sans-serif">{t}</text>
+        </g>
+      ))}
+      {rows.map(([disc, assunto, tag], i) => (
+        <g key={i}>
+          <rect x="16" y={82 + i * 52} width="448" height="44" rx="8" fill="white" stroke="#e2e8f0" />
+          <rect x="28" y={92 + i * 52} width="8" height="8" rx="2" fill="#60a5fa" />
+          <text x="44" y={102 + i * 52} fill="#1e293b" fontSize="11" fontFamily="sans-serif" fontWeight="600">{disc}</text>
+          <text x="44" y={116 + i * 52} fill="#64748b" fontSize="10" fontFamily="sans-serif">{assunto}</text>
+          <rect x="400" y={94 + i * 52} width="48" height="16" rx="8" fill="#f0fdf4" stroke="#bbf7d0" />
+          <text x="424" y={106 + i * 52} textAnchor="middle" fill="#15803d" fontSize="9" fontFamily="sans-serif">{tag}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function SvgProva() {
+  const respostas = ["B", "A", "C", "D", "B", "C"];
+  return (
+    <svg viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Folha A4 */}
+      <rect x="20" y="8" width="260" height="288" rx="6" fill="white" stroke="#e2e8f0" />
+      <rect x="32" y="20" width="236" height="32" rx="4" fill="#fef9c3" />
+      <text x="150" y="40" textAnchor="middle" fill="#92400e" fontSize="10" fontFamily="sans-serif" fontWeight="700">AVALIAÇÃO — 3º BIMESTRE</text>
+      {[0, 1, 2, 3].map((i) => (
+        <g key={i}>
+          <text x="32" y={72 + i * 54} fill="#1e293b" fontSize="10" fontFamily="sans-serif" fontWeight="700">{i + 1}.</text>
+          <rect x="44" y={62 + i * 54} width="190" height="7" rx="3" fill="#e2e8f0" />
+          <rect x="44" y={74 + i * 54} width="170" height="7" rx="3" fill="#e2e8f0" />
+          {["A", "B", "C"].map((l, j) => (
+            <g key={l}>
+              <text x="44" y={91 + i * 54 + j * 10} fill="#64748b" fontSize="7" fontFamily="sans-serif">{l})</text>
+              <rect x="56" y={85 + i * 54 + j * 10} width={[110, 130, 95][j]} height="6" rx="3" fill="#f1f5f9" />
+            </g>
+          ))}
+        </g>
+      ))}
+      {/* Gabarito */}
+      <rect x="300" y="8" width="160" height="288" rx="8" fill="#0f172a" />
+      <text x="380" y="36" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="sans-serif" letterSpacing="2">GABARITO</text>
+      {respostas.map((resp, i) => (
+        <g key={i}>
+          <text x="316" y={56 + i * 36} fill="#475569" fontSize="10" fontFamily="monospace">{i + 1}.</text>
+          {["A", "B", "C", "D", "E"].map((l, j) => (
+            <g key={l}>
+              <circle cx={336 + j * 22} cy={50 + i * 36} r="8"
+                fill={resp === l ? "#fbbf24" : "transparent"}
+                stroke={resp === l ? "#fbbf24" : "#334155"} />
+              {resp === l && (
+                <text x={336 + j * 22} y={54 + i * 36} textAnchor="middle" fill="#0f172a" fontSize="8" fontFamily="sans-serif" fontWeight="700">{l}</text>
+              )}
+            </g>
+          ))}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function SvgImpressao() {
+  return (
+    <svg viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Papel saindo */}
+      <rect x="110" y="170" width="260" height="130" rx="4" fill="white" stroke="#e2e8f0" />
+      <rect x="126" y="186" width="200" height="7" rx="3" fill="#e2e8f0" />
+      <rect x="126" y="200" width="180" height="7" rx="3" fill="#e2e8f0" />
+      <rect x="126" y="214" width="190" height="7" rx="3" fill="#e2e8f0" />
+      <rect x="126" y="228" width="160" height="7" rx="3" fill="#e2e8f0" />
+      {/* Impressora */}
+      <rect x="60" y="90" width="360" height="100" rx="16" fill="#1e293b" />
+      <rect x="110" y="60" width="260" height="50" rx="8" fill="#0f172a" />
+      {/* Slot */}
+      <rect x="130" y="54" width="220" height="8" rx="3" fill="#334155" />
+      {/* Luz */}
+      <circle cx="390" cy="130" r="8" fill="#22c55e" />
+      <circle cx="390" cy="130" r="14" fill="#22c55e" fillOpacity="0.2" />
+      {/* Detalhes */}
+      <rect x="80" y="114" width="200" height="8" rx="4" fill="#334155" />
+      <text x="240" y="150" textAnchor="middle" fill="#475569" fontSize="11" fontFamily="sans-serif">Imprimindo...</text>
+    </svg>
+  );
+}
+
+const SVGS = [
+  <SvgHero key="hero" />,
+  <SvgModelo key="modelo" />,
+  <SvgTipos key="tipos" />,
+  <SvgEditor key="editor" />,
+  <SvgBanco key="banco" />,
+  <SvgProva key="prova" />,
+  <SvgImpressao key="impressao" />,
+];
+
+// ─── Componente principal ─────────────────────────────────────────────────────
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrolledVH, setScrolledVH] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = containerRef.current;
+      if (!el) return;
+      const { top } = el.getBoundingClientRect();
+      const scrolled = -top;
+      const vh = window.innerHeight;
+      setScrolledVH(Math.max(0, scrolled / vh));
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const currentStep = Math.min(Math.floor(scrolledVH), N - 1);
+  const stepProgress = scrolledVH % 1;
+
+  // Opacidade do texto: aparece em 0–0.15, some em 0.82–1.0
+  const textOpacity =
+    stepProgress < 0.15
+      ? stepProgress / 0.15
+      : stepProgress > 0.82
+      ? 1 - (stepProgress - 0.82) / 0.18
+      : 1;
+
+  const textY =
+    stepProgress < 0.15
+      ? (1 - stepProgress / 0.15) * 24
+      : stepProgress > 0.82
+      ? -((stepProgress - 0.82) / 0.18) * 24
+      : 0;
+
+  const step = STEPS[currentStep];
+
+  // SVG visível: crossfade no boundary (usa o próximo step quando progress > 0.85)
+  const svgIdx = Math.min(
+    stepProgress > 0.85 ? currentStep + 1 : currentStep,
+    SVGS.length - 1
+  );
+  const svgOpacity = Math.abs(stepProgress - 0.5) < 0.35 ? 1 : 0;
+
   return (
-    <main className="min-h-screen stripe-grid-bg">
-      {/* Faixa de marca amarela */}
-      <header className="brand-header sticky top-0 z-40">
-        <div className="mx-auto max-w-6xl px-4 flex items-center justify-between animate-fade-in-up">
-          <div className="min-w-0">
-            <h1 className="text-3xl font-bold text-slate-800">
-              ProvaMarela
-            </h1>
-            <p className="mt-1 text-sm text-slate-700">
-              Editor de questões e montagem de provas
-            </p>
+    <div ref={containerRef} style={{ height: `${(N + 1) * 100}vh` }} className="relative">
+      <div className="sticky top-0 h-screen overflow-hidden bg-slate-950 flex flex-col">
+
+        {/* Nav */}
+        <nav className="flex-none flex items-center justify-between px-8 py-5 z-10">
+          <span className="text-yellow-400 font-bold text-xl tracking-tight">ProvaMarela</span>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/dashboard"
+              className="text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1.5"
+            >
+              Pular apresentação <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-sm font-medium px-4 py-1.5 rounded-full bg-yellow-400 text-slate-900 hover:bg-yellow-300 transition-colors"
+            >
+              Entrar
+            </Link>
           </div>
-          <LoginButton />
+        </nav>
+
+        {/* Conteúdo central */}
+        <div className="flex-1 flex items-center justify-center px-8">
+
+          {/* HERO */}
+          {step.kind === "hero" && (
+            <div
+              className="flex flex-col items-center text-center"
+              style={{ opacity: stepProgress > 0.75 ? 1 - (stepProgress - 0.75) / 0.25 : 1 }}
+            >
+              <div className="w-32 h-32 mb-8">{SVGS[0]}</div>
+              <h1 className="text-6xl font-bold text-white mb-5 tracking-tight">ProvaMarela</h1>
+              <p className="text-xl text-slate-400 max-w-lg leading-relaxed">
+                Editor de questões e montagem de provas para professores
+              </p>
+              <div className="mt-14 flex flex-col items-center gap-2 text-slate-600 select-none">
+                <span className="text-xs uppercase tracking-widest">Role para ver como funciona</span>
+                <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
+              </div>
+            </div>
+          )}
+
+          {/* FEATURES */}
+          {step.kind === "feature" && (
+            <div className="w-full max-w-5xl flex items-center gap-16">
+              {/* Texto */}
+              <div
+                className="flex-1 min-w-0"
+                style={{
+                  opacity: textOpacity,
+                  transform: `translateY(${textY}px)`,
+                }}
+              >
+                <span className="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-5 block">
+                  {step.label}
+                </span>
+                <h2 className="text-4xl font-bold text-white mb-6 leading-tight">
+                  {step.title}
+                </h2>
+                <p className="text-lg text-slate-400 leading-relaxed">
+                  {step.desc}
+                </p>
+                {step.href && (
+                  <Link
+                    href={step.href}
+                    className="inline-flex items-center gap-2 mt-8 text-sm font-medium text-yellow-400 hover:text-yellow-300 transition-colors"
+                  >
+                    {step.hrefLabel} <ArrowRight className="h-4 w-4" />
+                  </Link>
+                )}
+              </div>
+
+              {/* SVG */}
+              <div
+                className="flex-1 flex items-center justify-center"
+                style={{
+                  opacity: textOpacity,
+                  transform: `translateY(${textY * 0.4}px)`,
+                }}
+              >
+                <div className="w-full max-w-md">
+                  {SVGS[Math.min(currentStep, SVGS.length - 1)]}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* CTA */}
+          {step.kind === "cta" && (
+            <div
+              className="flex flex-col items-center text-center"
+              style={{ opacity: stepProgress < 0.25 ? stepProgress / 0.25 : 1 }}
+            >
+              <h2 className="text-5xl font-bold text-white mb-5 tracking-tight">
+                Pronto para começar?
+              </h2>
+              <p className="text-slate-400 mb-10 max-w-md text-lg leading-relaxed">
+                Crie suas primeiras questões e monte a próxima prova em minutos.
+              </p>
+              <div className="flex gap-4">
+                <Link
+                  href="/editor"
+                  className="px-8 py-3 bg-yellow-400 text-slate-900 rounded-full font-semibold hover:bg-yellow-300 transition-colors text-sm"
+                >
+                  Abrir o editor
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="px-8 py-3 border border-slate-700 text-slate-300 rounded-full font-medium hover:border-slate-500 hover:text-white transition-colors text-sm"
+                >
+                  Ver todas as opções
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
-      </header>
 
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        {SHOW_METRICS && (<>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <StatCard label="Questões Criadas" value={0} tone="blue" />
-          <StatCard label="Provas Geradas" value={0} tone="green" />
-          <StatCard label="Alunos Avaliados" value={0} tone="purple" />
-        </div></>)}
-
-        <Separator className="my-8" />
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-  <ProtectedActionCard
-    href="/editor"
-    title="Nova Questão"
-    description="Crie uma nova questão no editor."
-    icon={<PlusCircle className="h-6 w-6" />}
-    accent="blue"
-  />
-
-  <ActionCard
-    href="/editor/questoes/filtro"
-    title="Banco de Questões"
-    description="Filtre, navegue e selecione questões para montar provas."
-    icon={<BookOpen className="h-6 w-6" />}
-    accent="purple"
-  />
-
-  <ActionCard
-    href="/template"
-    title="Modelo de Questão"
-    description="Copie o modelo para pré-preencher as informações da questão."
-    icon={<ClipboardCopy className="h-6 w-6" />}
-    accent="green"
-  />
-
-  <ProtectedActionCard
-    href="/minha-area"
-    title="Minha Área"
-    description="Perfil, turmas, questões salvas e provas."
-    icon={<User className="h-6 w-6" />}
-    accent="gray"
-  />
-</div>
-
+        {/* Indicador de progresso */}
+        <div className="flex-none flex justify-center gap-2 pb-8">
+          {STEPS.map((_, i) => (
+            <div
+              key={i}
+              className="rounded-full transition-all duration-500"
+              style={{
+                width: i === currentStep ? 28 : 6,
+                height: 6,
+                backgroundColor: i === currentStep ? "#fbbf24" : "#1e293b",
+              }}
+            />
+          ))}
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

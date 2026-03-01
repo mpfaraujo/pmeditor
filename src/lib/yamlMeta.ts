@@ -253,7 +253,7 @@ dificuldade: Média             # Fácil | Média | Difícil
 disciplina: ${disc.padEnd(22)}# Ex: Matemática
 assunto:                       # Ex: Álgebra Linear
 gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
-tags: []                       # Ex: [ENEM, 2024, geometria]
+tags: []                       # Palavras-chave livres (não use aqui: banca, ano, assunto)
 
 # Fonte (opcional — preencher se for questão de concurso)
 fonte: original                # original | concurso
@@ -288,7 +288,7 @@ numero:
 
 # Por item — copie e cole os blocos abaixo para quantos itens quiser
 assunto1:                      # Ex: Interpretação de texto
-tags1: []                      # Ex: [inferência, sentido]
+tags1: []                      # Palavras-chave livres
 gabarito1: A
 
 assunto2:                      # Ex: Figuras de linguagem
