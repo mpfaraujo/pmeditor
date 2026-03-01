@@ -1,7 +1,80 @@
 import areasJson from "./matematica_areas.json";
+import disciplinasJson from "./disciplinas_areas.json";
 
 export type AreasMap = Record<string, { subareas: string[] }>;
+
+// Mapa de áreas exclusivo da Matemática (retrocompatibilidade)
 export const AREAS_MAP: AreasMap = areasJson as AreasMap;
+
+// Mapa completo: disciplina → AreasMap
+// Chaves em lowercase para lookup case-insensitive
+const DISCIPLINAS_AREAS_MAP: Record<string, AreasMap> = {
+  "matemática":       AREAS_MAP,
+  "matematica":       AREAS_MAP,
+  ...(Object.fromEntries(
+    Object.entries(disciplinasJson as Record<string, AreasMap>).flatMap(([disc, areas]) => [
+      [disc.toLowerCase(), areas],
+      // aliases para nomes alternativos
+    ])
+  ) as Record<string, AreasMap>),
+  // aliases adicionais
+  "português":        (disciplinasJson as any)["Língua Portuguesa"],
+  "portugues":        (disciplinasJson as any)["Língua Portuguesa"],
+  "lingua portuguesa":(disciplinasJson as any)["Língua Portuguesa"],
+  "inglês":           (disciplinasJson as any)["Língua Inglesa"],
+  "ingles":           (disciplinasJson as any)["Língua Inglesa"],
+  "lingua inglesa":   (disciplinasJson as any)["Língua Inglesa"],
+  "espanhol":         (disciplinasJson as any)["Língua Espanhola"],
+  "lingua espanhola": (disciplinasJson as any)["Língua Espanhola"],
+  "francês":          (disciplinasJson as any)["Língua Francesa"],
+  "frances":          (disciplinasJson as any)["Língua Francesa"],
+  "lingua francesa":  (disciplinasJson as any)["Língua Francesa"],
+  "artes":            (disciplinasJson as any)["Arte"],
+  "arte":             (disciplinasJson as any)["Arte"],
+  "educação física":  (disciplinasJson as any)["Educação Física"],
+  "educacao fisica":  (disciplinasJson as any)["Educação Física"],
+  "ed. física":       (disciplinasJson as any)["Educação Física"],
+  "biologia":         (disciplinasJson as any)["Biologia"],
+  "física":           (disciplinasJson as any)["Física"],
+  "fisica":           (disciplinasJson as any)["Física"],
+  "química":          (disciplinasJson as any)["Química"],
+  "quimica":          (disciplinasJson as any)["Química"],
+  "história":         (disciplinasJson as any)["História"],
+  "historia":         (disciplinasJson as any)["História"],
+  "geografia":        (disciplinasJson as any)["Geografia"],
+  "filosofia":        (disciplinasJson as any)["Filosofia"],
+  "sociologia":       (disciplinasJson as any)["Sociologia"],
+};
+
+/**
+ * Retorna o AreasMap para uma disciplina específica.
+ * Se a disciplina não tiver mapa, retorna null.
+ */
+export function getAreasMapPorDisciplina(disciplina?: string | null): AreasMap | null {
+  if (!disciplina || disciplina.trim() === "") return null;
+  const key = disciplina.trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // sem acento para fallback
+  // Tenta com acento primeiro
+  const comAcento = disciplina.trim().toLowerCase();
+  return DISCIPLINAS_AREAS_MAP[comAcento]
+    ?? DISCIPLINAS_AREAS_MAP[key]
+    ?? null;
+}
+
+/**
+ * Retorna a lista de assuntos canônicos para uma disciplina.
+ * Se disciplina não informada ou desconhecida, retorna TODOS os assuntos.
+ */
+export function getAssuntosPorDisciplina(disciplina?: string | null): string[] {
+  const map = getAreasMapPorDisciplina(disciplina);
+  if (!map) return ASSUNTOS_CANONICOS; // fallback: todos
+  const set = new Set<string>();
+  for (const [area, { subareas }] of Object.entries(map)) {
+    set.add(area);
+    for (const s of subareas) set.add(s);
+  }
+  return [...set].sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
 
 // Mapa: variante suja do banco → nome canônico (subárea ou área)
 // Valor "" = lixo, será filtrado
@@ -192,12 +265,24 @@ const ASSUNTO_ALIASES: Record<string, string> = {
 };
 
 // Mapa lowercase → grafia canônica de todos os nomes conhecidos (áreas + subáreas)
-// Ex: "geometria plana" → "Geometria Plana", "análise combinatória" → "Análise Combinatória"
+// Inclui Matemática (AREAS_MAP) + todas as outras disciplinas (disciplinasJson)
 const CANONICAL_NAMES: Record<string, string> = {};
+
+// Matemática
 for (const [area, { subareas }] of Object.entries(AREAS_MAP)) {
   CANONICAL_NAMES[area.toLowerCase()] = area;
   for (const s of subareas) {
     CANONICAL_NAMES[s.toLowerCase()] = s;
+  }
+}
+
+// Todas as outras disciplinas
+for (const areasMap of Object.values(disciplinasJson as Record<string, AreasMap>)) {
+  for (const [area, { subareas }] of Object.entries(areasMap)) {
+    CANONICAL_NAMES[area.toLowerCase()] = area;
+    for (const s of subareas) {
+      CANONICAL_NAMES[s.toLowerCase()] = s;
+    }
   }
 }
 
@@ -318,34 +403,47 @@ export const ASSUNTOS_CANONICOS: string[] = (() => {
  * Dado uma lista de assuntos (já normalizados), agrupa por área.
  * Reconhece tanto nomes de subáreas quanto nomes de áreas.
  * Assuntos que não pertencem a nenhuma área vão para "Outros".
+ *
+ * @param assuntos  Lista de assuntos a agrupar
+ * @param disciplina  Disciplina opcional para usar o mapa correto
  */
-export function groupAssuntosByArea(assuntos: string[]): { area: string; assuntos: string[] }[] {
+export function groupAssuntosByArea(
+  assuntos: string[],
+  disciplina?: string | null
+): { area: string; assuntos: string[] }[] {
+  // Usa o mapa da disciplina se disponível; senão combina todos os mapas conhecidos
+  const specificMap = getAreasMapPorDisciplina(disciplina);
+  const allMaps: AreasMap[] = specificMap
+    ? [specificMap]
+    : [
+        AREAS_MAP,
+        ...Object.values(disciplinasJson as Record<string, AreasMap>),
+      ];
+
   const assuntoSet = new Set(assuntos);
   const used = new Set<string>();
   const groups: { area: string; assuntos: string[] }[] = [];
 
-  for (const [area, { subareas }] of Object.entries(AREAS_MAP)) {
-    const matched: string[] = [];
+  for (const map of allMaps) {
+    for (const [area, { subareas }] of Object.entries(map)) {
+      if (used.has(area)) continue; // já processada por outro mapa
 
-    // Se o próprio nome da área aparece como assunto
-    if (assuntoSet.has(area)) {
-      matched.push(area);
-    }
+      const matched: string[] = [];
 
-    // Subáreas que existem na lista
-    for (const s of subareas) {
-      if (assuntoSet.has(s)) {
-        matched.push(s);
+      if (assuntoSet.has(area)) matched.push(area);
+      for (const s of subareas) {
+        if (assuntoSet.has(s)) matched.push(s);
       }
-    }
 
-    if (matched.length > 0) {
-      groups.push({ area, assuntos: matched });
-      matched.forEach((s) => used.add(s));
+      if (matched.length > 0) {
+        groups.push({ area, assuntos: matched });
+        matched.forEach((s) => used.add(s));
+        used.add(area);
+      }
     }
   }
 
-  // Assuntos que não bateram com nenhuma subárea/área conhecida
+  // Assuntos que não bateram com nenhuma área conhecida
   const remaining = assuntos.filter((s) => !used.has(s));
   if (remaining.length > 0) {
     groups.push({ area: "Outros", assuntos: remaining.sort() });

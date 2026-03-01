@@ -4,7 +4,7 @@ import type {
   Difficulty,
   AnswerKey,
 } from "@/components/editor/QuestionMetaBar";
-import { normalizeAssunto } from "@/data/assuntos";
+import { normalizeAssunto, normalizeDisciplina } from "@/data/assuntos";
 
 /** Mapa de nomes aceitos no YAML → QuestionType interno */
 const TIPO_MAP: Record<string, QuestionType> = {
@@ -148,7 +148,7 @@ export function parseYamlMeta(
       }
       case "disciplina": {
         const d = val.replace(/^["']|["']$/g, "").trim();
-        if (d) result.disciplina = d;
+        if (d) result.disciplina = normalizeDisciplina(d) || d;
         break;
       }
       case "assunto": {

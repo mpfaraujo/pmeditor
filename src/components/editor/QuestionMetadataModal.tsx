@@ -268,6 +268,7 @@ export function QuestionMetadataModal({
                 placeholder="Ex: Geometria Analítica"
                 value={value.assunto ?? ""}
                 onChange={(v) => set({ assunto: v })}
+                disciplina={value.disciplina}
               />
             </div>
           )}
@@ -385,6 +386,7 @@ export function QuestionMetadataModal({
                       placeholder="Assunto"
                       value={item.assunto ?? ""}
                       onChange={(v) => onItemMetaChangeAtPos?.(item.pos, { assunto: v })}
+                      disciplina={value.disciplina}
                     />
                     <ItemTagsInput
                       initialTags={item.tags ?? []}

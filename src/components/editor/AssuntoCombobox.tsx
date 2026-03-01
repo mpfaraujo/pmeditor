@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { ASSUNTOS_CANONICOS, normalizeAssunto } from "@/data/assuntos";
+import { getAssuntosPorDisciplina, normalizeAssunto } from "@/data/assuntos";
 import { cn } from "@/lib/utils";
 
 interface AssuntoComboboxProps {
@@ -9,6 +9,7 @@ interface AssuntoComboboxProps {
   onChange: (v: string) => void;
   placeholder?: string;
   className?: string;
+  disciplina?: string;
 }
 
 export function AssuntoCombobox({
@@ -16,7 +17,9 @@ export function AssuntoCombobox({
   onChange,
   placeholder = "Assunto",
   className,
+  disciplina,
 }: AssuntoComboboxProps) {
+  const assuntos = getAssuntosPorDisciplina(disciplina);
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(value);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -39,10 +42,10 @@ export function AssuntoCombobox({
   }, []);
 
   const filtered = inputValue.trim()
-    ? ASSUNTOS_CANONICOS.filter((a) =>
+    ? assuntos.filter((a) =>
         a.toLowerCase().includes(inputValue.trim().toLowerCase())
       )
-    : ASSUNTOS_CANONICOS;
+    : assuntos;
 
   const handleSelect = (item: string) => {
     setInputValue(item);
