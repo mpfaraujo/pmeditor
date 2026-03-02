@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, User, Users, FileText, ClipboardList, ShieldCheck } from "lucide-react";
+import { ArrowLeft, User, Users, FileText, ClipboardList, ShieldCheck, BookOpen } from "lucide-react";
+import Link from "next/link";
 import { ProfileTab } from "@/components/minha-area/ProfileTab";
 import { TurmasTab } from "@/components/minha-area/TurmasTab";
 import { QuestoesTab } from "@/components/minha-area/QuestoesTab";
@@ -74,6 +75,17 @@ function MinhaAreaContent() {
             </Button>
           </div>
         )}
+
+        {/* Colaborar com assuntos */}
+        <div className="mb-6 p-4 border border-slate-200 bg-slate-50 rounded-xl flex items-center justify-between">
+          <div className="flex items-center gap-2 text-slate-600">
+            <BookOpen className="h-4 w-4" />
+            <span className="text-sm">Quer propor ajustes nos assuntos da sua disciplina?</span>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/editor/assuntos">Propor ajustes</Link>
+          </Button>
+        </div>
 
         {/* Tabs com identidade ProvaMarela */}
         <Tabs defaultValue={defaultTab} className="space-y-6">

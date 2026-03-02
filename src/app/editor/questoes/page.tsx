@@ -56,7 +56,7 @@ const ITEMS_PER_PAGE = 30;
 
 export default function QuestoesPage() {
   const router = useRouter();
-  const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll } = useProva();
+  const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll, selectedQuestions } = useProva();
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -219,10 +219,12 @@ export default function QuestoesPage() {
   };
 
   // Filtrar questões se toggle ativo
+  // Quando showOnlySelected, usa selectedQuestions do contexto diretamente —
+  // assim mostra todas as selecionadas independente dos filtros atuais.
   const displayItems = useMemo(() => {
     if (!showOnlySelected) return items;
-    return items.filter((q) => isSelected(q.metadata.id));
-  }, [items, showOnlySelected, isSelected]);
+    return selectedQuestions as QuestionItem[];
+  }, [items, showOnlySelected, selectedQuestions]);
 
   // Reset index quando toggle muda
   useEffect(() => {

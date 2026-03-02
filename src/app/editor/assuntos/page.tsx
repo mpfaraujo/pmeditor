@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import disciplinasJson from "@/data/disciplinas_areas.json";
 import matematicaJson from "@/data/matematica_areas.json";
+import { useAuth } from "@/contexts/AuthContext";
+import { LoginButton } from "@/components/auth/LoginButton";
+import { ArrowLeft } from "lucide-react";
 
 // ──────────────────────────────────────────────
 // Tipos
@@ -21,8 +25,6 @@ const BASE_DATA: DisciplinasData = {
 };
 
 const DISCIPLINAS = Object.keys(BASE_DATA);
-
-const CODIGO_ACESSO = "assuntos2024";
 
 // ──────────────────────────────────────────────
 // Utilitários
@@ -228,9 +230,8 @@ function SubareaRow({
 // ──────────────────────────────────────────────
 
 export default function AssuntosPage() {
-  const [codigo, setCodigo] = useState("");
-  const [autenticado, setAutenticado] = useState(false);
-  const [erroLogin, setErroLogin] = useState(false);
+  const router = useRouter();
+  const { isLoggedIn, loading } = useAuth();
 
   // Disciplina selecionada
   const [disciplinaAtual, setDisciplinaAtual] = useState<string>(DISCIPLINAS[0]);
@@ -242,16 +243,10 @@ export default function AssuntosPage() {
   const [jsonExportado, setJsonExportado] = useState<string | null>(null);
   const [copiado, setCopiado] = useState(false);
 
-  // ── Autenticação ──────────────────────────────
-
-  const handleLogin = () => {
-    if (codigo.trim() === CODIGO_ACESSO) {
-      setAutenticado(true);
-      setErroLogin(false);
-    } else {
-      setErroLogin(true);
-    }
-  };
+  // Envio por email
+  const [remetente, setRemetente] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [statusEnvio, setStatusEnvio] = useState<"idle" | "ok" | "erro">("idle");
 
   // ── Mutadores ─────────────────────────────────
 
@@ -319,6 +314,86 @@ export default function AssuntosPage() {
     });
   };
 
+  // ── Diff em relação ao original ───────────────
+
+  const gerarDiff = (original: AreasMap, editado: AreasMap): string => {
+    const lines: string[] = [];
+
+    const areasOrig = Object.keys(original);
+    const areasEdit = Object.keys(editado);
+    const setOrig = new Set(areasOrig);
+    const setEdit = new Set(areasEdit);
+
+    // Áreas removidas
+    for (const area of areasOrig) {
+      if (!setEdit.has(area)) {
+        lines.push(`- ÁREA REMOVIDA: ${area}`);
+        for (const s of original[area].subareas) lines.push(`    - ${s}`);
+      }
+    }
+
+    // Áreas adicionadas
+    for (const area of areasEdit) {
+      if (!setOrig.has(area)) {
+        lines.push(`+ ÁREA ADICIONADA: ${area}`);
+        for (const s of editado[area].subareas) lines.push(`    + ${s}`);
+      }
+    }
+
+    // Áreas em comum — diferenças nos assuntos
+    for (const area of areasOrig) {
+      if (!setEdit.has(area)) continue;
+      const subsOrig = new Set(original[area].subareas.filter(s => s.trim()));
+      const subsEdit = new Set(editado[area].subareas.filter(s => s.trim()));
+      const removidos = [...subsOrig].filter(s => !subsEdit.has(s));
+      const adicionados = [...subsEdit].filter(s => !subsOrig.has(s));
+      if (removidos.length > 0 || adicionados.length > 0) {
+        lines.push(`  ÁREA: ${area}`);
+        for (const s of removidos) lines.push(`    - ${s}`);
+        for (const s of adicionados) lines.push(`    + ${s}`);
+      }
+    }
+
+    return lines.length > 0 ? lines.join("\n") : "(nenhuma alteração detectada)";
+  };
+
+  // ── Enviar JSON por email ──────────────────────
+
+  const enviarPorEmail = async () => {
+    if (!jsonExportado) return;
+    setEnviando(true);
+    setStatusEnvio("idle");
+    try {
+      const original = BASE_DATA[disciplinaAtual] ?? {};
+      const editadoClean: AreasMap = {};
+      for (const [area, { subareas }] of Object.entries(dados[disciplinaAtual] ?? {})) {
+        const filtered = subareas.filter((s) => s.trim() !== "");
+        if (area.trim()) editadoClean[area.trim()] = { subareas: filtered };
+      }
+      const diff = gerarDiff(original, editadoClean);
+
+      const res = await fetch(
+        "https://mpfaraujo.com.br/guardafiguras/api/send-assuntos.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            json: jsonExportado,
+            disciplina: disciplinaAtual,
+            remetente: remetente.trim(),
+            diff,
+          }),
+        }
+      );
+      const data = await res.json();
+      setStatusEnvio(data.success ? "ok" : "erro");
+    } catch {
+      setStatusEnvio("erro");
+    } finally {
+      setEnviando(false);
+    }
+  };
+
   // ── Exportar JSON ─────────────────────────────
 
   const gerarJson = () => {
@@ -346,35 +421,27 @@ export default function AssuntosPage() {
     }
   };
 
-  // ── Tela de login ─────────────────────────────
+  // ── Gate de autenticação ──────────────────────
 
-  if (!autenticado) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100">
-        <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm">
-          <h1 className="text-xl font-bold text-slate-800 mb-1">Editar Assuntos</h1>
+        <span className="text-sm text-slate-400">Carregando...</span>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-100">
+        <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm text-center">
+          <h1 className="text-xl font-bold text-slate-800 mb-2">Editar Assuntos</h1>
           <p className="text-sm text-slate-500 mb-6">
-            Digite o código de acesso para continuar.
+            Você precisa estar logado para editar os assuntos.
           </p>
-          <input
-            type="password"
-            autoFocus
-            suppressHydrationWarning
-            className="w-full border rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Código de acesso"
-            value={codigo}
-            onChange={(e) => setCodigo(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-          />
-          {erroLogin && (
-            <p className="text-xs text-red-500 mb-3">Código incorreto. Tente novamente.</p>
-          )}
-          <button
-            onClick={handleLogin}
-            className="w-full bg-blue-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-700"
-          >
-            Entrar
-          </button>
+          <div className="flex justify-center">
+            <LoginButton />
+          </div>
         </div>
       </div>
     );
@@ -389,6 +456,13 @@ export default function AssuntosPage() {
       <div className="max-w-3xl mx-auto py-8 px-4">
         {/* Cabeçalho */}
         <div className="mb-6">
+          <button
+            onClick={() => router.push("/minha-area")}
+            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-4 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar para Minha Área
+          </button>
           <h1 className="text-2xl font-bold text-slate-800">Editar Assuntos por Disciplina</h1>
           <p className="text-sm text-slate-500 mt-1">
             Edite as áreas e assuntos de cada disciplina. Ao terminar, clique em{" "}
@@ -454,7 +528,7 @@ export default function AssuntosPage() {
 
         {/* Exportar */}
         <div className="bg-white rounded-xl shadow-sm border p-4">
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3 mb-3 flex-wrap">
             <button
               onClick={gerarJson}
               className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
@@ -469,21 +543,47 @@ export default function AssuntosPage() {
                 {copiado ? "✓ Copiado!" : "Copiar"}
               </button>
             )}
-            {jsonExportado && (
-              <span className="text-xs text-slate-400">
-                Envie este JSON para o administrador atualizar o arquivo.
-              </span>
-            )}
           </div>
 
           {jsonExportado && (
-            <textarea
-              id="json-output"
-              readOnly
-              value={jsonExportado}
-              rows={14}
-              className="w-full font-mono text-xs border rounded-lg p-3 bg-slate-50 focus:outline-none resize-none"
-            />
+            <>
+              <textarea
+                id="json-output"
+                readOnly
+                value={jsonExportado}
+                rows={14}
+                className="w-full font-mono text-xs border rounded-lg p-3 bg-slate-50 focus:outline-none resize-none mb-4"
+              />
+
+              {/* Envio por email */}
+              <div className="border-t pt-4">
+                <p className="text-xs text-slate-500 mb-3">
+                  Envie diretamente para o administrador atualizar o arquivo:
+                </p>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <input
+                    type="text"
+                    placeholder="Seu nome (opcional)"
+                    value={remetente}
+                    onChange={(e) => setRemetente(e.target.value)}
+                    className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+                  />
+                  <button
+                    onClick={enviarPorEmail}
+                    disabled={enviando}
+                    className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    {enviando ? "Enviando..." : "Enviar para o administrador"}
+                  </button>
+                  {statusEnvio === "ok" && (
+                    <span className="text-sm text-emerald-600 font-medium">✓ Enviado com sucesso!</span>
+                  )}
+                  {statusEnvio === "erro" && (
+                    <span className="text-sm text-red-600">Falha ao enviar. Copie o JSON manualmente.</span>
+                  )}
+                </div>
+              </div>
+            </>
           )}
         </div>
 
