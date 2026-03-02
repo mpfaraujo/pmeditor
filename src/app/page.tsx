@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -13,8 +13,14 @@ type Step =
       label: string;
       title: string;
       desc: string;
+      svgIdx: number;
       href?: string;
       hrefLabel?: string;
+    }
+  | {
+      kind: "section";
+      title: string;
+      subtitle: string;
     }
   | { kind: "cta" };
 
@@ -22,11 +28,19 @@ type Step =
 
 const STEPS: Step[] = [
   { kind: "hero" },
+
+  // ── Editor de Questões ──────────────────────────────────────────────────
+  {
+    kind: "section",
+    title: "Editor de Questões",
+    subtitle: "Crie questões com metadados, fórmulas e imagens — cole de LaTeX, Word ou PDF e deixe o banco organizado.",
+  },
   {
     kind: "feature",
     label: "Passo 1 — Modelo",
     title: "Preencha as informações da questão",
     desc: "Copie um template simples com disciplina, assunto, tipo e gabarito. Preencha no bloco de notas e cole no editor — as informações já chegam preenchidas automaticamente.",
+    svgIdx: 0,
     href: "/template",
     hrefLabel: "Ver modelo de informações",
   },
@@ -35,35 +49,55 @@ const STEPS: Step[] = [
     label: "Passo 2 — Tipos de questão",
     title: "Quatro formatos de questão",
     desc: "Questões objetivas (múltipla escolha ou certo/errado), questões discursivas com gabarito comentado, conjuntos de itens objetivos com texto base compartilhado — e conjuntos discursivos com partes a), b), c), cada uma com sua resposta.",
+    svgIdx: 1,
   },
   {
     kind: "feature",
     label: "Passo 3 — Editor",
     title: "Digite ou cole a questão",
     desc: "O editor aceita texto puro, LaTeX, Word e PDF. Alternativas, fórmulas matemáticas e imagens são reconhecidas automaticamente ao colar.",
+    svgIdx: 2,
     href: "/editor",
     hrefLabel: "Abrir editor",
+  },
+
+  // ── Montador de Provas ──────────────────────────────────────────────────
+  {
+    kind: "section",
+    title: "Montador de Provas",
+    subtitle: "Selecione questões do banco, personalize o layout e gere uma prova ou lista de exercício pronta para imprimir.",
   },
   {
     kind: "feature",
     label: "Passo 4 — Banco",
-    title: "Organize por disciplina e assunto",
-    desc: "Cada questão fica salva com seus metadados. Filtre por disciplina, assunto, banca ou ano — e encontre o que precisa em segundos.",
+    title: "Encontre as questões certas",
+    desc: "Filtre o banco por disciplina, assunto, banca ou ano — e selecione exatamente o que precisa para a próxima prova.",
+    svgIdx: 3,
     href: "/editor/questoes/filtro",
     hrefLabel: "Ver banco de questões",
   },
   {
     kind: "feature",
-    label: "Passo 5 — Prova",
-    title: "Monte a prova em minutos",
-    desc: "Selecione as questões, escolha o layout e o cabeçalho. Gere tipos diferentes com alternativas embaralhadas para evitar cola entre alunos.",
+    label: "Passo 5 — Montar",
+    title: "Monte a prova ou lista de exercício",
+    desc: "Selecione as questões e escolha o formato: prova com cabeçalho completo ou lista de exercício. Gere tipos diferentes com alternativas embaralhadas para evitar cola entre alunos.",
+    svgIdx: 4,
   },
   {
     kind: "feature",
-    label: "Passo 6 — Impressão",
+    label: "Passo 6 — Visual",
+    title: "Personalize a apresentação",
+    desc: "Escolha entre 11 modelos de cabeçalho e 5 estilos de numeração de questão. Do clássico ao minimalista — a prova fica com a cara da sua escola.",
+    svgIdx: 5,
+  },
+  {
+    kind: "feature",
+    label: "Passo 7 — Impressão",
     title: "Imprima com gabarito",
     desc: "Visualize a prova em A4 antes de imprimir. O gabarito é gerado automaticamente — inclusive para múltiplos tipos de prova.",
+    svgIdx: 6,
   },
+
   { kind: "cta" },
 ];
 
@@ -326,14 +360,125 @@ function SvgImpressao() {
   );
 }
 
-const SVGS = [
-  <SvgHero key="hero" />,
-  <SvgModelo key="modelo" />,
-  <SvgTipos key="tipos" />,
-  <SvgEditor key="editor" />,
-  <SvgBanco key="banco" />,
-  <SvgProva key="prova" />,
-  <SvgImpressao key="impressao" />,
+function SvgVisual() {
+  const Paper = ({ x, y, w, h, children }: { x: number; y: number; w: number; h: number; children?: ReactNode }) => (
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx="4" fill="white" />
+      {children}
+    </g>
+  );
+
+  return (
+    <svg viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      {/* ── Decoradores ── */}
+      <text x="8" y="14" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1">DECORADORES DE QUESTÃO</text>
+
+      {/* V0 Classic */}
+      <Paper x={8} y={20} w={84} h={36}>
+        <rect x={12} y={26} width={34} height={14} rx="2" fill="#e5e7eb" stroke="#374151" strokeWidth="0.5" />
+        <text x={14} y={35} fill="#111827" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">Questão 1</text>
+        <line x1={48} y1={40} x2={88} y2={40} stroke="#374151" strokeWidth="0.5" />
+        <text x={12} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Classic</text>
+      </Paper>
+
+      {/* V1 Bracket */}
+      <Paper x={104} y={20} w={84} h={36}>
+        <path d="M 112 25 L 109 25 L 109 41 L 112 41" fill="none" stroke="#374151" strokeWidth="1" />
+        <text x={115} y={36} fill="#111827" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">Questão 2</text>
+        <line x1={109} y1={41} x2={184} y2={41} stroke="#374151" strokeWidth="0.5" />
+        <text x={104} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Bracket</text>
+      </Paper>
+
+      {/* V2 Badge */}
+      <Paper x={200} y={20} w={84} h={36}>
+        <circle cx={220} cy={33} r="9" fill="#111827" />
+        <text x={220} y={37} textAnchor="middle" fill="white" fontSize="8" fontFamily="sans-serif" fontWeight="700">3</text>
+        <text x={200} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Badge</text>
+      </Paper>
+
+      {/* V3 Minimal */}
+      <Paper x={296} y={20} w={84} h={36}>
+        <text x={304} y={40} fill="#111827" fontSize="14" fontFamily="sans-serif" fontWeight="700">4</text>
+        <text x={296} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Minimal</text>
+      </Paper>
+
+      {/* V4 Corner */}
+      <Paper x={392} y={20} w={84} h={36}>
+        <path d="M 396 34 L 396 26 L 404 26" fill="none" stroke="#374151" strokeWidth="1.2" />
+        <text x={407} y={36} fill="#111827" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">Questão 5</text>
+        <line x1={396} y1={40} x2={472} y2={40} stroke="#374151" strokeWidth="0.5" strokeDasharray="2 2" />
+        <text x={392} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Corner</text>
+      </Paper>
+
+      {/* ── Cabeçalhos ── */}
+      <text x="8" y="82" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1">MODELOS DE CABEÇALHO (11 variantes)</text>
+
+      {/* H0: clássico — logo centro + linhas de campos */}
+      <Paper x={8} y={90} w={148} h={104}>
+        <rect x={58} y={96} width={48} height={14} rx="2" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="0.5" />
+        <text x={82} y={105} textAnchor="middle" fill="#9ca3af" fontSize="5" fontFamily="sans-serif">Logo</text>
+        <text x={82} y={118} textAnchor="middle" fill="#374151" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">ESCOLA ESTADUAL</text>
+        <line x1={12} y1={122} x2={152} y2={122} stroke="#374151" strokeWidth="0.6" />
+        {[12, 84].map((x, i) => (
+          <g key={x}>
+            <text x={x} y={131} fill="#6b7280" fontSize="4.5" fontFamily="sans-serif">{["Nome:", "Turma:"][i]}</text>
+            <line x1={x} y1={136} x2={x + 64} y2={136} stroke="#d1d5db" strokeWidth="0.5" />
+          </g>
+        ))}
+        {[12, 84].map((x, i) => (
+          <g key={x + 100}>
+            <text x={x} y={146} fill="#6b7280" fontSize="4.5" fontFamily="sans-serif">{["Professor:", "Disciplina:"][i]}</text>
+            <line x1={x} y1={151} x2={x + 64} y2={151} stroke="#d1d5db" strokeWidth="0.5" />
+          </g>
+        ))}
+        <text x={8} y={186} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Clássico</text>
+      </Paper>
+
+      {/* H1: sidebar — logo barra lateral esquerda + campos à direita */}
+      <Paper x={168} y={90} w={148} h={104}>
+        <rect x={168} y={90} width={26} height={104} rx="4" fill="#1e293b" />
+        <text x={181} y={145} textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="sans-serif" transform="rotate(-90 181 145)">LOGO</text>
+        <text x={200} y={102} fill="#374151" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">ESCOLA EST.</text>
+        <line x1={198} y1={106} x2={312} y2={106} stroke="#374151" strokeWidth="0.5" />
+        {[["Nome:", 114], ["Turma:", 122], ["Prof:", 130], ["Disc:", 138]].map(([lbl, y]) => (
+          <g key={String(y)}>
+            <text x={200} y={Number(y)} fill="#6b7280" fontSize="4.5" fontFamily="sans-serif">{String(lbl)}</text>
+            <line x1={220} y1={Number(y) + 2} x2={312} y2={Number(y) + 2} stroke="#d1d5db" strokeWidth="0.5" />
+          </g>
+        ))}
+        <text x={168} y={186} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Sidebar</text>
+      </Paper>
+
+      {/* H2: grade com células */}
+      <Paper x={328} y={90} w={148} h={104}>
+        <rect x={328} y={90} width={148} height={20} rx="4" fill="#1e293b" />
+        <rect x={328} y={102} width={148} height={8} rx="0" fill="#1e293b" />
+        <text x={402} y={101} textAnchor="middle" fill="white" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">ESCOLA ESTADUAL</text>
+        {[0, 1, 2, 3].map((i) => (
+          <g key={i}>
+            <rect x={328 + (i % 2) * 74} y={112 + Math.floor(i / 2) * 22} width={74} height={20} fill="white" stroke="#e5e7eb" strokeWidth="0.5" />
+            <text x={332 + (i % 2) * 74} y={122 + Math.floor(i / 2) * 22} fill="#6b7280" fontSize="4.5" fontFamily="sans-serif">
+              {["Nome:", "Turma:", "Professor:", "Disciplina:"][i]}
+            </text>
+          </g>
+        ))}
+        <text x={328} y={186} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Grade</text>
+      </Paper>
+
+    </svg>
+  );
+}
+
+// SVGs para os feature steps (índice = svgIdx do step)
+const FEATURE_SVGS = [
+  <SvgModelo key="modelo" />,    // 0
+  <SvgTipos key="tipos" />,      // 1
+  <SvgEditor key="editor" />,    // 2
+  <SvgBanco key="banco" />,      // 3
+  <SvgProva key="prova" />,      // 4
+  <SvgVisual key="visual" />,    // 5
+  <SvgImpressao key="impressao" />, // 6
 ];
 
 // ─── Componente principal ─────────────────────────────────────────────────────
@@ -376,13 +521,6 @@ export default function Home() {
 
   const step = STEPS[currentStep];
 
-  // SVG visível: crossfade no boundary (usa o próximo step quando progress > 0.85)
-  const svgIdx = Math.min(
-    stepProgress > 0.85 ? currentStep + 1 : currentStep,
-    SVGS.length - 1
-  );
-  const svgOpacity = Math.abs(stepProgress - 0.5) < 0.35 ? 1 : 0;
-
   return (
     <div ref={containerRef} style={{ height: `${(N + 1) * 100}vh` }} className="relative">
       <div className="sticky top-0 h-screen overflow-hidden bg-slate-950 flex flex-col">
@@ -415,13 +553,35 @@ export default function Home() {
               className="flex flex-col items-center text-center"
               style={{ opacity: stepProgress > 0.75 ? 1 - (stepProgress - 0.75) / 0.25 : 1 }}
             >
-              <div className="w-32 h-32 mb-8">{SVGS[0]}</div>
+              <div className="w-32 h-32 mb-8"><SvgHero /></div>
               <h1 className="text-6xl font-bold text-white mb-5 tracking-tight">ProvaMarela</h1>
               <p className="text-xl text-slate-400 max-w-lg leading-relaxed">
                 Editor de questões e montagem de provas para professores
               </p>
               <div className="mt-14 flex flex-col items-center gap-2 text-slate-600 select-none">
                 <span className="text-xs uppercase tracking-widest">Role para ver como funciona</span>
+                <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
+              </div>
+            </div>
+          )}
+
+          {/* SEÇÃO — divisor entre serviços */}
+          {step.kind === "section" && (
+            <div
+              className="flex flex-col items-center text-center max-w-2xl"
+              style={{
+                opacity: textOpacity,
+                transform: `translateY(${textY}px)`,
+              }}
+            >
+              <h2 className="text-6xl font-bold text-white mb-6 tracking-tight">
+                {step.title}
+              </h2>
+              <p className="text-xl text-slate-400 leading-relaxed">
+                {step.subtitle}
+              </p>
+              <div className="mt-12 text-slate-600 select-none flex flex-col items-center gap-1">
+                <span className="text-xs uppercase tracking-widest">Continue rolando</span>
                 <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
               </div>
             </div>
@@ -466,7 +626,7 @@ export default function Home() {
                 }}
               >
                 <div className="w-full max-w-md">
-                  {SVGS[Math.min(currentStep, SVGS.length - 1)]}
+                  {FEATURE_SVGS[step.svgIdx]}
                 </div>
               </div>
             </div>
@@ -503,18 +663,33 @@ export default function Home() {
         </div>
 
         {/* Indicador de progresso */}
-        <div className="flex-none flex justify-center gap-2 pb-8">
-          {STEPS.map((_, i) => (
-            <div
-              key={i}
-              className="rounded-full transition-all duration-500"
-              style={{
-                width: i === currentStep ? 28 : 6,
-                height: 6,
-                backgroundColor: i === currentStep ? "#fbbf24" : "#1e293b",
-              }}
-            />
-          ))}
+        <div className="flex-none flex justify-center items-center gap-2 pb-8">
+          {STEPS.map((s, i) => {
+            const isSection = s.kind === "section";
+            const isCurrent = i === currentStep;
+            return (
+              <div
+                key={i}
+                className="transition-all duration-500"
+                style={
+                  isSection
+                    ? {
+                        width: 6,
+                        height: 6,
+                        transform: "rotate(45deg)",
+                        backgroundColor: isCurrent ? "#fbbf24" : "#334155",
+                        borderRadius: 1,
+                      }
+                    : {
+                        width: isCurrent ? 28 : 6,
+                        height: 6,
+                        borderRadius: 9999,
+                        backgroundColor: isCurrent ? "#fbbf24" : "#1e293b",
+                      }
+                }
+              />
+            );
+          })}
         </div>
       </div>
     </div>
