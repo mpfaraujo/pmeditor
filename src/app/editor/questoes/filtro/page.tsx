@@ -53,6 +53,7 @@ interface FilterValues {
   assuntos: string[];
   tipos: string[];
   dificuldades: string[];
+  nivel: string;
   tags: string;
 }
 
@@ -74,6 +75,7 @@ export default function FiltroQuestoesPage() {
     assuntos: [],
     tipos: [],
     dificuldades: [],
+    nivel: "",
     tags: "",
   });
 
@@ -150,15 +152,16 @@ export default function FiltroQuestoesPage() {
 
   // Recarregar assuntos e atualizar contagem quando filtros mudam
   useEffect(() => {
-    loadFilterOptions(filters.disciplinas);
+    loadFilterOptions(filters.disciplinas, filters.nivel);
     updateCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sourceKind, rootType, selectedConcursos, selectedAnos, myQuestions]);
 
-  const loadFilterOptions = async (disciplinas: string[] = []) => {
+  const loadFilterOptions = async (disciplinas: string[] = [], nivel: string = "") => {
     try {
       const params = new URLSearchParams();
       disciplinas.forEach(d => params.append("disciplinas[]", d));
+      if (nivel) params.append("nivel", nivel);
 
       const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
         headers: { "X-Questions-Token": TOKEN },
@@ -237,6 +240,7 @@ export default function FiltroQuestoesPage() {
       if (rawAssuntos.length) rawAssuntos.forEach(a => q.append("assuntos[]", a));
       if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos[]", t));
       if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades[]", d));
+      if (filters.nivel) q.append("niveis[]", filters.nivel);
       if (filters.tags) q.set("tags", filters.tags);
       if (sourceKind) q.set("source_kind", sourceKind);
       if (rootType) q.set("root_type", rootType);
@@ -264,7 +268,7 @@ export default function FiltroQuestoesPage() {
     }
   };
 
-  const toggleFilter = (key: keyof Omit<FilterValues, "tags">, value: string) => {
+  const toggleFilter = (key: keyof Pick<FilterValues, "disciplinas" | "assuntos" | "tipos" | "dificuldades">, value: string) => {
     setFilters(prev => {
       const current = prev[key];
       const updated = current.includes(value)
@@ -302,6 +306,7 @@ export default function FiltroQuestoesPage() {
       assuntos: turma.filtros.assuntos || [],
       tipos: turma.filtros.tipos || [],
       dificuldades: turma.filtros.dificuldades || [],
+      nivel: (turma.filtros as any).niveis?.[0] || (turma.filtros as any).nivel || "",
       tags: turma.filtros.tags || "",
     });
     setSourceKind(turma.filtros.sourceKind || "");
@@ -335,6 +340,7 @@ export default function FiltroQuestoesPage() {
     if (rawAssuntosNav.length) rawAssuntosNav.forEach(a => q.append("assuntos", a));
     if (filters.tipos.length) filters.tipos.forEach(t => q.append("tipos", t));
     if (filters.dificuldades.length) filters.dificuldades.forEach(d => q.append("dificuldades", d));
+    if (filters.nivel) q.append("niveis", filters.nivel);
     if (filters.tags) q.set("tags", filters.tags);
     if (sourceKind) q.set("source_kind", sourceKind);
     if (rootType) q.set("root_type", rootType);
@@ -424,6 +430,27 @@ export default function FiltroQuestoesPage() {
                         <Separator />
                       </>
                     )}
+
+                    {/* Nível de Ensino */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-bold text-slate-700">Nível de Ensino</Label>
+                      <Select
+                        value={filters.nivel || "todos"}
+                        onValueChange={(v) => setFilters(prev => ({ ...prev, nivel: v === "todos" ? "" : v, disciplinas: [], assuntos: [] }))}
+                      >
+                        <SelectTrigger className="h-9">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="todos">Todos os níveis</SelectItem>
+                          <SelectItem value="fundamental">Fundamental</SelectItem>
+                          <SelectItem value="medio">Médio</SelectItem>
+                          <SelectItem value="superior">Superior</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <Separator />
 
                     {/* Disciplinas */}
                     <div className="space-y-3">

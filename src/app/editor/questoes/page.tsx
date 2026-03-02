@@ -44,6 +44,7 @@ type FilterValues = {
   assuntos: string[];
   tipos: string[];
   dificuldades: string[];
+  niveis: string[];
   tags: string;
   sourceKind: string;
   rootType: string;
@@ -76,6 +77,7 @@ export default function QuestoesPage() {
       assuntos: searchParams.getAll("assuntos"),
       tipos: searchParams.getAll("tipos"),
       dificuldades: searchParams.getAll("dificuldades"),
+      niveis: searchParams.getAll("niveis"),
       tags: searchParams.get("tags") || "",
       sourceKind: searchParams.get("source_kind") || "",
       rootType: searchParams.get("root_type") || "",
@@ -99,6 +101,7 @@ export default function QuestoesPage() {
       if (filters.assuntos?.length) baseParams.assuntos = filters.assuntos;
       if (filters.tipos?.length) baseParams.tipos = filters.tipos;
       if (filters.dificuldades?.length) baseParams.dificuldades = filters.dificuldades;
+      if (filters.niveis?.length) baseParams.niveis = filters.niveis;
       if (filters.tags) baseParams.tags = filters.tags;
       if (filters.sourceKind) baseParams.sourceKind = filters.sourceKind;
       if (filters.rootType) baseParams.rootType = filters.rootType;

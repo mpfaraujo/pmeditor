@@ -517,9 +517,32 @@ POST https://mpfaraujo.com.br/guardafiguras/api/upload.php
 
 ## Planos futuros
 
-- [ ] Sistema de curtidas e flags para questoes (plano em `C:\Users\mpfar\.claude\plans\keen-leaping-lampson.md`)
-- [ ] Turmas — professor cadastra turmas com filtros de assuntos pre-definidos, facilitando busca de questoes relevantes
-- [ ] Provas salvas — salvar/recuperar provas e listas de exercicio (precisa de endpoint + UI de salvar/carregar em varias paginas)
+- [x] Turmas — IMPLEMENTADO (back + front completos)
+- [x] Provas salvas — IMPLEMENTADO (back + front completos)
+
+- [ ] Sistema de curtidas e flags (plano em `C:\Users\mpfar\.claude\plans\keen-leaping-lampson.md`)
+  - 0% implementado — precisa de back (tabela + vote.php + list.php) e front (QuestionCard)
+  - Coração: toggle (curtir/descurtir), pois acidente e comum
+  - Flags: definitivas, abre modal com opcoes (conteudo improprio, erro no enunciado, gabarito errado, duplicada)
+  - Flag "duplicada": campo de texto livre para indicar qual questao e a duplicata
+  - Fallback enquanto nao existe: sem UI (nao exibir)
+
+- [ ] Suporte a multiplos niveis de ensino (fundamental, medio, superior)
+  - 0% implementado — precisa de back (coluna + filtro em list/create/update/propose) e front (modal + filtro)
+  - Hoje focado no ensino medio (contexto do autor: professor no CEFET); objetivo e ser um app completo
+  - Fundamental: disciplinas diferentes (ex: Ciencias em vez de Fisica/Quimica/Bio separadas)
+  - EPTNM: NAO e nivel separado — continua "medio"; disciplinas tecnicas tem nomes proprios que ja as identificam
+  - Campo "curso" NAO e necessario: nomes de disciplinas tecnicas sao suficientemente especificos
+  - Superior: disciplinas dependem do curso; escopo mais aberto
+  - Unico campo novo: "nivel" (fundamental | medio | superior)
+  - Backwards compatible: campo opcional; questoes sem nivel sao tratadas como "medio"
+  - Migracao: UPDATE questions SET nivel='medio' + JSON_SET(metadata_json, '$.nivel', 'medio')
+  - Fallback enquanto nao existe: tags por convencao ("nivel:fundamental", "curso:edificacoes")
+
+- [ ] Refinamento de busca por sub-assunto
+  - Usar tags livres para granularidade maior (ex: "soma-PA", "progressao-aritmetica")
+  - Filtro de tags ja existe; depende de disciplina de tagueamento consistente
+  - Melhoria futura: autocomplete de tags no editor (endpoint tags.php listando tags existentes)
 
 ### Refatoracoes propostas
 

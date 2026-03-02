@@ -3,7 +3,6 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import disciplinasJson from "@/data/disciplinas_areas.json";
-import matematicaJson from "@/data/matematica_areas.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoginButton } from "@/components/auth/LoginButton";
 import { ArrowLeft } from "lucide-react";
@@ -13,17 +12,20 @@ import { ArrowLeft } from "lucide-react";
 // ──────────────────────────────────────────────
 
 type AreasMap = Record<string, { subareas: string[] }>;
-type DisciplinasData = Record<string, AreasMap>;
+type NivelAreasMap = Partial<Record<"fundamental" | "medio" | "superior", AreasMap>>;
+type DisciplinasData = Record<string, NivelAreasMap>;
+
+const NIVEIS = [
+  { value: "fundamental" as const, label: "Fundamental" },
+  { value: "medio"       as const, label: "Médio" },
+  { value: "superior"    as const, label: "Superior" },
+];
 
 // ──────────────────────────────────────────────
 // Dados base (deep clone para edição)
 // ──────────────────────────────────────────────
 
-const BASE_DATA: DisciplinasData = {
-  Matemática: matematicaJson as AreasMap,
-  ...(disciplinasJson as DisciplinasData),
-};
-
+const BASE_DATA: DisciplinasData = disciplinasJson as DisciplinasData;
 const DISCIPLINAS = Object.keys(BASE_DATA);
 
 // ──────────────────────────────────────────────
@@ -233,36 +235,38 @@ export default function AssuntosPage() {
   const router = useRouter();
   const { isLoggedIn, loading } = useAuth();
 
-  // Disciplina selecionada
   const [disciplinaAtual, setDisciplinaAtual] = useState<string>(DISCIPLINAS[0]);
+  const [nivelAtual, setNivelAtual] = useState<"fundamental" | "medio" | "superior">("medio");
 
-  // Estado editável — um AreasMap por disciplina (lazy: carrega ao entrar)
+  // Estado editável — estrutura completa NivelAreasMap por disciplina
   const [dados, setDados] = useState<DisciplinasData>(() => deepClone(BASE_DATA));
 
-  // JSON exportado
   const [jsonExportado, setJsonExportado] = useState<string | null>(null);
   const [copiado, setCopiado] = useState(false);
-
-  // Envio por email
   const [remetente, setRemetente] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [statusEnvio, setStatusEnvio] = useState<"idle" | "ok" | "erro">("idle");
 
-  // ── Mutadores ─────────────────────────────────
+  // AreasMap do nível atual
+  const currentAreasMap = (): AreasMap => dados[disciplinaAtual]?.[nivelAtual] ?? {};
 
-  const getAreas = (): [string, { subareas: string[] }][] =>
-    Object.entries(dados[disciplinaAtual] ?? {});
-
+  // Mutador: atualiza apenas o nível atual da disciplina atual
   const setAreas = useCallback(
     (updater: (prev: AreasMap) => AreasMap) => {
       setDados((d) => ({
         ...d,
-        [disciplinaAtual]: updater(d[disciplinaAtual] ?? {}),
+        [disciplinaAtual]: {
+          ...(d[disciplinaAtual] ?? {}),
+          [nivelAtual]: updater(d[disciplinaAtual]?.[nivelAtual] ?? {}),
+        },
       }));
       setJsonExportado(null);
     },
-    [disciplinaAtual]
+    [disciplinaAtual, nivelAtual]
   );
+
+  const getAreas = (): [string, { subareas: string[] }][] =>
+    Object.entries(currentAreasMap());
 
   const handleRenameArea = (oldName: string, newName: string) => {
     setAreas((prev) => {
@@ -318,29 +322,23 @@ export default function AssuntosPage() {
 
   const gerarDiff = (original: AreasMap, editado: AreasMap): string => {
     const lines: string[] = [];
-
     const areasOrig = Object.keys(original);
     const areasEdit = Object.keys(editado);
     const setOrig = new Set(areasOrig);
     const setEdit = new Set(areasEdit);
 
-    // Áreas removidas
     for (const area of areasOrig) {
       if (!setEdit.has(area)) {
         lines.push(`- ÁREA REMOVIDA: ${area}`);
         for (const s of original[area].subareas) lines.push(`    - ${s}`);
       }
     }
-
-    // Áreas adicionadas
     for (const area of areasEdit) {
       if (!setOrig.has(area)) {
         lines.push(`+ ÁREA ADICIONADA: ${area}`);
         for (const s of editado[area].subareas) lines.push(`    + ${s}`);
       }
     }
-
-    // Áreas em comum — diferenças nos assuntos
     for (const area of areasOrig) {
       if (!setEdit.has(area)) continue;
       const subsOrig = new Set(original[area].subareas.filter(s => s.trim()));
@@ -353,8 +351,34 @@ export default function AssuntosPage() {
         for (const s of adicionados) lines.push(`    + ${s}`);
       }
     }
-
     return lines.length > 0 ? lines.join("\n") : "(nenhuma alteração detectada)";
+  };
+
+  // ── Exportar JSON ─────────────────────────────
+
+  const gerarJson = () => {
+    const areasAtual = currentAreasMap();
+    const clean: AreasMap = {};
+    for (const [area, { subareas }] of Object.entries(areasAtual)) {
+      const filtered = subareas.filter((s) => s.trim() !== "");
+      if (area.trim()) clean[area.trim()] = { subareas: filtered };
+    }
+    setJsonExportado(
+      JSON.stringify({ [disciplinaAtual]: { [nivelAtual]: clean } }, null, 2)
+    );
+    setCopiado(false);
+  };
+
+  const copiarJson = async () => {
+    if (!jsonExportado) return;
+    try {
+      await navigator.clipboard.writeText(jsonExportado);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2500);
+    } catch {
+      const ta = document.getElementById("json-output") as HTMLTextAreaElement | null;
+      ta?.select();
+    }
   };
 
   // ── Enviar JSON por email ──────────────────────
@@ -364,13 +388,13 @@ export default function AssuntosPage() {
     setEnviando(true);
     setStatusEnvio("idle");
     try {
-      const original = BASE_DATA[disciplinaAtual] ?? {};
+      const originalAreas = BASE_DATA[disciplinaAtual]?.[nivelAtual] ?? {};
       const editadoClean: AreasMap = {};
-      for (const [area, { subareas }] of Object.entries(dados[disciplinaAtual] ?? {})) {
+      for (const [area, { subareas }] of Object.entries(currentAreasMap())) {
         const filtered = subareas.filter((s) => s.trim() !== "");
         if (area.trim()) editadoClean[area.trim()] = { subareas: filtered };
       }
-      const diff = gerarDiff(original, editadoClean);
+      const diff = gerarDiff(originalAreas, editadoClean);
 
       const res = await fetch(
         "https://mpfaraujo.com.br/guardafiguras/api/send-assuntos.php",
@@ -380,6 +404,7 @@ export default function AssuntosPage() {
           body: JSON.stringify({
             json: jsonExportado,
             disciplina: disciplinaAtual,
+            nivel: nivelAtual,
             remetente: remetente.trim(),
             diff,
           }),
@@ -391,33 +416,6 @@ export default function AssuntosPage() {
       setStatusEnvio("erro");
     } finally {
       setEnviando(false);
-    }
-  };
-
-  // ── Exportar JSON ─────────────────────────────
-
-  const gerarJson = () => {
-    const disciplinaData = dados[disciplinaAtual] ?? {};
-    // Filtra subareas vazias
-    const clean: AreasMap = {};
-    for (const [area, { subareas }] of Object.entries(disciplinaData)) {
-      const filtered = subareas.filter((s) => s.trim() !== "");
-      if (area.trim()) clean[area.trim()] = { subareas: filtered };
-    }
-    setJsonExportado(JSON.stringify({ [disciplinaAtual]: clean }, null, 2));
-    setCopiado(false);
-  };
-
-  const copiarJson = async () => {
-    if (!jsonExportado) return;
-    try {
-      await navigator.clipboard.writeText(jsonExportado);
-      setCopiado(true);
-      setTimeout(() => setCopiado(false), 2500);
-    } catch {
-      // fallback: selecionar textarea
-      const ta = document.getElementById("json-output") as HTMLTextAreaElement | null;
-      ta?.select();
     }
   };
 
@@ -450,6 +448,7 @@ export default function AssuntosPage() {
   // ── Tela principal ────────────────────────────
 
   const areas = getAreas();
+  const niveisDisponiveis = NIVEIS.filter(n => BASE_DATA[disciplinaAtual]?.[n.value] !== undefined);
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -465,37 +464,64 @@ export default function AssuntosPage() {
           </button>
           <h1 className="text-2xl font-bold text-slate-800">Editar Assuntos por Disciplina</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Edite as áreas e assuntos de cada disciplina. Ao terminar, clique em{" "}
-            <strong>Gerar JSON</strong> e envie o resultado para o administrador.
+            Edite as áreas e assuntos de cada disciplina e nível. Ao terminar, clique em{" "}
+            <strong>Gerar JSON</strong> e envie para o administrador.
           </p>
         </div>
 
-        {/* Seletor de disciplina */}
+        {/* Seletor de disciplina e nível */}
         <div className="bg-white rounded-xl shadow-sm border p-4 mb-4">
-          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-            Disciplina
-          </label>
-          <select
-            value={disciplinaAtual}
-            onChange={(e) => {
-              setDisciplinaAtual(e.target.value);
-              setJsonExportado(null);
-            }}
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            {DISCIPLINAS.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                Disciplina
+              </label>
+              <select
+                value={disciplinaAtual}
+                onChange={(e) => {
+                  setDisciplinaAtual(e.target.value);
+                  setNivelAtual("medio");
+                  setJsonExportado(null);
+                }}
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                {DISCIPLINAS.map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="w-40">
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                Nível
+              </label>
+              <select
+                value={nivelAtual}
+                onChange={(e) => {
+                  setNivelAtual(e.target.value as typeof nivelAtual);
+                  setJsonExportado(null);
+                }}
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                {niveisDisponiveis.map((n) => (
+                  <option key={n.value} value={n.value}>{n.label}</option>
+                ))}
+                {/* Permite criar novo nível mesmo que não exista ainda */}
+                {!niveisDisponiveis.find(n => n.value === nivelAtual) && (
+                  <option value={nivelAtual}>
+                    {NIVEIS.find(n => n.value === nivelAtual)?.label ?? nivelAtual}
+                  </option>
+                )}
+              </select>
+            </div>
+          </div>
         </div>
 
         {/* Áreas */}
         <div className="bg-white rounded-xl shadow-sm border p-4 mb-4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-slate-700">
-              Áreas de {disciplinaAtual}{" "}
+              Áreas de {disciplinaAtual} — {NIVEIS.find(n => n.value === nivelAtual)?.label}{" "}
               <span className="text-slate-400 font-normal">({areas.length} área(s))</span>
             </h2>
             <button
@@ -508,7 +534,7 @@ export default function AssuntosPage() {
 
           {areas.length === 0 && (
             <p className="text-sm text-slate-400 italic">
-              Nenhuma área cadastrada. Clique em "+ Nova área" para começar.
+              Nenhuma área cadastrada para este nível. Clique em "+ Nova área" para começar.
             </p>
           )}
 
@@ -592,6 +618,7 @@ export default function AssuntosPage() {
           <p>• <strong>Duplo clique</strong> no nome de uma área ou assunto para renomear.</p>
           <p>• Assuntos em branco são ignorados ao gerar o JSON.</p>
           <p>• As alterações ficam apenas nesta sessão — gere e envie o JSON para salvar permanentemente.</p>
+          <p>• O JSON gerado inclui a disciplina, o nível selecionado e as áreas editadas.</p>
         </div>
       </div>
     </div>

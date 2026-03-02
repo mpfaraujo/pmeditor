@@ -82,6 +82,7 @@ export async function listQuestions(params?: {
   assuntos?: string[];
   tipos?: string[];
   dificuldades?: string[];
+  niveis?: string[];
   tags?: string;
 
   sourceKind?: string;
@@ -108,6 +109,9 @@ export async function listQuestions(params?: {
   }
   if (params?.dificuldades?.length) {
     params.dificuldades.forEach((d) => q.append("dificuldades[]", d));
+  }
+  if (params?.niveis?.length) {
+    params.niveis.forEach((n) => q.append("niveis[]", n));
   }
   if (params?.tags) {
     q.set("tags", params.tags);

@@ -15,6 +15,7 @@ import {
 
 export type Difficulty = "Fácil" | "Média" | "Difícil";
 export type QuestionType = "Múltipla Escolha" | "Certo/Errado" | "Discursiva";
+export type NivelEducacional = "fundamental" | "medio" | "superior";
 
 export type AnswerKey =
   | { kind: "mcq"; correct: "A" | "B" | "C" | "D" | "E" }
@@ -33,6 +34,7 @@ export interface QuestionMetadataV1 {
   disciplina?: string;
   assunto?: string;
   dificuldade?: Difficulty;
+  nivel?: NivelEducacional;
   tipo?: QuestionType;
   tags?: string[];
 
@@ -181,6 +183,26 @@ export function QuestionMetaBar({
               <SelectItem value="Fácil">Fácil</SelectItem>
               <SelectItem value="Média">Média</SelectItem>
               <SelectItem value="Difícil">Difícil</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Nível */}
+        <div className="col-span-2 sm:col-span-1 flex items-center gap-2">
+          <span className="text-xs text-muted-foreground w-20 shrink-0">
+            Nível
+          </span>
+          <Select
+            value={value.nivel ?? "medio"}
+            onValueChange={(v) => set({ nivel: v as NivelEducacional })}
+          >
+            <SelectTrigger className="h-7 w-full px-2 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="fundamental">Fundamental</SelectItem>
+              <SelectItem value="medio">Médio</SelectItem>
+              <SelectItem value="superior">Superior</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -182,6 +182,24 @@ export function QuestionMetadataModal({
             </Select>
           </div>
 
+          {/* Nível de Ensino */}
+          <div className="col-span-2 sm:col-span-1 space-y-2">
+            <label className="text-sm font-medium">Nível de Ensino</label>
+            <Select
+              value={value.nivel ?? "medio"}
+              onValueChange={(v) => set({ nivel: v as any })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fundamental">Fundamental</SelectItem>
+                <SelectItem value="medio">Médio</SelectItem>
+                <SelectItem value="superior">Superior</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Gabarito (MCQ/TF) */}
           {activeAnswerKey && activeAnswerKey.kind !== "essay" && (
             <div className="col-span-2 sm:col-span-1 space-y-2">

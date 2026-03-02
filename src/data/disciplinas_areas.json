@@ -1,1201 +1,1724 @@
 {
+  "Matemática": {
+    "fundamental": {
+      "Aritmética": {
+        "subareas": [
+          "Múltiplos e Divisores",
+          "MMC e MDC",
+          "Divisibilidade",
+          "Problemas sobre as 4 Operações",
+          "Sistema de Numeração e Métrico Decimal",
+          "Potenciação",
+          "Radiciação",
+          "Grandezas Proporcionais",
+          "Razões e Proporções",
+          "Regra de Três",
+          "Porcentagem",
+          "Matemática Financeira",
+          "Juros Simples",
+          "Médias"
+        ]
+      },
+      "Álgebra": {
+        "subareas": [
+          "Conjuntos",
+          "Conjuntos Numéricos",
+          "Expressões e Frações Algébricas",
+          "Fatoração e Produtos Notáveis",
+          "Equação do Primeiro Grau",
+          "Equação do Segundo Grau",
+          "Sistemas Lineares",
+          "Inequação do Primeiro Grau"
+        ]
+      },
+      "Geometria Plana": {
+        "subareas": [
+          "Fundamentos",
+          "Ângulos",
+          "Polígonos",
+          "Teorema de Pitágoras",
+          "Semelhança de Triângulos",
+          "Circunferência e Círculo",
+          "Área das Figuras Planas"
+        ]
+      },
+      "Estatística": {
+        "subareas": [
+          "Tabelas e Gráficos Estatísticos",
+          "Distribuição de Frequências",
+          "Medidas de Tendência Central"
+        ]
+      },
+      "Probabilidade": {
+        "subareas": [
+          "Espaço Amostral e Eventos",
+          "Probabilidade Simples"
+        ]
+      },
+      "Lógica Matemática": {
+        "subareas": [
+          "Proposições e Conectivos",
+          "Tabela-Verdade",
+          "Sequências Lógicas"
+        ]
+      }
+    },
+    "medio": {
+      "Aritmética": {
+        "subareas": [
+          "Múltiplos e Divisores",
+          "MMC e MDC",
+          "Divisibilidade",
+          "Problemas sobre as 4 Operações",
+          "Sistema de Numeração e Métrico Decimal",
+          "Notação Científica",
+          "Expressões Numéricas",
+          "Potenciação",
+          "Radiciação",
+          "Grandezas Proporcionais",
+          "Razões e Proporções",
+          "Regra de Três",
+          "Porcentagem",
+          "Matemática Financeira",
+          "Juros Simples",
+          "Juros Compostos",
+          "Progressão Aritmética",
+          "Progressão Geométrica",
+          "Médias"
+        ]
+      },
+      "Álgebra": {
+        "subareas": [
+          "Conjuntos",
+          "Conjuntos Numéricos",
+          "Expressões e Frações Algébricas",
+          "Fatoração e Produtos Notáveis",
+          "Polinômios",
+          "Equação do Primeiro Grau",
+          "Equação do Segundo Grau",
+          "Equação do Terceiro Grau",
+          "Equações Redutíveis ao Segundo Grau",
+          "Equações Polinomiais",
+          "Equações Modulares",
+          "Equações Irracionais",
+          "Equações Exponenciais",
+          "Sistemas Lineares",
+          "Matrizes",
+          "Determinantes",
+          "Números Complexos",
+          "Inequação do Primeiro Grau",
+          "Inequação do Segundo Grau",
+          "Inequações Produto e Quociente",
+          "Inequações Modulares",
+          "Indução Finita"
+        ]
+      },
+      "Funções": {
+        "subareas": [
+          "Domínio, Imagem e Contradomínio",
+          "Função Afim",
+          "Função Quadrática",
+          "Função Exponencial",
+          "Função Logarítmica",
+          "Função Modular",
+          "Função Composta",
+          "Função Inversa",
+          "Função Injetora, Sobrejetora e Bijetora",
+          "Funções Definidas por Várias Sentenças",
+          "Função Polinomial",
+          "Função Raiz Quadrada",
+          "Gráficos e Transformações",
+          "Paridade",
+          "Relações Binárias"
+        ]
+      },
+      "Análise Combinatória": {
+        "subareas": [
+          "Princípio Fundamental da Contagem",
+          "Fatorial",
+          "Permutações Simples",
+          "Permutações com Repetição",
+          "Permutações Circulares",
+          "Arranjos",
+          "Combinações",
+          "Binômio de Newton"
+        ]
+      },
+      "Estatística": {
+        "subareas": [
+          "Tabelas e Gráficos Estatísticos",
+          "Distribuição de Frequências",
+          "Medidas de Tendência Central",
+          "Medidas de Dispersão",
+          "Medidas de Posição",
+          "Amostragem"
+        ]
+      },
+      "Probabilidade": {
+        "subareas": [
+          "Espaço Amostral e Eventos",
+          "Probabilidade Simples",
+          "Probabilidade Condicional",
+          "Probabilidade da União e Intersecção",
+          "Eventos Independentes",
+          "Distribuição Binomial"
+        ]
+      },
+      "Geometria Plana": {
+        "subareas": [
+          "Fundamentos",
+          "Ângulos",
+          "Polígonos",
+          "Polígonos Regulares",
+          "Quadriláteros Notáveis",
+          "Teorema de Tales",
+          "Teorema de Pitágoras",
+          "Congruência de Triângulos",
+          "Semelhança de Triângulos",
+          "Relações Métricas no Triângulo Retângulo",
+          "Relações Métricas em Triângulos Quaisquer",
+          "Pontos Notáveis do Triângulo",
+          "Segmentos Proporcionais",
+          "Circunferência e Círculo",
+          "Ângulos na Circunferência",
+          "Potência de Ponto",
+          "Inscrição e Circunscrição",
+          "Área das Figuras Planas",
+          "Transformações Geométricas"
+        ]
+      },
+      "Geometria Analítica": {
+        "subareas": [
+          "Distância entre Pontos",
+          "Ponto Médio",
+          "Reta",
+          "Posições Relativas",
+          "Circunferência",
+          "Elipse",
+          "Hipérbole",
+          "Parábola",
+          "Lugar Geométrico"
+        ]
+      },
+      "Geometria Espacial": {
+        "subareas": [
+          "Fundamentos",
+          "Retas e Planos",
+          "Diedros e Triedros",
+          "Prismas",
+          "Pirâmides",
+          "Cilindros",
+          "Cones",
+          "Esfera",
+          "Troncos",
+          "Sólidos Inscritos e Circunscritos",
+          "Superfície Poliédrica e Poliedros",
+          "Planificação de Sólidos"
+        ]
+      },
+      "Trigonometria": {
+        "subareas": [
+          "Razões Trigonométricas no Triângulo Retângulo",
+          "Círculo Trigonométrico",
+          "Arcos e Medidas de Arcos",
+          "Redução ao Primeiro Quadrante",
+          "Soma de Arcos",
+          "Arco Duplo",
+          "Arco Metade",
+          "Lei dos Senos",
+          "Lei dos Cossenos",
+          "Outras Relações Trigonométricas",
+          "Funções Trigonométricas",
+          "Funções Trigonométricas Inversas",
+          "Equações Trigonométricas",
+          "Inequações Trigonométricas"
+        ]
+      },
+      "Lógica Matemática": {
+        "subareas": [
+          "Proposições e Conectivos",
+          "Tabela-Verdade",
+          "Equivalências e Negações",
+          "Argumentação e Validade",
+          "Diagramas Lógicos",
+          "Sequências Lógicas"
+        ]
+      },
+      "Vetores": {
+        "subareas": [
+          "Operações com Vetores",
+          "Produto Escalar",
+          "Produto Vetorial"
+        ]
+      },
+      "Análise Matemática": {
+        "subareas": [
+          "Limites",
+          "Derivadas",
+          "Integrais"
+        ]
+      },
+      "Miscelânea": {
+        "subareas": [
+          "Outros"
+        ]
+      }
+    }
+  },
+
   "Língua Portuguesa": {
-    "Interpretação de Texto": {
-      "subareas": [
-        "Tipologia e Gêneros Textuais",
-        "Intertextualidade",
-        "Coerência e Coesão",
-        "Inferência e Subentendido",
-        "Figuras de Linguagem",
-        "Funções da Linguagem",
-        "Ironia e Humor",
-        "Texto Lírico e Poesia",
-        "Texto Narrativo",
-        "Texto Argumentativo",
-        "Texto Informativo e Jornalístico",
-        "Texto Publicitário e Midiático"
-      ]
+    "fundamental": {
+      "Leitura e Compreensão": {
+        "subareas": [
+          "Identificação do Tema e Assunto",
+          "Localização de Informações Explícitas",
+          "Inferência e Interpretação",
+          "Elementos da Narrativa",
+          "Tipos e Gêneros Textuais Básicos",
+          "Vocabulário e Significado de Palavras"
+        ]
+      },
+      "Gramática Básica": {
+        "subareas": [
+          "Classes de Palavras",
+          "Substantivo e Adjetivo",
+          "Verbo — Conceito e Conjugação",
+          "Pronomes e Artigos",
+          "Advérbios",
+          "Preposições e Conjunções",
+          "Sujeito e Predicado",
+          "Ortografia",
+          "Acentuação Gráfica",
+          "Pontuação",
+          "Concordância Nominal e Verbal"
+        ]
+      },
+      "Produção de Texto": {
+        "subareas": [
+          "Texto Narrativo",
+          "Texto Descritivo",
+          "Texto Informativo",
+          "Coesão e Coerência Básica",
+          "Parágrafo e Estrutura do Texto"
+        ]
+      },
+      "Língua Oral e Variação": {
+        "subareas": [
+          "Gêneros Orais",
+          "Expressão Oral e Escuta",
+          "Variação Linguística Básica"
+        ]
+      }
     },
-    "Gramática": {
-      "subareas": [
-        "Morfologia e Classes de Palavras",
-        "Substantivo e Adjetivo",
-        "Pronomes",
-        "Verbos e Conjugação",
-        "Advérbios e Conjunções",
-        "Preposições e Interjeições",
-        "Sintaxe",
-        "Período Simples e Composto",
-        "Orações Subordinadas",
-        "Concordância Nominal e Verbal",
-        "Regência Nominal e Verbal",
-        "Crase",
-        "Pontuação",
-        "Ortografia e Acentuação",
-        "Semântica",
-        "Figuras de Sintaxe",
-        "Vícios de Linguagem",
-        "Estilística"
-      ]
-    },
-    "Literatura Brasileira": {
-      "subareas": [
-        "Quinhentismo e Literatura Colonial",
-        "Barroco Brasileiro",
-        "Arcadismo Brasileiro",
-        "Romantismo no Brasil",
-        "Realismo e Naturalismo",
-        "Parnasianismo e Simbolismo",
-        "Pré-Modernismo",
-        "Modernismo — Primeira Fase",
-        "Modernismo — Segunda Fase",
-        "Modernismo — Terceira Fase",
-        "Literatura Contemporânea"
-      ]
-    },
-    "Literatura Portuguesa": {
-      "subareas": [
-        "Trovadorismo",
-        "Humanismo",
-        "Classicismo e Camões",
-        "Barroco Português",
-        "Arcadismo Português",
-        "Romantismo Português",
-        "Realismo Português",
-        "Simbolismo Português",
-        "Modernismo Português"
-      ]
-    },
-    "Redação": {
-      "subareas": [
-        "Dissertação-Argumentativa",
-        "Proposta de Intervenção",
-        "Tese e Argumentação",
-        "Coesão e Coerência Textual",
-        "Introdução e Conclusão",
-        "Norma Culta na Redação",
-        "Repertório Sociocultural"
-      ]
-    },
-    "Variação Linguística": {
-      "subareas": [
-        "Variedades Dialetais",
-        "Variedades Sociolinguísticas",
-        "Registros Formais e Informais",
-        "Língua Oral e Escrita",
-        "Preconceito Linguístico"
-      ]
+    "medio": {
+      "Interpretação de Texto": {
+        "subareas": [
+          "Tipologia e Gêneros Textuais",
+          "Intertextualidade",
+          "Coerência e Coesão",
+          "Inferência e Subentendido",
+          "Figuras de Linguagem",
+          "Funções da Linguagem",
+          "Ironia e Humor",
+          "Texto Lírico e Poesia",
+          "Texto Narrativo",
+          "Texto Argumentativo",
+          "Texto Informativo e Jornalístico",
+          "Texto Publicitário e Midiático"
+        ]
+      },
+      "Gramática": {
+        "subareas": [
+          "Morfologia e Classes de Palavras",
+          "Substantivo e Adjetivo",
+          "Pronomes",
+          "Verbos e Conjugação",
+          "Advérbios e Conjunções",
+          "Preposições e Interjeições",
+          "Sintaxe",
+          "Período Simples e Composto",
+          "Orações Subordinadas",
+          "Concordância Nominal e Verbal",
+          "Regência Nominal e Verbal",
+          "Crase",
+          "Pontuação",
+          "Ortografia e Acentuação",
+          "Semântica",
+          "Figuras de Sintaxe",
+          "Vícios de Linguagem",
+          "Estilística"
+        ]
+      },
+      "Literatura Brasileira": {
+        "subareas": [
+          "Quinhentismo e Literatura Colonial",
+          "Barroco Brasileiro",
+          "Arcadismo Brasileiro",
+          "Romantismo no Brasil",
+          "Realismo e Naturalismo",
+          "Parnasianismo e Simbolismo",
+          "Pré-Modernismo",
+          "Modernismo — Primeira Fase",
+          "Modernismo — Segunda Fase",
+          "Modernismo — Terceira Fase",
+          "Literatura Contemporânea"
+        ]
+      },
+      "Literatura Portuguesa": {
+        "subareas": [
+          "Trovadorismo",
+          "Humanismo",
+          "Classicismo e Camões",
+          "Barroco Português",
+          "Arcadismo Português",
+          "Romantismo Português",
+          "Realismo Português",
+          "Simbolismo Português",
+          "Modernismo Português"
+        ]
+      },
+      "Redação": {
+        "subareas": [
+          "Dissertação-Argumentativa",
+          "Proposta de Intervenção",
+          "Tese e Argumentação",
+          "Coesão e Coerência Textual",
+          "Introdução e Conclusão",
+          "Norma Culta na Redação",
+          "Repertório Sociocultural"
+        ]
+      },
+      "Variação Linguística": {
+        "subareas": [
+          "Variedades Dialetais",
+          "Variedades Sociolinguísticas",
+          "Registros Formais e Informais",
+          "Língua Oral e Escrita",
+          "Preconceito Linguístico"
+        ]
+      }
     }
   },
 
   "Língua Inglesa": {
-    "Reading Comprehension": {
-      "subareas": [
-        "Main Idea and Topic",
-        "Inference and Implied Meaning",
-        "Text Types and Genres",
-        "Vocabulary in Context",
-        "Author's Purpose and Tone",
-        "Cohesive Devices",
-        "Critical Reading"
-      ]
-    },
-    "Grammar": {
-      "subareas": [
-        "Verb Tenses",
-        "Modal Verbs",
-        "Conditionals",
-        "Passive Voice",
-        "Reported Speech",
-        "Relative Clauses",
-        "Articles and Determiners",
-        "Prepositions",
-        "Conjunctions and Connectors",
-        "Sentence Structure",
-        "Questions and Negation"
-      ]
-    },
-    "Vocabulary": {
-      "subareas": [
-        "False Cognates",
-        "Phrasal Verbs",
-        "Idioms and Expressions",
-        "Word Formation",
-        "Collocations",
-        "Academic Vocabulary",
-        "Slang and Informal Language"
-      ]
-    },
-    "Language in Use": {
-      "subareas": [
-        "Formal and Informal Register",
-        "Discourse and Pragmatics",
-        "Social and Cultural Context",
-        "Advertising and Media Language",
-        "Technology and Globalization"
-      ]
-    },
-    "Writing Skills": {
-      "subareas": [
-        "Paragraph Organization",
-        "Essay Writing",
-        "Argumentative Writing",
-        "Descriptive Writing",
-        "Email and Letter Writing"
-      ]
+    "medio": {
+      "Reading Comprehension": {
+        "subareas": [
+          "Main Idea and Topic",
+          "Inference and Implied Meaning",
+          "Text Types and Genres",
+          "Vocabulary in Context",
+          "Author's Purpose and Tone",
+          "Cohesive Devices",
+          "Critical Reading"
+        ]
+      },
+      "Grammar": {
+        "subareas": [
+          "Verb Tenses",
+          "Modal Verbs",
+          "Conditionals",
+          "Passive Voice",
+          "Reported Speech",
+          "Relative Clauses",
+          "Articles and Determiners",
+          "Prepositions",
+          "Conjunctions and Connectors",
+          "Sentence Structure",
+          "Questions and Negation"
+        ]
+      },
+      "Vocabulary": {
+        "subareas": [
+          "False Cognates",
+          "Phrasal Verbs",
+          "Idioms and Expressions",
+          "Word Formation",
+          "Collocations",
+          "Academic Vocabulary",
+          "Slang and Informal Language"
+        ]
+      },
+      "Language in Use": {
+        "subareas": [
+          "Formal and Informal Register",
+          "Discourse and Pragmatics",
+          "Social and Cultural Context",
+          "Advertising and Media Language",
+          "Technology and Globalization"
+        ]
+      },
+      "Writing Skills": {
+        "subareas": [
+          "Paragraph Organization",
+          "Essay Writing",
+          "Argumentative Writing",
+          "Descriptive Writing",
+          "Email and Letter Writing"
+        ]
+      }
     }
   },
 
   "Língua Espanhola": {
-    "Comprensión Lectora": {
-      "subareas": [
-        "Idea Principal y Secundaria",
-        "Inferencia e Implicación",
-        "Tipos de Texto y Géneros",
-        "Vocabulario en Contexto",
-        "Intención del Autor",
-        "Elementos de Cohesión"
-      ]
-    },
-    "Gramática": {
-      "subareas": [
-        "Tiempos Verbales",
-        "Subjuntivo",
-        "Ser y Estar",
-        "Por y Para",
-        "Pronombres",
-        "Artículos",
-        "Preposiciones",
-        "Conjunciones",
-        "Oraciones Subordinadas",
-        "Condicionales"
-      ]
-    },
-    "Vocabulario": {
-      "subareas": [
-        "Falsos Cognados",
-        "Expresiones Idiomáticas",
-        "Formación de Palabras",
-        "Campo Semántico",
-        "Vocabulario Temático"
-      ]
-    },
-    "Cultura Hispana": {
-      "subareas": [
-        "Hispanoamérica y España",
-        "Literatura Hispana",
-        "Costumbres y Tradiciones",
-        "Arte y Música Hispana",
-        "Actualidad del Mundo Hispano"
-      ]
-    },
-    "Uso de la Lengua": {
-      "subareas": [
-        "Registro Formal e Informal",
-        "Variedades Dialectales",
-        "Comunicación Intercultural",
-        "Medios de Comunicación"
-      ]
+    "medio": {
+      "Comprensión Lectora": {
+        "subareas": [
+          "Idea Principal y Secundaria",
+          "Inferencia e Implicación",
+          "Tipos de Texto y Géneros",
+          "Vocabulario en Contexto",
+          "Intención del Autor",
+          "Elementos de Cohesión"
+        ]
+      },
+      "Gramática": {
+        "subareas": [
+          "Tiempos Verbales",
+          "Subjuntivo",
+          "Ser y Estar",
+          "Por y Para",
+          "Pronombres",
+          "Artículos",
+          "Preposiciones",
+          "Conjunciones",
+          "Oraciones Subordinadas",
+          "Condicionales"
+        ]
+      },
+      "Vocabulario": {
+        "subareas": [
+          "Falsos Cognados",
+          "Expresiones Idiomáticas",
+          "Formación de Palabras",
+          "Campo Semántico",
+          "Vocabulario Temático"
+        ]
+      },
+      "Cultura Hispana": {
+        "subareas": [
+          "Hispanoamérica y España",
+          "Literatura Hispana",
+          "Costumbres y Tradiciones",
+          "Arte y Música Hispana",
+          "Actualidad del Mundo Hispano"
+        ]
+      },
+      "Uso de la Lengua": {
+        "subareas": [
+          "Registro Formal e Informal",
+          "Variedades Dialectales",
+          "Comunicación Intercultural",
+          "Medios de Comunicación"
+        ]
+      }
     }
   },
 
   "Língua Francesa": {
-    "Compréhension Écrite": {
-      "subareas": [
-        "Idée Principale et Secondaire",
-        "Inférence et Implication",
-        "Types de Textes et Genres",
-        "Vocabulaire en Contexte",
-        "Intention de l'Auteur",
-        "Éléments de Cohésion"
-      ]
-    },
-    "Grammaire": {
-      "subareas": [
-        "Temps des Verbes",
-        "Subjonctif",
-        "Accord en Genre et Nombre",
-        "Pronoms",
-        "Articles",
-        "Prépositions",
-        "Conjonctions",
-        "Phrases Complexes",
-        "Conditionnel",
-        "Passé Composé et Imparfait"
-      ]
-    },
-    "Vocabulaire": {
-      "subareas": [
-        "Faux Amis",
-        "Expressions Idiomatiques",
-        "Formation des Mots",
-        "Champ Sémantique",
-        "Vocabulaire Thématique"
-      ]
-    },
-    "Culture Francophone": {
-      "subareas": [
-        "France et Pays Francophones",
-        "Littérature Française",
-        "Art et Cinéma Français",
-        "Coutumes et Traditions",
-        "Actualité du Monde Francophone"
-      ]
-    },
-    "Usage de la Langue": {
-      "subareas": [
-        "Registre Formel et Informel",
-        "Variétés Régionales",
-        "Communication Interculturelle",
-        "Médias et Publicité"
-      ]
+    "medio": {
+      "Compréhension Écrite": {
+        "subareas": [
+          "Idée Principale et Secondaire",
+          "Inférence et Implication",
+          "Types de Textes et Genres",
+          "Vocabulaire en Contexte",
+          "Intention de l'Auteur",
+          "Éléments de Cohésion"
+        ]
+      },
+      "Grammaire": {
+        "subareas": [
+          "Temps des Verbes",
+          "Subjonctif",
+          "Accord en Genre et Nombre",
+          "Pronoms",
+          "Articles",
+          "Prépositions",
+          "Conjonctions",
+          "Phrases Complexes",
+          "Conditionnel",
+          "Passé Composé et Imparfait"
+        ]
+      },
+      "Vocabulaire": {
+        "subareas": [
+          "Faux Amis",
+          "Expressions Idiomatiques",
+          "Formation des Mots",
+          "Champ Sémantique",
+          "Vocabulaire Thématique"
+        ]
+      },
+      "Culture Francophone": {
+        "subareas": [
+          "France et Pays Francophones",
+          "Littérature Française",
+          "Art et Cinéma Français",
+          "Coutumes et Traditions",
+          "Actualité du Monde Francophone"
+        ]
+      },
+      "Usage de la Langue": {
+        "subareas": [
+          "Registre Formel et Informel",
+          "Variétés Régionales",
+          "Communication Interculturelle",
+          "Médias et Publicité"
+        ]
+      }
     }
   },
 
   "Arte": {
-    "Artes Visuais": {
-      "subareas": [
-        "Desenho e Ilustração",
-        "Pintura",
-        "Escultura",
-        "Fotografia",
-        "Cinema e Audiovisual",
-        "Arte Digital",
-        "Gravura e Impressão",
-        "Arte Abstrata",
-        "Arte Contemporânea",
-        "Elementos Visuais e Composição"
-      ]
+    "fundamental": {
+      "Artes Visuais": {
+        "subareas": [
+          "Desenho e Ilustração",
+          "Pintura Básica",
+          "Escultura e Modelagem",
+          "Elementos Visuais (Linha, Cor, Forma)"
+        ]
+      },
+      "Música": {
+        "subareas": [
+          "Sons e Silêncios",
+          "Ritmo e Melodia Básica",
+          "Gêneros Musicais Populares",
+          "Música Brasileira e Folclore"
+        ]
+      },
+      "Teatro e Dança": {
+        "subareas": [
+          "Expressão Corporal e Gestual",
+          "Improvisação e Jogos Teatrais",
+          "Danças Folclóricas e Populares"
+        ]
+      },
+      "Cultura e Arte Brasileira": {
+        "subareas": [
+          "Arte Indígena",
+          "Arte Afro-brasileira",
+          "Folclore e Manifestações Culturais"
+        ]
+      }
     },
-    "Música": {
-      "subareas": [
-        "Teoria Musical",
-        "Notação Musical",
-        "Ritmo e Melodia",
-        "Harmonia",
-        "Gêneros Musicais",
-        "Instrumentos Musicais",
-        "Música Brasileira",
-        "Música Erudita",
-        "Música Popular"
-      ]
-    },
-    "Teatro": {
-      "subareas": [
-        "História do Teatro",
-        "Dramaturgia",
-        "Atuação e Expressão Corporal",
-        "Teatro Brasileiro",
-        "Teatro Grego e Clássico",
-        "Teatro Contemporâneo",
-        "Performance e Teatro Experimental"
-      ]
-    },
-    "Dança": {
-      "subareas": [
-        "História da Dança",
-        "Danças Brasileiras",
-        "Ballet Clássico",
-        "Dança Contemporânea",
-        "Danças Populares e Folclóricas",
-        "Corpo, Movimento e Ritmo"
-      ]
-    },
-    "História da Arte": {
-      "subareas": [
-        "Arte Pré-Histórica",
-        "Arte Antiga (Egito, Grécia, Roma)",
-        "Arte Medieval",
-        "Renascimento",
-        "Barroco",
-        "Neoclassicismo e Romantismo",
-        "Impressionismo",
-        "Vanguardas Europeias",
-        "Modernismo Brasileiro",
-        "Arte Contemporânea e Pop Art"
-      ]
-    },
-    "Arte e Cultura Brasileira": {
-      "subareas": [
-        "Arte Indígena",
-        "Arte Africana e Afro-brasileira",
-        "Folclore e Cultura Popular",
-        "Carnaval e Manifestações Culturais",
-        "Arte Colonial Brasileira",
-        "Modernismo no Brasil"
-      ]
+    "medio": {
+      "Artes Visuais": {
+        "subareas": [
+          "Desenho e Ilustração",
+          "Pintura",
+          "Escultura",
+          "Fotografia",
+          "Cinema e Audiovisual",
+          "Arte Digital",
+          "Gravura e Impressão",
+          "Arte Abstrata",
+          "Arte Contemporânea",
+          "Elementos Visuais e Composição"
+        ]
+      },
+      "Música": {
+        "subareas": [
+          "Teoria Musical",
+          "Notação Musical",
+          "Ritmo e Melodia",
+          "Harmonia",
+          "Gêneros Musicais",
+          "Instrumentos Musicais",
+          "Música Brasileira",
+          "Música Erudita",
+          "Música Popular"
+        ]
+      },
+      "Teatro": {
+        "subareas": [
+          "História do Teatro",
+          "Dramaturgia",
+          "Atuação e Expressão Corporal",
+          "Teatro Brasileiro",
+          "Teatro Grego e Clássico",
+          "Teatro Contemporâneo",
+          "Performance e Teatro Experimental"
+        ]
+      },
+      "Dança": {
+        "subareas": [
+          "História da Dança",
+          "Danças Brasileiras",
+          "Ballet Clássico",
+          "Dança Contemporânea",
+          "Danças Populares e Folclóricas",
+          "Corpo, Movimento e Ritmo"
+        ]
+      },
+      "História da Arte": {
+        "subareas": [
+          "Arte Pré-Histórica",
+          "Arte Antiga (Egito, Grécia, Roma)",
+          "Arte Medieval",
+          "Renascimento",
+          "Barroco",
+          "Neoclassicismo e Romantismo",
+          "Impressionismo",
+          "Vanguardas Europeias",
+          "Modernismo Brasileiro",
+          "Arte Contemporânea e Pop Art"
+        ]
+      },
+      "Arte e Cultura Brasileira": {
+        "subareas": [
+          "Arte Indígena",
+          "Arte Africana e Afro-brasileira",
+          "Folclore e Cultura Popular",
+          "Carnaval e Manifestações Culturais",
+          "Arte Colonial Brasileira",
+          "Modernismo no Brasil"
+        ]
+      }
     }
   },
 
   "Educação Física": {
-    "Esportes e Jogos": {
-      "subareas": [
-        "Futebol e Futsal",
-        "Voleibol e Voleibol de Praia",
-        "Basquetebol",
-        "Handebol",
-        "Atletismo",
-        "Natação",
-        "Tênis e Esportes de Raquete",
-        "Esportes Olímpicos",
-        "Esportes Paralímpicos",
-        "Esportes Radicais e de Aventura",
-        "Jogos Cooperativos",
-        "Esportes de Origem Brasileira"
-      ]
+    "fundamental": {
+      "Corpo e Movimento": {
+        "subareas": [
+          "Psicomotricidade",
+          "Desenvolvimento Motor",
+          "Esquema Corporal e Lateralidade",
+          "Postura e Higiene Corporal"
+        ]
+      },
+      "Esportes e Jogos": {
+        "subareas": [
+          "Jogos Cooperativos e Recreativos",
+          "Esportes Coletivos (Futebol, Vôlei, Basquete)",
+          "Esportes Individuais (Atletismo, Natação)",
+          "Brincadeiras e Jogos Populares"
+        ]
+      },
+      "Dança e Expressão": {
+        "subareas": [
+          "Danças Folclóricas Brasileiras",
+          "Expressão Corporal e Criatividade",
+          "Ritmo e Coordenação"
+        ]
+      },
+      "Saúde e Qualidade de Vida": {
+        "subareas": [
+          "Hábitos Saudáveis e Higiene",
+          "Alimentação e Exercício",
+          "Primeiros Socorros Básicos"
+        ]
+      }
     },
-    "Ginástica": {
-      "subareas": [
-        "Ginástica Artística",
-        "Ginástica Rítmica",
-        "Ginástica de Academia",
-        "Ginástica Laboral",
-        "Exercícios Funcionais",
-        "Treinamento e Condicionamento Físico"
-      ]
-    },
-    "Lutas e Artes Marciais": {
-      "subareas": [
-        "Judô",
-        "Capoeira",
-        "Karatê",
-        "Jiu-Jítsu",
-        "Boxe e Muay Thai",
-        "Wrestling e Lutas Olímpicas",
-        "Lutas na Cultura Brasileira"
-      ]
-    },
-    "Dança": {
-      "subareas": [
-        "Dança na Escola",
-        "Danças Folclóricas Brasileiras",
-        "Dança de Salão",
-        "Dança Contemporânea",
-        "Ritmo e Expressão Corporal"
-      ]
-    },
-    "Saúde e Qualidade de Vida": {
-      "subareas": [
-        "Aptidão Física e Saúde",
-        "Sedentarismo e Obesidade",
-        "Nutrição e Exercício",
-        "Doenças Crônicas e Atividade Física",
-        "Primeiros Socorros",
-        "Saúde Mental e Exercício",
-        "Doping e Substâncias Proibidas"
-      ]
-    },
-    "Corpo Humano e Movimento": {
-      "subareas": [
-        "Anatomia Básica e Postura",
-        "Sistema Muscular e Esquelético",
-        "Sistema Cardiorrespiratório no Exercício",
-        "Biomecânica do Movimento",
-        "Desenvolvimento Motor",
-        "Psicomotricidade"
-      ]
+    "medio": {
+      "Esportes e Jogos": {
+        "subareas": [
+          "Futebol e Futsal",
+          "Voleibol e Voleibol de Praia",
+          "Basquetebol",
+          "Handebol",
+          "Atletismo",
+          "Natação",
+          "Tênis e Esportes de Raquete",
+          "Esportes Olímpicos",
+          "Esportes Paralímpicos",
+          "Esportes Radicais e de Aventura",
+          "Jogos Cooperativos",
+          "Esportes de Origem Brasileira"
+        ]
+      },
+      "Ginástica": {
+        "subareas": [
+          "Ginástica Artística",
+          "Ginástica Rítmica",
+          "Ginástica de Academia",
+          "Ginástica Laboral",
+          "Exercícios Funcionais",
+          "Treinamento e Condicionamento Físico"
+        ]
+      },
+      "Lutas e Artes Marciais": {
+        "subareas": [
+          "Judô",
+          "Capoeira",
+          "Karatê",
+          "Jiu-Jítsu",
+          "Boxe e Muay Thai",
+          "Wrestling e Lutas Olímpicas",
+          "Lutas na Cultura Brasileira"
+        ]
+      },
+      "Dança": {
+        "subareas": [
+          "Dança na Escola",
+          "Danças Folclóricas Brasileiras",
+          "Dança de Salão",
+          "Dança Contemporânea",
+          "Ritmo e Expressão Corporal"
+        ]
+      },
+      "Saúde e Qualidade de Vida": {
+        "subareas": [
+          "Aptidão Física e Saúde",
+          "Sedentarismo e Obesidade",
+          "Nutrição e Exercício",
+          "Doenças Crônicas e Atividade Física",
+          "Primeiros Socorros",
+          "Saúde Mental e Exercício",
+          "Doping e Substâncias Proibidas"
+        ]
+      },
+      "Corpo Humano e Movimento": {
+        "subareas": [
+          "Anatomia Básica e Postura",
+          "Sistema Muscular e Esquelético",
+          "Sistema Cardiorrespiratório no Exercício",
+          "Biomecânica do Movimento",
+          "Desenvolvimento Motor",
+          "Psicomotricidade"
+        ]
+      }
+    }
+  },
+
+  "Ciências": {
+    "fundamental": {
+      "Ser Vivo e Ambiente": {
+        "subareas": [
+          "Características dos Seres Vivos",
+          "Animais — Classificação e Características",
+          "Plantas — Partes e Funções",
+          "Ecossistemas e Cadeia Alimentar",
+          "Preservação e Meio Ambiente"
+        ]
+      },
+      "Corpo Humano": {
+        "subareas": [
+          "Sistemas do Corpo Humano",
+          "Higiene e Saúde",
+          "Alimentação Saudável",
+          "Doenças e Prevenção",
+          "Puberdade e Sexualidade"
+        ]
+      },
+      "Matéria e Energia": {
+        "subareas": [
+          "Estados Físicos da Matéria",
+          "Transformações Físicas e Químicas",
+          "Calor e Temperatura",
+          "Luz e Som",
+          "Eletricidade Básica"
+        ]
+      },
+      "Terra e Universo": {
+        "subareas": [
+          "Sistema Solar e Planetas",
+          "Movimentos da Terra (Rotação e Translação)",
+          "Lua e Fases",
+          "Rochas e Solo",
+          "Água e Ciclo Hidrológico"
+        ]
+      },
+      "Tecnologia e Sociedade": {
+        "subareas": [
+          "Tecnologia no Cotidiano",
+          "Fontes de Energia",
+          "Lixo e Reciclagem",
+          "Impactos Ambientais"
+        ]
+      }
     }
   },
 
   "Biologia": {
-    "Citologia": {
-      "subareas": [
-        "Composição Química da Célula",
-        "Estrutura da Célula Procariótica",
-        "Estrutura da Célula Eucariótica",
-        "Organelas Celulares",
-        "Membrana Plasmática e Transportes",
-        "Metabolismo Celular",
-        "Fotossíntese",
-        "Respiração Celular e Fermentação",
-        "Divisão Celular — Mitose",
-        "Divisão Celular — Meiose"
-      ]
-    },
-    "Genética": {
-      "subareas": [
-        "Primeira Lei de Mendel",
-        "Segunda Lei de Mendel",
-        "Alelos Múltiplos e Grupos Sanguíneos",
-        "Interação Gênica",
-        "Ligação e Permutação",
-        "Herança Ligada ao Sexo",
-        "DNA — Estrutura e Replicação",
-        "Síntese de Proteínas (Transcrição e Tradução)",
-        "Mutações Gênicas e Cromossômicas",
-        "Biotecnologia e Engenharia Genética"
-      ]
-    },
-    "Evolução": {
-      "subareas": [
-        "Teorias Evolutivas (Lamarck e Darwin)",
-        "Seleção Natural e Adaptação",
-        "Especiação",
-        "Evidências da Evolução",
-        "Evolução Humana",
-        "Genética de Populações e Equilíbrio de Hardy-Weinberg"
-      ]
-    },
-    "Ecologia": {
-      "subareas": [
-        "Ecossistemas e Biomas",
-        "Cadeias e Teias Alimentares",
-        "Fluxo de Energia e Pirâmides Ecológicas",
-        "Ciclos Biogeoquímicos",
-        "Relações Ecológicas",
-        "Dinâmica Populacional",
-        "Sucessão Ecológica",
-        "Biomas Brasileiros",
-        "Problemas Ambientais e Conservação",
-        "Poluição e Impacto Ambiental"
-      ]
-    },
-    "Fisiologia Humana": {
-      "subareas": [
-        "Sistema Digestório",
-        "Sistema Respiratório",
-        "Sistema Circulatório",
-        "Sistema Excretor",
-        "Sistema Nervoso",
-        "Sistema Endócrino",
-        "Sistema Reprodutor",
-        "Sistema Imunológico",
-        "Sistema Locomotor (Muscular e Esquelético)",
-        "Sistema Sensorial"
-      ]
-    },
-    "Botânica": {
-      "subareas": [
-        "Classificação das Plantas",
-        "Briófitas e Pteridófitas",
-        "Gimnospermas e Angiospermas",
-        "Morfologia Vegetal",
-        "Fisiologia Vegetal",
-        "Reprodução Vegetal",
-        "Histologia Vegetal"
-      ]
-    },
-    "Zoologia": {
-      "subareas": [
-        "Poríferos e Cnidários",
-        "Platelmintos e Nematódeos",
-        "Anelídeos e Moluscos",
-        "Artrópodes",
-        "Equinodermos",
-        "Peixes e Anfíbios",
-        "Répteis",
-        "Aves",
-        "Mamíferos",
-        "Classificação e Sistemática Animal"
-      ]
-    },
-    "Microbiologia e Virologia": {
-      "subareas": [
-        "Vírus — Estrutura e Replicação",
-        "Doenças Virais",
-        "Bactérias — Estrutura e Metabolismo",
-        "Doenças Bacterianas",
-        "Fungos",
-        "Protozoários e Doenças",
-        "Antibióticos e Resistência",
-        "Vacinas e Imunização"
-      ]
-    },
-    "Embriologia e Histologia": {
-      "subareas": [
-        "Fecundação e Desenvolvimento Embrionário",
-        "Anexos Embrionários",
-        "Tecido Epitelial",
-        "Tecido Conjuntivo",
-        "Tecido Muscular",
-        "Tecido Nervoso"
-      ]
+    "medio": {
+      "Citologia": {
+        "subareas": [
+          "Composição Química da Célula",
+          "Estrutura da Célula Procariótica",
+          "Estrutura da Célula Eucariótica",
+          "Organelas Celulares",
+          "Membrana Plasmática e Transportes",
+          "Metabolismo Celular",
+          "Fotossíntese",
+          "Respiração Celular e Fermentação",
+          "Divisão Celular — Mitose",
+          "Divisão Celular — Meiose"
+        ]
+      },
+      "Genética": {
+        "subareas": [
+          "Primeira Lei de Mendel",
+          "Segunda Lei de Mendel",
+          "Alelos Múltiplos e Grupos Sanguíneos",
+          "Interação Gênica",
+          "Ligação e Permutação",
+          "Herança Ligada ao Sexo",
+          "DNA — Estrutura e Replicação",
+          "Síntese de Proteínas (Transcrição e Tradução)",
+          "Mutações Gênicas e Cromossômicas",
+          "Biotecnologia e Engenharia Genética"
+        ]
+      },
+      "Evolução": {
+        "subareas": [
+          "Teorias Evolutivas (Lamarck e Darwin)",
+          "Seleção Natural e Adaptação",
+          "Especiação",
+          "Evidências da Evolução",
+          "Evolução Humana",
+          "Genética de Populações e Equilíbrio de Hardy-Weinberg"
+        ]
+      },
+      "Ecologia": {
+        "subareas": [
+          "Ecossistemas e Biomas",
+          "Cadeias e Teias Alimentares",
+          "Fluxo de Energia e Pirâmides Ecológicas",
+          "Ciclos Biogeoquímicos",
+          "Relações Ecológicas",
+          "Dinâmica Populacional",
+          "Sucessão Ecológica",
+          "Biomas Brasileiros",
+          "Problemas Ambientais e Conservação",
+          "Poluição e Impacto Ambiental"
+        ]
+      },
+      "Fisiologia Humana": {
+        "subareas": [
+          "Sistema Digestório",
+          "Sistema Respiratório",
+          "Sistema Circulatório",
+          "Sistema Excretor",
+          "Sistema Nervoso",
+          "Sistema Endócrino",
+          "Sistema Reprodutor",
+          "Sistema Imunológico",
+          "Sistema Locomotor (Muscular e Esquelético)",
+          "Sistema Sensorial"
+        ]
+      },
+      "Botânica": {
+        "subareas": [
+          "Classificação das Plantas",
+          "Briófitas e Pteridófitas",
+          "Gimnospermas e Angiospermas",
+          "Morfologia Vegetal",
+          "Fisiologia Vegetal",
+          "Reprodução Vegetal",
+          "Histologia Vegetal"
+        ]
+      },
+      "Zoologia": {
+        "subareas": [
+          "Poríferos e Cnidários",
+          "Platelmintos e Nematódeos",
+          "Anelídeos e Moluscos",
+          "Artrópodes",
+          "Equinodermos",
+          "Peixes e Anfíbios",
+          "Répteis",
+          "Aves",
+          "Mamíferos",
+          "Classificação e Sistemática Animal"
+        ]
+      },
+      "Microbiologia e Virologia": {
+        "subareas": [
+          "Vírus — Estrutura e Replicação",
+          "Doenças Virais",
+          "Bactérias — Estrutura e Metabolismo",
+          "Doenças Bacterianas",
+          "Fungos",
+          "Protozoários e Doenças",
+          "Antibióticos e Resistência",
+          "Vacinas e Imunização"
+        ]
+      },
+      "Embriologia e Histologia": {
+        "subareas": [
+          "Fecundação e Desenvolvimento Embrionário",
+          "Anexos Embrionários",
+          "Tecido Epitelial",
+          "Tecido Conjuntivo",
+          "Tecido Muscular",
+          "Tecido Nervoso"
+        ]
+      }
     }
   },
 
   "Física": {
-    "Mecânica": {
-      "subareas": [
-        "Cinemática Escalar",
-        "Cinemática Vetorial",
-        "Movimento Uniforme (MU)",
-        "Movimento Uniformemente Variado (MUV)",
-        "Queda Livre e Lançamento de Projéteis",
-        "Leis de Newton",
-        "Força de Atrito",
-        "Plano Inclinado",
-        "Trabalho e Energia",
-        "Potência",
-        "Conservação de Energia",
-        "Quantidade de Movimento e Impulso",
-        "Colisões",
-        "Gravitação Universal",
-        "Movimentos Circulares",
-        "Estática e Equilíbrio",
-        "Hidrostática",
-        "Hidrodinâmica"
-      ]
-    },
-    "Termodinâmica": {
-      "subareas": [
-        "Temperatura e Escalas Termométricas",
-        "Dilatação Térmica",
-        "Calorimetria e Calor Específico",
-        "Mudanças de Estado Físico",
-        "Transmissão de Calor",
-        "Gases Ideais e Transformações",
-        "Primeiro Princípio da Termodinâmica",
-        "Segundo Princípio da Termodinâmica",
-        "Máquinas Térmicas e Ciclo de Carnot"
-      ]
-    },
-    "Óptica": {
-      "subareas": [
-        "Natureza da Luz",
-        "Reflexão da Luz",
-        "Espelhos Planos e Esféricos",
-        "Refração da Luz",
-        "Lentes Esféricas",
-        "Óptica da Visão e Defeitos",
-        "Dispersão da Luz",
-        "Polarização, Difração e Interferência"
-      ]
-    },
-    "Ondulatória e Acústica": {
-      "subareas": [
-        "Ondas — Classificação e Propriedades",
-        "Velocidade, Frequência e Comprimento de Onda",
-        "Reflexão e Refração de Ondas",
-        "Difração e Interferência",
-        "Efeito Doppler",
-        "Acústica e Som",
-        "Intensidade Sonora e Decibéis",
-        "Ondas Eletromagnéticas e Espectro"
-      ]
-    },
-    "Eletrostática": {
-      "subareas": [
-        "Carga Elétrica e Estrutura da Matéria",
-        "Processos de Eletrização",
-        "Lei de Coulomb",
-        "Campo Elétrico",
-        "Potencial Elétrico",
-        "Energia Potencial Elétrica",
-        "Capacitores e Capacitância"
-      ]
-    },
-    "Eletrodinâmica": {
-      "subareas": [
-        "Corrente Elétrica",
-        "Resistência e Resistividade",
-        "Lei de Ohm",
-        "Circuitos em Série e Paralelo",
-        "Leis de Kirchhoff",
-        "Potência e Energia Elétrica",
-        "Geradores e Receptores",
-        "Efeito Joule"
-      ]
-    },
-    "Magnetismo e Eletromagnetismo": {
-      "subareas": [
-        "Campo Magnético",
-        "Força Magnética sobre Cargas e Correntes",
-        "Indução Eletromagnética",
-        "Lei de Faraday e Lenz",
-        "Transformadores",
-        "Corrente Alternada e Circuitos CA",
-        "Ondas Eletromagnéticas"
-      ]
-    },
-    "Física Moderna": {
-      "subareas": [
-        "Teoria da Relatividade (Especial)",
-        "Efeito Fotoelétrico",
-        "Mecânica Quântica — Conceitos",
-        "Modelos Atômicos",
-        "Radioatividade e Decaimento",
-        "Fissão e Fusão Nuclear",
-        "Partículas Elementares e Modelo Padrão"
-      ]
+    "medio": {
+      "Mecânica": {
+        "subareas": [
+          "Cinemática Escalar",
+          "Cinemática Vetorial",
+          "Movimento Uniforme (MU)",
+          "Movimento Uniformemente Variado (MUV)",
+          "Queda Livre e Lançamento de Projéteis",
+          "Leis de Newton",
+          "Força de Atrito",
+          "Plano Inclinado",
+          "Trabalho e Energia",
+          "Potência",
+          "Conservação de Energia",
+          "Quantidade de Movimento e Impulso",
+          "Colisões",
+          "Gravitação Universal",
+          "Movimentos Circulares",
+          "Estática e Equilíbrio",
+          "Hidrostática",
+          "Hidrodinâmica"
+        ]
+      },
+      "Termodinâmica": {
+        "subareas": [
+          "Temperatura e Escalas Termométricas",
+          "Dilatação Térmica",
+          "Calorimetria e Calor Específico",
+          "Mudanças de Estado Físico",
+          "Transmissão de Calor",
+          "Gases Ideais e Transformações",
+          "Primeiro Princípio da Termodinâmica",
+          "Segundo Princípio da Termodinâmica",
+          "Máquinas Térmicas e Ciclo de Carnot"
+        ]
+      },
+      "Óptica": {
+        "subareas": [
+          "Natureza da Luz",
+          "Reflexão da Luz",
+          "Espelhos Planos e Esféricos",
+          "Refração da Luz",
+          "Lentes Esféricas",
+          "Óptica da Visão e Defeitos",
+          "Dispersão da Luz",
+          "Polarização, Difração e Interferência"
+        ]
+      },
+      "Ondulatória e Acústica": {
+        "subareas": [
+          "Ondas — Classificação e Propriedades",
+          "Velocidade, Frequência e Comprimento de Onda",
+          "Reflexão e Refração de Ondas",
+          "Difração e Interferência",
+          "Efeito Doppler",
+          "Acústica e Som",
+          "Intensidade Sonora e Decibéis",
+          "Ondas Eletromagnéticas e Espectro"
+        ]
+      },
+      "Eletrostática": {
+        "subareas": [
+          "Carga Elétrica e Estrutura da Matéria",
+          "Processos de Eletrização",
+          "Lei de Coulomb",
+          "Campo Elétrico",
+          "Potencial Elétrico",
+          "Energia Potencial Elétrica",
+          "Capacitores e Capacitância"
+        ]
+      },
+      "Eletrodinâmica": {
+        "subareas": [
+          "Corrente Elétrica",
+          "Resistência e Resistividade",
+          "Lei de Ohm",
+          "Circuitos em Série e Paralelo",
+          "Leis de Kirchhoff",
+          "Potência e Energia Elétrica",
+          "Geradores e Receptores",
+          "Efeito Joule"
+        ]
+      },
+      "Magnetismo e Eletromagnetismo": {
+        "subareas": [
+          "Campo Magnético",
+          "Força Magnética sobre Cargas e Correntes",
+          "Indução Eletromagnética",
+          "Lei de Faraday e Lenz",
+          "Transformadores",
+          "Corrente Alternada e Circuitos CA",
+          "Ondas Eletromagnéticas"
+        ]
+      },
+      "Física Moderna": {
+        "subareas": [
+          "Teoria da Relatividade (Especial)",
+          "Efeito Fotoelétrico",
+          "Mecânica Quântica — Conceitos",
+          "Modelos Atômicos",
+          "Radioatividade e Decaimento",
+          "Fissão e Fusão Nuclear",
+          "Partículas Elementares e Modelo Padrão"
+        ]
+      }
     }
   },
 
   "Química": {
-    "Química Geral": {
-      "subareas": [
-        "Estrutura Atômica e Modelos Atômicos",
-        "Tabela Periódica e Propriedades Periódicas",
-        "Reações Químicas e Balanceamento",
-        "Estequiometria",
-        "Pureza e Rendimento",
-        "Substâncias e Misturas",
-        "Separação de Misturas",
-        "Grandezas Químicas e Mol"
-      ]
-    },
-    "Ligações Químicas e Estrutura Molecular": {
-      "subareas": [
-        "Ligação Iônica",
-        "Ligação Covalente",
-        "Ligação Metálica",
-        "Geometria Molecular",
-        "Polaridade de Ligações e Moléculas",
-        "Forças Intermoleculares"
-      ]
-    },
-    "Soluções e Ácido-Base": {
-      "subareas": [
-        "Solubilidade",
-        "Concentração Comum e Molar",
-        "Diluição e Mistura de Soluções",
-        "Propriedades Coligativas",
-        "Ácidos e Bases — Conceitos",
-        "pH e pOH",
-        "Neutralização e Titulação",
-        "Sais e Óxidos"
-      ]
-    },
-    "Termoquímica": {
-      "subareas": [
-        "Entalpia e Calor de Reação",
-        "Calorimetria Química",
-        "Lei de Hess",
-        "Energia de Ligação",
-        "Reações Exotérmicas e Endotérmicas"
-      ]
-    },
-    "Cinética Química": {
-      "subareas": [
-        "Velocidade de Reação",
-        "Fatores que Afetam a Velocidade",
-        "Teoria das Colisões",
-        "Catálise e Catalisadores",
-        "Lei da Velocidade e Ordem de Reação"
-      ]
-    },
-    "Equilíbrio Químico": {
-      "subareas": [
-        "Constante de Equilíbrio (Kc e Kp)",
-        "Princípio de Le Chatelier",
-        "Equilíbrio Ácido-Base e pH",
-        "Equilíbrio de Solubilidade (Kps)",
-        "Hidrólise Salina"
-      ]
-    },
-    "Eletroquímica": {
-      "subareas": [
-        "Oxidação e Redução (Redox)",
-        "Número de Oxidação (NOX)",
-        "Pilhas e Células Galvânicas",
-        "Eletrólise",
-        "Lei de Faraday na Eletroquímica",
-        "Corrosão e Proteção Metálica"
-      ]
-    },
-    "Química Orgânica": {
-      "subareas": [
-        "Introdução ao Carbono e Cadeias Carbônicas",
-        "Hibridação do Carbono",
-        "Hidrocarbonetos",
-        "Funções Orgânicas Oxigenadas",
-        "Funções Orgânicas Nitrogenadas",
-        "Isomeria",
-        "Reações Orgânicas",
-        "Reatividade e Mecanismos de Reação"
-      ]
-    },
-    "Polímeros e Materiais": {
-      "subareas": [
-        "Polímeros Naturais e Sintéticos",
-        "Plásticos e Borracha",
-        "Polímeros de Adição e Condensação",
-        "Materiais Cerâmicos",
-        "Ligas Metálicas",
-        "Química Ambiental e Sustentabilidade"
-      ]
+    "medio": {
+      "Química Geral": {
+        "subareas": [
+          "Estrutura Atômica e Modelos Atômicos",
+          "Tabela Periódica e Propriedades Periódicas",
+          "Reações Químicas e Balanceamento",
+          "Estequiometria",
+          "Pureza e Rendimento",
+          "Substâncias e Misturas",
+          "Separação de Misturas",
+          "Grandezas Químicas e Mol"
+        ]
+      },
+      "Ligações Químicas e Estrutura Molecular": {
+        "subareas": [
+          "Ligação Iônica",
+          "Ligação Covalente",
+          "Ligação Metálica",
+          "Geometria Molecular",
+          "Polaridade de Ligações e Moléculas",
+          "Forças Intermoleculares"
+        ]
+      },
+      "Soluções e Ácido-Base": {
+        "subareas": [
+          "Solubilidade",
+          "Concentração Comum e Molar",
+          "Diluição e Mistura de Soluções",
+          "Propriedades Coligativas",
+          "Ácidos e Bases — Conceitos",
+          "pH e pOH",
+          "Neutralização e Titulação",
+          "Sais e Óxidos"
+        ]
+      },
+      "Termoquímica": {
+        "subareas": [
+          "Entalpia e Calor de Reação",
+          "Calorimetria Química",
+          "Lei de Hess",
+          "Energia de Ligação",
+          "Reações Exotérmicas e Endotérmicas"
+        ]
+      },
+      "Cinética Química": {
+        "subareas": [
+          "Velocidade de Reação",
+          "Fatores que Afetam a Velocidade",
+          "Teoria das Colisões",
+          "Catálise e Catalisadores",
+          "Lei da Velocidade e Ordem de Reação"
+        ]
+      },
+      "Equilíbrio Químico": {
+        "subareas": [
+          "Constante de Equilíbrio (Kc e Kp)",
+          "Princípio de Le Chatelier",
+          "Equilíbrio Ácido-Base e pH",
+          "Equilíbrio de Solubilidade (Kps)",
+          "Hidrólise Salina"
+        ]
+      },
+      "Eletroquímica": {
+        "subareas": [
+          "Oxidação e Redução (Redox)",
+          "Número de Oxidação (NOX)",
+          "Pilhas e Células Galvânicas",
+          "Eletrólise",
+          "Lei de Faraday na Eletroquímica",
+          "Corrosão e Proteção Metálica"
+        ]
+      },
+      "Química Orgânica": {
+        "subareas": [
+          "Introdução ao Carbono e Cadeias Carbônicas",
+          "Hibridação do Carbono",
+          "Hidrocarbonetos",
+          "Funções Orgânicas Oxigenadas",
+          "Funções Orgânicas Nitrogenadas",
+          "Isomeria",
+          "Reações Orgânicas",
+          "Reatividade e Mecanismos de Reação"
+        ]
+      },
+      "Polímeros e Materiais": {
+        "subareas": [
+          "Polímeros Naturais e Sintéticos",
+          "Plásticos e Borracha",
+          "Polímeros de Adição e Condensação",
+          "Materiais Cerâmicos",
+          "Ligas Metálicas",
+          "Química Ambiental e Sustentabilidade"
+        ]
+      }
     }
   },
 
   "História": {
-    "Pré-História e Antiguidade": {
-      "subareas": [
-        "Hominização e Pré-História",
-        "Mesopotâmia",
-        "Egito Antigo",
-        "Grécia Antiga",
-        "Roma Antiga",
-        "Outras Civilizações Antigas",
-        "Formação do Oriente Antigo"
-      ]
+    "fundamental": {
+      "Pré-História e Primeiros Humanos": {
+        "subareas": [
+          "Surgimento do Ser Humano",
+          "Paleolítico e Neolítico",
+          "Primeiras Civilizações"
+        ]
+      },
+      "Antigas e Medievais": {
+        "subareas": [
+          "Egito Antigo",
+          "Grécia e Roma Antigas",
+          "Povos da Mesopotâmia",
+          "Idade Média — Conceitos Básicos"
+        ]
+      },
+      "Povos do Brasil e América": {
+        "subareas": [
+          "Povos Indígenas Originários",
+          "Chegada dos Europeus",
+          "Civilizações Pré-Colombianas (Maias, Astecas, Incas)"
+        ]
+      },
+      "História do Brasil": {
+        "subareas": [
+          "Brasil Colonial (Capitanias, Ciclos Econômicos)",
+          "Escravidão no Brasil",
+          "Independência do Brasil",
+          "Período Imperial",
+          "Proclamação da República",
+          "Brasil no Século XX"
+        ]
+      },
+      "Mundo Contemporâneo Básico": {
+        "subareas": [
+          "Guerras Mundiais — Conceitos Básicos",
+          "Direitos Humanos e Cidadania",
+          "Globalização e Tecnologia"
+        ]
+      }
     },
-    "Idade Média": {
-      "subareas": [
-        "Feudalismo",
-        "Igreja e Papado na Idade Média",
-        "Cruzadas",
-        "Cultura Medieval",
-        "Bizâncio e Mundo Árabe",
-        "Crise do Feudalismo e Baixa Idade Média"
-      ]
-    },
-    "Expansão Marítima e Colonialismo": {
-      "subareas": [
-        "Grandes Navegações",
-        "Conquista da América",
-        "Colonização da África e Ásia",
-        "Escravidão Africana e Tráfico Negreiro",
-        "Mercantilismo"
-      ]
-    },
-    "Idade Moderna": {
-      "subareas": [
-        "Renascimento Cultural e Científico",
-        "Reforma Protestante e Contrarreforma",
-        "Absolutismo Monárquico",
-        "Iluminismo",
-        "Revolução Inglesa e Gloriosa",
-        "Formação do Estado Moderno"
-      ]
-    },
-    "Revoluções Burguesas": {
-      "subareas": [
-        "Independência Americana",
-        "Revolução Francesa",
-        "Era Napoleônica",
-        "Revolução Industrial",
-        "Liberalismo e Socialismo"
-      ]
-    },
-    "Imperialismo e Neocolonialismo": {
-      "subareas": [
-        "Imperialismo Europeu (Século XIX)",
-        "Partilha da África e Ásia",
-        "Resistência dos Povos Colonizados",
-        "Pan-Africanismo e Movimentos de Libertação",
-        "Industrialização e Capitalismo"
-      ]
-    },
-    "Primeira Guerra Mundial": {
-      "subareas": [
-        "Causas e Antecedentes",
-        "Desenvolvimento do Conflito",
-        "Tratado de Versalhes",
-        "Consequências Políticas e Sociais"
-      ]
-    },
-    "Entre Guerras e Totalitarismo": {
-      "subareas": [
-        "Crise de 1929",
-        "Fascismo Italiano",
-        "Nazismo Alemão",
-        "Franquismo e Salazarismo",
-        "Revolução Russa e Stalinismo",
-        "New Deal e Social-Democracia"
-      ]
-    },
-    "Segunda Guerra Mundial": {
-      "subareas": [
-        "Causas e Antecedentes",
-        "Desenvolvimento do Conflito",
-        "Holocausto e Genocídios",
-        "Resistência e Colaboração",
-        "Fim da Guerra e Consequências",
-        "ONU e Nova Ordem Internacional"
-      ]
-    },
-    "Guerra Fria": {
-      "subareas": [
-        "Bipolaridade EUA x URSS",
-        "Corrida Armamentista e Espacial",
-        "Conflitos da Guerra Fria (Coreia, Vietnã, Cuba)",
-        "Descolonização da África e Ásia",
-        "Movimentos de Direitos Civis",
-        "Fim da Guerra Fria e Dissolução da URSS"
-      ]
-    },
-    "Brasil Colonial": {
-      "subareas": [
-        "Pré-Colonial e Povos Indígenas",
-        "Ciclo do Pau-Brasil",
-        "Capitanias Hereditárias e Governo-Geral",
-        "Ciclo da Cana-de-Açúcar",
-        "Escravidão no Brasil",
-        "Entradas e Bandeiras",
-        "Ciclo do Ouro e Mineração",
-        "Quilombos e Resistência",
-        "Invasões Estrangeiras"
-      ]
-    },
-    "Brasil Imperial": {
-      "subareas": [
-        "Independência do Brasil",
-        "Primeiro Reinado",
-        "Período Regencial",
-        "Segundo Reinado",
-        "Abolição da Escravidão",
-        "Imigração Europeia",
-        "Crise do Império e Proclamação da República"
-      ]
-    },
-    "Brasil República": {
-      "subareas": [
-        "República Velha e Política do Café com Leite",
-        "Tenentismo e Revolução de 1930",
-        "Era Vargas e Estado Novo",
-        "Democracia Populista (1945–1964)",
-        "Ditadura Militar (1964–1985)",
-        "Redemocratização e Constituição de 1988"
-      ]
-    },
-    "Brasil Contemporâneo": {
-      "subareas": [
-        "Nova República e Governo Collor",
-        "Plano Real e Governo FHC",
-        "Governos Lula e Dilma",
-        "Crise Política e Impeachment",
-        "Agenda Social e Econômica Atual"
-      ]
-    },
-    "América Latina": {
-      "subareas": [
-        "Processos de Independência",
-        "Caudilhismo",
-        "Revoluções Latino-americanas (México, Cuba)",
-        "Ditaduras Militares na América Latina",
-        "Democracia e Integração Regional",
-        "MERCOSUL e Relações Internacionais"
-      ]
+    "medio": {
+      "Pré-História e Antiguidade": {
+        "subareas": [
+          "Hominização e Pré-História",
+          "Mesopotâmia",
+          "Egito Antigo",
+          "Grécia Antiga",
+          "Roma Antiga",
+          "Outras Civilizações Antigas",
+          "Formação do Oriente Antigo"
+        ]
+      },
+      "Idade Média": {
+        "subareas": [
+          "Feudalismo",
+          "Igreja e Papado na Idade Média",
+          "Cruzadas",
+          "Cultura Medieval",
+          "Bizâncio e Mundo Árabe",
+          "Crise do Feudalismo e Baixa Idade Média"
+        ]
+      },
+      "Expansão Marítima e Colonialismo": {
+        "subareas": [
+          "Grandes Navegações",
+          "Conquista da América",
+          "Colonização da África e Ásia",
+          "Escravidão Africana e Tráfico Negreiro",
+          "Mercantilismo"
+        ]
+      },
+      "Idade Moderna": {
+        "subareas": [
+          "Renascimento Cultural e Científico",
+          "Reforma Protestante e Contrarreforma",
+          "Absolutismo Monárquico",
+          "Iluminismo",
+          "Revolução Inglesa e Gloriosa",
+          "Formação do Estado Moderno"
+        ]
+      },
+      "Revoluções Burguesas": {
+        "subareas": [
+          "Independência Americana",
+          "Revolução Francesa",
+          "Era Napoleônica",
+          "Revolução Industrial",
+          "Liberalismo e Socialismo"
+        ]
+      },
+      "Imperialismo e Neocolonialismo": {
+        "subareas": [
+          "Imperialismo Europeu (Século XIX)",
+          "Partilha da África e Ásia",
+          "Resistência dos Povos Colonizados",
+          "Pan-Africanismo e Movimentos de Libertação",
+          "Industrialização e Capitalismo"
+        ]
+      },
+      "Primeira Guerra Mundial": {
+        "subareas": [
+          "Causas e Antecedentes",
+          "Desenvolvimento do Conflito",
+          "Tratado de Versalhes",
+          "Consequências Políticas e Sociais"
+        ]
+      },
+      "Entre Guerras e Totalitarismo": {
+        "subareas": [
+          "Crise de 1929",
+          "Fascismo Italiano",
+          "Nazismo Alemão",
+          "Franquismo e Salazarismo",
+          "Revolução Russa e Stalinismo",
+          "New Deal e Social-Democracia"
+        ]
+      },
+      "Segunda Guerra Mundial": {
+        "subareas": [
+          "Causas e Antecedentes",
+          "Desenvolvimento do Conflito",
+          "Holocausto e Genocídios",
+          "Resistência e Colaboração",
+          "Fim da Guerra e Consequências",
+          "ONU e Nova Ordem Internacional"
+        ]
+      },
+      "Guerra Fria": {
+        "subareas": [
+          "Bipolaridade EUA x URSS",
+          "Corrida Armamentista e Espacial",
+          "Conflitos da Guerra Fria (Coreia, Vietnã, Cuba)",
+          "Descolonização da África e Ásia",
+          "Movimentos de Direitos Civis",
+          "Fim da Guerra Fria e Dissolução da URSS"
+        ]
+      },
+      "Brasil Colonial": {
+        "subareas": [
+          "Pré-Colonial e Povos Indígenas",
+          "Ciclo do Pau-Brasil",
+          "Capitanias Hereditárias e Governo-Geral",
+          "Ciclo da Cana-de-Açúcar",
+          "Escravidão no Brasil",
+          "Entradas e Bandeiras",
+          "Ciclo do Ouro e Mineração",
+          "Quilombos e Resistência",
+          "Invasões Estrangeiras"
+        ]
+      },
+      "Brasil Imperial": {
+        "subareas": [
+          "Independência do Brasil",
+          "Primeiro Reinado",
+          "Período Regencial",
+          "Segundo Reinado",
+          "Abolição da Escravidão",
+          "Imigração Europeia",
+          "Crise do Império e Proclamação da República"
+        ]
+      },
+      "Brasil República": {
+        "subareas": [
+          "República Velha e Política do Café com Leite",
+          "Tenentismo e Revolução de 1930",
+          "Era Vargas e Estado Novo",
+          "Democracia Populista (1945–1964)",
+          "Ditadura Militar (1964–1985)",
+          "Redemocratização e Constituição de 1988"
+        ]
+      },
+      "Brasil Contemporâneo": {
+        "subareas": [
+          "Nova República e Governo Collor",
+          "Plano Real e Governo FHC",
+          "Governos Lula e Dilma",
+          "Crise Política e Impeachment",
+          "Agenda Social e Econômica Atual"
+        ]
+      },
+      "América Latina": {
+        "subareas": [
+          "Processos de Independência",
+          "Caudilhismo",
+          "Revoluções Latino-americanas (México, Cuba)",
+          "Ditaduras Militares na América Latina",
+          "Democracia e Integração Regional",
+          "MERCOSUL e Relações Internacionais"
+        ]
+      }
     }
   },
 
   "Geografia": {
-    "Cartografia e Orientação": {
-      "subareas": [
-        "Projeções Cartográficas",
-        "Escala e Localização",
-        "Fusos Horários",
-        "Coordenadas Geográficas",
-        "Leitura e Interpretação de Mapas",
-        "Sensoriamento Remoto e SIG"
-      ]
+    "fundamental": {
+      "Espaço e Paisagem": {
+        "subareas": [
+          "Paisagem Natural e Cultural",
+          "Espaço Geográfico e Lugar",
+          "Mapas e Orientação Básica",
+          "Pontos Cardeais e Coordenadas"
+        ]
+      },
+      "Natureza e Meio Ambiente": {
+        "subareas": [
+          "Relevo, Solo e Rochas",
+          "Rios, Lagos e Mares",
+          "Clima e Tempo",
+          "Biomas e Vegetação Brasileira"
+        ]
+      },
+      "Sociedade e Cultura": {
+        "subareas": [
+          "Povos e Culturas do Brasil",
+          "Campo e Cidade",
+          "Migrações Básicas"
+        ]
+      },
+      "Território Brasileiro": {
+        "subareas": [
+          "Regiões do Brasil",
+          "Estados e Capitais",
+          "Recursos Naturais do Brasil",
+          "Problemas Ambientais Básicos"
+        ]
+      }
     },
-    "Geomorfologia e Relevo": {
-      "subareas": [
-        "Estrutura Geológica da Terra",
-        "Tectônica de Placas",
-        "Vulcanismo e Terremotos",
-        "Formação e Tipos de Relevo",
-        "Agentes Exógenos (Erosão e Intemperismo)",
-        "Relevo Brasileiro"
-      ]
-    },
-    "Climatologia e Meteorologia": {
-      "subareas": [
-        "Elementos do Clima",
-        "Fatores do Clima",
-        "Massas de Ar",
-        "Tipos Climáticos do Mundo",
-        "Clima do Brasil",
-        "Mudanças Climáticas e Aquecimento Global",
-        "El Niño e La Niña"
-      ]
-    },
-    "Hidrologia e Recursos Hídricos": {
-      "subareas": [
-        "Ciclo Hidrológico",
-        "Bacias Hidrográficas",
-        "Rios e Lagos",
-        "Oceanos e Correntes Marítimas",
-        "Águas Subterrâneas",
-        "Crise Hídrica e Saneamento",
-        "Bacias Hidrográficas Brasileiras"
-      ]
-    },
-    "Biomas e Vegetação": {
-      "subareas": [
-        "Florestas Tropicais",
-        "Florestas Temperadas",
-        "Savanas e Cerrados",
-        "Desertos",
-        "Tundra e Taiga",
-        "Biomas Brasileiros",
-        "Desmatamento e Conservação"
-      ]
-    },
-    "Geopolítica Mundial": {
-      "subareas": [
-        "Ordem Mundial Pós-Guerra Fria",
-        "Conflitos Geopolíticos Atuais",
-        "Organizações Internacionais",
-        "Blocos Econômicos",
-        "Terrorismo e Questões de Segurança",
-        "Oriente Médio e Geopolítica do Petróleo",
-        "África e Neocolonialismo Contemporâneo"
-      ]
-    },
-    "Globalização e Economia": {
-      "subareas": [
-        "Processo de Globalização",
-        "Divisão Internacional do Trabalho",
-        "Países Desenvolvidos e em Desenvolvimento",
-        "Fluxos Comerciais e Financeiros",
-        "Multinacionais e Capital Financeiro",
-        "IDH e Indicadores de Desenvolvimento",
-        "Desigualdade Global"
-      ]
-    },
-    "População e Urbanização": {
-      "subareas": [
-        "Crescimento Populacional",
-        "Distribuição Geográfica da População",
-        "Migrações Internas e Internacionais",
-        "Urbanização e Metropolização",
-        "Problemas Urbanos",
-        "Favelas e Segregação Socioespacial",
-        "População Brasileira"
-      ]
-    },
-    "Brasil: Territórios e Regiões": {
-      "subareas": [
-        "Regionalização do Brasil",
-        "Região Norte",
-        "Região Nordeste",
-        "Região Centro-Oeste",
-        "Região Sudeste",
-        "Região Sul",
-        "Fronteiras e Espaço Amazônico"
-      ]
-    },
-    "Questões Ambientais": {
-      "subareas": [
-        "Degradação Ambiental",
-        "Poluição do Ar, Água e Solo",
-        "Aquecimento Global e Efeito Estufa",
-        "Desertificação",
-        "Lixo e Reciclagem",
-        "Desenvolvimento Sustentável",
-        "Conferências Ambientais Internacionais"
-      ]
-    },
-    "Fontes de Energia": {
-      "subareas": [
-        "Combustíveis Fósseis",
-        "Energia Nuclear",
-        "Energias Renováveis (Solar, Eólica, Hídrica, Biomassa)",
-        "Matriz Energética Brasileira",
-        "Pré-Sal e Petróleo",
-        "Geopolítica Energética"
-      ]
-    },
-    "Agropecuária e Indústria": {
-      "subareas": [
-        "Agricultura Moderna e Agronegócio",
-        "Agricultura Familiar",
-        "Reforma Agrária",
-        "Industrialização e Desindustrialização",
-        "Economia Brasileira",
-        "Comércio e Serviços"
-      ]
+    "medio": {
+      "Cartografia e Orientação": {
+        "subareas": [
+          "Projeções Cartográficas",
+          "Escala e Localização",
+          "Fusos Horários",
+          "Coordenadas Geográficas",
+          "Leitura e Interpretação de Mapas",
+          "Sensoriamento Remoto e SIG"
+        ]
+      },
+      "Geomorfologia e Relevo": {
+        "subareas": [
+          "Estrutura Geológica da Terra",
+          "Tectônica de Placas",
+          "Vulcanismo e Terremotos",
+          "Formação e Tipos de Relevo",
+          "Agentes Exógenos (Erosão e Intemperismo)",
+          "Relevo Brasileiro"
+        ]
+      },
+      "Climatologia e Meteorologia": {
+        "subareas": [
+          "Elementos do Clima",
+          "Fatores do Clima",
+          "Massas de Ar",
+          "Tipos Climáticos do Mundo",
+          "Clima do Brasil",
+          "Mudanças Climáticas e Aquecimento Global",
+          "El Niño e La Niña"
+        ]
+      },
+      "Hidrologia e Recursos Hídricos": {
+        "subareas": [
+          "Ciclo Hidrológico",
+          "Bacias Hidrográficas",
+          "Rios e Lagos",
+          "Oceanos e Correntes Marítimas",
+          "Águas Subterrâneas",
+          "Crise Hídrica e Saneamento",
+          "Bacias Hidrográficas Brasileiras"
+        ]
+      },
+      "Biomas e Vegetação": {
+        "subareas": [
+          "Florestas Tropicais",
+          "Florestas Temperadas",
+          "Savanas e Cerrados",
+          "Desertos",
+          "Tundra e Taiga",
+          "Biomas Brasileiros",
+          "Desmatamento e Conservação"
+        ]
+      },
+      "Geopolítica Mundial": {
+        "subareas": [
+          "Ordem Mundial Pós-Guerra Fria",
+          "Conflitos Geopolíticos Atuais",
+          "Organizações Internacionais",
+          "Blocos Econômicos",
+          "Terrorismo e Questões de Segurança",
+          "Oriente Médio e Geopolítica do Petróleo",
+          "África e Neocolonialismo Contemporâneo"
+        ]
+      },
+      "Globalização e Economia": {
+        "subareas": [
+          "Processo de Globalização",
+          "Divisão Internacional do Trabalho",
+          "Países Desenvolvidos e em Desenvolvimento",
+          "Fluxos Comerciais e Financeiros",
+          "Multinacionais e Capital Financeiro",
+          "IDH e Indicadores de Desenvolvimento",
+          "Desigualdade Global"
+        ]
+      },
+      "População e Urbanização": {
+        "subareas": [
+          "Crescimento Populacional",
+          "Distribuição Geográfica da População",
+          "Migrações Internas e Internacionais",
+          "Urbanização e Metropolização",
+          "Problemas Urbanos",
+          "Favelas e Segregação Socioespacial",
+          "População Brasileira"
+        ]
+      },
+      "Brasil: Territórios e Regiões": {
+        "subareas": [
+          "Regionalização do Brasil",
+          "Região Norte",
+          "Região Nordeste",
+          "Região Centro-Oeste",
+          "Região Sudeste",
+          "Região Sul",
+          "Fronteiras e Espaço Amazônico"
+        ]
+      },
+      "Questões Ambientais": {
+        "subareas": [
+          "Degradação Ambiental",
+          "Poluição do Ar, Água e Solo",
+          "Aquecimento Global e Efeito Estufa",
+          "Desertificação",
+          "Lixo e Reciclagem",
+          "Desenvolvimento Sustentável",
+          "Conferências Ambientais Internacionais"
+        ]
+      },
+      "Fontes de Energia": {
+        "subareas": [
+          "Combustíveis Fósseis",
+          "Energia Nuclear",
+          "Energias Renováveis (Solar, Eólica, Hídrica, Biomassa)",
+          "Matriz Energética Brasileira",
+          "Pré-Sal e Petróleo",
+          "Geopolítica Energética"
+        ]
+      },
+      "Agropecuária e Indústria": {
+        "subareas": [
+          "Agricultura Moderna e Agronegócio",
+          "Agricultura Familiar",
+          "Reforma Agrária",
+          "Industrialização e Desindustrialização",
+          "Economia Brasileira",
+          "Comércio e Serviços"
+        ]
+      }
     }
   },
 
   "Filosofia": {
-    "Filosofia Antiga": {
-      "subareas": [
-        "Pré-Socráticos e Cosmologia",
-        "Sócrates e o Método Maiêutico",
-        "Platão e a Teoria das Ideias",
-        "Aristóteles e a Lógica",
-        "Helenismo (Estoicismo, Epicurismo, Ceticismo)",
-        "Filosofia e Mito"
-      ]
-    },
-    "Filosofia Medieval": {
-      "subareas": [
-        "Patrística e Santo Agostinho",
-        "Escolástica e Santo Tomás de Aquino",
-        "Fé e Razão",
-        "Nominalismo e Realismo",
-        "Filosofia Árabe e Islâmica"
-      ]
-    },
-    "Filosofia Moderna": {
-      "subareas": [
-        "Racionalismo (Descartes, Spinoza, Leibniz)",
-        "Empirismo (Bacon, Locke, Hume)",
-        "Iluminismo e Razão",
-        "Kant e o Criticismo",
-        "Contratualismo (Hobbes, Locke, Rousseau)",
-        "Filosofia Política Moderna"
-      ]
-    },
-    "Filosofia Contemporânea": {
-      "subareas": [
-        "Idealismo Alemão (Hegel)",
-        "Marx e o Materialismo Histórico",
-        "Positivismo (Comte)",
-        "Nietzsche e a Crítica da Moral",
-        "Pragmatismo",
-        "Filosofia Analítica",
-        "Estruturalismo e Pós-Estruturalismo",
-        "Frankfurt e a Teoria Crítica"
-      ]
-    },
-    "Ética e Moral": {
-      "subareas": [
-        "Ética das Virtudes (Aristóteles)",
-        "Ética Deontológica (Kant)",
-        "Utilitarismo (Bentham e Mill)",
-        "Ética Contemporânea",
-        "Bioética",
-        "Ética Ambiental",
-        "Moral e Sociedade"
-      ]
-    },
-    "Filosofia Política": {
-      "subareas": [
-        "Estado, Poder e Soberania",
-        "Democracia e Representação",
-        "Justiça e Direito",
-        "Liberdade e Igualdade",
-        "Ideologias Políticas",
-        "Hannah Arendt e Totalitarismo",
-        "Rawls e a Justiça como Equidade"
-      ]
-    },
-    "Epistemologia e Teoria do Conhecimento": {
-      "subareas": [
-        "Conhecimento e Crença",
-        "Verdade e Ceticismo",
-        "Método Científico",
-        "Filosofia da Ciência (Popper, Kuhn)",
-        "Racionalismo vs. Empirismo",
-        "Fenomenologia (Husserl)"
-      ]
-    },
-    "Existencialismo e Fenomenologia": {
-      "subareas": [
-        "Kierkegaard e o Existencialismo",
-        "Heidegger e o Ser",
-        "Sartre e a Existência Precede a Essência",
-        "Beauvoir e o Feminismo Existencial",
-        "Camus e o Absurdo"
-      ]
-    },
-    "Lógica Filosófica": {
-      "subareas": [
-        "Lógica Aristotélica e Silogismo",
-        "Proposições e Validade",
-        "Falácias Lógicas",
-        "Lógica Formal Moderna"
-      ]
+    "medio": {
+      "Filosofia Antiga": {
+        "subareas": [
+          "Pré-Socráticos e Cosmologia",
+          "Sócrates e o Método Maiêutico",
+          "Platão e a Teoria das Ideias",
+          "Aristóteles e a Lógica",
+          "Helenismo (Estoicismo, Epicurismo, Ceticismo)",
+          "Filosofia e Mito"
+        ]
+      },
+      "Filosofia Medieval": {
+        "subareas": [
+          "Patrística e Santo Agostinho",
+          "Escolástica e Santo Tomás de Aquino",
+          "Fé e Razão",
+          "Nominalismo e Realismo",
+          "Filosofia Árabe e Islâmica"
+        ]
+      },
+      "Filosofia Moderna": {
+        "subareas": [
+          "Racionalismo (Descartes, Spinoza, Leibniz)",
+          "Empirismo (Bacon, Locke, Hume)",
+          "Iluminismo e Razão",
+          "Kant e o Criticismo",
+          "Contratualismo (Hobbes, Locke, Rousseau)",
+          "Filosofia Política Moderna"
+        ]
+      },
+      "Filosofia Contemporânea": {
+        "subareas": [
+          "Idealismo Alemão (Hegel)",
+          "Marx e o Materialismo Histórico",
+          "Positivismo (Comte)",
+          "Nietzsche e a Crítica da Moral",
+          "Pragmatismo",
+          "Filosofia Analítica",
+          "Estruturalismo e Pós-Estruturalismo",
+          "Frankfurt e a Teoria Crítica"
+        ]
+      },
+      "Ética e Moral": {
+        "subareas": [
+          "Ética das Virtudes (Aristóteles)",
+          "Ética Deontológica (Kant)",
+          "Utilitarismo (Bentham e Mill)",
+          "Ética Contemporânea",
+          "Bioética",
+          "Ética Ambiental",
+          "Moral e Sociedade"
+        ]
+      },
+      "Filosofia Política": {
+        "subareas": [
+          "Estado, Poder e Soberania",
+          "Democracia e Representação",
+          "Justiça e Direito",
+          "Liberdade e Igualdade",
+          "Ideologias Políticas",
+          "Hannah Arendt e Totalitarismo",
+          "Rawls e a Justiça como Equidade"
+        ]
+      },
+      "Epistemologia e Teoria do Conhecimento": {
+        "subareas": [
+          "Conhecimento e Crença",
+          "Verdade e Ceticismo",
+          "Método Científico",
+          "Filosofia da Ciência (Popper, Kuhn)",
+          "Racionalismo vs. Empirismo",
+          "Fenomenologia (Husserl)"
+        ]
+      },
+      "Existencialismo e Fenomenologia": {
+        "subareas": [
+          "Kierkegaard e o Existencialismo",
+          "Heidegger e o Ser",
+          "Sartre e a Existência Precede a Essência",
+          "Beauvoir e o Feminismo Existencial",
+          "Camus e o Absurdo"
+        ]
+      },
+      "Lógica Filosófica": {
+        "subareas": [
+          "Lógica Aristotélica e Silogismo",
+          "Proposições e Validade",
+          "Falácias Lógicas",
+          "Lógica Formal Moderna"
+        ]
+      }
     }
   },
 
   "Sociologia": {
-    "Clássicos da Sociologia": {
-      "subareas": [
-        "Auguste Comte e o Positivismo",
-        "Émile Durkheim e os Fatos Sociais",
-        "Karl Marx e o Materialismo Histórico",
-        "Max Weber e a Ação Social",
-        "Simmel e a Modernidade"
-      ]
-    },
-    "Cultura e Identidade": {
-      "subareas": [
-        "Conceito de Cultura",
-        "Cultura e Diversidade",
-        "Etnocentrismo e Relativismo Cultural",
-        "Indústria Cultural",
-        "Identidade e Alteridade",
-        "Folclore e Cultura Popular",
-        "Cultura de Massa e Meios de Comunicação"
-      ]
-    },
-    "Estrutura Social e Estratificação": {
-      "subareas": [
-        "Classes Sociais",
-        "Castas e Estamentos",
-        "Mobilidade Social",
-        "Desigualdade Social no Brasil",
-        "Gênero e Divisão Sexual",
-        "Raça e Etnia",
-        "Pobreza e Exclusão Social"
-      ]
-    },
-    "Trabalho e Modos de Produção": {
-      "subareas": [
-        "Trabalho e Alienação",
-        "Capitalismo e suas Fases",
-        "Fordismo, Taylorismo e Toyotismo",
-        "Neoliberalismo",
-        "Desemprego e Precarização do Trabalho",
-        "Sindicalismo e Movimentos Operários",
-        "Trabalho na Sociedade Contemporânea"
-      ]
-    },
-    "Educação e Sociedade": {
-      "subareas": [
-        "Educação como Fato Social",
-        "Reprodução Social e Escola",
-        "Educação e Cidadania",
-        "Desigualdades na Educação",
-        "Educação no Brasil"
-      ]
-    },
-    "Movimentos Sociais": {
-      "subareas": [
-        "Teoria dos Movimentos Sociais",
-        "Movimento Operário e Sindical",
-        "Feminismo e Luta das Mulheres",
-        "Movimentos Negros",
-        "Movimentos Indígenas",
-        "Movimentos Ambientais",
-        "LGBTQIA+ e Direitos",
-        "Movimentos Sociais no Brasil"
-      ]
-    },
-    "Democracia e Cidadania": {
-      "subareas": [
-        "Estado e Formas de Governo",
-        "Democracia e Participação Política",
-        "Direitos Humanos",
-        "Constituição e Cidadania no Brasil",
-        "Partidos Políticos e Eleições",
-        "Populismo e Autoritarismo"
-      ]
-    },
-    "Globalização e Sociedade": {
-      "subareas": [
-        "Globalização Econômica e Cultural",
-        "Sociedade em Rede e Tecnologia",
-        "Consumismo e Sociedade de Consumo",
-        "Migrações e Refugiados",
-        "Geopolítica e Poder Mundial"
-      ]
-    },
-    "Questões Raciais e de Gênero": {
-      "subareas": [
-        "Racismo e Discriminação",
-        "Escravidão e seus Legados",
-        "Identidade Negra e Afrocentrismo",
-        "Políticas de Cotas",
-        "Sexismo e Machismo",
-        "Feminismos",
-        "Violência de Gênero",
-        "LGBTQIA+ e Sociedade"
-      ]
-    },
-    "Religião e Secularização": {
-      "subareas": [
-        "Sociologia da Religião (Durkheim, Weber)",
-        "Secularização e Modernidade",
-        "Igrejas e Estado",
-        "Fundamentalismo Religioso",
-        "Religiosidade no Brasil",
-        "Religiões Afro-brasileiras"
-      ]
+    "medio": {
+      "Clássicos da Sociologia": {
+        "subareas": [
+          "Auguste Comte e o Positivismo",
+          "Émile Durkheim e os Fatos Sociais",
+          "Karl Marx e o Materialismo Histórico",
+          "Max Weber e a Ação Social",
+          "Simmel e a Modernidade"
+        ]
+      },
+      "Cultura e Identidade": {
+        "subareas": [
+          "Conceito de Cultura",
+          "Cultura e Diversidade",
+          "Etnocentrismo e Relativismo Cultural",
+          "Indústria Cultural",
+          "Identidade e Alteridade",
+          "Folclore e Cultura Popular",
+          "Cultura de Massa e Meios de Comunicação"
+        ]
+      },
+      "Estrutura Social e Estratificação": {
+        "subareas": [
+          "Classes Sociais",
+          "Castas e Estamentos",
+          "Mobilidade Social",
+          "Desigualdade Social no Brasil",
+          "Gênero e Divisão Sexual",
+          "Raça e Etnia",
+          "Pobreza e Exclusão Social"
+        ]
+      },
+      "Trabalho e Modos de Produção": {
+        "subareas": [
+          "Trabalho e Alienação",
+          "Capitalismo e suas Fases",
+          "Fordismo, Taylorismo e Toyotismo",
+          "Neoliberalismo",
+          "Desemprego e Precarização do Trabalho",
+          "Sindicalismo e Movimentos Operários",
+          "Trabalho na Sociedade Contemporânea"
+        ]
+      },
+      "Educação e Sociedade": {
+        "subareas": [
+          "Educação como Fato Social",
+          "Reprodução Social e Escola",
+          "Educação e Cidadania",
+          "Desigualdades na Educação",
+          "Educação no Brasil"
+        ]
+      },
+      "Movimentos Sociais": {
+        "subareas": [
+          "Teoria dos Movimentos Sociais",
+          "Movimento Operário e Sindical",
+          "Feminismo e Luta das Mulheres",
+          "Movimentos Negros",
+          "Movimentos Indígenas",
+          "Movimentos Ambientais",
+          "LGBTQIA+ e Direitos",
+          "Movimentos Sociais no Brasil"
+        ]
+      },
+      "Democracia e Cidadania": {
+        "subareas": [
+          "Estado e Formas de Governo",
+          "Democracia e Participação Política",
+          "Direitos Humanos",
+          "Constituição e Cidadania no Brasil",
+          "Partidos Políticos e Eleições",
+          "Populismo e Autoritarismo"
+        ]
+      },
+      "Globalização e Sociedade": {
+        "subareas": [
+          "Globalização Econômica e Cultural",
+          "Sociedade em Rede e Tecnologia",
+          "Consumismo e Sociedade de Consumo",
+          "Migrações e Refugiados",
+          "Geopolítica e Poder Mundial"
+        ]
+      },
+      "Questões Raciais e de Gênero": {
+        "subareas": [
+          "Racismo e Discriminação",
+          "Escravidão e seus Legados",
+          "Identidade Negra e Afrocentrismo",
+          "Políticas de Cotas",
+          "Sexismo e Machismo",
+          "Feminismos",
+          "Violência de Gênero",
+          "LGBTQIA+ e Sociedade"
+        ]
+      },
+      "Religião e Secularização": {
+        "subareas": [
+          "Sociologia da Religião (Durkheim, Weber)",
+          "Secularização e Modernidade",
+          "Igrejas e Estado",
+          "Fundamentalismo Religioso",
+          "Religiosidade no Brasil",
+          "Religiões Afro-brasileiras"
+        ]
+      }
     }
   }
 }

@@ -146,6 +146,13 @@ export function parseYamlMeta(
         if (match) result.dificuldade = match;
         break;
       }
+      case "nivel": {
+        const n = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (n === "fundamental") result.nivel = "fundamental";
+        else if (n === "medio") result.nivel = "medio";
+        else if (n === "superior") result.nivel = "superior";
+        break;
+      }
       case "disciplina": {
         const d = val.replace(/^["']|["']$/g, "").trim();
         if (d) result.disciplina = normalizeDisciplina(d) || d;
@@ -250,6 +257,7 @@ export function generateYamlTemplate(defaults?: {
   return `---
 tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
 dificuldade: Média             # Fácil | Média | Difícil
+nivel: médio                   # fundamental | médio | superior
 disciplina: ${disc.padEnd(22)}# Ex: Matemática
 assunto:                       # Ex: Álgebra Linear
 gabarito: A                    # Letra: A-E ou V/F (deixe vazio se for discursiva)
@@ -277,6 +285,7 @@ export function generateYamlSetTemplate(defaults?: {
   return `---
 tipo: Múltipla Escolha        # Múltipla Escolha | V/F | Discursiva
 dificuldade: Média             # Fácil | Média | Difícil
+nivel: médio                   # fundamental | médio | superior
 disciplina: ${disc.padEnd(22)}# Ex: Língua Portuguesa
 
 # Fonte compartilhada (opcional)

@@ -166,6 +166,7 @@ function defaultMetadata(): QuestionMetadataV1 {
     updatedAt: now,
     tipo: "Múltipla Escolha",
     dificuldade: "Média",
+    nivel: "medio",
     tags: [],
     gabarito: normalizeGabaritoForTipo("Múltipla Escolha" as any),
     source: { kind: "original" },
