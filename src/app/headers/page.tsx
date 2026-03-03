@@ -78,7 +78,7 @@ export default function DemoHeadersPage() {
             {layouts.find((l) => l.id === layoutAtivo)?.nome}
           </h2>
           <div className="border-4 border-gray-200 p-4 overflow-x-auto">
-            <div style={{ minWidth: "600px" }}>
+            <div style={{ minWidth: "18cm" }}>
               {layoutAtivo === "original" && <ProvaHeader {...dadosMock} />}
               {layoutAtivo === "layout1" && <ProvaHeaderLayout1 {...dadosMock} />}
               {layoutAtivo === "layout2" && <ProvaHeaderLayout2 {...dadosMock} />}
@@ -108,7 +108,7 @@ export default function DemoHeadersPage() {
                     {layout.nome}
                   </h3>
                   <div className="border-2 border-gray-200 p-4 overflow-x-auto">
-                    <div style={{ minWidth: "600px" }}>
+                    <div style={{ minWidth: "18cm" }}>
                       <Component {...dadosMock} />
                     </div>
                   </div>
