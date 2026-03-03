@@ -526,14 +526,16 @@ export default function Home() {
       <div className="sticky top-0 h-screen overflow-hidden bg-slate-950 flex flex-col">
 
         {/* Nav */}
-        <nav className="flex-none flex items-center justify-between px-8 py-5 z-10">
+        <nav className="flex-none flex items-center justify-between px-4 py-3 md:px-8 md:py-5 z-10">
           <span className="text-yellow-400 font-bold text-xl tracking-tight">ProvaMarela</span>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
               className="text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1.5"
             >
-              Pular apresentação <ArrowRight className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Pular apresentação</span>
+              <span className="sm:hidden">Pular</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/dashboard"
@@ -545,7 +547,7 @@ export default function Home() {
         </nav>
 
         {/* Conteúdo central */}
-        <div className="flex-1 flex items-center justify-center px-8">
+        <div className="flex-1 flex items-center justify-center px-4 md:px-8">
 
           {/* HERO */}
           {step.kind === "hero" && (
@@ -553,12 +555,12 @@ export default function Home() {
               className="flex flex-col items-center text-center"
               style={{ opacity: stepProgress > 0.75 ? 1 - (stepProgress - 0.75) / 0.25 : 1 }}
             >
-              <div className="w-32 h-32 mb-8"><SvgHero /></div>
-              <h1 className="text-6xl font-bold text-white mb-5 tracking-tight">ProvaMarela</h1>
-              <p className="text-xl text-slate-400 max-w-lg leading-relaxed">
+              <div className="w-20 h-20 mb-5 md:w-32 md:h-32 md:mb-8"><SvgHero /></div>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-5 tracking-tight">ProvaMarela</h1>
+              <p className="text-base md:text-xl text-slate-400 max-w-lg leading-relaxed">
                 Editor de questões e montagem de provas para professores
               </p>
-              <div className="mt-14 flex flex-col items-center gap-2 text-slate-600 select-none">
+              <div className="mt-10 md:mt-14 flex flex-col items-center gap-2 text-slate-600 select-none">
                 <span className="text-xs uppercase tracking-widest">Role para ver como funciona</span>
                 <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
               </div>
@@ -574,13 +576,13 @@ export default function Home() {
                 transform: `translateY(${textY}px)`,
               }}
             >
-              <h2 className="text-6xl font-bold text-white mb-6 tracking-tight">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-6 tracking-tight">
                 {step.title}
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
+              <p className="text-sm md:text-xl text-slate-400 leading-relaxed">
                 {step.subtitle}
               </p>
-              <div className="mt-12 text-slate-600 select-none flex flex-col items-center gap-1">
+              <div className="mt-10 md:mt-12 text-slate-600 select-none flex flex-col items-center gap-1">
                 <span className="text-xs uppercase tracking-widest">Continue rolando</span>
                 <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
               </div>
@@ -589,37 +591,37 @@ export default function Home() {
 
           {/* FEATURES */}
           {step.kind === "feature" && (
-            <div className="w-full max-w-5xl flex items-center gap-16">
+            <div className="w-full max-w-5xl flex flex-col md:flex-row md:items-center gap-6 md:gap-16">
               {/* Texto */}
               <div
-                className="flex-1 min-w-0"
+                className="w-full md:flex-1 min-w-0 text-center md:text-left"
                 style={{
                   opacity: textOpacity,
                   transform: `translateY(${textY}px)`,
                 }}
               >
-                <span className="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-5 block">
+                <span className="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-3 md:mb-5 block">
                   {step.label}
                 </span>
-                <h2 className="text-4xl font-bold text-white mb-6 leading-tight">
+                <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-6 leading-tight">
                   {step.title}
                 </h2>
-                <p className="text-lg text-slate-400 leading-relaxed">
+                <p className="text-sm md:text-lg text-slate-400 leading-relaxed">
                   {step.desc}
                 </p>
                 {step.href && (
                   <Link
                     href={step.href}
-                    className="inline-flex items-center gap-2 mt-8 text-sm font-medium text-yellow-400 hover:text-yellow-300 transition-colors"
+                    className="inline-flex items-center gap-2 mt-6 md:mt-8 text-sm font-medium text-yellow-400 hover:text-yellow-300 transition-colors"
                   >
                     {step.hrefLabel} <ArrowRight className="h-4 w-4" />
                   </Link>
                 )}
               </div>
 
-              {/* SVG */}
+              {/* SVG — oculto em mobile para não comprimir o texto */}
               <div
-                className="flex-1 flex items-center justify-center"
+                className="hidden md:flex flex-1 items-center justify-center"
                 style={{
                   opacity: textOpacity,
                   transform: `translateY(${textY * 0.4}px)`,
@@ -638,13 +640,13 @@ export default function Home() {
               className="flex flex-col items-center text-center"
               style={{ opacity: stepProgress < 0.25 ? stepProgress / 0.25 : 1 }}
             >
-              <h2 className="text-5xl font-bold text-white mb-5 tracking-tight">
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-5 tracking-tight">
                 Pronto para começar?
               </h2>
-              <p className="text-slate-400 mb-10 max-w-md text-lg leading-relaxed">
+              <p className="text-slate-400 mb-8 md:mb-10 max-w-md text-base md:text-lg leading-relaxed">
                 Crie suas primeiras questões e monte a próxima prova em minutos.
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <Link
                   href="/editor"
                   className="px-8 py-3 bg-yellow-400 text-slate-900 rounded-full font-semibold hover:bg-yellow-300 transition-colors text-sm"

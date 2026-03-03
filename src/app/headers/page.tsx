@@ -77,18 +77,20 @@ export default function DemoHeadersPage() {
           <h2 className="text-xl font-bold mb-4 text-gray-700">
             {layouts.find((l) => l.id === layoutAtivo)?.nome}
           </h2>
-          <div className="border-4 border-gray-200 p-4">
-            {layoutAtivo === "original" && <ProvaHeader {...dadosMock} />}
-            {layoutAtivo === "layout1" && <ProvaHeaderLayout1 {...dadosMock} />}
-            {layoutAtivo === "layout2" && <ProvaHeaderLayout2 {...dadosMock} />}
-            {layoutAtivo === "layout3" && <ProvaHeaderLayout3 {...dadosMock} />}
-            {layoutAtivo === "layout4" && <ProvaHeaderLayout4 {...dadosMock} />}
-            {layoutAtivo === "layout5" && <ProvaHeaderLayout5 {...dadosMock} />}
-            {layoutAtivo === "layout6" && <ProvaHeaderLayout6 {...dadosMock} />}
-            {layoutAtivo === "layout7" && <ProvaHeaderLayout7 {...dadosMock} />}
-            {layoutAtivo === "layout8" && <ProvaHeaderLayout8 {...dadosMock} />}
-            {layoutAtivo === "layout9" && <ProvaHeaderLayout9 {...dadosMock} />}
-            {layoutAtivo === "layout10" && <ProvaHeaderLayout10 {...dadosMock} />}
+          <div className="border-4 border-gray-200 p-4 overflow-x-auto">
+            <div style={{ minWidth: "600px" }}>
+              {layoutAtivo === "original" && <ProvaHeader {...dadosMock} />}
+              {layoutAtivo === "layout1" && <ProvaHeaderLayout1 {...dadosMock} />}
+              {layoutAtivo === "layout2" && <ProvaHeaderLayout2 {...dadosMock} />}
+              {layoutAtivo === "layout3" && <ProvaHeaderLayout3 {...dadosMock} />}
+              {layoutAtivo === "layout4" && <ProvaHeaderLayout4 {...dadosMock} />}
+              {layoutAtivo === "layout5" && <ProvaHeaderLayout5 {...dadosMock} />}
+              {layoutAtivo === "layout6" && <ProvaHeaderLayout6 {...dadosMock} />}
+              {layoutAtivo === "layout7" && <ProvaHeaderLayout7 {...dadosMock} />}
+              {layoutAtivo === "layout8" && <ProvaHeaderLayout8 {...dadosMock} />}
+              {layoutAtivo === "layout9" && <ProvaHeaderLayout9 {...dadosMock} />}
+              {layoutAtivo === "layout10" && <ProvaHeaderLayout10 {...dadosMock} />}
+            </div>
           </div>
         </div>
 
@@ -105,8 +107,10 @@ export default function DemoHeadersPage() {
                   <h3 className="text-lg font-bold mb-4 text-gray-700">
                     {layout.nome}
                   </h3>
-                  <div className="border-2 border-gray-200 p-4">
-                    <Component {...dadosMock} />
+                  <div className="border-2 border-gray-200 p-4 overflow-x-auto">
+                    <div style={{ minWidth: "600px" }}>
+                      <Component {...dadosMock} />
+                    </div>
                   </div>
                 </div>
               );

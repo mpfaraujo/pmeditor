@@ -669,7 +669,7 @@ const { pages, refs } = usePagination({
             </Button>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
 
             <Button
               variant="outline"
@@ -761,7 +761,7 @@ const { pages, refs } = usePagination({
           </div>
         </div>
 
-        <div className="print:hidden h-[104px] lg:h-[60px]" />
+        <div className="print:hidden h-[130px] sm:h-[104px] lg:h-[60px]" />
 
         <LayoutComponent
           pages={pages as any}

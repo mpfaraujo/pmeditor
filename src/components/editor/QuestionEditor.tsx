@@ -871,39 +871,40 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
   // ----------------------------------------------------------------
 
     return (
-    <div className="w-full min-h-screen bg-[#d3d3d3] p-4">
-      <div className="w-full max-w-[210mm] mx-auto">
-        {/* Toolbar Única no Topo */}
-        <div className="mb-4 bg-white rounded-lg shadow-sm p-2">
-          <EditorToolbar
-            view={view}
-            metadata={meta}
-            onOpenMath={() =>
-              setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })
-            }
-            onNew={handleNew}
-            onRecover={handleRecover}
-            onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
-            onSave={handleSave}
-            onAction={handleToolbarAction}
-            optionsCount={optionCount}
-          />
-
-          {textLines > LINE_LIMIT && (
-            <div className="text-xs px-2 py-1 rounded border bg-red-50 text-red-700 border-red-200">
-              {textLines} linhas (limite {LINE_LIMIT})
-            </div>
-          )}
-        </div>
-
-        {/* Folha A4 Centralizada */}
-        <div
-          ref={editorRef}
-          className="focus:outline-none shadow-2xl"
-          style={{ width: "210mm" }}
+    <div className="w-full min-h-screen bg-[#d3d3d3] p-2 sm:p-4">
+      {/* Toolbar — largura total em mobile, centralizada (max 210mm) em desktop */}
+      <div className="mb-4 bg-white rounded-lg shadow-sm p-2 sm:max-w-[210mm] sm:mx-auto">
+        <EditorToolbar
+          view={view}
+          metadata={meta}
+          onOpenMath={() =>
+            setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })
+          }
+          onNew={handleNew}
+          onRecover={handleRecover}
+          onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
+          onSave={handleSave}
+          onAction={handleToolbarAction}
+          optionsCount={optionCount}
         />
 
-        {/* Modais Preservados Exatamente como estavam */}
+        {textLines > LINE_LIMIT && (
+          <div className="text-xs px-2 py-1 rounded border bg-red-50 text-red-700 border-red-200">
+            {textLines} linhas (limite {LINE_LIMIT})
+          </div>
+        )}
+      </div>
+
+      {/* Folha A4 — container com scroll horizontal em mobile */}
+      <div className="overflow-x-auto pb-4">
+        <div
+          ref={editorRef}
+          className="focus:outline-none shadow-2xl mx-auto"
+          style={{ width: "210mm" }}
+        />
+      </div>
+
+      {/* Modais */}
         <MathInsert
           open={mathDialog.open}
           onOpenChange={(o) => {
@@ -986,7 +987,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </div>
     </div>
   );
 }

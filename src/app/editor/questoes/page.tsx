@@ -14,8 +14,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  type CarouselApi,
 } from "@/components/ui/carousel";
-import type { CarouselApi } from "@/components/ui/carousel";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
 import "./print.css";
 
@@ -131,14 +131,10 @@ export default function QuestoesPage() {
 
   useEffect(() => {
     if (!api) return;
-
     const update = () => setCurrentIndex(api.selectedScrollSnap());
     update();
     api.on("select", update);
-
-    return () => {
-      api.off("select", update);
-    };
+    return () => { api.off("select", update); };
   }, [api]);
 
   const toggleSelect = (id: string, checked: boolean) => {
@@ -333,10 +329,7 @@ export default function QuestoesPage() {
             {/* Navegação dentro do carrossel */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
               <button
-                onClick={() => {
-                  setCurrentIndex(currentIndex - 1);
-                  api?.scrollTo(currentIndex - 1);
-                }}
+                onClick={() => api?.scrollTo(currentIndex - 1)}
                 disabled={currentIndex === 0}
                 style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex === 0 ? 0.3 : 1 }}
               >
@@ -346,10 +339,7 @@ export default function QuestoesPage() {
                 {currentIndex + 1} / {displayItems.length}
               </span>
               <button
-                onClick={() => {
-                  setCurrentIndex(currentIndex + 1);
-                  api?.scrollTo(currentIndex + 1);
-                }}
+                onClick={() => api?.scrollTo(currentIndex + 1)}
                 disabled={currentIndex >= displayItems.length - 1}
                 style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= displayItems.length - 1 ? 0.3 : 1 }}
               >
@@ -357,7 +347,7 @@ export default function QuestoesPage() {
               </button>
             </div>
 
-            <Carousel opts={{ align: "start", duration: 60, watchResize: false, watchSlides: false }} className="w-full" setApi={setApi}>
+            <Carousel opts={{ align: "center", duration: 60 }} className="w-full" setApi={setApi}>
               <CarouselContent>
                 {displayItems.map((q) => (
                   <CarouselItem key={q.metadata.id}>

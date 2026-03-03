@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e \"const d = require\\(''./src/data/matematica_areas.json''\\); console.log\\(Object.keys\\(d\\).join\\(''\\\\n''\\)\\);\")"
+      "Bash(node -e \"const d = require\\(''./src/data/matematica_areas.json''\\); console.log\\(Object.keys\\(d\\).join\\(''\\\\n''\\)\\);\")",
+      "Bash(pnpm tsc --noEmit)"
     ]
   }
 }
