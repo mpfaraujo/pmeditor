@@ -26,6 +26,7 @@ interface FilterValues {
   assuntos: string[];
   tipos: string[];
   dificuldades: string[];
+  niveis: string[];
   tags: string;
   sourceKind: string;
   rootType: string;
@@ -54,6 +55,7 @@ export function QuestionsFilter({ onFilter, totalResults }: QuestionsFilterProps
     assuntos: [],
     tipos: [],
     dificuldades: [],
+    niveis: [],
     tags: "",
     sourceKind: "",
     rootType: "",
@@ -150,6 +152,7 @@ export function QuestionsFilter({ onFilter, totalResults }: QuestionsFilterProps
       assuntos: [],
       tipos: [],
       dificuldades: [],
+      niveis: [],
       tags: "",
       sourceKind: "",
       rootType: "",
@@ -172,6 +175,34 @@ export function QuestionsFilter({ onFilter, totalResults }: QuestionsFilterProps
 
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
+          {/* Nível */}
+          <div>
+            <Label className="text-xs font-medium mb-1.5 block">Nível</Label>
+            <div className="space-y-1">
+              {[
+                { value: "", label: "Todos" },
+                { value: "fundamental", label: "Fundamental" },
+                { value: "medio", label: "Médio" },
+                { value: "superior", label: "Superior" },
+              ].map(opt => (
+                <div key={opt.value} className="flex items-center gap-1.5">
+                  <input
+                    type="radio"
+                    id={`nivel-${opt.value || "todos"}`}
+                    name="sidebar-nivel"
+                    value={opt.value}
+                    checked={(filters.niveis[0] ?? "") === opt.value}
+                    onChange={() => setFilters(prev => ({ ...prev, niveis: opt.value ? [opt.value] : [] }))}
+                    className="h-3 w-3"
+                  />
+                  <label htmlFor={`nivel-${opt.value || "todos"}`} className="text-xs cursor-pointer leading-tight">
+                    {opt.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Disciplinas */}
           <div>
             <Label className="text-xs font-medium mb-1.5 block">Disciplina</Label>
