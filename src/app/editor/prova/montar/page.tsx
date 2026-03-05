@@ -175,7 +175,7 @@ export default function MontarProvaPage() {
     provaConfig,
     updateProvaConfig,
   } = useProva();
-  const columns = (Number(provaConfig.columns) === 2 ? 2 : 1) as 1 | 2;
+  const columns = (provaConfig.layoutType === "acessivel" ? 1 : Number(provaConfig.columns) === 2 ? 2 : 1) as 1 | 2;
 
   // Lista linear de questões (sem divisão coluna1/coluna2)
   const [orderedList, setOrderedList] = useState<QuestionData[]>(() => {
@@ -231,13 +231,15 @@ export default function MontarProvaPage() {
   // Questões com opções em linha (oneparchoices)
   const [inlineOptionsSet, setInlineOptionsSet] = useState<Set<string>>(new Set());
 
-  const handleToggleInlineOptions = (id: string) =>
+  const handleToggleInlineOptions = (id: string) => {
     setInlineOptionsSet(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
+    setRepaginateVersion(v => v + 1);
+  };
 
   useEffect(() => {
     setIsMounted(true);
