@@ -437,11 +437,13 @@
   align-items: flex-start;
 }
 
-.question-options .flex.items-start:has(.math-inline, .katex, img) {
+.question-options .flex.items-start:has(.math-inline, .katex, img),
+.question-options .flex.items-baseline:has(.math-inline, .katex, img) {
   align-items: center;
 }
 
-.question-options .flex.items-start:has(.math-inline, .katex, img) > span:first-child {
+.question-options .flex.items-start:has(.math-inline, .katex, img) > span:first-child,
+.question-options .flex.items-baseline:has(.math-inline, .katex, img) > span:first-child {
   line-height: 1;
   display: inline-flex;
   align-items: center;
