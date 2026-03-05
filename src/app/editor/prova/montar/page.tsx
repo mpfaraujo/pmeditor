@@ -658,12 +658,12 @@ const { pages, refs } = usePagination({
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
         <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center gap-x-2 gap-y-2 justify-between border-b px-4 py-3" style={{ background: 'var(--yellow-brand)' }}>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => router.push("/editor/questoes")} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
+            <Button variant="outline" onClick={() => router.push("/editor/questoes")} className="bg-white hover:bg-slate-50">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar
             </Button>
 
-            <Button variant="outline" onClick={handleEditarConfiguracao} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
+            <Button variant="outline" onClick={handleEditarConfiguracao} className="bg-white hover:bg-slate-50">
               <Settings className="h-4 w-4 mr-2" />
               Configuração
             </Button>
@@ -674,7 +674,7 @@ const { pages, refs } = usePagination({
             <Button
               variant="outline"
               onClick={() => updateProvaConfig({ showGabarito: !provaConfig.showGabarito })}
-              className="bg-amber-50 hover:bg-amber-100 border-amber-200"
+              className="bg-white hover:bg-slate-50"
             >
               {provaConfig.showGabarito ? (
                 <CheckSquare className="h-4 w-4 mr-2" />
@@ -684,11 +684,11 @@ const { pages, refs } = usePagination({
               Gabarito
             </Button>
 
-            <Button variant="outline" onClick={() => setReorderModalOpen(true)} className="bg-amber-50 hover:bg-amber-100 border-amber-200">
+            <Button variant="outline" onClick={() => setReorderModalOpen(true)} className="bg-white hover:bg-slate-50">
               <ListOrdered className="h-4 w-4 mr-2" />
               Reordenar
               {manualOrder && (
-                <span className="ml-1 text-[9px] text-amber-600">(manual)</span>
+                <span className="ml-1 text-[9px] text-slate-500">(manual)</span>
               )}
             </Button>
 
@@ -696,7 +696,7 @@ const { pages, refs } = usePagination({
               variant="outline"
               onClick={() => setSalvarDialogOpen(true)}
               disabled={initialQuestions.length === 0}
-              className="bg-amber-50 hover:bg-amber-100 border-amber-200"
+              className="bg-white hover:bg-slate-50"
             >
               <Save className="h-4 w-4 mr-2" />
               Salvar Prova

@@ -54,7 +54,7 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
+  --primary: #1a6680;
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -218,9 +218,9 @@
   @apply hover:shadow-lg;
 }
 
-/* Botão primário azul estrutural */
+/* Botão primário */
 .btn-primary {
-  background: var(--blue-structure);
+  background: var(--primary);
   color: var(--white);
   font-weight: 600;
   padding: 10px 18px;
@@ -230,7 +230,7 @@
 }
 
 .btn-primary:hover {
-  background: var(--blue-hover);
+  background: color-mix(in srgb, var(--primary) 85%, black);
   box-shadow: var(--shadow-md);
 }
 

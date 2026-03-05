@@ -360,10 +360,10 @@ export default function FiltroQuestoesPage() {
         <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <span>Você tem <strong>{selectedCount}</strong> {selectedCount === 1 ? "questão selecionada" : "questões selecionadas"}. Deseja continuar adicionando ou iniciar uma nova seleção?</span>
           <div className="flex shrink-0 gap-2">
-            <Button size="sm" variant="outline" className="border-amber-300 bg-white hover:bg-amber-100 text-amber-800" onClick={() => setBannerDismissed(true)}>
+            <Button size="sm" variant="outline" onClick={() => setBannerDismissed(true)}>
               Continuar
             </Button>
-            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white" onClick={() => { clearAll(); setBannerDismissed(true); }}>
+            <Button size="sm" onClick={() => { clearAll(); setBannerDismissed(true); }}>
               Nova seleção
             </Button>
           </div>

@@ -434,11 +434,11 @@ function Layout5({
       <div className="flex items-center justify-between border-b-2 border-gray-900 pb-1 mb-2">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <div
-            className={`flex items-center justify-center shrink-0 w-[1.5cm] h-[1.5cm] ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border border-gray-400 text-[8px]"}`}
+            className={`flex items-center justify-center shrink-0 w-[2cm] ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border border-gray-400 text-[8px]"}`}
             onClick={isEditable ? onLogoClick : undefined}
           >
             {logoUrl ? (
-              <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }} />
+              <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "2cm" }} />
             ) : (
               <span className="text-xs font-bold">{logoPlaceholder?.trim() ?? ""}</span>
             )}
@@ -493,13 +493,13 @@ function Layout6({
   const E = (f: string) => ed(f, !!isEditable, onFieldChange);
   return (
     <div className="border border-gray-300 w-[18cm] mb-4 text-[10px]">
-      <div className="grid grid-cols-[1.5cm_1fr_2.5cm] gap-2 px-2 py-1 border-b border-gray-300 items-end">
+      <div className="grid grid-cols-[2cm_1fr_2.5cm] gap-2 px-2 py-1 border-b border-gray-300 items-end">
         <div
           className={`flex items-center justify-center shrink-0 ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border border-gray-400 text-[8px]"}`}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
-            <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }} />
+            <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "2cm" }} />
           ) : (
             <span>{logoPlaceholder?.trim() ?? ""}</span>
           )}
@@ -565,22 +565,20 @@ function Layout7({
   const E = (f: string) => ed(f, !!isEditable, onFieldChange);
   return (
     <div className="w-[18cm] border border-gray-200 mb-4">
-      <div className="grid grid-cols-[1.5cm_1fr] border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+      <div className="flex items-stretch border-b border-gray-200">
         <div
-          className={`flex items-center justify-center p-1 ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "text-[8px] text-gray-400"}`}
+          className={`flex items-center justify-center px-4 py-1 bg-white border-r border-gray-200 shrink-0 ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "text-[8px] text-gray-400"}`}
+          style={{ width: "2.5cm" }}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
-            <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }} />
+            <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "2cm" }} />
           ) : (
             <span className="text-xs font-bold">{logoPlaceholder?.trim() ?? ""}</span>
           )}
         </div>
-        {/* w-full garante que a faixa da instituição ocupe toda a célula */}
-        <div className="flex items-center px-2 py-1.5">
-          <div className="instituicao-footer w-full" {...E("instituicao")}>
-            <p>{instituicao ?? ""}</p>
-          </div>
+        <div className="instituicao-footer flex-1" style={{ borderRadius: 0, margin: 0 }} {...E("instituicao")}>
+          <p>{instituicao ?? ""}</p>
         </div>
       </div>
 
@@ -639,16 +637,17 @@ function Layout8({
     <div className="w-[18cm] border border-gray-300 mb-4">
       <div className="bg-gray-400 text-white py-1 px-3 flex items-center justify-between">
         <div
-          className={`flex items-center justify-center text-xs font-bold ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border-2 border-gray-800"}`}
+          className={`flex items-center justify-center shrink-0 text-xs font-bold ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border-2 border-white/60"}`}
+          style={{ width: "2cm" }}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
-            <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "min(100%, 2cm)", maxHeight: "min(100%, 2cm)" }} />
+            <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "2cm", maxHeight: "0.7cm" }} />
           ) : (
             <span className="text-xs font-bold">{logoPlaceholder?.trim() ?? ""}</span>
           )}
         </div>
-        <span className="text-xs font-bold" {...E("instituicao")}>{instituicao ?? ""}</span>
+        <span className="flex-1 text-center text-sm font-bold" {...E("instituicao")}>{instituicao ?? ""}</span>
       </div>
 
       <div className="divide-y divide-gray-200">
@@ -712,13 +711,13 @@ function Layout9({
       <div className="w-3 bg-gradient-to-b from-blue-600 to-blue-800 shrink-0"></div>
 
       <div className="flex-1 min-w-0">
-        <div className="grid grid-cols-[1.5cm_1fr_auto] items-center px-3 py-1.5 bg-gray-50 border-b border-gray-200">
+        <div className="grid grid-cols-[2cm_1fr_auto] gap-3 items-center px-3 py-1.5 bg-gray-50 border-b border-gray-200">
           <div
             className={`flex items-center justify-center shrink-0 ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "text-[8px] text-gray-400"}`}
             onClick={isEditable ? onLogoClick : undefined}
           >
             {logoUrl ? (
-              <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "min(100%, 1.5cm)", maxHeight: "min(100%, 1.5cm)" }} />
+              <img src={logoUrl} alt="Logo da instituição" className="object-contain" style={{ maxWidth: "2cm" }} />
             ) : (
               <span className="text-xs font-bold">{logoPlaceholder?.trim() ?? ""}</span>
             )}

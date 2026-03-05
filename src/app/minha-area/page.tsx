@@ -68,7 +68,6 @@ function MinhaAreaContent() {
             <Button
               variant="outline"
               size="sm"
-              className="border-amber-300 text-amber-800 hover:bg-amber-100"
               onClick={() => router.push("/admin/gerenciar")}
             >
               Gerenciar Questões
@@ -93,28 +92,28 @@ function MinhaAreaContent() {
             <TabsList className="w-full bg-transparent gap-2">
               <TabsTrigger
                 value="perfil"
-                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
               >
                 <User className="h-4 w-4" />
                 <span className="hidden sm:inline">Perfil</span>
               </TabsTrigger>
               <TabsTrigger
                 value="turmas"
-                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
               >
                 <Users className="h-4 w-4" />
                 <span className="hidden sm:inline">Turmas</span>
               </TabsTrigger>
               <TabsTrigger
                 value="questoes"
-                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
               >
                 <FileText className="h-4 w-4" />
                 <span className="hidden sm:inline">Questões</span>
               </TabsTrigger>
               <TabsTrigger
                 value="provas"
-                className="gap-2 data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
               >
                 <ClipboardList className="h-4 w-4" />
                 <span className="hidden sm:inline">Provas</span>
