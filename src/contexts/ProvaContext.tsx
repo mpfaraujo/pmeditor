@@ -19,7 +19,7 @@ type ColumnLayout = {
   coluna2: QuestionData[];
 };
 
-type LayoutType = "prova" | "exercicio";
+type LayoutType = "prova" | "exercicio" | "acessivel";
 type ColumnCount = 1 | 2;
 
 export type ProvaConfig = {
@@ -31,6 +31,7 @@ export type ProvaConfig = {
   showGabarito: boolean;
 
   // campos do cabeçalho
+  titulo: string;
   turma: string;
   professor: string;
   disciplina: string;
@@ -74,6 +75,7 @@ const defaultProvaConfig: ProvaConfig = {
   logoUrl: null,
   showGabarito: false,
 
+  titulo: "AVALIAÇÃO BIMESTRAL",
   turma: "",
   professor: "",
   disciplina: "",

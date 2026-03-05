@@ -133,7 +133,6 @@ export function ExerciseLayout({
                 data={provaConfig.data}
               />
             )}
-
             {/* espaço controlado entre header e questões */}
             <div className={pageIndex === 0 ? "pt-6" : ""}>
               <div className="questoes-container">

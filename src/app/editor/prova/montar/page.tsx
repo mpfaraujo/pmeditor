@@ -25,6 +25,7 @@ import PaginatedA4 from "@/components/prova/PaginatedA4";
 import { usePagination } from "@/hooks/usePagination";
 import { ProvaLayout } from "@/components/prova/layouts/ProvaLayout";
 import { ExerciseLayout } from "@/components/prova/layouts/ExerciseLayout";
+import { AccessibleLayout } from "@/components/prova/layouts/AccessibleLayout";
 import { QuestionData, ColumnLayout } from "@/types/layout";
 import Gabarito from "@/components/prova/Gabarito";
 import GabaritoDiscursivoPages from "@/components/prova/GabaritoDiscursivoPages";
@@ -602,12 +603,18 @@ const { pages, refs } = usePagination({
           <div className="questao-item">
             {(!frag || frag.first) && (
               <div className="questao-header-linha">
-                <QuestionHeaderSvg
-                  numero={printedIndex + 1}
-                  totalMm={columns === 2 ? 85 : 180}
-                  boxMm={28}
-                  variant={provaConfig.questionHeaderVariant ?? 0}
-                />
+                {provaConfig.layoutType === "acessivel" ? (
+                  <div className="accessible-question-number">
+                    QUESTÃO {printedIndex + 1}
+                  </div>
+                ) : (
+                  <QuestionHeaderSvg
+                    numero={printedIndex + 1}
+                    totalMm={columns === 2 ? 85 : 180}
+                    boxMm={28}
+                    variant={provaConfig.questionHeaderVariant ?? 0}
+                  />
+                )}
                 <span
                   contentEditable
                   suppressContentEditableWarning
@@ -633,6 +640,7 @@ const { pages, refs } = usePagination({
   };
 
   const LayoutComponent =
+    provaConfig.layoutType === "acessivel" ? AccessibleLayout :
     provaConfig.layoutType === "exercicio" ? ExerciseLayout : ProvaLayout;
     const logoPlaceholder = provaConfig.logoPlaceholder;
 

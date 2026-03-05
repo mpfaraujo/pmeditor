@@ -19,7 +19,7 @@ import { ArrowLeft } from "lucide-react";
 import { LogoPicker } from "@/components/editor/LogoPicker";
 import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
 
-type LayoutType = "prova" | "exercicio";
+type LayoutType = "prova" | "exercicio" | "acessivel";
 type ColumnCount = 1 | 2;
 
 
@@ -176,8 +176,21 @@ if (!mounted) return null;
                   >
                     <div className="font-semibold">Lista de Exercício</div>
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => setLayoutType("acessivel")}
+                    className={`w-full p-3 rounded-lg border-2 text-left ${
+                      layoutType === "acessivel"
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-slate-200 bg-white"
+                    }`}
+                  >
+                    <div className="font-semibold">Acessível (TEA / TDAH)</div>
+                    <div className="text-xs text-slate-500 mt-0.5">1 coluna, tipografia ampliada, espaçamento aumentado</div>
+                  </button>
                 </div>
 
+                {layoutType !== "acessivel" && (<>
                 <div className="space-y-2">
                   <button
                     type="button"
@@ -219,7 +232,8 @@ if (!mounted) return null;
                   value={questionHeaderVariant}
                   options={decoratorOptions}
                   onChange={setQuestionHeaderVariant}/>
-                </div> 
+                </div>
+                </>)}
                
 
                 {/* Gabarito */}

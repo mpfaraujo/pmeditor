@@ -42,7 +42,7 @@ export function ProvaLayout({
   onSpacerChange,
   onSpacerCommit,
 }: ProvaLayoutProps) {
-  const { provaConfig } = useProva();
+  const { provaConfig, updateProvaConfig } = useProva();
 
   const headerLayout: number = (provaConfig as any).headerLayout ?? 0;
 
@@ -91,14 +91,19 @@ export function ProvaLayout({
             onLogoClick={onLogoClick}
             logoPlaceholder={logoPlaceholder}
             isEditable={false}
-            nome=""
+            nome=" "
             turma={provaConfig.turma}
             professor={provaConfig.professor}
             disciplina={provaConfig.disciplina}
             data={provaConfig.data}
-            nota=""
+            nota=" "
             instituicao={provaConfig.instituicao}
           />
+          {provaConfig.titulo && (
+            <div className="text-[11pt] font-bold text-center uppercase pt-0 pb-3">
+              {provaConfig.titulo}
+            </div>
+          )}
           <div
             className="questoes-container"
             ref={refs.measureFirstQuestoesRef}
@@ -156,6 +161,16 @@ export function ProvaLayout({
                   instituicao={provaConfig.instituicao}
                   logoPlaceholder={logoPlaceholder}
                 />
+              )}
+              {pageIndex === 0 && provaConfig.titulo !== undefined && (
+                <div
+                  className="text-[11pt] font-bold text-center uppercase pt-0 pb-3"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => updateProvaConfig({ titulo: e.currentTarget.textContent ?? "" })}
+                >
+                  {provaConfig.titulo}
+                </div>
               )}
 
               <div className="questoes-container">

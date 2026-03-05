@@ -731,3 +731,106 @@
 /* =========================
    PRINT FLOW (allowPageBreak)
    ========================= */
+
+/* =========================================================
+   MODO ACESSÍVEL (TEA / TDAH)
+   ========================================================= */
+
+/*
+ * .accessible-page sobrescreve as configurações visuais do .prova-page
+ * para aplicar tipografia ampliada, margens maiores e espaçamento
+ * aumentado conforme spec de acessibilidade.
+ */
+
+.accessible-page {
+  font-family: "Noto Sans", "Source Sans Pro", Arial, sans-serif;
+  font-size: 12.5pt;
+  line-height: 1.5;
+  padding: 2cm;
+}
+
+/* Número da questão em texto puro */
+.accessible-question-number {
+  font-size: 14pt;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 6pt;
+}
+
+/* Cabeçalho acessível */
+.accessible-page .accessible-header {
+  margin-bottom: 0.6cm;
+}
+
+/* Questão: espaçamento entre questões */
+.accessible-page .questao-wrapper,
+.accessible-page .question-block {
+  margin-bottom: 18pt;
+}
+
+/* Número da questão: destaque forte */
+.accessible-page .questao-numero,
+.accessible-page .question-number {
+  font-size: 14pt;
+  font-weight: 700;
+  margin-bottom: 6pt;
+  letter-spacing: 0.01em;
+}
+
+/* Enunciado */
+.accessible-page .questao-enunciado,
+.accessible-page .question-statement {
+  font-size: 12.5pt;
+  line-height: 1.35;
+  margin-bottom: 10pt;
+  text-align: left;
+}
+
+/* Alternativas: espaçamento generoso */
+.accessible-page .options,
+.accessible-page .questao-alternativas {
+  display: flex;
+  flex-direction: column;
+  gap: 5pt;
+}
+
+/* Cada alternativa: hanging indent */
+.accessible-page .option,
+.accessible-page li.option {
+  display: grid;
+  grid-template-columns: 1.4em 1fr;
+  gap: 0.3em;
+  line-height: 1.35;
+  font-size: 12.5pt;
+  text-align: left;
+}
+
+/* Sem decoração de fundo/borda nas questões */
+.accessible-page .questao-header-svg,
+.accessible-page .question-decorator {
+  display: none;
+}
+
+/* Separador sutil entre questões */
+.accessible-page .questao-wrapper + .questao-wrapper,
+.accessible-page .question-block + .question-block {
+  border-top: 1px solid #ddd;
+  padding-top: 14pt;
+}
+
+/* Sem colunas — forçar 1 coluna */
+.accessible-page .questoes-container {
+  display: block;
+}
+
+.accessible-page .coluna {
+  width: 100%;
+  max-width: 17cm;
+}
+
+/* Print: margens maiores */
+@media print {
+  .accessible-page {
+    padding: 2cm 2.2cm;
+  }
+}

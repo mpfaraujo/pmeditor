@@ -10,7 +10,7 @@ interface ProvaFooterProps {
   tipoAtual?: number;
   /** Total de tipos gerados */
   numTipos?: number;
-  layoutType?: "prova" | "exercicio";
+  layoutType?: "prova" | "exercicio" | "acessivel";
 }
 
 export function ProvaFooter({ disciplina, currentPage, totalPages, spacerHeight = 0, tipoAtual, numTipos, layoutType = "prova" }: ProvaFooterProps) {
