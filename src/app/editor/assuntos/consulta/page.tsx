@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { X } from "lucide-react";
 import disciplinasJson from "@/data/disciplinas_areas.json";
 
 type AreasMap = Record<string, { subareas: string[] }>;
@@ -34,17 +36,30 @@ export default function ConsultaAssuntosPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      <div className="max-w-2xl mx-auto py-8 px-4">
-        <h1 className="text-2xl font-bold text-slate-800 mb-1">
-          Assuntos por Disciplina
-        </h1>
-        <p className="text-sm text-slate-500 mb-6">
-          Copie o nome exato do assunto para usar no campo{" "}
-          <code className="bg-slate-100 px-1 rounded font-mono text-xs">assunto:</code>{" "}
-          do modelo de informações.
-        </p>
+    <main className="min-h-screen stripe-grid-bg">
+      <header className="sticky top-0 z-40 border-b glass">
+        <div className="mx-auto max-w-2xl px-4 py-4 flex items-start justify-between animate-fade-in-up">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">
+              Assuntos por Disciplina
+            </h1>
+            <p className="text-sm text-slate-500 mt-0.5">
+              Referência para preencher o campo{" "}
+              <code className="bg-slate-100 px-1 rounded font-mono text-xs">assunto:</code>{" "}
+              do modelo de informações.
+            </p>
+          </div>
+          <button
+            onClick={() => window.close()}
+            title="Fechar aba"
+            className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors mt-0.5 shrink-0"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      </header>
 
+      <div className="max-w-2xl mx-auto py-8 px-4 animate-fade-in-up">
         {/* Seletor de disciplina e nível */}
         <div className="flex gap-3 mb-6">
           <select
@@ -76,8 +91,8 @@ export default function ConsultaAssuntosPage() {
         ) : (
           <div className="space-y-4">
             {areas.map(([area, { subareas }]) => (
-              <div key={area} className="bg-white rounded-xl border shadow-sm overflow-hidden">
-                <div className="px-4 py-2 bg-slate-100 border-b">
+              <div key={area} className="stripe-card overflow-hidden">
+                <div className="px-4 py-2 bg-slate-50 border-b">
                   <span className="text-sm font-semibold text-slate-700">{area}</span>
                 </div>
                 <ul className="divide-y">
@@ -105,6 +120,13 @@ export default function ConsultaAssuntosPage() {
             ))}
           </div>
         )}
+
+        <p className="mt-8 text-center text-xs text-slate-400">
+          Feche esta aba quando terminar.{" "}
+          <Link href="/dashboard" className="underline hover:text-slate-600">
+            Ir para o Dashboard
+          </Link>
+        </p>
       </div>
     </main>
   );

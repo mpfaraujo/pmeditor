@@ -59,8 +59,10 @@ interface FilterValues {
 
 export default function FiltroQuestoesPage() {
   const router = useRouter();
-  const { provaConfig, updateProvaConfig } = useProva();
+  const { provaConfig, updateProvaConfig, selectedCount, clearAll } = useProva();
   const { isLoggedIn } = useAuth();
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const showBanner = selectedCount > 0 && !bannerDismissed;
 
   // Estados para Filtros
   const [options, setOptions] = useState<FilterOptions>({
@@ -354,11 +356,25 @@ export default function FiltroQuestoesPage() {
   return (
     <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-8 flex items-center justify-between animate-fade-in-up">
+        {showBanner && (
+        <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <span>Você tem <strong>{selectedCount}</strong> {selectedCount === 1 ? "questão selecionada" : "questões selecionadas"}. Deseja continuar adicionando ou iniciar uma nova seleção?</span>
+          <div className="flex shrink-0 gap-2">
+            <Button size="sm" variant="outline" className="border-amber-300 bg-white hover:bg-amber-100 text-amber-800" onClick={() => setBannerDismissed(true)}>
+              Continuar
+            </Button>
+            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white" onClick={() => { clearAll(); setBannerDismissed(true); }}>
+              Nova seleção
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <div className="mb-8 flex items-center justify-between animate-fade-in-up">
           <div>
-            <Button variant="ghost" onClick={() => router.push("/")} className="mb-2 -ml-2 hover:bg-white/60">
+            <Button variant="ghost" onClick={() => router.push("/dashboard")} className="mb-2 -ml-2 hover:bg-white/60">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar para o Início
+              Dashboard
             </Button>
             <h1 className="text-4xl font-bold text-slate-800">Preparar Prova</h1>
             <p className="text-slate-600 mt-2">Configure os filtros e o cabeçalho antes de selecionar as questões</p>

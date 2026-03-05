@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -484,8 +486,16 @@ const FEATURE_SVGS = [
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 export default function Home() {
+  const router = useRouter();
+  const { isLoggedIn, loading } = useAuth();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolledVH, setScrolledVH] = useState(0);
+
+  useEffect(() => {
+    if (!loading && isLoggedIn) {
+      router.replace("/dashboard");
+    }
+  }, [isLoggedIn, loading, router]);
 
   useEffect(() => {
     const handleScroll = () => {

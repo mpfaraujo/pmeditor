@@ -381,9 +381,9 @@ export default function AdminGerenciarPage() {
           <Button
             className="mt-4"
             variant="outline"
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/minha-area")}
           >
-            Voltar ao início
+            Minha Área
           </Button>
         </div>
       </div>

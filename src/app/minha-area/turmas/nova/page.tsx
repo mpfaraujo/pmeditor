@@ -146,7 +146,7 @@ export default function NovaTurmaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4">

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, ArrowRight } from "lucide-react";
+import { Copy, Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { generateYamlTemplate, generateYamlSetTemplate } from "@/lib/yamlMeta";
 
 type Tab = "individual" | "conjunto";
@@ -26,6 +26,13 @@ export default function TemplatePage() {
     <main className="min-h-screen stripe-grid-bg">
       <header className="sticky top-0 z-40 border-b glass">
         <div className="mx-auto max-w-3xl px-4 py-4 animate-fade-in-up">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 transition-colors mb-2"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Dashboard
+          </Link>
           <h1 className="text-3xl font-bold text-slate-800">
             Modelo de Informações da Questão
           </h1>

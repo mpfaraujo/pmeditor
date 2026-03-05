@@ -13,16 +13,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import QuestaoHeaderSvg from "@/components/prova/QuestaoHeaderSvg";
 import { ProvaHeader } from "@/components/prova/headers/ProvaHeader";
-import { ProvaHeaderLayout1 } from "@/components/prova/headers/ProvaHeaderLayout1";
-import { ProvaHeaderLayout2 } from "@/components/prova/headers/ProvaHeaderLayout2";
-import { ProvaHeaderLayout3 } from "@/components/prova/headers/ProvaHeaderLayout3";
-import { ProvaHeaderLayout4 } from "@/components/prova/headers/ProvaHeaderLayout4";
-import { ProvaHeaderLayout5 } from "@/components/prova/headers/ProvaHeaderLayout5";
-import { ProvaHeaderLayout6 } from "@/components/prova/headers/ProvaHeaderLayout6";
-import { ProvaHeaderLayout7 } from "@/components/prova/headers/ProvaHeaderLayout7";
-import { ProvaHeaderLayout8 } from "@/components/prova/headers/ProvaHeaderLayout8";
-import { ProvaHeaderLayout9 } from "@/components/prova/headers/ProvaHeaderLayout9";
-import { ProvaHeaderLayout10 } from "@/components/prova/headers/ProvaHeaderLayout10";
 
 interface HeaderPreviewModalProps {
   open: boolean;
@@ -36,19 +26,31 @@ interface HeaderPreviewModalProps {
   instituicao: string;
 }
 
-const HEADER_COMPONENTS: Record<number, React.ComponentType<any>> = {
-  0: ProvaHeader,
-  1: ProvaHeaderLayout1,
-  2: ProvaHeaderLayout2,
-  3: ProvaHeaderLayout3,
-  4: ProvaHeaderLayout4,
-  5: ProvaHeaderLayout5,
-  6: ProvaHeaderLayout6,
-  7: ProvaHeaderLayout7,
-  8: ProvaHeaderLayout8,
-  9: ProvaHeaderLayout9,
-  10: ProvaHeaderLayout10,
+type LogoHint = {
+  orientation: "horizontal" | "vertical" | "quadrado";
+  tip: string;
 };
+
+const HEADER_LOGO_HINTS: Record<number, LogoHint> = {
+  0:  { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+  1:  { orientation: "vertical",    tip: "Funciona melhor com logo vertical (mais alto que largo)" },
+  2:  { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+  3:  { orientation: "quadrado",    tip: "Funciona melhor com logo quadrado ou levemente vertical" },
+  4:  { orientation: "quadrado",    tip: "Funciona melhor com logo quadrado ou levemente vertical" },
+  5:  { orientation: "quadrado",    tip: "Área de logo quadrada — ideal para ícones e emblemas" },
+  6:  { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+  7:  { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+  8:  { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+  9:  { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+  10: { orientation: "horizontal",  tip: "Funciona melhor com logo horizontal (mais largo que alto)" },
+};
+
+const ORIENTATION_BADGE: Record<LogoHint["orientation"], { label: string; className: string }> = {
+  horizontal: { label: "Logo horizontal",  className: "bg-blue-50 text-blue-700 border-blue-200" },
+  vertical:   { label: "Logo vertical",    className: "bg-purple-50 text-purple-700 border-purple-200" },
+  quadrado:   { label: "Logo quadrado",    className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+};
+
 
 const PROVA_STYLES = `
   .prova-header { margin-bottom: 0.8cm; }
@@ -74,8 +76,6 @@ export function HeaderPreviewModal({
   professor,
   instituicao,
 }: HeaderPreviewModalProps) {
-  const HeaderComponent = HEADER_COMPONENTS[selectedHeaderLayout] || ProvaHeader;
-
   return (
     <>
       <style>{PROVA_STYLES}</style>
@@ -112,10 +112,26 @@ export function HeaderPreviewModal({
 
               <div className="flex-1 border rounded-xl bg-slate-100 p-8 overflow-auto flex items-center justify-center">
                 <div className="bg-white shadow-2xl p-8 w-full max-w-[21cm] min-h-[5cm]" style={{ fontSize: "10pt", fontFamily: "Calibri, Arial, sans-serif" }}>
-                  <div className="mb-4 text-center text-xs font-bold text-blue-600 uppercase tracking-widest border-b pb-2">
-                    Preview do Cabeçalho {selectedHeaderLayout}
+                  <div className="mb-4 flex items-center justify-between border-b pb-2">
+                    <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">
+                      Cabeçalho {selectedHeaderLayout}
+                    </span>
+                    {(() => {
+                      const hint = HEADER_LOGO_HINTS[selectedHeaderLayout];
+                      const badge = hint ? ORIENTATION_BADGE[hint.orientation] : null;
+                      if (!hint || !badge) return null;
+                      return (
+                        <span
+                          title={hint.tip}
+                          className={`text-[10px] font-medium px-2 py-0.5 rounded border ${badge.className}`}
+                        >
+                          {badge.label}
+                        </span>
+                      );
+                    })()}
                   </div>
-                  <HeaderComponent
+                  <ProvaHeader
+                    layout={selectedHeaderLayout}
                     logoUrl={logoUrl}
                     onLogoClick={() => {}}
                     isEditable={false}
@@ -127,9 +143,15 @@ export function HeaderPreviewModal({
                     nota="10,0"
                     instituicao={instituicao || "Instituição Exemplo"}
                   />
-                  <div className="mt-4 text-center text-[8pt] text-slate-400 italic">
-                    * A instituição exibida acima é a que você configurou no filtro.
-                  </div>
+                  {(() => {
+                    const hint = HEADER_LOGO_HINTS[selectedHeaderLayout];
+                    if (!hint) return null;
+                    return (
+                      <p className="mt-3 text-[8pt] text-slate-500 italic">
+                        💡 {hint.tip}. A instituição exibida é a que você configurou.
+                      </p>
+                    );
+                  })()}
                 </div>
               </div>
             </TabsContent>

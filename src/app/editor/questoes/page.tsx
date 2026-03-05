@@ -284,7 +284,7 @@ export default function QuestoesPage() {
                     disabled={selectedCount === 0}
                     className="btn-primary"
                   >
-                    Montar Prova ({selectedCount})
+                    Nova Prova ({selectedCount})
                   </Button>
                 </div>
               </div>

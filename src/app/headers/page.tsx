@@ -4,16 +4,6 @@
 
 import { useState } from "react";
 import { ProvaHeader } from "@/components/prova/headers/ProvaHeader";
-import { ProvaHeaderLayout1 } from "@/components/prova/headers/ProvaHeaderLayout1";
-import { ProvaHeaderLayout2 } from "@/components/prova/headers/ProvaHeaderLayout2";
-import { ProvaHeaderLayout3 } from "@/components/prova/headers/ProvaHeaderLayout3";
-import { ProvaHeaderLayout4 } from "@/components/prova/headers/ProvaHeaderLayout4";
-import { ProvaHeaderLayout5 } from "@/components/prova/headers/ProvaHeaderLayout5";
-import { ProvaHeaderLayout6 } from "@/components/prova/headers/ProvaHeaderLayout6";
-import { ProvaHeaderLayout7 } from "@/components/prova/headers/ProvaHeaderLayout7";
-import { ProvaHeaderLayout8 } from "@/components/prova/headers/ProvaHeaderLayout8";
-import { ProvaHeaderLayout9 } from "@/components/prova/headers/ProvaHeaderLayout9";
-import { ProvaHeaderLayout10 } from "@/components/prova/headers/ProvaHeaderLayout10";
 
 const dadosMock = {
   logoUrl: null,
@@ -23,25 +13,28 @@ const dadosMock = {
   disciplina: "Matemática",
   data: "2025-02-04",
   nota: "10,0",
+  instituicao: "Instituição Exemplo",
   onLogoClick: () => alert("Click na logo"),
 };
 
-export default function DemoHeadersPage() {
-  const [layoutAtivo, setLayoutAtivo] = useState<string>("original");
+const LAYOUT_NOMES: Record<number, string> = {
+  0: "Layout Original",
+  1: "Layout 1 - Sidebar",
+  2: "Layout 2 - Grid Simétrico",
+  3: "Layout 3 - Duas Colunas",
+  4: "Layout 4 - Minimalista",
+  5: "Layout 5 - Agrupado",
+  6: "Layout 6 - Com Linhas",
+  7: "Layout 7 - Centralizado",
+  8: "Layout 8 - Com Ícones",
+  9: "Layout 9 - Moderno",
+  10: "Layout 10 - Completo",
+};
 
-  const layouts = [
-    { id: "original", nome: "Layout Original", component: ProvaHeader },
-    { id: "layout1", nome: "Layout 1 - Sidebar", component: ProvaHeaderLayout1 },
-    { id: "layout2", nome: "Layout 2 - Grid Simétrico", component: ProvaHeaderLayout2 },
-    { id: "layout3", nome: "Layout 3 - Duas Colunas", component: ProvaHeaderLayout3 },
-    { id: "layout4", nome: "Layout 4 - Minimalista", component: ProvaHeaderLayout4 },
-    { id: "layout5", nome: "Layout 5 - Agrupado", component: ProvaHeaderLayout5 },
-    { id: "layout6", nome: "Layout 6 - Com Linhas", component: ProvaHeaderLayout6 },
-    { id: "layout7", nome: "Layout 7 - Centralizado", component: ProvaHeaderLayout7 },
-    { id: "layout8", nome: "Layout 8 - Com Ícones", component: ProvaHeaderLayout8 },
-    { id: "layout9", nome: "Layout 9 - Moderno", component: ProvaHeaderLayout9 },
-    { id: "layout10", nome: "Layout 10 - Completo", component: ProvaHeaderLayout10 }
-  ];
+export default function DemoHeadersPage() {
+  const [layoutAtivo, setLayoutAtivo] = useState<number>(0);
+
+  const layouts = Array.from({ length: 11 }, (_, i) => ({ id: i, nome: LAYOUT_NOMES[i] }));
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -79,17 +72,7 @@ export default function DemoHeadersPage() {
           </h2>
           <div className="border-4 border-gray-200 p-4 overflow-x-auto">
             <div style={{ minWidth: "18cm" }}>
-              {layoutAtivo === "original" && <ProvaHeader {...dadosMock} />}
-              {layoutAtivo === "layout1" && <ProvaHeaderLayout1 {...dadosMock} />}
-              {layoutAtivo === "layout2" && <ProvaHeaderLayout2 {...dadosMock} />}
-              {layoutAtivo === "layout3" && <ProvaHeaderLayout3 {...dadosMock} />}
-              {layoutAtivo === "layout4" && <ProvaHeaderLayout4 {...dadosMock} />}
-              {layoutAtivo === "layout5" && <ProvaHeaderLayout5 {...dadosMock} />}
-              {layoutAtivo === "layout6" && <ProvaHeaderLayout6 {...dadosMock} />}
-              {layoutAtivo === "layout7" && <ProvaHeaderLayout7 {...dadosMock} />}
-              {layoutAtivo === "layout8" && <ProvaHeaderLayout8 {...dadosMock} />}
-              {layoutAtivo === "layout9" && <ProvaHeaderLayout9 {...dadosMock} />}
-              {layoutAtivo === "layout10" && <ProvaHeaderLayout10 {...dadosMock} />}
+              <ProvaHeader layout={layoutAtivo} {...dadosMock} />
             </div>
           </div>
         </div>
@@ -100,21 +83,18 @@ export default function DemoHeadersPage() {
             Comparação - Todos os Layouts
           </h2>
           <div className="space-y-8">
-            {layouts.map((layout) => {
-              const Component = layout.component;
-              return (
-                <div key={layout.id} className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-bold mb-4 text-gray-700">
-                    {layout.nome}
-                  </h3>
-                  <div className="border-2 border-gray-200 p-4 overflow-x-auto">
-                    <div style={{ minWidth: "18cm" }}>
-                      <Component {...dadosMock} />
-                    </div>
+            {layouts.map((layout) => (
+              <div key={layout.id} className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-bold mb-4 text-gray-700">
+                  {layout.nome}
+                </h3>
+                <div className="border-2 border-gray-200 p-4 overflow-x-auto">
+                  <div style={{ minWidth: "18cm" }}>
+                    <ProvaHeader layout={layout.id} {...dadosMock} />
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>

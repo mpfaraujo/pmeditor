@@ -181,7 +181,7 @@ export default function EditarTurmaPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 md:p-8 flex items-center justify-center">
+      <div className="min-h-screen stripe-grid-bg p-4 md:p-8 flex items-center justify-center">
         <p className="text-slate-600">Carregando...</p>
       </div>
     );
@@ -192,7 +192,7 @@ export default function EditarTurmaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4">

@@ -10,16 +10,6 @@ import { LayoutProps, ColumnCount } from "@/types/layout";
 import { ProvaHeader } from "../headers/ProvaHeader";
 import { ProvaFooter } from "../ProvaFooter";
 import { useProva } from "@/contexts/ProvaContext";
-import { ProvaHeaderLayout1 } from "../headers/ProvaHeaderLayout1";
-import { ProvaHeaderLayout2 } from "../headers/ProvaHeaderLayout2";
-import { ProvaHeaderLayout3 } from "../headers/ProvaHeaderLayout3";
-import { ProvaHeaderLayout4 } from "../headers/ProvaHeaderLayout4";
-import { ProvaHeaderLayout5 } from "../headers/ProvaHeaderLayout5";
-import { ProvaHeaderLayout6 } from "../headers/ProvaHeaderLayout6";
-import { ProvaHeaderLayout7 } from "../headers/ProvaHeaderLayout7";
-import { ProvaHeaderLayout8 } from "../headers/ProvaHeaderLayout8";
-import { ProvaHeaderLayout9 } from "../headers/ProvaHeaderLayout9";
-import { ProvaHeaderLayout10 } from "../headers/ProvaHeaderLayout10";
 import type { QuestionPermutation } from "@/lib/GeraTiposDeProva";
 import { SpacerHandle } from "../SpacerHandle";
 
@@ -54,33 +44,7 @@ export function ProvaLayout({
 }: ProvaLayoutProps) {
   const { provaConfig } = useProva();
 
-  const HeaderComponent = (() => {
-    switch ((provaConfig as any).headerLayout) {
-      case 1:
-        return ProvaHeaderLayout1;
-      case 2:
-        return ProvaHeaderLayout2;
-      case 3:
-        return ProvaHeaderLayout3;
-      case 4:
-        return ProvaHeaderLayout4;
-      case 5:
-        return ProvaHeaderLayout5;
-      case 6:
-        return ProvaHeaderLayout6;
-      case 7:
-        return ProvaHeaderLayout7;
-      case 8:
-        return ProvaHeaderLayout8;
-      case 9:
-        return ProvaHeaderLayout9;
-      case 10:
-        return ProvaHeaderLayout10;
-      case 0:
-      default:
-        return ProvaHeader; // original / default
-    }
-  })();
+  const headerLayout: number = (provaConfig as any).headerLayout ?? 0;
 
   const renderLayoutItem = (it: any) => {
     if (typeof it === "number") {
@@ -121,7 +85,8 @@ export function ProvaLayout({
           className="prova-page mx-auto bg-white"
           ref={refs.measureFirstPageRef}
         >
-          <HeaderComponent
+          <ProvaHeader
+            layout={headerLayout}
             logoUrl={logoUrl}
             onLogoClick={onLogoClick}
             logoPlaceholder={logoPlaceholder}
@@ -177,7 +142,8 @@ export function ProvaLayout({
           >
             <div className="prova-page mx-auto bg-white shadow-lg print:shadow-none">
               {pageIndex === 0 && (
-                <HeaderComponent
+                <ProvaHeader
+                  layout={headerLayout}
                   logoUrl={logoUrl}
                   onLogoClick={onLogoClick}
                   isEditable={true}
@@ -189,7 +155,6 @@ export function ProvaLayout({
                   nota=""
                   instituicao={provaConfig.instituicao}
                   logoPlaceholder={logoPlaceholder}
-
                 />
               )}
 

@@ -43,7 +43,7 @@ function MinhaAreaContent() {
         <div className="mb-8 animate-fade-in-up">
           <Button
             variant="ghost"
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/dashboard")}
             className="mb-6 hover:bg-white/80 transition-all"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />

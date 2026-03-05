@@ -166,7 +166,7 @@ export default function QuestaoHeaderSvg({
   // VARIANT 3 - MINIMAL (só número)
   if (variant === 3) {
     const textX = 1;
-    const textY = heightMm / 2;
+    const textY = heightMm * 0.72; // próximo ao fundo — proximidade com o conteúdo abaixo
 
     return (
       <div className="questao-header-wrap">
@@ -199,7 +199,7 @@ export default function QuestaoHeaderSvg({
   if (variant === 4) {
     const cornerSize = 4;
     const textX = cornerSize + 1.5;
-    const textY = heightMm / 2;
+    const textY = heightMm * 0.6; // levemente abaixo do centro, mais próximo à linha pontilhada
     const lineY = heightMm - 1.5;
 
     return (

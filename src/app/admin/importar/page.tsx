@@ -10,7 +10,8 @@ import {
   extractLatexAnswerKey,
 } from "@/components/editor/plugins/smartPastePlugin";
 import { normalizeGabaritoForTipo, type QuestionMetadataV1 } from "@/components/editor/QuestionMetaBar";
-import { ChevronLeft, ChevronRight, SkipForward, FileText } from "lucide-react";
+import { ChevronLeft, ChevronRight, SkipForward, FileText, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { AssuntoCombobox } from "@/components/editor/AssuntoCombobox";
 
 type YamlMeta = {
@@ -193,6 +194,11 @@ function BatchConfigForm({
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow w-full max-w-md space-y-4"
       >
+        <div className="flex items-center gap-3 mb-1">
+          <Link href="/admin/gerenciar" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 transition-colors">
+            <ArrowLeft className="h-4 w-4" /> Gerenciar
+          </Link>
+        </div>
         <h1 className="text-xl font-bold">Configurar importação</h1>
         <p className="text-sm text-gray-500">
           Esses dados serão aplicados a todas as questões do lote.
@@ -360,6 +366,9 @@ export default function ImportarPage() {
         <div className="bg-white p-8 rounded-lg shadow text-center">
           <h1 className="text-xl font-bold text-red-600 mb-2">Acesso restrito</h1>
           <p className="text-gray-600">Essa página é exclusiva para administradores.</p>
+          <Link href="/minha-area" className="mt-4 inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800">
+            <ArrowLeft className="h-3.5 w-3.5" /> Minha Área
+          </Link>
         </div>
       </div>
     );
@@ -386,6 +395,9 @@ export default function ImportarPage() {
           <pre className="mt-4 text-xs text-left bg-gray-50 p-3 rounded">
             pnpm tsx scripts/parse-tex.ts arquivo.tex
           </pre>
+          <Link href="/admin/gerenciar" className="mt-4 inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800">
+            <ArrowLeft className="h-3.5 w-3.5" /> Voltar para Gerenciar
+          </Link>
         </div>
       </div>
     );
@@ -405,12 +417,17 @@ export default function ImportarPage() {
           <p className="text-gray-600">
             Todas as {queue.length} questões foram processadas.
           </p>
-          <button
-            onClick={() => { setCurrentIdx(0); setEditorKey((k) => k + 1); }}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Recomeçar
-          </button>
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <button
+              onClick={() => { setCurrentIdx(0); setEditorKey((k) => k + 1); }}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Recomeçar
+            </button>
+            <Link href="/admin/gerenciar" className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800">
+              <ArrowLeft className="h-3.5 w-3.5" /> Voltar para Gerenciar
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -434,7 +451,12 @@ export default function ImportarPage() {
       {/* Header de navegação */}
       <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
         <div className="max-w-[210mm] mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <h1 className="text-lg font-bold whitespace-nowrap">Importar Questões</h1>
+          <div className="flex items-center gap-3">
+            <Link href="/admin/gerenciar" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 transition-colors">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+            <h1 className="text-lg font-bold whitespace-nowrap">Importar Questões</h1>
+          </div>
 
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-500">

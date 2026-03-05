@@ -180,7 +180,7 @@ export function ProvasTab() {
           <Button asChild className="mt-6 btn-primary">
             <Link href="/editor/questoes/filtro">
               <BookOpen className="h-4 w-4 mr-2" />
-              Montar Prova
+              Nova Prova
             </Link>
           </Button>
         </CardContent>
@@ -196,7 +196,7 @@ export function ProvasTab() {
           <Button asChild className="btn-primary">
             <Link href="/editor/questoes/filtro">
               <BookOpen className="h-4 w-4 mr-2" />
-              Montar Prova
+              Nova Prova
             </Link>
           </Button>
         </div>
