@@ -54,7 +54,7 @@ export function AccessibleHeader({
         {/* Logo */}
         <div
           className={`shrink-0 flex items-center justify-center ${isEditable ? "cursor-pointer" : "cursor-default"}`}
-          style={{ width: "1.5cm", height: "1.2cm" }}
+          style={{ width: "2cm", height: "2cm" }}
           onClick={isEditable ? onLogoClick : undefined}
         >
           {logoUrl ? (
@@ -62,7 +62,7 @@ export function AccessibleHeader({
               src={logoUrl}
               alt="Logo da instituição"
               className="object-contain"
-              style={{ maxWidth: "1.5cm", maxHeight: "1.2cm" }}
+              style={{ maxWidth: "2cm", maxHeight: "2cm" }}
             />
           ) : logoPlaceholder?.trim() ? (
             <span className="text-[9px] font-semibold text-gray-500 text-center leading-tight">
