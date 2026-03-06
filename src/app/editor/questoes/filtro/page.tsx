@@ -72,16 +72,19 @@ export default function FiltroQuestoesPage() {
     dificuldades: [],
   });
 
-  const [filters, setFilters] = useState<FilterValues>({
-    disciplinas: [],
-    assuntos: [],
-    tipos: [],
-    dificuldades: [],
-    nivel: "",
-    tags: "",
+  const [filters, setFilters] = useState<FilterValues>(() => {
+    if (typeof window === "undefined") return { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" };
+    try {
+      const raw = window.localStorage.getItem("questaoFiltro_v1");
+      if (!raw) return { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" };
+      return JSON.parse(raw);
+    } catch { return { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" }; }
   });
 
-  const [myQuestions, setMyQuestions] = useState(false);
+  const [myQuestions, setMyQuestions] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try { return JSON.parse(window.localStorage.getItem("questaoFiltroMy_v1") ?? "false"); } catch { return false; }
+  });
   const [totalResults, setTotalResults] = useState(0);
   const [loadingCount, setLoadingCount] = useState(false);
   // Mapa: assunto normalizado → todos os brutos originais do banco
@@ -95,6 +98,15 @@ export default function FiltroQuestoesPage() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
+
+  // Persiste filtros no localStorage
+  useEffect(() => {
+    try { window.localStorage.setItem("questaoFiltro_v1", JSON.stringify(filters)); } catch {}
+  }, [filters]);
+
+  useEffect(() => {
+    try { window.localStorage.setItem("questaoFiltroMy_v1", JSON.stringify(myQuestions)); } catch {}
+  }, [myQuestions]);
 
   // Sincroniza com ProvaContext após hidratação
   useEffect(() => {
