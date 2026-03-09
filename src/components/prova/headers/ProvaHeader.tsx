@@ -76,14 +76,14 @@ function Layout0({
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Nome</div>
-          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nome")}>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nome")}>
             <span className="leading-[1.1]">{nome ?? ""}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Turma</div>
-          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("turma")}>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("turma")}>
             <span className="leading-[1.1]">{turma ?? ""}</span>
           </div>
         </div>
@@ -92,28 +92,28 @@ function Layout0({
       <div className="grid grid-cols-[1fr_1fr_3cm_3cm] gap-[0.15cm] mb-[0.05cm] items-stretch">
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Professor</div>
-          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("professor")}>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("professor")}>
             <span className="leading-[1.1]">{professor ?? ""}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Disciplina</div>
-          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("disciplina")}>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("disciplina")}>
             <span className="leading-[1.1]">{disciplina ?? ""}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Data</div>
-          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("data")}>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("data")}>
             <span className="leading-[1.1]">{formatDateBR(data ?? "")}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Nota</div>
-          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nota")}>
+          <div className="border border-black rounded-[5px] py-[0.3em] px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nota")}>
             <span className="leading-[1.1]">{nota ?? ""}</span>
           </div>
         </div>
@@ -787,14 +787,14 @@ function Layout10({
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Nome</div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nome")}>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nome")}>
             <span className="leading-[1.1]">{nome ?? ""}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Turma</div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("turma")}>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("turma")}>
             <span className="leading-[1.1]">{turma ?? ""}</span>
           </div>
         </div>
@@ -803,28 +803,28 @@ function Layout10({
       <div className="grid grid-cols-[1fr_1fr_3cm_3cm] gap-[0.15cm] mb-[0.05cm] items-stretch">
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Professor</div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("professor")}>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("professor")}>
             <span className="leading-[1.1]">{professor ?? ""}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Disciplina</div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("disciplina")}>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("disciplina")}>
             <span className="leading-[1.1]">{disciplina ?? ""}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Data</div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("data")}>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("data")}>
             <span className="leading-[1.1]">{formatDateBR(data ?? "")}</span>
           </div>
         </div>
 
         <div className="relative pt-2">
           <div className="absolute top-0 left-[6px] text-[7pt] font-normal bg-white px-[3px] z-[1]">Nota</div>
-          <div className="border border-black rounded-[5px] py-1 px-[6px] min-h-[22px] outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nota")}>
+          <div className="border border-black rounded-[5px] py-1 px-[6px] h-[28px] overflow-hidden outline-none w-full box-border focus:bg-[#f9f9f9] flex items-end" {...E("nota")}>
             <span className="leading-[1.1]">{nota ?? ""}</span>
           </div>
         </div>
