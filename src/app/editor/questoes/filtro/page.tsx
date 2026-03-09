@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useProva } from "@/contexts/ProvaContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -60,6 +60,14 @@ interface FilterValues {
 const EMPTY_FILTERS: FilterValues = { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" };
 
 export default function FiltroQuestoesPage() {
+  return (
+    <Suspense>
+      <FiltroQuestoesPageInner />
+    </Suspense>
+  );
+}
+
+function FiltroQuestoesPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const fromMontar = searchParams.get("from") === "montar";
