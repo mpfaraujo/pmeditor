@@ -9,7 +9,7 @@ import { useProva } from "@/contexts/ProvaContext";
 import { listQuestions, QuestionVersion } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LayoutGrid, Rows3 } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -17,6 +17,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
+import { QuestionCardCompact } from "@/components/Questions/QuestionCardCompact";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import "./print.css";
 
 type QuestionItem = {
@@ -68,7 +70,12 @@ export default function QuestoesPage() {
 
   const [editorOpen, setEditorOpen] = useState(false);
   const [editing, setEditing] = useState<QuestionItem | null>(null);
+  const [previewItem, setPreviewItem] = useState<QuestionItem | null>(null);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
+  const [viewMode, setViewMode] = useState<"carousel" | "grid">(() => {
+    if (typeof window === "undefined") return "carousel";
+    return (localStorage.getItem("questaoViewMode") as "carousel" | "grid") ?? "carousel";
+  });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -167,6 +174,14 @@ export default function QuestoesPage() {
     );
   };
 
+  const toggleViewMode = () => {
+    setViewMode(prev => {
+      const next = prev === "carousel" ? "grid" : "carousel";
+      localStorage.setItem("questaoViewMode", next);
+      return next;
+    });
+  };
+
   const handleMontarProva = () => {
     router.push("/editor/prova/selecionar-layout");
   };
@@ -255,7 +270,7 @@ export default function QuestoesPage() {
         )}
 
         {!loading && items.length > 0 && (
-          <div className="w-full max-w-full md:max-w-[12cm] mx-auto">
+          <div className={`w-full mx-auto ${viewMode === "grid" ? "max-w-5xl" : "max-w-full md:max-w-[12cm]"}`}>
             {/* Toolbar */}
             <div className="flex flex-col gap-2 mb-3">
               {/* Linha 1: Toggle + Botões de ação */}
@@ -275,9 +290,14 @@ export default function QuestoesPage() {
                 </div>
 
                 <div className="shrink-0 flex items-center gap-2">
-                  <Button size="sm" variant="secondary" onClick={handleEditAtual}>
-                    Editar
+                  <Button size="sm" variant="ghost" onClick={toggleViewMode} title={viewMode === "carousel" ? "Modo grade" : "Modo carrossel"} className="px-2">
+                    {viewMode === "carousel" ? <LayoutGrid className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}
                   </Button>
+                  {viewMode === "carousel" && (
+                    <Button size="sm" variant="secondary" onClick={handleEditAtual}>
+                      Editar
+                    </Button>
+                  )}
 
                   <Button
                     onClick={handleMontarProva}
@@ -328,50 +348,92 @@ export default function QuestoesPage() {
               </div>
             )}
 
-            {/* Navegação dentro do carrossel */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-              <button
-                onClick={() => api?.scrollTo(currentIndex - 1)}
-                disabled={currentIndex === 0}
-                style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex === 0 ? 0.3 : 1 }}
-              >
-                ‹ Anterior
-              </button>
-              <span style={{ fontSize: 13, fontWeight: 500, minWidth: 60, textAlign: "center" as const }}>
-                {currentIndex + 1} / {displayItems.length}
-              </span>
-              <button
-                onClick={() => api?.scrollTo(currentIndex + 1)}
-                disabled={currentIndex >= displayItems.length - 1}
-                style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= displayItems.length - 1 ? 0.3 : 1 }}
-              >
-                Próxima ›
-              </button>
-            </div>
+            {viewMode === "carousel" ? (
+              <>
+                {/* Navegação dentro do carrossel */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
+                  <button
+                    onClick={() => api?.scrollTo(currentIndex - 1)}
+                    disabled={currentIndex === 0}
+                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex === 0 ? 0.3 : 1 }}
+                  >
+                    ‹ Anterior
+                  </button>
+                  <span style={{ fontSize: 13, fontWeight: 500, minWidth: 60, textAlign: "center" as const }}>
+                    {currentIndex + 1} / {displayItems.length}
+                  </span>
+                  <button
+                    onClick={() => api?.scrollTo(currentIndex + 1)}
+                    disabled={currentIndex >= displayItems.length - 1}
+                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= displayItems.length - 1 ? 0.3 : 1 }}
+                  >
+                    Próxima ›
+                  </button>
+                </div>
 
-            <Carousel opts={{ align: "center", duration: 60 }} className="w-full" setApi={setApi}>
-              <CarouselContent>
+                <Carousel opts={{ align: "center", duration: 60 }} className="w-full" setApi={setApi}>
+                  <CarouselContent>
+                    {displayItems.map((q) => (
+                      <CarouselItem key={q.metadata.id}>
+                        <div className="w-full md:w-[10cm] mx-auto px-2">
+                          <QuestionCard
+                            metadata={q.metadata}
+                            content={q.content}
+                            base={q.base}
+                            variantsCount={q.variantsCount}
+                            active={q.active}
+                            selected={isSelected(q.metadata.id)}
+                            onSelect={toggleSelect}
+                            onVersionChange={(versionData) => handleVersionChange(q.metadata.id, versionData)}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              </>
+            ) : (
+              <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
                 {displayItems.map((q) => (
-                  <CarouselItem key={q.metadata.id}>
-                    <div className="w-full md:w-[10cm] mx-auto px-2">
-                      <QuestionCard
-                        metadata={q.metadata}
-                        content={q.content}
-                        base={q.base}
-                        variantsCount={q.variantsCount}
-                        active={q.active}
-                        selected={isSelected(q.metadata.id)}
-                        onSelect={toggleSelect}
-                        onVersionChange={(versionData) => handleVersionChange(q.metadata.id, versionData)}
-                      />
-                    </div>
-                  </CarouselItem>
+                  <QuestionCardCompact
+                    key={q.metadata.id}
+                    metadata={q.metadata}
+                    content={q.content}
+                    selected={isSelected(q.metadata.id)}
+                    onSelect={toggleSelect}
+                    onPreview={() => setPreviewItem(q)}
+                  />
                 ))}
-              </CarouselContent>
-            </Carousel>
+              </div>
+            )}
           </div>
         )}
       </div>
+
+      {/* Modal de preview (modo grade) */}
+      <Dialog open={!!previewItem} onOpenChange={(open) => { if (!open) setPreviewItem(null); }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-4">
+          <DialogTitle className="sr-only">Visualizar questão</DialogTitle>
+          {previewItem && (
+            <>
+              <div className="flex justify-end mb-2">
+                <Button size="sm" variant="secondary" onClick={() => { setEditing(previewItem); setEditorOpen(true); setPreviewItem(null); }}>
+                  Editar
+                </Button>
+              </div>
+              <QuestionCard
+                metadata={previewItem.metadata}
+                content={previewItem.content}
+                base={previewItem.base}
+                variantsCount={previewItem.variantsCount}
+                active={previewItem.active}
+                selected={isSelected(previewItem.metadata.id)}
+                onSelect={(id, checked) => { toggleSelect(id, checked); }}
+              />
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <QuestionEditorModal
         open={editorOpen}
