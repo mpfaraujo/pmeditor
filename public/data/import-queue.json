@@ -1,156 +1,106 @@
 [
   {
-    "latex": "\\question Observe no gráfico a distribuição de frequências das notas de matemática de 20 alunos de uma turma.\n\n\nA média aritmética das notas de matemática de todos os alunos dessa turma é:\n\\begin{choices}\n    \\choice 6,2\n    \\choice 6,4\n    \\choice 6,6\n    \\choice 6,8\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Médias",
-      "gabarito": "C",
-      "tags": [
-        "gráfico",
-        "estatística",
-        "notas",
-        "frequência"
-      ],
-      "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "28"
-    }
-  },
-  {
-    "latex": "\\question A parábola representada a seguir intersecta os eixos coordenados nos pontos $A(1,0),$ $B(-1,0)$ e $C(0,-1)$.\n\n\nEssa parábola é o gráfico da função quadrática f definida pela seguinte sentença:\n\\begin{choices}\n    \\choice $f(x)=x^{2}-1$\n    \\choice $f(x)=x^{2}+1$\n    \\choice $f(x)=-x^{2}-1$\n    \\choice $f(x)=-x^{2}+1$\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Função Quadrática",
-      "gabarito": "A",
-      "tags": [
-        "parábola",
-        "eixos coordenados",
-        "pontos de interseção",
-        "gráfico"
-      ],
-      "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "29"
-    }
-  },
-  {
-    "latex": "\\question Um lojista comprou 625 camisas e vendeu cada uma delas por x reais. O custo de sua compra foi igual ao valor exato da venda de 500 camisas.\nCom a venda de todas as camisas, o percentual de lucro obtido pelo lojista, em relação ao custo, foi:\n\\begin{choices}\n    \\choice 15\\%\n    \\choice 20\\%\n    \\choice 25\\%\n    \\choice 30\\%\n\\end{choices}",
+    "latex": "\\question Um rapaz de massa $m_1$ corre numa pista horizontal e pula sobre um skate de massa $m_2$, que se encontra inicialmente em repouso. Com o impacto, o skate adquire velocidade e o conjunto rapaz + skate segue em direção a uma rampa e atinge uma altura máxima $h$. A velocidade do rapaz, imediatamente antes de tocar no skate, é dada por\n\n\\begin{choices}\n\\choice $(m_1+m_2)v=\\sqrt{gh}$\n\\choice $\\dfrac{m_1+m_2}{m_1}v=\\sqrt{gh}$\n\\correctchoice $\\dfrac{m_1}{m_1+m_2}v=\\sqrt{gh}$\n\\choice $(m_1+m_2)\\sqrt{2gh}$\n\\choice $\\dfrac{2m_1}{m_1+m_2}\\sqrt{gh}$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Porcentagem",
+      "disciplina": "Física",
+      "assunto": "Quantidade de Movimento e Impulso",
       "gabarito": "C",
       "tags": [
-        "lucro",
-        "custo",
-        "venda",
-        "lojista"
+        "colisão",
+        "momento linear"
       ],
       "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "30"
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "17"
     }
   },
   {
-    "latex": "\\question Considere o seno e o cosseno de um ângulo $\\alpha$ do segundo quadrante do círculo trigonométrico representado a seguir.\n\n\nSe sen $\\alpha = \\frac{3}{4}$, o valor de cos $\\alpha$ é:\n\\begin{choices}\n    \\choice $\\frac{\\sqrt{7}}{4}$\n    \\choice $\\frac{1}{4}$\n    \\choice $-\\frac{\\sqrt{7}}{4}$\n    \\choice $-\\frac{1}{4}$\n\\end{choices}",
+    "latex": "\\question Três pequenas esferas carregadas com cargas positivas $Q$ ocupam os vértices de um triângulo, como mostra a figura. Na parte interna do triângulo, está afixada uma quarta esfera de carga negativa $q$. As distâncias entre essa carga e as outras três podem ser obtidas a partir da figura.\n\nSendo $Q = 2\\times10^{-4}\\,C$, $q = -2\\times10^{-6}\\,C$ e $d = 6\\,m$, a força elétrica resultante sobre a carga $q$ é\n\n\\begin{choices}\n\\choice nula.\n\\choice tem direção do eixo $y$, sentido para baixo e módulo $1,8\\,N$.\n\\correctchoice tem direção do eixo $y$, sentido para cima e módulo $1,8\\,N$.\n\\choice tem direção do eixo $x$, sentido para a direita e módulo $0,1\\,N$.\n\\choice tem direção do eixo $x$, sentido para a esquerda e módulo $0,3\\,N$.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Trigonometria",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Lei de Coulomb",
       "gabarito": "C",
       "tags": [
-        "seno",
-        "cosseno",
-        "círculo trigonométrico",
-        "segundo quadrante"
+        "força elétrica",
+        "cargas"
       ],
       "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "31"
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "18"
     }
   },
   {
-    "latex": "\\question Observe na figura o retângulo PQRS com lados $\\overline{PQ}=8$ cm e $\\overline{PS}=3$ cm. O ponto T é a interseção do lado RS com o segmento PU, sendo $\\overline{TS}=5$ cm. O ponto U, que define o triângulo RUT, pertence à reta QR.\n\n\nA área do triângulo RUT, em $cm^{2}$, é igual a:\n\\begin{choices}\n    \\choice $\\frac{27}{10}$\n    \\choice $\\frac{25}{7}$\n    \\choice $\\frac{13}{10}$\n    \\choice $\\frac{11}{7}$\n\\end{choices}",
+    "latex": "\\question Uma pessoa observa uma vela através de uma lente de vidro biconvexa, como representado na figura.\n\nConsidere que a vela está posicionada entre a lente e o seu ponto focal $F$. Nessa condição, a imagem observada pela pessoa é\n\n\\begin{choices}\n\\choice virtual, invertida e maior.\n\\choice virtual, invertida e menor.\n\\correctchoice real, direita e menor.\n\\choice real, invertida e maior.\n\\choice virtual, direita e maior.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A",
+    "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Área das Figuras Planas",
-      "gabarito": "A",
+      "disciplina": "Física",
+      "assunto": "Lentes Esféricas",
+      "gabarito": "C",
       "tags": [
-        "retângulo",
-        "triângulo",
-        "área",
-        "geometria plana"
+        "óptica",
+        "lentes"
       ],
       "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "32"
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "19"
     }
   },
   {
-    "latex": "\\question O tetraedro ABCD tem altura AD e base ABC inscrita em um círculo de diâmetro AB, conforme mostra a ilustração. Sabe-se que todo triângulo inscrito em um círculo, que tem um dos lados igual ao diâmetro, é um triângulo retângulo.\n\n\nConsidere que $\\overline{AC}=6$ cm, $\\overline{BC}=8$ cm e $\\overline{BD}=10\\sqrt{2}$.\nO volume desse tetraedro, em $cm^{3}$, é igual a:\n\\begin{choices}\n    \\choice 240\n    \\choice 120\n    \\choice 90\n    \\choice 80\n\\end{choices}",
+    "latex": "\\question Uma bateria de tensão $V$ e resistência interna $R_i$ é ligada em série com um resistor de resistência $R$. O esquema do circuito está representado na figura. A potência dissipada pelo resistor $R$ é dada por\n\n\\begin{choices}\n\\choice $\\dfrac{V}{R}$\n\\correctchoice $\\dfrac{V^2}{R_i+R}$\n\\choice $\\dfrac{V^2}{(R_i+R)^2}$\n\\choice $(R_i+R)V^2$\n\\choice $\\dfrac{V^2}{(R-R_i)}$\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D",
+    "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Espacial",
-      "gabarito": "D",
+      "disciplina": "Física",
+      "assunto": "Lei de Ohm",
+      "gabarito": "B",
       "tags": [
-        "tetraedro",
-        "volume",
-        "triângulo retângulo",
-        "círculo inscrito"
+        "circuitos",
+        "potência"
       ],
       "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "33"
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "20"
     }
   },
   {
-    "latex": "\\question Em um grupo de 40 pessoas adultas, 18 têm mais de 50 anos e 25 têm curso superior. Dentre aquelas com mais de 50, há 8 que não têm curso superior.\nSe uma pessoa escolhida ao acaso tem curso superior, a probabilidade de ela ter mais de 50 anos é:\n\\begin{choices}\n    \\choice $\\frac{3}{4}$\n    \\choice $\\frac{1}{4}$\n    \\choice $\\frac{3}{5}$\n    \\choice $\\frac{2}{5}$\n\\end{choices}",
+    "latex": "\\question Em uma garrafa térmica, são colocados $200\\,g$ de água a uma temperatura de $30^\\circ C$ e uma pedra de gelo de massa $50\\,g$, à temperatura de $-10^\\circ C$. Após o equilíbrio térmico,\n\n\\begin{choices}\n\\choice todo o gelo derreteu e a temperatura de equilíbrio é $7^\\circ C$.\n\\correctchoice todo o gelo derreteu e a temperatura de equilíbrio é $0^\\circ C$.\n\\choice todo o gelo derreteu e a temperatura de equilíbrio é $-10^\\circ C$.\n\\choice nem todo o gelo derreteu e a temperatura de equilíbrio é $0^\\circ C$.\n\\choice o gelo não derreteu e a temperatura de equilíbrio é $-2^\\circ C$.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D",
+    "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Condicional",
-      "gabarito": "D",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Calorimetria e Calor Específico",
+      "gabarito": "B",
       "tags": [
-        "curso superior",
-        "idade",
-        "probabilidade",
-        "grupo de pessoas"
+        "equilíbrio térmico"
       ],
       "fonte": "concurso",
-      "banca": "UERJ",
-      "ano": 2025,
-      "numero": "34"
+      "concurso": "FUVEST",
+      "banca": "FUVEST",
+      "ano": 2019,
+      "numero": "21"
     }
   }
 ]

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useProva } from "@/contexts/ProvaContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -57,8 +57,12 @@ interface FilterValues {
   tags: string;
 }
 
+const EMPTY_FILTERS: FilterValues = { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" };
+
 export default function FiltroQuestoesPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromMontar = searchParams.get("from") === "montar";
   const { provaConfig, updateProvaConfig, selectedCount, clearAll } = useProva();
   const { isLoggedIn } = useAuth();
   const [bannerDismissed, setBannerDismissed] = useState(false);
@@ -73,16 +77,17 @@ export default function FiltroQuestoesPage() {
   });
 
   const [filters, setFilters] = useState<FilterValues>(() => {
-    if (typeof window === "undefined") return { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" };
+    if (typeof window === "undefined") return EMPTY_FILTERS;
+    if (!new URLSearchParams(window.location.search).get("from")) return EMPTY_FILTERS;
     try {
       const raw = window.localStorage.getItem("questaoFiltro_v1");
-      if (!raw) return { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" };
-      return JSON.parse(raw);
-    } catch { return { disciplinas: [], assuntos: [], tipos: [], dificuldades: [], nivel: "", tags: "" }; }
+      return raw ? JSON.parse(raw) : EMPTY_FILTERS;
+    } catch { return EMPTY_FILTERS; }
   });
 
   const [myQuestions, setMyQuestions] = useState(() => {
     if (typeof window === "undefined") return false;
+    if (!new URLSearchParams(window.location.search).get("from")) return false;
     try { return JSON.parse(window.localStorage.getItem("questaoFiltroMy_v1") ?? "false"); } catch { return false; }
   });
   const [totalResults, setTotalResults] = useState(0);

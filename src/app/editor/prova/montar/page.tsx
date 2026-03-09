@@ -656,7 +656,7 @@ const { pages, refs } = usePagination({
     return (
       <div className="p-8 text-center">
         <p className="text-muted-foreground mb-4">Nenhuma questão selecionada</p>
-        <Button onClick={() => router.push("/editor/questoes/filtro")}>
+        <Button onClick={() => router.push("/editor/questoes/filtro?from=montar")}>
           Voltar para seleção
         </Button>
       </div>
@@ -668,7 +668,7 @@ const { pages, refs } = usePagination({
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
         <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center gap-x-2 gap-y-2 justify-between border-b px-4 py-3" style={{ background: 'var(--yellow-brand)' }}>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => router.push("/editor/questoes/filtro")} className="bg-white hover:bg-slate-50">
+            <Button variant="outline" onClick={() => router.push("/editor/questoes/filtro?from=montar")} className="bg-white hover:bg-slate-50">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar
             </Button>
