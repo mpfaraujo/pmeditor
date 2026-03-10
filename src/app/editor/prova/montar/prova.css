@@ -357,16 +357,36 @@
   top: 1px;
   outline: none;
   min-width: 2.5cm;
-  border: none;
   text-align: center;
   font-size: 8pt;
+  border: 1px dashed #bbb;
+  border-radius: 3px;
+  padding: 1px 4px;
+  color: #888;
+  cursor: text;
+}
+
+.pontos-editavel:empty::before {
+  content: "pts";
+  color: #bbb;
+  pointer-events: none;
 }
 
 .pontos-editavel:focus {
   color: #000;
   background: #fff;
-  border: 1px dashed #aaa;
-  padding: 1px 4px;
+  border: 1px dashed #888;
+}
+
+@media print {
+  .pontos-editavel {
+    border: none;
+    padding: 0;
+    color: #000;
+  }
+  .pontos-editavel:empty::before {
+    content: "";
+  }
 }
 
 /* ====== QUEBRA/ANTI-OVERFLOW ====== */
