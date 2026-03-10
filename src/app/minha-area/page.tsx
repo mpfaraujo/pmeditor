@@ -65,13 +65,22 @@ function MinhaAreaContent() {
               <ShieldCheck className="h-4 w-4" />
               <span className="text-sm font-medium">Administrador</span>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => router.push("/admin/gerenciar")}
-            >
-              Gerenciar Questões
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push("/admin/usuarios")}
+              >
+                Usuários
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push("/admin/gerenciar")}
+              >
+                Gerenciar Questões
+              </Button>
+            </div>
           </div>
         )}
 

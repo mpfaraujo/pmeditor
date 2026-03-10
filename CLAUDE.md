@@ -10,6 +10,16 @@
 
 O usuario nem sempre le tudo com atencao e pode acabar concordando com algo que nao entendeu se estiver em ingles.
 
+## Backend PHP
+
+Os arquivos PHP do backend estao em `c:/Projetos/pmeditor/php/guardafiguras/api/`. Estrutura:
+- `questoes/` — CRUD de questoes
+- `users/` — autenticacao e perfis
+- `provas/` — provas salvas
+- `turmas/` — turmas
+- `upload.php` — upload de imagens
+- `config.php` / `config/` — configuracao do banco
+
 ## Gerenciador de pacotes
 
 Usar **pnpm** (nao npm nem npx).
