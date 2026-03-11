@@ -30,13 +30,17 @@ type Props = {
   imageWidthProp?: Record<string, number>;
   /** Chamado no pointerup com (id, novaLargura) para acionar re-paginação */
   onImageResizeCommit?: (id: string, width: number) => void;
+  /** Larguras (%) das caixas de dados, vindas do pai */
+  dataBoxWidthProp?: Record<string, number>;
+  /** Chamado no pointerup com (key, novaLargura%) */
+  onDataBoxWidthCommit?: (key: string, width: number) => void;
   /** Renderiza alternativas em linha (estilo oneparchoices do LaTeX) */
   inlineOptions?: boolean;
   /** Chamado ao clicar no botão de alternar modo de opções */
   onToggleInlineOptions?: () => void;
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender, permutation, imageWidthProp, onImageResizeCommit, inlineOptions, onToggleInlineOptions }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -46,6 +50,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     startW: number;
     lastW: number;
   } | null>(null);
+
+  const [dataBoxWidthOverrides, setDataBoxWidthOverrides] = React.useState<Record<string, number>>({});
+  const dataBoxDragRef = React.useRef<{ key: string; startX: number; startW: number; lastW: number } | null>(null);
 
   const [imageAlignOverrides, setImageAlignOverrides] = React.useState<
     Record<string, "left" | "center" | "right">
@@ -382,6 +389,70 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
             <p key={key} className="credits">
               {renderInline(child)}
             </p>
+          );
+        }
+
+        if (child.type === "data_box") {
+          const defaultW = child.attrs?.width === "70" ? 70 : 50;
+          const w = (dataBoxWidthProp?.[key] ?? dataBoxWidthOverrides[key]) ?? defaultW;
+
+          if (mode !== "prova") {
+            return (
+              <div key={key} className="data-box" style={{ width: `${w}%` }}>
+                {renderBlock(child, key)}
+              </div>
+            );
+          }
+
+          const onDbPointerDown = (e: React.PointerEvent) => {
+            e.preventDefault();
+            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+            dataBoxDragRef.current = { key, startX: e.clientX, startW: w, lastW: w };
+          };
+          const onDbPointerMove = (e: React.PointerEvent) => {
+            const d = dataBoxDragRef.current;
+            if (!d) return;
+            // Dragging left = wider (negative dx = positive delta%)
+            const dx = e.clientX - d.startX;
+            const next = Math.min(90, Math.max(30, Math.round(d.startW - dx / 3.2)));
+            d.lastW = next;
+            setDataBoxWidthOverrides(prev => prev[d.key] === next ? prev : { ...prev, [d.key]: next });
+          };
+          const onDbPointerUp = (e: React.PointerEvent) => {
+            const d = dataBoxDragRef.current;
+            if (!d) return;
+            dataBoxDragRef.current = null;
+            try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
+            onDataBoxWidthCommit?.(d.key, d.lastW);
+          };
+
+          return (
+            <div
+              key={key}
+              style={{ position: "relative", marginLeft: "auto", marginRight: 0, width: `${w}%` }}
+              onPointerMove={onDbPointerMove}
+              onPointerUp={onDbPointerUp}
+            >
+              <div className="data-box" style={{ width: "100%" }}>
+                {renderBlock(child, key)}
+              </div>
+              <span
+                className="no-print"
+                onPointerDown={onDbPointerDown}
+                style={{
+                  position: "absolute",
+                  left: -6,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 12,
+                  height: 24,
+                  cursor: "ew-resize",
+                  background: "rgba(0,0,0,0.08)",
+                  borderRadius: 4,
+                }}
+                title="Arraste para redimensionar"
+              />
+            </div>
           );
         }
 

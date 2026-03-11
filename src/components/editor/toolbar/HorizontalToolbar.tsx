@@ -120,6 +120,9 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
                 <DropdownMenuItem onClick={() => onAction("insert-credits")}>
                   <Icons.Quote className="h-4 w-4 mr-2" /> Créditos
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onAction("insert-databox")}>
+                  <Icons.BoxSelect className="h-4 w-4 mr-2" /> Dados
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

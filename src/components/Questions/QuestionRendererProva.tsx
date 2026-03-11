@@ -21,10 +21,12 @@ type Props = {
   permutation?: OptionPermutation | null;
   imageWidthProp?: Record<string, number>;
   onImageResizeCommit?: (id: string, width: number) => void;
+  dataBoxWidthProp?: Record<string, number>;
+  onDataBoxWidthCommit?: (key: string, width: number) => void;
   inlineOptions?: boolean;
   onToggleInlineOptions?: () => void;
 };
 
-export default function QuestionRendererProva({ content, fragmentRender, permutation, imageWidthProp, onImageResizeCommit, inlineOptions, onToggleInlineOptions }: Props) {
-  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={imageWidthProp} onImageResizeCommit={onImageResizeCommit} inlineOptions={inlineOptions} onToggleInlineOptions={onToggleInlineOptions} />;
+export default function QuestionRendererProva({ content, fragmentRender, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions }: Props) {
+  return <QuestionRendererBase content={content} mode="prova" fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={imageWidthProp} onImageResizeCommit={onImageResizeCommit} dataBoxWidthProp={dataBoxWidthProp} onDataBoxWidthCommit={onDataBoxWidthCommit} inlineOptions={inlineOptions} onToggleInlineOptions={onToggleInlineOptions} />;
 }

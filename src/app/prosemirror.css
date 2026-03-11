@@ -333,3 +333,29 @@
   border-top: 1px solid #ccc;
   margin: 1rem 0;
 }
+
+/* ===== CAIXA DE DADOS ===== */
+.ProseMirror .data-box {
+  display: block;
+  width: 50%;
+  margin: 0.5em 0 0.5em auto;
+  padding: 0.4em 0.8em;
+  background: #f3f3f3;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  font-size: 0.88em;
+  line-height: 1.35;
+}
+
+.ProseMirror .data-box[data-width="70"] {
+  width: 70%;
+}
+
+.ProseMirror .data-box p {
+  margin: 0;
+  text-align: center;
+}
+
+.ProseMirror .data-box p + p {
+  margin-top: 0.2em;
+}

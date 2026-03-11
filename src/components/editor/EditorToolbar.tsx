@@ -115,6 +115,14 @@ export function EditorToolbar({
     view.focus();
   };
 
+  const handleInsertDataBox = () => {
+    if (!view) return;
+    const para = schema.nodes.paragraph.create();
+    const dataBox = schema.nodes.data_box.create(null, [para]);
+    view.dispatch(view.state.tr.replaceSelectionWith(dataBox));
+    view.focus();
+  };
+
   const handleInsertPoem = () => {
     const { $from, $to } = view.state.selection;
 
@@ -471,6 +479,9 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
         break;
       case "insert-credits":
         handleInsertCredits();
+        break;
+      case "insert-databox":
+        handleInsertDataBox();
         break;
       case "toggle-numbered":
         handleToggleNumbered();

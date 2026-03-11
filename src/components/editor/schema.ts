@@ -374,6 +374,25 @@ image: {
       return ["div", { class: "math-block", "data-latex": node.attrs.latex }];
     },
   },
+
+  data_box: {
+    group: "block",
+    content: "block+",
+    attrs: {
+      width: { default: "50" as "50" | "70" },
+    },
+    parseDOM: [{
+      tag: "div.data-box",
+      getAttrs(dom: Node | string) {
+        const el = dom as HTMLElement;
+        const w = el.getAttribute("data-width");
+        return { width: w === "70" ? "70" : "50" };
+      },
+    }],
+    toDOM(node): DOMOutputSpec {
+      return ["div", { class: "data-box", "data-width": node.attrs.width }, 0];
+    },
+  },
 };
 
 export const marks: Record<string, MarkSpec> = {

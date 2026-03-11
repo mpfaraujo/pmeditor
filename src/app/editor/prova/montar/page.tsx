@@ -225,6 +225,17 @@ export default function MontarProvaPage() {
     [committedImageWidths]
   );
 
+  // Larguras (%) das caixas de dados — chave: `${questionId}:${boxKey}`
+  const [committedDataBoxWidths, setCommittedDataBoxWidths] = useState<Record<string, number>>({});
+  const makeDataBoxWidthCommit = (questionId: string) => (key: string, width: number) =>
+    setCommittedDataBoxWidths(prev => ({ ...prev, [`${questionId}:${key}`]: width }));
+  const getDataBoxWidthProp = (questionId: string): Record<string, number> =>
+    Object.fromEntries(
+      Object.entries(committedDataBoxWidths)
+        .filter(([k]) => k.startsWith(`${questionId}:`))
+        .map(([k, v]) => [k.slice(questionId.length + 1), v])
+    );
+
   // Versão manual de re-paginação (imagem resize não re-pagina automaticamente)
   const [repaginateVersion, setRepaginateVersion] = useState(0);
 
@@ -238,7 +249,6 @@ export default function MontarProvaPage() {
       else next.add(id);
       return next;
     });
-    setRepaginateVersion(v => v + 1);
   };
 
   useEffect(() => {
@@ -598,7 +608,7 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
     </div>
   </div>
 ) : (
@@ -633,7 +643,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
             </div>
           </div>
         )}
@@ -752,17 +762,15 @@ const { pages, refs } = usePagination({
               )}
             </div>
 
-            {(Object.keys(committedImageWidths).length > 0 || inlineOptionsSet.size > 0) && (
-              <Button
-                variant="outline"
-                onClick={() => setRepaginateVersion(v => v + 1)}
-                className="bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700"
-                title="Re-paginar com os tamanhos de imagem atuais"
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Repaginar
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              onClick={() => setRepaginateVersion(v => v + 1)}
+              className="bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700"
+              title="Re-paginar"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Repaginar
+            </Button>
 
             <Button onClick={handlePrint} className="btn-primary">
               <Printer className="h-4 w-4 mr-2" />

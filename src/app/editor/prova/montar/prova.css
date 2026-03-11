@@ -389,6 +389,38 @@
   }
 }
 
+/* ====== CAIXA DE DADOS ====== */
+.questao-conteudo .data-box,
+.question-readonly .data-box {
+  display: block;
+  width: 50%;
+  margin: 0.4em 0 0.4em auto;
+  padding: 0.3em 0.6em;
+  background: #f3f3f3;
+  border: 1px solid #bbb;
+  border-radius: 2px;
+  font-size: 8.5pt;
+  line-height: 1.3;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.questao-conteudo .data-box[data-width="70"],
+.question-readonly .data-box[data-width="70"] {
+  width: 70%;
+}
+
+.questao-conteudo .data-box p,
+.question-readonly .data-box p {
+  margin: 0;
+  text-align: center !important;
+}
+
+.questao-conteudo .data-box p + p,
+.question-readonly .data-box p + p {
+  margin-top: 0.15em;
+}
+
 /* ====== QUEBRA/ANTI-OVERFLOW ====== */
 .questao-conteudo {
   display: block;

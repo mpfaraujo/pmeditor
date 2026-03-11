@@ -71,6 +71,7 @@ export default function QuestoesPage() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [editing, setEditing] = useState<QuestionItem | null>(null);
   const [previewItem, setPreviewItem] = useState<QuestionItem | null>(null);
+  const [pendingRemoveId, setPendingRemoveId] = useState<string | null>(null);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
   const [viewMode, setViewMode] = useState<"carousel" | "grid">(() => {
     if (typeof window === "undefined") return "carousel";
@@ -145,8 +146,13 @@ export default function QuestoesPage() {
   }, [api]);
 
   const toggleSelect = (id: string, checked: boolean) => {
-    const q = items.find((x) => x.metadata.id === id);
+    const q = items.find((x) => x.metadata.id === id)
+      ?? (selectedQuestions as QuestionItem[]).find((x) => x.metadata.id === id);
     if (!q) return;
+    if (!checked && showOnlySelected) {
+      setPendingRemoveId(id);
+      return;
+    }
     checked ? addQuestion(q) : removeQuestion(id);
   };
 
@@ -187,7 +193,7 @@ export default function QuestoesPage() {
   };
 
   const handleEditAtual = () => {
-    const q = items[currentIndex];
+    const q = displayItems[currentIndex];
     if (!q) return;
     setEditing(q);
     setEditorOpen(true);
@@ -410,6 +416,21 @@ export default function QuestoesPage() {
         )}
       </div>
 
+      {/* Confirmação de remoção da seleção */}
+      <Dialog open={!!pendingRemoveId} onOpenChange={(open) => { if (!open) setPendingRemoveId(null); }}>
+        <DialogContent className="max-w-sm p-6">
+          <DialogTitle>Remover da seleção?</DialogTitle>
+          <p className="text-sm text-muted-foreground mt-1">A questão será removida da lista de selecionadas.</p>
+          <div className="flex gap-2 justify-end mt-4">
+            <Button variant="outline" size="sm" onClick={() => setPendingRemoveId(null)}>Cancelar</Button>
+            <Button variant="destructive" size="sm" onClick={() => {
+              if (pendingRemoveId) removeQuestion(pendingRemoveId);
+              setPendingRemoveId(null);
+            }}>Remover</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Modal de preview (modo grade) */}
       <Dialog open={!!previewItem} onOpenChange={(open) => { if (!open) setPreviewItem(null); }}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-4">
@@ -444,21 +465,25 @@ export default function QuestoesPage() {
 
           if (!next?.metadata?.id) return;
 
+          const updatedItem: QuestionItem = {
+            metadata: next.metadata,
+            content: next.content,
+            base: next.base,
+            variantsCount: next.variantsCount,
+            active: next.active,
+          };
+
           setItems((prev) =>
             prev.map((it) =>
-              it.metadata.id === next.metadata.id
-                ? {
-                    ...it,
-                    ...next,
-                    metadata: next.metadata ?? it.metadata,
-                    content: next.content ?? it.content,
-                    base: next.base ?? it.base,
-                    variantsCount: next.variantsCount ?? it.variantsCount,
-                    active: next.active ?? it.active,
-                  }
-                : it
+              it.metadata.id === next.metadata.id ? { ...it, ...updatedItem } : it
             )
           );
+
+          // Atualiza também a seleção, se a questão estiver selecionada
+          if (isSelected(next.metadata.id)) {
+            removeQuestion(next.metadata.id);
+            addQuestion(updatedItem);
+          }
         }}
       />
     </div>
