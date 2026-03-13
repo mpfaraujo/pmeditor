@@ -495,6 +495,16 @@ const { pages, refs } = usePagination({
     return out;
   }, [expandedQuestions, printNumberMap]);
 
+  // Mapa de printNum → questão (correto mesmo com set_questions expandidos)
+  const questoesPorNumero = useMemo(() => {
+    const map: Record<number, any> = {};
+    expandedQuestions.forEach((q: any, idx) => {
+      const printNum = printNumberMap.get(idx);
+      if (printNum && printNum > 0) map[printNum] = q;
+    });
+    return map;
+  }, [expandedQuestions, printNumberMap]);
+
   // Respostas permutadas conforme tipo de prova selecionado
   const respostasPermutadas = useMemo(() => {
     if (!tiposGerados || tipoAtual === 1) return respostas;
@@ -502,8 +512,8 @@ const { pages, refs } = usePagination({
     const tipoConfig = tiposGerados[tipoAtual - 1];
     if (!tipoConfig) return respostas;
 
-    return aplicarPermutacaoGabarito(respostas, tipoConfig.permutations, orderedList);
-  }, [respostas, tiposGerados, tipoAtual, orderedList]);
+    return aplicarPermutacaoGabarito(respostas, tipoConfig.permutations, questoesPorNumero);
+  }, [respostas, tiposGerados, tipoAtual, questoesPorNumero]);
 
   const respostasDiscursivas = useMemo(() => {
     const out: Record<number, any[]> = {};

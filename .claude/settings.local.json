@@ -6,7 +6,8 @@
       "Bash(mkdir -p \"c:/Projetos/pmeditor/.claude/commands\")",
       "Bash(cp \"C:/Users/mpfar/.claude/commands/alimentar.md\" \"c:/Projetos/pmeditor/.claude/commands/alimentar.md\")",
       "Bash(pip install:*)",
-      "Bash(python -c \":*)"
+      "Bash(python -c \":*)",
+      "Bash(curl -s \"https://mpfaraujo.com.br/guardafiguras/api/questoes/get.php?id=fbddd4b4\" -H \"X-Questions-Token: kKxj4aTzv8mQ3pYwN7cR2uL9hS6eD1fG0nV5bJ8pZ3xQ6wE9rT2yU7iO4aP1sD8\")"
     ]
   }
 }
