@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(node -e \"const d = require\\(''./src/data/matematica_areas.json''\\); console.log\\(Object.keys\\(d\\).join\\(''\\\\n''\\)\\);\")",
-      "Bash(pnpm tsc --noEmit)"
+      "Bash(pnpm tsc --noEmit)",
+      "Bash(mkdir -p \"c:/Projetos/pmeditor/.claude/commands\")",
+      "Bash(cp \"C:/Users/mpfar/.claude/commands/alimentar.md\" \"c:/Projetos/pmeditor/.claude/commands/alimentar.md\")",
+      "Bash(pip install:*)",
+      "Bash(python -c \":*)"
     ]
   }
 }

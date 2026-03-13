@@ -50,3 +50,9 @@ teste.yaml
 .vercel
 
 /php/
+
+# provas (PDFs e .tex gerados — não versionar)
+/scripts/provas/
+
+# fila de importação gerada pelo parse-tex
+/public/data/import-queue.json

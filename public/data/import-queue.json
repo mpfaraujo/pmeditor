@@ -1,106 +1,185 @@
 [
   {
-    "latex": "\\question Um rapaz de massa $m_1$ corre numa pista horizontal e pula sobre um skate de massa $m_2$, que se encontra inicialmente em repouso. Com o impacto, o skate adquire velocidade e o conjunto rapaz + skate segue em direção a uma rampa e atinge uma altura máxima $h$. A velocidade do rapaz, imediatamente antes de tocar no skate, é dada por\n\n\\begin{choices}\n\\choice $(m_1+m_2)v=\\sqrt{gh}$\n\\choice $\\dfrac{m_1+m_2}{m_1}v=\\sqrt{gh}$\n\\correctchoice $\\dfrac{m_1}{m_1+m_2}v=\\sqrt{gh}$\n\\choice $(m_1+m_2)\\sqrt{2gh}$\n\\choice $\\dfrac{2m_1}{m_1+m_2}\\sqrt{gh}$\n\\end{choices}",
+    "latex": "\\question Um comerciante, para aumentar as vendas de seu estabelecimento, fez a seguinte promoção para determinado produto:\r\n\r\nCOMPRE 4 UNIDADES E LEVE 5\r\n\r\nEssa promoção representa um desconto de \\(x\\)\\% na venda de 5 unidades.\r\n\r\nO valor de \\(x\\) é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 10\r\n\\choice 15\r\n\\correctchoice 20\r\n\\choice 25\r\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Quantidade de Movimento e Impulso",
-      "gabarito": "C",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Porcentagem",
       "tags": [
-        "colisão",
-        "momento linear"
+        "desconto",
+        "compre e leve",
+        "porcentagem comercial",
+        "matemática financeira"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2019,
-      "numero": "17"
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "22"
     }
   },
   {
-    "latex": "\\question Três pequenas esferas carregadas com cargas positivas $Q$ ocupam os vértices de um triângulo, como mostra a figura. Na parte interna do triângulo, está afixada uma quarta esfera de carga negativa $q$. As distâncias entre essa carga e as outras três podem ser obtidas a partir da figura.\n\nSendo $Q = 2\\times10^{-4}\\,C$, $q = -2\\times10^{-6}\\,C$ e $d = 6\\,m$, a força elétrica resultante sobre a carga $q$ é\n\n\\begin{choices}\n\\choice nula.\n\\choice tem direção do eixo $y$, sentido para baixo e módulo $1,8\\,N$.\n\\correctchoice tem direção do eixo $y$, sentido para cima e módulo $1,8\\,N$.\n\\choice tem direção do eixo $x$, sentido para a direita e módulo $0,1\\,N$.\n\\choice tem direção do eixo $x$, sentido para a esquerda e módulo $0,3\\,N$.\n\\end{choices}",
+    "latex": "\\question Um fisioterapeuta elaborou o seguinte plano de treinos diários para o condicionamento de um maratonista que se recupera de uma contusão:\r\n\r\n\\begin{itemize}\r\n\\item primeiro dia — corrida de 6 km;\r\n\\item dias subsequentes — acréscimo de 2 km à corrida de cada dia imediatamente anterior.\r\n\\end{itemize}\r\n\r\nO último dia de treino será aquele em que o atleta correr 42 km.\r\n\r\nO total percorrido pelo atleta nesse treinamento, do primeiro ao último dia, em quilômetros, corresponde a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 414\r\n\\choice 438\r\n\\correctchoice 456\r\n\\choice 484\r\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Lei de Coulomb",
-      "gabarito": "C",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Progressão Aritmética",
       "tags": [
-        "força elétrica",
-        "cargas"
+        "soma de PA",
+        "termo geral",
+        "corrida",
+        "plano de treino"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2019,
-      "numero": "18"
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "23"
     }
   },
   {
-    "latex": "\\question Uma pessoa observa uma vela através de uma lente de vidro biconvexa, como representado na figura.\n\nConsidere que a vela está posicionada entre a lente e o seu ponto focal $F$. Nessa condição, a imagem observada pela pessoa é\n\n\\begin{choices}\n\\choice virtual, invertida e maior.\n\\choice virtual, invertida e menor.\n\\correctchoice real, direita e menor.\n\\choice real, invertida e maior.\n\\choice virtual, direita e maior.\n\\end{choices}",
+    "latex": "\\question Para combater a subnutrição infantil, foi desenvolvida uma mistura alimentícia composta por três tipos de suplementos alimentares: I, II e III. Esses suplementos, por sua vez, contêm diferentes concentrações de três nutrientes: A, B e C. Observe as tabelas a seguir, que indicam a concentração de nutrientes nos suplementos e a porcentagem de suplementos na mistura, respectivamente.\r\n\r\n\\includegraphics{figura-24}\r\n\r\nA quantidade do nutriente C, em g/kg, encontrada na mistura alimentícia é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 0,235\r\n\\choice 0,265\r\n\\choice 0,275\r\n\\correctchoice 0,295\r\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C",
+    "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Lentes Esféricas",
-      "gabarito": "C",
+      "disciplina": "Matemática",
+      "assunto": "Médias",
       "tags": [
-        "óptica",
-        "lentes"
+        "média ponderada",
+        "mistura",
+        "concentração",
+        "suplemento alimentar",
+        "porcentagem"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2019,
-      "numero": "19"
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "24"
     }
   },
   {
-    "latex": "\\question Uma bateria de tensão $V$ e resistência interna $R_i$ é ligada em série com um resistor de resistência $R$. O esquema do circuito está representado na figura. A potência dissipada pelo resistor $R$ é dada por\n\n\\begin{choices}\n\\choice $\\dfrac{V}{R}$\n\\correctchoice $\\dfrac{V^2}{R_i+R}$\n\\choice $\\dfrac{V^2}{(R_i+R)^2}$\n\\choice $(R_i+R)V^2$\n\\choice $\\dfrac{V^2}{(R-R_i)}$\n\\end{choices}",
+    "latex": "\\question Um cilindro circular reto possui diâmetro AB de 4 cm e altura AA' de 10 cm. O plano \\(\\alpha\\), perpendicular à seção meridiana ABB'A', que passa pelos pontos B e A' das bases, divide o cilindro em duas partes, conforme ilustra a imagem.\r\n\r\n\\includegraphics{figura-25}\r\n\r\nO volume da parte do cilindro compreendida entre o plano \\(\\alpha\\) e a base inferior, em cm³, é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice \\(8\\pi\\)\r\n\\choice \\(12\\pi\\)\r\n\\choice \\(16\\pi\\)\r\n\\correctchoice \\(20\\pi\\)\r\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "assunto": "Cilindros",
+      "tags": [
+        "cilindro",
+        "volume",
+        "plano de corte",
+        "seção meridiana",
+        "geometria espacial"
+      ],
+      "fonte": "concurso",
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "25"
+    }
+  },
+  {
+    "latex": "\\question Uma calculadora tem duas teclas especiais, A e B. Quando a tecla A é digitada, o número que está no visor é substituído pelo logaritmo decimal desse número. Quando a tecla B é digitada, o número do visor é multiplicado por 5.\r\n\r\nConsidere que uma pessoa digitou as teclas BAB, nesta ordem, e obteve no visor o número 10.\r\n\r\nNesse caso, o visor da calculadora mostrava inicialmente o seguinte número:\r\n\r\n\\begin{oneparchoices}\r\n\\correctchoice 20\r\n\\choice 30\r\n\\choice 40\r\n\\choice 50\r\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Logarítmica",
+      "tags": [
+        "logaritmo decimal",
+        "composição de funções",
+        "calculadora",
+        "operações sequenciais"
+      ],
+      "fonte": "concurso",
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "26"
+    }
+  },
+  {
+    "latex": "\\question No esquema abaixo, estão representados um quadrado ABCD e um círculo de centro P e raio \\(r\\), tangente às retas AB e BC. O lado do quadrado mede \\(3r\\).\r\n\r\n\\includegraphics{figura-27}\r\n\r\nA medida \\(\\theta\\) do ângulo \\(C\\hat{A}P\\) pode ser determinada a partir da seguinte identidade trigonométrica:\r\n\r\n\\[\r\n\\text{tg}(\\alpha - \\beta) = \\frac{\\text{tg}(\\alpha) - \\text{tg}(\\beta)}{1 + \\text{tg}(\\alpha) \\times \\text{tg}(\\beta)}\r\n\\]\r\n\r\nO valor da tangente de \\(\\theta\\) é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 0,65\r\n\\correctchoice 0,60\r\n\\choice 0,55\r\n\\choice 0,50\r\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "assunto": "Soma de Arcos",
+      "tags": [
+        "tangente",
+        "subtração de arcos",
+        "quadrado",
+        "círculo tangente",
+        "geometria"
+      ],
+      "fonte": "concurso",
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "27"
+    }
+  },
+  {
+    "latex": "\\question Considere o gráfico a seguir, em que a área S é limitada pelos eixos coordenados, pela reta \\(r\\), que passa por \\(A(0, 4)\\) e \\(B(2, 0)\\), e pela reta perpendicular ao eixo \\(x\\) no ponto \\(P(x_0, 0)\\), sendo \\(0 \\leq x_0 \\leq 2\\).\r\n\r\n\\includegraphics{figura-28}\r\n\r\nPara que a área S seja a metade da área do triângulo de vértices \\(C(0, 0)\\), A e B, o valor de \\(x_0\\) deve ser igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\correctchoice \\(2 - \\sqrt{2}\\)\r\n\\choice \\(3 - \\sqrt{2}\\)\r\n\\choice \\(4 - 2\\sqrt{2}\\)\r\n\\choice \\(5 - 2\\sqrt{2}\\)\r\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "assunto": "Geometria Analítica",
+      "tags": [
+        "área",
+        "triângulo",
+        "reta",
+        "mediatriz",
+        "raiz quadrada",
+        "área igual"
+      ],
+      "fonte": "concurso",
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "28"
+    }
+  },
+  {
+    "latex": "\\question Considere o conjunto de números naturais abaixo e os procedimentos subsequentes:\r\n\r\n\\[ A = \\{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 \\} \\]\r\n\r\n\\begin{enumerate}\r\n\\item Cada número primo de A foi multiplicado por 3. Sabe-se que um número natural P é primo se \\(P > 1\\) e tem apenas dois divisores naturais distintos.\r\n\\item A cada um dos demais elementos de A, foi somado o número 1.\r\n\\item Cada um dos números distintos obtidos foi escrito em apenas um pequeno cartão.\r\n\\item Dentre todos os cartões, foram sorteados exatamente dois cartões com números distintos ao acaso.\r\n\\end{enumerate}\r\n\r\nA probabilidade de em pelo menos um cartão sorteado estar escrito um número par é:\r\n\r\n\\begin{oneparchoices}\r\n\\choice \\(\\dfrac{5}{12}\\)\r\n\\correctchoice \\(\\dfrac{7}{12}\\)\r\n\\choice \\(\\dfrac{13}{24}\\)\r\n\\choice \\(\\dfrac{17}{24}\\)\r\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Lei de Ohm",
-      "gabarito": "B",
+      "disciplina": "Matemática",
+      "assunto": "Probabilidade Simples",
       "tags": [
-        "circuitos",
-        "potência"
+        "conjunto",
+        "números primos",
+        "contagem",
+        "ao menos um",
+        "par",
+        "sorteio"
       ],
       "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2019,
-      "numero": "20"
-    }
-  },
-  {
-    "latex": "\\question Em uma garrafa térmica, são colocados $200\\,g$ de água a uma temperatura de $30^\\circ C$ e uma pedra de gelo de massa $50\\,g$, à temperatura de $-10^\\circ C$. Após o equilíbrio térmico,\n\n\\begin{choices}\n\\choice todo o gelo derreteu e a temperatura de equilíbrio é $7^\\circ C$.\n\\correctchoice todo o gelo derreteu e a temperatura de equilíbrio é $0^\\circ C$.\n\\choice todo o gelo derreteu e a temperatura de equilíbrio é $-10^\\circ C$.\n\\choice nem todo o gelo derreteu e a temperatura de equilíbrio é $0^\\circ C$.\n\\choice o gelo não derreteu e a temperatura de equilíbrio é $-2^\\circ C$.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Calorimetria e Calor Específico",
-      "gabarito": "B",
-      "tags": [
-        "equilíbrio térmico"
-      ],
-      "fonte": "concurso",
-      "concurso": "FUVEST",
-      "banca": "FUVEST",
-      "ano": 2019,
-      "numero": "21"
+      "concurso": "UERJ",
+      "banca": "UERJ",
+      "ano": 2016,
+      "numero": "29"
     }
   }
 ]

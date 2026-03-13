@@ -272,8 +272,23 @@ function applyTipoToDoc(v: EditorView, tipo: QuestionMetadataV1["tipo"]) {
   const container = findContainerAtSelection(v);
   if (!container) return;
 
-  if (isDiscursiveTipo(tipo)) removeOptionsInContainer(v, container);
-  else ensureOptionsCountInContainer(v, container, 5);
+  if (isDiscursiveTipo(tipo)) {
+    removeOptionsInContainer(v, container);
+  } else {
+    const hit = findOptionsInContainer(container);
+    if (!hit) {
+      ensureOptionsCountInContainer(v, container, 5);
+      return;
+    }
+    // Conta só opções com conteúdo real (content.size > 2 funciona mesmo para options com só math)
+    // Uma option vazia = apenas um parágrafo vazio = content.size exatamente 2
+    let nonEmpty = 0;
+    for (let i = 0; i < hit.node.childCount; i++) {
+      if (hit.node.child(i).content.size > 2) nonEmpty++;
+    }
+    const target = nonEmpty > 0 ? nonEmpty : hit.node.childCount;
+    ensureOptionsCountInContainer(v, container, target > 0 ? target : 5);
+  }
 }
 
 /* ---------- set_questions helpers ---------- */

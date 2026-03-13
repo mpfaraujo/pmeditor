@@ -21,10 +21,10 @@ export type ProvaTypeConfig = {
 };
 
 /**
- * Fisher-Yates shuffle com seed determinístico
+ * Fisher-Yates shuffle com seed determinístico (aceita string para evitar colisões aritméticas)
  */
-function shuffleArray<T>(array: T[], seed: number): T[] {
-  const rng = seedrandom(seed.toString());
+function shuffleArray<T>(array: T[], seed: string): T[] {
+  const rng = seedrandom(seed);
   const arr = [...array]; // clone
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
@@ -66,7 +66,7 @@ function getNumOpcoes(q: any): number {
     const contentNode = PMNode.fromJSON(schema, q.content);
 
     // Buscar node 'question' > 'options'
-    let numOpcoes = 5; // padrão
+    let numOpcoes: number | null = null;
 
     contentNode.descendants((node) => {
       if (node.type.name === 'options' && node.content) {
@@ -75,9 +75,44 @@ function getNumOpcoes(q: any): number {
       }
     });
 
-    return numOpcoes;
+    // Se não encontrou via ProseMirror, tenta contar diretamente no JSON
+    if (numOpcoes === null) {
+      const findOptions = (node: any): number | null => {
+        if (node?.type === 'options' && Array.isArray(node.content)) return node.content.length;
+        if (Array.isArray(node?.content)) {
+          for (const child of node.content) {
+            const r = findOptions(child);
+            if (r !== null) return r;
+          }
+        }
+        return null;
+      };
+      numOpcoes = findOptions(q.content) ?? 4;
+    }
+
+    // Se retornou 5 mas alguma opção está vazia (bug de importação anterior),
+    // usa content.size > 2 que funciona mesmo para options com só math (textContent seria "")
+    // Uma option vazia = apenas um parágrafo vazio = content.size exatamente 2
+    if (numOpcoes === 5) {
+      contentNode.descendants((node) => {
+        if (node.type.name === 'options') {
+          const sizes: number[] = [];
+          let nonEmpty = 0;
+          for (let i = 0; i < node.childCount; i++) {
+            const s = node.child(i).content.size;
+            sizes.push(s);
+            if (s > 2) nonEmpty++;
+          }
+          console.log('[getNumOpcoes] 5 opções detectadas | sizes:', sizes, '| nonEmpty:', nonEmpty, '| id:', (q.metadata?.id ?? '?').slice(0,8));
+          if (nonEmpty >= 2 && nonEmpty < 5) numOpcoes = nonEmpty;
+          return false;
+        }
+      });
+    }
+
+    return Math.min(5, Math.max(2, numOpcoes));
   } catch {
-    return 5; // fallback
+    return 4; // fallback 4 (mais comum que 5)
   }
 }
 
@@ -90,11 +125,16 @@ function gerarPermutacaoIdentidade(numOpcoes: number): OptionPermutation {
 }
 
 /**
- * Gera permutação embaralhada para uma questão
+ * Gera permutação embaralhada para uma questão, com balanceamento de gabarito.
+ * Se a letra resultante para a resposta correta estiver acima do limite,
+ * troca-a com a letra de menor contagem, mantendo a permutação válida.
  */
-function gerarPermutacaoQuestao(
-  numOpcoes: number, // 2-5
-  seed: number
+function gerarPermutacaoQuestaoBalanceada(
+  numOpcoes: number,
+  seed: string,
+  originalCorrect: string | null,
+  letterCount: Record<string, number>,
+  maxPerLetter: number
 ): OptionPermutation {
   const letras = ['A', 'B', 'C', 'D', 'E'].slice(0, numOpcoes);
   const embaralhadas = shuffleArray(letras, seed);
@@ -103,6 +143,64 @@ function gerarPermutacaoQuestao(
   letras.forEach((original, idx) => {
     permutation[original] = embaralhadas[idx];
   });
+
+  // Sem gabarito conhecido: retorna permutação como está
+  if (!originalCorrect || !letras.includes(originalCorrect)) return permutation;
+
+  const newCorrect = permutation[originalCorrect];
+
+  // Validação crítica: garantir que newCorrect é uma letra válida para esta questão
+  if (!letras.includes(newCorrect)) {
+    console.warn(
+      `[gerarPermutacaoQuestaoBalanceada] Letra inválida detectada: ${newCorrect} não está em [${letras.join(',')}]`
+    );
+    return gerarPermutacaoIdentidade(numOpcoes);
+  }
+
+  // Se a letra resultante está dentro do limite, não precisa ajustar
+  if ((letterCount[newCorrect] ?? 0) < maxPerLetter) return permutation;
+
+  // Encontra as letras disponíveis (abaixo do limite) e escolhe aleatoriamente entre elas
+  const available = letras.filter(l => l !== newCorrect && (letterCount[l] ?? 0) < maxPerLetter);
+
+  if (available.length > 0) {
+    // Escolha aleatória com seed para não criar padrões sequenciais (AA BB CC DD)
+    const rng = seedrandom(seed + ':redirect');
+    const target = available[Math.floor(rng() * available.length)];
+    const otherOriginal = letras.find(k => permutation[k] === target);
+    if (otherOriginal) {
+      permutation[originalCorrect] = target;
+      permutation[otherOriginal] = newCorrect;
+    }
+  } else {
+    // Nenhuma letra disponível via balanceamento: força para a primeira com espaço
+    const fallback = letras.find(l => (letterCount[l] ?? 0) < maxPerLetter);
+    if (fallback) {
+      const otherOriginal = letras.find(k => permutation[k] === fallback);
+      if (otherOriginal) {
+        permutation[originalCorrect] = fallback;
+        permutation[otherOriginal] = newCorrect;
+      }
+    } else {
+      // Todas as letras saturadas: minimiza o excesso trocando para a de menor contagem
+      const minCount = Math.min(...letras.map(l => letterCount[l] ?? 0));
+      const leastUsed = letras.find(l => l !== newCorrect && (letterCount[l] ?? 0) === minCount);
+      if (leastUsed) {
+        const otherOriginal = letras.find(k => permutation[k] === leastUsed);
+        if (otherOriginal) {
+          permutation[originalCorrect] = leastUsed;
+          permutation[otherOriginal] = newCorrect;
+        }
+      }
+    }
+  }
+
+  // Validação final: garantir que nenhuma letra mapeada está fora do intervalo válido
+  for (const mapped of Object.values(permutation)) {
+    if (!letras.includes(mapped)) {
+      return gerarPermutacaoIdentidade(numOpcoes);
+    }
+  }
 
   return permutation;
 }
@@ -130,19 +228,46 @@ export function gerarTiposDeProva(
           }))
       });
     } else {
-      // Tipos 2-N = permutado
-      tipos.push({
-        tipoNumber,
-        permutations: questoes
-          .filter(q => isMCQ(q))
-          .map(q => ({
-            questionId: q.metadata.id,
-            permutation: gerarPermutacaoQuestao(
-              getNumOpcoes(q),
-              provaSeed + tipoNumber * 1000 + hashQuestionId(q.metadata.id)
-            )
-          }))
+      // Tipos 2-N = permutado com balanceamento de gabarito
+      const mcqs = questoes.filter(q => isMCQ(q));
+      const numOpcoesPorQ = mcqs.map(q => getNumOpcoes(q));
+      const maxOpcoes = Math.max(...numOpcoesPorQ, 4);
+      const maxPerLetter = Math.ceil(mcqs.length / maxOpcoes);
+
+      // Contagem de letras do gabarito gerado até agora
+      const letterCount: Record<string, number> = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+
+      const permutations = mcqs.map((q, idx) => {
+        // Extrai gabarito em múltiplos formatos possíveis
+        const gab = q.metadata?.gabarito;
+        const originalCorrect: string | null =
+          (gab?.kind === 'mcq' && gab?.correct)
+            ? gab.correct
+            : (typeof gab === 'string' && /^[A-E]$/.test(gab))
+              ? gab
+              : (typeof gab?.correct === 'string' && /^[A-E]$/.test(gab.correct))
+                ? gab.correct
+                : null;
+
+        const numOpcoes = numOpcoesPorQ[idx];
+        const perm = gerarPermutacaoQuestaoBalanceada(
+          numOpcoes,
+          `${provaSeed}:${tipoNumber}:${idx}:${q.metadata.id}`,
+          originalCorrect,
+          letterCount,
+          maxPerLetter
+        );
+
+        // Atualiza contagem com a letra resultante desta questão
+        if (originalCorrect) {
+          const newCorrect = perm[originalCorrect];
+          if (newCorrect) letterCount[newCorrect] = (letterCount[newCorrect] ?? 0) + 1;
+        }
+
+        return { questionId: q.metadata.id, permutation: perm };
       });
+
+      tipos.push({ tipoNumber, permutations });
     }
   }
 
