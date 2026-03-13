@@ -90,20 +90,24 @@ function getNumOpcoes(q: any): number {
       numOpcoes = findOptions(q.content) ?? 4;
     }
 
-    // Se retornou 5 mas alguma opção está vazia (bug de importação anterior),
-    // usa content.size > 2 que funciona mesmo para options com só math (textContent seria "")
-    // Uma option vazia = apenas um parágrafo vazio = content.size exatamente 2
+    // Se retornou 5 mas alguma opção está vazia (bug de importação anterior).
+    // Usa textContent.trim() + presença de math/imagem para detectar opções reais,
+    // pois content.size > 2 falha quando a opção tem só whitespace (size=3 mas visualmente vazia).
     if (numOpcoes === 5) {
       contentNode.descendants((node) => {
         if (node.type.name === 'options') {
-          const sizes: number[] = [];
           let nonEmpty = 0;
           for (let i = 0; i < node.childCount; i++) {
-            const s = node.child(i).content.size;
-            sizes.push(s);
-            if (s > 2) nonEmpty++;
+            const opt = node.child(i);
+            const hasText = opt.textContent.trim().length > 0;
+            let hasMathOrImage = false;
+            opt.descendants((n) => {
+              if (n.type.name === 'math_inline' || n.type.name === 'math_block' || n.type.name === 'image') {
+                hasMathOrImage = true;
+              }
+            });
+            if (hasText || hasMathOrImage) nonEmpty++;
           }
-          console.log('[getNumOpcoes] 5 opções detectadas | sizes:', sizes, '| nonEmpty:', nonEmpty, '| id:', (q.metadata?.id ?? '?').slice(0,8));
           if (nonEmpty >= 2 && nonEmpty < 5) numOpcoes = nonEmpty;
           return false;
         }
