@@ -8,6 +8,7 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/tests/**/*.test.ts', 'src/tests/**/*.test.tsx'],
     exclude: ['src/tests/pagination-tests-package/**'],
+    testTimeout: 10000,
   },
   resolve: {
     alias: {

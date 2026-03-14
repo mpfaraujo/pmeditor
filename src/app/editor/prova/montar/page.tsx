@@ -208,12 +208,6 @@ export default function MontarProvaPage() {
   const handleSpacerCommit = (key: string, h: number) =>
     setCommittedSpacers(prev => new Map(prev).set(key, h));
 
-  // Serializar committedSpacers para dependências do usePagination
-  const committedSpacersKey = useMemo(() =>
-    JSON.stringify([...committedSpacers.entries()].sort()),
-    [committedSpacers]
-  );
-
   // Larguras de imagens comprometidas (dispara re-paginação no pointerup)
   const [committedImageWidths, setCommittedImageWidths] = useState<Record<string, number>>({});
 
@@ -249,7 +243,7 @@ export default function MontarProvaPage() {
       else next.add(id);
       return next;
     });
-    setRepaginateVersion(v => v + 1);
+    // Não dispara repaginação automática — usuário pressiona Repaginar quando quiser
   };
 
   useEffect(() => {
@@ -451,15 +445,6 @@ const { pages, refs } = usePagination({
   },
   questionCount: expandedQuestions.length,
   dependencies: [
-    expandedQuestions,
-    logoUrl,
-    columns,
-    provaConfig.layoutType,
-    (provaConfig as any).headerLayout,
-    (provaConfig as any).questionHeaderVariant,
-    manualOrder,
-    setGroups,
-    committedSpacersKey,
     repaginateVersion,
   ],
 });
