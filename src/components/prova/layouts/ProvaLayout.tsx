@@ -164,7 +164,7 @@ export function ProvaLayout({
               )}
               {pageIndex === 0 && provaConfig.titulo !== undefined && (
                 <div
-                  className="text-[11pt] font-bold text-center uppercase pt-0 pb-3"
+                  className="text-[11pt] font-bold text-center uppercase -mt-[0.5cm] pb-3"
                   contentEditable
                   suppressContentEditableWarning
                   onBlur={(e) => updateProvaConfig({ titulo: e.currentTarget.textContent ?? "" })}
