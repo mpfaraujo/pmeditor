@@ -3,6 +3,63 @@
  * - Permite fragmentar questão por blocos do DOM quando não cabe inteira
  * - optimizeLayout=true: bin-packing (First Fit Decreasing) para otimizar espaço
  * - optimizeLayout=false: distribuição linear sequencial (comportamento original)
+ *
+ * ════════════════════════════════════════════════════════════════════════
+ * DECISÕES DE DESIGN CRÍTICAS — leia antes de alterar qualquer coisa
+ * ════════════════════════════════════════════════════════════════════════
+ *
+ * 1. FRAGMENTAÇÃO vs. NOVA PÁGINA (o bug que custou 5 sessões)
+ * ─────────────────────────────────────────────────────────────
+ * Quando h > firstPageCapacity mas h <= otherPageCapacity, NÃO se deve
+ * simplesmente criar uma nova página e colocar a questão lá como "full".
+ *
+ * Por quê: o bin-packing filtra páginas vazias ao final. Se a página 0
+ * ficou vazia (porque nenhuma questão coube nela), ela é removida. A
+ * página 1 — que foi alocada com otherPageCapacity (ex: 931px) — vira a
+ * página renderizada 0 e recebe o cabeçalho da prova. O cabeçalho reduz
+ * o espaço disponível para firstPageCapacity (ex: 742px). Conteúdo de
+ * 931px numa área de 742px → overflow visual invadindo o footer.
+ *
+ * Solução (em placeGroup): se a página atual ainda está VAZIA e
+ * h > firstPageCapacity, chama placeWithFragmentation ANTES de fechar a
+ * coluna. Isso usa o espaço restante (742px) como capHere, dividindo a
+ * questão entre a página atual e a próxima. A página 0 deixa de ser
+ * vazia e não é removida.
+ *
+ * Restrição importante: só fragmenta quando currentPageEmpty === true.
+ * Sem essa restrição, qualquer questão com h > firstPageCapacity em
+ * qualquer página intermediária seria fragmentada desnecessariamente.
+ *
+ * Testes de regressão: src/tests/pagination/layout.test.ts
+ *   "[otimizado] questão maior que firstPageCapacity deve ser fragmentada"
+ *   "[otimizado] set group com base maior que firstPageCapacity deve fragmentar a base"
+ *
+ * 2. appendOptions e textBlockCount
+ * ───────────────────────────────────
+ * appendOptions retorna:
+ *   - undefined  → opções encontradas mas não expandidas (bloco atômico)
+ *   - N (número) → sem opções (ex: setBase/poema) ou opções expandidas
+ *
+ * Em buildFragmentsForQuestion: se textBlockCount===undefined e há mais
+ * de 1 bloco, retorna null imediatamente → força retry com expandOptions=true.
+ * Isso garante que fragmentação de MCQ seja feita bloco-a-bloco nas opções.
+ *
+ * 3. capHere em placeWithFragmentation
+ * ──────────────────────────────────────
+ * placeWithFragmentation usa pages[last].coluna1.remaining como capHere.
+ * Por isso, NÃO feche a coluna antes de chamá-la quando quiser que ela
+ * use o espaço restante da página atual. Se remaining=0, ela cria uma
+ * nova página e capHere=otherPageCapacity — o que não resolve o bug (1).
+ *
+ * 4. Remoção de páginas vazias
+ * ─────────────────────────────
+ * O filtro `pages.filter(p => !isEmptyPage(p))` remove páginas sem itens.
+ * Depois, o .map re-atribui capacidades: idx===0 → firstPageCapacity,
+ * resto → otherPageCapacity. Se uma página alocada com otherPageCapacity
+ * se tornar idx===0 após filtragem, seu remainingHeight é recalculado
+ * mas os ITENS já foram colocados assumindo 931px — o overflow persiste.
+ * Nunca deixe a primeira página ficar vazia.
+ * ════════════════════════════════════════════════════════════════════════
  */
 
 export type LayoutItem =
@@ -123,7 +180,7 @@ function pickBlockElementsFromWrapper(
 
   function appendOptions(blocks: HTMLElement[], root: HTMLElement): number | undefined {
     const options = root.querySelector(".question-options") as HTMLElement | null;
-    if (!options) return undefined;
+    if (!options) return blocks.length; // sem opções: todos os blocos são texto
 
     if (expandOptions) {
       const optKids = Array.from(options.children) as HTMLElement[];
@@ -330,6 +387,31 @@ export function distributeQuestionsAcrossPages(
     pushNewPage();
   };
 
+  /**
+   * ALTERAÇÃO DOCUMENTADA:
+   * Antes, a lógica linear tentava fragmentar imediatamente quando a questão
+   * não cabia no slot atual. Agora ela verifica primeiro se a questão cabe
+   * inteira no próximo slot limpo.
+   *
+   * Regras atuais:
+   * - em 2 colunas, se estamos na coluna1, o próximo slot limpo é a coluna2
+   *   da mesma página;
+   * - caso contrário, o próximo slot limpo é uma nova página.
+   */
+  const getCleanSlotPlan = (
+    fullH: number
+  ): { kind: "column" | "page"; cap: number } | null => {
+    if (columns === 2 && col === "coluna1" && fullH <= getCap()) {
+      return { kind: "column", cap: getCap() };
+    }
+
+    if (fullH <= otherPageCapacity) {
+      return { kind: "page", cap: otherPageCapacity };
+    }
+
+    return null;
+  };
+
   for (let i = 0; i < questionCount; i++) {
     const fullH = questionHeights[i] ?? 0;
     const cap = getCap();
@@ -341,23 +423,66 @@ export function distributeQuestionsAcrossPages(
       continue;
     }
 
-    // Tenta fragmentar aproveitando o espaço restante na coluna atual
-    const remaining = cap - used;
-    const capFirstFrag = remaining > 0 ? remaining : getCap();
+    // ALTERAÇÃO DOCUMENTADA:
+    // LÓGICA ANTIGA (mantida aqui em comentário para reversão fácil):
+    // ---------------------------------------------------------------
+    // // Tenta fragmentar aproveitando o espaço restante na coluna atual
+    // const remaining = cap - used;
+    // const capFirstFrag = remaining > 0 ? remaining : getCap();
+    //
+    // // Se não há espaço restante, avança para coluna/página limpa
+    // if (remaining <= 0 && used > 0) {
+    //   nextColumnOrPage();
+    // }
+    //
+    // const capHere = remaining > 0 ? remaining : getCap();
+    //
+    // // Se cabe inteira numa coluna limpa, coloca como full
+    // if (used === 0 && fullH <= capHere) {
+    //   page[col].push({ kind: "full", q: i });
+    //   used += fullH;
+    //   continue;
+    // }
+    // ---------------------------------------------------------------
+    // LÓGICA NOVA:
+    // 1) não coube no slot atual;
+    // 2) tenta próximo slot limpo SEM fragmentar;
+    // 3) só fragmenta se não couber nem em slot limpo.
+    const cleanSlotPlan = getCleanSlotPlan(fullH);
+    if (cleanSlotPlan) {
+      if (cleanSlotPlan.kind === "column") {
+        // Próximo slot limpo = coluna2 da mesma página.
+        nextColumnOrPage();
+      } else {
+        // Próximo slot limpo = nova página.
+        // Ponto crítico: avançamos MESMO QUANDO used === 0.
+        // Isso corrige o caso da primeira página vazia, porém insuficiente.
+        if (columns === 2 && col === "coluna1") {
+          // Se estivermos em 2 colunas na coluna1 e decidimos que o slot limpo
+          // correto é uma NOVA página, precisamos pular também a coluna2 atual.
+          nextColumnOrPage();
+        }
+        nextColumnOrPage();
+      }
 
-    // Se não há espaço restante, avança para coluna/página limpa
-    if (remaining <= 0 && used > 0) {
-      nextColumnOrPage();
-    }
-
-    const capHere = remaining > 0 ? remaining : getCap();
-
-    // Se cabe inteira numa coluna limpa, coloca como full
-    if (used === 0 && fullH <= capHere) {
       page[col].push({ kind: "full", q: i });
       used += fullH;
       continue;
     }
+
+    // Não coube em slot limpo: agora a fragmentação é obrigatória.
+    const remaining = cap - used;
+    const capFirstFrag = remaining > 0 ? remaining : getCap();
+
+    // Se não há espaço restante, avança para coluna/página limpa ANTES
+    // de iniciar a fragmentação.
+    if (remaining <= 0) {
+      nextColumnOrPage();
+    }
+
+    // Recalcula capHere depois de eventual avanço. Antes isso era calculado
+    // com base no estado antigo, o que podia deixar a decisão inconsistente.
+    const capHere = used > 0 ? Math.max(0, getCap() - used) : getCap();
 
     let split = measureSplitInfo(measureItemsRef, i);
     if (!split) {
@@ -381,6 +506,12 @@ export function distributeQuestionsAcrossPages(
     }
 
     if (!frag) {
+      // ALTERAÇÃO DOCUMENTADA:
+      // Antes esse fallback era silencioso. Mantive o comportamento, mas agora
+      // ele deixa um aviso explícito para depuração.
+      console.warn(
+        `[pagination][linear] Falha ao fragmentar questão ${i}. Inserindo como 'full' por fallback.`
+      );
       if (used > 0) nextColumnOrPage();
       page[col].push({ kind: "full", q: i });
       used += fullH;
@@ -561,16 +692,31 @@ export function distributeQuestionsOptimized(
         if (columns === 2 && tryPlaceInSlot(page.coluna2, qIdx, h)) return;
       }
 
-      // Não coube em nenhum slot — tenta fragmentação
-      if (h > otherPageCapacity) {
+      // Se a primeira página ainda está vazia e h > firstPageCapacity, tenta fragmentar.
+      // Sem isso: cria nova página (otherPageCapacity), a primeira página fica vazia,
+      // é removida, e a nova página vira a página 0 renderizada — com cabeçalho mas
+      // sem espaço planejado para ele → overflow.
+      // Restrição: só fragmenta se a página AINDA ESTÁ VAZIA (sem itens) para não
+      // acionar fragmentação desnecessária em páginas intermediárias.
+      const firstPageEmpty = pages.length === 1 &&
+        pages[0].coluna1.items.length === 0 &&
+        pages[0].coluna2.items.length === 0;
+      const bestRemaining = firstPageEmpty
+        ? Math.max(pages[0].coluna1.remaining, columns === 2 ? pages[0].coluna2.remaining : 0)
+        : 0;
+      if (h > firstPageCapacity && bestRemaining > 0) {
         placeWithFragmentation(qIdx, h);
         return;
       }
 
-      // Cria nova página
-      const newP = newPage(pages.length);
-      pages.push(newP);
-      tryPlaceInSlot(newP.coluna1, qIdx, h);
+      if (h <= otherPageCapacity) {
+        const newP = newPage(pages.length);
+        pages.push(newP);
+        tryPlaceInSlot(newP.coluna1, qIdx, h);
+        return;
+      }
+
+      placeWithFragmentation(qIdx, h);
       return;
     }
 
@@ -589,31 +735,43 @@ export function distributeQuestionsOptimized(
       // Tenta coluna atual da última página
       if (tryPlaceInSlot(lastPage[setCol], qIdx, h)) continue;
 
-      // Não coube — precisa mudar de coluna ou página
-      // Fecha o espaço restante da coluna atual pra proteger o set
-      lastPage[setCol].remaining = 0;
-
-      if (columns === 2 && setCol === "coluna1") {
-        // Tenta coluna2 da mesma página
-        setCol = "coluna2";
-        if (tryPlaceInSlot(lastPage.coluna2, qIdx, h)) continue;
-
-        // Não coube na col2 também — fecha e cria nova página
-        lastPage.coluna2.remaining = 0;
-      }
-
-      // Tenta fragmentação se necessário
-      if (h > otherPageCapacity) {
+      // Antes de fechar a coluna: se a página ainda está vazia e h > firstPageCapacity,
+      // tenta fragmentar — evita que a página fique vazia, seja removida e a próxima
+      // vire a página 0 renderizada sem espaço para o cabeçalho → overflow.
+      const currentPageEmpty = lastPage.coluna1.items.length === 0 &&
+        lastPage.coluna2.items.length === 0;
+      if (h > firstPageCapacity && currentPageEmpty && lastPage[setCol].remaining > 0) {
         placeWithFragmentation(qIdx, h);
         setCol = "coluna1";
         continue;
       }
 
-      // Cria nova página e coloca lá
-      const newP = newPage(pages.length);
-      pages.push(newP);
+      if (columns === 2 && setCol === "coluna1") {
+        lastPage[setCol].remaining = 0;
+        setCol = "coluna2";
+        if (tryPlaceInSlot(lastPage.coluna2, qIdx, h)) continue;
+
+        if (h > firstPageCapacity && currentPageEmpty && lastPage.coluna2.remaining > 0) {
+          placeWithFragmentation(qIdx, h);
+          setCol = "coluna1";
+          continue;
+        }
+
+        lastPage.coluna2.remaining = 0;
+      } else {
+        lastPage[setCol].remaining = 0;
+      }
+
+      if (h <= otherPageCapacity) {
+        const newP = newPage(pages.length);
+        pages.push(newP);
+        setCol = "coluna1";
+        tryPlaceInSlot(newP.coluna1, qIdx, h);
+        continue;
+      }
+
+      placeWithFragmentation(qIdx, h);
       setCol = "coluna1";
-      tryPlaceInSlot(newP.coluna1, qIdx, h);
     }
 
   }
@@ -625,6 +783,12 @@ export function distributeQuestionsOptimized(
   function placeWithFragmentation(qIndex: number, fullH: number): void {
     let split = measureSplitInfo(measureItemsRef, qIndex);
     if (!split) {
+      // ALTERAÇÃO DOCUMENTADA:
+      // Antes esse fallback era silencioso. Mantive o comportamento para não
+      // alterar demais o fluxo atual, mas agora ele deixa rastro no console.
+      console.warn(
+        `[pagination][optimized] measureSplitInfo falhou para questão ${qIndex}. Inserindo como 'full' por fallback.`
+      );
       // Fallback: coloca inteira numa nova página
       const newP = newPage(pages.length);
       pages.push(newP);
@@ -666,6 +830,12 @@ export function distributeQuestionsOptimized(
     }
 
     if (!frag) {
+      // ALTERAÇÃO DOCUMENTADA:
+      // fallback silencioso removido; agora há aviso explícito para facilitar
+      // detectar divergências entre medição e fragmentação real.
+      console.warn(
+        `[pagination][optimized] Falha ao fragmentar questão ${qIndex}. Inserindo como 'full' por fallback.`
+      );
       // Fallback
       const slot = targetCol === "coluna1" ? targetPage.coluna1 : targetPage.coluna2;
       slot.items.push({ kind: "full", q: qIndex });

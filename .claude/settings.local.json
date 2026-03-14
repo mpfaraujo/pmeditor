@@ -7,7 +7,16 @@
       "Bash(cp \"C:/Users/mpfar/.claude/commands/alimentar.md\" \"c:/Projetos/pmeditor/.claude/commands/alimentar.md\")",
       "Bash(pip install:*)",
       "Bash(python -c \":*)",
-      "Bash(curl -s \"https://mpfaraujo.com.br/guardafiguras/api/questoes/get.php?id=fbddd4b4\" -H \"X-Questions-Token: kKxj4aTzv8mQ3pYwN7cR2uL9hS6eD1fG0nV5bJ8pZ3xQ6wE9rT2yU7iO4aP1sD8\")"
+      "Bash(curl -s \"https://mpfaraujo.com.br/guardafiguras/api/questoes/get.php?id=fbddd4b4\" -H \"X-Questions-Token: kKxj4aTzv8mQ3pYwN7cR2uL9hS6eD1fG0nV5bJ8pZ3xQ6wE9rT2yU7iO4aP1sD8\")",
+      "Read(//c/Users/mpfar/.claude/plans/**)",
+      "Read(//c/Users/mpfar/.claude/**)",
+      "Bash(find C:/Projetos/pmeditor -name *.md -newer C:/Projetos/pmeditor/package.json)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Projetos/pmeditor/**)",
+      "Bash(done)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm vitest:*)"
     ]
   }
 }

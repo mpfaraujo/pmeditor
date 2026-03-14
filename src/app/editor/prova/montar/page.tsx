@@ -249,6 +249,7 @@ export default function MontarProvaPage() {
       else next.add(id);
       return next;
     });
+    setRepaginateVersion(v => v + 1);
   };
 
   useEffect(() => {
@@ -290,7 +291,12 @@ export default function MontarProvaPage() {
     // Visitantes (não logados) usam seed 0
     const userSeed = user?.googleId ? hashQuestionId(user.googleId) : 0;
 
-    const tipos = gerarTiposDeProva(orderedList, numTipos, userSeed);
+    // Usa expandedQuestions (itens individuais) para que cada question_item de um
+    // set_questions receba sua própria permutação. Com orderedList, getLetrasOpcoes
+    // encontraria as opções de TODOS os itens do conjunto numa única chamada.
+    // Filtra setBase (sem opções) para não distorcer a contagem de balanceamento.
+    const questoesParaTipos = (expandedQuestions as any[]).filter((q: any) => !q.__setBase);
+    const tipos = gerarTiposDeProva(questoesParaTipos, numTipos, userSeed);
     setTiposGerados(tipos);
     setTipoAtual(1);
   };
@@ -587,12 +593,18 @@ const { pages, refs } = usePagination({
           textBlocks: hasText ? Array.from({ length: textTo - textFrom + 1 }, (_, i) => textFrom + i) : [],
           options: hasOpts ? Array.from({ length: optTo - optFrom + 1 }, (_, i) => optFrom + i) : [],
         };
+      } else if (N != null) {
+        // Blocos de texto apenas (sem opções neste fragmento): texto base, discursiva, etc.
+        return {
+          textBlocks: Array.from({ length: to - from + 1 }, (_, i) => from + i),
+          options: [],
+        };
       } else {
-        // Sem opções expandidas: só renderiza no primeiro fragmento
+        // N indefinido (não deveria ocorrer normalmente): renderiza tudo no primeiro fragmento
         if (frag.first) {
-          return undefined; // renderiza tudo
+          return undefined;
         } else {
-          return { textBlocks: [], options: [] }; // renderiza nada
+          return { textBlocks: [], options: [] };
         }
       }
     })();

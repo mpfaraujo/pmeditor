@@ -1,5 +1,23 @@
 # CLAUDE.md — PMEditor: Editor de Questoes & Montador de Provas
 
+## ⚠️ AVISO CRITICO — pagination.ts
+
+`src/lib/pagination.ts` e o arquivo mais sensivel do projeto. Um bug nele
+custou 5 sessoes de tokens para resolver (e foi reintroduzido por uma IA
+externa que reescreveu o arquivo sem entender o design).
+
+**Antes de qualquer alteracao em `pagination.ts` ou em qualquer codigo que
+afete a paginacao:**
+1. Ler o cabecalho do proprio `pagination.ts` (secao "DECISOES DE DESIGN CRITICAS")
+2. Ler `memory/pagination_critico.md`
+3. Rodar `pnpm test` apos a alteracao — os testes de regressao em
+   `src/tests/pagination/` cobrem o bug principal
+
+**O bug principal:** quando `h > firstPageCapacity` mas `h <= otherPageCapacity`,
+criar uma nova pagina causa overflow porque a pagina 0 fica vazia, e removida,
+e a nova pagina vira a pagina 0 renderizada — mas com o cabecalho, so ha
+firstPageCapacity disponivel. Solucao: fragmentar quando `currentPageEmpty === true`.
+
 ## Idioma
 
 **SEMPRE se comunicar em portugues (pt-BR).** Nunca responder em ingles — nem parcialmente. Isso inclui:
