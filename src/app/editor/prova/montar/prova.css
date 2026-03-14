@@ -484,18 +484,18 @@
   font-size: 8pt;
   background: transparent;
 }
-/* Opções: top por padrão, center quando tem math/imagem */
+/* Opções: top por padrão, center apenas quando COMEÇA com math/imagem */
 .question-options .flex.items-start {
   align-items: flex-start;
 }
 
-.question-options .flex.items-start:has(.math-inline, .katex, img),
-.question-options .flex.items-baseline:has(.math-inline, .katex, img) {
+.question-options .flex.items-start:has(p:first-of-type > :is(.math-inline, .katex, img):first-child),
+.question-options .flex.items-baseline:has(p:first-of-type > :is(.math-inline, .katex, img):first-child) {
   align-items: center;
 }
 
-.question-options .flex.items-start:has(.math-inline, .katex, img) > span:first-child,
-.question-options .flex.items-baseline:has(.math-inline, .katex, img) > span:first-child {
+.question-options .flex.items-start:has(p:first-of-type > :is(.math-inline, .katex, img):first-child) > span:first-child,
+.question-options .flex.items-baseline:has(p:first-of-type > :is(.math-inline, .katex, img):first-child) > span:first-child {
   line-height: 1;
   display: inline-flex;
   align-items: center;
