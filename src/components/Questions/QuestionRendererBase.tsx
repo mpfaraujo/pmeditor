@@ -497,8 +497,10 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     return (
       options.map((opt, i) => {
         const letter = opt.attrs?.letter ?? "?";
+        const firstInlineType = opt.content?.[0]?.content?.[0]?.type;
+        const startsWithMathOrImage = firstInlineType === 'math_inline' || firstInlineType === 'math_block' || firstInlineType === 'image';
         return (
-          <div key={`${keyPrefix}-opt-${i}`} className={inlineOptions ? "flex items-baseline gap-1" : "flex items-start gap-2"}>
+          <div key={`${keyPrefix}-opt-${i}`} className={`${inlineOptions ? "flex items-baseline gap-1" : "flex items-start gap-2"}${startsWithMathOrImage ? " starts-with-math" : ""}`}>
             <span>({letter})</span>
             {inlineOptions ? (
               <span>{renderInline(opt)}</span>

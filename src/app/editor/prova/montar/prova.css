@@ -489,13 +489,11 @@
   align-items: flex-start;
 }
 
-.question-options .flex.items-start:has(p:first-of-type > :is(.math-inline, .katex, img):first-child),
-.question-options .flex.items-baseline:has(p:first-of-type > :is(.math-inline, .katex, img):first-child) {
+.question-options .starts-with-math {
   align-items: center;
 }
 
-.question-options .flex.items-start:has(p:first-of-type > :is(.math-inline, .katex, img):first-child) > span:first-child,
-.question-options .flex.items-baseline:has(p:first-of-type > :is(.math-inline, .katex, img):first-child) > span:first-child {
+.question-options .starts-with-math > span:first-child {
   line-height: 1;
   display: inline-flex;
   align-items: center;
