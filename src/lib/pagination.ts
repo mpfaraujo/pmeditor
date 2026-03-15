@@ -59,6 +59,25 @@
  * se tornar idx===0 após filtragem, seu remainingHeight é recalculado
  * mas os ITENS já foram colocados assumindo 931px — o overflow persiste.
  * Nunca deixe a primeira página ficar vazia.
+ *
+ * 5. Aproveitamento de espaço residual (tryFragmentResidual)
+ * ──────────────────────────────────────────────────────────
+ * Quando um slot tem espaço residual >= 50% da capacidade da coluna e o
+ * próximo elemento a colocar (primeiro de um set — o texto base) não cabe
+ * inteiro, tenta-se fragmentá-lo para aproveitar o espaço.
+ *
+ * Critérios para ativar: slot.remaining >= colCap * 0.50 E
+ * slot.items.length > 0 (coluna não vazia — mesma proteção do item 1) E
+ * fragmento inicial >= 30% do total (evita fragmento minúsculo/feio).
+ *
+ * Só se aplica ao PRIMEIRO elemento do set (texto base). Itens intermediários
+ * nunca são fragmentados por esse mecanismo — quebraria a coesão visual.
+ *
+ * Testes: src/tests/pagination/layout.test.ts
+ *   "[otimizado] fragmenta texto base no espaço residual >= 50%"
+ *   "[otimizado] não fragmenta quando espaço residual < 50%"
+ *   "[otimizado] não fragmenta quando fragmento inicial < 30% do total"
+ *   "[otimizado] não fragmenta quando coluna está vazia"
  * ════════════════════════════════════════════════════════════════════════
  */
 
@@ -677,6 +696,40 @@ export function distributeQuestionsOptimized(
   }
 
   /**
+   * Tenta fragmentar a questão `qIdx` para aproveitar espaço residual do slot.
+   * Ativa apenas quando:
+   *   - slot não está vazio (items.length > 0)
+   *   - slot.remaining >= 50% da capacidade da coluna
+   *   - questão não cabe inteira (h > slot.remaining)
+   *   - fragmento inicial >= 30% da altura total
+   * Retorna null se não for possível/válido fragmentar.
+   */
+  function tryFragmentResidual(
+    qIdx: number,
+    h: number,
+    slot: PageSlots["coluna1"],
+    colCap: number,
+    capNext: number
+  ): { firstItem: LayoutItem; firstHeight: number; restItems: LayoutItem[]; restHeights: number[] } | null {
+    if (slot.items.length === 0) return null;
+    if (slot.remaining < colCap * 0.50) return null;
+    if (h <= slot.remaining) return null; // cabe inteira — loop normal trata
+
+    const split = measureSplitInfo(measureItemsRef, qIdx);
+    if (!split) return null;
+    const frags = buildFragmentsForQuestion(qIdx, split, slot.remaining, capNext);
+    if (!frags || frags.items.length < 2) return null;
+    if (frags.heights[0] / h < 0.30) return null; // fragmento < 30% — feio
+
+    return {
+      firstItem: frags.items[0],
+      firstHeight: frags.heights[0],
+      restItems: frags.items.slice(1),
+      restHeights: frags.heights.slice(1),
+    };
+  }
+
+  /**
    * Encontra o melhor slot (First Fit) para uma questão/grupo.
    * Para grupos de set, precisa de espaço contíguo na mesma coluna.
    */
@@ -724,13 +777,45 @@ export function distributeQuestionsOptimized(
     // Quando o set muda de coluna/página, fecha o espaço restante da coluna
     // anterior pra que questões livres não entrem no meio do set.
     let setCol: "coluna1" | "coluna2" = "coluna1";
-    let setPageIdx = pages.length - 1;
 
-    for (const qIdx of group.indexes) {
+    // --- Aproveitamento de espaço residual antes de iniciar o set ---
+    // Tenta fragmentar o texto-base (indexes[0]) para preencher espaço
+    // residual >= 50% da coluna antes de iniciar o conjunto.
+    let startIdx = 0;
+    if (group.indexes.length > 0) {
+      const slot = pages[pages.length - 1][setCol];
+      const colCap = pages.length === 1 ? firstPageCapacity : otherPageCapacity;
+      const baseIdx = group.indexes[0];
+      const baseH = questionHeights[baseIdx] ?? 0;
+      const result = tryFragmentResidual(baseIdx, baseH, slot, colCap, otherPageCapacity);
+      if (result) {
+        // Coloca fragmento 0 na coluna atual e fecha o slot
+        slot.items.push(result.firstItem);
+        slot.remaining -= result.firstHeight;
+        slot.usedHeight += result.firstHeight;
+        slot.remaining = 0;
+        // Coloca fragmentos restantes nos slots seguintes
+        for (let k = 0; k < result.restItems.length; k++) {
+          if (columns === 2 && setCol === "coluna1") {
+            setCol = "coluna2";
+          } else {
+            pages.push(newPage(pages.length));
+            setCol = "coluna1";
+          }
+          const nextSlot = pages[pages.length - 1][setCol];
+          nextSlot.items.push(result.restItems[k]);
+          nextSlot.remaining -= result.restHeights[k];
+          nextSlot.usedHeight += result.restHeights[k];
+        }
+        startIdx = 1; // texto-base já tratado — pula no loop principal
+      }
+    }
+
+    for (let iIdx = startIdx; iIdx < group.indexes.length; iIdx++) {
+      const qIdx = group.indexes[iIdx];
       const h = questionHeights[qIdx] ?? 0;
 
       const lastPage = pages[pages.length - 1];
-      const lastPageIdx = pages.length - 1;
 
       // Tenta coluna atual da última página
       if (tryPlaceInSlot(lastPage[setCol], qIdx, h)) continue;

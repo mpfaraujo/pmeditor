@@ -548,6 +548,22 @@ POST https://mpfaraujo.com.br/guardafiguras/api/upload.php
 - [x] Turmas — IMPLEMENTADO (back + front completos)
 - [x] Provas salvas — IMPLEMENTADO (back + front completos)
 
+- [ ] Fragmentação de texto base de set_questions entre colunas/páginas
+  - 0% implementado — ideia: aproveitar espaço em branco após um conjunto longo fragmentando o texto base na coluna/página seguinte
+  - Caso de uso: provas de LP com textos base longos que deixam espaço em branco grande após o conjunto
+  - ⚠️ RISCOS ALTOS — não implementar sem planejamento cuidadoso:
+    1. Hoje grupos set_questions são atômicos para decisão de placement — fragmentar o texto base quebra essa invariante
+    2. A lógica de grupos em `distributeQuestionsOptimized` teria que distinguir "fragmentar texto base" de "fragmentar item" — dois caminhos de fragmentação diferentes
+    3. O texto base fragmentado precisa repetir o header ("Use o texto...") na continuação? Ou corta sem aviso?
+    4. Alto risco de reintroduzir o bug da página vazia (o bug mais caro do projeto)
+    5. Só vale implementar se professores de LP reportarem isso como problema real — é raro para outras disciplinas
+  - 💡 Abordagem sugerida quando for implementar:
+    - É um bin-packing de dois níveis: nível 1 = placement atual; nível 2 = pós-placement, verifica espaço restante após cada grupo
+    - Critério de ativação: espaço restante após o conjunto >= ~50% da capacidade da coluna (abaixo disso não vale)
+    - Critério de fragmentação mínima: o fragmento que caberia no espaço deve ter pelo menos ~30% do conteúdo total do item (evita 2 linhas numa coluna e o resto na outra)
+    - Comportamento atual deve ser preservado integralmente para todos os casos fora dessa janela
+    - Exige novos testes de regressão cobrindo o cenário com e sem o novo critério ANTES de implementar
+
 - [ ] Sistema de curtidas e flags (plano em `C:\Users\mpfar\.claude\plans\keen-leaping-lampson.md`)
   - 0% implementado — precisa de back (tabela + vote.php + list.php) e front (QuestionCard)
   - Coração: toggle (curtir/descurtir), pois acidente e comum
