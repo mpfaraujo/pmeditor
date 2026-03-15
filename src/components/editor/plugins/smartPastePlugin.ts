@@ -860,7 +860,7 @@ function parseLatexListEnv(src: string, beginIdx: number) {
   };
 }
 
-function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[] {
+export function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[] {
   const paragraph = ensureNode(schema, "paragraph");
   const orderedList = schema.nodes["ordered_list"];
   const bulletList = schema.nodes["bullet_list"];

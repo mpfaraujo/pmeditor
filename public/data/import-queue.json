@@ -1,185 +1,346 @@
 [
   {
-    "latex": "\\question Um comerciante, para aumentar as vendas de seu estabelecimento, fez a seguinte promoção para determinado produto:\r\n\r\nCOMPRE 4 UNIDADES E LEVE 5\r\n\r\nEssa promoção representa um desconto de \\(x\\)\\% na venda de 5 unidades.\r\n\r\nO valor de \\(x\\) é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 10\r\n\\choice 15\r\n\\correctchoice 20\r\n\\choice 25\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Porcentagem",
-      "tags": [
-        "desconto",
-        "compre e leve",
-        "porcentagem comercial",
-        "matemática financeira"
-      ],
-      "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "22"
-    }
-  },
-  {
-    "latex": "\\question Um fisioterapeuta elaborou o seguinte plano de treinos diários para o condicionamento de um maratonista que se recupera de uma contusão:\r\n\r\n\\begin{itemize}\r\n\\item primeiro dia — corrida de 6 km;\r\n\\item dias subsequentes — acréscimo de 2 km à corrida de cada dia imediatamente anterior.\r\n\\end{itemize}\r\n\r\nO último dia de treino será aquele em que o atleta correr 42 km.\r\n\r\nO total percorrido pelo atleta nesse treinamento, do primeiro ao último dia, em quilômetros, corresponde a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 414\r\n\\choice 438\r\n\\correctchoice 456\r\n\\choice 484\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Progressão Aritmética",
-      "tags": [
-        "soma de PA",
-        "termo geral",
-        "corrida",
-        "plano de treino"
-      ],
-      "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "23"
-    }
-  },
-  {
-    "latex": "\\question Para combater a subnutrição infantil, foi desenvolvida uma mistura alimentícia composta por três tipos de suplementos alimentares: I, II e III. Esses suplementos, por sua vez, contêm diferentes concentrações de três nutrientes: A, B e C. Observe as tabelas a seguir, que indicam a concentração de nutrientes nos suplementos e a porcentagem de suplementos na mistura, respectivamente.\r\n\r\n\\includegraphics{figura-24}\r\n\r\nA quantidade do nutriente C, em g/kg, encontrada na mistura alimentícia é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 0,235\r\n\\choice 0,265\r\n\\choice 0,275\r\n\\correctchoice 0,295\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
+    "isSet": true,
+    "baseLatex": "Encontre todas as soluções reais distintas de cada uma das equações abaixo. Explicite o número de soluções reais distintas.",
+    "items": [
+      {
+        "latex": "\\( x^2 - 5x = 6 \\)",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Equação do Segundo Grau",
+          "tags": [
+            "equação quadrática",
+            "fatoração",
+            "número de raízes"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "\\( x^2 - 5|x| = 6 \\)",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Equações Modulares",
+          "tags": [
+            "valor absoluto",
+            "equação com módulo"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "\\( |x^2 - 5x + 6| = 0 \\)",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Equações Modulares",
+          "tags": [
+            "módulo",
+            "equação",
+            "número de raízes"
+          ],
+          "gabarito": "vazio"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Médias",
-      "tags": [
-        "média ponderada",
-        "mistura",
-        "concentração",
-        "suplemento alimentar",
-        "porcentagem"
-      ],
       "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "24"
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2025,
+      "numero": "1",
+      "items": [
+        {
+          "assunto": "Equação do Segundo Grau",
+          "tags": [
+            "equação quadrática",
+            "fatoração",
+            "número de raízes"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Equações Modulares",
+          "tags": [
+            "valor absoluto",
+            "equação com módulo"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Equações Modulares",
+          "tags": [
+            "módulo",
+            "equação",
+            "número de raízes"
+          ],
+          "gabarito": "vazio"
+        }
+      ]
     }
   },
   {
-    "latex": "\\question Um cilindro circular reto possui diâmetro AB de 4 cm e altura AA' de 10 cm. O plano \\(\\alpha\\), perpendicular à seção meridiana ABB'A', que passa pelos pontos B e A' das bases, divide o cilindro em duas partes, conforme ilustra a imagem.\r\n\r\n\\includegraphics{figura-25}\r\n\r\nO volume da parte do cilindro compreendida entre o plano \\(\\alpha\\) e a base inferior, em cm³, é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice \\(8\\pi\\)\r\n\\choice \\(12\\pi\\)\r\n\\choice \\(16\\pi\\)\r\n\\correctchoice \\(20\\pi\\)\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
+    "isSet": true,
+    "baseLatex": "Seja \\( f : \\mathbb{R} \\to \\mathbb{R} \\) a função \\( f(x) = \\cos(2x) \\).",
+    "items": [
+      {
+        "latex": "Qual é o valor de \\( f\\!\\left(\\dfrac{1}{2}\\right) \\)?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Função Trigonométrica",
+          "tags": [
+            "cosseno",
+            "valor da função"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "Quantas e quais são as soluções distintas da equação \\( f(x) = \\dfrac{1}{2} \\) para \\( x \\) no intervalo \\( [0, 1) \\)?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Equações Trigonométricas",
+          "tags": [
+            "cosseno",
+            "soluções no intervalo",
+            "equação trigonométrica"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "Quantas soluções distintas tem a equação \\( f(f(x)) = \\dfrac{1}{2} \\) para \\( x \\) no intervalo \\( [0, 1) \\)?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Funções Trigonométricas",
+          "tags": [
+            "composição",
+            "cosseno",
+            "equação trigonométrica"
+          ],
+          "gabarito": "vazio"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
       "dificuldade": "Difícil",
       "disciplina": "Matemática",
-      "assunto": "Cilindros",
-      "tags": [
-        "cilindro",
-        "volume",
-        "plano de corte",
-        "seção meridiana",
-        "geometria espacial"
-      ],
       "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "25"
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2025,
+      "numero": "2",
+      "items": [
+        {
+          "assunto": "Função Trigonométrica",
+          "tags": [
+            "cosseno",
+            "valor da função"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Equações Trigonométricas",
+          "tags": [
+            "cosseno",
+            "soluções no intervalo",
+            "equação trigonométrica"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Funções Trigonométricas",
+          "tags": [
+            "composição",
+            "cosseno",
+            "equação trigonométrica"
+          ],
+          "gabarito": "vazio"
+        }
+      ]
     }
   },
   {
-    "latex": "\\question Uma calculadora tem duas teclas especiais, A e B. Quando a tecla A é digitada, o número que está no visor é substituído pelo logaritmo decimal desse número. Quando a tecla B é digitada, o número do visor é multiplicado por 5.\r\n\r\nConsidere que uma pessoa digitou as teclas BAB, nesta ordem, e obteve no visor o número 10.\r\n\r\nNesse caso, o visor da calculadora mostrava inicialmente o seguinte número:\r\n\r\n\\begin{oneparchoices}\r\n\\correctchoice 20\r\n\\choice 30\r\n\\choice 40\r\n\\choice 50\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
+    "isSet": true,
+    "baseLatex": "Foi traçado no plano um círculo de centro \\( O \\) e raio 1 e foram marcados sobre o círculo os seis pontos \\( P_1, P_2, P_3, P_4, P_5 \\) e \\( P_6 \\), igualmente espaçados. Em seguida, foram traçados círculos de raio 1 com centros \\( P_1, P_2, P_3, P_4, P_5 \\) e \\( P_6 \\). Foram traçados também os segmentos de reta \\( OP_1 \\), \\( P_1P_2 \\), \\( P_2P_3 \\), \\( P_3O \\).\r\n\r\n\\includegraphics{figura-q3}",
+    "items": [
+      {
+        "latex": "Qual é a distância entre os pontos \\( P_1 \\) e \\( P_3 \\)?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "circunferência",
+            "pontos equidistantes",
+            "distância entre pontos"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "Qual é a área do paralelogramo de vértices \\( O, P_1, P_2 \\) e \\( P_3 \\)?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "paralelogramo",
+            "área",
+            "círculos"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "Sejam \\( C_0 \\) e \\( C_2 \\) os círculos traçados de centros \\( O \\) e \\( P_2 \\), respectivamente. Qual é a área da interseção entre os discos de bordos \\( C_0 \\) e \\( C_2 \\), ou seja, da região interior aos dois círculos \\( C_0 \\) e \\( C_2 \\)?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Circunferência e Círculo",
+          "tags": [
+            "área de interseção",
+            "dois círculos",
+            "disco"
+          ],
+          "gabarito": "vazio"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2025,
+      "numero": "3",
+      "items": [
+        {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "circunferência",
+            "pontos equidistantes",
+            "distância entre pontos"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "paralelogramo",
+            "área",
+            "círculos"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Circunferência e Círculo",
+          "tags": [
+            "área de interseção",
+            "dois círculos",
+            "disco"
+          ],
+          "gabarito": "vazio"
+        }
+      ]
+    }
+  },
+  {
+    "isSet": true,
+    "baseLatex": "Em um jogo são usados dois tipos de dados. O dado cúbico é o dado comum, com 6 faces equiprováveis numeradas de 1 a 6. O dado dodecaédrico tem 12 faces equiprováveis numeradas de 1 a 12.",
+    "items": [
+      {
+        "latex": "O primeiro jogador lança um dado dodecaédrico. Qual é a probabilidade de que o resultado seja maior do que 9?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Probabilidade Simples",
+          "tags": [
+            "dado dodecaédrico",
+            "espaço amostral",
+            "probabilidade simples"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "O segundo jogador lança dois dados cúbicos e soma os pontos dos dois dados. Qual é a probabilidade de que o resultado seja maior do que 9?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Probabilidade Simples",
+          "tags": [
+            "dois dados",
+            "soma",
+            "espaço amostral"
+          ],
+          "gabarito": "vazio"
+        }
+      },
+      {
+        "latex": "O primeiro jogador lança um dado dodecaédrico, e o segundo jogador lança dois dados cúbicos e soma os pontos dos dois dados. Qual é a probabilidade de que o resultado obtido pelo segundo jogador seja menor do que o resultado obtido pelo primeiro jogador?",
+        "tipo": "Discursiva",
+        "gabarito": "VAZIO",
+        "meta": {
+          "assunto": "Probabilidade Condicional",
+          "tags": [
+            "dois dados",
+            "comparação de resultados",
+            "probabilidade composta"
+          ],
+          "gabarito": "vazio"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
       "dificuldade": "Média",
       "disciplina": "Matemática",
-      "assunto": "Função Logarítmica",
-      "tags": [
-        "logaritmo decimal",
-        "composição de funções",
-        "calculadora",
-        "operações sequenciais"
-      ],
       "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "26"
-    }
-  },
-  {
-    "latex": "\\question No esquema abaixo, estão representados um quadrado ABCD e um círculo de centro P e raio \\(r\\), tangente às retas AB e BC. O lado do quadrado mede \\(3r\\).\r\n\r\n\\includegraphics{figura-27}\r\n\r\nA medida \\(\\theta\\) do ângulo \\(C\\hat{A}P\\) pode ser determinada a partir da seguinte identidade trigonométrica:\r\n\r\n\\[\r\n\\text{tg}(\\alpha - \\beta) = \\frac{\\text{tg}(\\alpha) - \\text{tg}(\\beta)}{1 + \\text{tg}(\\alpha) \\times \\text{tg}(\\beta)}\r\n\\]\r\n\r\nO valor da tangente de \\(\\theta\\) é igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\choice 0,65\r\n\\correctchoice 0,60\r\n\\choice 0,55\r\n\\choice 0,50\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Soma de Arcos",
-      "tags": [
-        "tangente",
-        "subtração de arcos",
-        "quadrado",
-        "círculo tangente",
-        "geometria"
-      ],
-      "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "27"
-    }
-  },
-  {
-    "latex": "\\question Considere o gráfico a seguir, em que a área S é limitada pelos eixos coordenados, pela reta \\(r\\), que passa por \\(A(0, 4)\\) e \\(B(2, 0)\\), e pela reta perpendicular ao eixo \\(x\\) no ponto \\(P(x_0, 0)\\), sendo \\(0 \\leq x_0 \\leq 2\\).\r\n\r\n\\includegraphics{figura-28}\r\n\r\nPara que a área S seja a metade da área do triângulo de vértices \\(C(0, 0)\\), A e B, o valor de \\(x_0\\) deve ser igual a:\r\n\r\n\\begin{oneparchoices}\r\n\\correctchoice \\(2 - \\sqrt{2}\\)\r\n\\choice \\(3 - \\sqrt{2}\\)\r\n\\choice \\(4 - 2\\sqrt{2}\\)\r\n\\choice \\(5 - 2\\sqrt{2}\\)\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Difícil",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Analítica",
-      "tags": [
-        "área",
-        "triângulo",
-        "reta",
-        "mediatriz",
-        "raiz quadrada",
-        "área igual"
-      ],
-      "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "28"
-    }
-  },
-  {
-    "latex": "\\question Considere o conjunto de números naturais abaixo e os procedimentos subsequentes:\r\n\r\n\\[ A = \\{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 \\} \\]\r\n\r\n\\begin{enumerate}\r\n\\item Cada número primo de A foi multiplicado por 3. Sabe-se que um número natural P é primo se \\(P > 1\\) e tem apenas dois divisores naturais distintos.\r\n\\item A cada um dos demais elementos de A, foi somado o número 1.\r\n\\item Cada um dos números distintos obtidos foi escrito em apenas um pequeno cartão.\r\n\\item Dentre todos os cartões, foram sorteados exatamente dois cartões com números distintos ao acaso.\r\n\\end{enumerate}\r\n\r\nA probabilidade de em pelo menos um cartão sorteado estar escrito um número par é:\r\n\r\n\\begin{oneparchoices}\r\n\\choice \\(\\dfrac{5}{12}\\)\r\n\\correctchoice \\(\\dfrac{7}{12}\\)\r\n\\choice \\(\\dfrac{13}{24}\\)\r\n\\choice \\(\\dfrac{17}{24}\\)\r\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Simples",
-      "tags": [
-        "conjunto",
-        "números primos",
-        "contagem",
-        "ao menos um",
-        "par",
-        "sorteio"
-      ],
-      "fonte": "concurso",
-      "concurso": "UERJ",
-      "banca": "UERJ",
-      "ano": 2016,
-      "numero": "29"
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2025,
+      "numero": "4",
+      "items": [
+        {
+          "assunto": "Probabilidade Simples",
+          "tags": [
+            "dado dodecaédrico",
+            "espaço amostral",
+            "probabilidade simples"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Probabilidade Simples",
+          "tags": [
+            "dois dados",
+            "soma",
+            "espaço amostral"
+          ],
+          "gabarito": "vazio"
+        },
+        {
+          "assunto": "Probabilidade Condicional",
+          "tags": [
+            "dois dados",
+            "comparação de resultados",
+            "probabilidade composta"
+          ],
+          "gabarito": "vazio"
+        }
+      ]
     }
   }
 ]

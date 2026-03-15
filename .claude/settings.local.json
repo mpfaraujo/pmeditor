@@ -16,7 +16,9 @@
       "Read(//c/Projetos/pmeditor/**)",
       "Bash(done)",
       "Bash(pnpm add:*)",
-      "Bash(pnpm vitest:*)"
+      "Bash(pnpm vitest:*)",
+      "Bash(pdftotext c:/Projetos/pmeditor/scripts/provas/puc/2025/prova.pdf -)",
+      "Bash(pdftotext -f 17 c:/Projetos/pmeditor/scripts/provas/puc/2025/prova.pdf -)"
     ]
   }
 }

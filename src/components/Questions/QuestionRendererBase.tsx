@@ -175,13 +175,10 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     // Se não houver marcação, mantém o comportamento antigo (não quebra nada).
     const ak = setNode?.attrs?.answerKey ?? parentQuestionAttrs?.answerKey;
 
-    const isEssaySet =
-      setNode?.attrs?.mode === "essay" ||
-      setNode?.attrs?.mode == null
-        ? !items.some((it) =>
-            (it.content ?? []).some((n) => n?.type === "options")
-          )
-        : false;
+    // Essay set = nenhum item tem choices (independe do mode attr)
+    const isEssaySet = !items.some((it) =>
+      (it.content ?? []).some((n) => n?.type === "options")
+    );
 
     if (isEssaySet) {
       const showLabels = shouldShowEssayPartLabels(items.length);

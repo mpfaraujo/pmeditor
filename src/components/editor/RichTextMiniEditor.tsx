@@ -14,8 +14,10 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 import "katex/contrib/mhchem";
 
+import { Plugin } from "prosemirror-state";
 import { miniSchema } from "./miniSchema";
 import { placeholderPlugin } from "./placeholder-plugin";
+import { buildBlocksFromLatex } from "./plugins/smartPastePlugin";
 import { MathInsert } from "./MathInsert";
 import { ImageUpload } from "./ImageUpload";
 
@@ -134,6 +136,21 @@ export function RichTextMiniEditor({ value, onChange }: RichTextMiniEditorProps)
     const state = EditorState.create({
       doc,
       plugins: [
+        new Plugin({
+          props: {
+            handlePaste(view, event) {
+              const text = event.clipboardData?.getData("text/plain") ?? "";
+              const hasMath = /\\\(|\\\)|\\\[|\\\]|\$[^\$]/.test(text);
+              if (!hasMath) return false;
+              event.preventDefault();
+              const blocks = buildBlocksFromLatex(miniSchema, text);
+              const { tr, selection } = view.state;
+              tr.replaceWith(selection.from, selection.to, blocks);
+              view.dispatch(tr);
+              return true;
+            },
+          },
+        }),
         history(),
         placeholderPlugin({ paragraph: "Resposta-modelo..." }),
         keymap({

@@ -37,6 +37,20 @@ type ImportItem = {
   meta?: YamlMeta;
 };
 
+type ImportSetItem = {
+  isSet: true;
+  baseLatex: string;
+  items: Array<{
+    latex: string;
+    tipo: "Múltipla Escolha" | "Discursiva";
+    gabarito: string | null;
+    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito">;
+  }>;
+  sharedMeta?: YamlMeta;
+};
+
+type QueueEntry = ImportItem | ImportSetItem;
+
 /** Configuração aplicada a todas as questões do lote */
 type BatchConfig = {
   assunto: string;
@@ -141,6 +155,109 @@ function buildInitial(
     dificuldade,
     gabarito: gabarito ?? normalizeGabaritoForTipo(item.tipo as any),
     tags,
+    source,
+    author,
+  };
+
+  return { metadata, content };
+}
+
+/** Extrai o nó statement de um texto/LaTeX usando o parser existente */
+function parseToStatementNode(text: string) {
+  try {
+    const parsed = parseQuestionFromLatexText("\\question " + text);
+    if (parsed) {
+      const questionNode = buildQuestionNodeLatex(schema, parsed);
+      // firstChild de question é o statement
+      const stmt = questionNode.firstChild;
+      if (stmt && stmt.type === schema.nodes.statement) return stmt;
+    }
+  } catch {
+    // fallback
+  }
+  // Fallback: statement com um parágrafo de texto puro
+  return schema.nodes.statement.create(null, [
+    schema.nodes.paragraph.create(null, text.trim() ? [schema.text(text.trim())] : []),
+  ]);
+}
+
+function buildInitialSet(
+  item: ImportSetItem,
+  batch: BatchConfig,
+  author?: { id?: string; name?: string },
+): { metadata: any; content: any } {
+  const now = new Date().toISOString();
+  const m = item.sharedMeta;
+
+  const VALID_DIFICULDADES = ["Fácil", "Média", "Difícil"] as const;
+  const dificuldade = (
+    m?.dificuldade && VALID_DIFICULDADES.find(d => d.toLowerCase() === m.dificuldade!.toLowerCase())
+  ) || batch.dificuldade;
+
+  const source = m?.concurso || m?.banca || m?.ano || m?.fonte
+    ? {
+        kind: (m!.fonte === "original" ? "original" : "concurso") as "original" | "concurso",
+        concurso: m!.concurso || batch.source.concurso,
+        banca: m!.banca || batch.source.banca,
+        ano: m!.ano || batch.source.ano,
+        cargo: m!.cargo || batch.source.cargo,
+        numero: m!.numero || undefined,
+        prova: m!.prova || undefined,
+      }
+    : { ...batch.source };
+
+  const sharedTipo = m?.tipo ?? "Discursiva";
+
+  // Monta nó base_text com conteúdo real
+  const baseStmt = parseToStatementNode(item.baseLatex);
+  const baseTextNode = schema.nodes.base_text.create(null, baseStmt.content);
+
+  // Monta question_item nodes usando a API do ProseMirror (garante schema válido)
+  const questionItemNodes = item.items.map((it) => {
+    const answerKey = it.gabarito && it.tipo === "Múltipla Escolha"
+      ? { kind: "mcq", correct: it.gabarito }
+      : { kind: "essay" };
+
+    const stmtNode = parseToStatementNode(it.latex);
+    return schema.nodes.question_item.create({
+      answerKey,
+      assunto: it.meta?.assunto ?? null,
+      tags: it.meta?.tags ?? null,
+    }, [stmtNode]);
+  });
+
+  // Constrói o doc via API do ProseMirror para garantir validade do schema
+  // mode: null → discursiva com partes a/b/c (isEssaySet = true no renderer)
+  // mode: "set" → MCQ com texto-base (isEssaySet = false, mostra banner "use o texto...")
+  const hasChoices = item.items.some(it => it.tipo === "Múltipla Escolha");
+  const setNode = schema.nodes.set_questions.create({ mode: hasChoices ? "set" : null }, [baseTextNode, ...questionItemNodes]);
+  const doc = schema.nodes.doc.create(null, [setNode]);
+  const content = doc.toJSON();
+
+  // Assunto: usa sharedMeta.assunto ou o assunto do primeiro item
+  const assunto = m?.assunto || item.items[0]?.meta?.assunto || batch.assunto || undefined;
+
+  // Tags: mescla todas as tags dos itens (sem duplicatas), com fallback para sharedMeta ou batch
+  const allItemTags = item.items.flatMap(it => it.meta?.tags ?? []);
+  const mergedTags = m?.tags?.length
+    ? [...m.tags]
+    : allItemTags.length
+    ? [...new Set(allItemTags)]
+    : batch.tags.length
+    ? [...batch.tags]
+    : [];
+
+  const metadata = {
+    schemaVersion: 1,
+    id: newId(),
+    createdAt: now,
+    updatedAt: now,
+    tipo: sharedTipo,
+    disciplina: m?.disciplina || batch.assunto || "Matemática",
+    dificuldade,
+    assunto,
+    gabarito: null,
+    tags: mergedTags,
     source,
     author,
   };
@@ -328,7 +445,7 @@ function BatchConfigForm({
 
 export default function ImportarPage() {
   const { isAdmin, user } = useAuth();
-  const [queue, setQueue] = useState<ImportItem[]>([]);
+  const [queue, setQueue] = useState<QueueEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [batchConfig, setBatchConfig] = useState<BatchConfig | null>(null);
@@ -342,7 +459,7 @@ export default function ImportarPage() {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
       })
-      .then((data: ImportItem[]) => {
+      .then((data: QueueEntry[]) => {
         setQueue(data);
         setLoading(false);
       })
@@ -357,7 +474,10 @@ export default function ImportarPage() {
   const initial = useMemo(() => {
     if (!item || !batchConfig) return null;
     const author = user ? { id: user.googleId, name: user.nome } : undefined;
-    return buildInitial(item, batchConfig, author);
+    if ("isSet" in item && item.isSet) {
+      return buildInitialSet(item, batchConfig, author);
+    }
+    return buildInitial(item as ImportItem, batchConfig, author);
   }, [item, batchConfig, user]);
 
   if (!isAdmin) {
@@ -463,26 +583,38 @@ export default function ImportarPage() {
               Questão {currentIdx + 1} de {queue.length}
             </span>
 
-            <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">
-              {item!.tipo}
-            </span>
-
-            {item!.gabarito && (
-              <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">
-                Gab: {item!.gabarito}
-              </span>
-            )}
-
-            {(item!.meta?.assunto || batchConfig.assunto) && (
-              <span className="text-xs px-2 py-0.5 rounded bg-purple-100 text-purple-700">
-                {item!.meta?.assunto || batchConfig.assunto}
-              </span>
-            )}
-
-            {item!.meta?.numero && (
-              <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">
-                #{item!.meta.numero}
-              </span>
+            {"isSet" in item! && item!.isSet ? (
+              <>
+                <span className="text-xs px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">
+                  Conjunto ({(item as ImportSetItem).items.length} itens)
+                </span>
+                {(item as ImportSetItem).sharedMeta?.numero && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+                    #{(item as ImportSetItem).sharedMeta!.numero}
+                  </span>
+                )}
+              </>
+            ) : (
+              <>
+                <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">
+                  {(item as ImportItem).tipo}
+                </span>
+                {(item as ImportItem).gabarito && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">
+                    Gab: {(item as ImportItem).gabarito}
+                  </span>
+                )}
+                {((item as ImportItem).meta?.assunto || batchConfig.assunto) && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-purple-100 text-purple-700">
+                    {(item as ImportItem).meta?.assunto || batchConfig.assunto}
+                  </span>
+                )}
+                {(item as ImportItem).meta?.numero && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+                    #{(item as ImportItem).meta!.numero}
+                  </span>
+                )}
+              </>
             )}
           </div>
 
@@ -527,7 +659,10 @@ export default function ImportarPage() {
         {showLatex && (
           <div className="max-w-[210mm] mx-auto px-4 pb-3">
             <pre className="text-xs bg-gray-50 border rounded p-3 max-h-48 overflow-auto whitespace-pre-wrap">
-              {item!.latex}
+              {"isSet" in item! && item!.isSet
+                ? `[base]\n${(item as ImportSetItem).baseLatex}\n\n` +
+                  (item as ImportSetItem).items.map((it, i) => `[item ${i + 1}]\n${it.latex}`).join("\n\n")
+                : (item as ImportItem).latex}
             </pre>
           </div>
         )}

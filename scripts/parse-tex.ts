@@ -4,7 +4,11 @@
 //
 // Lê um .tex (pacote exam) e gera public/data/import-queue.json
 // com cada questão separada, tipo detectado, gabarito extraído,
-// e metadados YAML (se houver bloco \begin{verbatim}---...---\end{verbatim}).
+// e metadados YAML (se houver bloco ---...--- antes de cada \question).
+//
+// Suporte a set_questions: use \setquestion para o texto-base e
+// \questionitem para cada sub-item. O YAML pode ter campos por item:
+//   assunto1, tags1, gabarito1, assunto2, tags2, gabarito2, ...
 
 import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { resolve, dirname } from "path";
@@ -12,6 +16,7 @@ import { resolve, dirname } from "path";
 type YamlMeta = {
   tipo?: string;
   dificuldade?: string;
+  nivel?: string;
   disciplina?: string;
   assunto?: string;
   gabarito?: string;
@@ -23,6 +28,12 @@ type YamlMeta = {
   numero?: string;
   cargo?: string;
   prova?: string;
+  // Por item (set_questions)
+  items?: Array<{
+    assunto?: string;
+    tags?: string[];
+    gabarito?: string;
+  }>;
 };
 
 type ImportItem = {
@@ -32,9 +43,24 @@ type ImportItem = {
   meta?: YamlMeta;
 };
 
+type ImportSetItem = {
+  isSet: true;
+  baseLatex: string;
+  items: Array<{
+    latex: string;
+    tipo: "Múltipla Escolha" | "Discursiva";
+    gabarito: string | null;
+    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito">;
+  }>;
+  sharedMeta?: YamlMeta;
+};
+
+type QueueEntry = ImportItem | ImportSetItem;
+
 /** Parseia frontmatter YAML simples entre --- delimitadores */
 function parseYamlBlock(block: string): YamlMeta {
   const result: YamlMeta = {};
+  const itemsMap: Map<number, { assunto?: string; tags?: string[]; gabarito?: string }> = new Map();
 
   for (const line of block.split("\n")) {
     const stripped = line.replace(/#.*$/, "").trim();
@@ -46,11 +72,29 @@ function parseYamlBlock(block: string): YamlMeta {
     const key = stripped.slice(0, colonIdx).trim().toLowerCase();
     const val = stripped.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, "");
 
-    if (!val && key !== "tags") continue;
+    if (!val && key !== "tags" && !key.startsWith("tags")) continue;
+
+    // Campos por item: assunto1, tags1, gabarito1, assunto2, ...
+    const itemMatch = key.match(/^(assunto|tags|gabarito)(\d+)$/);
+    if (itemMatch) {
+      const field = itemMatch[1] as "assunto" | "tags" | "gabarito";
+      const idx = parseInt(itemMatch[2], 10) - 1; // 0-based
+      if (!itemsMap.has(idx)) itemsMap.set(idx, {});
+      const entry = itemsMap.get(idx)!;
+      if (field === "tags") {
+        let s = val;
+        if (s.startsWith("[") && s.endsWith("]")) s = s.slice(1, -1);
+        entry.tags = s.split(",").map(t => t.trim().replace(/^["']|["']$/g, "")).filter(Boolean);
+      } else {
+        entry[field] = val;
+      }
+      continue;
+    }
 
     switch (key) {
       case "tipo": result.tipo = val; break;
       case "dificuldade": result.dificuldade = val; break;
+      case "nivel": result.nivel = val; break;
       case "disciplina": result.disciplina = val; break;
       case "assunto": result.assunto = val; break;
       case "gabarito": result.gabarito = val; break;
@@ -74,13 +118,21 @@ function parseYamlBlock(block: string): YamlMeta {
     }
   }
 
+  // Converte itemsMap para array (preenche buracos com {})
+  if (itemsMap.size > 0) {
+    const maxIdx = Math.max(...itemsMap.keys());
+    result.items = [];
+    for (let i = 0; i <= maxIdx; i++) {
+      result.items.push(itemsMap.get(i) ?? {});
+    }
+  }
+
   return result;
 }
 
 /** Extrai o bloco YAML de dentro de \begin{verbatim}---...---\end{verbatim} OU direto ---...--- */
 function extractVerbatimYaml(text: string): { meta: YamlMeta | null; yamlText: string | null } {
   // Primeiro tenta pegar YAML direto (sem verbatim): ---...---
-  // Usa regex global para pegar TODOS os blocos e depois pega o último
   const directRe = /---\s*\n([\s\S]*?)\n\s*---/g;
   let lastDirectMatch: RegExpExecArray | null = null;
   let m: RegExpExecArray | null;
@@ -91,7 +143,7 @@ function extractVerbatimYaml(text: string): { meta: YamlMeta | null; yamlText: s
   if (lastDirectMatch) {
     return {
       meta: parseYamlBlock(lastDirectMatch[1]),
-      yamlText: lastDirectMatch[0].trim(), // Retorna o bloco completo com ---
+      yamlText: lastDirectMatch[0].trim(),
     };
   }
 
@@ -105,7 +157,75 @@ function extractVerbatimYaml(text: string): { meta: YamlMeta | null; yamlText: s
 
   return {
     meta: parseYamlBlock(lastMatch[1]),
-    yamlText: `---\n${lastMatch[1]}\n---`, // Extrai só o YAML, sem o verbatim
+    yamlText: `---\n${lastMatch[1]}\n---`,
+  };
+}
+
+/** Detecta o gabarito de um bloco de choices LaTeX */
+function extractGabaritoFromChoices(chunk: string): string | null {
+  const choicesMatch = chunk.match(
+    /\\begin\{(?:choices|oneparchoices)\}([\s\S]*?)\\end\{(?:choices|oneparchoices)\}/
+  );
+  if (!choicesMatch) return null;
+  const body = choicesMatch[1];
+  const re = /\\(CorrectChoice|correctchoice|choice)\b/g;
+  let idx = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(body))) {
+    if (m[1] === "CorrectChoice" || m[1] === "correctchoice") {
+      return String.fromCharCode("A".charCodeAt(0) + idx);
+    }
+    idx++;
+  }
+  return null;
+}
+
+/** Processa um bloco de \setquestion...\questionitem...\questionitem... */
+function parseSetBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
+  // Separa base text dos items
+  const itemSplitRe = /\\questionitem\b/g;
+  const splits: number[] = [];
+  let sm: RegExpExecArray | null;
+  while ((sm = itemSplitRe.exec(chunk))) {
+    splits.push(sm.index);
+  }
+
+  const baseLatex = chunk.slice(0, splits.length > 0 ? splits[0] : chunk.length).trim();
+
+  const itemChunks: string[] = [];
+  for (let i = 0; i < splits.length; i++) {
+    const start = splits[i] + "\\questionitem".length;
+    const end = i + 1 < splits.length ? splits[i + 1] : chunk.length;
+    itemChunks.push(chunk.slice(start, end).trim());
+  }
+
+  const sharedTipo = meta?.tipo?.toLowerCase();
+  const defaultTipo: "Múltipla Escolha" | "Discursiva" =
+    sharedTipo?.includes("múltipla") || sharedTipo?.includes("multipla")
+      ? "Múltipla Escolha"
+      : "Discursiva";
+
+  const items = itemChunks.map((itemChunk, idx) => {
+    const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(itemChunk);
+    const tipo: "Múltipla Escolha" | "Discursiva" = hasChoices ? "Múltipla Escolha" : defaultTipo;
+    const gabarito = hasChoices
+      ? extractGabaritoFromChoices(itemChunk)
+      : (meta?.items?.[idx]?.gabarito?.toUpperCase() ?? null);
+
+    const itemMeta = meta?.items?.[idx];
+    return {
+      latex: itemChunk,
+      tipo,
+      gabarito,
+      ...(itemMeta ? { meta: itemMeta } : {}),
+    };
+  });
+
+  return {
+    isSet: true,
+    baseLatex,
+    items,
+    ...(meta ? { sharedMeta: meta } : {}),
   };
 }
 
@@ -119,100 +239,77 @@ function main() {
   const filePath = resolve(args[0]);
   const src = readFileSync(filePath, "utf-8");
 
-  // Encontra todas as posições de \question no texto
-  const questionRe = /\\question\b/g;
-  const positions: number[] = [];
+  // Encontra todas as posições de \question e \setquestion no texto
+  const markerRe = /\\(setquestion|question)\b/g;
+  const markers: Array<{ index: number; isSet: boolean }> = [];
   let qm: RegExpExecArray | null;
-  while ((qm = questionRe.exec(src))) {
-    positions.push(qm.index);
+  while ((qm = markerRe.exec(src))) {
+    markers.push({ index: qm.index, isSet: qm[1] === "setquestion" });
   }
 
-  if (!positions.length) {
-    console.error("Nenhuma \\question encontrada no arquivo.");
+  if (!markers.length) {
+    console.error("Nenhuma \\question ou \\setquestion encontrada no arquivo.");
     process.exit(1);
   }
 
-  const queue: ImportItem[] = [];
+  const queue: QueueEntry[] = [];
 
-  for (let i = 0; i < positions.length; i++) {
-    const qStart = positions[i];
-    const qEnd = i + 1 < positions.length ? positions[i + 1] : src.length;
+  for (let i = 0; i < markers.length; i++) {
+    const { index: qStart, isSet } = markers[i];
+    const qEnd = i + 1 < markers.length ? markers[i + 1].index : src.length;
 
-    // Texto antes deste \question (entre o \question anterior e este)
-    const prevStart = i > 0 ? positions[i - 1] : 0;
+    // Texto antes deste marcador (entre o marcador anterior e este)
+    const prevStart = i > 0 ? markers[i - 1].index : 0;
     const textBefore = src.slice(prevStart, qStart);
 
-    // Extrai YAML do verbatim que aparece antes deste \question
+    // Extrai YAML do bloco que aparece antes deste marcador
     const { meta } = extractVerbatimYaml(textBefore);
 
-    // Texto da questão: do \question até o próximo \question (ou fim)
-    // Remove o \begin{verbatim}...---...\end{verbatim} que pertence à PRÓXIMA questão
-    let questionText = src.slice(qStart, qEnd);
-    // Remove verbatim/yaml que esteja no final (pertence à próxima questão)
-    questionText = questionText.replace(
+    // Texto do bloco: do marcador até o próximo
+    let blockText = src.slice(qStart, qEnd);
+    // Remove YAML/verbatim que esteja no final (pertence ao próximo bloco)
+    blockText = blockText.replace(
       /\\begin\{verbatim\}\s*\n?\s*---[\s\S]*?---\s*\n?\s*\\end\{verbatim\}\s*$/,
       ""
     );
-    // Remove YAML direto que esteja no final (pertence à próxima questão)
-    // IMPORTANTE: Sem flag 'm' para casar com fim da STRING, não fim de linha
-    questionText = questionText.replace(/\n\s*---\s*\n[\s\S]*?---\s*$/, "");
-    // Remove \section* que possa estar no final (pertence à próxima questão)
-    questionText = questionText.replace(/\\section\*?\{[^}]*\}\s*$/, "");
-    questionText = questionText.trim();
+    blockText = blockText.replace(/\n\s*---\s*\n[\s\S]*?---\s*$/, "");
+    blockText = blockText.replace(/\\section\*?\{[^}]*\}\s*$/, "");
+    blockText = blockText.trim();
 
-    // Remove \question e parâmetro opcional [pontos]
-    const chunk = questionText
-      .replace(/^\\question\s*(\[[^\]]*\])?\s*/, "")
-      .trim();
-    if (!chunk) continue;
-
-    const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(chunk);
-
-    let tipo: ImportItem["tipo"];
-    let gabarito: string | null = null;
-
-    if (hasChoices) {
-      tipo = "Múltipla Escolha";
-
-      // Gabarito do \correctchoice
-      const choicesMatch = chunk.match(
-        /\\begin\{(?:choices|oneparchoices)\}([\s\S]*?)\\end\{(?:choices|oneparchoices)\}/
-      );
-      if (choicesMatch) {
-        const body = choicesMatch[1];
-        const re = /\\(CorrectChoice|correctchoice|choice)\b/g;
-        let idx = 0;
-        let m: RegExpExecArray | null;
-        while ((m = re.exec(body))) {
-          if (m[1] === "CorrectChoice" || m[1] === "correctchoice") {
-            gabarito = String.fromCharCode("A".charCodeAt(0) + idx);
-            break;
-          }
-          idx++;
-        }
-      }
+    if (isSet) {
+      // Remove o marcador \setquestion
+      const chunk = blockText.replace(/^\\setquestion\b\s*(\[[^\]]*\])?\s*/, "").trim();
+      if (!chunk) continue;
+      queue.push(parseSetBlock(chunk, meta));
     } else {
-      tipo = "Discursiva";
+      // Questão individual — lógica original
+      const chunk = blockText.replace(/^\\question\b\s*(\[[^\]]*\])?\s*/, "").trim();
+      if (!chunk) continue;
+
+      const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(chunk);
+      let tipo: ImportItem["tipo"];
+      let gabarito: string | null = null;
+
+      if (hasChoices) {
+        tipo = "Múltipla Escolha";
+        gabarito = extractGabaritoFromChoices(chunk);
+      } else {
+        tipo = "Discursiva";
+      }
+
+      if (!gabarito && meta?.gabarito) {
+        gabarito = meta.gabarito.toUpperCase();
+      }
+
+      if (meta?.tipo) {
+        const t = meta.tipo.toLowerCase();
+        if (t.includes("múltipla") || t.includes("multipla")) tipo = "Múltipla Escolha";
+        else if (t.includes("discursiva")) tipo = "Discursiva";
+      }
+
+      const latex = "\\question " + chunk;
+      queue.push({ latex, tipo, gabarito, ...(meta ? { meta } : {}) });
     }
-
-    // Gabarito do YAML tem prioridade se não veio do \correctchoice
-    if (!gabarito && meta?.gabarito) {
-      gabarito = meta.gabarito.toUpperCase();
-    }
-
-    // Tipo do YAML pode sobrescrever
-    if (meta?.tipo) {
-      const t = meta.tipo.toLowerCase();
-      if (t.includes("múltipla") || t.includes("multipla")) tipo = "Múltipla Escolha";
-      else if (t.includes("discursiva")) tipo = "Discursiva";
-    }
-
-    // Monta o LaTeX: apenas \question + conteúdo (sem YAML)
-    // O YAML já foi extraído para item.meta, não precisa duplicar no latex
-    // IMPORTANTE: Não sanitizar aqui porque o LaTeX ainda será parseado em /admin/importar
-    const latex = "\\question " + chunk;
-
-    queue.push({ latex, tipo, gabarito, ...(meta ? { meta } : {}) });
   }
 
   // Salva em public/data/import-queue.json
@@ -220,15 +317,22 @@ function main() {
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, JSON.stringify(queue, null, 2), "utf-8");
 
-  console.log(`✓ ${queue.length} questões extraídas → public/data/import-queue.json`);
+  const total = queue.length;
+  const sets = queue.filter((q) => "isSet" in q).length;
+  const individual = total - sets;
+  console.log(`✓ ${total} entradas extraídas (${individual} individual, ${sets} set) → public/data/import-queue.json`);
 
   for (let i = 0; i < queue.length; i++) {
     const q = queue[i];
-    const assunto = q.meta?.assunto || "—";
-    const preview = q.latex.slice(0, 50).replace(/\n/g, " ");
-    console.log(
-      `  ${i + 1}. [${q.tipo}] gab=${q.gabarito ?? "—"} assunto=${assunto} | ${preview}...`
-    );
+    if ("isSet" in q && q.isSet) {
+      const base = q.baseLatex.slice(0, 50).replace(/\n/g, " ");
+      console.log(`  ${i + 1}. [SET ${q.items.length} itens] disciplina=${q.sharedMeta?.disciplina ?? "—"} | ${base}...`);
+    } else {
+      const item = q as ImportItem;
+      const assunto = item.meta?.assunto || "—";
+      const preview = item.latex.slice(0, 50).replace(/\n/g, " ");
+      console.log(`  ${i + 1}. [${item.tipo}] gab=${item.gabarito ?? "—"} assunto=${assunto} | ${preview}...`);
+    }
   }
 }
 
