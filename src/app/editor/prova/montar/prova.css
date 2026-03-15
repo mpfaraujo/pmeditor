@@ -857,6 +857,12 @@
   text-align: left;
 }
 
+/* Caixa de dados: acompanha a tipografia ampliada */
+.accessible-page .data-box {
+  font-size: 12.5pt;
+  line-height: 1.5;
+}
+
 /* Sem decoração de fundo/borda nas questões */
 .accessible-page .questao-header-svg,
 .accessible-page .question-decorator {
