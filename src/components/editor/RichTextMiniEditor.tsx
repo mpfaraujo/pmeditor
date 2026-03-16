@@ -33,7 +33,14 @@ import {
   ListOrdered,
   Undo2,
   Redo2,
+  Maximize2,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 /* ---------- MathInlineView (same as QuestionEditor) ---------- */
 
@@ -100,15 +107,19 @@ function TBtn({
 interface RichTextMiniEditorProps {
   value?: any;
   onChange: (doc: any) => void;
+  expandable?: boolean;   // mostra botão expandir (default true)
+  expandedMode?: boolean; // usa altura maior (default false)
 }
 
-export function RichTextMiniEditor({ value, onChange }: RichTextMiniEditorProps) {
+export function RichTextMiniEditor({ value, onChange, expandable = true, expandedMode = false }: RichTextMiniEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
 
   const [, forceUpdate] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalDoc, setModalDoc] = useState<any>(null);
   const [mathOpen, setMathOpen] = useState(false);
   const [mathLatex, setMathLatex] = useState("\\frac{a}{b}");
   const [mathEditPos, setMathEditPos] = useState<number | null>(null);
@@ -340,13 +351,54 @@ export function RichTextMiniEditor({ value, onChange }: RichTextMiniEditorProps)
             view.focus();
           }}
         />
+
+        {expandable && (
+          <>
+            <div className="w-px h-4 bg-gray-300 mx-1" />
+            <TBtn
+              icon={Maximize2}
+              title="Expandir editor"
+              onClick={() => {
+                setModalDoc(viewRef.current?.state.doc.toJSON() ?? null);
+                setModalOpen(true);
+              }}
+            />
+          </>
+        )}
       </div>
 
       {/* Editor area */}
       <div
         ref={editorRef}
-        className="overflow-y-auto text-xs [&_.ProseMirror]:!w-auto [&_.ProseMirror]:!max-w-none [&_.ProseMirror]:!min-h-[40px] [&_.ProseMirror]:!max-h-[70px] [&_.ProseMirror]:!p-[6px_1cm] [&_.ProseMirror]:!m-0 [&_.ProseMirror]:!shadow-none [&_.ProseMirror]:!text-xs [&_.ProseMirror]:!leading-snug [&_.ProseMirror]:!font-sans [&_.ProseMirror]:outline-none [&_.ProseMirror]:overflow-y-auto [&_.ProseMirror_p]:my-0 [&_.ProseMirror_p]:leading-snug [&_.math-inline]:bg-blue-50 [&_.math-inline]:px-0.5 [&_.math-inline]:rounded [&_.math-inline]:cursor-pointer [&_.ProseMirror_ul]:list-disc [&_.ProseMirror_ul]:pl-4 [&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:pl-4 [&_.ProseMirror_li]:my-0 [&_.ProseMirror_img]:max-w-full [&_.ProseMirror_img]:h-auto"
+        className={`overflow-y-auto text-xs [&_.ProseMirror]:!w-auto [&_.ProseMirror]:!max-w-none [&_.ProseMirror]:!p-[6px_1cm] [&_.ProseMirror]:!m-0 [&_.ProseMirror]:!shadow-none [&_.ProseMirror]:!text-xs [&_.ProseMirror]:!leading-snug [&_.ProseMirror]:!font-sans [&_.ProseMirror]:outline-none [&_.ProseMirror]:overflow-y-auto [&_.ProseMirror_p]:my-0 [&_.ProseMirror_p]:leading-snug [&_.math-inline]:bg-blue-50 [&_.math-inline]:px-0.5 [&_.math-inline]:rounded [&_.math-inline]:cursor-pointer [&_.ProseMirror_ul]:list-disc [&_.ProseMirror_ul]:pl-4 [&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:pl-4 [&_.ProseMirror_li]:my-0 [&_.ProseMirror_img]:max-w-full [&_.ProseMirror_img]:h-auto ${
+          expandedMode
+            ? "[&_.ProseMirror]:!min-h-[300px] [&_.ProseMirror]:!max-h-[calc(70vh-120px)]"
+            : "[&_.ProseMirror]:!min-h-[40px] [&_.ProseMirror]:!max-h-[70px]"
+        }`}
       />
+
+      <Dialog open={modalOpen} onOpenChange={(open) => {
+        if (!open) {
+          onChange(modalDoc ?? viewRef.current?.state.doc.toJSON());
+          setModalOpen(false);
+        }
+      }}>
+        <DialogContent className="max-w-3xl flex flex-col" style={{ height: "80vh" }}>
+          <DialogHeader>
+            <DialogTitle>Gabarito / Resposta-modelo</DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 overflow-hidden min-h-0">
+            {modalOpen && (
+              <RichTextMiniEditor
+                value={modalDoc}
+                onChange={setModalDoc}
+                expandable={false}
+                expandedMode={true}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <MathInsert
         open={mathOpen}

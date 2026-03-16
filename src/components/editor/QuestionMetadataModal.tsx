@@ -459,6 +459,16 @@ export function QuestionMetadataModal({
             </div>
           )}
 
+          {/* Resolução comentada — todos os tipos */}
+          <div className="col-span-2 space-y-2">
+            <label className="text-sm font-medium">Resolução</label>
+            <RichTextMiniEditor
+              value={value.resolucao}
+              onChange={(docJson) => set({ resolucao: docJson })}
+              expandable={true}
+            />
+          </div>
+
           <div className="col-span-2 text-xs text-muted-foreground">
             ID: {value.id}
           </div>

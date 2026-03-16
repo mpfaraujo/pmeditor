@@ -39,6 +39,7 @@ export interface QuestionMetadataV1 {
   tags?: string[];
 
   gabarito: AnswerKey;
+  resolucao?: any; // ProseMirror doc (miniSchema) — resolução comentada, opcional
 
   source?: {
     kind?: "original" | "concurso";

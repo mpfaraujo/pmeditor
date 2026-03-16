@@ -876,6 +876,20 @@
   padding-top: 14pt;
 }
 
+/* Partes a), b), c) de questões discursivas */
+.accessible-page .question-set-readonly > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.accessible-page .question-set-readonly > div > .font-semibold {
+  font-size: 12.5pt;
+  line-height: 1.5;
+  flex-shrink: 0;
+  min-width: 1.5em;
+}
+
 /* Sem colunas — forçar 1 coluna */
 .accessible-page .questoes-container {
   display: block;
