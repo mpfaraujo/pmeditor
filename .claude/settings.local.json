@@ -18,7 +18,12 @@
       "Bash(pnpm add:*)",
       "Bash(pnpm vitest:*)",
       "Bash(pdftotext c:/Projetos/pmeditor/scripts/provas/puc/2025/prova.pdf -)",
-      "Bash(pdftotext -f 17 c:/Projetos/pmeditor/scripts/provas/puc/2025/prova.pdf -)"
+      "Bash(pdftotext -f 17 c:/Projetos/pmeditor/scripts/provas/puc/2025/prova.pdf -)",
+      "Bash(pnpm tsx:*)",
+      "Bash(node -e \":*)",
+      "Bash(python -c \"import fitz; print\\(''pymupdf ok, version:'', fitz.__version__\\)\")",
+      "Bash(node -e \"const d = require\\(''''./src/data/disciplinas_areas.json''''\\); const q = d[''''Química''''][''''medio'''']; Object.keys\\(q\\).forEach\\(k => console.log\\(k\\)\\)\")",
+      "Bash(grep -n \"math_block\\\\|$$|displayMath\" c:/Projetos/pmeditor/src/components/Questions/QuestionRendererBase.tsx)"
     ]
   }
 }

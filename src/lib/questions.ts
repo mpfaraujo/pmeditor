@@ -3,6 +3,7 @@
 export type QuestionPayload = {
   metadata: any;
   content: any;
+  force?: boolean;
 };
 
 export type ProposePayload = {

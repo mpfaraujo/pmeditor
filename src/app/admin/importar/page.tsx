@@ -20,6 +20,7 @@ type YamlMeta = {
   disciplina?: string;
   assunto?: string;
   gabarito?: string;
+  resposta?: string;
   tags?: string[];
   fonte?: string;
   concurso?: string;
@@ -44,7 +45,7 @@ type ImportSetItem = {
     latex: string;
     tipo: "Múltipla Escolha" | "Discursiva";
     gabarito: string | null;
-    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito">;
+    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta">;
   }>;
   sharedMeta?: YamlMeta;
 };
@@ -68,6 +69,14 @@ type BatchConfig = {
 function newId() {
   if (crypto?.randomUUID) return crypto.randomUUID();
   return `q_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+}
+
+/** Cria um doc ProseMirror mínimo com um parágrafo de texto puro */
+function makeTextDoc(text: string) {
+  return {
+    type: "doc",
+    content: [{ type: "paragraph", content: [{ type: "text", text }] }],
+  };
 }
 
 function buildInitial(
@@ -115,15 +124,23 @@ function buildInitial(
   }
 
   const now = new Date().toISOString();
-  const rawKey = parsed ? extractLatexAnswerKey(parsed) : null;
-  const gabarito = rawKey
-    ? { kind: "mcq" as const, correct: rawKey.correct as "A" | "B" | "C" | "D" | "E" }
-    : item.gabarito
-      ? { kind: "mcq" as const, correct: item.gabarito as "A" | "B" | "C" | "D" | "E" }
-      : null;
 
   // YAML por questão sobrescreve batchConfig quando disponível
   const m = item.meta;
+
+  const rawKey = parsed ? extractLatexAnswerKey(parsed) : null;
+  let gabarito: any;
+  if (item.tipo === "Múltipla Escolha") {
+    const letter = rawKey?.correct ?? item.gabarito;
+    gabarito = letter
+      ? { kind: "mcq" as const, correct: letter as "A" | "B" | "C" | "D" | "E" }
+      : null;
+  } else {
+    // Discursiva: usa campo resposta: do YAML se disponível
+    gabarito = m?.resposta?.trim()
+      ? { kind: "essay" as const, rubric: makeTextDoc(m.resposta.trim()) }
+      : null;
+  }
 
   const VALID_DIFICULDADES = ["Fácil", "Média", "Difícil"] as const;
   const dificuldade = (
@@ -132,7 +149,7 @@ function buildInitial(
 
   const source = m?.concurso || m?.banca || m?.ano || m?.fonte
     ? {
-        kind: (m.fonte === "original" ? "original" : "concurso") as "original" | "concurso",
+        kind: (m.fonte === "concurso" ? "concurso" : "original") as "original" | "concurso",
         concurso: m.concurso || batch.source.concurso,
         banca: m.banca || batch.source.banca,
         ano: m.ano || batch.source.ano,
@@ -196,7 +213,7 @@ function buildInitialSet(
 
   const source = m?.concurso || m?.banca || m?.ano || m?.fonte
     ? {
-        kind: (m!.fonte === "original" ? "original" : "concurso") as "original" | "concurso",
+        kind: (m!.fonte === "concurso" ? "concurso" : "original") as "original" | "concurso",
         concurso: m!.concurso || batch.source.concurso,
         banca: m!.banca || batch.source.banca,
         ano: m!.ano || batch.source.ano,
@@ -216,7 +233,9 @@ function buildInitialSet(
   const questionItemNodes = item.items.map((it) => {
     const answerKey = it.gabarito && it.tipo === "Múltipla Escolha"
       ? { kind: "mcq", correct: it.gabarito }
-      : { kind: "essay" };
+      : it.meta?.resposta?.trim()
+        ? { kind: "essay", rubric: makeTextDoc(it.meta.resposta.trim()) }
+        : { kind: "essay" };
 
     const stmtNode = parseToStatementNode(it.latex);
     return schema.nodes.question_item.create({

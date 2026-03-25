@@ -19,22 +19,20 @@ type Props = {
 export function QuestionEditorModal({ open, onOpenChange, question, onSaved }: Props) {
   const [saving, setSaving] = useState(false);
 
-  if (!question) return null;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(60vw-2rem)] max-w-none h-[92vh] p-0 overflow-hidden">
         <DialogHeader className="px-6 pt-6">
-          <DialogTitle>Editar questão</DialogTitle>
+          <DialogTitle>{question ? "Editar questão" : "Nova questão"}</DialogTitle>
         </DialogHeader>
 
         <div className="h-full overflow-y-auto px-6 pb-6">
           <QuestionEditor
             modal
-            initial={{
+            initial={question ? {
               metadata: question.metadata,
               content: question.content,
-            }}
+            } : undefined}
             onSaved={async (info) => {
               if (saving) return;
               setSaving(true);

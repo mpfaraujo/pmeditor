@@ -287,6 +287,18 @@ const ASSUNTO_ALIASES: Record<string, string> = {
   "arcos": "Arcos e Medidas de Arcos",
   "radianos": "Arcos e Medidas de Arcos",
 
+  // ── Aliases de assuntos que não existem no JSON mas aparecem no banco ────
+  "cônicas": "Geometria Analítica",
+  "cónicas": "Geometria Analítica",
+  "secções cônicas": "Geometria Analítica",
+  "inequação racional": "Inequações Produto e Quociente",
+  "inequações racionais": "Inequações Produto e Quociente",
+  "números decimais": "Expressões e Frações Algébricas",
+  "números decimais e frações": "Expressões e Frações Algébricas",
+  "problemas com restrições": "Sistemas Lineares",
+  "teoria dos conjuntos": "Conjuntos",
+  "conjuntos e subconjuntos": "Conjuntos",
+
   // ── Lógica Matemática ─────────────────────────────────────────────────────
   "lógica": "Lógica Matemática",
   "lógica proposicional": "Proposições e Conectivos",
@@ -438,12 +450,26 @@ export function groupAssuntosByArea(
 ): { area: string; assuntos: string[] }[] {
   const specificMap = getAreasMapPorDisciplina(disciplina, nivel);
 
-  // Se disciplina não informada ou não encontrada: usa todos os mapas de todas as disciplinas
+  // Se disciplina não informada ou não encontrada: mescla todos os níveis por disciplina para
+  // evitar que áreas com o mesmo nome (ex: "Aritmética" em fundamental e médio) se cancelem
   const allMaps: AreasMap[] = specificMap
     ? [specificMap]
-    : Object.values(DISCIPLINAS_JSON).flatMap((nivelMap) =>
-        Object.values(nivelMap).filter((m): m is AreasMap => m != null)
-      );
+    : Object.values(DISCIPLINAS_JSON).map((nivelMap) => {
+        const merged: AreasMap = {};
+        for (const m of Object.values(nivelMap)) {
+          if (!m) continue;
+          for (const [area, { subareas }] of Object.entries(m as AreasMap)) {
+            if (merged[area]) {
+              const existing = new Set(merged[area].subareas);
+              for (const s of subareas) existing.add(s);
+              merged[area] = { subareas: [...existing] };
+            } else {
+              merged[area] = { subareas: [...subareas] };
+            }
+          }
+        }
+        return merged;
+      });
 
   const assuntoSet = new Set(assuntos);
   const used = new Set<string>();

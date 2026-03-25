@@ -61,7 +61,7 @@ function Layout0({
 }: ProvaHeaderProps) {
   const E = (f: string) => ed(f, !!isEditable, onFieldChange);
   return (
-    <div className="mb-[0.8cm]">
+    <div className="mb-4">
       <div className="grid grid-cols-[2.3cm_1fr_4cm] gap-[0.15cm] items-stretch">
         <div
           className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border-2 border-gray-800"}`}
@@ -772,7 +772,7 @@ function Layout10({
 }: ProvaHeaderProps) {
   const E = (f: string) => ed(f, !!isEditable, onFieldChange);
   return (
-    <div className="mb-[1cm] px-1 py-1 rounded-[5px] border-1 border-gray-800 w-[18cm]">
+    <div className="mb-4 px-1 py-1 rounded-[5px] border-1 border-gray-800 w-[18cm]">
       <div className="grid grid-cols-[2cm_1fr_4cm] gap-[0.15cm] mb-[0.00cm] items-stretch">
         <div
           className={`logo-area [grid-row:auto] flex items-center justify-center text-xs font-bold ${isEditable ? "cursor-pointer" : "cursor-default"} ${logoUrl ? "" : "border-2 border-gray-800"}`}

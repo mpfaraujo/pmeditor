@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 import { createQuestion, proposeQuestion, updateQuestion } from "@/lib/questions";
+import { DuplicateWarningDialog } from "./DuplicateWarningDialog";
 import { useAuth } from "@/contexts/AuthContext";
 import "../../app/prosemirror.css";
 
@@ -464,6 +465,12 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
 
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
+  const [duplicateDialog, setDuplicateDialog] = useState<{
+    open: boolean;
+    existingId: string;
+    similarity: number;
+    payload: any;
+  }>({ open: false, existingId: "", similarity: 0, payload: null });
 
   const [textLines, setTextLines] = useState(0);
   const [optionCount, setOptionCount] = useState(5);
@@ -657,6 +664,16 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
       if (!modal) window.alert("Salvo.");
     } catch (e: any) {
       if (e?.status === 409) {
+        // Duplicata detectada pelo backend
+        if (e?.body?.duplicate) {
+          setDuplicateDialog({
+            open: true,
+            existingId: e.body.existing_id,
+            similarity: e.body.similarity,
+            payload,
+          });
+          return;
+        }
         if (isAdmin) {
           // Admin sobrescreve a base diretamente, sem precisar descrever mudança
           try {
@@ -673,6 +690,20 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
         setChangeDescriptionModal({ open: true, payload });
         return;
       }
+      if (!modal) window.alert("Erro ao salvar.");
+    }
+  };
+
+  const confirmForceSave = async () => {
+    const payload = { ...duplicateDialog.payload, force: true };
+    setDuplicateDialog({ open: false, existingId: "", similarity: 0, payload: null });
+    try {
+      await createQuestion(payload);
+      setMeta(payload.metadata);
+      setChangeDescription("");
+      onSaved?.({ questionId: meta.id, kind: "base" });
+      if (!modal) window.alert("Salvo.");
+    } catch {
       if (!modal) window.alert("Erro ao salvar.");
     }
   };
@@ -1002,6 +1033,15 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <DuplicateWarningDialog
+          open={duplicateDialog.open}
+          existingId={duplicateDialog.existingId}
+          similarity={duplicateDialog.similarity}
+          newContent={duplicateDialog.payload?.content}
+          onConfirm={confirmForceSave}
+          onCancel={() => setDuplicateDialog({ open: false, existingId: "", similarity: 0, payload: null })}
+        />
     </div>
   );
 }

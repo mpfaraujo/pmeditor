@@ -9,7 +9,7 @@ import { useProva } from "@/contexts/ProvaContext";
 import { listQuestions, QuestionVersion } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, LayoutGrid, Rows3 } from "lucide-react";
+import { ArrowLeft, LayoutGrid, Rows3, Plus } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -199,6 +199,11 @@ export default function QuestoesPage() {
     setEditorOpen(true);
   };
 
+  const handleNovaQuestao = () => {
+    setEditing(null);
+    setEditorOpen(true);
+  };
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       const searchParams = new URLSearchParams(window.location.search);
@@ -291,7 +296,7 @@ export default function QuestoesPage() {
                     htmlFor="show-only-selected"
                     className="text-sm font-medium leading-none cursor-pointer"
                   >
-                    Mostrar apenas selecionadas ({selectedCount})
+                    Selecionadas ({selectedCount})
                   </label>
                 </div>
 
@@ -304,6 +309,10 @@ export default function QuestoesPage() {
                       Editar
                     </Button>
                   )}
+                  <Button size="sm" variant="secondary" onClick={handleNovaQuestao}>
+                    <Plus className="h-4 w-4 mr-1" />
+                    Nova questão
+                  </Button>
 
                   <Button
                     onClick={handleMontarProva}
@@ -460,29 +469,39 @@ export default function QuestoesPage() {
         open={editorOpen}
         onOpenChange={setEditorOpen}
         question={editing}
-        onSaved={(updated) => {
+        onSaved={(updated, info) => {
           const next = updated?.item ?? updated;
 
           if (!next?.metadata?.id) return;
+
+          // get.php não retorna variantsCount — preserva o atual e incrementa se foi variant
+          const prevVariantsCount = items.find(it => it.metadata.id === next.metadata.id)?.variantsCount ?? 0;
+          const newVariantsCount = info?.kind === "variant" ? prevVariantsCount + 1 : prevVariantsCount;
 
           const updatedItem: QuestionItem = {
             metadata: next.metadata,
             content: next.content,
             base: next.base,
-            variantsCount: next.variantsCount,
+            variantsCount: newVariantsCount,
             active: next.active,
           };
 
-          setItems((prev) =>
-            prev.map((it) =>
-              it.metadata.id === next.metadata.id ? { ...it, ...updatedItem } : it
-            )
-          );
+          const isNew = !items.find(it => it.metadata.id === next.metadata.id);
 
-          // Atualiza também a seleção, se a questão estiver selecionada
-          if (isSelected(next.metadata.id)) {
-            removeQuestion(next.metadata.id);
+          if (isNew) {
+            setItems((prev) => [updatedItem, ...prev]);
             addQuestion(updatedItem);
+          } else {
+            setItems((prev) =>
+              prev.map((it) =>
+                it.metadata.id === next.metadata.id ? { ...it, ...updatedItem } : it
+              )
+            );
+            // Atualiza também a seleção, se a questão estiver selecionada
+            if (isSelected(next.metadata.id)) {
+              removeQuestion(next.metadata.id);
+              addQuestion(updatedItem);
+            }
           }
         }}
       />

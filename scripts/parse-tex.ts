@@ -20,6 +20,7 @@ type YamlMeta = {
   disciplina?: string;
   assunto?: string;
   gabarito?: string;
+  resposta?: string;
   tags?: string[];
   fonte?: string;
   concurso?: string;
@@ -50,7 +51,7 @@ type ImportSetItem = {
     latex: string;
     tipo: "Múltipla Escolha" | "Discursiva";
     gabarito: string | null;
-    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito">;
+    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta">;
   }>;
   sharedMeta?: YamlMeta;
 };
@@ -60,7 +61,7 @@ type QueueEntry = ImportItem | ImportSetItem;
 /** Parseia frontmatter YAML simples entre --- delimitadores */
 function parseYamlBlock(block: string): YamlMeta {
   const result: YamlMeta = {};
-  const itemsMap: Map<number, { assunto?: string; tags?: string[]; gabarito?: string }> = new Map();
+  const itemsMap: Map<number, { assunto?: string; tags?: string[]; gabarito?: string; resposta?: string }> = new Map();
 
   for (const line of block.split("\n")) {
     const stripped = line.replace(/#.*$/, "").trim();
@@ -75,9 +76,9 @@ function parseYamlBlock(block: string): YamlMeta {
     if (!val && key !== "tags" && !key.startsWith("tags")) continue;
 
     // Campos por item: assunto1, tags1, gabarito1, assunto2, ...
-    const itemMatch = key.match(/^(assunto|tags|gabarito)(\d+)$/);
+    const itemMatch = key.match(/^(assunto|tags|gabarito|resposta)(\d+)$/);
     if (itemMatch) {
-      const field = itemMatch[1] as "assunto" | "tags" | "gabarito";
+      const field = itemMatch[1] as "assunto" | "tags" | "gabarito" | "resposta";
       const idx = parseInt(itemMatch[2], 10) - 1; // 0-based
       if (!itemsMap.has(idx)) itemsMap.set(idx, {});
       const entry = itemsMap.get(idx)!;
@@ -98,6 +99,7 @@ function parseYamlBlock(block: string): YamlMeta {
       case "disciplina": result.disciplina = val; break;
       case "assunto": result.assunto = val; break;
       case "gabarito": result.gabarito = val; break;
+      case "resposta": result.resposta = val; break;
       case "fonte": result.fonte = val; break;
       case "concurso": result.concurso = val; break;
       case "banca": result.banca = val; break;
@@ -178,6 +180,44 @@ function extractGabaritoFromChoices(chunk: string): string | null {
     idx++;
   }
   return null;
+}
+
+/** Processa um bloco de \question com \begin{parts}...\end{parts} */
+function parsePartsBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
+  const partsMatch = chunk.match(/^([\s\S]*?)\\begin\{parts\}([\s\S]*?)\\end\{parts\}([\s\S]*)$/);
+  if (!partsMatch) {
+    return { isSet: true, baseLatex: chunk, items: [], ...(meta ? { sharedMeta: meta } : {}) };
+  }
+
+  const beforeParts = partsMatch[1].trim();
+  const partsBody = partsMatch[2];
+  const afterParts = partsMatch[3].trim();
+  const baseLatex = afterParts ? `${beforeParts}\n\n${afterParts}` : beforeParts;
+
+  // Divide pelos \part
+  const partSplitRe = /\\part\b/g;
+  const splits: number[] = [];
+  let sm: RegExpExecArray | null;
+  while ((sm = partSplitRe.exec(partsBody))) splits.push(sm.index);
+
+  const itemChunks: string[] = [];
+  for (let i = 0; i < splits.length; i++) {
+    const start = splits[i] + "\\part".length;
+    const end = i + 1 < splits.length ? splits[i + 1] : partsBody.length;
+    itemChunks.push(partsBody.slice(start, end).trim());
+  }
+
+  const items = itemChunks.map((itemChunk, idx) => {
+    const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(itemChunk);
+    const tipo: "Múltipla Escolha" | "Discursiva" = hasChoices ? "Múltipla Escolha" : "Discursiva";
+    const gabarito = hasChoices
+      ? extractGabaritoFromChoices(itemChunk)
+      : (meta?.items?.[idx]?.gabarito?.toUpperCase() ?? null);
+    const itemMeta = meta?.items?.[idx];
+    return { latex: itemChunk, tipo, gabarito, ...(itemMeta ? { meta: itemMeta } : {}) };
+  });
+
+  return { isSet: true, baseLatex, items, ...(meta ? { sharedMeta: meta } : {}) };
 }
 
 /** Processa um bloco de \setquestion...\questionitem...\questionitem... */
@@ -285,6 +325,12 @@ function main() {
       // Questão individual — lógica original
       const chunk = blockText.replace(/^\\question\b\s*(\[[^\]]*\])?\s*/, "").trim();
       if (!chunk) continue;
+
+      // Detecta \begin{parts} → set_questions discursivo
+      if (/\\begin\{parts\}/.test(chunk)) {
+        queue.push(parsePartsBlock(chunk, meta));
+        continue;
+      }
 
       const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(chunk);
       let tipo: ImportItem["tipo"];
