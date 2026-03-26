@@ -30,6 +30,8 @@ import { createQuestion, proposeQuestion, updateQuestion } from "@/lib/questions
 import { DuplicateWarningDialog } from "./DuplicateWarningDialog";
 import { useAuth } from "@/contexts/AuthContext";
 import "../../app/prosemirror.css";
+import QuestionRendererProva from "@/components/Questions/QuestionRendererProva";
+import "@/app/editor/prova/montar/prova.css";
 
 import { ensureImageIds } from "./ensureImageIds";
 type QuestionEditorProps = {
@@ -463,6 +465,8 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initial?.metadata]);
 
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewColumns, setPreviewColumns] = useState<1 | 2>(1);
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
   const [duplicateDialog, setDuplicateDialog] = useState<{
@@ -656,15 +660,32 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
       content: doc.toJSON(),
     };
 
+    // Editando questão existente: vai direto ao caminho certo sem roundtrip create→409
+    if (initial) {
+      if (isAdmin) {
+        try {
+          await updateQuestion(payload);
+          setMeta(payload.metadata);
+          onSaved?.({ questionId: meta.id, kind: "base" });
+          if (!modal) window.alert("Salvo.");
+        } catch (e: any) {
+          window.alert("Erro ao salvar: " + (e?.message ?? "erro desconhecido"));
+        }
+      } else {
+        setChangeDescriptionModal({ open: true, payload });
+      }
+      return;
+    }
+
+    // Criando nova questão
     try {
       await createQuestion(payload);
       setMeta(payload.metadata);
-      setChangeDescription(""); // Limpar após salvar
+      setChangeDescription("");
       onSaved?.({ questionId: meta.id, kind: "base" });
       if (!modal) window.alert("Salvo.");
     } catch (e: any) {
       if (e?.status === 409) {
-        // Duplicata detectada pelo backend
         if (e?.body?.duplicate) {
           setDuplicateDialog({
             open: true,
@@ -674,23 +695,8 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           });
           return;
         }
-        if (isAdmin) {
-          // Admin sobrescreve a base diretamente, sem precisar descrever mudança
-          try {
-            await updateQuestion(payload);
-            setMeta(payload.metadata);
-            onSaved?.({ questionId: meta.id, kind: "base" });
-            if (!modal) window.alert("Salvo.");
-          } catch {
-            if (!modal) window.alert("Erro ao salvar.");
-          }
-          return;
-        }
-        // Base imutável - precisa criar variante
-        setChangeDescriptionModal({ open: true, payload });
-        return;
       }
-      if (!modal) window.alert("Erro ao salvar.");
+      window.alert("Erro ao salvar: " + (e?.message ?? "erro desconhecido"));
     }
   };
 
@@ -931,6 +937,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
           onSave={handleSave}
           onAction={handleToolbarAction}
+          onPreview={() => setPreviewOpen(true)}
           optionsCount={optionCount}
         />
 
@@ -1031,6 +1038,34 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
                 Salvar variante
               </Button>
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Modal de preview da renderização atual */}
+        <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+          <DialogContent className="w-[calc(21cm+4rem)] max-w-none max-h-[92vh] overflow-y-auto p-0">
+            <DialogHeader className="px-6 pt-5 pb-3 border-b border-slate-200 flex-row items-center justify-between">
+              <DialogTitle className="text-base">Preview</DialogTitle>
+              <div className="flex items-center gap-1 pr-8">
+                <button
+                  onClick={() => setPreviewColumns(1)}
+                  className={`px-2.5 py-1 text-xs rounded border transition-colors ${previewColumns === 1 ? "bg-slate-800 text-white border-slate-800" : "border-slate-300 text-slate-600 hover:border-slate-400"}`}
+                >1 coluna</button>
+                <button
+                  onClick={() => setPreviewColumns(2)}
+                  className={`px-2.5 py-1 text-xs rounded border transition-colors ${previewColumns === 2 ? "bg-slate-800 text-white border-slate-800" : "border-slate-300 text-slate-600 hover:border-slate-400"}`}
+                >2 colunas</button>
+              </div>
+            </DialogHeader>
+            <div className="flex justify-center py-6 px-4 bg-slate-100">
+              <div className="prova-page bg-white shadow-md" style={{ height: "auto", minHeight: "auto", overflow: "visible" }}>
+                <div style={{ maxWidth: previewColumns === 2 ? "8.5cm" : "18cm" }}>
+                  {previewOpen && view && (
+                    <QuestionRendererProva content={view.state.doc.toJSON()} />
+                  )}
+                </div>
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
 

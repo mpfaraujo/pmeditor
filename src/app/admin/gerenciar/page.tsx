@@ -15,6 +15,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import QuestionCard from "@/components/Questions/QuestionCard";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
+import QuestionRendererProva from "@/components/Questions/QuestionRendererProva";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -31,10 +32,12 @@ import {
   ChevronRight,
   ChevronsUp,
   Eye,
+  EyeOff,
   Loader2,
   Pencil,
   Trash2,
 } from "lucide-react";
+import "@/app/editor/prova/montar/prova.css";
 
 type QuestionItem = {
   id: string;
@@ -99,12 +102,32 @@ export default function AdminGerenciarPage() {
   const [filterDificuldades, setFilterDificuldades] = useState<string[]>([]);
   const [filterTags, setFilterTags] = useState("");
 
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set());
+  const [showHidden, setShowHidden] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<QuestionItem | null>(null);
+  const [previewQuestion, setPreviewQuestion] = useState<QuestionItem | null>(null);
+  const [previewColumns, setPreviewColumns] = useState<1 | 2>(1);
   const [promotingVariantId, setPromotingVariantId] = useState<string | null>(null);
   const [previewVariant, setPreviewVariant] = useState<{
     variant: QuestionVersion;
     base: QuestionVersion | null;
   } | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("pmeditor:gerenciar:hidden");
+    if (stored) {
+      try { setHiddenIds(new Set(JSON.parse(stored))); } catch {}
+    }
+  }, []);
+
+  function toggleHidden(id: string) {
+    setHiddenIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      localStorage.setItem("pmeditor:gerenciar:hidden", JSON.stringify([...next]));
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (authLoading || !isAdmin) return;
@@ -170,6 +193,7 @@ export default function AdminGerenciarPage() {
 
   const filtered = useMemo(() => {
     let result = questions;
+    if (!showHidden) result = result.filter((q) => !hiddenIds.has(q.id));
     if (filterTipo) result = result.filter((q) => norm(q.tipo) === norm(filterTipo));
     if (filterHasVariant) result = result.filter((q) => (q.variantsCount ?? 0) > 0);
     if (filterDisciplinas.length) {
@@ -198,7 +222,7 @@ export default function AdminGerenciarPage() {
       });
     }
     return result;
-  }, [questions, search, filterTipo, filterHasVariant, filterDisciplinas, filterBancas, filterAnos, filterDificuldades, filterTags]);
+  }, [questions, search, filterTipo, filterHasVariant, filterDisciplinas, filterBancas, filterAnos, filterDificuldades, filterTags, hiddenIds, showHidden]);
 
   async function toggleVariants(questionId: string) {
     if (expandedIds.has(questionId)) {
@@ -284,6 +308,8 @@ export default function AdminGerenciarPage() {
               tipo: updated.metadata?.tipo ?? q.tipo,
               dificuldade: updated.metadata?.dificuldade ?? q.dificuldade,
               tags: updated.metadata?.tags ?? q.tags,
+              variantsCount: updated.variantsCount ?? q.variantsCount,
+              active: updated.active ?? q.active,
             }
           : q
       )
@@ -453,6 +479,31 @@ export default function AdminGerenciarPage() {
               </button>
             </div>
 
+            {/* Ocultas */}
+            {hiddenIds.size > 0 && (
+              <div className="space-y-0.5">
+                <button
+                  onClick={() => setShowHidden((v) => !v)}
+                  className={`w-full text-left text-sm px-2 py-1.5 rounded transition-colors flex items-center gap-2 ${
+                    showHidden ? "bg-slate-200 text-slate-800 font-medium" : "hover:bg-slate-100 text-slate-500"
+                  }`}
+                >
+                  <EyeOff className={`w-3 h-3 flex-shrink-0 ${showHidden ? "text-slate-700" : "text-slate-400"}`} />
+                  {showHidden ? "Ocultar revisadas" : `Mostrar ocultas (${hiddenIds.size})`}
+                </button>
+                <button
+                  onClick={() => {
+                    setHiddenIds(new Set());
+                    localStorage.removeItem("pmeditor:gerenciar:hidden");
+                    setShowHidden(false);
+                  }}
+                  className="w-full text-left text-xs px-2 py-1 rounded text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  Desocultar todas
+                </button>
+              </div>
+            )}
+
             {/* Tipo */}
             {availableTipos.length > 0 && (
               <FilterSection label="Tipo">
@@ -599,6 +650,25 @@ export default function AdminGerenciarPage() {
                         {item.variantsCount ?? 0} versão(ões)
                       </button>
                       <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className={`h-7 text-xs gap-1 ${hiddenIds.has(item.id) ? "text-slate-400 line-through" : "text-slate-500"}`}
+                          onClick={() => toggleHidden(item.id)}
+                          title={hiddenIds.has(item.id) ? "Mostrar novamente" : "Ocultar (revisada)"}
+                        >
+                          <EyeOff className="h-3 w-3" />
+                          {hiddenIds.has(item.id) ? "Oculta" : "Ocultar"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 text-xs gap-1 text-slate-500"
+                          onClick={() => setPreviewQuestion(item)}
+                        >
+                          <Eye className="h-3 w-3" />
+                          Visualizar
+                        </Button>
                         <Button
                           size="sm"
                           variant="outline"
@@ -772,6 +842,51 @@ export default function AdminGerenciarPage() {
           )}
         </main>
       </div>
+
+      {/* Modal de preview A4 */}
+      <Dialog open={previewQuestion !== null} onOpenChange={(open) => { if (!open) setPreviewQuestion(null); }}>
+        <DialogContent className="w-[calc(21cm+4rem)] max-w-none max-h-[92vh] overflow-y-auto p-0">
+          <DialogHeader className="px-6 pt-5 pb-3 border-b border-slate-200 flex-row items-center justify-between">
+            <DialogTitle className="text-base">
+              {previewQuestion?.disciplina} — {previewQuestion?.assunto}
+            </DialogTitle>
+            <div className="flex items-center gap-1 pr-8">
+              <button
+                onClick={() => setPreviewColumns(1)}
+                className={`px-2.5 py-1 text-xs rounded border transition-colors ${
+                  previewColumns === 1
+                    ? "bg-slate-800 text-white border-slate-800"
+                    : "border-slate-300 text-slate-600 hover:border-slate-400"
+                }`}
+              >
+                1 coluna
+              </button>
+              <button
+                onClick={() => setPreviewColumns(2)}
+                className={`px-2.5 py-1 text-xs rounded border transition-colors ${
+                  previewColumns === 2
+                    ? "bg-slate-800 text-white border-slate-800"
+                    : "border-slate-300 text-slate-600 hover:border-slate-400"
+                }`}
+              >
+                2 colunas
+              </button>
+            </div>
+          </DialogHeader>
+          <div className="flex justify-center py-6 px-4 bg-slate-100">
+            <div
+              className="prova-page bg-white shadow-md"
+              style={{ height: "auto", minHeight: "auto", overflow: "visible" }}
+            >
+              <div style={{ maxWidth: previewColumns === 2 ? "8.5cm" : "18cm" }}>
+                {previewQuestion && (
+                  <QuestionRendererProva content={previewQuestion.content} />
+                )}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal de edição */}
       <QuestionEditorModal

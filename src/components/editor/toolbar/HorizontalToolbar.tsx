@@ -7,6 +7,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -123,6 +126,28 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
                 <DropdownMenuItem onClick={() => onAction("insert-databox")}>
                   <Icons.BoxSelect className="h-4 w-4 mr-2" /> Dados
                 </DropdownMenuItem>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Icons.List className="h-4 w-4 mr-2" /> Listas
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem onClick={() => onAction("insert-bullet-list")}>
+                      <Icons.List className="h-4 w-4 mr-2" /> Lista  •
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onAction("insert-ordered-list")}>
+                      <Icons.ListOrdered className="h-4 w-4 mr-2" /> Lista ordenada  1, 2, 3…
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onAction("insert-roman-list")}>
+                      <Icons.ListOrdered className="h-4 w-4 mr-2" /> Romana  I, II, III…
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onAction("insert-alpha-list")}>
+                      <Icons.ListOrdered className="h-4 w-4 mr-2" /> Alfabética  a, b, c…
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onAction("insert-assertive-list")}>
+                      <Icons.SquareCheck className="h-4 w-4 mr-2" /> VF  ( )
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -179,6 +204,9 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
             </Button>
             <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("toggle-numbered")} title="Numerar linhas">
               <Icons.Hash className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("preview")} title="Visualizar renderização">
+              <Icons.Eye className="h-4 w-4" />
             </Button>
           </div>
 

@@ -1,0 +1,45 @@
+/* Tabela Periódica — CSS próprio do componente */
+
+@page tabela-periodica {
+  size: A4 portrait;
+  margin: 0;
+}
+
+/* Ambos os modos são folhas A4 portrait — sem mistura de orientações */
+.a4landscape,
+.meiafolha {
+  width: 21cm;
+  height: 29.7cm;
+  background: white;
+  display: block;
+  overflow: hidden;
+  page-break-before: always;
+  break-before: page;
+}
+
+/* SVG da meia-folha ocupa apenas a metade superior da página */
+.meiafolha > svg {
+  height: 14.85cm;
+}
+
+@media screen {
+  .a4landscape,
+  .meiafolha {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    margin: 1cm auto;
+  }
+}
+
+@media print {
+  .a4landscape,
+  .meiafolha {
+    page: tabela-periodica;
+  }
+
+  /* Impressão em P&B: células brancas para poupar tinta */
+  .a4landscape rect,
+  .meiafolha rect {
+    fill: white;
+    stroke: #888;
+  }
+}

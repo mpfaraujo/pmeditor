@@ -23,7 +23,28 @@
       "Bash(node -e \":*)",
       "Bash(python -c \"import fitz; print\\(''pymupdf ok, version:'', fitz.__version__\\)\")",
       "Bash(node -e \"const d = require\\(''''./src/data/disciplinas_areas.json''''\\); const q = d[''''Química''''][''''medio'''']; Object.keys\\(q\\).forEach\\(k => console.log\\(k\\)\\)\")",
-      "Bash(grep -n \"math_block\\\\|$$|displayMath\" c:/Projetos/pmeditor/src/components/Questions/QuestionRendererBase.tsx)"
+      "Bash(grep -n \"math_block\\\\|$$|displayMath\" c:/Projetos/pmeditor/src/components/Questions/QuestionRendererBase.tsx)",
+      "Bash(node scripts/check-lista20.js)",
+      "Bash(grep -n \"numero: 4$\\\\|numero: 82-E$\" scripts/listas/diversas/lista20.tex)",
+      "Bash(find c:/Projetos/pmeditor/scripts/provas -name *.pdf)",
+      "Bash(find c:/Projetos/pmeditor/scripts/provas -name *simulado* -o -name *apostila*)",
+      "Bash(python3 -c \":*)",
+      "Bash(node scripts/fix-assuntos.js)",
+      "Bash(node scripts/merge-variants.js)",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\(''''scripts'''', {}\\), indent=2\\)\\)\")",
+      "Bash(ls c:/Projetos/pmeditor/.env*)",
+      "Bash(ls c:/Projetos/pmeditor/*.env)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X POST \"https://mpfaraujo.com.br/guardafiguras/api/questoes/update.php\" -H \"X-Questions-Token: kKxj4aTzv8mQ3pYwN7cR2uL9hS6eD1fG0nV5bJ8pZ3xQ6wE9rT2yU7iO4aP1sD8\" -H \"Content-Type: application/json\" -d '{\"\"metadata\"\":{\"\"id\"\":\"\"test\"\"},\"\"content\"\":{}}')",
+      "Bash(where winscp:*)",
+      "Bash(where ftp:*)",
+      "Bash(where sftp:*)",
+      "Bash(where winscp.com)",
+      "Read(//c/Program Files/WinSCP/**)",
+      "Read(//c/Program Files \\(x86\\)/WinSCP/**)",
+      "Bash(where curl:*)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash(node scripts/fix-hifenizacao.js)"
     ]
   }
 }

@@ -29,6 +29,7 @@ import { AccessibleLayout } from "@/components/prova/layouts/AccessibleLayout";
 import { QuestionData, ColumnLayout } from "@/types/layout";
 import Gabarito from "@/components/prova/Gabarito";
 import GabaritoDiscursivoPages from "@/components/prova/GabaritoDiscursivoPages";
+import TabelaPeriodica, { type TabelaSize } from "@/components/prova/TabelaPeriodica";
 import {
   gerarTiposDeProva,
   aplicarPermutacaoGabarito,
@@ -235,6 +236,20 @@ export default function MontarProvaPage() {
 
   // Questões com opções em linha (oneparchoices)
   const [inlineOptionsSet, setInlineOptionsSet] = useState<Set<string>>(new Set());
+
+  // Tabela Periódica
+  const [showTabelaPeriodica, setShowTabelaPeriodica] = useState(false);
+  const [tabelaPeriodicaSize, setTabelaPeriodicaSize] = useState<TabelaSize>("a4-landscape");
+
+  // Detecta se há questões de Química entre as selecionadas
+  const isQuimica = useMemo(() => {
+    const norm = (s: string) =>
+      s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    return orderedList.some((q: any) => {
+      const d = q?.metadata?.disciplina ?? "";
+      return norm(d) === "quimica";
+    });
+  }, [orderedList]);
 
   const handleToggleInlineOptions = (id: string) => {
     setInlineOptionsSet(prev => {
@@ -698,6 +713,30 @@ const { pages, refs } = usePagination({
 
           <div className="flex flex-wrap gap-2">
 
+            {isQuimica && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 border border-emerald-200 rounded-md">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowTabelaPeriodica((v) => !v)}
+                  className={`h-6 text-xs px-2 ${showTabelaPeriodica ? "bg-emerald-200" : ""}`}
+                >
+                  {showTabelaPeriodica ? <CheckSquare className="h-3 w-3 mr-1" /> : <Square className="h-3 w-3 mr-1" />}
+                  Tab. Periódica
+                </Button>
+                {showTabelaPeriodica && (
+                  <select
+                    value={tabelaPeriodicaSize}
+                    onChange={(e) => setTabelaPeriodicaSize(e.target.value as TabelaSize)}
+                    className="px-1.5 py-0.5 border rounded text-xs"
+                  >
+                    <option value="a4-landscape">A4 paisagem</option>
+                    <option value="meia-folha">Meia folha</option>
+                  </select>
+                )}
+              </div>
+            )}
+
             <Button
               variant="outline"
               onClick={() => updateProvaConfig({ showGabarito: !provaConfig.showGabarito })}
@@ -805,6 +844,12 @@ const { pages, refs } = usePagination({
           onSpacerChange={handleSpacerChange}
           onSpacerCommit={handleSpacerCommit}
         />
+
+        {showTabelaPeriodica && (
+          <div className={tabelaPeriodicaSize === "a4-landscape" ? "a4-sheet bg-gray-100 print:bg-white py-4 print:py-0" : "a4-sheet bg-gray-100 print:bg-white py-4 print:py-0 flex justify-center"}>
+            <TabelaPeriodica size={tabelaPeriodicaSize} />
+          </div>
+        )}
 
         {provaConfig.showGabarito && totalQuestoes > 0 && (
           <>

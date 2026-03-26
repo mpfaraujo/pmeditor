@@ -36,13 +36,15 @@ export function QuestionEditorModal({ open, onOpenChange, question, onSaved }: P
             onSaved={async (info) => {
               if (saving) return;
               setSaving(true);
-
               try {
                 const updated = await getQuestion(info.questionId);
                 onSaved(updated, info);
-                onOpenChange(false);
+              } catch {
+                // mesmo se getQuestion falhar, atualiza com o que o editor tem
+                onSaved({}, info);
               } finally {
                 setSaving(false);
+                onOpenChange(false);
               }
             }}
           />

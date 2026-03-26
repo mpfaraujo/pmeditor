@@ -10,6 +10,7 @@ import { ImageUpload } from "./ImageUpload";
 import { SymbolPicker } from "./toolbar/SymbolPicker";
 import { HorizontalToolbar } from "./toolbar/HorizontalToolbar";
 import { createQuestion, getQuestion } from "@/lib/questions";
+import { wrapInList } from "prosemirror-schema-list";
 
 interface EditorToolbarProps {
   view: EditorView | null;
@@ -25,6 +26,7 @@ interface EditorToolbarProps {
 
   // ações extras (tipo/largura/opções) tratadas fora da toolbar
   onAction?: (action: string) => void;
+  onPreview?: () => void;
 
   // contagem real de opções (2..5); se não vier, deriva do container atual
   optionsCount?: number;
@@ -55,6 +57,7 @@ export function EditorToolbar({
   loadId,
   onLoadedMetadata,
   onAction,
+  onPreview,
   optionsCount: optionsCountProp,
 }: EditorToolbarProps) {
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
@@ -485,6 +488,29 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
         break;
       case "toggle-numbered":
         handleToggleNumbered();
+        break;
+      case "preview":
+        onPreview?.();
+        break;
+      case "insert-bullet-list":
+        wrapInList(schema.nodes.bullet_list)(view.state, view.dispatch);
+        view.focus();
+        break;
+      case "insert-ordered-list":
+        wrapInList(schema.nodes.ordered_list)(view.state, view.dispatch);
+        view.focus();
+        break;
+      case "insert-roman-list":
+        wrapInList(schema.nodes.roman_list)(view.state, view.dispatch);
+        view.focus();
+        break;
+      case "insert-alpha-list":
+        wrapInList(schema.nodes.alpha_list)(view.state, view.dispatch);
+        view.focus();
+        break;
+      case "insert-assertive-list":
+        wrapInList(schema.nodes.assertive_list)(view.state, view.dispatch);
+        view.focus();
         break;
     }
   };

@@ -239,7 +239,7 @@ export default function QuestionCard({
   const headerLabel = isSet ? "Conjunto" : "Questão";
 
   return (
-    <div className="border rounded-lg p-4 bg-white space-y-3">
+    <div className="border rounded-lg p-4 bg-white space-y-3 text-black">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">

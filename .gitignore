@@ -52,7 +52,7 @@ teste.yaml
 /php/
 
 # provas (PDFs e .tex gerados — não versionar)
-/scripts/provas/
+/scripts/
 
 # fila de importação gerada pelo parse-tex
 /public/data/import-queue.json
