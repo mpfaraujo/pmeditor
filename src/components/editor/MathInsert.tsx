@@ -55,7 +55,7 @@ export function MathInsert({
   initialLatex,
   title = "Fórmula",
 }: MathInsertProps) {
-  const [latex, setLatex] = useState<string>(initialLatex ?? "\\frac{a}{b}");
+  const [latex, setLatex] = useState<string>(initialLatex ?? "");
   const [err, setErr] = useState<string>("");
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -66,7 +66,7 @@ export function MathInsert({
       return;
     }
     setErr("");
-    setLatex((initialLatex ?? "\\frac{a}{b}").toString());
+    setLatex((initialLatex ?? "").toString());
   }, [open, initialLatex]);
 
   const previewHtml = useMemo(() => {

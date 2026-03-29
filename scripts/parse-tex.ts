@@ -34,6 +34,7 @@ type YamlMeta = {
     assunto?: string;
     tags?: string[];
     gabarito?: string;
+    resposta?: string;
   }>;
 };
 
@@ -132,6 +133,25 @@ function parseYamlBlock(block: string): YamlMeta {
   return result;
 }
 
+/**
+ * Extrai YAML do INÍCIO de um bloco (logo após \question, \setquestion ou \questionitem).
+ * Suporta formato direto (---...---) e verbatim.
+ * Retorna o YAML e o latex restante sem o bloco YAML.
+ */
+function extractLeadingYaml(text: string): { meta: YamlMeta | null; latex: string } {
+  const directM = text.match(/^---\s*\n([\s\S]*?)\n\s*---\s*\n?([\s\S]*)$/);
+  if (directM) {
+    return { meta: parseYamlBlock(directM[1]), latex: directM[2].trim() };
+  }
+  const verbatimM = text.match(
+    /^\\begin\{verbatim\}\s*\n?\s*---\s*\n([\s\S]*?)\n\s*---\s*\n?\s*\\end\{verbatim\}\s*\n?([\s\S]*)$/
+  );
+  if (verbatimM) {
+    return { meta: parseYamlBlock(verbatimM[1]), latex: verbatimM[2].trim() };
+  }
+  return { meta: null, latex: text };
+}
+
 /** Extrai o bloco YAML de dentro de \begin{verbatim}---...---\end{verbatim} OU direto ---...--- */
 function extractVerbatimYaml(text: string): { meta: YamlMeta | null; yamlText: string | null } {
   // Primeiro tenta pegar YAML direto (sem verbatim): ---...---
@@ -221,22 +241,27 @@ function parsePartsBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
 }
 
 /** Processa um bloco de \setquestion...\questionitem...\questionitem... */
-function parseSetBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
+function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSetItem {
+  // Suporte a YAML inline logo após \setquestion (formato: \setquestion\n---\nyaml\n---\nbase...)
+  const { meta: inlineMeta, latex: chunkClean } = extractLeadingYaml(chunk);
+  const meta = inlineMeta ?? metaFromBefore;
+  const effectiveChunk = inlineMeta ? chunkClean : chunk;
+
   // Separa base text dos items
   const itemSplitRe = /\\questionitem\b/g;
   const splits: number[] = [];
   let sm: RegExpExecArray | null;
-  while ((sm = itemSplitRe.exec(chunk))) {
+  while ((sm = itemSplitRe.exec(effectiveChunk))) {
     splits.push(sm.index);
   }
 
-  const baseLatex = chunk.slice(0, splits.length > 0 ? splits[0] : chunk.length).trim();
+  const baseLatex = effectiveChunk.slice(0, splits.length > 0 ? splits[0] : effectiveChunk.length).trim();
 
   const itemChunks: string[] = [];
   for (let i = 0; i < splits.length; i++) {
     const start = splits[i] + "\\questionitem".length;
-    const end = i + 1 < splits.length ? splits[i + 1] : chunk.length;
-    itemChunks.push(chunk.slice(start, end).trim());
+    const end = i + 1 < splits.length ? splits[i + 1] : effectiveChunk.length;
+    itemChunks.push(effectiveChunk.slice(start, end).trim());
   }
 
   const sharedTipo = meta?.tipo?.toLowerCase();
@@ -246,15 +271,28 @@ function parseSetBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
       : "Discursiva";
 
   const items = itemChunks.map((itemChunk, idx) => {
-    const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(itemChunk);
+    // Extrai YAML inline de cada \questionitem
+    const { meta: itemYaml, latex: itemLatex } = extractLeadingYaml(itemChunk);
+
+    // Merge: YAML per-item (inline) tem prioridade; fallback para campos numerados no YAML compartilhado
+    const sharedItemMeta = meta?.items?.[idx];
+    const assunto = itemYaml?.assunto ?? sharedItemMeta?.assunto;
+    const tags = itemYaml?.tags ?? sharedItemMeta?.tags;
+    const gabaritoFromYaml = itemYaml?.gabarito ?? sharedItemMeta?.gabarito;
+    const resposta = itemYaml?.resposta ?? sharedItemMeta?.resposta;
+
+    const hasChoices = /\\begin\{(choices|oneparchoices)\}/.test(itemLatex);
     const tipo: "Múltipla Escolha" | "Discursiva" = hasChoices ? "Múltipla Escolha" : defaultTipo;
     const gabarito = hasChoices
-      ? extractGabaritoFromChoices(itemChunk)
-      : (meta?.items?.[idx]?.gabarito?.toUpperCase() ?? null);
+      ? extractGabaritoFromChoices(itemLatex)
+      : (gabaritoFromYaml?.toUpperCase() ?? null);
 
-    const itemMeta = meta?.items?.[idx];
+    const itemMeta = assunto || tags?.length || resposta
+      ? { assunto, tags, gabarito: gabarito ?? undefined, resposta }
+      : undefined;
+
     return {
-      latex: itemChunk,
+      latex: itemLatex,
       tipo,
       gabarito,
       ...(itemMeta ? { meta: itemMeta } : {}),
@@ -322,13 +360,18 @@ function main() {
       if (!chunk) continue;
       queue.push(parseSetBlock(chunk, meta));
     } else {
-      // Questão individual — lógica original
-      const chunk = blockText.replace(/^\\question\b\s*(\[[^\]]*\])?\s*/, "").trim();
+      // Questão individual
+      let chunk = blockText.replace(/^\\question\b\s*(\[[^\]]*\])?\s*/, "").trim();
       if (!chunk) continue;
+
+      // Suporte a YAML inline (logo após \question): prioridade sobre textBefore
+      const { meta: inlineMeta, latex: cleanChunk } = extractLeadingYaml(chunk);
+      const effectiveMeta = inlineMeta ?? meta;
+      if (inlineMeta) chunk = cleanChunk;
 
       // Detecta \begin{parts} → set_questions discursivo
       if (/\\begin\{parts\}/.test(chunk)) {
-        queue.push(parsePartsBlock(chunk, meta));
+        queue.push(parsePartsBlock(chunk, effectiveMeta));
         continue;
       }
 
@@ -343,18 +386,19 @@ function main() {
         tipo = "Discursiva";
       }
 
-      if (!gabarito && meta?.gabarito) {
-        gabarito = meta.gabarito.toUpperCase();
+      if (!gabarito && effectiveMeta?.gabarito) {
+        gabarito = effectiveMeta.gabarito.toUpperCase();
       }
 
-      if (meta?.tipo) {
-        const t = meta.tipo.toLowerCase();
+      if (effectiveMeta?.tipo) {
+        const t = effectiveMeta.tipo.toLowerCase();
         if (t.includes("múltipla") || t.includes("multipla")) tipo = "Múltipla Escolha";
         else if (t.includes("discursiva")) tipo = "Discursiva";
+        else if (t.includes("certo") || t.includes("errado")) tipo = "Discursiva"; // C/E → discursiva
       }
 
       const latex = "\\question " + chunk;
-      queue.push({ latex, tipo, gabarito, ...(meta ? { meta } : {}) });
+      queue.push({ latex, tipo, gabarito, ...(effectiveMeta ? { meta: effectiveMeta } : {}) });
     }
   }
 

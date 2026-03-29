@@ -1,1607 +1,273 @@
 [
   {
-    "isSet": true,
-    "baseLatex": "):\r\n%   Q1-Q3         → texto completo: quilombos e resistência à escravidão (SILVA, 2003)\r\n%   Q4-Q6         → texto PARCIAL: \"TV a Serviço da Tecnologia e do Racismo\" (Joice Beth, 2017) — completar no PDF\r\n%   Q82-E + Q83-E → texto PARCIAL: \"UNA LECCIÓN DE VIDA\" — completar no PDF\r\n%   Q88-E + Q89-E → texto completo: \"QUEMAR LAS NAVES\"",
-    "items": []
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Matemática\nassunto: Expressões Algébricas\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"1\"\n}\n[[IMG_PENDENTE: figura-q1]]\n\n\\begin{choices}\n\\choice $1$\n\\CorrectChoice $\\dfrac{11}{6}$\n\\choice $\\dfrac{6}{11}$\n\\choice $\\dfrac{10}{3}$\n\\choice $\\sqrt{\\dfrac{11}{6}}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Matemática\nassunto: Porcentagem\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"2\"\n}\nEm uma liquidação, uma mercadoria teve um desconto de 5\\%. Em seguida, devido à Copa do Mundo, teve um novo desconto de 3\\% (em regime composto). Esses dois descontos correspondem a um único desconto.\n\nDe quanto é esse único desconto?\n\n\\begin{choices}\n\\CorrectChoice $7{,}85\\%$\n\\choice $8\\%$\n\\choice $10\\%$\n\\choice $15\\%$\n\\choice $15{,}5\\%$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Matemática\nassunto: Análise Combinatória\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"3\"\n}\nRoberval vai escolher, para levar em uma viagem, 3 calças e 7 camisas. Ele possui 5 calças e 10 camisas.\n\nQuantas escolhas distintas podem ser feitas?\n\n\\begin{choices}\n\\choice $21$\n\\choice $120$\n\\choice $370$\n\\choice $500$\n\\CorrectChoice $1200$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Inequações\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"4\"\n}\n[[IMG_PENDENTE: figura-q4]]\n\n\\begin{choices}\n\\choice $1$\n\\choice $2$\n\\choice $3$\n\\CorrectChoice $4$\n\\choice $5$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Matemática\nassunto: Trigonometria\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"5\"\n}\nSabemos que $x \\in \\left(0, \\dfrac{\\pi}{2}\\right)$ e que $\\tg(x) = \\dfrac{5}{12}$.\n\nQuanto vale $\\sen(x)$?\n\n\\begin{choices}\n\\CorrectChoice $\\dfrac{5}{13}$\n\\choice $\\dfrac{1}{12}$\n\\choice $\\dfrac{5}{14}$\n\\choice $1$\n\\choice $3$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Matemática\nassunto: Geometria Analítica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"6\"\n}\nO retângulo $ABCD$, com $A = (0, 0)$, $B$ sobre o semieixo $x$ positivo, $D$ sobre o semieixo $y$ positivo, conforme figura abaixo, tem área $36$, e a medida do lado $AD$ é igual a $4$.\n\n[[IMG_PENDENTE: figura-q6]]\n\nQual é a equação da reta $BD$?\n\n\\begin{choices}\n\\choice $x + y = 8$\n\\CorrectChoice $4x + 9y = 36$\n\\choice $5x + 3y = 10$\n\\choice $9x + 4y = 36$\n\\choice $x + y = 36$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Potenciação e Radiciação\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"7\"\n}\n[[IMG_PENDENTE: figura-q7]]\n\n\\begin{choices}\n\\choice $\\sqrt{2} - 1$\n\\choice $\\sqrt[3]{3}$\n\\choice $\\sqrt[3]{5}$\n\\CorrectChoice $\\sqrt[3]{6}$\n\\choice $\\sqrt[4]{10}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Funções\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"8\"\n}\nSejam $f, g\\colon \\mathbb{R} \\to \\mathbb{R}$ funções dadas por $f(x) = 4 - x^2$ e $g(x) = x + b$ (onde $b$ é uma constante real). Existe um único número real $x$ tal que $f(x) = g(x)$.\n\nQuanto vale $b$?\n\n\\begin{choices}\n\\choice $12$\n\\choice $\\dfrac{13}{2}$\n\\choice $\\dfrac{15}{2}$\n\\CorrectChoice $\\dfrac{17}{4}$\n\\choice $18$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Progressão Aritmética\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"9\"\n}\nEm uma alameda, plantamos 10 roseiras em linha reta. A roseira $R_1$ está no início da alameda. Sabe-se que a distância entre $R_1$ e $R_2$ é de 1 metro, a distância entre $R_2$ e $R_3$ é de 2 metros. Em geral, a distância entre $R_k$ e $R_{k+1}$ é de $k$ metros.\n\nQuanto vale, em metros, a distância entre a primeira roseira $R_1$ e a última roseira $R_{10}$?\n\n\\begin{choices}\n\\choice $25$\n\\choice $35$\n\\choice $40$\n\\CorrectChoice $45$\n\\choice $55$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Matemática\nassunto: Geometria Plana\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"10\"\n}\nConsidere um triângulo equilátero $ABC$ de lado $1$. Traçamos um arco de círculo de centro $A$ ligando $B$ a $C$, como na figura.\n\n[[IMG_PENDENTE: figura-q10]]\n\nQuanto vale a área da região assinalada, que fica fora do triângulo e dentro do círculo?\n\n\\begin{choices}\n\\choice $\\dfrac{\\pi}{6}$\n\\choice $\\dfrac{\\pi - 1}{6}$\n\\CorrectChoice $\\dfrac{2\\pi - 3\\sqrt{3}}{12}$\n\\choice $\\dfrac{\\pi - 1}{7}$\n\\choice $\\dfrac{\\sqrt{\\pi}}{6}$\n\\end{choices}\n\n%% BIOLOGIA",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Biologia\nassunto: Botânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"11\"\n}\nA \\textit{Artocarpus heterophyllus} Lam, conhecida como jaqueira, é uma espécie exótica invasora. O governo brasileiro tem incentivado a erradicação dos indivíduos dessa espécie dos ecossistemas, e uma das formas de manejo para a sua erradicação é a retirada do anel cortical (anel de Malpighi), como na foto abaixo, registrada na Floresta da Tijuca.\n\n[[IMG_PENDENTE: figura-q11]]\n\nEssa forma de manejo é eficiente, pois\n\n\\begin{choices}\n\\choice a água e os sais minerais não poderão atingir as folhas.\n\\choice a água e os sais minerais não poderão atingir as raízes.\n\\choice a planta que for anelada não realizará fotossíntese.\n\\choice os fotoassimilados não poderão atingir as folhas.\n\\CorrectChoice os fotoassimilados não poderão atingir as raízes.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Biologia\nassunto: Botânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"12\"\n}\nUm pesquisador solicitou que dois alunos coletassem algumas plantas monocotiledôneas nos canteiros da PUC-Rio. Para cumprimento da tarefa, as características que deverão ser observadas na identificação das monocotiledôneas são:\n\n\\begin{choices}\n\\choice plantas com flores trímeras; raiz fasciculada; bainha desenvolvida; nervuras reticuladas\n\\choice plantas com flores pentâmeras; raiz axial; bainha desenvolvida; nervuras reticuladas\n\\CorrectChoice plantas com flores trímeras; raiz fasciculada; bainha desenvolvida; nervuras paralelas\n\\choice plantas com flores pentâmeras; raiz axial; bainha reduzida; nervuras paralelas\n\\choice flores trímeras; raiz axial; bainha desenvolvida; nervuras reticuladas\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Biologia\nassunto: Ecologia\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"13\"\n}\nUm dos grandes problemas das regiões urbanas é a poluição gerada pelo som e pela liberação de energia na forma de luz e calor. Esses tipos de poluição são particularmente graves para os seres humanos e alguns outros animais. De acordo com os estudos científicos, considere as afirmações a seguir.\n\n\\begin{romanitems}\n\\item Em humanos, esses tipos de poluição podem afetar a saúde mental, causando irritação, nervosismo e fadiga.\n\\item Em alguns animais, esses tipos de poluição podem alterar a orientação espacial e o comportamento de acasalamento.\n\\item Em alguns animais ectotérmicos, o aumento de temperatura pode influenciar na determinação do sexo, tendo efeito no sucesso reprodutivo dessas populações.\n\\end{romanitems}\n\nEstá correto o que se afirma em\n\n\\begin{choices}\n\\choice I, apenas\n\\choice III, apenas\n\\choice I e II, apenas\n\\choice II e III, apenas\n\\CorrectChoice I, II e III\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Biologia\nassunto: Fisiologia Humana\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"14\"\n}\nAlém do sistema circulatório, o corpo humano apresenta outro sistema de transporte de fluidos: o sistema linfático. Sobre esse sistema, é INCORRETO afirmar que\n\n\\begin{choices}\n\\CorrectChoice o sistema linfático está envolvido no transporte de oxigênio.\n\\choice a composição da linfa se assemelha à do plasma sanguíneo.\n\\choice uma das funções do sistema linfático é a defesa do organismo.\n\\choice órgãos como linfonodos, baço e timo fazem parte do sistema linfático.\n\\choice os linfonodos concentram um tipo de leucócito denominado linfócito.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Biologia\nassunto: Genética\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"15\"\n}\nSabendo-se que os cachorros (\\textit{Canis lupus familiaris}) apresentam 78 cromossomos, identifica-se que\n\n\\begin{choices}\n\\choice a espécie é poliploide.\n\\choice os gametas da espécie têm 78 cromossomos.\n\\CorrectChoice os gametas da espécie têm 39 cromossomos.\n\\choice os machos da espécie têm 39 pares de cromossomos autossômicos.\n\\choice as fêmeas da espécie têm um par de cromossomos sexuais XY.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Biologia\nassunto: Imunologia\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"16\"\n}\nO último surto de sarampo do Brasil foi registrado em 2014, quando 211 pessoas foram infectadas no Ceará. Desde então, o país só ouviu falar da doença em 2016, quando a OMS (Organização Mundial da Saúde) certificou o Brasil por eliminar a circulação do vírus. Em 2018, no entanto, os surtos voltaram. O conselho de antigamente se mantém: é melhor vacinar. A primeira suspeita de sarampo foi registrada em janeiro, em pacientes venezuelanos que chegaram ao Brasil fugindo da pobreza e da crise no país vizinho. Em pouco tempo, o Ministério da Saúde registrava surtos em Roraima e no Amazonas, onde a vacinação estava muito abaixo dos 95\\% recomendados. Nos dois estados, quem mais sofreu foram as crianças de seis meses a quatro anos, com registro de casos fatais. Segundo o médico Juarez Cunha, diretor da SBIm (Sociedade Brasileira de Imunizações), todos os casos recentes no Brasil ocorreram a partir do contato de uma pessoa não imunizada adequadamente com um indivíduo infectado em outro país.\n\n\\credits{Adaptado de: UOL Notícias, 18 jul. 2018.}\n\nSobre a vacinação contra o sarampo, foram feitas as afirmações a seguir:\n\n\\begin{romanitems}\n\\item A vacinação ajuda na diminuição da circulação do vírus entre a população.\n\\item A vacinação ativa a produção de anticorpos de memória que protegerão o indivíduo em futuros contatos com o vírus.\n\\item A vacinação está relacionada ao desenvolvimento de algumas síndromes, como o autismo.\n\\end{romanitems}\n\nEstá correto o que se afirma em\n\n\\begin{choices}\n\\choice III, apenas\n\\CorrectChoice I e II, apenas\n\\choice I e III, apenas\n\\choice II e III, apenas\n\\choice I, II e III\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Biologia\nassunto: Botânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"17\"\n}\nA madeira é um recurso natural renovável, amplamente utilizado, por exemplo, na construção civil, movelaria e indústria de celulose.\n\nO tipo específico de tecido da planta que nos fornece a madeira é o(a)\n\n\\begin{choices}\n\\CorrectChoice xilema secundário\n\\choice esclerênquima\n\\choice floema\n\\choice periderme\n\\choice epiderme\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Biologia\nassunto: Evolução\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"18\"\n}\nA resistência aos antibióticos está alcançando níveis perigosamente altos em todas as partes do mundo. Novos mecanismos de resistência estão surgindo e se espalhando globalmente, ameaçando nossa capacidade de tratar doenças infecciosas comuns. Uma lista crescente de infecções — como pneumonia, tuberculose, envenenamento do sangue, gonorreia e doenças transmitidas por alimentos — está se tornando mais difícil, e algumas vezes impossível, de tratar, à medida que os antibióticos se tornam menos eficazes. Quando os antibióticos podem ser comprados para uso humano ou animal sem receita médica, o surgimento e a disseminação da resistência pioram. Da mesma forma, em países sem diretrizes de tratamento padrão, os antibióticos são muitas vezes prescritos em demasia pelos profissionais de saúde e veterinários e usados excessivamente pelo público. Sem uma ação urgente, estamos caminhando para uma era pós-antibiótico, na qual infecções comuns e ferimentos leves podem mais uma vez matar.\n\n\\credits{Adaptado de: Organização Mundial de Saúde. Disponível em: www.who.int. Acesso em: 15 ago. 2018.}\n\nO aumento da ocorrência de bactérias resistentes a antibióticos está relacionado a qual força evolutiva?\n\n\\begin{choices}\n\\choice Deriva genética\n\\choice Mutação\n\\choice Recombinação\n\\CorrectChoice Seleção natural\n\\choice Migração\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Biologia\nassunto: Zoologia\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"19\"\n}\nOs equinodermos constituem o filo mais próximo evolutivamente dos cordados, por compartilharem a seguinte característica:\n\n\\begin{choices}\n\\choice pés ambulacrários.\n\\choice simetria radial.\n\\CorrectChoice deuterostomia.\n\\choice mesoderme.\n\\choice fecundação externa.\n\\end{choices}\n\n%% FÍSICA",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Física\nassunto: Cinemática\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"20\"\n}\nUma moça faz um programa de treinamento físico com duração de $40{,}0$ min em uma esteira, de forma a intercalar caminhada e corrida em ciclos de $5{,}00$ min: durante os primeiros $2{,}00$ min, ela caminha a uma velocidade de $6{,}00$ km/h e, então, corre a uma velocidade de $9{,}00$ km/h nos seguintes $3{,}00$ min.\n\nAo fim do tempo de treinamento, qual é a leitura de distância total percorrida, em km, que a esteira indica?\n\n\\begin{choices}\n\\choice $5{,}0$\n\\CorrectChoice $5{,}2$\n\\choice $6{,}0$\n\\choice $7{,}5$\n\\choice $7{,}8$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Energia e Trabalho\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"21\"\n}\nUm corpo de massa igual a $2{,}0$ kg, com velocidade inicial $v_i = 5{,}0$ m/s, percorre uma rampa curva, como na figura. Ao chegar a um ponto que está $1{,}0$ m acima da posição inicial, sua velocidade final é $v_f = 1{,}0$ m/s.\n\n[[IMG_PENDENTE: figura-q21]]\n\nCalcule, em J, a energia dissipada pelo atrito, enquanto o corpo se move entre essas duas posições.\n\nDado: $g = 10{,}0$ m/s²\n\n\\begin{choices}\n\\choice $25$\n\\choice $20$\n\\CorrectChoice $4$\n\\choice $1$\n\\choice $0$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Física\nassunto: Hidrostática\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"22\"\n}\nUm tubo em U, composto por dois tubos grandes (tubo A com seção reta de $5{,}00$ cm² e tubo B com seção reta de $2{,}50$ cm²), ligados por um pequeno tubo horizontal, contém uma certa quantidade de água. Coloca-se então um volume $V = 25{,}0$ cm³ de óleo, que não se mistura com a água, no tubo A. Ao atingir o equilíbrio, o sistema fica como mostrado na figura, tal que a superfície livre do tubo A fica a uma altura $H$ acima da superfície livre do tubo B.\n\n[[IMG_PENDENTE: figura-q22]]\n\nCalcule $H$, em cm.\n\nDados: $g = 10{,}0$ m/s²; $d_\\text{óleo} = 0{,}800$ g/cm³; $d_\\text{água} = 1{,}00$ g/cm³\n\n\\begin{choices}\n\\choice $0{,}0$\n\\CorrectChoice $1{,}0$\n\\choice $4{,}0$\n\\choice $5{,}0$\n\\choice $10{,}0$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Física\nassunto: Eletricidade\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"23\"\n}\nCom fios ideais, três resistores idênticos de $3{,}0\\ \\Omega$ e uma bateria de $3{,}0$ V, sem resistência interna, podem-se montar circuitos elétricos que dissipam energia.\n\nCalcule, em W, a maior potência dissipada possível de ser dissipada com esses componentes.\n\n\\begin{choices}\n\\choice $0{,}33$\n\\choice $1{,}0$\n\\choice $3{,}0$\n\\CorrectChoice $9{,}0$\n\\choice $27{,}0$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Hidrostática\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"24\"\n}\nUma mangueira fornece água a uma vazão de $400$ cm³ por segundo.\n\nEm quanto tempo, com essa mangueira, é possível encher uma pequena piscina de capacidade $1800$ L?\n\n\\begin{choices}\n\\choice $75$ segundos\n\\choice $7$ minutos e $30$ segundos\n\\CorrectChoice $1$ hora e $15$ minutos\n\\choice $7$ horas e $30$ minutos\n\\choice $12$ horas e $30$ minutos\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Mecânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"25\"\n}\nUma placa retangular de $2{,}00$ m de largura é composta por duas metades A e B de mesmo tamanho, como mostrado na figura, tendo a metade A uma massa três vezes maior que a metade B. Ambas as metades têm distribuição de massa homogênea. Um fio vertical deve ser usado para suspender a placa, tal que sua base fique alinhada horizontalmente.\n\n[[IMG_PENDENTE: figura-q25]]\n\nMedindo a partir da borda esquerda da placa, em qual posição horizontal, em metros, o fio deve ser colocado?\n\n\\begin{choices}\n\\choice $0{,}50$\n\\choice $0{,}67$\n\\CorrectChoice $0{,}75$\n\\choice $1{,}33$\n\\choice $1{,}50$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Física\nassunto: Ondulatória\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"26\"\n}\nNo espectro de luz visível, a luz laranja no vácuo tem um comprimento de onda típico de $600$ nm ($1$ nm $= 10^{-9}$ m).\n\nQual é a frequência da luz laranja, em Hz?\n\nDado: velocidade da luz no vácuo $= 3{,}00 \\times 10^8$ m/s\n\n\\begin{choices}\n\\choice $1{,}8 \\times 10^{11}$\n\\CorrectChoice $5{,}0 \\times 10^{14}$\n\\choice $2{,}0 \\times 10^{15}$\n\\choice $5{,}0 \\times 10^{16}$\n\\choice $1{,}8 \\times 10^{20}$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Dinâmica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"27\"\n}\nUm bloco de $2{,}0$ kg é empurrado, a partir do repouso, por uma força de módulo $20$ N sobre uma superfície horizontal sem atrito. A força atua obliquamente, fazendo um ângulo de $60°$ com a horizontal.\n\n[[IMG_PENDENTE: figura-q27]]\n\nQuanto tempo, em segundos, o bloco leva para percorrer $10{,}0$ m?\n\nDados: $\\sen 60° = \\dfrac{\\sqrt{3}}{2}$; $\\cos 60° = \\dfrac{1}{2}$\n\n\\begin{choices}\n\\choice $\\dfrac{2\\sqrt{3}}{3}$\n\\choice $10\\sqrt{2}$\n\\CorrectChoice $2{,}0$\n\\choice $2\\sqrt{3}$\n\\choice $4{,}0$\n\\end{choices}\n\n%% QUÍMICA",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Química\nassunto: Química Orgânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"28\"\n}\nA representação tridimensional de uma molécula orgânica é mostrada na figura abaixo, na qual as bolas de cor cinza representam átomos de carbono; as de cor branca, átomos de hidrogênio; e cada barra representa uma ligação química.\n\n[[IMG_PENDENTE: figura-q28]]\n\nA molécula em questão\n\n\\begin{choices}\n\\choice não possui isomeria geométrica.\n\\choice é um hidrocarboneto insaturado e linear.\n\\choice tem fórmula molecular \\ce{C7H12}.\n\\CorrectChoice pode sofrer hidrogenação catalítica e levar a um hidrocarboneto saturado.\n\\choice tem quatro ligações $\\sigma$ e uma ligação $\\pi$.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Química\nassunto: Número de Oxidação\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"29\"\n}\nOs números de oxidação do manganês, do cromo e do enxofre, nos compostos \\ce{KMnO4}, \\ce{K2Cr2O7} e \\ce{NaHSO3}, respectivamente, são os seguintes:\n\n\\begin{choices}\n\\choice $+4$, $+6$ e $+6$\n\\CorrectChoice $+7$, $+6$ e $+4$\n\\choice $+5$, $+2$ e $0$\n\\choice $+7$, $+3$ e $+4$\n\\choice $+6$, $+6$ e $+6$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Química\nassunto: Geometria Molecular\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"30\"\n}\nA disposição dos átomos determina a geometria molecular.\n\nPara a molécula de água, a geometria é\n\n\\begin{choices}\n\\choice linear\n\\choice trigonal plana\n\\choice tetraédrica\n\\choice piramidal quadrada\n\\CorrectChoice angular\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Química\nassunto: Tabela Periódica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"31\"\n}\nDa lista de elementos indicados nas opções, aquela que tem, na sequência, uma terra rara (elemento lantanoide), um elemento metálico representativo e um metal alcalino é:\n\n\\begin{choices}\n\\choice Ouro, silício e hidrogênio\n\\choice Európio, germânio e bário\n\\CorrectChoice Cério, chumbo e césio\n\\choice Disprósio, estanho e boro\n\\choice Urânio, gálio e cloro\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Química\nassunto: Soluções\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"32\"\n}\nQuando \\ce{Na2CO3} e \\ce{NH4Cl} são dissolvidos, separadamente, em água, temos soluções, respectivamente, com pH\n\n\\begin{choices}\n\\choice ácido e ácido\n\\CorrectChoice alcalino e ácido\n\\choice neutro e neutro\n\\choice ácido e neutro\n\\choice ácido e alcalino\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Química\nassunto: Estequiometria\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"33\"\n}\nO iodeto de potássio (\\ce{KI}) é um sólido branco que pode ser utilizado na formulação de xaropes mucolíticos e expectorantes.\n\nA porcentagem, em massa, de iodo na unidade formal de iodeto de potássio é\n\nDados: $M(\\text{K}) = 39$ g mol$^{-1}$; $M(\\text{I}) = 127$ g mol$^{-1}$\n\n\\begin{choices}\n\\choice $23{,}5\\%$\n\\choice $40{,}0\\%$\n\\choice $50{,}0\\%$\n\\CorrectChoice $76{,}5\\%$\n\\choice $82{,}5\\%$\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Química\nassunto: Química Inorgânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"34\"\n}\n[[IMG_PENDENTE: figura-q34]]\n\nA associação mais correta dos itens da primeira coluna com os da segunda seria\n\n\\begin{choices}\n\\choice P–I; Q–III; R–IV; S–II\n\\choice P–IV; Q–I; R–III; S–II\n\\choice P–I; Q–IV; R–II; S–III\n\\CorrectChoice P–IV; Q–III; R–II; S–I\n\\choice P–III; Q–II; R–I; S–IV\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D"
+  },
+  {
+    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Química\nassunto: Eletroquímica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"35\"\n}\nA pilha de Daniell é composta de duas celas, uma contendo uma placa de cobre, imersa em uma solução de \\ce{Cu^{2+}}, e outra contendo uma placa de zinco imersa numa solução de \\ce{Zn^{2+}}. As duas placas são conectadas uma a outra por um fio metálico.\n\nAs extremidades de uma ponte salina são colocadas nas soluções das celas. Nessa pilha, em condição padrão, é fato que\n\nDados: $E°_{\\ce{Cu^{2+}/Cu}} = +0{,}34$ V; $E°_{\\ce{Zn^{2+}/Zn}} = -0{,}76$ V\n\n\\begin{choices}\n\\CorrectChoice o potencial desenvolvido é maior do que $1$ V.\n\\choice ocorre migração de íons das soluções para a ponte salina.\n\\choice o catodo é a cela de \\ce{Zn^{2+}/Zn}.\n\\choice o anodo é a cela de \\ce{Cu^{2+}/Cu}.\n\\choice o fluxo de elétrons é da cela de \\ce{Cu^{2+}/Cu} para a de \\ce{Zn^{2+}/Zn}.\n\\end{choices}\n\n%% CIÊNCIAS HUMANAS — DISCURSIVAS",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A"
   },
   {
     "isSet": true,
-    "baseLatex": "A crise final da escravidão, no Brasil, deu lugar ao aparecimento de um modelo novo de resistência, a que podemos chamar quilombo abolicionista. No modelo tradicional de resistência à escravidão, o quilombo-rompimento, a tendência dominante era a política do esconderijo e do segredo de guerra. Por isso, esforçavam-se os quilombolas exatamente para proteger seu dia a dia, sua organização interna e suas lideranças de todo tipo de inimigo, curioso ou forasteiro, inclusive, depois, os historiadores.\r\n\r\nJá no modelo novo de resistência, o quilombo abolicionista, as lideranças são muito bem conhecidas, cidadãos prestantes, com documentação civil em dia e, principalmente, muito bem articulados politicamente. Não mais os grandes guerreiros do modelo anterior, mas um tipo novo de liderança, uma espécie de instância de intermediação entre a comunidade de fugitivos e a sociedade envolvente. Sabemos hoje que a existência de um quilombo inteiramente isolado foi coisa rara. Mas, no caso dos quilombos abolicionistas, os contatos com a sociedade são tantos e tão essenciais que o quilombo encontra-se já internalizado, parte do jogo político da sociedade mais ampla.\r\n\r\n(SILVA, Eduardo: \\textit{As Camélias do Leblon}, 2003.)",
+    "baseLatex": "{\ntipo: Discursiva\ndisciplina: Geografia\nassunto: Questão Ambiental\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"36\"\n}\nAgbogbloshie é um bairro periférico da cidade de Accra, capital de Gana, na África Ocidental, onde há um dos maiores e mais poluidores lixões de resíduos eletrônicos do mundo, sendo comparado à Chernobyl, na Ucrânia, em termos da toxidade do seu meio ambiente. Esse pequeno país africano importa, a cada ano, cerca de 40.000 toneladas de resíduos eletrônicos.\n\n[[IMG_PENDENTE: figura-q36]]\n\n\\credits{Adaptado de: yogui.co/agbogbloshie-o-quintal-para-nosso-lixo-eletronico. Acesso em: 21 jul. 2018.}\n\nCom base na problemática apresentada, faça o que se pede a seguir:",
     "items": [
       {
-        "latex": "Qual é a principal diferença entre o modelo tradicional de resistência à escravidão e o modelo de quilombo abolicionista descrito no texto?\r\n\\begin{choices}\r\n\\choice O modelo tradicional enfatizava a importância da documentação civil em dia dos seus líderes.\r\n\\choice O modelo abolicionista procurava se isolar da sociedade envolvente para evitar conflitos.\r\n\\CorrectChoice As lideranças do modelo tradicional eram grandes guerreiros, enquanto no modelo abolicionista eram instâncias de intermediação política.\r\n\\choice No modelo tradicional, os quilombolas eram facilmente encontrados por curiosos e forasteiros, enquanto no modelo abolicionista eram muito bem protegidos.\r\n\\choice O modelo abolicionista não se preocupava com a proteção da organização interna do quilombo.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "gabarito": "C"
-        }
+        "latex": "{\na) Apresente uma causa que torna esse ambiente de \\textit{e-waste} (lixo informático) um dos mais tóxicos do mundo.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       },
       {
-        "latex": "Com base no texto, assinale a alternativa INCORRETA.\r\n\\begin{choices}\r\n\\choice Segundo o autor, a organização quilombola, no período pré-abolição, não era constituída exclusivamente como modelo de resistência belicoso.\r\n\\CorrectChoice As lideranças de ambos os tipos de organização quilombola apontados no texto eram ocupadas por indivíduos de prestígio na sociedade circundante.\r\n\\choice Cada um dos tipos de quilombo apontados pelo autor do texto, no Brasil, tinha estratégias e finalidades diferentes.\r\n\\choice Quilombos inteiramente isolados não eram tão comuns, segundo Silva, diferentemente do que se acreditava.\r\n\\choice Os chamados quilombos abolicionistas eram mais integrados à sociedade circundante, mantendo com ela uma estreita relação.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "gabarito": "B"
-        }
-      },
-      {
-        "latex": "As expressões ‘cidadãos prestantes’ e ‘instância de intermediação’, no segundo parágrafo, podem ser interpretadas, segundo o contexto de ocorrência, respectivamente, como:\r\n\\begin{choices}\r\n\\choice ‘pessoas que têm crenças religiosas’ e ‘foro oficial’.\r\n\\choice ‘indivíduos que prestam serviços’ e ‘lugar de recurso’.\r\n\\CorrectChoice ‘cidadãos que se distinguem na sociedade’ e ‘nível de mediação’.\r\n\\choice ‘cidadãos que são prestativos’ e ‘intermediários eventuais’.\r\n\\choice ‘pessoas que protestam contra injustiças’ e ‘nível intermediário’\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "gabarito": "C"
-        }
+        "latex": "{\nb) Explique por que um dos fatores promotores de tal tragédia ambiental é a chamada obsolescência programada.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Interpretação de Texto",
-      "assunto": "Interpretação de Texto",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "1",
-      "items": [
-        {
-          "gabarito": "C"
-        },
-        {
-          "gabarito": "B"
-        },
-        {
-          "gabarito": "C"
-        }
-      ]
-    }
+    ]
   },
   {
     "isSet": true,
-    "baseLatex": "% ATENÇÃO: texto base parcialmente recuperado — verificar e completar no PDF original antes de importar\r\n\r\n\\textbf{TV a Serviço da Tecnologia e do Racismo}\r\n\r\nOs meios de comunicação, todos eles, têm sido braço direito e esquerdo da propagação das tecnologias da estrutura racista. [...]\r\n\r\nO poderoso e influente jornalista Assis Chateaubriand foi o responsável pela primeira transmissão televisiva no Brasil, em 18 de setembro de 1950. [...]\r\n\r\n[...] sobras.\r\n\r\n(JOICE BETH. \\textit{Le Monde Diplomatique Brasil}, junho/2017, p. 38. Adaptado.)",
+    "baseLatex": "{\ntipo: Discursiva\ndisciplina: Geografia\nassunto: Migrações\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"37\"\n}\nRefugiados climáticos (ou ambientais) são pessoas forçadas a emigrar de sua terra natal, temporária ou permanentemente, em função de uma perturbação no meio ambiente (natural e/ou desencadeada pela ação humana), que coloca em risco sua existência e/ou sua qualidade de vida, individual ou coletiva.\n\n[[IMG_PENDENTE: figura-q37]]\n\n\\credits{Adaptado de: Essam El-Hinnawi, 1985, do PNUMA.}\n\nApesar de tal migrante ainda não ser reconhecido juridicamente no plano internacional, eles crescem, de maneira alarmante, por todas as regiões do planeta, a partir das mudanças climáticas da atualidade. Com base na definição apresentada, apresente uma causa ambiental para esse crescente fluxo demográfico que sai",
     "items": [
       {
-        "latex": "Com base no texto acima, qual foi o papel de Assis Chateaubriand na introdução da televisão no Brasil?\r\n\\begin{choices}\r\n\\choice Foi o responsável por importar recursos dos Estados Unidos para a construção dos primeiros televisores fabricados no Brasil.\r\n\\choice Foi o primeiro jornalista a apresentar um programa de TV no Brasil.\r\n\\choice Foi o responsável por viabilizar a transmissão televisiva no Rio de Janeiro, após São Paulo.\r\n\\choice Foi o principal responsável por manter as estruturas racistas, que persistiam mesmo pós-abolição.\r\n\\CorrectChoice Foi o responsável por trazer a tecnologia da televisão ao Brasil, com a transmissão pela TV Tupi.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "gabarito": "E"
-        }
+        "latex": "{\na) das estepes africanas.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       },
       {
-        "latex": "Com relação à palavra \"sobras\" citada na última frase do texto, é correto afirmar que se refere:\r\n\\begin{choices}\r\n\\choice aos recursos humanos da TV.\r\n\\CorrectChoice aos negros pós-abolição.\r\n\\choice à sociedade manipulada pela TV.\r\n\\choice aos profissionais da tecnologia televisiva.\r\n\\choice aos líderes abolicionistas.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "gabarito": "B"
-        }
-      },
-      {
-        "latex": "O parágrafo a seguir dá continuidade ao texto de Joice Beth.\r\n\r\nO mito da democracia racial foi amplamente propagado, __________ sempre, nas telenovelas, negros e brancos conviviam de forma pacífica, __________ alicerçou na mentalidade do sujeito negro uma aceitação inexistente da negritude, __________ essa convivência era claramente hierarquizada, estabelecendo sem nenhum constrangimento quem era \"superior\" - e mandava - e quem era \"inferior\" - e, __________, obedecia.\r\n\r\nAssinale a alternativa que preenche adequadamente as lacunas, na ordem em que aparecem no texto.\r\n\\begin{choices}\r\n\\CorrectChoice visto que - o que - pois - portanto.\r\n\\choice onde - desse modo - mas - no entanto.\r\n\\choice mesmo que - por isso - de modo que - por isso.\r\n\\choice que - a qual - entretanto - por conseguinte.\r\n\\choice pois - contudo - sendo que - assim.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "A",
-        "meta": {
-          "gabarito": "A"
-        }
+        "latex": "{\nb) das ilhas e regiões litorâneas dos Oceanos Índico e Pacífico.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Interpretação de Texto",
-      "assunto": "Interpretação de Texto",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "4",
-      "items": [
-        {
-          "gabarito": "E"
-        },
-        {
-          "gabarito": "B"
-        },
-        {
-          "gabarito": "A"
-        }
-      ]
-    }
-  },
-  {
-    "latex": "\\question (BENETT. Disponível em: www.gazetadopovo.com.br. Acesso em: 10 dez. 2017.)\r\n No cartum, o confronto entre primatas produz um efeito de humor\r\nque se vincula à função social de\r\n\\begin{choices}\r\n\\choice criticar a postura humana de fazer piada com assuntos sérios.\r\n\\choice acentuar a necessidade de respeito entre as diferentes espécies.\r\n\\CorrectChoice questionar a indiferença do homem em relação ao meio ambiente.\r\n\\choice alertar a população para a conveniência do desenvolvimento tecnológico.\r\n\\choice destacar a limitação humana para a percepção da realidade da vida animal.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Interpretação de Texto",
-      "assunto": "Interpretação de Texto",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "7"
-    }
-  },
-  {
-    "latex": "\\question O vocábulo \"eólica\" acentua-se devido à mesma regra\r\nde acentuação que determina o emprego do acento na palavra\r\n\\begin{choices}\r\n\\choice renovável.\r\n\\choice elevará.\r\n\\CorrectChoice pássaros.\r\n\\choice carvão.\r\n\\choice ruído.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Português",
-      "assunto": "Português",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "8"
-    }
-  },
-  {
-    "latex": "\\question Analise as seguintes assertivas, a respeito de acentuação\r\ngráfica.\r\n\r\nI. As palavras \"tímido\" (linha 01) e \"alegórico\" (linha 10) são acentuadas\r\npelo mesmo motivo: ambas são proparoxítonas.\r\nII. A palavra \"psicanalítico\" (linha 05) é acentuada por ser paroxítona\r\nterminada em o.\r\nIII. A mesma regra preceitua o acento gráfico em \"alguém\" (linha 05) e em\r\n\"embaraçá-lo\" (linha 18).\r\n\r\nQual(is) está(ão) correta(s)?\r\n\\begin{choices}\r\n\\CorrectChoice Apenas a I.\r\n\\choice Apenas a II.\r\n\\choice Apenas a III.\r\n\\choice Apenas a I e a II.\r\n\\choice Apenas a I e a III.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Português",
-      "assunto": "Português",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "9"
-    }
-  },
-  {
-    "latex": "\\question No trecho \"O acento diferencial consegui esquecer, mas\r\nhá outros que ainda me causam dúvidas.\" (5º§), o autor se refere à queda da\r\nacentuação de diversas palavras que anteriormente eram acentuadas para\r\ndiferenciá-las de outras de mesma pronúncia. No entanto, o acento diferencial\r\nnão foi abolido do idioma e a acentuação se mantém em determinados\r\ncasos com o mesmo propósito. Um exemplo que ainda perdura na língua\r\nportuguesa mesmo com a reforma ortográfica se dá no par de palavras:\r\n\\begin{choices}\r\n\\CorrectChoice \"Por\" (preposição) e \"pôr\" (forma infinitiva do verbo).\r\n\\choice \"Pelo\" (contração da preposição \"por\" com o artigo \"o\") e \"pêlo\" (substantivo).\r\n\\choice \"Para\" (preposição) e \"pára\" (verbo \"parar\" conjugado na 3ª pessoa do singular\r\nno presente do modo indicativo).\r\n\\choice \"Apoio\" (substantivo) e \"apóio\" (verbo \"apoiar\" conjugado na 1ª pessoa do\r\nsingular no presente do modo indicativo).\r\n\\choice fôrma (substantivo) e fórma (verbo e substantivo)\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Português",
-      "assunto": "Português",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "10"
-    }
-  },
-  {
-    "latex": "\\question Assinale a opção que apresenta, correta e respectivamente,\r\na classe gramatical a que pertencem as palavras destacadas no trecho\r\nabaixo.\r\n\r\n\"Aquele repórter SENSACIONALISTA que repete à exaustão a cena de\r\nLINCHAMENTO, o apresentador que tripudia sobre o drama do desvalido,\r\na loura que vê na criança um consumidor A mais, o JOVEM que tem num\r\n‘reality show' desumano a alternativa para sua falta de horizonte, a menina\r\nPRECOCEMENTE erotizada, no fundo, somos todos nós.\"\r\n\\begin{choices}\r\n\\choice substantivo - substantivo - artigo - substantivo - adjetivo\r\n\\choice advérbio - adjetivo - artigo - adjetivo - adjetivo\r\n\\choice advérbio - verbo - artigo - adjetivo - advérbio\r\n\\choice adjetivo - substantivo - preposição - substantivo - advérbio\r\n\\CorrectChoice adjetivo - verbo - preposição - adjetivo - advérbio\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Português",
-      "assunto": "Português",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "11"
-    }
-  },
-  {
-    "latex": "\\question A palavra anoitecer é formado pelo seguinte processo\r\nde formação de palavras:\r\n\\begin{choices}\r\n\\choice derivação prefixal\r\n\\choice derivação sufixal\r\n\\CorrectChoice derivação parassintética\r\n\\choice derivação regressiva\r\n\\choice derivação imprópria\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Português",
-      "assunto": "Português",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "12"
-    }
-  },
-  {
-    "latex": "\\question Das seguintes definições, qual apresenta de forma mais\r\nprecisa o conceito de Literatura?\r\n\\begin{choices}\r\n\\CorrectChoice É a arte da palavra, expressando ideias e emoções por meio de contos,\r\nromances, crônicas e poemas, refletindo a diversidade cultural e social de\r\ndiferentes épocas.\r\n\\choice Uma forma de entretenimento popular que inclui apenas romances e contos.\r\n\\choice Qualquer texto escrito por um autor famoso, independentemente do gênero\r\ntextual. O texto se torna literário a partir do momento que é reconhecido pelo\r\ngrande público.\r\n\\choice Todo o conjunto de livros técnicos, científicos e de pesquisa acadêmica das\r\nmais diversas áreas e que contribuem para o avanço do conhecimento humano.\r\n\\choice Um gênero literário restrito aos clássicos da antiguidade greco-romana, ou\r\nseja, apenas poesia e peças teatrais.\r\n\\end{choices}\r\n\r\n% OMITIDA: Q14 (Literatura) — requer imagem da pintura \"A mulher com o unicórnio\" (Raphael Sanzio)",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Literatura",
-      "assunto": "Literatura",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "13"
-    }
-  },
-  {
-    "latex": "\\question \"Pequei, Senhor; mas não porque hei pecado,\r\nDa vossa alta clemência me despido;\r\nPorque, quanto mais tenho delinquido,\r\nVos tenho a perdoar mais empenhado.\r\n\r\nSe basta a vos irar tanto um pecado,\r\nA abrandar-vos sobeja um só gemido:\r\nQue a mesma culpa, que vos há ofendido,\r\nVos tem para o perdão lisonjeado.\r\n\r\nSe uma ovelha perdida já cobrada\r\nGlória tal e prazer tão repentino\r\nVos deu, como afirmais na Sacra História:\r\n\r\nEu sou, Senhor, a ovelha desgarrada,\r\nCobrai-a; e não queirais, Pastor Divino,\r\nPerder na vossa ovelha a vossa glória.\"\r\n(MATOS, Gregório de. A Jesus Cristo Nosso Senhor.)\r\nSobre o poema A Jesus Cristo Nosso Senhor é INCORRETO afirmar que\r\n\\begin{choices}\r\n\\choice trata-se de um soneto, por ser formado respectivamente por duas quadras e\r\ndois tercetos.\r\n\\choice apresenta traços do Conceptismo, pois o eu lírico faz um apelo baseado em\r\nargumentos lógicos.\r\n\\CorrectChoice é representativo do Cultismo, o que se observa nas inversões sintáticas e em\r\ntermos rebuscados, como \"sobeja\" e \"lisonjeado\".\r\n\\choice é um exemplo da vertente religiosa da poesia de Gregório de Matos.\r\n\\choice trata o Cristianismo com descaso e ironia, ao contrário do que fazia o padre\r\nAntônio Vieira.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Literatura",
-      "assunto": "Literatura",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "16"
-    }
-  },
-  {
-    "latex": "\\question \"(...) Para um homem se ver a si mesmo são neces-\r\nsárias três coisas: olhos, espelho e luz. Se tem espelho e é cego, não se\r\npode ver por falta de olhos; se tem espelhos e olhos, e é de noite, não\r\nse pode ver por falta de luz. Logo, há mister luz, há mister espelho e há\r\nmister olhos. (...)\"\r\n(Antônio Vieira. Sermão da Sexagésima.)\r\n\r\nNo texto de Antônio Vieira, predomina o\r\n\\begin{choices}\r\n\\choice Cultismo: palavras rebuscadas, inversões nas frases e trocadilhos.\r\n\\CorrectChoice Conceptismo: jogos de ideias, retórica aprimorada, argumentação.\r\n\\choice Quinhentismo: descrição das riquezas da terra e conversão dos nativos.\r\n\\choice Classicismo: resgate da temática e das preferências estéticas gregas.\r\n\\choice Bucolismo: fuga das cidades, valorização da vida simples no campo.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Literatura",
-      "assunto": "Literatura",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "17"
-    }
-  },
-  {
-    "latex": "\\question \"Acaso são estes\r\nos sítios formosos,\r\naonde passava\r\nos anos gostosos?\r\nSão estes os prados,\r\naonde brincava,\r\nenquanto pastava,\r\no manso rebanho\r\nque Alceu me deixou?\"\r\n\r\nOs versos acima, de Tomás Antônio Gonzaga, são expressão de um mo-\r\nmento estético em que o poeta\r\n\\begin{choices}\r\n\\choice expressava seus sentimentos a partir da religião.\r\n\\choice exprimia-se com elegância e requinte formal.\r\n\\choice demonstrava desinteresse por assuntos mundanos.\r\n\\choice contemplava a natureza e a simplicidade.\r\n\\CorrectChoice mostrava-se tímido diante dos interesses dos poderosos.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Literatura",
-      "assunto": "Literatura",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "18"
-    }
-  },
-  {
-    "latex": "\\question De acordo com seu conhecimento sobre a estrutura in-\r\nterna da Terra assinale a alternativa correta.\r\n\\begin{choices}\r\n\\choice É na camada denominada de Núcleo Externo(2) que se constitui o Material\r\nMagmático;\r\n\\choice A Zona de Descontinuidade de Mohorovicic encontra-se entre os Núcleos In-\r\nterno(1) e Externo(2);\r\n\\choice A constituição química mineralógica do Núcleo Interno (1) é de Ferro, Silicatos\r\ne Peróxidos;\r\n\\choice A Crosta Terrestre é Constituída das camadas de Crosta Interna SIAL (5) e\r\nCrosta Externa SIMA (6);\r\n\\CorrectChoice O eletromagnetismo terrestre ocorre entre os Núcleos Interno (1) e Externo\r\n(2).\r\n\\end{choices}\r\n\r\n% OMITIDA: Q20 (Geografia) — requer figura com camadas da Terra (I, II, III, IV)",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Geografia",
-      "assunto": "Geografia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "19"
-    }
-  },
-  {
-    "latex": "\\question \"0 equilíbrio do Sial sobre o Sima ocorre de acordo com\r\no Princípio de Arquimedes ... Assim, pois, é natural que, sob as grandes\r\nelevações do relevo, o Sial se aprofunde, enquanto, nas planuras, dá-se\r\njustamente o contrário.\" O texto refere-se ao princípio:\r\n\\begin{choices}\r\n\\choice da tectogênese;\r\n\\choice da orogênese;\r\n\\CorrectChoice da isostasia;\r\n\\choice do diastrofismo;\r\n\\choice da sismologia.\r\n\\end{choices}\r\n\r\n% OMITIDA: Q22 (Geografia) — requer figuras de representação do relevo (letras A, B, C, Y)",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Geografia",
-      "assunto": "Geografia",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "21"
-    }
-  },
-  {
-    "latex": "\\question Observe a figura e assinale a que estiver errada:\r\n\\begin{choices}\r\n\\choice Movimento de massa é o movimento do solo, rocha e/ou vegetação ao longo\r\nde uma vertente de um morro sob a ação direta da gravidade. A água e a ação\r\nhumana favorecem o evento.\r\n\\choice Dentre os processos de movimento de massa, os mais frequentes na região\r\nsudeste do Brasil e principalmente na Serra do Mar, são os escorregamentos de\r\nterra com ou sem rolamento de blocos.\r\n\\CorrectChoice Áreas de morro são locais ideais para moradia por causa da valorização da\r\npaisagem. E ainda é possível fazer corte e aterro para a construção de casas\r\nsem autorização da prefeitura.\r\n\\choice O crescimento da ocupação em áreas de encosta sem planejamento urbano\r\nadequado tem levado a um progressivo aumento no número de acidentes asso-\r\nciados a escorregamento de terra.\r\n\\choice Existem diferentes tipos de escorregamento, que são definidos em relação ao\r\ntipo de material, tamanho, velocidade e forma da massa movimentada.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Geografia",
-      "assunto": "Geografia",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "23"
-    }
-  },
-  {
-    "latex": "\\question Como é denominado o fenômeno astronômico derivado\r\nda translação, em que o Sol ilumina igualmente o Hemisfério Norte e o He-\r\nmisfério Sul?\r\n\\begin{choices}\r\n\\choice Solstício.\r\n\\choice Sol da Meia-Noite.\r\n\\choice Aurora boreal.\r\n\\CorrectChoice Equinócio.\r\n\\choice Monções.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Geografia",
-      "assunto": "Geografia",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "24"
-    }
-  },
-  {
-    "latex": "\\question O Brasil possui uma relativa diversidade em termos de\r\nhoras legais, ou seja, aqueles horários oficialmente adotados para as di-\r\nferentes localidades. Essa característica pode ser explicada por um fator\r\nterritorial brasileiro e um aspecto geofísico da Terra, que são, respectiva-\r\nmente:\r\n\\begin{choices}\r\n\\CorrectChoice ampla extensão longitudinal - movimento de rotação\r\n\\choice posição territorial específica - formato geoide do planeta\r\n\\choice longa distanciação norte-sul - movimento em torno do sol\r\n\\choice expansão colonial interna - transformações geomorfológicas\r\n\\choice fragmentação sociopolítica - deslocamento aparente do sol´\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Geografia",
-      "assunto": "Geografia",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "25"
-    }
-  },
-  {
-    "latex": "\\question As curvas de nível são linhas curvas fechadas obtidas a\r\npartir da interseção de planos horizontais com a superfície de um dado ter-\r\nreno, como exemplificado na figura a seguir. Todos os pontos pertencentes\r\na uma dessas linhas encontram-se no mesmo nível e, portanto, apresentam\r\na mesma cota altimétrica. Os planos de interseção são paralelos e apresen-\r\ntam a mesma distância entre dois planos adjacentes. Essa distância recebe\r\no nome de equidistância vertical. Segundo seu traçado, as curvas de nível\r\nclassificam-se em mestras, representadas por traços mais espessos, e co-\r\ntadas, sendo normalmente múltiplas de 5 ou 10 m; intermediárias, quando\r\nmúltiplas da equidistância vertical e não são linhas mestras; e curvas de\r\nmeia equidistância, cuja finalidade é a densificação de terrenos muito pla-\r\nnos.\r\nCom relação ao procedimento para representação de um terreno por meio\r\nde curvas de nível, sua correta compreensão e suas recomendações nor-\r\nmativas, assinale a alternativa correta:\r\n\\begin{choices}\r\n\\CorrectChoice Duas curvas de nível não podem cruzar-se.\r\n\\choice Quanto mais próximas as curvas de nível de um terreno, menor é a declivida-\r\nde do terreno.\r\n\\choice Curvas afastadas representam terrenos muito acidentados.\r\n\\choice Os pontos de início e término de uma curva de nível podem ser diferentes.\r\n\\choice Elevações são superfícies em que as curvas de nível de maior valor envolvem\r\nas de menor valor.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Geografia",
-      "assunto": "Geografia",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "27"
-    }
-  },
-  {
-    "latex": "\\question Em 2015, o noticiário internacional deu grande destaque à\r\nGrécia, país europeu que vivia uma grave crise econômica e convocou a\r\npopulação para decidir, via referendo, as medidas que deveriam ser adota-\r\ndas pelo governo para gerir a crise. Parte da imprensa destacou o caráter\r\ndemocrático de tal medida e, em muitos textos, lembrou que os gregos\r\nforam os criadores da democracia.\r\nAssinale a alternativa que indica corretamente quais são as principais di-\r\nferenças entre as concepções de democracia na Antiguidade grega e no\r\nmundo contemporâneo.\r\n\\begin{choices}\r\n\\choice Na Antiguidade grega, a democracia surgiu da necessidade de administrar\r\npaíses cada vez maiores; nas democracias contemporâneas, a política ajuda a\r\nadministrar unidades menores, como as cidades.\r\n\\choice Na Antiguidade grega, o espaço reservado à atividade política eram os tem-\r\nplos religiosos ou as residências das pessoas mais importantes; nas democra-\r\ncias contemporâneas, a atividade política se realiza no espaço público.\r\n\\choice Na Antiguidade grega, política e religião eram esferas sociais separadas; nas\r\ndemocracias contemporâneas, a noção de cidadania vincula-se estreitamente às\r\nconcepções religiosas.\r\n\\choice Nas democracias contemporâneas, a participação política é vinculada à ren-\r\nda, com o voto censitário; na Grécia Antiga, apenas os proprietários de terras,\r\nhomens e mulheres, tinham direito à participação política.\r\n\\CorrectChoice Nas democracias contemporâneas, o direito à participação política se estende\r\na todos os grupos sociais; na Grécia antiga, apenas os homens livres nascidos\r\nna pólis eram considerados cidadãos.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "28"
-    }
-  },
-  {
-    "latex": "\\question O que implica o sistema da pólis é uma extraordinária\r\npreeminência da palavra sobre todos os outros instrumentos do poder. A\r\npalavra constitui o debate contraditório, a discussão, a argumentação e a\r\npolêmica. Torna-se a regra do jogo intelectual, assim como do jogo político.\r\nVERNANT, J. P. As origens do pensamento grego. Rio de Janeiro: Bertrand,\r\n1992 (adaptado).\r\nNa configuração política da democracia grega, em especial a ateniense, a\r\nágora tinha por função\r\n\\begin{choices}\r\n\\choice agregar os cidadãos em torno de reis que governavam em prol da cidade.\r\n\\choice permitir aos homens livres o acesso às decisões do Estado expostas por seus\r\nmagistrados.\r\n\\CorrectChoice constituir o lugar onde o corpo de cidadãos se reunia para deliberar sobre as\r\nquestões da comunidade.\r\n\\choice reunir os exércitos para decidir em assembleias fechadas os rumos a serem\r\ntomados em caso de guerra.\r\n\\choice congregar a comunidade para eleger representantes com direito a pronunciar-\r\nse em assembleias.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "29"
-    }
-  },
-  {
-    "latex": "\\question (UFPR) Leia o seguinte excerto:\r\n\r\n\"Embora os macedônicos fossem orgulhosos, sabiam que o restante do\r\nmundo considerava seu reino arcaico, tribal e insignificante. [...] Naquele\r\ntempo, o Oriente era o foco da civilização, bem iluminado pela História, e\r\no Ocidente, um território escuro e selvagem onde viviam os bárbaros. No\r\natlas das percepções e dos preconceitos geográficos, a Macedônia ocupa-\r\nva a periferia do mundo civilizado. Provavelmente poucos egípcios sabe-\r\nriam localizar no mapa a pátria do seu próximo rei.\"\r\n VALLEHO, Irene. O infinito em um junco: a invenção dos livros no mundo antigo. Tradução\r\n de Ari Roitman e Paulina Wacht. Rio de Janeiro: Intrínseca, 2022. p. 33.\r\n\r\nO trecho acima faz referência ao rei Ptolomeu, que governou o Egito a partir\r\nde 305 a.C. durante um período conhecido pela historiografia como hele-\r\nnístico.\r\n\r\nConsiderando os conhecimentos sobre Antiguidade, é correto afirmar que\r\na cultura helenística foi:\r\n\\begin{choices}\r\n\\CorrectChoice caracterizada pela popularização e uso corrente da língua grega em diversas\r\npartes da Ásia e da África.\r\n\\choice definida pela adoção da democracia ateniense por Alexandre, o Grande, após\r\nsuas vitórias na África e na Ásia.\r\n\\choice baseada na conquista da Macedônia pelo Egito e o consequente espalhamen-\r\nto da cultura alexandrina.\r\n\\choice marcada pelos contatos entre Oriente e Ocidente a partir da expansão romana\r\nno norte da África e na Ásia.\r\n\\choice conhecida também como Idade das Trevas por conta da escassez de textos\r\nescritos no Ocidente.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "30"
-    }
-  },
-  {
-    "latex": "\\question Para assegurar a ordem entre os conquistados, os romanos\r\ntinham que manter postos avançados e acampamentos militares espalha-\r\ndos pelo território imperial. Era preciso alimentar e armar os soldados onde\r\nestivessem.\r\n (FUNARI, Pedro P. A. Grécia e Roma. São Paulo: Editora Contexto, 2001, p. 91.)\r\nSobre o exército romano, no período imperial, é correto afirmar:\r\n\\begin{choices}\r\n\\choice Foi decisivo nas conquistas territoriais durante o período republicano, perdendo\r\nseu prestígio durante o período imperial.\r\n\\choice Permaneceu distante das atividades de manutenção das fronteiras dos\r\nterritórios.\r\n\\choice Deixou de exercer sua influência no governo após as reformas de Augusto.\r\n\\CorrectChoice Desempenhou diferentes papéis administrativos e econômicos na manutenção\r\ndo poder imperial.\r\n\\choice Era limitado em tamanho, o que refletiu num papel político secundário.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "31"
-    }
-  },
-  {
-    "latex": "\\question Os combates de gladiadores surgiram no sul da Itália, che-\r\ngaram a Roma no meio século III a.C. e foram oficializados pelo Senado,\r\nem 105 a.C. Inicialmente realizados durante as cerimônias fúnebres, pouco\r\na pouco eles foram perdendo seu caráter sagrado e se transformaram em\r\nmanifestações laicas, no início da era cristã. Apesar de escravos, os gladia-\r\ndores eram esportistas de alto nível, pois cabia aos promotores das lutas\r\noferecerem um espetáculo de qualidade. Esses combates representavam,\r\npara os gladiadores, cair nas graças da multidão, fato que os levava à fama.\r\n\r\nPara conquistar o reconhecimento do povo, cidadãos importantes, desde\r\nlíderes locais até o próprio imperador, ofereciam esses espetáculos ao pú-\r\nblico.\r\n\r\nO governo de Otávio Augusto (30 a.C.- 14 d.C.), visando aumentar a popu-\r\nlaridade e diminuir as revoltas dos pobres da cidade de Roma, ampliou a\r\n\"política do pão e circo\".\r\n\r\n (Revista História Viva, ano V, nº 56. Adaptado)\r\n\r\nSobre esse momento da história romana, é válido afirmar que\r\n\\begin{choices}\r\n\\choice esses espetáculos públicos tinham um caráter puramente religioso e evitavam\r\nas revoltas sociais, pois os romanos temiam a ira de seus deuses.\r\n\\choice a \"política do pão e circo\", no fim da era cristã, manteve o caráter sagrado dos\r\ncombates de gladiadores, pois muitos desses participantes ofereciam sua vida\r\nao deus cristão.\r\n\\choice a política do \"pão e circo\", ampliada por Otávio Augusto, pôs fim às desigual-\r\ndades sociais entre patrícios e plebeus.\r\n\\CorrectChoice os combates entre gladiadores, promovidos nos estádios, serviam para dimi-\r\nnuir a insatisfação popular contra os governantes.\r\n\\choice as lutas de gladiadores surgiram no sul da Itália para pôr fim a revoltas sociais\r\nocorridas no governo de Otávio Augusto, no século III a.C.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "32"
-    }
-  },
-  {
-    "latex": "\\question Complete a frase abaixo com a alternativa correta:\r\nO descobrimento do Brasil foi parte do plano imperial da Coroa Portuguesa,\r\nno século XV. Embora não houvesse interesse específico de expansão\r\npara o Ocidente,…\r\n\\begin{choices}\r\n\\CorrectChoice a posse de terras no Atlântico ocidental consolidava a hegemonia portuguesa\r\nsobre o Oceano Atlântico\r\n\\choice o Brasil era uma alternativa mercantil ao comércio português no Oriente.\r\n\\choice o desvio da esquadra de Cabral seguia a mesma inspiração de Colombo\r\npara chegar às Índias.\r\n\\choice a procura de terras no Ocidente foi uma reação de Portugal ao Tratado de\r\nTordesilhas, que o afastava da América.\r\n\\choice essa descoberta foi mero acaso, provocado pelas intempéries que desviaram\r\na esquadra da rota da Índia.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "33"
-    }
-  },
-  {
-    "latex": "\\question Foram inúmeras as consequências da expansão ultrama-\r\nrina dos europeus, gerando uma radical transformação no panorama da\r\nhistória da humanidade.\r\n\r\nSobressai como UMA importante conseqüência:\r\n\\begin{choices}\r\n\\CorrectChoice a constituição de impérios coloniais embasados pelo espírito mercantil.\r\n\\choice a manutenção do eixo econômico do Mar Mediterrâneo com acesso fácil ao\r\nOceano Atlântico.\r\n\\choice a dependência do comércio com o Oriente, fornecedor de produtos de luxo\r\ncomo sândalo, porcelanas e pedras preciosas.\r\n\\choice o pioneirismo de Portugal, explicado pela posição geográfica favorável.\r\n\\choice a manutenção dos níveis de afluxo de metais preciosos para a Europa.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "34"
-    }
-  },
-  {
-    "latex": "\\question (Espcex) \"Os primeiros trinta anos da História do Brasil são\r\nconhecidos como período Pré-Colonial. Nesse período, a coroa portugue-\r\nsa iniciou a dominação das terras brasileiras, sem, no entanto, traçar um\r\nplano de ocupação efetiva. […] A atenção da burguesia metropolitana e do\r\ngoverno português estavam voltados para o comércio com o Oriente, que\r\ndesde a viagem de Vasco da Gama, no final do século XV, havia sido mo-\r\nnopolizado pelo Estado português. […] O desinteresse português em rela-\r\nção ao Brasil estava em conformidade com os interesses mercantilistas da\r\népoca, como observou o navegante Américo Vespúcio, após a exploração\r\ndo litoral brasileiro, pode-se dizer que não encontramos nada de proveito\".\r\nBerutti, 2004.\r\n\r\nSobre o período retratado no texto, pode-se afirmar que o(a)\r\n\\begin{choices}\r\n\\choice Desinteresse português pelo Brasil nos primeiros anos de colonização, deu-se\r\nem decorrência dos tratados comerciais assinados com a Espanha, que tinha\r\nprioridade pela exploração de terras situadas a oeste de Greenwich.\r\n\\choice Maior distância marítima era a maior desvantagem brasileira em relação ao\r\ncomércio com as Índias.\r\n\\choice Desinteresse português pode ser melhor explicado pela resistência oferecida\r\npelos indígenas que dificultavam o desembarque e o reconhecimento das novas\r\nterras.\r\n\\choice Abertura de um novo mercado na América do Sul, ampliava as possibilidades\r\nde lucro da burguesia metropolitana portuguesa.\r\n\\CorrectChoice Relativo descaso português pelo Brasil, nos primeiros trinta anos de História,\r\nexplica-se pela aparente inexistência de artigos (ou produtos) que atendiam aos\r\ninteresses daqueles que patrocinavam as expedições.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "35"
-    }
-  },
-  {
-    "latex": "\\question Os primitivos habitantes do Brasil foram vítimas do proces-\r\nso colonizador. O europeu, com visão de mundo calcada em preconceitos,\r\nmenosprezou o indígena e sua cultura. A acreditar nos viajantes e missio-\r\nnários, a partir de meados do século XVI, há um decréscimo da população\r\nindígena, que se agrava nos séculos seguintes. Os fatores que mais contri-\r\nbuíram para o citado decréscimo foram:\r\n\\begin{choices}\r\n\\choice a captura e a venda do índio para o trabalho nas minas de prata do Potosí.\r\n\\choice as guerras permanentes entre as tribos indígenas e entre índios e brancos.\r\n\\choice o canibalismo, o sentido mítico das práticas rituais, o espírito sanguinário,\r\ncruel e vingativo dos naturais.\r\n\\choice as missões jesuíticas do vale amazônico e a exploração do trabalho indígena\r\nna extração da borracha.\r\n\\CorrectChoice as epidemias introduzidas pelo invasor europeu e a escravidão dos índios.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "História",
-      "assunto": "História",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "36"
-    }
-  },
-  {
-    "latex": "\\question (PSS) Ao reassumir as características de cada um dos su-\r\ncessivos modelos do átomo de hidrogênio, um estudante elaborou o se-\r\nguinte resumo:\r\n\r\n• Modelo atômico: Dalton\r\n Características: átomos maciços e indivisíveis.\r\n• Modelo atômico: Thomson\r\n Características: elétron, de carga negativa, incrustado em uma es-\r\nfera de carga positiva. A carga positiva está distribuída, homogeneamente,\r\npor toda a esfera.\r\n• Modelo atômico: Rutherford\r\n Características: elétron, de carga negativa, em órbita em torno de\r\num núcleo central, de carga positiva. Não há restrição quanto aos valores\r\ndos raios das órbitas e das energias do elétron.\r\n• Modelo atômico: Bohr\r\n Características: elétron, de carga negativa, em órbita em torno de\r\num núcleo central, de carga positiva. Apenas certos valores de raios das\r\nórbitas e das energias do elétron são possíveis.\r\n\r\nO número de erros cometidos pelo estudante é:\r\n\\begin{choices}\r\n\\CorrectChoice 0\r\n\\choice 1\r\n\\choice 2\r\n\\choice 3\r\n\\choice 4\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "37"
-    }
-  },
-  {
-    "latex": "\\question (UFPE) Ao longo da história da ciência, diversos modelos\r\natômicos foram propostos até chegarmos ao modelo atual. Com relação ao\r\nmodelo atômico de Rutherford, podermos afirmar que:\r\n\\begin{choices}\r\n\\choice foi baseado em experimentos com eletrólise de soluções de sais de ouro.\r\n\\choice é um modelo nuclear que mostra o fato de a matéria ter sua massa concentrada\r\nem um pequeno núcleo.\r\n\\CorrectChoice é um modelo que apresenta a matéria como sendo constituída por elétrons\r\n(partículas de carga negativa) em contato direto com prótons (partículas de carga\r\npositiva).\r\n\\choice não dá nenhuma informação sobre a existência de nêutrons.\r\n\\choice foi deduzido a partir de experimentos de bombardeio de finas lâminas de um\r\nmetal por partículas beta.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "38"
-    }
-  },
-  {
-    "latex": "\\question A água da chuva é naturalmente ácida em virtude da presença\r\nnormal de CO2(g) (dióxido de carbono) na atmosfera, que reage com a água\r\ne forma o ácido de fórmula H2CO3(aq). No entanto, óxidos de enxofre, como\r\no SO2(g), e de nitrogênio, como o NO2(g), contribuem para elevar ainda mais\r\no pH da água, porque, ao se combinar com ela, eles reagem e formam os\r\nácidos H2SO3(aq) e HNO3(aq).\r\n\r\nOs nomes respectivos dos três ácidos mencionados são:\r\n\\begin{choices}\r\n\\choice carbônico, sulfúrico e nítrico.\r\n\\choice carbônico, sulfuroso e nítrico.\r\n\\CorrectChoice carbonoso, sulfuroso e nitroso.\r\n\\choice percarbônico, persulfúrico e nítrico.\r\n\\choice hipocarbonoso, sulfúrico e hiponitroso.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "39"
-    }
-  },
-  {
-    "latex": "\\question (UFPB) Os ácidos são substâncias químicas sempre\r\npresentes no cotidiano do homem. Por exemplo, durante a amamentação,\r\nera comum usar-se água boricada (solução aquosa que contém ácido\r\nbórico) para fazer a assepsia do seio da mãe; para limpezas mais fortes\r\nda casa, emprega-se ácido muriático (solução aquosa de ácido clorídrico);\r\nnos refrigerantes, encontra-se o ácido carbônico; e, no ovo podre, o mau\r\ncheiro é devido à presença do ácido sulfídrico. Esses ácidos podem ser\r\nrepresentados, respectivamente, pelas seguintes fórmulas moleculares:\r\n\\begin{choices}\r\n\\choice H3BO3, HCl, H2CO2 e H2SO4\r\n\\choice H2BO3, HCl, H2CO3 e H2S\r\n\\choice H3BO3, HClO3, H2SO3 e H2CO2\r\n\\choice H2BO3, HClO4, H2S e H2CO3\r\n\\CorrectChoice H3BO3, HCl, H2CO3 e H2S\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "40"
-    }
-  },
-  {
-    "latex": "\\question Considere os seguintes compostos orgânicos:\r\nA sequência correta, de cima para baixo, é:\r\n\\begin{choices}\r\n\\choice C11H22, C9H16O, C8H14, C12H17O.\r\n\\choice C11H24, C9H16O, C8H14, C12H18O.\r\n\\CorrectChoice C11H24, C9H15O, C8H15, C12H18O.\r\n\\choice C11H22, C9H16O, C8H13, C12H17O.\r\n\\choice C11H23, C9H15O, C8H14, C12H17O.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "41"
-    }
-  },
-  {
-    "latex": "\\question A região amazônica é rica em biodiversidade. Uma das árvo-\r\nres frutíferas dessa região brasileira é o camucamuzeiro (Myrciaria dubia),\r\ncujo fruto, que pode ser chamado camu-camu, caçari ou araçá-d'água, é\r\nextremamente rico em vitamina C. A fórmula estrutural da vitamina C é:\r\nOs tipos de hibridização dos orbitais do átomo de carbono indicado na fór-\r\nmula estrutural da vitamina C pela seta vermelha 1 e pela seta vermelha 2\r\nsão, respectivamente:\r\n\\begin{choices}\r\n\\choice sp3 e sp\r\n\\choice sp2 e sp3\r\n\\choice sp e sp2\r\n\\choice sp2 e sp\r\n\\CorrectChoice sp3 e sp2\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "42"
-    }
-  },
-  {
-    "latex": "\\question (UEL - 2021) Analise o diagrama a seguir.\r\n\r\nA formação natural de flocos de neve é uma consequência direta das con-\r\ndições atmosféricas de temperatura e pressão. Isso justifica a ocorrência\r\ndesse fenômeno acima dos cumes de elevadas montanhas como o Acon-\r\ncágua (6962 m acima do nível do mar), a cordilheira dos Andes e o Everest\r\n(8848 m acima do nível do mar), localizado na cordilheira do Himalaia.\r\n\r\nCom base no diagrama de fases da água pura, assinale a alternativa que\r\napresenta, corretamente, a transição de fase que corresponde à formação\r\nde flocos de neve em elevadas altitudes a partir da água na fase vapor.\r\n\\begin{choices}\r\n\\choice A → B\r\n\\choice B → A\r\n\\choice C → D\r\n\\choice D → C\r\n\\CorrectChoice F → E\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "43"
-    }
-  },
-  {
-    "latex": "\\question (FAMERP - 2022) O esquema a seguir representa o processo\r\nde extração do óleo essencial de cascas de laranja.\r\n\r\nOs números 1 e 2 correspondem a processos de separação de misturas\r\ndenominados, respectivamente,\r\n\\begin{choices}\r\n\\choice dissolução fracionada e filtração.\r\n\\choice decantação e centrifugação.\r\n\\choice centrifugação e filtração.\r\n\\choice destilação e decantação.\r\n\\CorrectChoice filtração e destilação.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "44"
-    }
-  },
-  {
-    "latex": "\\question (CPS - 2018) Há mais de um tipo de bafômetro, mas todos\r\nsão baseados em reações químicas envolvendo o álcool etílico presente na\r\nbaforada e um reagente - por isso, o nome técnico desses aparelhos é eti-\r\nlômetro. Nos dois mais comuns são utilizados dicromato de potássio (que\r\nmuda de cor na presença do álcool) e célula de combustível (que gera uma\r\ncorrente elétrica). Este último é o mais usado entre os policiais no Brasil.\r\nCom a nova legislação, o motorista que for flagrado com nível alcoólico\r\nacima do permitido (0,1 mg/L de sangue) terá que pagar uma multa de R$\r\n955,00, além de ter o carro apreendido e perder a habilitação. Se estiver em-\r\nbriagado (níveis acima de 0,3 mg/L de sangue), ainda corre o risco de ficar\r\npreso por 6 meses a 1 ano.\r\n<https://tinyurl.com/yctm9zrz> Acesso em: 10.11.2017. Adaptado.\r\nNo etilômetro que muda de cor na presença do álcool, ocorre a seguinte\r\nreação química:\r\n\r\nÉ possível identificarmos, na reação, a presença de\r\n\\begin{choices}\r\n\\choice uma substância simples nos reagentes e uma simples nos produtos.\r\n\\choice três substâncias compostas nos reagentes.\r\n\\CorrectChoice quatro substâncias simples nos produtos.\r\n\\choice átomos de sódio na substância verde.\r\n\\choice ácido clorídrico nos reagentes.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Química",
-      "assunto": "Química",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "45"
-    }
-  },
-  {
-    "latex": "\\question Quando comemos em um restaurante, as saladas de alface\r\nque são servidas não contêm, em geral, sal ou nenhum tipo de condimento.\r\nAs saladas são temperadas apenas na hora de comer.\r\nEsse procedimento evita que a salada murche rapidamente, pois, quando\r\nadicionamos sal e outros condimentos à salada,\r\n\\begin{choices}\r\n\\choice o meio externo torna-se hipotônico, e as células da alface ficam túrgidas.\r\n\\choice o meio externo torna-se isotônico, e as células da alface ficam túrgidas.\r\n\\CorrectChoice o meio externo torna-se hipertônico, e as células da alface sofrem plasmólise.\r\n\\choice o meio externo torna-se hipertônico, e as células da alface sofrem lise celular.\r\n\\choice o meio externo torna-se isotônico, e as células da alface sofrem lise celular.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "46"
-    }
-  },
-  {
-    "latex": "\\question A membrana plasmática, presente em todas as células,\r\nexerce todas as funções abaixo, EXCETO:\r\n\\begin{choices}\r\n\\choice o controle de entrada e saída de substâncias.\r\n\\choice a adesão entre células contíguas.\r\n\\choice a formação de organelas internas.\r\n\\choice a produção de energia para realização de transporte ativo.\r\n\\CorrectChoice a manutenção da forma da célula.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "47"
-    }
-  },
-  {
-    "latex": "\\question Um cientista ao colocar células animais em água destilada,\r\nconstatou que as mesmas estouravam. Para que esse fenômeno ocorra é\r\nnecessário que a água destilada esteja:\r\n\\begin{choices}\r\n\\choice hipertônica, pois tem concentração menor que a das células animais;\r\n\\choice hipertônica, pois tem concentração maior que a das células animais;\r\n\\choice isotônica, pois tem concentração igual que a das células animais;\r\n\\choice hipotônica, pois tem concentração menor que a das células animais;\r\n\\CorrectChoice hipotônica, pois tem concentração maior que a das células animais.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "48"
-    }
-  },
-  {
-    "latex": "\\question Na composição química das células, um constituinte de\r\nextrema importância são os glicídios, também chamados de açúcares ou\r\ncarboidratos.\r\n\r\nAnalise as proposições com relação a estas moléculas.\r\n\r\nI. Algumas são a fonte primária de energia para as células, e outras atuam\r\ncomo reserva desta energia.\r\nII. Alguns glicídios são importantes para a formação dos ácidos nucleicos.\r\nIII. Como exemplo destas moléculas pode-se citar a glicose, o amido, o gli-\r\ncogênio e a celulose.\r\nIV. Além de função energética, elas podem ter papel estrutural em algumas\r\ncélulas.\r\n\\begin{choices}\r\n\\choice Somente as afirmativas I, II e III são verdadeiras.\r\n\\choice Somente as afirmativas I e III são verdadeiras.\r\n\\CorrectChoice Somente as afirmativas II e IV são verdadeiras.\r\n\\choice Somente as afirmativas III e IV são verdadeiras.\r\n\\choice Todas as afirmativas são verdadeiras.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "49"
-    }
-  },
-  {
-    "latex": "\\question A água tem uma importância fundamental na vida dos or-\r\nganismos vivos. Cerca de 70% da massa de nosso corpo é constituída por\r\nágua. Essa substância participa de inúmeras reações químicas nos seres\r\nvivos onde as células produzem substâncias necessárias à vida. O con-\r\nsumo diário de água é imprescindível para o funcionamento adequado de\r\nnosso corpo. Com relação à água e a sua importância, podemos afirmar\r\nque\r\n\\begin{choices}\r\n\\choice são chamados compostos hidrofóbicos aqueles capazes de serem dissolvidos\r\nem água.\r\n\\choice à medida que avançamos em idade, a porcentagem de água em nosso corpo\r\naumenta.\r\n\\CorrectChoice a água tem o importante papel de auxiliar na manutenção da temperatura\r\ncorporal.\r\n\\choice os músculos e os ossos apresentam, em sua composição a mesma porcenta-\r\ngem de água.\r\n\\choice as ligações de hidrogênio entre as moléculas de água não afetam suas pro-\r\npriedades.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "50"
-    }
-  },
-  {
-    "latex": "\\question Ao longo da evolução das plantas, estas também tiveram\r\nancestrais que partiram do ambiente aquático para a conquista do ambien-\r\nte terrestre. Qual foi o primeiro grupo de plantas que desenvolveu vasos\r\ncondutores, possibilitando a formação das florestas sobre o continente.\r\n\\begin{choices}\r\n\\choice algas;\r\n\\choice Briófitas\r\n\\CorrectChoice pteridófitas\r\n\\choice Gimnospermas\r\n\\choice Angiospermas\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "51"
-    }
-  },
-  {
-    "latex": "\\question O Reino Plantae (Mataphytha) pode ser dividido em dois\r\ngrandes grupos: plantas avasculares e vasculares. No grupo das plantas\r\navasculares, encontramos apenas um tipo de planta, que é classificada\r\ncomo:\r\n\\begin{choices}\r\n\\CorrectChoice Briófita.\r\n\\choice Pteridófita.\r\n\\choice Gimnosperma.\r\n\\choice Angiosperma.\r\n\\choice Monocotiledônea\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "52"
-    }
-  },
-  {
-    "latex": "\\question Tendo por base os graus de classificação e taxonomia dos\r\nanimais, uma familia compreende:\r\n\\begin{choices}\r\n\\choice vários reinos\r\n\\choice várias ordens\r\n\\choice várias classes\r\n\\choice vários gêneros\r\n\\CorrectChoice vários filos\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "53"
-    }
-  },
-  {
-    "latex": "\\question (Fuvest) Uma dificuldade enfrentada pelos pesquisadores\r\nque buscam uma vacina contra o vírus da Aids deve-se ao fato dele:\r\n\\begin{choices}\r\n\\choice Não possuir a enzima transcriptase reversa\r\n\\choice Alternar seu material genético entre DNA e RNA\r\n\\choice Ser um vírus de RNAr, para os quais é impossível fazer vacinas\r\n\\choice Ter seu material genético sofrendo constantes mutações\r\n\\CorrectChoice Possuir uma cápsula lipídica que impede a ação da vacina\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Biologia",
-      "assunto": "Biologia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "54"
-    }
-  },
-  {
-    "latex": "\\question (Mackenzie 2023) Uma rodovia liga as cidades A e B, cuja dis-\r\ntância entre elas é de 120 km. A velocidade máxima permitida nessa rodovia\r\nvaria conforme o trecho. Na primeira metade, o limite máximo de velocida-\r\nde é 100 km/h e na segunda metade, 80 km/h.\r\n\r\nSe uma pessoa fez esse percurso sempre na velocidade máxima permitida\r\nem cada trecho, então o tempo gasto para ir de A até B foi de\r\n\\begin{choices}\r\n\\choice 1 hora e 15 minutos\r\n\\choice 1 hora e 18 minutos\r\n\\choice 1 hora e 20 minutos\r\n\\CorrectChoice 1 hora e 21 minutos\r\n\\choice 1 hora e 25 minutos\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "55"
-    }
-  },
-  {
-    "latex": "\\question (Upf 2023) Henrique, um estudante brasileiro, ao ler o romance\r\nde ficção científica \"Fahrenheit 451\", de Ray Bradbury, identifica que um\r\ndos personagens da obra menciona que 451°F corresponde à temperatura\r\nem que o papel de que são feitos os livros entra em combustão. A escala de\r\ntemperatura utilizada no Brasil é a Celsius, o que significa que a temperatu-\r\nra mencionada pelo personagem na obra corresponde, aproximadamente,\r\na:\r\n\\begin{choices}\r\n\\choice 843,8 °C.\r\n\\choice 250,5 °C.\r\n\\choice 811,8 °C.\r\n\\CorrectChoice 232,7 °C.\r\n\\choice 178 °C.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "56"
-    }
-  },
-  {
-    "latex": "\\question (Unicentro 2021) Um pino de cobre é colocado, com pequena\r\nfolga, em um orifício existente numa chapa de alumínio \r\n\r\nConsidere os coeficientes de dilatação volumétrica do cobre e do alumínio\r\ne atribua V (verdadeiro) ou F (falso) às afirmativas a seguir.\r\n\r\n( ) Aquecendo-se apenas o pino, a folga diminuirá.\r\n( ) Aquecendo-se apenas a chapa, a folga aumentará.\r\n( ) Ambos sendo igualmente aquecidos, a folga diminuirá.\r\n( ) Ambos sendo igualmente aquecidos, a folga não irá se alterar.\r\n( ) Ambos sendo igualmente resfriados, a folga diminuirá.\r\n\r\nAssinale a alternativa que contém, de cima para baixo, a sequência correta.\r\n\\begin{choices}\r\n\\choice V, V, V, F, F.\r\n\\CorrectChoice V, V, F, F, V.\r\n\\choice V, F, F, F, V.\r\n\\choice F, V, F, V, V.\r\n\\choice F, F, V, V, F.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "57"
-    }
-  },
-  {
-    "latex": "\\question (Uea 2024) Um motorista faz uma viagem de carro por uma\r\nrodovia cuja velocidade máxima permitida é de 110 km/h. Durante a viagem,\r\no motorista repara que o velocímetro de seu carro está quebrado, o que im-\r\npede que a velocidade do automóvel seja monitorada ao longo do percurso.\r\nAo chegar a seu destino, o motorista percebe que levou 2,5 horas para fazer\r\na viagem.\r\nSabendo que o caminho percorrido foi de 300 km e que a rodovia possui\r\nmonitoramento de velocidade por toda sua extensão, o motorista\r\n\\begin{choices}\r\n\\CorrectChoice receberá uma multa, pois a velocidade média do carro foi de 120 km/h.\r\n\\choice receberá uma multa, pois a velocidade média do carro foi de 130 km/h.\r\n\\choice não receberá uma multa, pois a velocidade média do carro foi de 110 km/h.\r\n\\choice receberá uma multa, pois a velocidade média do carro foi de 150 km/h.\r\n\\choice não receberá uma multa, pois a velocidade média do carro foi de 90 km/h.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "58"
-    }
-  },
-  {
-    "latex": "\\question (Eam 2022) Um militar lotado na Delegacia da Capitania dos\r\nPortos de Angra dos Reis - RJ precisa levar um documento, em meio físico,\r\nao 1º Distrito Naval no centro da cidade do Rio de Janeiro - RJ. Partindo\r\nda Delegacia às 8h, após percorrer 120km, o referido militar faz uma para-\r\nda de 15 minutos, em uma loja de conveniência de um posto de gasolina,\r\npara fazer um lanche. De volta à estrada, percorre mais 40 km chegando\r\nao 1º Distrito Naval, no início do horário do almoço, às 12h. Determine a\r\nvelocidade escalar média do motorista durante o percurso da Delegacia da\r\nCapitania dos Portos de Angra dos Reis ao 1º Distrito Naval e assinale a\r\nopção correta.\r\n\\begin{choices}\r\n\\CorrectChoice 40 km/h\r\n\\choice 45 km/h\r\n\\choice 50 km/h\r\n\\choice 55 km/h\r\n\\choice 60 km/h\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "59"
-    }
-  },
-  {
-    "latex": "\\question Em relação aos conceitos elementares de onda, analise as afir-\r\nmativas abaixo e assinale V para as verdadeiras e \"F\" para as falsas.\r\n( ) Para uma onda que se propaga em um certo meio, quanto maior o com-\r\nprimento de onda, menor é a freqüência.\r\n( ) As cordas de uma harpa possuem comprimentos diferentes, para emiti-\r\nrem notas diferentes, e quanto maior o comprimento da corda, mais agudo\r\nserá o som.\r\n( ) Onda é uma perturbação do meio que transporta energia com transporte\r\nde matéria.\r\n( ) Uma onda sonora se propaga no ar (v_ar=340 m⁄(s)), cujo comprimento\r\nde onda é λ=34 m, tem uma frequência de 100 Hz.\r\n\r\nAssinale a alternativa que contêm a correta relação das afirmativas assina-\r\nlada como verdadeiras e falsas.\r\n\\begin{choices}\r\n\\choice F - V - V - V.\r\n\\choice V - F - V - F.\r\n\\choice F -V - F - V.\r\n\\choice V - V - V - F.\r\n\\CorrectChoice V - F - F - F.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "60"
-    }
-  },
-  {
-    "latex": "\\question (UESC-BA) Variando-se a freqüência com que se movimenta\r\numa corda tracionada, produzem-se ondas de frequências diversas.\r\nSabe-se, porém, que todas essas ondas, propagando-se em uma corda ho-\r\nmogênea sob tração constante, apresentam em comum\r\n\\begin{choices}\r\n\\choice o período, apenas.\r\n\\CorrectChoice a velocidade de propagação, apenas.\r\n\\choice o comprimento de onda, apenas.\r\n\\choice a amplitude e o período.\r\n\\choice o comprimento de onda, a amplitude e a velocidade de propagação.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "61"
-    }
-  },
-  {
-    "latex": "\\question Uma pequena esfera metálica isolada, denominada A, possui\r\n3.1011 prótons e 5.1011 elétrons. Essa esfera é colocada em contato com\r\noutra esfera isolada, denominada B, de mesmo material e dimensões, cuja\r\ncarga elétrica é 32 nC. As esferas são separadas após atingir o equilíbrio\r\neletrostático. Dados: carga elementar e = 1,6.10-19 C\r\n\r\nAnalise as afirmativas a seguir:\r\n\r\nI. A carga elétrica da esfera A antes do contato é -32 nC.\r\nII. Durante o procedimento do contato, a esfera B transfere prótons para a\r\nesfera A.\r\nIII. A carga elétrica das esferas após o contato será nula.\r\n\r\nEstão corretas as afirmativas\r\n\\begin{choices}\r\n\\choice I e II, apenas.\r\n\\CorrectChoice I e III, apenas.\r\n\\choice II e III, apenas.\r\n\\choice I, II e III.\r\n\\choice II apenas.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "62"
-    }
-  },
-  {
-    "latex": "\\question Por qual motivo ocorre a eletrização ilustrada na tirinha?\r\n\\begin{choices}\r\n\\choice Troca de átomos entre a calça e os pelos do gato.\r\n\\choice Diminuição do número de prótons nos pelos do gato.\r\n\\choice Criação de novas partículas eletrizadas nos pelos do gato.\r\n\\CorrectChoice Movimentação de elétrons entre a calça e os pelos do gato.\r\n\\choice Repulsão entre partículas elétricas da calça e dos pelos do gato.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Física",
-      "assunto": "Física",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "63"
-    }
-  },
-  {
-    "latex": "\\question (UTFPR) A alternativa que representa na região\r\nsombreada a operação (A ∪ B) - (A ∩ B) é:\r\n\\begin{choices}\r\n\\choice \r\n\\choice \r\n\\choice \r\n\\CorrectChoice \r\n\\choice \r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "64"
-    }
-  },
-  {
-    "latex": "\\question Em uma escola, 100 alunos praticam vôlei, 150 futebol,\r\n20 os dois esportes e 110 alunos, nenhum esporte. O número total de\r\nalunos é\r\n\\begin{choices}\r\n\\choice 230\r\n\\choice 300\r\n\\CorrectChoice 340\r\n\\choice 380\r\n\\choice 360\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "65"
-    }
-  },
-  {
-    "latex": "\\question (UECE) Dados os números racionais 3/7, 5/6, 4/9 e 3/5,\r\na divisão do menor deles pelo maior é igual a:\r\n\\begin{choices}\r\n\\choice 27/28\r\n\\choice 18/25\r\n\\CorrectChoice 18/35\r\n\\choice 20/27\r\n\\choice N. d. a.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "66"
-    }
-  },
-  {
-    "latex": "\\question (UEPB) Com relação ao movimento dos cometas\r\nno universo, sabemos que muitos deles passam pelo planeta Terra em\r\nperíodos de anos definidos. Os cometas A e B passam de 20 em 20 anos\r\ne 35 em 35 anos respectivamente, e suas últimas aparições na Terra\r\nocorreram em 1930. A próxima passagem dos dois pela Terra ocorrerá no\r\nano de:\r\n\\begin{choices}\r\n\\choice 2.065\r\n\\choice 2.060\r\n\\choice 2.075\r\n\\choice 2.072\r\n\\CorrectChoice 2.070\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "67"
-    }
-  },
-  {
-    "latex": "\\question O número de aulas de Física, Química e Inglês corres-\r\nponde a cinco doze avos do total de aulas que Marcela tem durante a se-\r\nmana. Sabendo que ela tem tantas aulas de Física quantas de Química, que\r\no número de aulas de Química é o dobro do número de aulas de Inglês e\r\nque ainda tem mais 21 aulas de outras matérias durante a semana, pode-se\r\nconcluir que Marcela tem, por semana, exatamente:\r\n\\begin{choices}\r\n\\choice 3 aulas de Física.\r\n\\choice 4 aulas de Inglês.\r\n\\choice 8 aulas de Química.\r\n\\CorrectChoice 6 aulas de Física.\r\n\\choice 6 aulas de Inglês.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "68"
-    }
-  },
-  {
-    "latex": "\\question (UFPR) Em uma pesquisa com 500 pessoas, 50% dos\r\nhomens entrevistados responderam \"sim\" a uma determinada pergunta,\r\nenquanto 60% das mulheres responderam \"sim\" à mesma pergunta. Saben-\r\ndo que, na entrevista, houve 280 respostas \"sim\" a essa pergunta, quantas\r\nmulheres a mais que homens foram entrevistadas?\r\n\\begin{choices}\r\n\\choice 40\r\n\\choice 70\r\n\\CorrectChoice 100\r\n\\choice 120\r\n\\choice 160\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "69"
-    }
-  },
-  {
-    "latex": "\\question (UNESP) O Ministério da Saúde e os estados brasileiros\r\ninvestigaram 3.670 casos suspeitos de microcefalia em todo o país. O bole-\r\ntim de 02 de fevereiro aponta que, desse total, 404 tiveram confirmação de\r\nmicrocefalia ou de outras alterações do sistema central, e outros 709 casos\r\nforam descartados. Anteriormente, no boletim de 23 de janeiro, havia 732\r\ncasos investigados e classificados como confirmados ou como descarta-\r\ndos.\r\n Disponível em: <https://agencia.fiocruz.br>. (Adapt.).\r\n\r\nDe acordo com os dados do texto, do boletim de 23 de janeiro para o de 02\r\nde fevereiro, o aumento no número decasos classificados, como confirma-\r\ndos ou como descartados, foi de, aproximadamente,\r\n\\begin{choices}\r\n\\CorrectChoice 52%\r\n\\choice 30%\r\n\\choice 66%\r\n\\choice 48%\r\n\\choice 28%\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "70"
-    }
-  },
-  {
-    "latex": "\\question Dada as matrizes A = eB= , então A +\r\nBt - B.At é igual a:\r\n\\begin{choices}\r\n\\CorrectChoice \r\n\\choice \r\n\\choice \r\n\\choice \r\n\\choice \r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "71"
-    }
-  },
-  {
-    "latex": "\\question Três termos consecutivos de uma progressão aritméti-\r\nca são assim representados:\r\n\r\n4x - 1, 3x + 6 e 6x + 1\r\n\r\nDetermine o valor do primeiro deles.\r\n\\begin{choices}\r\n\\choice 8\r\n\\choice 9\r\n\\choice 10\r\n\\CorrectChoice 11\r\n\\choice 12\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Matemática",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "72"
-    }
-  },
-  {
-    "latex": "\\question ‘o mito conta uma história sagrada; ele relata um acon-\r\ntecimento ocorrido no tempo primordial, o tempo fabuloso do princípio'\r\n[...], ou seja, é uma história que foi ou é sagrada para algum povo em deter-\r\nminada ocasião. [...] as sociedades arcaicas tinham no Mito \"uma ‘história\r\nverdadeira' e, ademais, extremamente preciosa por seu caráter sagrado,\r\nexemplar e significativo.\"\r\n RODA, Regiane Rafaela. Mitologia Dantesca. Disponível em: https://repositorio.unesp.br/\r\n bitstream/handle/11449/99092/roda_rr_me_sjrp.pdf?sequence=1. Acesso em: 16 mar. 2023.\r\n\r\nA partir da leitura do texto, é possível analisar que, para as sociedades an-\r\ntigas, os mitos eram tidos como\r\n\\begin{choices}\r\n\\choice um conto fantasioso.\r\n\\CorrectChoice uma narrativa do mundo.\r\n\\choice uma forma de enganação.\r\n\\choice uma produção de entretenimento.\r\n\\choice uma dominação religiosa e política.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Filosofia",
-      "assunto": "Filosofia",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "73"
-    }
-  },
-  {
-    "latex": "\\question Leia os textos.\r\n\r\nTexto I\r\nO mito é um tipo de conhecimento relacionado ao modo como uma deter-\r\nminada sociedade explica os aspectos fundamentais da sua existência: o\r\nsurgimento do mundo e de seus processos naturais, a origem de seu povo,\r\nbem como dos seus saberes, valores e suas práticas.\r\n CARNEIRO, Mari; ZANLORENZI, Rafael. Temas de Filosofia para o Ensino Médio. Curitiba:\r\n Aymará, 2009. p. 31\r\nTexto II\r\n\r\nSegundo julgo, diríamos que os poetas e prosadores proferem os maio-\r\nres erros acerca dos homens: que muitas pessoas injustas são felizes, e\r\ndesgraçadas as justas, e que é vantajoso cometer injustiça, se não fossem\r\ndescobertas, que a justiça é um bem nos outros, mas nociva para o próprio.\r\n PLATÃO. A República. Tradução de Pietro Nassetti. São Paulo: Martin Claret, 2000. p. 83\r\n\r\nAo comparar os textos, é possível constatar que ambos evidenciam que o\r\nsurgimento da Filosofia ocorreu\r\n\\begin{choices}\r\n\\choice para respaldar racionalmente as explicações dos fenômenos naturais dadas\r\npor mitos.\r\n\\choice pelas narrativas simbólicas que representam a necessidade humana acerca\r\nde sua origem.\r\n\\choice ao abandonar o raciocínio rigoroso que fundamentava as narrativas mitológi-\r\ncas.\r\n\\choice com a busca da explicação racional para a realidade que cercava o homem\r\ngrego.\r\n\\CorrectChoice baseada em tradições que estavam enraizadas nas práticas destinadas aos\r\ndeuses.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Filosofia",
-      "assunto": "Filosofia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "74"
-    }
-  },
-  {
-    "latex": "\\question \"Seja como termo, seja como conceito, a filosofia é consi-\r\nderada pela quase totalidade dos estudiosos como uma criação própria do\r\ngênio dos gregos. Quem não levar isso em conta não poderá compreender\r\npor que, sob o impulso dos gregos, a civilização ocidental tomou uma dire-\r\nção completamente diferente da oriental\".\r\n ANTISERI, Dario e REALE, Giovanni. História da Filosofia, São Paulo: Paulus, 2018, p. 11.\r\n\r\nO declínio do mito na Grécia Antiga, de acordo com o pensamento apresen-\r\ntado por Antiseri e Reale,\r\n\\begin{choices}\r\n\\CorrectChoice buscavam seu sentido na vida pública principalmente, na qual os debates\r\nargumentativos eram orientados por princípios racionais, fórmulas e vocabulário\r\npróprios.\r\n\\choice os gregos foram responsáveis pelo surgimento da filosofia que permitiu à sua\r\naproximação das culturas orientais.\r\n\\choice ocupava-se dos mitos e deles se serviam para orientar a vida religiosa dos\r\nhomens gregos.\r\n\\choice valorizava os argumentos que são acessíveis aos cidadãos se aproximam das\r\nfórmulas religiosas que eram exclusivas dos iniciados nos mistérios sagrados\r\n\\choice provocou seu completo abandono tornando a filosofia como uma nova expres-\r\nsão religiosa.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Filosofia",
-      "assunto": "Filosofia",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "75"
-    }
-  },
-  {
-    "latex": "\\question Quando esteve no Egito, certamente Tales pôde observar\r\nno delta do Nilo como os campos inundados se tornavam férteis depois\r\nque as águas recuavam. Talvez também tenha visto como do nada surgem\r\nsapos e rãs e como o campo fica verde após a chuva. É portanto provável\r\nque Tales tenha especulado como a água pode se transformar em gelo e\r\nvapor - e depois retornar à forma líquida.\r\n GAARDER, Jostein. Os filósofos da natureza. In: ____. O mundo de Sofia: romance da histó-\r\n ria da filosofia. São Paulo: Companhia das Letras, 2012.\r\nAs experiências citadas no texto são atribuídas à Tales de Mileto com o\r\nintuito de\r\n\\begin{choices}\r\n\\CorrectChoice justificar sua teoria sobre a arché.\r\n\\choice demonstrar seu apelo aos sentidos.\r\n\\choice enfatizar sua rejeição à cosmologia.\r\n\\choice comprovar seu teorema matemático.\r\n\\choice refutar sua concepção acerca da physis.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Filosofia",
-      "assunto": "Filosofia",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "76"
-    }
-  },
-  {
-    "latex": "\\question Leia o trecho da canção Como uma onda, do artista Lulu\r\nSantos, e associe-o às questões metafísicas da filosofia antiga.\r\n\r\nComo uma onda\r\nNada do que foi será\r\nDe novo do jeito que já foi um dia\r\nTudo passa, tudo sempre passará\r\n\r\n SANTOS, Lulu; MOTTA, Nelson. Como uma onda. O Ritmo do momento. Universal Music\r\n Publishing Group. 1983.\r\nAnalisa-se que a ideia de que \"tudo passa, tudo sempre passará\" remete à\r\ntese do mobilismo de qual filósofo pré-socrático\r\n\\begin{choices}\r\n\\CorrectChoice Heráclito.\r\n\\choice Pitágoras.\r\n\\choice Aristóteles.\r\n\\choice Parmênides.\r\n\\choice Empédocles.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Filosofia",
-      "assunto": "Filosofia",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "77"
-    }
-  },
-  {
-    "latex": "\\question Entre as principais características que diferenciam a Pré\r\nModernidade (séculos XIV ao XVIII) e a Modernidade (Século XVIII ao XX)\r\npodemos destacar:\r\n\\begin{choices}\r\n\\choice A pré-modernidade pode ser compreendida por uma não separação entre es-\r\npaço e tempo, pois, em sociedades com essa característica a divisão social do\r\ntrabalho colocava-se como característica principal.\r\n\\choice Uma sociedade com características pré-modernas segundo as ciências sociais\r\né calcada em valores tradicionais, tais como o costume e a providência divina, ao\r\ncontrário de uma sociedade moderna, essa consolida-se pelo trabalho, disciplina e\r\na ciência.\r\n\\choice A sociedade moderna nasce a partir do momento que a Europa Ocidental pas-\r\nsa por uma crise moral e de valores no século XVIII.\r\n\\CorrectChoice A Modernidade pode ser encarada como um processo que se fez de forma\r\nharmônica nas sociedades ocidentais.\r\n\\choice O discurso da modernidade não pode ser compreendido essencialmente pelas\r\nconsequências sociais das revoluções burguesas, pelo avanço da ciência e pela\r\ncomplexidade entre os sujeitos.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Sociologia",
-      "assunto": "Sociologia",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "78"
-    }
-  },
-  {
-    "latex": "\\question Segundo Anthony Giddens, o nascimento das ciências\r\nsociais pode ser compreendido pelo viés de transição de um modelo de\r\nsociedade (Pré- Modernidade), para um modelo mais complexo de socieda-\r\nde (Modernidade). Esse período de transição se fez essencialmente pelo\r\ncontexto histórico das:\r\n\\begin{choices}\r\n\\choice Rebeliões urbanas por melhores condições de vida no século XVIII.\r\n\\choice Pela transição do Estado providencialista para o Estado Laico.\r\n\\choice Pela dupla Revolução (Industrial e Francesa), ambas, Revoluções Burguesas.\r\n\\choice Pela complexidade da migração campo- cidade nas cidades inglesas e fran-\r\ncesas no século XVIII.\r\n\\CorrectChoice Pela resistência da velha ordem (absolutista) a aderir os novos valores bur-\r\ngueses pós Revolução Francesa.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Sociologia",
-      "assunto": "Sociologia",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "79"
-    }
-  },
-  {
-    "latex": "\\question Sobre as correntes sociológicas que caracterizaram o\r\nsurgimento da sociologia e estruturaram o conhecimento social ao longo\r\ndo século XIX, podemos afirmar:\r\n\\begin{choices}\r\n\\choice Todas as correntes sociais, tais como positivismo, funcionalismo e marxismo\r\nsão isentas de uma ideologia para a compreensão do mundo.\r\n\\choice Existiram correntes sociológicas mais conservadoras, ou de manutenção do\r\nstatus quo, tais como o Positivismo Comteano, mas, também correntes de trans-\r\nformação social, tais como o Socialismo Científico.\r\n\\choice A Sociologia Comteana, apesar de calcada na ciência, na razão humana, va-\r\nlores essencialmente modernos, é a favor da união Estado e Igreja, a partir do\r\nmomento que critica a laicização social.\r\n\\CorrectChoice O Positivismo pode ser compreendido como uma corrente social progressista.\r\n\\choice O Positivismo Comteano influenciou demasiadamente outras correntes de\r\npensamento, como o socialismo científico de Karl Marx e Friendrich Engels.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Sociologia",
-      "assunto": "Sociologia",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "80"
-    }
-  },
-  {
-    "latex": "\\question 4- Sobre a primeira corrente sociológica, o Positivismo,\r\nassinale a alternativa correta.\r\n\\begin{choices}\r\n\\choice Trata-se de uma corrente sociológica aberta as questões culturais, não se\r\npresta somente ao estudo da evolução das sociedades humanas ao longo do\r\ntempo.\r\n\\choice O Positivismo pode ser compreendido como uma corrente pouco antropoló-\r\ngica, (pois não possui uma grande preocupação com os fenômenos culturais) e\r\nmais física, pois, busca analisar a história da humanidade dentro da perspectiva\r\ncientificista, conceito que compreende a sociedade dentro da linearidade de seu\r\ndesenvolvimento histórico.\r\n\\choice Para Comte, nem todas as sociedades humanas buscam o progresso.\r\n\\CorrectChoice Para haver progresso tem que haver ordem, esse lema positivista de Auguste\r\nComte pode ser compreendido dentro de uma perspectiva política democrática.\r\n\\choice Para o positivismo, o conhecimento racional, científico e experimentalista de-\r\nveria ser institucionalizado assim como uma religião, o que acabou acontecendo,\r\ntodavia, sem excluir a divindade e sobrenatural no que Comte denominou de\r\n\"RELIGIÃO DA HUMANIDADE\".\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Sociologia",
-      "assunto": "Sociologia",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "81"
-    }
-  },
-  {
-    "latex": "\\question Em relação à sequência correta de adjetivos possessivos,\r\nassinale:\r\n\r\nMY - THEIR - HER - OUR - YOUR - HIS\r\n\\begin{choices}\r\n\\choice MEU - DELES/DELAS - NOSSO - DELA - SEU - DELE\r\n\\choice MEU - DELES/DELAS - DELE - NOSSO - SEU - DELA\r\n\\CorrectChoice MEU - DELES/DELAS - DELA - NOSSO - SEU - DELE\r\n\\choice MEU - DELES/DELAS - DELA - NOSSO - DELE - SEU\r\n\\choice SEU - DELES/DELAS - DELA - NOSSO - MEU - DELE\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "82-I"
-    }
-  },
-  {
-    "latex": "\\question Segundo o texto abaixo, é correto afirmar:\r\n\r\n\"Anxiety and depression occur in both genders, but by the teenage years,\r\ngirls are much more at risk than boys. Before puberty, the prevalence of\r\nmood disorders is about the same in boys and girls-3 to 5 percent. But by\r\nmid-adolescence girls are more than twice as likely to be diagnosed with a\r\nmood disorder as boys, with the prevalence at adult levels, 14 to 20 percent.\r\nWhy such a big disparity in mood disorders? We know from looking at brain\r\nscans that there are differences in the way girls and boys process emotio-\r\nnal stimuli. Girls mature, in terms of their emotional recognition, faster than\r\nboys-and that sensitivity could make them more vulnerable to depression\r\nand anxiety. […]\r\n https://childmind.org/article/mood-disorders-and-teenage-girls/\r\n\\begin{choices}\r\n\\choice Antes da puberdade, a prevalência de desordens de humor é a mesma para\r\nmeninos e meninas - 3% a 5%. Mas no meio da adolescência as meninas são\r\nmenos do que duas vezes suscetíveis a serem diagnosticadas com uma desor-\r\ndem de humor em relação aos meninos.\r\n\\CorrectChoice Ansiedade e depressão ocorrem em ambos os gêneros, mas na adolescência,\r\nas meninas estão muito mais em risco que os meninos.\r\n\\choice No final da adolescência meninas são mais do que duas vezes suscetíveis a\r\nserem diagnosticadas com uma desordem de humor em relação aos meninos.\r\n\\choice Sabemos ao olhar para gráficos de atividades cerebrais que não existem di-\r\nferenças nas formas que meninas e meninos processam estímulos emocionais.\r\n\\choice Meninos amadurecem mais rápido que as meninas em termos de seus reco-\r\nnhecimentos emocionais.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "83-I"
-    }
-  },
-  {
-    "latex": "\\question Assinale a alternativa composta exclusivamente por verbos\r\nno formato INFINITIVO da Língua Inglesa:\r\n\\begin{choices}\r\n\\choice To Mexico, To Georgia, To Brazil, To Italy, To Russia\r\n\\choice Speak, work, dance, try, go\r\n\\CorrectChoice To speak, to work, to dance, to try, to go\r\n\\choice I speak, you work, she dances, he tries, we go\r\n\\choice Spoke, worked, danced, tried, went\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "84-I"
-    }
-  },
-  {
-    "latex": "\\question Assinale a alternativa correta:\r\n\\begin{choices}\r\n\\choice Para as pessoas que falam Inglês, as características dos objetos (coisas)\r\nsempre os sucedem.\r\n\\choice Na língua inglesa, os adjetivos não existem.\r\n\\CorrectChoice Para as pessoas que falam Inglês, as características das coisas sempre as\r\nprecedem.\r\n\\choice Na língua inglesa, as características das coisas são ditas depois delas, assim\r\ncomo na língua portuguesa.\r\n\\choice Para as pessoas que falam Inglês, os substantivos (coisas) vêm antes dos\r\nadjetivos (características).\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "85-I"
-    }
-  },
-  {
-    "latex": "\\question Ao substituir a frase abaixo com o sujeito ROBERT pelo sujeito\r\nYOU, como ficaria a sentença atendendo aos padrões da Língua Inglesa:\r\n\r\nRobert plays video games on Saturdays.\r\n\\begin{choices}\r\n\\choice Robert play video games on Saturdays.\r\n\\choice You plays videos games on Saturdays.\r\n\\choice Robert you plays videos games on Saturdays.\r\n\\CorrectChoice You play video games on Saturdays.\r\n\\choice You playes video games on Saturdays.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "D",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "86-I"
-    }
-  },
-  {
-    "latex": "\\question Ao reescrever a frase abaixo e substituir o sujeito THEY pelo\r\nsujeito TIM e o substantivo UMBRELLA pelo substantivo UNICORN, como\r\nficaria a sentença atendendo aos padrões da Língua Inglesa:\r\n\r\nThey have an umbrella as a logo.\r\n\\begin{choices}\r\n\\choice They have a unicorn as a logo.\r\n\\choice Tim have a unicorn as a logo.\r\n\\choice Tim have an umbrella as a logo.\r\n\\choice Tim has an unicorn as a logo.\r\n\\CorrectChoice Tim has a unicorn as a logo.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "87-I"
-    }
-  },
-  {
-    "latex": "\\question Ao reescrever a frase abaixo e substituir o sujeito CHARLIE\r\npelo sujeito SHE e o substantivo UNIVERSITY pela locução substantiva\r\nUNION OF STUDENTS, como ficaria a sentença atendendo aos padrões da\r\nLíngua Inglesa:\r\n\r\nCharlie studies in a university.\r\n\\begin{choices}\r\n\\CorrectChoice She studies in a union of students.\r\n\\choice Charlie studies in an union of students.\r\n\\choice Charlie studies in a union of students.\r\n\\choice She study in a union of students.\r\n\\choice She studies in an union of students.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "88-I"
-    }
-  },
-  {
-    "latex": "\\question Assinale a alternativa composta pelo uso correto do artigo\r\nindefinido e seu respectivo substantivo:\r\n\\begin{choices}\r\n\\choice Mary needs a coffee.\r\n\\choice Mary needs a water.\r\n\\CorrectChoice Mary needs a pen.\r\n\\choice Mary needs an air.\r\n\\choice Mary needs a fire.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "89-I"
-    }
-  },
-  {
-    "latex": "\\question O substantivo que substitui de forma correta o substantivo\r\npresente na frase abaixo sem modificar as demais palavras é:\r\n\r\nShe has money on her.\r\n\\begin{choices}\r\n\\choice Gun\r\n\\CorrectChoice Food\r\n\\choice Axe\r\n\\choice Knife\r\n\\choice Taser\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Inglês",
-      "assunto": "Inglês",
-      "gabarito": "B",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "90-I"
-    }
+    ]
   },
   {
     "isSet": true,
-    "baseLatex": "% ATENÇÃO: texto base parcialmente recuperado — verificar e completar no PDF original antes de importar\r\n\r\n\\textbf{UNA LECCIÓN DE VIDA}\r\n\r\nCierta leyenda cuenta que estaban dos niños patinando encima de un lago congelado, cuando de repente el hielo se rompió y uno de ellos cayó al agua helada. El otro niño, desesperado, tomó una piedra y comenzó a golpear el hielo con todas sus fuerzas hasta que logró romperlo y salvar a su amigo.\r\n\r\nCuando llegaron los bomberos y vieron lo que había pasado, preguntaron: \"¿Cómo lo hiciste? Es imposible que con las manos tan pequeñas hayas podido romper un hielo tan grueso.\"\r\n\r\nEn ese momento apareció un anciano y los bomberos le preguntaron: \"¿Cómo crees tú que pudo hacerlo?\" El anciano respondió: \"Es que no había nadie para decirle que no sería capaz de hacerlo.\"",
+    "baseLatex": "{\ntipo: Discursiva\ndisciplina: Geografia\nassunto: Geografia Econômica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"38\"\n}\nOs polos apresentados no cartograma representam alguns centros de excelência da pesquisa e produção no país, associados às tecnologias de ponta e de informação. São também chamados de \"tecnopolos\". Esse termo foi cunhado no início do século XX nos EUA, e é fundamental para a consolidação de uma das regiões industriais mais importantes no mundo ocidental, o Vale do Silício (Califórnia, EUA).\n\n[[IMG_PENDENTE: figura-q38]]\n\nCom base no cartograma e nas explicações acima, apresente",
     "items": [
       {
-        "latex": "El texto narra una lección de vida y de él podemos afirmar que:\r\n\\begin{choices}\r\n\\choice no es bueno confiar en los demás.\r\n\\choice no se debe patinar en el hielo cuando está muy frio.\r\n\\choice un buen bombero es aquel que llega rápido al lugar de la emergencia.\r\n\\choice todos los ancianos son sabios.\r\n\\CorrectChoice todo es posible cuando se cree en uno mismo, aun en las peores circunstancias.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "gabarito": "E"
-        }
+        "latex": "{\na) duas condições socioespaciais necessárias para a formação de um tecnopolo em um país.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       },
       {
-        "latex": "Elige una de las alternativas para completar el espacio de la siguiente frase:\r\n\r\nSi hoy es jueves, entonces ___________ fue martes.\r\n\\begin{choices}\r\n\\CorrectChoice hace dos dias\r\n\\choice hace tres días\r\n\\choice ayer\r\n\\choice antes de hoy\r\n\\choice mañana\r\n\\end{choices}\r\n\r\n% OMITIDA: Q84-E (Espanhol) — requer figura de diálogo entre personagens (tratamiento formal/informal)",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "A",
-        "meta": {
-          "gabarito": "A"
-        }
+        "latex": "{\nb) dois problemas estruturais brasileiros para que o país ainda tenha tão poucos tecnopolos.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Espanhol",
-      "assunto": "Espanhol",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "82-E",
-      "items": [
-        {
-          "gabarito": "E"
-        },
-        {
-          "gabarito": "A"
-        }
-      ]
-    }
-  },
-  {
-    "latex": "\\question Completa la frase con la alternativa correcta:\r\n \"Gizzi es el __________ de la modelo cuyo _________ es Gisele y cuyo\r\n_________ es Bundchen\".\r\n\\begin{choices}\r\n\\choice apellido, nombre, sobrenombre;\r\n\\choice apellido, sobrenombre, nombre.\r\n\\CorrectChoice sobrenombre, nombre, apellido.\r\n\\choice nombre, sobrenombre, apellido.\r\n\\choice sobrenombre, apellido, nombre.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Espanhol",
-      "assunto": "Espanhol",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "85-E"
-    }
-  },
-  {
-    "latex": "\\question 5. Señala los pares correctos:\r\n\r\n1. Gris cinza\r\n2. Morado roxo\r\n3. Rojo roxo\r\n4. Crema bege\r\n\\begin{choices}\r\n\\choice 1 2\r\n\\choice 2 3\r\n\\CorrectChoice 1 2 4\r\n\\choice 2 3 4\r\n\\choice 1 2 3 4\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Espanhol",
-      "assunto": "Espanhol",
-      "gabarito": "C",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "86-E"
-    }
-  },
-  {
-    "latex": "\\question Lee las frases y luego marca la alternativa correcta:\r\n\r\n I. ¿Quieres viajar con nosotros?\r\n II. Tú puedes estudiar siempre más.\r\n III. ¿Cómo se llama usted?\r\n IV. Señorita Ramírez, puede pasar.\r\n\\begin{choices}\r\n\\choice en las frases l y ll el tratamiento es formal y en las frases lll y lV informal.\r\n\\choice en las frases l y lll el tratamiento es formal y en las ll y lV informal.\r\n\\choice en las frases ll y lV el tratamiento es formal y en las l y lll informal.\r\n\\choice en la frase l el tratamiento es formal y en las ll, lll y lV informal.\r\n\\CorrectChoice en las frases l, ll el tratamiento es informal y en las lll y lV formal.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Espanhol",
-      "assunto": "Espanhol",
-      "gabarito": "E",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "87-E"
-    }
+    ]
   },
   {
     "isSet": true,
-    "baseLatex": "QUEMAR LAS NAVES\r\n\r\nAntes del año 335 a.C. al llegar a las costas de Fenicia, Alejandro Magno\r\ndebió enfrentar una de sus más grandes batallas. Al desembarcar,\r\ncomprendió que los soldados enemigos superaban en cantidad a su gran\r\nejército. Sus hombres estaban atemorizados y no encontraban motivación\r\npara enfrentarse y combatir; habían perdido la fe y se daban por derrotados.\r\nAparentemente el temor había acabado con aquellos guerreros invencibles.\r\nEntonces Alejandro Magno hizo desembarcar a todos sus hombres en la\r\ncosta enemiga y dio la orden de quemar todas sus naves. Mientras los barcos\r\nse consumían en llamas y se hundían en el mar, reunió a sus hombres y les\r\ndijo: \"Observen como se queman los barcos... Esa es Ia única razón por la\r\nque debemos vencer, porque si no ganamos, no podremos regresar, ni ver\r\nnuevamente a nuestras familias. Y para regresar sólo hay un camino, por\r\nmar... Debemos salir victoriosos porque Ia única forma posible es hacerlo\r\nen los barcos de nuestros enemigos\".",
+    "baseLatex": "{\ntipo: Discursiva\ndisciplina: História\nassunto: Guerra Fria\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"39\"\n}\nNo dia 5 de março de 1946, o primeiro-ministro britânico Winston Churchill proferiu um discurso em Fulton, no Missouri (EUA), em que usou a expressão \\textit{Iron Curtain}, ou \"Cortina de Ferro\". O chefe de governo britânico afirmou que \"de Stetin, no (mar) Báltico, até Trieste, no (mar) Adriático, uma Cortina de Ferro desceu sobre o continente\". Considerando os conhecimentos sobre o período",
     "items": [
       {
-        "latex": "De acuerdo con el texto las naves se quemaron porque:\r\n\\begin{choices}\r\n\\choice Alejandro había perdido una gran batalla.\r\n\\choice Sus hombres las incendiaron\r\n\\CorrectChoice Alejandro quiso motivar a sus hombres a vencer la batalla.\r\n\\choice Alejandro se sintió derrotado.\r\n\\choice los soldados enemigos las incendiaron.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "gabarito": "C",
-          "tags": []
-        }
+        "latex": "{\na) EXPLIQUE o que o termo \"Cortina de Ferro\" significava nesse contexto.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       },
       {
-        "latex": "Según el texto, Alejandro y sus hombres volverán a sus\r\nhogares\r\n\\begin{choices}\r\n\\choice en sus propias naves si pierden la batalla.\r\n\\choice por tierra caminando.\r\n\\choice en sus barcos, pero ganando la batalla.\r\n\\CorrectChoice al ganar la batalla y en las naves de sus enemigos.\r\n\\choice en los barcos de sus enemigos si pierden la batalla.\r\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "gabarito": "D",
-          "tags": []
-        }
+        "latex": "{\nb) CITE dois países que ficavam no interior dessa \"Cortina de Ferro\".\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
       }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Espanhol",
-      "assunto": "Espanhol",
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "88-E",
-      "items": [
-        {
-          "gabarito": "C",
-          "tags": []
-        },
-        {
-          "gabarito": "D",
-          "tags": []
-        }
-      ]
-    }
+    ]
   },
   {
-    "latex": "\\question Lee a continuación la siguiente relación de palabras:\r\n\r\n calzón pantalón falda pantalón corto\r\n corbata calzoncillo gorro paraguas\r\n\r\n¿Cuál es el artículo o accesorio que no se menciona en la relación anterior:\r\n\\begin{choices}\r\n\\CorrectChoice lenço\r\n\\choice guardachuva\r\n\\choice calcinha\r\n\\choice calção\r\n\\choice boné\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Espanhol",
-      "assunto": "Espanhol",
-      "gabarito": "A",
-      "tags": [],
-      "fonte": "original",
-      "ano": 2024,
-      "numero": "90-E"
-    }
+    "isSet": true,
+    "baseLatex": "{\ntipo: Discursiva\ndisciplina: História\nassunto: História do Brasil Colonial\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"40\"\n}\n\"Os nossos tupinambás muito se admiram dos franceses e outros estrangeiros se darem ao trabalho de ir buscar o seu arabutan. Uma vez um velho perguntou-me: Por que vindes vós outros, maírs e peros (franceses e portugueses) buscar lenha de tão longe para vos aquecer? Não tendes madeira em vossa terra? Respondi que tínhamos muita, mas não daquela qualidade, e que não a queimávamos, como ele o supunha, mas dela extraíamos tinta para tingir, tal qual o faziam eles com os seus cordões de algodão e suas plumas.\"\n\n\\credits{Jean de Léry, \\textit{Viagem à terra do Brasil} [1578]. São Paulo: Conselho Nacional da Reserva da Biosfera da Mata Atlântica, 1998, p. 37.}",
+    "items": [
+      {
+        "latex": "{\na) EXPLIQUE uma das motivações iniciais dos europeus na conquista do Novo Mundo.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
+      },
+      {
+        "latex": "{\nb) DESCREVA o sistema de trabalho que possibilitou a exploração de pau-brasil pelos europeus.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
+      }
+    ]
+  },
+  {
+    "isSet": true,
+    "baseLatex": "{\ntipo: Discursiva\ndisciplina: História\nassunto: História da África\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"41\"\n}\n[[IMG_PENDENTE: figura-q41]]\n\nO mapa acima mostra as potências europeias que dominaram os territórios e implementaram os sistemas coloniais na África a partir do final do século XIX. Com relação à colonização do continente africano, faça o que se pede a seguir.",
+    "items": [
+      {
+        "latex": "{\na) EXPLIQUE os interesses que levaram os países europeus a efetivarem a colonização da África no final do século XIX.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
+      },
+      {
+        "latex": "{\nb) INDIQUE duas ações empregadas pelos europeus para colonizar os territórios africanos.\n}",
+        "tipo": "Discursiva",
+        "gabarito": null
+      }
+    ]
   }
 ]

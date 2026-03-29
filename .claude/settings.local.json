@@ -44,7 +44,13 @@
       "Bash(where curl:*)",
       "Read(//c/Program Files/**)",
       "Read(//c/Program Files \\(x86\\)/**)",
-      "Bash(node scripts/fix-hifenizacao.js)"
+      "Bash(node scripts/fix-hifenizacao.js)",
+      "Bash(pdftotext -layout \"SIMULADO-2-SEMI-2019.pdf\" \"_lista21_pdf.txt\")",
+      "Bash(pdftotext -enc UTF-8 \"SIMULADO-2-SEMI-2019.pdf\" \"_lista21_pdf.txt\")",
+      "Bash(grep -c \"^[0-9]\\\\{1,2\\\\}\\\\.\" c:/Projetos/pmeditor/scripts/listas/diversas/_lista21_pdf.txt)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(*)"
     ]
   }
 }

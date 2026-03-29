@@ -562,6 +562,14 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
       state,
       nodeViews: { math_inline: (n) => new MathInlineView(n) },
       handleDOMEvents: {
+        keydown(_view, e) {
+          if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+            e.preventDefault();
+            setMathDialog({ open: true, mode: "new", pos: null, latex: "" });
+            return true;
+          }
+          return false;
+        },
         dblclick(view, e) {
           const hit = view.posAtCoords({
             left: (e as MouseEvent).clientX,
@@ -930,7 +938,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           view={view}
           metadata={meta}
           onOpenMath={() =>
-            setMathDialog({ open: true, mode: "new", pos: null, latex: "\\frac{a}{b}" })
+            setMathDialog({ open: true, mode: "new", pos: null, latex: "" })
           }
           onNew={handleNew}
           onRecover={handleRecover}

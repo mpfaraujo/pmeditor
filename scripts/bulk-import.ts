@@ -20,6 +20,7 @@
  *   --autor-id   <str>   Google ID do autor
  *   --autor-nome <str>   Nome do autor
  *   --com-imagens        Inclui questões com \includegraphics (padrão: pula)
+ *   --so-imagens         Importa APENAS questões com \includegraphics
  */
 
 import { readFileSync, existsSync } from "fs";
@@ -32,6 +33,7 @@ import {
   buildQuestionNodeLatex,
   extractLatexAnswerKey,
 } from "../src/components/editor/plugins/smartPastePlugin";
+import { normalizeDisciplina, normalizeAssunto } from "../src/data/assuntos";
 
 // ─── Tipos (copiados de importar/page.tsx e questions.ts) ────────────────────
 
@@ -122,7 +124,7 @@ function normalizeGabaritoForTipo(tipo: string): any {
 }
 
 function hasImage(latex: string): boolean {
-  return /\\includegraphics/.test(latex);
+  return /\\includegraphics|\\begin\{tabular/.test(latex);
 }
 
 /** Lê .env.local e retorna um map de variáveis */
@@ -244,8 +246,8 @@ function buildInitial(
     createdAt: now,
     updatedAt: now,
     tipo: item.tipo,
-    disciplina: m?.disciplina || batch.disciplina,
-    assunto: m?.assunto || batch.assunto || undefined,
+    disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina),
+    assunto: normalizeAssunto(m?.assunto || batch.assunto || "") || undefined,
     dificuldade,
     gabarito: gabarito ?? normalizeGabaritoForTipo(item.tipo),
     tags,
@@ -306,8 +308,9 @@ function buildInitialSet(
         : { kind: "essay" };
 
     const stmtNode = parseToStatementNode(it.latex);
+    const itemAssunto = normalizeAssunto(it.meta?.assunto ?? "") || null;
     return schema.nodes.question_item.create(
-      { answerKey, assunto: it.meta?.assunto ?? null, tags: it.meta?.tags ?? null },
+      { answerKey, assunto: itemAssunto, tags: it.meta?.tags ?? null },
       [stmtNode]
     );
   });
@@ -335,9 +338,9 @@ function buildInitialSet(
     createdAt: now,
     updatedAt: now,
     tipo: m?.tipo ?? "Discursiva",
-    disciplina: m?.disciplina || batch.disciplina,
+    disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina),
     dificuldade,
-    assunto: m?.assunto || item.items[0]?.meta?.assunto || batch.assunto || undefined,
+    assunto: normalizeAssunto(m?.assunto || item.items[0]?.meta?.assunto || batch.assunto || "") || undefined,
     gabarito: null,
     tags: mergedTags,
     source,
@@ -381,6 +384,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const dryRun = args.get("dry-run") === true;
   const includeImages = args.get("com-imagens") === true;
+  const onlyImages = args.get("so-imagens") === true;
 
   // Token e API base
   const envLocal = loadEnvLocal();
@@ -436,20 +440,23 @@ async function main() {
 
   const queue: QueueEntry[] = JSON.parse(readFileSync(queuePath, "utf-8"));
 
-  // Filtra questões com imagem (a menos que --com-imagens)
-  const filtered = includeImages
+  // Filtra por presença de imagem
+  const entryHasImage = (entry: QueueEntry) =>
+    "isSet" in entry && entry.isSet
+      ? hasImage(entry.baseLatex) || entry.items.some(it => hasImage(it.latex))
+      : hasImage((entry as ImportItem).latex);
+
+  const filtered = onlyImages
+    ? queue.filter(entryHasImage)
+    : includeImages
     ? queue
-    : queue.filter(entry => {
-        if ("isSet" in entry && entry.isSet) {
-          return !hasImage(entry.baseLatex) && entry.items.every(it => !hasImage(it.latex));
-        }
-        return !hasImage((entry as ImportItem).latex);
-      });
+    : queue.filter(entry => !entryHasImage(entry));
 
   const skipped = queue.length - filtered.length;
 
   console.log(`\n📋 Fila: ${queue.length} entradas`);
-  if (skipped > 0) console.log(`   ⏭  ${skipped} puladas por terem imagens`);
+  if (onlyImages) console.log(`   🖼  Modo --so-imagens: apenas questões com \\includegraphics`);
+  else if (skipped > 0) console.log(`   ⏭  ${skipped} puladas por terem imagens`);
   console.log(`   ✉  ${filtered.length} para importar`);
   if (dryRun) console.log("   🔍 DRY RUN — nada será enviado\n");
   else console.log(`   🌐 API: ${apiBase}\n`);
@@ -529,8 +536,8 @@ async function main() {
       console.log(`     #${e.idx} ${e.id}: ${e.error}`);
     }
   }
-  if (skipped > 0) {
-    console.log(`  ⏭  ${skipped} puladas (têm imagens — use --com-imagens para incluir)`);
+  if (!onlyImages && skipped > 0) {
+    console.log(`  ⏭  ${skipped} puladas (têm imagens — use --com-imagens para incluir, --so-imagens para só elas)`);
   }
   console.log();
 }

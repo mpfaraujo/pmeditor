@@ -92,8 +92,13 @@ function looksLikePdfText(raw: string) {
 function normalizePdfText(input: string) {
   let s = normalizePastedText(input);
 
-  // de-hifenização: "exem-\nplo" => "exemplo"
-  s = s.replace(/([A-Za-zÀ-ÿ])-[ \t]*\n[ \t]*([A-Za-zÀ-ÿ])/g, "$1$2");
+  // Normaliza hífens alternativos (soft hyphen \u00AD, hífen não-quebrável \u2011)
+  s = s.replace(/[\u00AD\u2011]/g, "-");
+
+  // De-hifenização: "exem-\nplo" => "exemplo"
+  // Cobre: letra minúscula/maiúscula/acentuada antes do hífem, qualquer letra depois
+  // (só junta se a continuação começa com minúscula — indica quebra de palavra, não composto)
+  s = s.replace(/([A-Za-zÀ-ÿ])-[ \t]*\n[ \t]*([a-zà-ÿ])/g, "$1$2");
 
   const lines = s.split("\n");
 
@@ -537,7 +542,7 @@ function stripLatexQuestionCommand(stmt: string) {
   return stmt
     .replace(/\\begin\{questions\}/g, "")
     .replace(/\\end\{questions\}/g, "")
-    .replace(/\\question\s*(\[[^\]]*\])?\s*/g, "")
+    .replace(/\\question\s*(\[(?!\[)[^\]]*\])?\s*/g, "")
     .trim();
 }
 
@@ -822,6 +827,50 @@ function parseInlineLatex(
   return nodes;
 }
 
+type SpecialBlockKind =
+  | "enumerate" | "itemize"
+  | "assertiveitems" | "romanitems" | "alphaitems"
+  | "poem" | "databox" | "codeblock" | "credits";
+
+function findNextSpecialBlock(src: string, from: number): { idx: number; kind: SpecialBlockKind } | null {
+  const candidates: Array<{ search: string; kind: SpecialBlockKind }> = [
+    { search: "\\begin{enumerate}", kind: "enumerate" },
+    { search: "\\begin{itemize}", kind: "itemize" },
+    { search: "\\begin{assertiveitems}", kind: "assertiveitems" },
+    { search: "\\begin{romanitems}", kind: "romanitems" },
+    { search: "\\begin{alphaitems}", kind: "alphaitems" },
+    { search: "\\begin{poem}", kind: "poem" },
+    { search: "\\begin{databox}", kind: "databox" },
+    { search: "\\begin{codeblock}", kind: "codeblock" },
+    { search: "\\credits{", kind: "credits" },
+  ];
+  let best: { idx: number; kind: SpecialBlockKind } | null = null;
+  for (const { search, kind } of candidates) {
+    const idx = src.indexOf(search, from);
+    if (idx !== -1 && (best === null || idx < best.idx)) {
+      best = { idx, kind };
+    }
+  }
+  return best;
+}
+
+/** Lê um argumento entre chaves a partir de `from`, pulando espaços iniciais */
+function readBracedArgAt(src: string, from: number): { content: string; end: number } | null {
+  let i = from;
+  while (i < src.length && /\s/.test(src[i])) i++;
+  if (src[i] !== "{") return null;
+  let depth = 0;
+  for (let j = i; j < src.length; j++) {
+    if (src[j] === "{") depth++;
+    else if (src[j] === "}") {
+      depth--;
+      if (depth === 0) return { content: src.slice(i + 1, j), end: j + 1 };
+    }
+  }
+  return null;
+}
+
+/** Mantido para compat. interna — delega para findNextSpecialBlock */
 function findNextListBegin(src: string, from: number) {
   const a = src.indexOf("\\begin{enumerate}", from);
   const b = src.indexOf("\\begin{itemize}", from);
@@ -833,38 +882,8 @@ function findNextListBegin(src: string, from: number) {
     : { idx: b, env: "itemize" as const };
 }
 
-function parseLatexListEnv(src: string, beginIdx: number) {
-  const isEnum = src.startsWith("\\begin{enumerate}", beginIdx);
-  const isItem = src.startsWith("\\begin{itemize}", beginIdx);
-  if (!isEnum && !isItem) return null;
-
-  const env = isEnum ? "enumerate" : "itemize";
-  const beginTag = `\\begin{${env}}`;
-  const endTag = `\\end{${env}}`;
-
-  const start = beginIdx + beginTag.length;
-  const endPos = src.indexOf(endTag, start);
-  if (endPos === -1) return null;
-
-  const body = src.slice(start, endPos);
-
-  const items = body
-    .split(/\\item\b/g)
-    .map((x) => x.trim())
-    .filter(Boolean);
-
-  return {
-    kind: isEnum ? ("ordered" as const) : ("bullet" as const),
-    items,
-    end: endPos + endTag.length,
-  };
-}
-
 export function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[] {
   const paragraph = ensureNode(schema, "paragraph");
-  const orderedList = schema.nodes["ordered_list"];
-  const bulletList = schema.nodes["bullet_list"];
-  const listItem = schema.nodes["list_item"];
 
   const src = normalizePastedText(rawLatex ?? "");
   if (!src) return [paragraph.create()];
@@ -877,44 +896,163 @@ export function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[]
       .split(/\n\n+/)
       .map((p) => p.trim())
       .filter(Boolean);
-
     for (const p of parts) {
       blocks.push(paragraph.create(null, parseInlineLatex(schema, p)));
     }
   };
 
+  const listNodeFor = (kind: SpecialBlockKind) => {
+    switch (kind) {
+      case "enumerate":      return schema.nodes["ordered_list"];
+      case "itemize":        return schema.nodes["bullet_list"];
+      case "assertiveitems": return schema.nodes["assertive_list"];
+      case "romanitems":     return schema.nodes["roman_list"];
+      case "alphaitems":     return schema.nodes["alpha_list"];
+      default: return null;
+    }
+  };
+
+  const isListKind = (kind: SpecialBlockKind) =>
+    ["enumerate", "itemize", "assertiveitems", "romanitems", "alphaitems"].includes(kind);
+
+  const envNameFor = (kind: SpecialBlockKind) => {
+    switch (kind) {
+      case "enumerate":      return "enumerate";
+      case "itemize":        return "itemize";
+      case "assertiveitems": return "assertiveitems";
+      case "romanitems":     return "romanitems";
+      case "alphaitems":     return "alphaitems";
+      case "poem":           return "poem";
+      case "databox":        return "databox";
+      case "codeblock":      return "codeblock";
+      default: return null;
+    }
+  };
+
   let i = 0;
   while (i < src.length) {
-    const nextList = findNextListBegin(src, i);
-    if (!nextList) {
+    const next = findNextSpecialBlock(src, i);
+    if (!next) {
       pushTextAsParagraphs(src.slice(i));
       break;
     }
 
-    if (nextList.idx > i) pushTextAsParagraphs(src.slice(i, nextList.idx));
+    if (next.idx > i) pushTextAsParagraphs(src.slice(i, next.idx));
 
-    const parsed = parseLatexListEnv(src, nextList.idx);
-    if (!parsed) {
-      pushTextAsParagraphs(src.slice(nextList.idx, nextList.idx + 20));
-      i = nextList.idx + 20;
+    const { idx: beginIdx, kind } = next;
+
+    // ── \credits{...} ──────────────────────────────────────────────────────
+    if (kind === "credits") {
+      const creditsType = schema.nodes["credits"];
+      const argStart = beginIdx + "\\credits".length;
+      const arg = readBracedArgAt(src, argStart);
+      if (!arg || !creditsType) {
+        i = beginIdx + 9; // skip past "\credits{"
+        continue;
+      }
+      const inlines = parseInlineLatex(schema, arg.content.trim());
+      blocks.push(creditsType.create(null, inlines.length ? inlines : []));
+      i = arg.end;
       continue;
     }
 
-    const { kind, items, end } = parsed;
-    i = end;
+    // ── \begin{...}...\end{...} environments ───────────────────────────────
+    const envName = envNameFor(kind);
+    if (!envName) { i = beginIdx + 1; continue; }
 
-    if (!orderedList || !bulletList || !listItem) {
-      const marker = kind === "ordered" ? "1." : "-";
-      const fallback = items.map((it) => `${marker} ${it}`).join("\n");
-      pushTextAsParagraphs(fallback);
+    const beginTag = `\\begin{${envName}}`;
+    const endTag   = `\\end{${envName}}`;
+    const bodyStart = beginIdx + beginTag.length;
+    const endPos    = src.indexOf(endTag, bodyStart);
+
+    if (endPos === -1) {
+      // tag sem fechamento — trata como texto
+      pushTextAsParagraphs(src.slice(beginIdx, beginIdx + beginTag.length));
+      i = beginIdx + beginTag.length;
       continue;
     }
 
-    const listNode = kind === "ordered" ? orderedList : bulletList;
-    const itemNodes = items.map((it) =>
-      listItem.create(null, buildBlocksFromLatex(schema, it))
-    );
-    blocks.push(listNode.create(null, itemNodes));
+    const body = src.slice(bodyStart, endPos).trim();
+    const blockEnd = endPos + endTag.length;
+
+    // ── Listas ─────────────────────────────────────────────────────────────
+    if (isListKind(kind)) {
+      const listNode = listNodeFor(kind);
+      const listItem = schema.nodes["list_item"];
+      if (!listNode || !listItem) {
+        pushTextAsParagraphs(body);
+      } else {
+        const items = body.split(/\\item\b/g).map((x) => x.trim()).filter(Boolean);
+        const itemNodes = items.map((it) =>
+          listItem.create(null, buildBlocksFromLatex(schema, it))
+        );
+        if (itemNodes.length) blocks.push(listNode.create(null, itemNodes));
+      }
+      i = blockEnd;
+      continue;
+    }
+
+    // ── Poema ──────────────────────────────────────────────────────────────
+    if (kind === "poem") {
+      const poemType  = schema.nodes["poem"];
+      const verseType = schema.nodes["verse"];
+      if (!poemType || !verseType) {
+        pushTextAsParagraphs(body);
+      } else {
+        const verseNodes: PMNode[] = [];
+        let vi = 0;
+        while (vi < body.length) {
+          const vIdx = body.indexOf("\\verse", vi);
+          if (vIdx === -1) break;
+          const arg = readBracedArgAt(body, vIdx + "\\verse".length);
+          if (!arg) { vi = vIdx + 6; continue; }
+          const inlines = parseInlineLatex(schema, arg.content.trim());
+          verseNodes.push(verseType.create(null, inlines.length ? inlines : []));
+          vi = arg.end;
+        }
+        // fallback: sem \verse — cada linha é um verso
+        if (!verseNodes.length) {
+          for (const line of body.split("\n").map((l) => l.trim()).filter(Boolean)) {
+            const inlines = parseInlineLatex(schema, line);
+            verseNodes.push(verseType.create(null, inlines.length ? inlines : []));
+          }
+        }
+        if (verseNodes.length) blocks.push(poemType.create(null, verseNodes));
+        else pushTextAsParagraphs(body);
+      }
+      i = blockEnd;
+      continue;
+    }
+
+    // ── Caixa de dados ─────────────────────────────────────────────────────
+    if (kind === "databox") {
+      const dataBoxType = schema.nodes["data_box"];
+      if (!dataBoxType) {
+        pushTextAsParagraphs(body);
+      } else {
+        const innerBlocks = buildBlocksFromLatex(schema, body);
+        blocks.push(dataBoxType.create(null, innerBlocks));
+      }
+      i = blockEnd;
+      continue;
+    }
+
+    // ── Bloco de código ────────────────────────────────────────────────────
+    if (kind === "codeblock") {
+      const codeBlockType = schema.nodes["code_block"];
+      if (!codeBlockType) {
+        pushTextAsParagraphs(body);
+      } else {
+        const textContent = body ? [schema.text(body)] : [];
+        blocks.push(codeBlockType.create(null, textContent));
+      }
+      i = blockEnd;
+      continue;
+    }
+
+    // fallback
+    pushTextAsParagraphs(body);
+    i = blockEnd;
   }
 
   return blocks.length ? blocks : [paragraph.create()];
