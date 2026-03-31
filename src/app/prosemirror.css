@@ -363,13 +363,10 @@
 /* ===== SET_QUESTIONS — separação visual de question_items no editor ===== */
 
 .ProseMirror .set-questions {
-  counter-reset: question-item-counter;
+  counter-reset: question-group-counter question-item-counter;
 }
 
-.ProseMirror .question-item {
-  counter-increment: question-item-counter;
-}
-
+/* Separadores */
 .ProseMirror .question-item + .question-item,
 .ProseMirror .question-group + .question-group {
   border-top: 1px solid #d1d5db;
@@ -377,7 +374,50 @@
   padding-top: 0.75em;
 }
 
-.ProseMirror .question-item::before {
+/* === MODO GRUPOS === */
+
+.ProseMirror .question-group {
+  counter-increment: question-group-counter;
+  counter-reset: question-item-in-group-counter;
+}
+
+.ProseMirror .question-group::before {
+  content: "Grupo " counter(question-group-counter);
+  display: block;
+  font-size: 0.72em;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
+  user-select: none;
+}
+
+.ProseMirror .question-group .question-item {
+  counter-increment: question-item-in-group-counter;
+  padding-left: 0.75em;
+  border-left: 2px solid #e5e7eb;
+}
+
+.ProseMirror .question-group .question-item::before {
+  content: "Item " counter(question-item-in-group-counter);
+  display: block;
+  font-size: 0.72em;
+  font-weight: 600;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
+  user-select: none;
+}
+
+/* === MODO PLANO === */
+
+.ProseMirror .set-questions > .question-item {
+  counter-increment: question-item-counter;
+}
+
+.ProseMirror .set-questions > .question-item::before {
   content: "Item " counter(question-item-counter);
   display: block;
   font-size: 0.72em;
