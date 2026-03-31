@@ -30,6 +30,12 @@ interface EditorToolbarProps {
 
   // contagem real de opções (2..5); se não vier, deriva do container atual
   optionsCount?: number;
+
+  // estado de conjunto / grupos
+  isSetQuestions?: boolean;
+  isGroupMode?: boolean;
+  groupCount?: number;
+  itemCount?: number;
 }
 
 function clampInt(n: number, min: number, max: number) {
@@ -59,6 +65,10 @@ export function EditorToolbar({
   onAction,
   onPreview,
   optionsCount: optionsCountProp,
+  isSetQuestions,
+  isGroupMode,
+  groupCount,
+  itemCount,
 }: EditorToolbarProps) {
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [symbolPickerOpen, setSymbolPickerOpen] = useState(false);
@@ -410,7 +420,9 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
       action === "toggle-options" ||
       action === "convert-to-setquestions" ||
       action === "add-question-item" ||
-      action === "remove-question-item"
+      action === "remove-question-item" ||
+      action === "add-question-group" ||
+      action === "remove-question-group"
     ) {
       onAction?.(action);
       return;
@@ -517,7 +529,14 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
 
   return (
     <>
-          <HorizontalToolbar onAction={handleAction} optionsCount={optionsCount} />
+          <HorizontalToolbar
+            onAction={handleAction}
+            optionsCount={optionsCount}
+            isSetQuestions={isSetQuestions ?? false}
+            isGroupMode={isGroupMode ?? false}
+            groupCount={groupCount ?? 0}
+            itemCount={itemCount ?? 0}
+          />
 
 
       <ImageUpload

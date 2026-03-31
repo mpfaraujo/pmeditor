@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -16,9 +17,20 @@ import {
 interface HorizontalToolbarProps {
   onAction: (action: string) => void;
   optionsCount: number;
+  isSetQuestions?: boolean;
+  isGroupMode?: boolean;
+  groupCount?: number;
+  itemCount?: number;
 }
 
-export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarProps) {
+export function HorizontalToolbar({
+  onAction,
+  optionsCount,
+  isSetQuestions = false,
+  isGroupMode = false,
+  groupCount = 0,
+  itemCount = 0,
+}: HorizontalToolbarProps) {
   const clampedOptions = Math.max(0, Math.min(5, Math.floor(optionsCount || 0)));
   const canDec = clampedOptions > 2;
   const canInc = clampedOptions < 5;
@@ -181,16 +193,50 @@ export function HorizontalToolbar({ onAction, optionsCount }: HorizontalToolbarP
 
           {/* CONJUNTO */}
           <div className="flex items-center gap-1 border-r border-gray-300 px-2">
-            <Button variant="ghost" size="sm" className="h-8 px-2 hover:bg-green-100" onClick={() => onAction("convert-to-setquestions")} title="Converter para conjunto">
-              <Icons.Layers className="h-4 w-4" />
-              <span className="ml-1 text-xs font-medium">Conjunto</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-green-100" onClick={() => onAction("add-question-item")} title="Adicionar pergunta">
-              <Icons.PlusSquare className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-green-100" onClick={() => onAction("remove-question-item")} title="Remover pergunta">
-              <Icons.MinusSquare className="h-4 w-4" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 px-2 hover:bg-green-100">
+                  <Icons.Layers className="h-4 w-4" />
+                  <span className="ml-1 text-xs font-medium">Conjunto</span>
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                {!isSetQuestions && (
+                  <DropdownMenuItem onClick={() => onAction("convert-to-setquestions")}>
+                    <Icons.Layers className="h-4 w-4 mr-2" />
+                    Converter para conjunto
+                  </DropdownMenuItem>
+                )}
+                {isSetQuestions && (
+                  <>
+                    <DropdownMenuItem onClick={() => onAction("add-question-group")}>
+                      <Icons.FolderPlus className="h-4 w-4 mr-2" />
+                      {isGroupMode ? "Adicionar grupo" : "Criar grupos"}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => onAction("remove-question-group")}
+                      disabled={!isGroupMode || groupCount <= 1}
+                    >
+                      <Icons.FolderMinus className="h-4 w-4 mr-2" />
+                      Remover grupo atual
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => onAction("add-question-item")}>
+                      <Icons.PlusSquare className="h-4 w-4 mr-2" />
+                      Adicionar item
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => onAction("remove-question-item")}
+                      disabled={itemCount <= 1}
+                    >
+                      <Icons.MinusSquare className="h-4 w-4 mr-2" />
+                      Remover item
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* TAMANHO DE IMAGEM + NUMERAÇÃO */}

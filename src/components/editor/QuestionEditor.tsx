@@ -345,19 +345,35 @@ function addQuestionItem(v: EditorView) {
   const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
   if (!root || root.type !== schema.nodes.set_questions) return;
 
-  const cur = findContainerAtSelection(v);
-
-  let insertPos = Number(root.nodeSize) - 1;
-  if (cur && cur.kind === "question_item") {
-    insertPos = Number(cur.pos) + Number(cur.node.nodeSize);
-  }
-
   const item = schema.nodes.question_item.create({ answerKey: null }, [
     schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
-    // options opcional; não cria
   ]);
 
-  v.dispatch(v.state.tr.insert(insertPos, item));
+  const cur = findContainerAtSelection(v);
+  if (cur && cur.kind === "question_item") {
+    // Insert after current item — works for both flat and group mode:
+    // in group mode the position is inside the group (before group's closing tag)
+    v.dispatch(v.state.tr.insert(cur.pos + cur.node.nodeSize, item));
+    v.focus();
+    return;
+  }
+
+  // Fallback: add to last group (group mode) or end of set_questions (flat)
+  if (isSetInGroupMode(v.state)) {
+    let lastGroupInsertPos = -1;
+    v.state.doc.descendants((node: any, pos: number) => {
+      if (schema.nodes.question_group && node.type === schema.nodes.question_group) {
+        lastGroupInsertPos = pos + node.nodeSize - 1;
+      }
+    });
+    if (lastGroupInsertPos !== -1) {
+      v.dispatch(v.state.tr.insert(lastGroupInsertPos, item));
+      v.focus();
+      return;
+    }
+  }
+
+  v.dispatch(v.state.tr.insert(root.nodeSize - 1, item));
   v.focus();
 }
 
@@ -374,9 +390,111 @@ function removeCurrentQuestionItem(v: EditorView) {
   const count = findAllQuestionItems(v.state).length;
   if (count <= 1) return;
 
+  // Em modo grupos: se o grupo atual tem só 1 item, remove o grupo inteiro
+  if (isSetInGroupMode(v.state)) {
+    const grp = findCurrentGroup(v.state);
+    if (grp && grp.node.childCount === 1 && countGroups(v.state) > 1) {
+      v.dispatch(v.state.tr.delete(grp.pos, grp.pos + grp.node.nodeSize));
+      v.focus();
+      return;
+    }
+  }
+
   const from = cur.pos;
   const to = cur.pos + Number(cur.node.nodeSize);
   v.dispatch(v.state.tr.delete(from, to));
+  v.focus();
+}
+
+/* ---------- question_group helpers ---------- */
+
+function isSetInGroupMode(state: any): boolean {
+  const root = state.doc.childCount ? state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.set_questions) return false;
+  for (let i = 0; i < root.childCount; i++) {
+    if (schema.nodes.question_group && root.child(i).type === schema.nodes.question_group) return true;
+  }
+  return false;
+}
+
+function findCurrentGroup(state: any): { pos: number; node: any } | null {
+  const $head = state.selection.$head;
+  for (let d = $head.depth; d > 0; d--) {
+    const n = $head.node(d);
+    if (schema.nodes.question_group && n.type === schema.nodes.question_group) {
+      return { pos: $head.before(d), node: n };
+    }
+  }
+  return null;
+}
+
+function countGroups(state: any): number {
+  const root = state.doc.childCount ? state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.set_questions) return 0;
+  let count = 0;
+  for (let i = 0; i < root.childCount; i++) {
+    if (schema.nodes.question_group && root.child(i).type === schema.nodes.question_group) count++;
+  }
+  return count;
+}
+
+function convertFlatToGroups(v: EditorView) {
+  if (!schema.nodes.question_group) return;
+  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.set_questions) return;
+
+  const newChildren: any[] = [];
+  for (let i = 0; i < root.childCount; i++) {
+    const child = root.child(i);
+    if (child.type === schema.nodes.question_item) {
+      newChildren.push(schema.nodes.question_group.create(null, [child]));
+    } else {
+      newChildren.push(child);
+    }
+  }
+
+  const newSet = schema.nodes.set_questions.create(root.attrs, newChildren);
+  v.dispatch(v.state.tr.replaceWith(0, v.state.doc.content.size, newSet));
+  v.focus();
+}
+
+function addQuestionGroup(v: EditorView) {
+  if (!schema.nodes.question_group) return;
+  ensureSetQuestionsRoot(v);
+
+  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
+  if (!root || root.type !== schema.nodes.set_questions) return;
+
+  const emptyItem = schema.nodes.question_item.create({ answerKey: null }, [
+    schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
+  ]);
+  const newGroup = schema.nodes.question_group.create(null, [emptyItem]);
+
+  if (!isSetInGroupMode(v.state)) {
+    convertFlatToGroups(v);
+    // v.state updated after dispatch; insert new group at end of new set_questions
+    const newRoot = v.state.doc.childCount ? v.state.doc.child(0) : null;
+    if (!newRoot) return;
+    v.dispatch(v.state.tr.insert(newRoot.nodeSize - 1, newGroup));
+    v.focus();
+    return;
+  }
+
+  // Group mode: insert after current group (or at end)
+  const cur = findCurrentGroup(v.state);
+  const insertPos = cur ? cur.pos + cur.node.nodeSize : root.nodeSize - 1;
+  v.dispatch(v.state.tr.insert(insertPos, newGroup));
+  v.focus();
+}
+
+function removeCurrentQuestionGroup(v: EditorView) {
+  if (!schema.nodes.question_group) return;
+  if (countGroups(v.state) <= 1) return;
+
+  const cur = findCurrentGroup(v.state);
+  if (!cur) return;
+
+  v.dispatch(v.state.tr.delete(cur.pos, cur.pos + cur.node.nodeSize));
   v.focus();
 }
 
@@ -815,6 +933,18 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
         force((n) => n + 1);
         return;
       }
+      case "add-question-group": {
+        addQuestionGroup(view);
+        recompute(view);
+        force((n) => n + 1);
+        return;
+      }
+      case "remove-question-group": {
+        removeCurrentQuestionGroup(view);
+        recompute(view);
+        force((n) => n + 1);
+        return;
+      }
 
       case "set-type-discursiva": {
         const nextTipo = "Discursiva" as QuestionMetadataV1["tipo"];
@@ -897,6 +1027,11 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
   const allItems =
     docKind === "set_questions" && view ? findAllQuestionItems(view.state) : [];
 
+  const isGroupMode =
+    docKind === "set_questions" && view ? isSetInGroupMode(view.state) : false;
+  const groupCount =
+    docKind === "set_questions" && view ? countGroups(view.state) : 0;
+
   const writeActiveItemAnswerKey = (answerKey: any | null) => {
     if (!view) return;
     if (activeItemPos == null) return;
@@ -944,6 +1079,10 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           onAction={handleToolbarAction}
           onPreview={() => setPreviewOpen(true)}
           optionsCount={optionCount}
+          isSetQuestions={docKind === "set_questions"}
+          isGroupMode={isGroupMode}
+          groupCount={groupCount}
+          itemCount={allItems.length}
         />
 
         {textLines > LINE_LIMIT && (
