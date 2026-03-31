@@ -88,7 +88,12 @@ function extractItemRubrics(content: any): any[] {
     if (!doc || doc.type !== "doc") return [];
     const setNode = doc.content?.find((n: any) => n?.type === "set_questions");
     if (!setNode) return [];
-    const items = (setNode.content ?? []).filter((n: any) => n?.type === "question_item");
+    const items: any[] = [];
+    for (const child of (setNode.content ?? [])) {
+      if (child.type === "question_item") items.push(child);
+      else if (child.type === "question_group")
+        (child.content ?? []).forEach((qi: any) => { if (qi.type === "question_item") items.push(qi); });
+    }
     const rubrics: any[] = [];
     for (const item of items) {
       const ak = item.attrs?.answerKey;
@@ -131,7 +136,12 @@ function splitSetNode(setNode: PMNode | null): {
 } {
   const content = setNode?.content ?? [];
   const baseText = content.find((n) => n?.type === "base_text") ?? null;
-  const items = content.filter((n) => n?.type === "question_item");
+  const items: PMNode[] = [];
+  for (const child of content) {
+    if (child.type === "question_item") items.push(child);
+    else if (child.type === "question_group")
+      (child.content ?? []).forEach((qi: PMNode) => { if (qi.type === "question_item") items.push(qi); });
+  }
   return { baseText, items };
 }
 

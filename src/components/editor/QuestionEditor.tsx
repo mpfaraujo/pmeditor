@@ -370,11 +370,8 @@ function removeCurrentQuestionItem(v: EditorView) {
   const cur = findContainerAtSelection(v);
   if (!cur || cur.kind !== "question_item") return;
 
-  // conta itens (question_item+)
-  let count = 0;
-  root.forEach((child: any) => {
-    if (child.type === schema.nodes.question_item) count += 1;
-  });
+  // conta itens em qualquer profundidade (inclui question_group)
+  const count = findAllQuestionItems(v.state).length;
   if (count <= 1) return;
 
   const from = cur.pos;

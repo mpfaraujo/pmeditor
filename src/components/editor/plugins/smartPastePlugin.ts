@@ -649,6 +649,7 @@ function findNextLatexTokenIndex(s: string, from: number) {
     "\\textit",
     "\\emph",
     "\\underline",
+    "\\ce",
     "[[",
   ];
   let best = -1;
@@ -798,6 +799,17 @@ function parseInlineLatex(
         nodes.push(
           ...parseInlineLatex(schema, br.content, [...active, underline])
         );
+        i = br.end;
+        continue;
+      }
+    }
+
+    // \ce{...} — notação química (mhchem) → math_inline
+    if (s.startsWith("\\ce{", i) || s.startsWith("\\ce {", i)) {
+      const braceStart = s.indexOf("{", i + 3);
+      const br = readBraced(braceStart);
+      if (br) {
+        nodes.push(mathInline.create({ latex: `\\ce{${br.content}}` }));
         i = br.end;
         continue;
       }

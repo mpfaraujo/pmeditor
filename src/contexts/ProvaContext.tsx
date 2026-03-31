@@ -110,8 +110,13 @@ function safeParseDoc(content: any): PMNode | null {
 
 function getSetItemCount(doc: PMNode | null): number {
   const setNode = doc?.content?.find((n) => n?.type === "set_questions");
-  const items = setNode?.content?.filter((n) => n?.type === "question_item") ?? [];
-  return items.length;
+  let count = 0;
+  for (const child of (setNode?.content ?? [])) {
+    if (child.type === "question_item") count++;
+    else if (child.type === "question_group")
+      count += (child.content ?? []).filter((c: any) => c?.type === "question_item").length;
+  }
+  return count;
 }
 
 function isSetDoc(doc: PMNode | null): boolean {

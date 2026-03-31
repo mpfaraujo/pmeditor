@@ -1,273 +1,1361 @@
 [
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Matemática\nassunto: Expressões Algébricas\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"1\"\n}\n[[IMG_PENDENTE: figura-q1]]\n\n\\begin{choices}\n\\choice $1$\n\\CorrectChoice $\\dfrac{11}{6}$\n\\choice $\\dfrac{6}{11}$\n\\choice $\\dfrac{10}{3}$\n\\choice $\\sqrt{\\dfrac{11}{6}}$\n\\end{choices}",
+    "latex": "\\question Simplificando \\(\\left(3^9 + \\frac{1}{3}\\right)\\left(3^3 + 3^{24}\\right)\\), encontramos:\n\n\\begin{oneparchoices}\n\\choice 9\n\\choice 10\n\\choice \\(3^3\\)\n\\CorrectChoice 12\n\\choice 1\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Potenciação",
+      "tags": [
+        "simplificação algébrica",
+        "expoentes",
+        "propriedades de potência"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "1",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Matemática\nassunto: Porcentagem\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"2\"\n}\nEm uma liquidação, uma mercadoria teve um desconto de 5\\%. Em seguida, devido à Copa do Mundo, teve um novo desconto de 3\\% (em regime composto). Esses dois descontos correspondem a um único desconto.\n\nDe quanto é esse único desconto?\n\n\\begin{choices}\n\\CorrectChoice $7{,}85\\%$\n\\choice $8\\%$\n\\choice $10\\%$\n\\choice $15\\%$\n\\choice $15{,}5\\%$\n\\end{choices}",
+    "latex": "\\question Cientistas brasileiros verificaram que uma determinada colônia de bactérias triplica a cada meia hora. Uma amostra de 10000 bactérias por mililitro foi colocada em um tubo de ensaio e, após um tempo \\(x\\), verificou-se que o total era de \\(2{,}43 \\times 10^6\\) bactérias por mililitro. Qual é o valor de \\(x\\)?\n\n\\begin{choices}\n\\choice duas horas\n\\CorrectChoice duas horas e 30 minutos\n\\choice 3 horas e trinta minutos\n\\choice 48 horas\n\\choice 264 horas\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A"
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Exponencial",
+      "tags": [
+        "crescimento exponencial",
+        "bactérias",
+        "triplica",
+        "meia hora"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "2",
+      "gabarito": "B"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Matemática\nassunto: Análise Combinatória\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"3\"\n}\nRoberval vai escolher, para levar em uma viagem, 3 calças e 7 camisas. Ele possui 5 calças e 10 camisas.\n\nQuantas escolhas distintas podem ser feitas?\n\n\\begin{choices}\n\\choice $21$\n\\choice $120$\n\\choice $370$\n\\choice $500$\n\\CorrectChoice $1200$\n\\end{choices}",
+    "latex": "\\question Os sobrenomes de Roy, Edu e Luan são Todeka, Sharifa e Arrabeca, não necessariamente nessa ordem. O de sobrenome Sharifa, que não é o Roy, é mais velho que Luan. O de sobrenome Arrabeca é o mais velho dos três. Concluímos, então, que os sobrenomes de Roy, Edu e Luan são, respectivamente:\n\n\\begin{choices}\n\\choice Todeka, Sharifa e Arrabeca.\n\\choice Todeka, Arrabeca e Sharifa.\n\\CorrectChoice Arrabeca, Sharifa e Todeka.\n\\choice Arrabeca, Todeka e Sharifa.\n\\choice Sharifa, Todeka e Arrabeca.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Lógica Matemática",
+      "tags": [
+        "ordenação lógica",
+        "dedução",
+        "pessoas",
+        "sobrenomes"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "3",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Inequações\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"4\"\n}\n[[IMG_PENDENTE: figura-q4]]\n\n\\begin{choices}\n\\choice $1$\n\\choice $2$\n\\choice $3$\n\\CorrectChoice $4$\n\\choice $5$\n\\end{choices}",
+    "latex": "\\question Em 12 dias de trabalho, 8 costureiras de uma escola de samba fazem as fantasias da ala \"Só Alegria\". Se 2 costureiras ficassem doentes e não pudessem trabalhar, quantos dias seriam necessários para confeccionar as fantasias dessa mesma ala?\n\n\\begin{oneparchoices}\n\\CorrectChoice 16\n\\choice 20\n\\choice 24\n\\choice 28\n\\choice 32\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Regra de Três",
+      "tags": [
+        "trabalho",
+        "costureiras",
+        "proporcionalidade",
+        "dias"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "4",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Matemática\nassunto: Trigonometria\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"5\"\n}\nSabemos que $x \\in \\left(0, \\dfrac{\\pi}{2}\\right)$ e que $\\tg(x) = \\dfrac{5}{12}$.\n\nQuanto vale $\\sen(x)$?\n\n\\begin{choices}\n\\CorrectChoice $\\dfrac{5}{13}$\n\\choice $\\dfrac{1}{12}$\n\\choice $\\dfrac{5}{14}$\n\\choice $1$\n\\choice $3$\n\\end{choices}",
+    "latex": "\\question Temos uma urna com 5 bolinhas numeradas de 1 a 5. Retiramos duas bolinhas sem reposição e calculamos a soma dos números das bolinhas sorteadas. Qual é a probabilidade de que a soma seja par?\n\n\\begin{oneparchoices}\n\\CorrectChoice \\(\\frac{2}{5}\\)\n\\choice \\(\\frac{5}{12}\\)\n\\choice \\(\\frac{1}{2}\\)\n\\choice \\(\\frac{7}{12}\\)\n\\choice \\(\\frac{3}{5}\\)\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Probabilidade Simples",
+      "tags": [
+        "urna",
+        "soma par",
+        "sem reposição",
+        "bolinhas"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "5",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Matemática\nassunto: Geometria Analítica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"6\"\n}\nO retângulo $ABCD$, com $A = (0, 0)$, $B$ sobre o semieixo $x$ positivo, $D$ sobre o semieixo $y$ positivo, conforme figura abaixo, tem área $36$, e a medida do lado $AD$ é igual a $4$.\n\n[[IMG_PENDENTE: figura-q6]]\n\nQual é a equação da reta $BD$?\n\n\\begin{choices}\n\\choice $x + y = 8$\n\\CorrectChoice $4x + 9y = 36$\n\\choice $5x + 3y = 10$\n\\choice $9x + 4y = 36$\n\\choice $x + y = 36$\n\\end{choices}",
+    "latex": "\\question Um estudante vai a pé da escola até o metrô. Se ele caminha a 6 km/h, ele demora 20 minutos. Se ele corre, ele demora apenas 12 minutos. Com que velocidade ele corre?\n\n\\begin{oneparchoices}\n\\CorrectChoice 10 km/h\n\\choice 12 km/h\n\\choice 25 km/h\n\\choice 9 km/h\n\\choice 8 km/h\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Movimento Uniforme (MU)",
+      "tags": [
+        "velocidade média",
+        "caminhada",
+        "corrida",
+        "escola"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "6",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Potenciação e Radiciação\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"7\"\n}\n[[IMG_PENDENTE: figura-q7]]\n\n\\begin{choices}\n\\choice $\\sqrt{2} - 1$\n\\choice $\\sqrt[3]{3}$\n\\choice $\\sqrt[3]{5}$\n\\CorrectChoice $\\sqrt[3]{6}$\n\\choice $\\sqrt[4]{10}$\n\\end{choices}",
+    "latex": "\\question Na figura, temos que:\n\n\\includegraphics{figura-mat-q7}\n\n\\begin{itemize}\n\\item O triângulo ABC é retângulo em A.\n\\item M é o ponto médio do lado BC.\n\\item N é o ponto médio do lado AC.\n\\item P é o ponto médio do lado AB.\n\\end{itemize}\n\nNessas condições, a área do quadrilátero MBAN é:\n\n\\begin{choices}\n\\choice a mesma área do triângulo AMC.\n\\choice a metade da área do triângulo ABC.\n\\choice a quinta parte da área do triângulo MNC.\n\\choice o dobro da área do triângulo AMC.\n\\CorrectChoice o triplo da área do triângulo MNC.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Área das Figuras Planas",
+      "tags": [
+        "triângulo retângulo",
+        "pontos médios",
+        "quadrilátero",
+        "razão de áreas"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "7",
+      "gabarito": "E"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Funções\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"8\"\n}\nSejam $f, g\\colon \\mathbb{R} \\to \\mathbb{R}$ funções dadas por $f(x) = 4 - x^2$ e $g(x) = x + b$ (onde $b$ é uma constante real). Existe um único número real $x$ tal que $f(x) = g(x)$.\n\nQuanto vale $b$?\n\n\\begin{choices}\n\\choice $12$\n\\choice $\\dfrac{13}{2}$\n\\choice $\\dfrac{15}{2}$\n\\CorrectChoice $\\dfrac{17}{4}$\n\\choice $18$\n\\end{choices}",
+    "latex": "\\question Em uma pesquisa feita para saber o mês de nascimento dos alunos de uma turma, obtiveram-se os resultados mostrados na tabela abaixo:\n\n\\begin{itemize}\n\\item Janeiro: 4\n\\item Março: 5\n\\item Abril: 4\n\\item Junho: 3\n\\item Julho: 5\n\\item Setembro: 1\n\\item Novembro: 4\n\\item Dezembo: 4\n\\end{itemize}\n\nNenhum aluno desta turma nasceu nos meses não indicados na tabela. Qual é a porcentagem desses alunos que nasceram no mês de junho?\n\n\\begin{oneparchoices}\n\\CorrectChoice 10%\n\\choice 20%\n\\choice 25%\n\\choice 30%\n\\choice 90%\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Porcentagem",
+      "tags": [
+        "tabela",
+        "mês de nascimento",
+        "turma",
+        "junho"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "8",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Matemática\nassunto: Progressão Aritmética\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"9\"\n}\nEm uma alameda, plantamos 10 roseiras em linha reta. A roseira $R_1$ está no início da alameda. Sabe-se que a distância entre $R_1$ e $R_2$ é de 1 metro, a distância entre $R_2$ e $R_3$ é de 2 metros. Em geral, a distância entre $R_k$ e $R_{k+1}$ é de $k$ metros.\n\nQuanto vale, em metros, a distância entre a primeira roseira $R_1$ e a última roseira $R_{10}$?\n\n\\begin{choices}\n\\choice $25$\n\\choice $35$\n\\choice $40$\n\\CorrectChoice $45$\n\\choice $55$\n\\end{choices}",
+    "latex": "\\question A soma das raízes da equação \\(x^3 - 2x^2 - 6x = 0\\) vale:\n\n\\begin{oneparchoices}\n\\choice 0\n\\choice 1\n\\CorrectChoice 2\n\\choice 4\n\\choice 9\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Matemática",
+      "assunto": "Relações entre Coeficientes e Raízes",
+      "tags": [
+        "equação cúbica",
+        "soma das raízes",
+        "polinômio"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "9",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Matemática\nassunto: Geometria Plana\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"10\"\n}\nConsidere um triângulo equilátero $ABC$ de lado $1$. Traçamos um arco de círculo de centro $A$ ligando $B$ a $C$, como na figura.\n\n[[IMG_PENDENTE: figura-q10]]\n\nQuanto vale a área da região assinalada, que fica fora do triângulo e dentro do círculo?\n\n\\begin{choices}\n\\choice $\\dfrac{\\pi}{6}$\n\\choice $\\dfrac{\\pi - 1}{6}$\n\\CorrectChoice $\\dfrac{2\\pi - 3\\sqrt{3}}{12}$\n\\choice $\\dfrac{\\pi - 1}{7}$\n\\choice $\\dfrac{\\sqrt{\\pi}}{6}$\n\\end{choices}\n\n%% BIOLOGIA",
+    "latex": "\\question Sabendo que os números da sequência \\((5, m, n, 10)\\) estão em progressão geométrica, quanto vale o produto \\(mn\\)?\n\n\\begin{oneparchoices}\n\\choice 10\n\\choice 20\n\\CorrectChoice 50\n\\choice 100\n\\choice 225\n\\end{oneparchoices}\n\n% ── CIÊNCIAS DA NATUREZA ─────────────────────────────────────────────────",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Progressão Geométrica",
+      "tags": [
+        "PG",
+        "produto",
+        "termos consecutivos"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "10",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Biologia\nassunto: Botânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"11\"\n}\nA \\textit{Artocarpus heterophyllus} Lam, conhecida como jaqueira, é uma espécie exótica invasora. O governo brasileiro tem incentivado a erradicação dos indivíduos dessa espécie dos ecossistemas, e uma das formas de manejo para a sua erradicação é a retirada do anel cortical (anel de Malpighi), como na foto abaixo, registrada na Floresta da Tijuca.\n\n[[IMG_PENDENTE: figura-q11]]\n\nEssa forma de manejo é eficiente, pois\n\n\\begin{choices}\n\\choice a água e os sais minerais não poderão atingir as folhas.\n\\choice a água e os sais minerais não poderão atingir as raízes.\n\\choice a planta que for anelada não realizará fotossíntese.\n\\choice os fotoassimilados não poderão atingir as folhas.\n\\CorrectChoice os fotoassimilados não poderão atingir as raízes.\n\\end{choices}",
+    "latex": "\\question Um pequeno objeto é colocado no alto da rampa, no ponto A, mostrado na Figura. Esse objeto escorrega rampa abaixo, a partir do repouso, e alcança o ponto final da rampa (ponto C). Não há perdas por atrito. Calcule a razão \\(V_B / V_C\\) entre as velocidades do objeto nos pontos B (altura \\(0{,}64H\\)) e C, respectivamente.\n\n\\includegraphics{figura-fis-q11}\n\n\\begin{oneparchoices}\n\\choice 1,25\n\\choice 1,0\n\\choice 0,8\n\\choice 0,64\n\\CorrectChoice 0,60\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E"
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Conservação de Energia",
+      "tags": [
+        "rampa",
+        "energia mecânica",
+        "velocidade",
+        "razão"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "11",
+      "gabarito": "E"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Biologia\nassunto: Botânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"12\"\n}\nUm pesquisador solicitou que dois alunos coletassem algumas plantas monocotiledôneas nos canteiros da PUC-Rio. Para cumprimento da tarefa, as características que deverão ser observadas na identificação das monocotiledôneas são:\n\n\\begin{choices}\n\\choice plantas com flores trímeras; raiz fasciculada; bainha desenvolvida; nervuras reticuladas\n\\choice plantas com flores pentâmeras; raiz axial; bainha desenvolvida; nervuras reticuladas\n\\CorrectChoice plantas com flores trímeras; raiz fasciculada; bainha desenvolvida; nervuras paralelas\n\\choice plantas com flores pentâmeras; raiz axial; bainha reduzida; nervuras paralelas\n\\choice flores trímeras; raiz axial; bainha desenvolvida; nervuras reticuladas\n\\end{choices}",
+    "latex": "\\question Um carro percorre 20 km com velocidade de 60 km/h. Para em um posto por 10 minutos e segue viagem por mais meia hora, a uma velocidade de 50 km/h. Qual a sua velocidade escalar média no percurso total, em km/h?\n\n\\begin{oneparchoices}\n\\choice 55\n\\choice 54\n\\choice 50\n\\CorrectChoice 45\n\\choice 37\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Física",
+      "assunto": "Movimento Uniforme (MU)",
+      "tags": [
+        "velocidade escalar média",
+        "percurso",
+        "parada",
+        "carro"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "12",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Biologia\nassunto: Ecologia\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"13\"\n}\nUm dos grandes problemas das regiões urbanas é a poluição gerada pelo som e pela liberação de energia na forma de luz e calor. Esses tipos de poluição são particularmente graves para os seres humanos e alguns outros animais. De acordo com os estudos científicos, considere as afirmações a seguir.\n\n\\begin{romanitems}\n\\item Em humanos, esses tipos de poluição podem afetar a saúde mental, causando irritação, nervosismo e fadiga.\n\\item Em alguns animais, esses tipos de poluição podem alterar a orientação espacial e o comportamento de acasalamento.\n\\item Em alguns animais ectotérmicos, o aumento de temperatura pode influenciar na determinação do sexo, tendo efeito no sucesso reprodutivo dessas populações.\n\\end{romanitems}\n\nEstá correto o que se afirma em\n\n\\begin{choices}\n\\choice I, apenas\n\\choice III, apenas\n\\choice I e II, apenas\n\\choice II e III, apenas\n\\CorrectChoice I, II e III\n\\end{choices}",
+    "latex": "\\question Ao jogar uma pedra a partir da borda de um penhasco de 100 m de altura, uma garota verifica que a pedra chega ao solo a uma distância horizontal de 10 m da borda do penhasco, e 5 s depois de lançada. Qual é a tangente do ângulo de lançamento da pedra, em relação à horizontal? Dado: \\(g = 10\\,\\text{m/s}^2\\).\n\n\\begin{oneparchoices}\n\\choice 0\n\\choice 0,4\n\\choice 1\n\\choice 3\n\\CorrectChoice 2,5\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E"
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Queda Livre e Lançamento de Projéteis",
+      "tags": [
+        "penhasco",
+        "lançamento oblíquo",
+        "tangente",
+        "movimento"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "13",
+      "gabarito": "E"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Biologia\nassunto: Fisiologia Humana\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"14\"\n}\nAlém do sistema circulatório, o corpo humano apresenta outro sistema de transporte de fluidos: o sistema linfático. Sobre esse sistema, é INCORRETO afirmar que\n\n\\begin{choices}\n\\CorrectChoice o sistema linfático está envolvido no transporte de oxigênio.\n\\choice a composição da linfa se assemelha à do plasma sanguíneo.\n\\choice uma das funções do sistema linfático é a defesa do organismo.\n\\choice órgãos como linfonodos, baço e timo fazem parte do sistema linfático.\n\\choice os linfonodos concentram um tipo de leucócito denominado linfócito.\n\\end{choices}",
+    "latex": "\\question Para fazer seu chimarrão, uma pessoa esquenta 1 litro de água à temperatura inicial de 25°C utilizando um aquecedor elétrico. A água alcança a temperatura ideal de 85°C após 6 minutos. Qual é a potência desse aquecedor, em Watts? Despreze perdas de calor ao ambiente.\n\n\\begin{choices}\n\\choice 167\n\\choice 252\n\\CorrectChoice 700\n\\choice 992\n\\choice 4200\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Física",
+      "assunto": "Calorimetria e Calor Específico",
+      "tags": [
+        "potência",
+        "aquecedor",
+        "água",
+        "chimarrão"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "14",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Biologia\nassunto: Genética\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"15\"\n}\nSabendo-se que os cachorros (\\textit{Canis lupus familiaris}) apresentam 78 cromossomos, identifica-se que\n\n\\begin{choices}\n\\choice a espécie é poliploide.\n\\choice os gametas da espécie têm 78 cromossomos.\n\\CorrectChoice os gametas da espécie têm 39 cromossomos.\n\\choice os machos da espécie têm 39 pares de cromossomos autossômicos.\n\\choice as fêmeas da espécie têm um par de cromossomos sexuais XY.\n\\end{choices}",
+    "latex": "\\question Um gás ideal confinado é submetido a um processo tal que seu volume final é maior que seu volume inicial. Considere as afirmações abaixo, referentes ao processo.\n\n\\begin{romanitems}\n\\item Se o processo é isotérmico, a pressão final do gás é menor do que a pressão inicial.\n\\item Se a temperatura final do gás é maior do que a inicial, o processo é isobárico.\n\\item Se a pressão final do gás é maior do que a inicial, a temperatura final do gás é necessariamente maior que a temperatura inicial.\n\\end{romanitems}\n\nÉ correto o que se afirma em:\n\n\\begin{choices}\n\\choice I, somente.\n\\choice I e II, somente.\n\\CorrectChoice I e III, somente.\n\\choice II e III, somente.\n\\choice I, II e III.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Gases Ideais e Transformações",
+      "tags": [
+        "gás ideal",
+        "isotérmico",
+        "isobárico",
+        "pressão",
+        "temperatura"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "15",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Biologia\nassunto: Imunologia\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"16\"\n}\nO último surto de sarampo do Brasil foi registrado em 2014, quando 211 pessoas foram infectadas no Ceará. Desde então, o país só ouviu falar da doença em 2016, quando a OMS (Organização Mundial da Saúde) certificou o Brasil por eliminar a circulação do vírus. Em 2018, no entanto, os surtos voltaram. O conselho de antigamente se mantém: é melhor vacinar. A primeira suspeita de sarampo foi registrada em janeiro, em pacientes venezuelanos que chegaram ao Brasil fugindo da pobreza e da crise no país vizinho. Em pouco tempo, o Ministério da Saúde registrava surtos em Roraima e no Amazonas, onde a vacinação estava muito abaixo dos 95\\% recomendados. Nos dois estados, quem mais sofreu foram as crianças de seis meses a quatro anos, com registro de casos fatais. Segundo o médico Juarez Cunha, diretor da SBIm (Sociedade Brasileira de Imunizações), todos os casos recentes no Brasil ocorreram a partir do contato de uma pessoa não imunizada adequadamente com um indivíduo infectado em outro país.\n\n\\credits{Adaptado de: UOL Notícias, 18 jul. 2018.}\n\nSobre a vacinação contra o sarampo, foram feitas as afirmações a seguir:\n\n\\begin{romanitems}\n\\item A vacinação ajuda na diminuição da circulação do vírus entre a população.\n\\item A vacinação ativa a produção de anticorpos de memória que protegerão o indivíduo em futuros contatos com o vírus.\n\\item A vacinação está relacionada ao desenvolvimento de algumas síndromes, como o autismo.\n\\end{romanitems}\n\nEstá correto o que se afirma em\n\n\\begin{choices}\n\\choice III, apenas\n\\CorrectChoice I e II, apenas\n\\choice I e III, apenas\n\\choice II e III, apenas\n\\choice I, II e III\n\\end{choices}",
+    "latex": "\\question Com a chegada do inverno, cada integrante de uma família de quatro pessoas passa a utilizar um secador de cabelo de 2,0 kW, todos os dias, por aproximadamente 20 min. Sabendo que a tarifa de energia elétrica é de R$ 0,40 por kWh de consumo, ao final de 30 dias o aumento no custo da conta luz com a chegada do inverno, em reais, será de:\n\n\\begin{oneparchoices}\n\\choice 1,7\n\\choice 8,0\n\\choice 20\n\\CorrectChoice 32\n\\choice 80\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Física",
+      "assunto": "Potência e Energia Elétrica",
+      "tags": [
+        "consumo de energia",
+        "secador",
+        "kWh",
+        "conta de luz"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "16",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Biologia\nassunto: Botânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"17\"\n}\nA madeira é um recurso natural renovável, amplamente utilizado, por exemplo, na construção civil, movelaria e indústria de celulose.\n\nO tipo específico de tecido da planta que nos fornece a madeira é o(a)\n\n\\begin{choices}\n\\CorrectChoice xilema secundário\n\\choice esclerênquima\n\\choice floema\n\\choice periderme\n\\choice epiderme\n\\end{choices}",
+    "latex": "\\question Duas cargas elétricas idênticas são postas a uma distância \\(r_0\\) entre si tal que o módulo da força de interação entre elas é \\(F_0\\). Se a distância entre as cargas for reduzida à metade, o módulo da força de interação entre as cargas será:\n\n\\begin{oneparchoices}\n\\CorrectChoice \\(4F_0\\)\n\\choice \\(2F_0\\)\n\\choice \\(F_0\\)\n\\choice \\(F_0/2\\)\n\\choice \\(F_0/4\\)\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Física",
+      "assunto": "Lei de Coulomb",
+      "tags": [
+        "força elétrica",
+        "cargas idênticas",
+        "distância"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "17",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Biologia\nassunto: Evolução\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"18\"\n}\nA resistência aos antibióticos está alcançando níveis perigosamente altos em todas as partes do mundo. Novos mecanismos de resistência estão surgindo e se espalhando globalmente, ameaçando nossa capacidade de tratar doenças infecciosas comuns. Uma lista crescente de infecções — como pneumonia, tuberculose, envenenamento do sangue, gonorreia e doenças transmitidas por alimentos — está se tornando mais difícil, e algumas vezes impossível, de tratar, à medida que os antibióticos se tornam menos eficazes. Quando os antibióticos podem ser comprados para uso humano ou animal sem receita médica, o surgimento e a disseminação da resistência pioram. Da mesma forma, em países sem diretrizes de tratamento padrão, os antibióticos são muitas vezes prescritos em demasia pelos profissionais de saúde e veterinários e usados excessivamente pelo público. Sem uma ação urgente, estamos caminhando para uma era pós-antibiótico, na qual infecções comuns e ferimentos leves podem mais uma vez matar.\n\n\\credits{Adaptado de: Organização Mundial de Saúde. Disponível em: www.who.int. Acesso em: 15 ago. 2018.}\n\nO aumento da ocorrência de bactérias resistentes a antibióticos está relacionado a qual força evolutiva?\n\n\\begin{choices}\n\\choice Deriva genética\n\\choice Mutação\n\\choice Recombinação\n\\CorrectChoice Seleção natural\n\\choice Migração\n\\end{choices}",
+    "latex": "\\question Um objeto é colocado em frente a um espelho, e a imagem formada é virtual. Considere as afirmações abaixo.\n\n\\begin{romanitems}\n\\item O espelho é necessariamente plano ou convexo.\n\\item A imagem formada é de tamanho maior que o objeto, caso o espelho seja convexo.\n\\item A imagem não pode estar invertida, independentemente do tipo de espelho.\n\\end{romanitems}\n\nÉ correto SOMENTE o que se afirma em:\n\n\\begin{choices}\n\\choice II\n\\CorrectChoice III\n\\choice I e II\n\\choice I e III\n\\choice II e III\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Espelhos Planos e Esféricos",
+      "tags": [
+        "imagem virtual",
+        "espelho côncavo",
+        "espelho convexo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "18",
+      "gabarito": "B"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Biologia\nassunto: Zoologia\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"19\"\n}\nOs equinodermos constituem o filo mais próximo evolutivamente dos cordados, por compartilharem a seguinte característica:\n\n\\begin{choices}\n\\choice pés ambulacrários.\n\\choice simetria radial.\n\\CorrectChoice deuterostomia.\n\\choice mesoderme.\n\\choice fecundação externa.\n\\end{choices}\n\n%% FÍSICA",
+    "latex": "\\question Uma arma de tiro esportivo dispara um projétil de massa 2 g contra um bloco de madeira de massa 98 g, inicialmente em repouso sobre uma superfície horizontal sem atrito. O projétil fica encrustado no bloco, e o conjunto sai com velocidade de 4 m/s. Qual é a velocidade horizontal do projétil, em m/s, antes de atingir o bloco?\n\n\\begin{oneparchoices}\n\\choice 100\n\\CorrectChoice 200\n\\choice 400\n\\choice 800\n\\choice 1600\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Física",
+      "assunto": "Quantidade de Movimento e Impulso",
+      "tags": [
+        "colisão inelástica",
+        "projétil",
+        "bloco",
+        "conservação do momento"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "19",
+      "gabarito": "B"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Física\nassunto: Cinemática\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"20\"\n}\nUma moça faz um programa de treinamento físico com duração de $40{,}0$ min em uma esteira, de forma a intercalar caminhada e corrida em ciclos de $5{,}00$ min: durante os primeiros $2{,}00$ min, ela caminha a uma velocidade de $6{,}00$ km/h e, então, corre a uma velocidade de $9{,}00$ km/h nos seguintes $3{,}00$ min.\n\nAo fim do tempo de treinamento, qual é a leitura de distância total percorrida, em km, que a esteira indica?\n\n\\begin{choices}\n\\choice $5{,}0$\n\\CorrectChoice $5{,}2$\n\\choice $6{,}0$\n\\choice $7{,}5$\n\\choice $7{,}8$\n\\end{choices}",
+    "latex": "\\question Em um circuito elétrico, três resistores idênticos de resistência \\(R\\) são instalados em paralelo e ligados a uma bateria \\((V)\\) tal que a corrente passando pela bateria é \\(I_0\\). Se os resistores forem ligados em série ao invés de em paralelo, a nova corrente passando pela bateria será:\n\n\\begin{oneparchoices}\n\\CorrectChoice \\(I_0/9\\)\n\\choice \\(I_0/3\\)\n\\choice \\(I_0\\)\n\\choice \\(3I_0\\)\n\\choice \\(9I_0\\)\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Física",
+      "assunto": "Circuitos em Série e Paralelo",
+      "tags": [
+        "resistores",
+        "corrente",
+        "paralelo",
+        "série"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "20",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Energia e Trabalho\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"21\"\n}\nUm corpo de massa igual a $2{,}0$ kg, com velocidade inicial $v_i = 5{,}0$ m/s, percorre uma rampa curva, como na figura. Ao chegar a um ponto que está $1{,}0$ m acima da posição inicial, sua velocidade final é $v_f = 1{,}0$ m/s.\n\n[[IMG_PENDENTE: figura-q21]]\n\nCalcule, em J, a energia dissipada pelo atrito, enquanto o corpo se move entre essas duas posições.\n\nDado: $g = 10{,}0$ m/s²\n\n\\begin{choices}\n\\choice $25$\n\\choice $20$\n\\CorrectChoice $4$\n\\choice $1$\n\\choice $0$\n\\end{choices}",
+    "latex": "\\question O leite fresco é levemente ácido devido à presença de algumas substâncias, em especial o ácido lático formado pela hidrólise da lactose. A acidez do leite é expressa em graus Dornic (°D), em que toda a acidez do leite é considerada como se fosse advinda do ácido lático \\ce{CH3CHOHCOOH}. Para titulação de leite, utiliza-se uma solução de \\ce{NaOH} 0,111 mol L\\(^{-1}\\) (conhecida como soda Dornic) que reage na estequiometria de 1:1 com o ácido lático. Cada 0,1 mL da solução de soda Dornic gasto na titulação de 10 mL de leite corresponde a uma unidade de °D. Uma amostra de leite (10 mL) foi diluída com água e foi titulada, apresentando um valor de 14 °D. A massa, em mg, de ácido lático titulada foi aproximadamente igual a\n\n\\begin{oneparchoices}\n\\choice 4\n\\choice 10\n\\CorrectChoice 14\n\\choice 20\n\\choice 28\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Neutralização e Titulação",
+      "tags": [
+        "leite",
+        "ácido lático",
+        "Dornic",
+        "titulação"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "21",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Física\nassunto: Hidrostática\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"22\"\n}\nUm tubo em U, composto por dois tubos grandes (tubo A com seção reta de $5{,}00$ cm² e tubo B com seção reta de $2{,}50$ cm²), ligados por um pequeno tubo horizontal, contém uma certa quantidade de água. Coloca-se então um volume $V = 25{,}0$ cm³ de óleo, que não se mistura com a água, no tubo A. Ao atingir o equilíbrio, o sistema fica como mostrado na figura, tal que a superfície livre do tubo A fica a uma altura $H$ acima da superfície livre do tubo B.\n\n[[IMG_PENDENTE: figura-q22]]\n\nCalcule $H$, em cm.\n\nDados: $g = 10{,}0$ m/s²; $d_\\text{óleo} = 0{,}800$ g/cm³; $d_\\text{água} = 1{,}00$ g/cm³\n\n\\begin{choices}\n\\choice $0{,}0$\n\\CorrectChoice $1{,}0$\n\\choice $4{,}0$\n\\choice $5{,}0$\n\\choice $10{,}0$\n\\end{choices}",
+    "latex": "\\question O hidróxido de cálcio, \\ce{Ca(OH)2}, pode ser neutralizado com \\ce{H2SO4}, de acordo com a equação química balanceada representada a seguir:\n\n\\ce{H2SO4 (aq) + Ca(OH)2 (aq) -> CaSO4 (aq) + 2 H2O}\n\nA respeito das espécies químicas que participam dessa reação de neutralização, verifica-se que o\n\n\\begin{choices}\n\\choice \\ce{H2SO4} atua como base de Arrhenius.\n\\choice \\ce{Ca(OH)2} atua como ácido de Arrhenius.\n\\CorrectChoice \\ce{CaSO4} é um sal de caráter neutro.\n\\choice \\ce{CaSO4} é um óxido ácido.\n\\choice \\ce{CaSO4} é um óxido básico.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Química",
+      "assunto": "Sais e Óxidos",
+      "tags": [
+        "neutralização",
+        "hidróxido de cálcio",
+        "ácido sulfúrico",
+        "sal neutro"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "22",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Física\nassunto: Eletricidade\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"23\"\n}\nCom fios ideais, três resistores idênticos de $3{,}0\\ \\Omega$ e uma bateria de $3{,}0$ V, sem resistência interna, podem-se montar circuitos elétricos que dissipam energia.\n\nCalcule, em W, a maior potência dissipada possível de ser dissipada com esses componentes.\n\n\\begin{choices}\n\\choice $0{,}33$\n\\choice $1{,}0$\n\\choice $3{,}0$\n\\CorrectChoice $9{,}0$\n\\choice $27{,}0$\n\\end{choices}",
+    "latex": "\\question Uma amostra de um efluente industrial aquoso contém \\ce{Pb^2+} na concentração de \\(1 \\times 10^{-2}\\) mol L\\(^{-1}\\). Pretende-se diminuir essa concentração em solução por um fator de 1000 vezes, por meio da precipitação desse íon na forma de \\ce{PbSO4}.\n\n\\ce{PbSO4 (s) <=> Pb^2+ (aq) + SO4^2- (aq)}\n\n\\(K_{ps} = 2 \\times 10^{-8}\\,(\\text{mol L}^{-1})^2\\)\n\nA concentração mínima, em mol L\\(^{-1}\\), de íons \\ce{SO4^2-} que deve ser mantida em solução para que tal diminuição ocorra é\n\n\\begin{oneparchoices}\n\\choice \\(1 \\times 10^{-4}\\)\n\\choice \\(2 \\times 10^{-4}\\)\n\\choice \\(1 \\times 10^{-3}\\)\n\\CorrectChoice \\(2 \\times 10^{-3}\\)\n\\choice \\(1 \\times 10^{-2}\\)\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Equilíbrio de Solubilidade (Kps)",
+      "tags": [
+        "precipitação",
+        "chumbo",
+        "sulfato",
+        "efluente"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "23",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Hidrostática\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"24\"\n}\nUma mangueira fornece água a uma vazão de $400$ cm³ por segundo.\n\nEm quanto tempo, com essa mangueira, é possível encher uma pequena piscina de capacidade $1800$ L?\n\n\\begin{choices}\n\\choice $75$ segundos\n\\choice $7$ minutos e $30$ segundos\n\\CorrectChoice $1$ hora e $15$ minutos\n\\choice $7$ horas e $30$ minutos\n\\choice $12$ horas e $30$ minutos\n\\end{choices}",
+    "latex": "\\question O iodo-131 é utilizado na terapia para o câncer. Dos nuclídeos indicados abaixo, o que é um isótono do \\ce{^{131}I} é o\n\n\\begin{oneparchoices}\n\\choice \\ce{^{127}I}\n\\CorrectChoice \\ce{^{130}Te}\n\\choice \\ce{^{131}Xe}\n\\choice \\ce{^{127}Te}\n\\choice \\ce{^{123}Sb}\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Estrutura Atômica e Modelos Atômicos",
+      "tags": [
+        "isótono",
+        "iodo-131",
+        "nuclídeos"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "24",
+      "gabarito": "B"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Mecânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"25\"\n}\nUma placa retangular de $2{,}00$ m de largura é composta por duas metades A e B de mesmo tamanho, como mostrado na figura, tendo a metade A uma massa três vezes maior que a metade B. Ambas as metades têm distribuição de massa homogênea. Um fio vertical deve ser usado para suspender a placa, tal que sua base fique alinhada horizontalmente.\n\n[[IMG_PENDENTE: figura-q25]]\n\nMedindo a partir da borda esquerda da placa, em qual posição horizontal, em metros, o fio deve ser colocado?\n\n\\begin{choices}\n\\choice $0{,}50$\n\\choice $0{,}67$\n\\CorrectChoice $0{,}75$\n\\choice $1{,}33$\n\\choice $1{,}50$\n\\end{choices}",
+    "latex": "\\question Quando átomos eletricamente neutros dos elementos químicos Mg, Ca, Cu e Zn perdem 2 elétrons, ocorre a formação dos seus íons divalentes que desempenham funções importantes no organismo humano. Sobre a primeira energia de ionização dos elementos químicos citados, verifica-se que a do\n\n\\begin{choices}\n\\CorrectChoice Mg é maior que a do Ca, pois o número atômico do Mg é menor.\n\\choice Mg é igual à do Ca, pois se localizam no mesmo grupo da tabela periódica.\n\\choice Ca é maior que a do Cu, pois o número atômico do Ca é menor.\n\\choice Ca é maior que a do Zn, pois o número atômico do Ca é maior.\n\\choice Zn é igual à do Cu, pois se localizam no mesmo período da tabela periódica.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Tabela Periódica e Propriedades Periódicas",
+      "tags": [
+        "energia de ionização",
+        "magnésio",
+        "cálcio",
+        "cobre",
+        "zinco"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "25",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Física\nassunto: Ondulatória\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"26\"\n}\nNo espectro de luz visível, a luz laranja no vácuo tem um comprimento de onda típico de $600$ nm ($1$ nm $= 10^{-9}$ m).\n\nQual é a frequência da luz laranja, em Hz?\n\nDado: velocidade da luz no vácuo $= 3{,}00 \\times 10^8$ m/s\n\n\\begin{choices}\n\\choice $1{,}8 \\times 10^{11}$\n\\CorrectChoice $5{,}0 \\times 10^{14}$\n\\choice $2{,}0 \\times 10^{15}$\n\\choice $5{,}0 \\times 10^{16}$\n\\choice $1{,}8 \\times 10^{20}$\n\\end{choices}",
+    "latex": "\\question Os pontos de fusão e de ebulição das substâncias são influenciados pelas forças das ligações entre os átomos que as compõem e por interações intermoleculares. O metano tem ponto de ebulição muito baixo (-161°C), sendo, por isso, um gás na temperatura ambiente. O metano está no estado gasoso na CNTP por\n\n\\begin{choices}\n\\choice ser uma substância iônica.\n\\choice formar ligações de hidrogênio entre moléculas de metano.\n\\choice ter arranjo estrutural que produz um momento de dipolo elevado.\n\\choice decompor-se em \\ce{CH2} e \\ce{H2}, diminuindo o número de ligações do carbono.\n\\CorrectChoice ter quatro ligações covalentes polares (C-H) em um arranjo estrutural tetraédrico.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Geometria Molecular",
+      "tags": [
+        "metano",
+        "ligações covalentes",
+        "tetraédrica",
+        "polaridade"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "26",
+      "gabarito": "E"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Física\nassunto: Dinâmica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"27\"\n}\nUm bloco de $2{,}0$ kg é empurrado, a partir do repouso, por uma força de módulo $20$ N sobre uma superfície horizontal sem atrito. A força atua obliquamente, fazendo um ângulo de $60°$ com a horizontal.\n\n[[IMG_PENDENTE: figura-q27]]\n\nQuanto tempo, em segundos, o bloco leva para percorrer $10{,}0$ m?\n\nDados: $\\sen 60° = \\dfrac{\\sqrt{3}}{2}$; $\\cos 60° = \\dfrac{1}{2}$\n\n\\begin{choices}\n\\choice $\\dfrac{2\\sqrt{3}}{3}$\n\\choice $10\\sqrt{2}$\n\\CorrectChoice $2{,}0$\n\\choice $2\\sqrt{3}$\n\\choice $4{,}0$\n\\end{choices}\n\n%% QUÍMICA",
+    "latex": "\\question O carbofurano, cuja estrutura química está representada a seguir, é um pesticida que ainda é utilizado no Brasil, todavia em alguns países seu uso na agricultura foi proibido.\n\n\\includegraphics{figura-quim-q27}\n\nA fórmula molecular do carbofurano é\n\n\\begin{oneparchoices}\n\\choice \\ce{C12H18NO3}\n\\CorrectChoice \\ce{C12H15NO3}\n\\choice \\ce{C14H16NO3}\n\\choice \\ce{C16H18NO3}\n\\choice \\ce{C20H15NO3}\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Introdução ao Carbono e Cadeias Carbônicas",
+      "tags": [
+        "carbofurano",
+        "fórmula molecular",
+        "pesticida"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "27",
+      "gabarito": "B"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Química\nassunto: Química Orgânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"28\"\n}\nA representação tridimensional de uma molécula orgânica é mostrada na figura abaixo, na qual as bolas de cor cinza representam átomos de carbono; as de cor branca, átomos de hidrogênio; e cada barra representa uma ligação química.\n\n[[IMG_PENDENTE: figura-q28]]\n\nA molécula em questão\n\n\\begin{choices}\n\\choice não possui isomeria geométrica.\n\\choice é um hidrocarboneto insaturado e linear.\n\\choice tem fórmula molecular \\ce{C7H12}.\n\\CorrectChoice pode sofrer hidrogenação catalítica e levar a um hidrocarboneto saturado.\n\\choice tem quatro ligações $\\sigma$ e uma ligação $\\pi$.\n\\end{choices}",
+    "latex": "\\question O ácido clorogênico é uma substância natural que está presente em diversas plantas.\n\n\\includegraphics{figura-quim-q28}\n\nNa estrutura química do ácido clorogênico, que está representada acima, quantos átomos de carbono com hibridização \\(sp^3\\) existem?\n\n\\begin{oneparchoices}\n\\CorrectChoice 6\n\\choice 9\n\\choice 12\n\\choice 14\n\\choice 16\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Hibridação do Carbono",
+      "tags": [
+        "ácido clorogênico",
+        "sp3",
+        "estrutura orgânica"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "28",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Química\nassunto: Número de Oxidação\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"29\"\n}\nOs números de oxidação do manganês, do cromo e do enxofre, nos compostos \\ce{KMnO4}, \\ce{K2Cr2O7} e \\ce{NaHSO3}, respectivamente, são os seguintes:\n\n\\begin{choices}\n\\choice $+4$, $+6$ e $+6$\n\\CorrectChoice $+7$, $+6$ e $+4$\n\\choice $+5$, $+2$ e $0$\n\\choice $+7$, $+3$ e $+4$\n\\choice $+6$, $+6$ e $+6$\n\\end{choices}",
+    "latex": "\\question O benzeno reage completamente com oxigênio, conforme indicado na equação:\n\n\\ce{2 C6H6 (l) + 15 O2 (g) -> 12 CO2 (g) + 6 H2O (g)}\n\n\\(\\Delta H^\\circ = -6600\\,\\text{kJ}\\)\n\nUm volume, em mL, de benzeno foi reagido em excesso de oxigênio produzindo -132 kJ de energia. Se a densidade do benzeno é 0,88 g mL\\(^{-1}\\), o volume do hidrocarboneto mais próximo daquele que reagiu foi\n\n\\begin{choices}\n\\choice 0,9\n\\choice 2,2\n\\choice 2,8\n\\CorrectChoice 3,5\n\\choice 3,9\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Entalpia e Calor de Reação",
+      "tags": [
+        "benzeno",
+        "combustão",
+        "densidade",
+        "volume"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "29",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: E\ndisciplina: Química\nassunto: Geometria Molecular\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"30\"\n}\nA disposição dos átomos determina a geometria molecular.\n\nPara a molécula de água, a geometria é\n\n\\begin{choices}\n\\choice linear\n\\choice trigonal plana\n\\choice tetraédrica\n\\choice piramidal quadrada\n\\CorrectChoice angular\n\\end{choices}",
+    "latex": "\\question Há 30 anos, ocorreu um grave acidente em Goiânia, quando uma cápsula de um equipamento abandonado, contendo o isótopo radioativo do \\ce{^{137}Cs}, foi aberta. Em poucos dias, diversas pessoas haviam sido contaminadas pela radiação emitida, e as mais expostas vieram a óbito. A respeito dos isótopos do elemento químico césio, verifica-se que quando um nuclídeo do\n\n\\begin{choices}\n\\choice \\ce{^{137}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{137}_{54}Xe}.\n\\choice \\ce{^{137}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{133}_{54}Xe}.\n\\CorrectChoice \\ce{^{135}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{135}_{56}Ba}.\n\\choice \\ce{^{135}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{131}_{53}I}.\n\\choice \\ce{^{134}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{130}_{53}I}.\n\\end{choices}\n\n% ── CIÊNCIAS HUMANAS ─────────────────────────────────────────────────────",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Química",
+      "assunto": "Radioatividade e Decaimento",
+      "tags": [
+        "césio",
+        "partícula beta",
+        "nuclídeo",
+        "Goiânia"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "30",
+      "gabarito": "C"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: C\ndisciplina: Química\nassunto: Tabela Periódica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"31\"\n}\nDa lista de elementos indicados nas opções, aquela que tem, na sequência, uma terra rara (elemento lantanoide), um elemento metálico representativo e um metal alcalino é:\n\n\\begin{choices}\n\\choice Ouro, silício e hidrogênio\n\\choice Európio, germânio e bário\n\\CorrectChoice Cério, chumbo e césio\n\\choice Disprósio, estanho e boro\n\\choice Urânio, gálio e cloro\n\\end{choices}",
+    "latex": "\\question Observe o cartograma sobre mobilidade urbana na Região Metropolitana do Rio de Janeiro.\n\n\\includegraphics{figura-geo-q31}\n\nDe acordo com os índices municipais de mobilidade urbana na Região Metropolitana do Rio de Janeiro apresentados no cartograma acima, conclui-se que o(s)\n\n\\begin{choices}\n\\choice sistema de transporte hidroviário na Baia de Guanabara conecta com qualidade os municípios que margeiam o espelho d'água.\n\\choice eixo gás-óleo existente entre os municípios do Leste metropolitano reduz intensamente a dependência dos seus habitantes dos empregos da cidade carioca.\n\\choice municípios mais afastados do eixo Rio de Janeiro – São Paulo são os menos dependentes dos postos de trabalho oferecidos pelo Rio de Janeiro.\n\\CorrectChoice moradores da Baixada fluminense são os que mais dependem do trabalho disponível no município do Rio de Janeiro, gerando um grande fluxo pendular diário.\n\\choice espaços periurbanos da metrópole Rio de Janeiro são os que mais necessitam dos empregos cariocas devido ao seu perfil rural não vinculado aos setores industriais.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Urbanização e Metropolização",
+      "tags": [
+        "mobilidade urbana",
+        "fluxo pendular",
+        "Baixada Fluminense",
+        "Rio de Janeiro"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "31",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: B\ndisciplina: Química\nassunto: Soluções\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"32\"\n}\nQuando \\ce{Na2CO3} e \\ce{NH4Cl} são dissolvidos, separadamente, em água, temos soluções, respectivamente, com pH\n\n\\begin{choices}\n\\choice ácido e ácido\n\\CorrectChoice alcalino e ácido\n\\choice neutro e neutro\n\\choice ácido e neutro\n\\choice ácido e alcalino\n\\end{choices}",
+    "latex": "\\question Serviço ambiental é a capacidade da natureza de fornecer qualidade de vida e comodidades, ou seja, garantir que a vida, como conhecemos, exista para todos e com qualidade (ar puro, água limpa e acessível, solos férteis, florestas ricas em biodiversidade, alimentos nutritivos e abundantes etc.), ou seja, a natureza trabalha (presta serviços) para a manutenção da vida e de seus processos e estes serviços realizados pela natureza são conhecidos como serviços ambientais.\n\nNesse contexto, são serviços ambientais prestados por uma floresta à vida do planeta, EXCETO a(o)\n\n\\begin{choices}\n\\choice controle da erosão do solo e do assoreamento.\n\\CorrectChoice eliminação dos fungos presentes nos caules.\n\\choice manutenção dos hábitats aquáticos.\n\\choice redução da salinidade dos solos.\n\\choice sequestro de carbono do ar.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B"
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Desmatamento e Conservação",
+      "tags": [
+        "serviços ambientais",
+        "floresta",
+        "fungos",
+        "sequestro de carbono"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "32",
+      "gabarito": "B"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Química\nassunto: Estequiometria\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"33\"\n}\nO iodeto de potássio (\\ce{KI}) é um sólido branco que pode ser utilizado na formulação de xaropes mucolíticos e expectorantes.\n\nA porcentagem, em massa, de iodo na unidade formal de iodeto de potássio é\n\nDados: $M(\\text{K}) = 39$ g mol$^{-1}$; $M(\\text{I}) = 127$ g mol$^{-1}$\n\n\\begin{choices}\n\\choice $23{,}5\\%$\n\\choice $40{,}0\\%$\n\\choice $50{,}0\\%$\n\\CorrectChoice $76{,}5\\%$\n\\choice $82{,}5\\%$\n\\end{choices}",
+    "latex": "\\question A Austrália, assim como outros 53 países, faz parte do Commonwealth of Nations, uma comunidade de nações que têm em comum uma série de ações e objetivos defendidos pelos desígnios do Reino Unido. Dos objetivos dessa comunidade, aquele que NÃO deve ser valorizado pelos seus países-membros é a(o)\n\n\\begin{oneparchoices}\n\\CorrectChoice bilateralismo\n\\choice comércio livre\n\\choice democracia\n\\choice paz global\n\\choice sociedade igualitária\n\\end{oneparchoices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Organizações Internacionais",
+      "tags": [
+        "Commonwealth",
+        "Austrália",
+        "Reino Unido",
+        "multilateralismo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "33",
+      "gabarito": "A"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: D\ndisciplina: Química\nassunto: Química Inorgânica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"34\"\n}\n[[IMG_PENDENTE: figura-q34]]\n\nA associação mais correta dos itens da primeira coluna com os da segunda seria\n\n\\begin{choices}\n\\choice P–I; Q–III; R–IV; S–II\n\\choice P–IV; Q–I; R–III; S–II\n\\choice P–I; Q–IV; R–II; S–III\n\\CorrectChoice P–IV; Q–III; R–II; S–I\n\\choice P–III; Q–II; R–I; S–IV\n\\end{choices}",
+    "latex": "\\question A circulação dos homens pelo planeta, desde o período moderno, é baseada no menor tempo de deslocamento entre continentes, devendo-se levar em conta a geodésica da terra.\n\n\\includegraphics{figura-geo-q34}\n\nNesse sentido, o modelo apresentado no cartograma indica que a\n\n\\begin{choices}\n\\choice maior distância entre dois pontos é muitas vezes definida pelas latitudes.\n\\choice maior distância entre dois pontos é, algumas vezes, a dos fusos horários.\n\\choice menor distância entre dois pontos é sempre definida pelas longitudes.\n\\CorrectChoice menor distância entre dois pontos nem sempre é uma reta.\n\\choice menor distância entre dois pontos sempre é uma reta.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D"
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Leitura e Interpretação de Mapas",
+      "tags": [
+        "geodésica",
+        "cartograma",
+        "deslocamento",
+        "menor distância"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "34",
+      "gabarito": "D"
+    }
   },
   {
-    "latex": "\\question {\ntipo: Múltipla Escolha\ngabarito: A\ndisciplina: Química\nassunto: Eletroquímica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"35\"\n}\nA pilha de Daniell é composta de duas celas, uma contendo uma placa de cobre, imersa em uma solução de \\ce{Cu^{2+}}, e outra contendo uma placa de zinco imersa numa solução de \\ce{Zn^{2+}}. As duas placas são conectadas uma a outra por um fio metálico.\n\nAs extremidades de uma ponte salina são colocadas nas soluções das celas. Nessa pilha, em condição padrão, é fato que\n\nDados: $E°_{\\ce{Cu^{2+}/Cu}} = +0{,}34$ V; $E°_{\\ce{Zn^{2+}/Zn}} = -0{,}76$ V\n\n\\begin{choices}\n\\CorrectChoice o potencial desenvolvido é maior do que $1$ V.\n\\choice ocorre migração de íons das soluções para a ponte salina.\n\\choice o catodo é a cela de \\ce{Zn^{2+}/Zn}.\n\\choice o anodo é a cela de \\ce{Cu^{2+}/Cu}.\n\\choice o fluxo de elétrons é da cela de \\ce{Cu^{2+}/Cu} para a de \\ce{Zn^{2+}/Zn}.\n\\end{choices}\n\n%% CIÊNCIAS HUMANAS — DISCURSIVAS",
+    "latex": "\\question Após a 2ª Guerra mundial, a organização política dos países da Europa ocidental veio sofrendo importantes mudanças estruturais, que podem ser identificadas, nos dias atuais, pela formação da\n\n\\begin{choices}\n\\choice internacionalização, a partir do desmonte das sociedades científicas.\n\\choice nacionalização, a partir da falência das sociedades internacionalizadas.\n\\CorrectChoice regionalização, a partir da complexificação das sociedades nacionais.\n\\choice supranacionalização, a partir da eliminação das sociedades liberais.\n\\choice tecnificação, a partir da transformação das sociedades planificadas.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "A"
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Blocos Econômicos",
+      "tags": [
+        "Europa Ocidental",
+        "pós-guerra",
+        "regionalização",
+        "União Europeia"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "35",
+      "gabarito": "C"
+    }
+  },
+  {
+    "latex": "\\question Observe o cartograma com a divisão do território brasileiro.\n\n\\includegraphics{figura-geo-q36}\n\nA divisão do território brasileiro apresentada no cartograma é baseada na(s) sua(s)\n\n\\begin{choices}\n\\choice estrutura edáfica\n\\choice divisão geológica\n\\CorrectChoice bacias hidrográficas\n\\choice florestas nativas\n\\choice formações do relevo\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Geografia",
+      "assunto": "Bacias Hidrográficas",
+      "tags": [
+        "território brasileiro",
+        "divisão",
+        "cartograma",
+        "recursos hídricos"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "36",
+      "gabarito": "C"
+    }
+  },
+  {
+    "latex": "\\question Observe o esquema agrícola abaixo.\n\n\\includegraphics{figura-geo-q37}\n\nA técnica agrícola, apresentada no esquema acima, é uma das mais adequadas para a preservação ambiental, pois contribui para o melhoramento das características físicas, químicas e biológicas do solo. Tal técnica é chamada de\n\n\\begin{oneparchoices}\n\\choice afolhamento\n\\choice permacultura\n\\choice plantio direto\n\\CorrectChoice rotação de culturas\n\\choice terraceamento\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Geografia",
+      "assunto": "Agricultura Moderna e Agronegócio",
+      "tags": [
+        "solo",
+        "preservação ambiental",
+        "técnica agrícola",
+        "rotação"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "37",
+      "gabarito": "D"
+    }
+  },
+  {
+    "latex": "\\question Observe a imagem a seguir.\n\n\\includegraphics{figura-geo-q38}\n\nDas causas diretas geradoras do problema ambiental, apresentado na imagem acima, NÃO se inclui o(a)\n\n\\begin{choices}\n\\choice desmatamento das matas ciliares\n\\CorrectChoice efeito estufa e aquecimento global\n\\choice erosão antrópica e natural\n\\choice exploração pecuária e mineração\n\\choice impermeabilização dos solos pela urbanização\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Degradação Ambiental",
+      "tags": [
+        "assoreamento",
+        "Rio Doce",
+        "erosão",
+        "urbanização"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "38",
+      "gabarito": "B"
+    }
+  },
+  {
+    "latex": "\\question Os dois territórios espanhóis assinalados no cartograma são\n\n\\includegraphics{figura-geo-q39}\n\n\\begin{choices}\n\\CorrectChoice comunidades autônomas espanholas, com presidentes eleitos regularmente.\n\\choice estados industrializados da Espanha, cujo Governo não aceita as autonomias.\n\\choice regiões emancipacionistas na Espanha com pouca projeção política no Reino.\n\\choice Estados nacionais dentro do Reino de Espanha com o qual estão associados.\n\\choice comunidades espanholas pobres com partidos políticos emancipacionistas.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Geopolítica Mundial",
+      "tags": [
+        "Espanha",
+        "Catalunha",
+        "País Basco",
+        "comunidades autônomas"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "39",
+      "gabarito": "A"
+    }
+  },
+  {
+    "latex": "\\question Observe o cartograma sobre a distribuição da população brasileira segundo o Censo Demográfico de 1872.\n\n\\includegraphics{figura-geo-q40}\n\nCom base nos dados fornecidos pelo Censo demográfico brasileiro de 1872, conclui-se que:\n\n\\begin{choices}\n\\choice a ocupação do território brasileiro seguia a lógica colonial portuguesa na América do Sul, com a concentração demográfica no interior e aumento da população ao Leste.\n\\CorrectChoice as principais cidades brasileiras, em números de população absoluta, na segunda metade do século XIX, eram o Rio de Janeiro, Salvador e Recife.\n\\choice as cidades do sul do país tinham a melhor distribuição de população entre elas, por serem as mais desenvolvidas naquela época.\n\\choice o sertão nordestino vivia uma efervescência demográfica frente ao sucesso do cultivo da cana de açúcar e da mineração.\n\\choice o interior do país tinha uma boa distribuição demográfica, reflexo das políticas de imigração do 2º Reinado.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "População Brasileira",
+      "tags": [
+        "censo de 1872",
+        "demografia",
+        "cidades brasileiras",
+        "Império"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "40",
+      "gabarito": "B"
+    }
+  },
+  {
+    "latex": "\\question A Revolução Socialista na Rússia, em 1917, foi um dos acontecimentos mais significativos do século XX, uma vez que derrubou o regime tsarista e estabeleceu o socialismo no país. Sobre o contexto sociopolítico anterior à Revolução, analise as afirmativas a seguir:\n\n\\begin{romanitems}\n\\item A maior parte da população estava no campo, submetida a condições de trabalho muito precárias devido a um sistema fundiário concentrado.\n\\item A indústria e o setor financeiro se desenvolveram muito ao longo do século XIX e se tornaram a base de uma forte burguesia nacional.\n\\item A igreja ortodoxa mantinha forte influência sobre a elite aristocrática e era um dos pilares ideológicos do regime monárquico.\n\\item No decorrer do século XIX, o operariado russo tornou-se a principal oposição ao regime monárquico através de uma sólida rede de sindicatos e partidos.\n\\end{romanitems}\n\nEstão corretas SOMENTE as afirmativas:\n\n\\begin{choices}\n\\choice I e II.\n\\choice II e III.\n\\CorrectChoice I e III.\n\\choice I e IV.\n\\choice III e IV.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Revolução Russa e Stalinismo",
+      "tags": [
+        "Rússia tsarista",
+        "igreja ortodoxa",
+        "operariado",
+        "campo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "41",
+      "gabarito": "C"
+    }
+  },
+  {
+    "latex": "\\question Sobre a Primeira Guerra Mundial, assinale a alternativa correta:\n\n\\begin{choices}\n\\choice O conflito pode ser considerado uma guerra civil europeia, uma vez que o conflito ocorreu apenas em território europeu.\n\\choice Foi a primeira guerra a utilizar modernas armas de destruição em massa, resultando no abandono de formas tradicionais de luta.\n\\choice Ideologicamente, foi um conflito marcado pela cisão entre países alinhados a um projeto conservador e aqueles que apoiavam o socialismo.\n\\choice A Primeira Guerra pode ser definida como um conflito imperialista, pois a maior parte das ações bélicas ocorreu em território colonial.\n\\CorrectChoice A Primeira Guerra Mundial redefiniu as fronteiras europeias, abalou tradicionais estruturas políticas e permitiu a concretização de novos projetos ideológicos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Consequências Políticas e Sociais",
+      "tags": [
+        "Primeira Guerra Mundial",
+        "fronteiras",
+        "imperialismo",
+        "ideologias"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "42",
+      "gabarito": "E"
+    }
+  },
+  {
+    "latex": "\\question Sobre o impacto da Revolução Cubana nas relações entre os EUA e a América Latina na década de 1960, assinale a alternativa correta:\n\n\\begin{choices}\n\\choice A América Latina tornou-se o foco principal de preocupações militares para os norte-americanos no panorama da Guerra Fria nesse período.\n\\CorrectChoice Os EUA passaram a investir também em programas que garantissem a expansão da influência norte-americana por via pacífica, como a Aliança para o Progresso.\n\\choice Houve momentos de enfrentamento e tensão, como a bem-sucedida invasão da baía dos Porcos, em abril de 1961, por forças anticastristas.\n\\choice A crise dos mísseis cubanos, em 1962, resultou de testes realizados com armas nucleares soviéticas em território cubano.\n\\choice Os EUA abandonam a política praticada até então, que consistia na necessidade de exportar a democracia para os demais povos do continente.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Conflitos da Guerra Fria (Coreia, Vietnã, Cuba)",
+      "tags": [
+        "Revolução Cubana",
+        "EUA",
+        "América Latina",
+        "Aliança para o Progresso"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "43",
+      "gabarito": "B"
+    }
+  },
+  {
+    "latex": "\\question Nessa passagem, o presidente Campos Salles (1898-1902) sintetiza a estrutura de funcionamento político formulada em seu governo para a Primeira República brasileira. Sobre essa estrutura, assinale a alternativa correta:\n\n\\begin{choices}\n\\choice O comando da política republicana estava exclusivamente nas mãos dos coronéis que controlavam os municípios de acordo com seus interesses particulares.\n\\choice A despeito dos acordos políticos inerentes ao pacto oligárquico, o livre exercício do voto e a participação eleitoral possibilitavam a constante alternância de poder.\n\\choice Os últimos anos foram marcados por diversas tensões e sérios conflitos como a Revolta da Armada e a Revolução Federalista ocorrida no Rio Grande do Sul.\n\\choice Os debates e as articulações políticas na Capital Federal foram incentivados, valorizando-se, assim, um dos princípios republicanos fundamentais.\n\\CorrectChoice A concessão de verbas somada às interferências no processo eleitoral garantiam a perpetuação das oligarquias estaduais e seu apoio à política do governo federal.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "República Velha e Política do Café com Leite",
+      "tags": [
+        "Campos Salles",
+        "política dos governadores",
+        "oligarquias",
+        "coronelismo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "44",
+      "gabarito": "E"
+    }
+  },
+  {
+    "latex": "\\question Analise as afirmativas abaixo acerca do período Estado Novo (1937-1945) no Brasil.\n\n\\begin{romanitems}\n\\item O Estado Novo se estabeleceu a partir de um golpe que dissolveu o Congresso e da outorga de uma nova Constituição que suprimiu liberdades civis. Em meio a um período de turbulência política, o pretexto definitivo para o fechamento do regime foi o crescimento da Ação Integralista Brasileira (AIB) e suas marchas populares.\n\\item No âmbito do Ministério de Educação e Saúde (MES), elaborou-se um projeto cultural que visou a incentivar pesquisas sobre o Brasil e preservar suas raízes culturais. Em torno do ministro Gustavo Capanema, reuniram-se intelectuais de variadas correntes de pensamento nem sempre próximos ao regime, mas que compartilhavam um projeto nacionalista.\n\\item O Departamento de Imprensa e Propaganda (DIP), criado em 1939, controlava e censurava previamente os meios de comunicação. Subordinada ao poder público pela Constituição de 1937, a imprensa foi usada como instrumento de propaganda do regime, sendo obrigada a divulgar informes e comunicados oficiais.\n\\item O Estado Novo valorizou manifestações da cultura popular como o samba e o carnaval, transformando-os em símbolos da cultura nacional. As festas, os ritmos populares e temas como a sensualidade, a boemia carioca e a \"malandragem\", passaram a ser vistos como expressões de uma brasilidade que deveria ser exaltada.\n\\end{romanitems}\n\nEstão corretas SOMENTE as afirmativas:\n\n\\begin{choices}\n\\choice I e III.\n\\CorrectChoice II e III.\n\\choice II e IV.\n\\choice II, III e IV.\n\\choice I e IV.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Era Vargas e Estado Novo",
+      "tags": [
+        "DIP",
+        "Capanema",
+        "Estado Novo",
+        "cultura"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "45",
+      "gabarito": "B"
+    }
+  },
+  {
+    "latex": "\\question Sobre as condições que permitiram o desenvolvimento da economia cafeeira no Império do Brasil e o domínio do mercado mundial pelo café produzido no Brasil, assinale a alternativa INCORRETA:\n\n\\begin{choices}\n\\choice O desenvolvimento da cafeicultura no Vale do Paraíba se beneficiou da grande disponibilidade de terras com sua distribuição ainda não implementada.\n\\choice A Revolução do Haiti (entre 1791 e 1804) desestabilizou a produção cafeeira da ilha, retirando-a do mercado mundial de café.\n\\choice A existência prévia de vias que cruzavam a região e de um sistema de transportes baseado em tropas de mulas, que serviram ao escoamento da produção aurífera no século XVIII, facilitou o escoamento da produção cafeeira do Vale do Paraíba em direção aos portos de exportação.\n\\CorrectChoice As leis que proibiam o tráfico de escravos para o território do Império do Brasil, frutos da pressão inglesa, acabaram por beneficiar a produção cafeeira do Vale do Paraíba, uma vez que a utilização da mão de obra de imigrantes se mostrou muito mais produtiva.\n\\choice Um conflito fiscal entre Espanha e Estados Unidos na década de 1830 retirou a produção cafeeira cubana do principal mercado consumidor mundial de café à época, o mercado norte-americano.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "História",
+      "assunto": "Segundo Reinado",
+      "tags": [
+        "cafeicultura",
+        "Vale do Paraíba",
+        "tráfico negreiro",
+        "mão de obra"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "46",
+      "gabarito": "D"
+    }
+  },
+  {
+    "latex": "\\question Desde o último quartel do século XIX até o início da Primeira Guerra Mundial, no contexto de um capitalismo cada vez mais globalizado, grande parte do território africano foi partilhado entre um conjunto de Estados europeus. Indique qual destes Estados não fazia parte desse conjunto:\n\n\\begin{oneparchoices}\n\\choice Bélgica\n\\choice Grã-Bretanha\n\\CorrectChoice Império Russo\n\\choice Itália\n\\choice Países Baixos\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Partilha da África e Ásia",
+      "tags": [
+        "imperialismo",
+        "África",
+        "Estados europeus",
+        "século XIX"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "47",
+      "gabarito": "C"
+    }
+  },
+  {
+    "latex": "\\question De acordo com essa crônica de 1920 sobre o projeto do prefeito Carlos Sampaio para a cidade do Rio de Janeiro, é INCORRETO afirmar que o autor:\n\n\\begin{choices}\n\\CorrectChoice questiona no projeto elementos antidemocráticos e contrários ao princípio da igualdade social, os quais não correspondiam à concepção de República das elites da época.\n\\choice critica projetos de reforma urbana que não atendem aos interesses reais da maioria da população e promovem obras de caráter superficial no espaço.\n\\choice contesta a pretendida remodelação espacial, dentre outros motivos, pelo aumento da crise habitacional decorrente da demolição de casas populares.\n\\choice combate o arrasamento do morro do Castelo, obra que continuava o processo de expulsão dos trabalhadores do Centro, observado na Reforma Passos.\n\\choice discorda da ideia de que o Rio de Janeiro deveria ser uma espécie de Paris tropical, observando-se que, na época, a capital francesa era um centro irradiador de novidades.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "República Velha e Política do Café com Leite",
+      "tags": [
+        "Lima Barreto",
+        "reforma urbana",
+        "morro do Castelo",
+        "Rio de Janeiro"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "48",
+      "gabarito": "A"
+    }
+  },
+  {
+    "latex": "\\question Com base nessa música gravada por Chico Buarque, em 1984, ano que marcou o auge da campanha pelas Diretas Já, é INCORRETO afirmar que a canção:\n\n\\begin{choices}\n\\choice compara a ditadura à escravidão, lembrando antepassados, pés sangrados, calçamentos de paralelepípedo e até o samba como dança de escravizados.\n\\choice sugere a presença do povo nas ruas, num contexto em que as grandes manifestações de massa voltaram à cena política.\n\\choice trata a ditadura como uma \"página infeliz\" do Brasil, manifestação crítica essa favorecida pela revogação do AI-5 e pelo abrandamento da censura prévia, em 1978.\n\\CorrectChoice apresenta a luta pelas Diretas Já como um \"samba popular\", considerando o apoio nas ruas e a vitória da Emenda Dante de Oliveira, no Congresso Nacional.\n\\choice cita as \"tenebrosas transações\", uma referência aos casos de corrupção revelados na fase final da ditadura, com a maior liberdade aos meios de comunicação.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Ditadura Militar (1964–1985)",
+      "tags": [
+        "Diretas Já",
+        "Chico Buarque",
+        "Emenda Dante de Oliveira",
+        "canção"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "49",
+      "gabarito": "D"
+    }
+  },
+  {
+    "latex": "\\question Tendo como referência a notícia sobre Mbanza Congo e os conhecimentos históricos pertinentes, analise as afirmativas seguintes com relação à história do antigo Reino do Congo.\n\n\\begin{romanitems}\n\\item O Reino do Congo foi um dos mais conhecidos reinos da região centro-ocidental da África. Fundado no final do século XIII, chegou a abranger parte dos atuais países de Angola, República do Congo, República Democrática do Congo e Gabão.\n\\item A partir do século XV ocorreram os primeiros contatos dos portugueses com as autoridades políticas do Reino do Congo, transformando essa região em uma das maiores exportadoras de africanos escravizados para as Américas.\n\\item A capital do Reino do Congo era Mbanza Congo ou São Salvador, como ficou conhecida após a conversão ao catolicismo do manicongo (rei do Congo) e a construção da Catedral de São Salvador do Congo.\n\\item A organização política do Reino do Congo somente ocorreu após a chegada dos portugueses na região, quando estes influenciaram a formação de uma \"elite burocrática\" que ajudava o manicongo (rei do Congo) a governar.\n\\end{romanitems}\n\nEstão corretas SOMENTE as afirmativas:\n\n\\begin{choices}\n\\choice II, III e IV.\n\\CorrectChoice I, II e III.\n\\choice I, II e IV.\n\\choice I e II.\n\\choice I e III.\n\\end{choices}\n\n% ── BIOLOGIA DISCURSIVA ──────────────────────────────────────────────────",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Escravidão Africana e Tráfico Negreiro",
+      "tags": [
+        "Reino do Congo",
+        "Mbanza Congo",
+        "manicongo",
+        "África centro-ocidental"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "50",
+      "gabarito": "B"
+    }
+  },
+  {
+    "latex": "\\question A edição genética vem-se tornando cada vez mais uma realidade. Uma das grandes responsáveis por esse avanço é a tecnologia de CRISPR-Cas9, técnica que permite que sequências possam ser eliminadas ou inseridas em um genoma com altas taxas de sucesso. As possibilidades para essa metodologia são infinitas, desde tratamento de doenças até a possibilidade do entendimento de eventos evolutivos.\n\nO gene AGAP007280 de \\textit{Anopheles gambiae}, transmissor da malária, é importante para garantir a fertilidade de fêmeas dessa espécie de mosquito.\n\nExplique como a manipulação do gene AGAP007280, através da edição genética, poderia ser utilizada para o controle de doenças transmitidas por este inseto vetor.",
+    "tipo": "Discursiva",
+    "gabarito": null,
+    "meta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Média",
+      "disciplina": "Biologia",
+      "assunto": "Mutações Gênicas e Cromossômicas",
+      "tags": [
+        "CRISPR-Cas9",
+        "malária",
+        "Anopheles gambiae",
+        "fertilidade"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "1",
+      "resposta": "|"
+    }
+  },
+  {
+    "latex": "\\question A Figura abaixo representa a resposta imune de um indivíduo após dois contatos com o sorotipo I do vírus da Dengue (DENVI).\n\n\\includegraphics{figura-bio-q2-disc}\n\nLevando em consideração os dados representados no gráfico, explique as diferenças nas respostas imunes apresentadas por esse indivíduo após os dois momentos de contato com DENVI.",
+    "tipo": "Discursiva",
+    "gabarito": null,
+    "meta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Média",
+      "disciplina": "Biologia",
+      "assunto": "Antígenos, Anticorpos e Vacinas",
+      "tags": [
+        "dengue",
+        "memória imunológica",
+        "DENVI",
+        "anticorpos"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "2",
+      "resposta": "|"
+    }
   },
   {
     "isSet": true,
-    "baseLatex": "{\ntipo: Discursiva\ndisciplina: Geografia\nassunto: Questão Ambiental\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"36\"\n}\nAgbogbloshie é um bairro periférico da cidade de Accra, capital de Gana, na África Ocidental, onde há um dos maiores e mais poluidores lixões de resíduos eletrônicos do mundo, sendo comparado à Chernobyl, na Ucrânia, em termos da toxidade do seu meio ambiente. Esse pequeno país africano importa, a cada ano, cerca de 40.000 toneladas de resíduos eletrônicos.\n\n[[IMG_PENDENTE: figura-q36]]\n\n\\credits{Adaptado de: yogui.co/agbogbloshie-o-quintal-para-nosso-lixo-eletronico. Acesso em: 21 jul. 2018.}\n\nCom base na problemática apresentada, faça o que se pede a seguir:",
+    "baseLatex": "Segundo o IBGE, existem, no Brasil, seis biomas terrestres, distribuídos conforme a Figura abaixo:\n\n\\includegraphics{figura-bio-q3-disc}\n\nConsiderando a Figura acima,",
     "items": [
       {
-        "latex": "{\na) Apresente uma causa que torna esse ambiente de \\textit{e-waste} (lixo informático) um dos mais tóxicos do mundo.\n}",
+        "latex": "identifique quais são os biomas 1, 4 e 6.",
         "tipo": "Discursiva",
-        "gabarito": null
+        "gabarito": null,
+        "meta": {
+          "assunto": "Biomas Brasileiros",
+          "tags": [
+            "Amazônia",
+            "Pantanal",
+            "Pampas",
+            "identificação"
+          ],
+          "resposta": "|"
+        }
       },
       {
-        "latex": "{\nb) Explique por que um dos fatores promotores de tal tragédia ambiental é a chamada obsolescência programada.\n}",
+        "latex": "descreva dois fatores bióticos e dois fatores abióticos que caracterizam os biomas 5 e 3.",
         "tipo": "Discursiva",
-        "gabarito": null
+        "gabarito": null,
+        "meta": {
+          "assunto": "Biomas Brasileiros",
+          "tags": [
+            "Mata Atlântica",
+            "Caatinga",
+            "fatores bióticos",
+            "fatores abióticos"
+          ],
+          "resposta": "|"
+        }
       }
-    ]
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "disciplina": "Biologia",
+      "dificuldade": "Média",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5"
+    }
   },
   {
     "isSet": true,
-    "baseLatex": "{\ntipo: Discursiva\ndisciplina: Geografia\nassunto: Migrações\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"37\"\n}\nRefugiados climáticos (ou ambientais) são pessoas forçadas a emigrar de sua terra natal, temporária ou permanentemente, em função de uma perturbação no meio ambiente (natural e/ou desencadeada pela ação humana), que coloca em risco sua existência e/ou sua qualidade de vida, individual ou coletiva.\n\n[[IMG_PENDENTE: figura-q37]]\n\n\\credits{Adaptado de: Essam El-Hinnawi, 1985, do PNUMA.}\n\nApesar de tal migrante ainda não ser reconhecido juridicamente no plano internacional, eles crescem, de maneira alarmante, por todas as regiões do planeta, a partir das mudanças climáticas da atualidade. Com base na definição apresentada, apresente uma causa ambiental para esse crescente fluxo demográfico que sai",
+    "baseLatex": "A reconstrução da filogenia das formigas (família Formicidae), combinando dados moleculares e o registro fóssil, demonstra que o período de diversificação da família coincide com a diversificação das angiospermas e da maioria dos insetos herbívoros. As florestas dominadas por angiospermas proporcionaram alimento para os insetos herbívoros e, por gerarem uma serrapilheira mais diversa, possibilitaram o estabelecimento de uma maior variedade de nichos, o que resultou na diversificação destes insetos.",
     "items": [
       {
-        "latex": "{\na) das estepes africanas.\n}",
+        "latex": "Que força evolutiva estaria atuando na radiação adaptativa descrita acima? Explique.",
         "tipo": "Discursiva",
-        "gabarito": null
+        "gabarito": null,
+        "meta": {
+          "assunto": "Seleção Natural",
+          "tags": [
+            "radiação adaptativa",
+            "insetos",
+            "angiospermas",
+            "nicho ecológico"
+          ],
+          "resposta": "|"
+        }
       },
       {
-        "latex": "{\nb) das ilhas e regiões litorâneas dos Oceanos Índico e Pacífico.\n}",
+        "latex": "Identifique e exemplifique dois tipos de interações ecológicas entre plantas e insetos que podem estar envolvidas nos processos de coevolução.",
         "tipo": "Discursiva",
-        "gabarito": null
+        "gabarito": null,
+        "meta": {
+          "assunto": "Relações Ecológicas",
+          "tags": [
+            "coevolução",
+            "insetos",
+            "plantas",
+            "mutualismo",
+            "herbivoria"
+          ],
+          "resposta": "|"
+        }
       }
-    ]
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "disciplina": "Biologia",
+      "dificuldade": "Média",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5"
+    }
   },
   {
-    "isSet": true,
-    "baseLatex": "{\ntipo: Discursiva\ndisciplina: Geografia\nassunto: Geografia Econômica\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"38\"\n}\nOs polos apresentados no cartograma representam alguns centros de excelência da pesquisa e produção no país, associados às tecnologias de ponta e de informação. São também chamados de \"tecnopolos\". Esse termo foi cunhado no início do século XX nos EUA, e é fundamental para a consolidação de uma das regiões industriais mais importantes no mundo ocidental, o Vale do Silício (Califórnia, EUA).\n\n[[IMG_PENDENTE: figura-q38]]\n\nCom base no cartograma e nas explicações acima, apresente",
-    "items": [
-      {
-        "latex": "{\na) duas condições socioespaciais necessárias para a formação de um tecnopolo em um país.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      },
-      {
-        "latex": "{\nb) dois problemas estruturais brasileiros para que o país ainda tenha tão poucos tecnopolos.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      }
-    ]
-  },
-  {
-    "isSet": true,
-    "baseLatex": "{\ntipo: Discursiva\ndisciplina: História\nassunto: Guerra Fria\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"39\"\n}\nNo dia 5 de março de 1946, o primeiro-ministro britânico Winston Churchill proferiu um discurso em Fulton, no Missouri (EUA), em que usou a expressão \\textit{Iron Curtain}, ou \"Cortina de Ferro\". O chefe de governo britânico afirmou que \"de Stetin, no (mar) Báltico, até Trieste, no (mar) Adriático, uma Cortina de Ferro desceu sobre o continente\". Considerando os conhecimentos sobre o período",
-    "items": [
-      {
-        "latex": "{\na) EXPLIQUE o que o termo \"Cortina de Ferro\" significava nesse contexto.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      },
-      {
-        "latex": "{\nb) CITE dois países que ficavam no interior dessa \"Cortina de Ferro\".\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      }
-    ]
-  },
-  {
-    "isSet": true,
-    "baseLatex": "{\ntipo: Discursiva\ndisciplina: História\nassunto: História do Brasil Colonial\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"40\"\n}\n\"Os nossos tupinambás muito se admiram dos franceses e outros estrangeiros se darem ao trabalho de ir buscar o seu arabutan. Uma vez um velho perguntou-me: Por que vindes vós outros, maírs e peros (franceses e portugueses) buscar lenha de tão longe para vos aquecer? Não tendes madeira em vossa terra? Respondi que tínhamos muita, mas não daquela qualidade, e que não a queimávamos, como ele o supunha, mas dela extraíamos tinta para tingir, tal qual o faziam eles com os seus cordões de algodão e suas plumas.\"\n\n\\credits{Jean de Léry, \\textit{Viagem à terra do Brasil} [1578]. São Paulo: Conselho Nacional da Reserva da Biosfera da Mata Atlântica, 1998, p. 37.}",
-    "items": [
-      {
-        "latex": "{\na) EXPLIQUE uma das motivações iniciais dos europeus na conquista do Novo Mundo.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      },
-      {
-        "latex": "{\nb) DESCREVA o sistema de trabalho que possibilitou a exploração de pau-brasil pelos europeus.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      }
-    ]
-  },
-  {
-    "isSet": true,
-    "baseLatex": "{\ntipo: Discursiva\ndisciplina: História\nassunto: História da África\nconcurso: PUC-Rio\nbanca: PUC-Rio\nano: 2019\nprova: Manhã - 2º Dia\ncargo: Grupo 2\nnumero: \"41\"\n}\n[[IMG_PENDENTE: figura-q41]]\n\nO mapa acima mostra as potências europeias que dominaram os territórios e implementaram os sistemas coloniais na África a partir do final do século XIX. Com relação à colonização do continente africano, faça o que se pede a seguir.",
-    "items": [
-      {
-        "latex": "{\na) EXPLIQUE os interesses que levaram os países europeus a efetivarem a colonização da África no final do século XIX.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      },
-      {
-        "latex": "{\nb) INDIQUE duas ações empregadas pelos europeus para colonizar os territórios africanos.\n}",
-        "tipo": "Discursiva",
-        "gabarito": null
-      }
-    ]
+    "latex": "\\question A determinação do sexo nas tartarugas marinhas depende exclusivamente da temperatura de incubação dos ovos. Em um determinado estágio do desenvolvimento embrionário, a temperatura do ambiente influencia a síntese de enzimas que irão atuar na diferenciação dos sexos. As temperaturas mais quentes produzem maior proporção de fêmeas, enquanto temperaturas mais frias produzem maior proporção de machos.\n\nNo atual cenário de mudanças climáticas, em que vem sendo constatado um aumento de temperatura, explique de que forma o sucesso reprodutivo dessas espécies pode ser afetado.",
+    "tipo": "Discursiva",
+    "gabarito": null,
+    "meta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Média",
+      "disciplina": "Biologia",
+      "assunto": "Herança e Determinação do Sexo",
+      "tags": [
+        "tartarugas marinhas",
+        "temperatura",
+        "mudanças climáticas",
+        "sucesso reprodutivo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "Tarde G5",
+      "numero": "5",
+      "resposta": "|"
+    }
   }
 ]

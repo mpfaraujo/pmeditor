@@ -55,7 +55,7 @@ question: {
   
 set_questions: {
   // contexto obrigatório e compartilhado
-  content: "base_text question_item+",
+  content: "base_text (question_item | question_group)+",
   attrs: {
     mode: { default: null }, // "essay" | null
   },
@@ -66,6 +66,14 @@ set_questions: {
   },
 },
 
+
+question_group: {
+  // agrupa question_items que pertencem à mesma questão discursiva
+  content: "question_item+",
+  toDOM(): DOMOutputSpec {
+    return ["div", { class: "question-group" }, 0];
+  },
+},
 
 question_item: {
   // uma pergunta sobre o mesmo contexto

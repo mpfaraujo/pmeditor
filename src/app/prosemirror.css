@@ -359,3 +359,33 @@
 .ProseMirror .data-box p + p {
   margin-top: 0.2em;
 }
+
+/* ===== SET_QUESTIONS — separação visual de question_items no editor ===== */
+
+.ProseMirror .set-questions {
+  counter-reset: question-item-counter;
+}
+
+.ProseMirror .question-item {
+  counter-increment: question-item-counter;
+}
+
+.ProseMirror .question-item + .question-item,
+.ProseMirror .question-group + .question-group {
+  border-top: 1px solid #d1d5db;
+  margin-top: 0.75em;
+  padding-top: 0.75em;
+}
+
+.ProseMirror .question-item::before {
+  content: "Item " counter(question-item-counter);
+  display: block;
+  font-size: 0.72em;
+  font-weight: 600;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
+  user-select: none;
+}
+

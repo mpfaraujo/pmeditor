@@ -54,6 +54,7 @@ type ImportSetItem = {
     gabarito: string | null;
     meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta">;
   }>;
+  groups?: Array<{ itemIndexes: number[] }>;  // agrupamento por question_group
   sharedMeta?: YamlMeta;
 };
 
@@ -64,7 +65,10 @@ function parseYamlBlock(block: string): YamlMeta {
   const result: YamlMeta = {};
   const itemsMap: Map<number, { assunto?: string; tags?: string[]; gabarito?: string; resposta?: string }> = new Map();
 
-  for (const line of block.split("\n")) {
+  const rawLines = block.split("\n");
+  let lineIdx = 0;
+  while (lineIdx < rawLines.length) {
+    const line = rawLines[lineIdx++];
     const stripped = line.replace(/#.*$/, "").trim();
     if (!stripped) continue;
 
@@ -72,7 +76,19 @@ function parseYamlBlock(block: string): YamlMeta {
     if (colonIdx === -1) continue;
 
     const key = stripped.slice(0, colonIdx).trim().toLowerCase();
-    const val = stripped.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, "");
+    let val = stripped.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, "");
+
+    // Suporte a bloco multiline YAML (resposta: | ou resposta: |-)
+    if (val === "|" || val === "|-") {
+      const parts: string[] = [];
+      while (lineIdx < rawLines.length && /^[ \t]/.test(rawLines[lineIdx])) {
+        parts.push(rawLines[lineIdx++].trim());
+      }
+      // Remove linhas vazias no final
+      while (parts.length && !parts[parts.length - 1]) parts.pop();
+      val = parts.join(" ").trim();
+      if (!val) continue;
+    }
 
     if (!val && key !== "tags" && !key.startsWith("tags")) continue;
 
@@ -150,6 +166,21 @@ function extractLeadingYaml(text: string): { meta: YamlMeta | null; latex: strin
     return { meta: parseYamlBlock(verbatimM[1]), latex: verbatimM[2].trim() };
   }
   return { meta: null, latex: text };
+}
+
+/**
+ * Extrai YAML do formato {YAML} com chaves (formato inline do pmeditor).
+ * Só considera YAML se o conteúdo tiver pelo menos um campo reconhecido.
+ */
+function extractCurlyYaml(text: string): { meta: YamlMeta | null; latex: string } {
+  const m = text.match(/^\{([\s\S]*?)\}\s*([\s\S]*)$/);
+  if (!m) return { meta: null, latex: text };
+  const parsed = parseYamlBlock(m[1]);
+  // Só trata como YAML se tiver campos reconhecidos (evita confundir com conteúdo de questionitem)
+  if (!parsed.tipo && !parsed.disciplina && !parsed.gabarito && !parsed.concurso && !parsed.banca) {
+    return { meta: null, latex: text };
+  }
+  return { meta: parsed, latex: m[2].trim() };
 }
 
 /** Extrai o bloco YAML de dentro de \begin{verbatim}---...---\end{verbatim} OU direto ---...--- */
@@ -242,26 +273,52 @@ function parsePartsBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
 
 /** Processa um bloco de \setquestion...\questionitem...\questionitem... */
 function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSetItem {
-  // Suporte a YAML inline logo após \setquestion (formato: \setquestion\n---\nyaml\n---\nbase...)
+  // Suporte a YAML inline logo após \setquestion
+  // Tenta formato ---...--- primeiro, depois formato {YAML}
   const { meta: inlineMeta, latex: chunkClean } = extractLeadingYaml(chunk);
-  const meta = inlineMeta ?? metaFromBefore;
-  const effectiveChunk = inlineMeta ? chunkClean : chunk;
+  let meta = inlineMeta ?? metaFromBefore;
+  let effectiveChunk = inlineMeta ? chunkClean : chunk;
 
-  // Separa base text dos items
-  const itemSplitRe = /\\questionitem\b/g;
-  const splits: number[] = [];
-  let sm: RegExpExecArray | null;
-  while ((sm = itemSplitRe.exec(effectiveChunk))) {
-    splits.push(sm.index);
+  if (!inlineMeta) {
+    const { meta: curlyMeta, latex: curlyClean } = extractCurlyYaml(effectiveChunk);
+    if (curlyMeta) {
+      meta = curlyMeta;
+      effectiveChunk = curlyClean;
+    }
   }
 
-  const baseLatex = effectiveChunk.slice(0, splits.length > 0 ? splits[0] : effectiveChunk.length).trim();
+  // Separa base text dos items (detecta \questiongroup e \questionitem)
+  const tokenRe = /\\(questiongroup|questionitem)\b/g;
+  type Token = { kind: "questiongroup" | "questionitem"; index: number; len: number };
+  const tokens: Token[] = [];
+  let tm: RegExpExecArray | null;
+  while ((tm = tokenRe.exec(effectiveChunk))) {
+    tokens.push({ kind: tm[1] as Token["kind"], index: tm.index, len: tm[0].length });
+  }
+
+  const firstTokenIdx = tokens.length > 0 ? tokens[0].index : effectiveChunk.length;
+  const baseLatex = effectiveChunk.slice(0, firstTokenIdx).trim();
 
   const itemChunks: string[] = [];
-  for (let i = 0; i < splits.length; i++) {
-    const start = splits[i] + "\\questionitem".length;
-    const end = i + 1 < splits.length ? splits[i + 1] : effectiveChunk.length;
-    itemChunks.push(effectiveChunk.slice(start, end).trim());
+  // groupBoundaries[i] = índice do item (em itemChunks) onde começa o grupo i
+  const groupBoundaries: number[] = [];
+  let hasGroups = false;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const tok = tokens[i];
+    if (tok.kind === "questiongroup") {
+      hasGroups = true;
+      groupBoundaries.push(itemChunks.length);
+      continue;
+    }
+    // questionitem
+    const start = tok.index + tok.len;
+    const end = i + 1 < tokens.length ? tokens[i + 1].index : effectiveChunk.length;
+    let raw = effectiveChunk.slice(start, end).trim();
+    // Desembrulha {conteúdo} do formato \questionitem{conteúdo}
+    const bracesM = raw.match(/^\{([\s\S]*)\}\s*$/);
+    if (bracesM) raw = bracesM[1].trim();
+    itemChunks.push(raw);
   }
 
   const sharedTipo = meta?.tipo?.toLowerCase();
@@ -299,10 +356,20 @@ function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSe
     };
   });
 
+  // Constrói grupos a partir dos groupBoundaries
+  let groups: Array<{ itemIndexes: number[] }> | undefined;
+  if (hasGroups && groupBoundaries.length > 0) {
+    groups = groupBoundaries.map((startIdx, gi) => {
+      const endIdx = gi + 1 < groupBoundaries.length ? groupBoundaries[gi + 1] : items.length;
+      return { itemIndexes: Array.from({ length: endIdx - startIdx }, (_, k) => startIdx + k) };
+    });
+  }
+
   return {
     isSet: true,
     baseLatex,
     items,
+    ...(groups ? { groups } : {}),
     ...(meta ? { sharedMeta: meta } : {}),
   };
 }
@@ -365,9 +432,17 @@ function main() {
       if (!chunk) continue;
 
       // Suporte a YAML inline (logo após \question): prioridade sobre textBefore
+      // Tenta formato ---...--- primeiro, depois formato {YAML}
       const { meta: inlineMeta, latex: cleanChunk } = extractLeadingYaml(chunk);
-      const effectiveMeta = inlineMeta ?? meta;
+      let effectiveMeta = inlineMeta ?? meta;
       if (inlineMeta) chunk = cleanChunk;
+      if (!inlineMeta) {
+        const { meta: curlyMeta, latex: curlyClean } = extractCurlyYaml(chunk);
+        if (curlyMeta) {
+          effectiveMeta = curlyMeta;
+          chunk = curlyClean;
+        }
+      }
 
       // Detecta \begin{parts} → set_questions discursivo
       if (/\\begin\{parts\}/.test(chunk)) {

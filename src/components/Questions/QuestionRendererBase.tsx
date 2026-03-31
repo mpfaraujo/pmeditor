@@ -157,11 +157,19 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
   function splitSetQuestions(setNode: PMNode): {
     baseTextNode: PMNode | null;
     items: PMNode[];
+    groups: PMNode[] | null;  // null = sem question_group (comportamento antigo)
   } {
     const content = setNode.content ?? [];
     const baseTextNode = content.find((n) => n?.type === "base_text") ?? null;
-    const items = content.filter((n) => n?.type === "question_item");
-    return { baseTextNode, items };
+    const hasGroups = content.some((n) => n?.type === "question_group");
+    const items: PMNode[] = [];
+    for (const child of content) {
+      if (child.type === "question_item") items.push(child);
+      else if (child.type === "question_group")
+        (child.content ?? []).forEach((qi: PMNode) => { if (qi.type === "question_item") items.push(qi); });
+    }
+    const groups = hasGroups ? content.filter((n) => n?.type === "question_group") : null;
+    return { baseTextNode, items, groups };
   }
 
   function renderSetQuestions(
@@ -169,7 +177,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     keyPrefix: string,
     parentQuestionAttrs?: any
   ): React.ReactNode {
-    const { baseTextNode, items } = splitSetQuestions(setNode);
+    const { baseTextNode, items, groups } = splitSetQuestions(setNode);
 
     // Discursiva multipartes: só ativa se o set vier marcado explicitamente.
     // Se não houver marcação, mantém o comportamento antigo (não quebra nada).
@@ -181,6 +189,43 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     );
 
     if (isEssaySet) {
+      // Set discursivo com question_groups: cada grupo entra como questão, itens como a), b), c)
+      if (groups) {
+        return (
+          <div key={keyPrefix} className="question-set-readonly space-y-3">
+            {baseTextNode ? (
+              <div className="question-readonly">
+                <div className="question-text space-y-2">
+                  {renderBlock(baseTextNode, `${keyPrefix}-base`)}
+                </div>
+              </div>
+            ) : null}
+
+            {groups.map((grp, grpIdx) => {
+              const grpItems = (grp.content ?? []).filter((n: PMNode) => n?.type === "question_item");
+              const showLabels = shouldShowEssayPartLabels(grpItems.length);
+              return (
+                <div key={`${keyPrefix}-grp-${grpIdx}`} className="question-group-readonly space-y-2">
+                  {grpItems.map((it: PMNode, idx: number) => (
+                    <div
+                      key={`${keyPrefix}-grp-${grpIdx}-essay-${idx}`}
+                      className="flex items-start gap-2"
+                    >
+                      {showLabels ? (
+                        <div className="font-semibold">{essayPartLabel(idx)}</div>
+                      ) : null}
+                      <div className="flex-1">
+                        {renderQuestionLike(it.content ?? [], `${keyPrefix}-grp-${grpIdx}-essay-${idx}`)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        );
+      }
+
       const showLabels = shouldShowEssayPartLabels(items.length);
 
       return (

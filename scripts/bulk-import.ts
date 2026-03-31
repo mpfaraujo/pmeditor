@@ -71,6 +71,7 @@ type ImportSetItem = {
     gabarito: string | null;
     meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta">;
   }>;
+  groups?: Array<{ itemIndexes: number[] }>;
   sharedMeta?: YamlMeta;
 };
 
@@ -316,9 +317,24 @@ function buildInitialSet(
   });
 
   const hasChoices = item.items.some(it => it.tipo === "Múltipla Escolha");
+
+  // Se houver grupos definidos, envolve os items em question_group nodes
+  let setChildren;
+  if (item.groups?.length) {
+    const groupNodes = item.groups.map(grp =>
+      schema.nodes.question_group.create(
+        null,
+        grp.itemIndexes.map(idx => questionItemNodes[idx])
+      )
+    );
+    setChildren = [baseTextNode, ...groupNodes];
+  } else {
+    setChildren = [baseTextNode, ...questionItemNodes];
+  }
+
   const setNode = schema.nodes.set_questions.create(
     { mode: hasChoices ? "set" : null },
-    [baseTextNode, ...questionItemNodes]
+    setChildren
   );
   const doc = schema.nodes.doc.create(null, [setNode]);
   const content = doc.toJSON();
