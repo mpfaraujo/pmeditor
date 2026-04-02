@@ -1,1361 +1,604 @@
 [
   {
-    "latex": "\\question Simplificando \\(\\left(3^9 + \\frac{1}{3}\\right)\\left(3^3 + 3^{24}\\right)\\), encontramos:\n\n\\begin{oneparchoices}\n\\choice 9\n\\choice 10\n\\choice \\(3^3\\)\n\\CorrectChoice 12\n\\choice 1\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
+    "isSet": true,
+    "baseLatex": "HOW TO BE WISER\n\nWisdom is something that is hard to define and yet somehow we know it when we see it. Wise people stay calm in a crisis. They can step back and see the bigger picture. They are thoughtful and self-reflective. Although intelligence helps, you can be intelligent without being wise. Wise people tolerate uncertainty and remain optimistic that even tricky problems do have solutions.\n\nWise reasoning is associated with a whole lot of positives: higher life satisfaction, fewer negative feelings, better relationships and less depressive rumination, according to Igor Grossman of the University of Waterloo in Canada. He and his colleagues even found evidence that the wisest people might live longer. The wiser people were, the higher their levels of well-being, particularly as they got older. Intelligence made no difference to well-being, probably because IQ levels do not reflect a person's ability to foster good relationships or make decisions in everyday life.\n\nGrossman is convinced that wisdom is not simply a stable trait that you either possess or don't. It means that at least we are wise some of the time. Think back to yesterday. What was the most challenging situation you faced in your day? And how did you work out what to do? Grossman put questions like these to the participants in his recent study. People wrote about being late for meetings because of the traffic or the arguments they had with families and colleagues. The researchers examined their styles of reasoning in order to assess their wisdom. Did they recognise that their knowledge was limited? Did they see any positives in what seemed on the face of it to be a negative situation? He found that some people appeared to be wise sages in one situation, but not in another.\n\nSo why the difference in different situations? People were wiser when they were with their friends. It made them more likely to consider the bigger picture, to think of other perspectives and to recognise the limits of their own knowledge. When people were alone they seemed to get so involved in a situation, that they did not even think about alternatives. \"We are possibly all capable of some aspect of wisdom. It's just not all the time,\" says Grossman. If we can be wise sometimes, maybe we can learn to be wise more often.\n\nFor Cornell University psychologist Robert Sternberg, wisdom is all about balance. A wise person is able to complete a mental juggling act — to balance the short-term with the long-term, self-interest with the interests of others, while considering all the options. Following Sternberg's model, what you need to do is to remember to work out what all the different interests are in a given dilemma, both in the short and long-term and to pay attention to the changing environment and how it might be shaped.\n\nIn a kind of school of wisdom, Grossman has experimented with different strategies in the lab. People were taught to take a different perspective by imagining they were taking a bird's-eye-view of the situation or as if they were watching events as a fly on the wall. The idea is to try to distance yourself from the immediate experience. Even talking about yourself in the third person can help. Sometimes we could take it a step further than speaking in the third person and actually ask someone else what they think we should do. We are often wiser about other people's lives than about our own.\n\nAlthough we are bad at judging our own time-frames, we are much better at working out other people's. In one study, students were asked to estimate when they were likely to finish an assignment and when other students would finish theirs. They were far better at guessing other people's timings, because they took into account unpredictable interruptions such as getting the flu or coming home to find the washing machine has flooded the kitchen. When it comes to our own lives, our natural optimism seems to stop us factoring in potential problems.\n\nSo can you set out to be wise? Yes, but you need to take into account that people will have different goals, priorities and responses to your own, across the short- and long-term. If you can juggle all that, you probably are showing wisdom. But the complexity should not stop us from trying. As Grossman told me, \"It's not that you suddenly become the next Buddha, but you do become a little bit wiser.\"\n\n\\credits{Available at: <http://www.bbc.com/future/story/20170124-how-to-be-wiser>. Retrieved on: 24 Jan. 2017. Adapted.}",
+    "items": [
+      {
+        "latex": "The communicative intention of the text is to\n\n\\begin{choices}\n  \\choice correlate personality traits with the level of wisdom.\n  \\choice suggest that wisdom is a hereditary personality trait.\n  \\choice indicate that wisdom and intelligence are strictly connected.\n  \\choice give hope to those people who are upset about their lifestyles.\n  \\CorrectChoice argue that wisdom is a kind of knowledge that may be learned.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "E",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "wisdom",
+            "communicative intention",
+            "text purpose"
+          ],
+          "gabarito": "E"
+        }
+      },
+      {
+        "latex": "When discussing the benefits associated with wise reasoning, the author mentions all items below, EXCEPT\n\n\\begin{choices}\n  \\choice enhanced happiness.\n  \\choice greater life fulfillment.\n  \\choice improved relationships.\n  \\CorrectChoice higher intelligence levels.\n  \\choice increased life expectancy.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "D",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "wise reasoning",
+            "benefits",
+            "well-being",
+            "life expectancy"
+          ],
+          "gabarito": "D"
+        }
+      },
+      {
+        "latex": "In the fragment \"And how did you work out what to do?\" (lines 25-26), \"work out\" means to\n\n\\begin{choices}\n  \\choice invent.\n  \\CorrectChoice devise.\n  \\choice discard.\n  \\choice anticipate.\n  \\choice remember.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "B",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "vocabulary",
+            "phrasal verb",
+            "work out"
+          ],
+          "gabarito": "B"
+        }
+      },
+      {
+        "latex": "After carrying out different research experiments on wise reasoning, Igor Grossman concludes that\n\n\\begin{choices}\n  \\choice ignoring other people's problems is an act of wisdom.\n  \\choice wise people are the ones who are able to predict the future.\n  \\choice self-distancing from a problem will undermine wise reasoning.\n  \\CorrectChoice wisdom may vary according to the context in which one is inserted.\n  \\choice pessimistic people never recognise the limits of their own knowledge.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "D",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "Igor Grossman",
+            "wisdom",
+            "context",
+            "self-distancing"
+          ],
+          "gabarito": "D"
+        }
+      },
+      {
+        "latex": "According to Robert Sternberg, wise people are those who can\n\n\\begin{choices}\n  \\choice keep their own self-interest under strict control.\n  \\CorrectChoice accomplish several mental tasks at the same time.\n  \\choice distinguish between short-term and long-term goals.\n  \\choice learn from the constant changes in the domestic environment.\n  \\choice reach emotional stability when confronted with a terrible dilemma.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "B",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "Robert Sternberg",
+            "balance",
+            "mental juggling"
+          ],
+          "gabarito": "B"
+        }
+      },
+      {
+        "latex": "In the fragment \"People were taught to take a different perspective by imagining they were taking a bird's-eye-view of the situation…\" (lines 60-62), the expression \"taking a bird's-eye-view\" can be replaced, without a change in meaning, by\n\n\\begin{choices}\n  \\choice \"taking a methodological look at something\".\n  \\choice \"taking an unhurried look at something\".\n  \\choice \"taking a leisurely look at something\".\n  \\CorrectChoice \"taking an overall look at something\".\n  \\choice \"taking a quick look at something\".\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "D",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "bird's-eye-view",
+            "perspective",
+            "vocabulary"
+          ],
+          "gabarito": "D"
+        }
+      },
+      {
+        "latex": "The boldfaced expression introduces an idea of TIME in\n\n\\begin{choices}\n  \\choice \"Although intelligence helps,…..\" (line 5)\n  \\choice \"So why the difference in different situations?\" (line 37)\n  \\CorrectChoice \"…while considering all the options.\" (line 52)\n  \\choice \"…as if they were watching events as a fly on the wall.\" (lines 62-63)\n  \\choice \"…unpredictable interruptions such as getting the flu…\" (lines 76-77)\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "C",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "connectives",
+            "time",
+            "boldfaced expression"
+          ],
+          "gabarito": "C"
+        }
+      },
+      {
+        "latex": "Concerning the vocabulary used in the text, one may affirm that\n\n\\begin{choices}\n  \\choice \"thoughtful\" (line 4) and careless are synonyms.\n  \\CorrectChoice \"foster\" (line 19) and cultivate express similar ideas.\n  \\choice \"assess\" (line 31) and estimate express opposite ideas.\n  \\choice \"unpredictable\" (line 76) and uncertain are antonyms.\n  \\choice \"juggle\" (line 84) can be replaced by eliminate.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "B",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "vocabulary",
+            "synonyms",
+            "antonyms",
+            "thoughtful",
+            "foster",
+            "assess"
+          ],
+          "gabarito": "B"
+        }
+      },
+      {
+        "latex": "In the fragment \"But the complexity should not stop us from trying.\" (lines 85-86), the author expresses a(n)\n\n\\begin{choices}\n  \\choice threat.\n  \\choice ability.\n  \\choice possibility.\n  \\choice permission.\n  \\CorrectChoice recommendation.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "E",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "modal verbs",
+            "recommendation",
+            "complexity",
+            "should"
+          ],
+          "gabarito": "E"
+        }
+      },
+      {
+        "latex": "The message contained in the fragment \"It's not that you suddenly become the next Buddha, but you do become a little bit wiser.\" (lines 87-88) is that people\n\n\\begin{choices}\n  \\CorrectChoice can always improve their personal skills.\n  \\choice need to keep their feelings to themselves.\n  \\choice will never learn how to find balance in life.\n  \\choice must learn how to define their top priorities.\n  \\choice ought to try their best to become more self-controlled.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "A",
+        "meta": {
+          "assunto": "Reading Comprehension",
+          "tags": [
+            "Buddha",
+            "wisdom",
+            "personal growth",
+            "improvement"
+          ],
+          "gabarito": "A"
+        }
+      }
+    ],
+    "sharedMeta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Potenciação",
-      "tags": [
-        "simplificação algébrica",
-        "expoentes",
-        "propriedades de potência"
-      ],
+      "disciplina": "Língua Inglesa",
       "fonte": "concurso",
       "concurso": "PUC-Rio",
       "banca": "PUC-Rio",
       "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "1",
-      "gabarito": "D"
+      "prova": "G2 Manhã",
+      "numero": "LE-01"
     }
   },
   {
-    "latex": "\\question Cientistas brasileiros verificaram que uma determinada colônia de bactérias triplica a cada meia hora. Uma amostra de 10000 bactérias por mililitro foi colocada em um tubo de ensaio e, após um tempo \\(x\\), verificou-se que o total era de \\(2{,}43 \\times 10^6\\) bactérias por mililitro. Qual é o valor de \\(x\\)?\n\n\\begin{choices}\n\\choice duas horas\n\\CorrectChoice duas horas e 30 minutos\n\\choice 3 horas e trinta minutos\n\\choice 48 horas\n\\choice 264 horas\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
+    "isSet": true,
+    "baseLatex": "Tecnología para el verano: wifi en la playa y drones salvavidas\n\n[…] La playa está en el punto de mira del 41,8% de los españoles, ya que, según el Barómetro de junio del Centro de Investigaciones Sociológicas (CIS), los destinos de sol y playa siguen siendo la primera opción a la hora de viajar. Ante este auge turístico de costa también surgen un buen número de ingenios tecnológicos pensados para hacernos más fácil, segura y conectada nuestra estancia sobre la arena.\n\n\\textbf{Drones 'in the air'}\n\nEl Ayuntamiento de Torrevieja, Alicante, intentó poner en marcha el año pasado un sistema pionero de vigilancia y seguridad en zonas de baño mediante drones denominado SalvaDron. Este servicio consistía en usar de aeronaves no tripuladas y controladas de forma remota que pueden acudir rápidamente hasta las personas en riesgo y lazarles un salvavidas mientras llegan los medios tradicionales de rescate. Desgraciadamente la regulación del uso de estas aeronaves está por llegar y debido a la proximidad del aeropuerto San Javier de Murcia no se pudo llevar a cabo la iniciativa. Aun así el Ayuntamiento de Torrevieja no solo volverá este año a intentar poner en marcha su proyecto de salvamento, en zonas permitidas, sino que pretende fomentar el uso continuo de drones en el municipio para regular el tráfico, velar por el medio ambiente y tomar medidas de disciplina urbanística.\n\nA raíz de esta han surgido otras iniciativas en el litoral español. Fuengirola, por ejemplo, ha anunciado que este verano pondrá en marcha un proyecto similar con drones pilotados a distancia que, a través de vectores de posición y una cámara de alta calidad que lleva incorporada, pueden localizar a un bañista en situación de peligro y lanzarle un salvavidas que se hincha en dos segundos automáticamente, e incluso lleva otro más por si fuera necesario usarlo. Fuengirola se ha puesto las pilas en cuestión de experiencia de usuario, ya que además de ofrecer wifi a pie de toalla, ha incorporado taquillas tecnológicas donde los bañistas pueden guardar sus pertenencias y cargar sus móviles con la energía solar que nutre a éstas.\n\n\\textbf{Un poco de 'wifi playero'}\n\nSon varias las localidades costeras que, conscientes del auge del uso del móvil, instalan zonas wifi gratuitas en sus playas para atraer turistas. Algunas de ellas como Punta Umbría (Huelva), Barcelona o Calvià (Mallorca) llevan haciéndolo varias temporadas. Para localizar cuales son los puntos de wifi más cercanos o incluir los nuevos que nos vayamos encontrando podemos usar Wifium, una web colaborativa que aporta un mapa para mejor localización de estos puntos de conexión.[…]\n\n\\textbf{Protección ante todo}\n\nUno de los riesgos más comunes cuando se visita una playa en verano es el índice de radiación ultravioleta (UV). Para evitar que nos afecte se han creado diversas iniciativas tecnológicas como la aplicación UV-Derma, una herramienta gratuita que previene que los usuarios sufran quemaduras solares. Creada por expertos en dermatología de la Fundación Piel Sana de la Academia Española de Dermatología y Venereología, nos dice cuanto tiempo podemos estar al sol sin dañar nuestra piel, tomando como referencia el lugar en el que nos encontramos, nuestro tipo de piel y el índice de radicación UV. UVLens, por su parte, es otra aplicación móvil que accede en tiempo real a los informes meteorológicos sobre radiación ultravioleta y nos dice el tiempo que podemos tomar el sol y qué factor de protección necesitamos en cada momento.\n\nEn cuanto a seguridad en la playa, existe una forma rápida de avisar a los servicios de emergencia a través de la aplicación Alpify. Con ella podemos enviar una alerta a los servicios de emergencia del 112 simplemente pulsando un botón rojo que aparece en la pantalla del móvil. De esta forma se envía información imprescindible para localizar al afectado como: las coordenadas en las que se sitúa, el porcentaje de batería del móvil y todos los datos que se hayan incluido previamente en la app como alergias u otro tipo de problemas médicos. Lo mejor es que se activa un localizador que envía nuestra posición cada tres minutos, muy útil también para no despistarse en una playa demasiado concurrida.\n\nPrecisamente para evitar que los más pequeños se pierdan, los wearables también facilitan que nuestra estancia en la playa sea más segura. El Ayuntamiento de Castellón de la Plana ofrece cada año una pulsera inteligente para poner a los pequeños y que contiene un chip con los datos de contacto de los familiares, algo que hace más fácil su localización en caso de que el niño se pierda en la playa.\n\nPero si necesitamos un artilugio más personal, existen los relojes infantiles Pikavú que permiten localizar al niño por geolocalización GPS. Es resistente a los golpes, al agua y lleva un cierre de seguridad que dificulta que el niño lo pierda. El reloj se comercializa junto a una cuota mensual que permite el uso de su plataforma.\n\nSi nos ponemos en el peor de los casos es crucial tener algunos conocimientos de primeros auxilios. Es importante haber asistido personalmente a algún cursillo previo sobre técnicas de reanimación, pero si no hay más alternativa podremos echar mano de la app Manual de Primeros Auxilios, que además de indicarnos estas prácticas, nos informa de lo que hay que hacer en caso de deshidratación, golpes de calor, esguinces o quemaduras, entre otros, que pueden estropear un feliz día de playa.\n\n\\textbf{Bañador, toalla y aplicaciones}\n\nSi lo que queremos es información puntual para saber a qué playa dirigirnos hay aplicaciones como iBeach donde encontraremos fotografías y una descripción de las playas con sus características, servicios, información sobre el oleaje, el viento o incluso la temperatura del mar. Playea, por su lado, es otra app que nos indica qué playas son óptimas para ir con niños, las que tienen bandera azul, cuales admiten el baño a perros, si cuentan con chiringuito o si son nudistas. Su buscador permite filtrar a través de 35 parámetros que harán que nos acerquemos lo máximo posible a encontrar la playa de nuestros sueños. […]\n\n\\credits{Texto adaptado de Miguel Ángel Corcobado, publicado en El País, el 12/07/2017.}",
+    "items": [
+      {
+        "latex": "El objetivo del texto es\n\n\\begin{choices}\n  \\choice analizar los mejores dispositivos tecnológicos disponibles en las playas españolas.\n  \\choice enseñar cómo utilizar las aplicaciones móviles en las playas de España.\n  \\choice defender que las playas españolas están más seguras debido a los dispositivos tecnológicos.\n  \\choice promocionar una lista de aplicaciones móviles y drones desarrollados para este verano en España.\n  \\CorrectChoice informar sobre los dispositivos tecnológicos que pueden facilitar la estancia de los bañistas en playas españolas.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "E",
+        "meta": {
+          "assunto": "Comprensión Lectora",
+          "tags": [
+            "objetivo del texto",
+            "tecnología",
+            "playas",
+            "España"
+          ],
+          "gabarito": "E"
+        }
+      },
+      {
+        "latex": "Tras la lectura del texto podemos inferir que la ÚNICA alternativa que NO corresponde a lo que dice el texto es:\n\n\\begin{choices}\n  \\CorrectChoice La mayoría de los españoles prefiere la playa como la primera opción a la hora de viajar.\n  \\choice A través de aplicaciones se obtiene información sobre el oleaje, el viento y la temperatura del mar.\n  \\choice En cuanto a seguridad infantil hay relojes que permiten localizar a los niños por geolocalización GPS.\n  \\choice Playea indica las playas que admiten el baño a perros.\n  \\choice Para protegerse la piel se puede echar mano de apps como UV-Derma y UVLens.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "A",
+        "meta": {
+          "assunto": "Comprensión Lectora",
+          "tags": [
+            "inferencia",
+            "comprensión",
+            "playas",
+            "tecnología",
+            "España"
+          ],
+          "gabarito": "A"
+        }
+      },
+      {
+        "latex": "En el segundo párrafo, \"...el Ayuntamiento de Torrevieja no solo volverá (…), sino que pretende fomentar…\" (líneas 22-25), la segunda oración mantiene con respecto a la primera una relación de\n\n\\begin{choices}\n  \\choice exclusión.\n  \\choice oposición.\n  \\CorrectChoice inclusión.\n  \\choice condición.\n  \\choice negación.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "C",
+        "meta": {
+          "assunto": "Comprensión Lectora",
+          "tags": [
+            "relación lógica",
+            "inclusión",
+            "no solo sino que",
+            "Torrevieja"
+          ],
+          "gabarito": "C"
+        }
+      },
+      {
+        "latex": "Marque la ÚNICA alternativa en la que \"artilugio\" (línea 95), \"esguinces\" (línea 110) y \"chiringuito\" (línea 121) pueden ser sustituidos, respectivamente, sin alteración del sentido contextual.\n\n\\begin{choices}\n  \\choice reloj – bronceado – quiosco de bebidas al aire libre\n  \\choice móvil – luxación – taberna\n  \\choice herramienta – chorros de agua – bañador\n  \\CorrectChoice artefacto – torceduras – quiosco de bebidas al aire libre\n  \\choice máquina – dislocaciones – bañadores\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "D",
+        "meta": {
+          "assunto": "Vocabulario",
+          "tags": [
+            "vocabulario",
+            "artilugio",
+            "esguince",
+            "chiringuito",
+            "sinónimos"
+          ],
+          "gabarito": "D"
+        }
+      },
+      {
+        "latex": "En el fragmento \"llevan haciéndolo varias temporadas\" (líneas 49-50), el término subrayado se refiere a\n\n\\begin{choices}\n  \\choice estar conscientes del auge del uso del móvil.\n  \\CorrectChoice instalar zonas wifi gratuitas en las playas para atraer turistas.\n  \\choice cargar los móviles con la energía solar.\n  \\choice localizar los puntos de wifi más cercanos.\n  \\choice ofrecer taquillas tecnológicas a los bañistas.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "B",
+        "meta": {
+          "assunto": "Comprensión Lectora",
+          "tags": [
+            "referente",
+            "llevan haciéndolo",
+            "wifi",
+            "playas"
+          ],
+          "gabarito": "B"
+        }
+      },
+      {
+        "latex": "En el texto, la expresión \"echar mano de\" (líneas 106-107) tiene el mismo sentido de\n\n\\begin{choices}\n  \\choice sustituir a.\n  \\choice reemplazar a.\n  \\choice recordar a.\n  \\choice recoger a.\n  \\CorrectChoice recurrir a.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "E",
+        "meta": {
+          "assunto": "Gramática",
+          "tags": [
+            "expresión idiomática",
+            "echar mano de",
+            "recurrir a"
+          ],
+          "gabarito": "E"
+        }
+      },
+      {
+        "latex": "El hecho de que el Ayuntamiento de Torrevieja no logró cuidar la vigilancia y seguridad en zonas de baño mediante los drones SalvaDron se debe a que\n\n\\begin{choices}\n  \\choice su uso perjudicaría el medio ambiente.\n  \\CorrectChoice todavía no hay la regulación del uso de estas aeronaves.\n  \\choice su uso dificultaría el tráfico en la zona playera.\n  \\choice está muy lejos el aeropuerto San Javier de Murcia.\n  \\choice su uso interviene en la disciplina urbanística.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "B",
+        "meta": {
+          "assunto": "Comprensión Lectora",
+          "tags": [
+            "SalvaDron",
+            "Torrevieja",
+            "drones",
+            "regulación",
+            "aeropuerto"
+          ],
+          "gabarito": "B"
+        }
+      },
+      {
+        "latex": "En el primer párrafo, los términos destacados en \"…según el Barómetro de junio del Centro de Investigaciones Sociológicas\" (líneas 2-3) y \"Ante este auge turístico de costa…\" (líneas 5-6) podrían sustituirse respectivamente por\n\n\\begin{choices}\n  \\choice de acuerdo con y delante de.\n  \\choice conforme y antes.\n  \\choice segundo y primero.\n  \\choice segundo y anteriormente.\n  \\CorrectChoice con arreglo a y ante.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "E",
+        "meta": {
+          "assunto": "Gramática",
+          "tags": [
+            "conjunciones",
+            "según",
+            "ante",
+            "conectores"
+          ],
+          "gabarito": "E"
+        }
+      },
+      {
+        "latex": "En la oración \"…los datos que se hayan incluido… como alergias u otro tipo de problemas médicos.\" (líneas 81-83) la forma u sustituye la conjunción disyuntiva o delante del adjetivo \"otro\". Esto también sucede delante de\n\n\\begin{choices}\n  \\CorrectChoice huésped.\n  \\choice invierno.\n  \\choice hilos.\n  \\choice utópico.\n  \\choice horas.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "A",
+        "meta": {
+          "assunto": "Gramática",
+          "tags": [
+            "conjunción disyuntiva",
+            "u antes de o",
+            "fonética"
+          ],
+          "gabarito": "A"
+        }
+      },
+      {
+        "latex": "\"Fuengirola se ha puesto las pilas en cuestión de experiencia de usuario, ya que además de ofrecer wifi a pie de toalla, ha incorporado taquillas tecnológicas donde los bañistas pueden guardar sus pertenencias y cargar sus móviles con la energía solar que nutre a éstas.\" (líneas 38-43)\n\nLeído el fragmento, se percibe que Fuengirola\n\n\\begin{choices}\n  \\choice ha ofrecido pilas recargables para los móviles de los bañistas.\n  \\choice se ha dispuesto a ofrecer wi fi, toallas y taquillas a los turistas.\n  \\CorrectChoice se ha dedicado a disponer comodidad y tecnología a los bañistas.\n  \\choice ha ofrecido móviles con energía solar a los turistas en la playa.\n  \\choice se ha preocupado por ofrecer toallas para los pies de los bañistas.\n\\end{choices}",
+        "tipo": "Múltipla Escolha",
+        "gabarito": "C",
+        "meta": {
+          "assunto": "Comprensión Lectora",
+          "tags": [
+            "Fuengirola",
+            "wifi",
+            "taquillas",
+            "comodidad",
+            "tecnología",
+            "bañistas"
+          ],
+          "gabarito": "C"
+        }
+      }
+    ],
+    "sharedMeta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Exponencial",
-      "tags": [
-        "crescimento exponencial",
-        "bactérias",
-        "triplica",
-        "meia hora"
-      ],
+      "disciplina": "Língua Espanhola",
       "fonte": "concurso",
       "concurso": "PUC-Rio",
       "banca": "PUC-Rio",
       "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "2",
-      "gabarito": "B"
+      "prova": "G2 Manhã",
+      "numero": "LE-ES-01"
     }
   },
   {
-    "latex": "\\question Os sobrenomes de Roy, Edu e Luan são Todeka, Sharifa e Arrabeca, não necessariamente nessa ordem. O de sobrenome Sharifa, que não é o Roy, é mais velho que Luan. O de sobrenome Arrabeca é o mais velho dos três. Concluímos, então, que os sobrenomes de Roy, Edu e Luan são, respectivamente:\n\n\\begin{choices}\n\\choice Todeka, Sharifa e Arrabeca.\n\\choice Todeka, Arrabeca e Sharifa.\n\\CorrectChoice Arrabeca, Sharifa e Todeka.\n\\choice Arrabeca, Todeka e Sharifa.\n\\choice Sharifa, Todeka e Arrabeca.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Lógica Matemática",
-      "tags": [
-        "ordenação lógica",
-        "dedução",
-        "pessoas",
-        "sobrenomes"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "3",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Em 12 dias de trabalho, 8 costureiras de uma escola de samba fazem as fantasias da ala \"Só Alegria\". Se 2 costureiras ficassem doentes e não pudessem trabalhar, quantos dias seriam necessários para confeccionar as fantasias dessa mesma ala?\n\n\\begin{oneparchoices}\n\\CorrectChoice 16\n\\choice 20\n\\choice 24\n\\choice 28\n\\choice 32\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Regra de Três",
-      "tags": [
-        "trabalho",
-        "costureiras",
-        "proporcionalidade",
-        "dias"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "4",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Temos uma urna com 5 bolinhas numeradas de 1 a 5. Retiramos duas bolinhas sem reposição e calculamos a soma dos números das bolinhas sorteadas. Qual é a probabilidade de que a soma seja par?\n\n\\begin{oneparchoices}\n\\CorrectChoice \\(\\frac{2}{5}\\)\n\\choice \\(\\frac{5}{12}\\)\n\\choice \\(\\frac{1}{2}\\)\n\\choice \\(\\frac{7}{12}\\)\n\\choice \\(\\frac{3}{5}\\)\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Simples",
-      "tags": [
-        "urna",
-        "soma par",
-        "sem reposição",
-        "bolinhas"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "5",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Um estudante vai a pé da escola até o metrô. Se ele caminha a 6 km/h, ele demora 20 minutos. Se ele corre, ele demora apenas 12 minutos. Com que velocidade ele corre?\n\n\\begin{oneparchoices}\n\\CorrectChoice 10 km/h\n\\choice 12 km/h\n\\choice 25 km/h\n\\choice 9 km/h\n\\choice 8 km/h\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Movimento Uniforme (MU)",
-      "tags": [
-        "velocidade média",
-        "caminhada",
-        "corrida",
-        "escola"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "6",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Na figura, temos que:\n\n\\includegraphics{figura-mat-q7}\n\n\\begin{itemize}\n\\item O triângulo ABC é retângulo em A.\n\\item M é o ponto médio do lado BC.\n\\item N é o ponto médio do lado AC.\n\\item P é o ponto médio do lado AB.\n\\end{itemize}\n\nNessas condições, a área do quadrilátero MBAN é:\n\n\\begin{choices}\n\\choice a mesma área do triângulo AMC.\n\\choice a metade da área do triângulo ABC.\n\\choice a quinta parte da área do triângulo MNC.\n\\choice o dobro da área do triângulo AMC.\n\\CorrectChoice o triplo da área do triângulo MNC.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Área das Figuras Planas",
-      "tags": [
-        "triângulo retângulo",
-        "pontos médios",
-        "quadrilátero",
-        "razão de áreas"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "7",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question Em uma pesquisa feita para saber o mês de nascimento dos alunos de uma turma, obtiveram-se os resultados mostrados na tabela abaixo:\n\n\\begin{itemize}\n\\item Janeiro: 4\n\\item Março: 5\n\\item Abril: 4\n\\item Junho: 3\n\\item Julho: 5\n\\item Setembro: 1\n\\item Novembro: 4\n\\item Dezembo: 4\n\\end{itemize}\n\nNenhum aluno desta turma nasceu nos meses não indicados na tabela. Qual é a porcentagem desses alunos que nasceram no mês de junho?\n\n\\begin{oneparchoices}\n\\CorrectChoice 10%\n\\choice 20%\n\\choice 25%\n\\choice 30%\n\\choice 90%\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Porcentagem",
-      "tags": [
-        "tabela",
-        "mês de nascimento",
-        "turma",
-        "junho"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "8",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question A soma das raízes da equação \\(x^3 - 2x^2 - 6x = 0\\) vale:\n\n\\begin{oneparchoices}\n\\choice 0\n\\choice 1\n\\CorrectChoice 2\n\\choice 4\n\\choice 9\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Matemática",
-      "assunto": "Relações entre Coeficientes e Raízes",
-      "tags": [
-        "equação cúbica",
-        "soma das raízes",
-        "polinômio"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "9",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Sabendo que os números da sequência \\((5, m, n, 10)\\) estão em progressão geométrica, quanto vale o produto \\(mn\\)?\n\n\\begin{oneparchoices}\n\\choice 10\n\\choice 20\n\\CorrectChoice 50\n\\choice 100\n\\choice 225\n\\end{oneparchoices}\n\n% ── CIÊNCIAS DA NATUREZA ─────────────────────────────────────────────────",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Progressão Geométrica",
-      "tags": [
-        "PG",
-        "produto",
-        "termos consecutivos"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "10",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Um pequeno objeto é colocado no alto da rampa, no ponto A, mostrado na Figura. Esse objeto escorrega rampa abaixo, a partir do repouso, e alcança o ponto final da rampa (ponto C). Não há perdas por atrito. Calcule a razão \\(V_B / V_C\\) entre as velocidades do objeto nos pontos B (altura \\(0{,}64H\\)) e C, respectivamente.\n\n\\includegraphics{figura-fis-q11}\n\n\\begin{oneparchoices}\n\\choice 1,25\n\\choice 1,0\n\\choice 0,8\n\\choice 0,64\n\\CorrectChoice 0,60\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Conservação de Energia",
-      "tags": [
-        "rampa",
-        "energia mecânica",
-        "velocidade",
-        "razão"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "11",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question Um carro percorre 20 km com velocidade de 60 km/h. Para em um posto por 10 minutos e segue viagem por mais meia hora, a uma velocidade de 50 km/h. Qual a sua velocidade escalar média no percurso total, em km/h?\n\n\\begin{oneparchoices}\n\\choice 55\n\\choice 54\n\\choice 50\n\\CorrectChoice 45\n\\choice 37\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Física",
-      "assunto": "Movimento Uniforme (MU)",
-      "tags": [
-        "velocidade escalar média",
-        "percurso",
-        "parada",
-        "carro"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "12",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Ao jogar uma pedra a partir da borda de um penhasco de 100 m de altura, uma garota verifica que a pedra chega ao solo a uma distância horizontal de 10 m da borda do penhasco, e 5 s depois de lançada. Qual é a tangente do ângulo de lançamento da pedra, em relação à horizontal? Dado: \\(g = 10\\,\\text{m/s}^2\\).\n\n\\begin{oneparchoices}\n\\choice 0\n\\choice 0,4\n\\choice 1\n\\choice 3\n\\CorrectChoice 2,5\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Queda Livre e Lançamento de Projéteis",
-      "tags": [
-        "penhasco",
-        "lançamento oblíquo",
-        "tangente",
-        "movimento"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "13",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question Para fazer seu chimarrão, uma pessoa esquenta 1 litro de água à temperatura inicial de 25°C utilizando um aquecedor elétrico. A água alcança a temperatura ideal de 85°C após 6 minutos. Qual é a potência desse aquecedor, em Watts? Despreze perdas de calor ao ambiente.\n\n\\begin{choices}\n\\choice 167\n\\choice 252\n\\CorrectChoice 700\n\\choice 992\n\\choice 4200\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Física",
-      "assunto": "Calorimetria e Calor Específico",
-      "tags": [
-        "potência",
-        "aquecedor",
-        "água",
-        "chimarrão"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "14",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Um gás ideal confinado é submetido a um processo tal que seu volume final é maior que seu volume inicial. Considere as afirmações abaixo, referentes ao processo.\n\n\\begin{romanitems}\n\\item Se o processo é isotérmico, a pressão final do gás é menor do que a pressão inicial.\n\\item Se a temperatura final do gás é maior do que a inicial, o processo é isobárico.\n\\item Se a pressão final do gás é maior do que a inicial, a temperatura final do gás é necessariamente maior que a temperatura inicial.\n\\end{romanitems}\n\nÉ correto o que se afirma em:\n\n\\begin{choices}\n\\choice I, somente.\n\\choice I e II, somente.\n\\CorrectChoice I e III, somente.\n\\choice II e III, somente.\n\\choice I, II e III.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Gases Ideais e Transformações",
-      "tags": [
-        "gás ideal",
-        "isotérmico",
-        "isobárico",
-        "pressão",
-        "temperatura"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "15",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Com a chegada do inverno, cada integrante de uma família de quatro pessoas passa a utilizar um secador de cabelo de 2,0 kW, todos os dias, por aproximadamente 20 min. Sabendo que a tarifa de energia elétrica é de R$ 0,40 por kWh de consumo, ao final de 30 dias o aumento no custo da conta luz com a chegada do inverno, em reais, será de:\n\n\\begin{oneparchoices}\n\\choice 1,7\n\\choice 8,0\n\\choice 20\n\\CorrectChoice 32\n\\choice 80\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Física",
-      "assunto": "Potência e Energia Elétrica",
-      "tags": [
-        "consumo de energia",
-        "secador",
-        "kWh",
-        "conta de luz"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "16",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Duas cargas elétricas idênticas são postas a uma distância \\(r_0\\) entre si tal que o módulo da força de interação entre elas é \\(F_0\\). Se a distância entre as cargas for reduzida à metade, o módulo da força de interação entre as cargas será:\n\n\\begin{oneparchoices}\n\\CorrectChoice \\(4F_0\\)\n\\choice \\(2F_0\\)\n\\choice \\(F_0\\)\n\\choice \\(F_0/2\\)\n\\choice \\(F_0/4\\)\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Física",
-      "assunto": "Lei de Coulomb",
-      "tags": [
-        "força elétrica",
-        "cargas idênticas",
-        "distância"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "17",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Um objeto é colocado em frente a um espelho, e a imagem formada é virtual. Considere as afirmações abaixo.\n\n\\begin{romanitems}\n\\item O espelho é necessariamente plano ou convexo.\n\\item A imagem formada é de tamanho maior que o objeto, caso o espelho seja convexo.\n\\item A imagem não pode estar invertida, independentemente do tipo de espelho.\n\\end{romanitems}\n\nÉ correto SOMENTE o que se afirma em:\n\n\\begin{choices}\n\\choice II\n\\CorrectChoice III\n\\choice I e II\n\\choice I e III\n\\choice II e III\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Espelhos Planos e Esféricos",
-      "tags": [
-        "imagem virtual",
-        "espelho côncavo",
-        "espelho convexo"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "18",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Uma arma de tiro esportivo dispara um projétil de massa 2 g contra um bloco de madeira de massa 98 g, inicialmente em repouso sobre uma superfície horizontal sem atrito. O projétil fica encrustado no bloco, e o conjunto sai com velocidade de 4 m/s. Qual é a velocidade horizontal do projétil, em m/s, antes de atingir o bloco?\n\n\\begin{oneparchoices}\n\\choice 100\n\\CorrectChoice 200\n\\choice 400\n\\choice 800\n\\choice 1600\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Física",
-      "assunto": "Quantidade de Movimento e Impulso",
-      "tags": [
-        "colisão inelástica",
-        "projétil",
-        "bloco",
-        "conservação do momento"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "19",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Em um circuito elétrico, três resistores idênticos de resistência \\(R\\) são instalados em paralelo e ligados a uma bateria \\((V)\\) tal que a corrente passando pela bateria é \\(I_0\\). Se os resistores forem ligados em série ao invés de em paralelo, a nova corrente passando pela bateria será:\n\n\\begin{oneparchoices}\n\\CorrectChoice \\(I_0/9\\)\n\\choice \\(I_0/3\\)\n\\choice \\(I_0\\)\n\\choice \\(3I_0\\)\n\\choice \\(9I_0\\)\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Física",
-      "assunto": "Circuitos em Série e Paralelo",
-      "tags": [
-        "resistores",
-        "corrente",
-        "paralelo",
-        "série"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "20",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question O leite fresco é levemente ácido devido à presença de algumas substâncias, em especial o ácido lático formado pela hidrólise da lactose. A acidez do leite é expressa em graus Dornic (°D), em que toda a acidez do leite é considerada como se fosse advinda do ácido lático \\ce{CH3CHOHCOOH}. Para titulação de leite, utiliza-se uma solução de \\ce{NaOH} 0,111 mol L\\(^{-1}\\) (conhecida como soda Dornic) que reage na estequiometria de 1:1 com o ácido lático. Cada 0,1 mL da solução de soda Dornic gasto na titulação de 10 mL de leite corresponde a uma unidade de °D. Uma amostra de leite (10 mL) foi diluída com água e foi titulada, apresentando um valor de 14 °D. A massa, em mg, de ácido lático titulada foi aproximadamente igual a\n\n\\begin{oneparchoices}\n\\choice 4\n\\choice 10\n\\CorrectChoice 14\n\\choice 20\n\\choice 28\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Neutralização e Titulação",
-      "tags": [
-        "leite",
-        "ácido lático",
-        "Dornic",
-        "titulação"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "21",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question O hidróxido de cálcio, \\ce{Ca(OH)2}, pode ser neutralizado com \\ce{H2SO4}, de acordo com a equação química balanceada representada a seguir:\n\n\\ce{H2SO4 (aq) + Ca(OH)2 (aq) -> CaSO4 (aq) + 2 H2O}\n\nA respeito das espécies químicas que participam dessa reação de neutralização, verifica-se que o\n\n\\begin{choices}\n\\choice \\ce{H2SO4} atua como base de Arrhenius.\n\\choice \\ce{Ca(OH)2} atua como ácido de Arrhenius.\n\\CorrectChoice \\ce{CaSO4} é um sal de caráter neutro.\n\\choice \\ce{CaSO4} é um óxido ácido.\n\\choice \\ce{CaSO4} é um óxido básico.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Química",
-      "assunto": "Sais e Óxidos",
-      "tags": [
-        "neutralização",
-        "hidróxido de cálcio",
-        "ácido sulfúrico",
-        "sal neutro"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "22",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Uma amostra de um efluente industrial aquoso contém \\ce{Pb^2+} na concentração de \\(1 \\times 10^{-2}\\) mol L\\(^{-1}\\). Pretende-se diminuir essa concentração em solução por um fator de 1000 vezes, por meio da precipitação desse íon na forma de \\ce{PbSO4}.\n\n\\ce{PbSO4 (s) <=> Pb^2+ (aq) + SO4^2- (aq)}\n\n\\(K_{ps} = 2 \\times 10^{-8}\\,(\\text{mol L}^{-1})^2\\)\n\nA concentração mínima, em mol L\\(^{-1}\\), de íons \\ce{SO4^2-} que deve ser mantida em solução para que tal diminuição ocorra é\n\n\\begin{oneparchoices}\n\\choice \\(1 \\times 10^{-4}\\)\n\\choice \\(2 \\times 10^{-4}\\)\n\\choice \\(1 \\times 10^{-3}\\)\n\\CorrectChoice \\(2 \\times 10^{-3}\\)\n\\choice \\(1 \\times 10^{-2}\\)\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Equilíbrio de Solubilidade (Kps)",
-      "tags": [
-        "precipitação",
-        "chumbo",
-        "sulfato",
-        "efluente"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "23",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question O iodo-131 é utilizado na terapia para o câncer. Dos nuclídeos indicados abaixo, o que é um isótono do \\ce{^{131}I} é o\n\n\\begin{oneparchoices}\n\\choice \\ce{^{127}I}\n\\CorrectChoice \\ce{^{130}Te}\n\\choice \\ce{^{131}Xe}\n\\choice \\ce{^{127}Te}\n\\choice \\ce{^{123}Sb}\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Estrutura Atômica e Modelos Atômicos",
-      "tags": [
-        "isótono",
-        "iodo-131",
-        "nuclídeos"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "24",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Quando átomos eletricamente neutros dos elementos químicos Mg, Ca, Cu e Zn perdem 2 elétrons, ocorre a formação dos seus íons divalentes que desempenham funções importantes no organismo humano. Sobre a primeira energia de ionização dos elementos químicos citados, verifica-se que a do\n\n\\begin{choices}\n\\CorrectChoice Mg é maior que a do Ca, pois o número atômico do Mg é menor.\n\\choice Mg é igual à do Ca, pois se localizam no mesmo grupo da tabela periódica.\n\\choice Ca é maior que a do Cu, pois o número atômico do Ca é menor.\n\\choice Ca é maior que a do Zn, pois o número atômico do Ca é maior.\n\\choice Zn é igual à do Cu, pois se localizam no mesmo período da tabela periódica.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Tabela Periódica e Propriedades Periódicas",
-      "tags": [
-        "energia de ionização",
-        "magnésio",
-        "cálcio",
-        "cobre",
-        "zinco"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "25",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Os pontos de fusão e de ebulição das substâncias são influenciados pelas forças das ligações entre os átomos que as compõem e por interações intermoleculares. O metano tem ponto de ebulição muito baixo (-161°C), sendo, por isso, um gás na temperatura ambiente. O metano está no estado gasoso na CNTP por\n\n\\begin{choices}\n\\choice ser uma substância iônica.\n\\choice formar ligações de hidrogênio entre moléculas de metano.\n\\choice ter arranjo estrutural que produz um momento de dipolo elevado.\n\\choice decompor-se em \\ce{CH2} e \\ce{H2}, diminuindo o número de ligações do carbono.\n\\CorrectChoice ter quatro ligações covalentes polares (C-H) em um arranjo estrutural tetraédrico.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Geometria Molecular",
-      "tags": [
-        "metano",
-        "ligações covalentes",
-        "tetraédrica",
-        "polaridade"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "26",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question O carbofurano, cuja estrutura química está representada a seguir, é um pesticida que ainda é utilizado no Brasil, todavia em alguns países seu uso na agricultura foi proibido.\n\n\\includegraphics{figura-quim-q27}\n\nA fórmula molecular do carbofurano é\n\n\\begin{oneparchoices}\n\\choice \\ce{C12H18NO3}\n\\CorrectChoice \\ce{C12H15NO3}\n\\choice \\ce{C14H16NO3}\n\\choice \\ce{C16H18NO3}\n\\choice \\ce{C20H15NO3}\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Introdução ao Carbono e Cadeias Carbônicas",
-      "tags": [
-        "carbofurano",
-        "fórmula molecular",
-        "pesticida"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "27",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question O ácido clorogênico é uma substância natural que está presente em diversas plantas.\n\n\\includegraphics{figura-quim-q28}\n\nNa estrutura química do ácido clorogênico, que está representada acima, quantos átomos de carbono com hibridização \\(sp^3\\) existem?\n\n\\begin{oneparchoices}\n\\CorrectChoice 6\n\\choice 9\n\\choice 12\n\\choice 14\n\\choice 16\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Hibridação do Carbono",
-      "tags": [
-        "ácido clorogênico",
-        "sp3",
-        "estrutura orgânica"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "28",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question O benzeno reage completamente com oxigênio, conforme indicado na equação:\n\n\\ce{2 C6H6 (l) + 15 O2 (g) -> 12 CO2 (g) + 6 H2O (g)}\n\n\\(\\Delta H^\\circ = -6600\\,\\text{kJ}\\)\n\nUm volume, em mL, de benzeno foi reagido em excesso de oxigênio produzindo -132 kJ de energia. Se a densidade do benzeno é 0,88 g mL\\(^{-1}\\), o volume do hidrocarboneto mais próximo daquele que reagiu foi\n\n\\begin{choices}\n\\choice 0,9\n\\choice 2,2\n\\choice 2,8\n\\CorrectChoice 3,5\n\\choice 3,9\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Entalpia e Calor de Reação",
-      "tags": [
-        "benzeno",
-        "combustão",
-        "densidade",
-        "volume"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "29",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Há 30 anos, ocorreu um grave acidente em Goiânia, quando uma cápsula de um equipamento abandonado, contendo o isótopo radioativo do \\ce{^{137}Cs}, foi aberta. Em poucos dias, diversas pessoas haviam sido contaminadas pela radiação emitida, e as mais expostas vieram a óbito. A respeito dos isótopos do elemento químico césio, verifica-se que quando um nuclídeo do\n\n\\begin{choices}\n\\choice \\ce{^{137}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{137}_{54}Xe}.\n\\choice \\ce{^{137}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{133}_{54}Xe}.\n\\CorrectChoice \\ce{^{135}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{135}_{56}Ba}.\n\\choice \\ce{^{135}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{131}_{53}I}.\n\\choice \\ce{^{134}_{55}Cs} emite uma partícula \\(\\beta\\), ocorre a formação do nuclídeo \\ce{^{130}_{53}I}.\n\\end{choices}\n\n% ── CIÊNCIAS HUMANAS ─────────────────────────────────────────────────────",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Química",
-      "assunto": "Radioatividade e Decaimento",
-      "tags": [
-        "césio",
-        "partícula beta",
-        "nuclídeo",
-        "Goiânia"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "30",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Observe o cartograma sobre mobilidade urbana na Região Metropolitana do Rio de Janeiro.\n\n\\includegraphics{figura-geo-q31}\n\nDe acordo com os índices municipais de mobilidade urbana na Região Metropolitana do Rio de Janeiro apresentados no cartograma acima, conclui-se que o(s)\n\n\\begin{choices}\n\\choice sistema de transporte hidroviário na Baia de Guanabara conecta com qualidade os municípios que margeiam o espelho d'água.\n\\choice eixo gás-óleo existente entre os municípios do Leste metropolitano reduz intensamente a dependência dos seus habitantes dos empregos da cidade carioca.\n\\choice municípios mais afastados do eixo Rio de Janeiro – São Paulo são os menos dependentes dos postos de trabalho oferecidos pelo Rio de Janeiro.\n\\CorrectChoice moradores da Baixada fluminense são os que mais dependem do trabalho disponível no município do Rio de Janeiro, gerando um grande fluxo pendular diário.\n\\choice espaços periurbanos da metrópole Rio de Janeiro são os que mais necessitam dos empregos cariocas devido ao seu perfil rural não vinculado aos setores industriais.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Urbanização e Metropolização",
-      "tags": [
-        "mobilidade urbana",
-        "fluxo pendular",
-        "Baixada Fluminense",
-        "Rio de Janeiro"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "31",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Serviço ambiental é a capacidade da natureza de fornecer qualidade de vida e comodidades, ou seja, garantir que a vida, como conhecemos, exista para todos e com qualidade (ar puro, água limpa e acessível, solos férteis, florestas ricas em biodiversidade, alimentos nutritivos e abundantes etc.), ou seja, a natureza trabalha (presta serviços) para a manutenção da vida e de seus processos e estes serviços realizados pela natureza são conhecidos como serviços ambientais.\n\nNesse contexto, são serviços ambientais prestados por uma floresta à vida do planeta, EXCETO a(o)\n\n\\begin{choices}\n\\choice controle da erosão do solo e do assoreamento.\n\\CorrectChoice eliminação dos fungos presentes nos caules.\n\\choice manutenção dos hábitats aquáticos.\n\\choice redução da salinidade dos solos.\n\\choice sequestro de carbono do ar.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Desmatamento e Conservação",
-      "tags": [
-        "serviços ambientais",
-        "floresta",
-        "fungos",
-        "sequestro de carbono"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "32",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question A Austrália, assim como outros 53 países, faz parte do Commonwealth of Nations, uma comunidade de nações que têm em comum uma série de ações e objetivos defendidos pelos desígnios do Reino Unido. Dos objetivos dessa comunidade, aquele que NÃO deve ser valorizado pelos seus países-membros é a(o)\n\n\\begin{oneparchoices}\n\\CorrectChoice bilateralismo\n\\choice comércio livre\n\\choice democracia\n\\choice paz global\n\\choice sociedade igualitária\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Organizações Internacionais",
-      "tags": [
-        "Commonwealth",
-        "Austrália",
-        "Reino Unido",
-        "multilateralismo"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "33",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question A circulação dos homens pelo planeta, desde o período moderno, é baseada no menor tempo de deslocamento entre continentes, devendo-se levar em conta a geodésica da terra.\n\n\\includegraphics{figura-geo-q34}\n\nNesse sentido, o modelo apresentado no cartograma indica que a\n\n\\begin{choices}\n\\choice maior distância entre dois pontos é muitas vezes definida pelas latitudes.\n\\choice maior distância entre dois pontos é, algumas vezes, a dos fusos horários.\n\\choice menor distância entre dois pontos é sempre definida pelas longitudes.\n\\CorrectChoice menor distância entre dois pontos nem sempre é uma reta.\n\\choice menor distância entre dois pontos sempre é uma reta.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Leitura e Interpretação de Mapas",
-      "tags": [
-        "geodésica",
-        "cartograma",
-        "deslocamento",
-        "menor distância"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "34",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Após a 2ª Guerra mundial, a organização política dos países da Europa ocidental veio sofrendo importantes mudanças estruturais, que podem ser identificadas, nos dias atuais, pela formação da\n\n\\begin{choices}\n\\choice internacionalização, a partir do desmonte das sociedades científicas.\n\\choice nacionalização, a partir da falência das sociedades internacionalizadas.\n\\CorrectChoice regionalização, a partir da complexificação das sociedades nacionais.\n\\choice supranacionalização, a partir da eliminação das sociedades liberais.\n\\choice tecnificação, a partir da transformação das sociedades planificadas.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Blocos Econômicos",
-      "tags": [
-        "Europa Ocidental",
-        "pós-guerra",
-        "regionalização",
-        "União Europeia"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "35",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Observe o cartograma com a divisão do território brasileiro.\n\n\\includegraphics{figura-geo-q36}\n\nA divisão do território brasileiro apresentada no cartograma é baseada na(s) sua(s)\n\n\\begin{choices}\n\\choice estrutura edáfica\n\\choice divisão geológica\n\\CorrectChoice bacias hidrográficas\n\\choice florestas nativas\n\\choice formações do relevo\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Geografia",
-      "assunto": "Bacias Hidrográficas",
-      "tags": [
-        "território brasileiro",
-        "divisão",
-        "cartograma",
-        "recursos hídricos"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "36",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Observe o esquema agrícola abaixo.\n\n\\includegraphics{figura-geo-q37}\n\nA técnica agrícola, apresentada no esquema acima, é uma das mais adequadas para a preservação ambiental, pois contribui para o melhoramento das características físicas, químicas e biológicas do solo. Tal técnica é chamada de\n\n\\begin{oneparchoices}\n\\choice afolhamento\n\\choice permacultura\n\\choice plantio direto\n\\CorrectChoice rotação de culturas\n\\choice terraceamento\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Fácil",
-      "disciplina": "Geografia",
-      "assunto": "Agricultura Moderna e Agronegócio",
-      "tags": [
-        "solo",
-        "preservação ambiental",
-        "técnica agrícola",
-        "rotação"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "37",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Observe a imagem a seguir.\n\n\\includegraphics{figura-geo-q38}\n\nDas causas diretas geradoras do problema ambiental, apresentado na imagem acima, NÃO se inclui o(a)\n\n\\begin{choices}\n\\choice desmatamento das matas ciliares\n\\CorrectChoice efeito estufa e aquecimento global\n\\choice erosão antrópica e natural\n\\choice exploração pecuária e mineração\n\\choice impermeabilização dos solos pela urbanização\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Degradação Ambiental",
-      "tags": [
-        "assoreamento",
-        "Rio Doce",
-        "erosão",
-        "urbanização"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "38",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Os dois territórios espanhóis assinalados no cartograma são\n\n\\includegraphics{figura-geo-q39}\n\n\\begin{choices}\n\\CorrectChoice comunidades autônomas espanholas, com presidentes eleitos regularmente.\n\\choice estados industrializados da Espanha, cujo Governo não aceita as autonomias.\n\\choice regiões emancipacionistas na Espanha com pouca projeção política no Reino.\n\\choice Estados nacionais dentro do Reino de Espanha com o qual estão associados.\n\\choice comunidades espanholas pobres com partidos políticos emancipacionistas.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "Geopolítica Mundial",
-      "tags": [
-        "Espanha",
-        "Catalunha",
-        "País Basco",
-        "comunidades autônomas"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "39",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Observe o cartograma sobre a distribuição da população brasileira segundo o Censo Demográfico de 1872.\n\n\\includegraphics{figura-geo-q40}\n\nCom base nos dados fornecidos pelo Censo demográfico brasileiro de 1872, conclui-se que:\n\n\\begin{choices}\n\\choice a ocupação do território brasileiro seguia a lógica colonial portuguesa na América do Sul, com a concentração demográfica no interior e aumento da população ao Leste.\n\\CorrectChoice as principais cidades brasileiras, em números de população absoluta, na segunda metade do século XIX, eram o Rio de Janeiro, Salvador e Recife.\n\\choice as cidades do sul do país tinham a melhor distribuição de população entre elas, por serem as mais desenvolvidas naquela época.\n\\choice o sertão nordestino vivia uma efervescência demográfica frente ao sucesso do cultivo da cana de açúcar e da mineração.\n\\choice o interior do país tinha uma boa distribuição demográfica, reflexo das políticas de imigração do 2º Reinado.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Geografia",
-      "assunto": "População Brasileira",
-      "tags": [
-        "censo de 1872",
-        "demografia",
-        "cidades brasileiras",
-        "Império"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "40",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question A Revolução Socialista na Rússia, em 1917, foi um dos acontecimentos mais significativos do século XX, uma vez que derrubou o regime tsarista e estabeleceu o socialismo no país. Sobre o contexto sociopolítico anterior à Revolução, analise as afirmativas a seguir:\n\n\\begin{romanitems}\n\\item A maior parte da população estava no campo, submetida a condições de trabalho muito precárias devido a um sistema fundiário concentrado.\n\\item A indústria e o setor financeiro se desenvolveram muito ao longo do século XIX e se tornaram a base de uma forte burguesia nacional.\n\\item A igreja ortodoxa mantinha forte influência sobre a elite aristocrática e era um dos pilares ideológicos do regime monárquico.\n\\item No decorrer do século XIX, o operariado russo tornou-se a principal oposição ao regime monárquico através de uma sólida rede de sindicatos e partidos.\n\\end{romanitems}\n\nEstão corretas SOMENTE as afirmativas:\n\n\\begin{choices}\n\\choice I e II.\n\\choice II e III.\n\\CorrectChoice I e III.\n\\choice I e IV.\n\\choice III e IV.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Revolução Russa e Stalinismo",
-      "tags": [
-        "Rússia tsarista",
-        "igreja ortodoxa",
-        "operariado",
-        "campo"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "41",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question Sobre a Primeira Guerra Mundial, assinale a alternativa correta:\n\n\\begin{choices}\n\\choice O conflito pode ser considerado uma guerra civil europeia, uma vez que o conflito ocorreu apenas em território europeu.\n\\choice Foi a primeira guerra a utilizar modernas armas de destruição em massa, resultando no abandono de formas tradicionais de luta.\n\\choice Ideologicamente, foi um conflito marcado pela cisão entre países alinhados a um projeto conservador e aqueles que apoiavam o socialismo.\n\\choice A Primeira Guerra pode ser definida como um conflito imperialista, pois a maior parte das ações bélicas ocorreu em território colonial.\n\\CorrectChoice A Primeira Guerra Mundial redefiniu as fronteiras europeias, abalou tradicionais estruturas políticas e permitiu a concretização de novos projetos ideológicos.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Consequências Políticas e Sociais",
-      "tags": [
-        "Primeira Guerra Mundial",
-        "fronteiras",
-        "imperialismo",
-        "ideologias"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "42",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question Sobre o impacto da Revolução Cubana nas relações entre os EUA e a América Latina na década de 1960, assinale a alternativa correta:\n\n\\begin{choices}\n\\choice A América Latina tornou-se o foco principal de preocupações militares para os norte-americanos no panorama da Guerra Fria nesse período.\n\\CorrectChoice Os EUA passaram a investir também em programas que garantissem a expansão da influência norte-americana por via pacífica, como a Aliança para o Progresso.\n\\choice Houve momentos de enfrentamento e tensão, como a bem-sucedida invasão da baía dos Porcos, em abril de 1961, por forças anticastristas.\n\\choice A crise dos mísseis cubanos, em 1962, resultou de testes realizados com armas nucleares soviéticas em território cubano.\n\\choice Os EUA abandonam a política praticada até então, que consistia na necessidade de exportar a democracia para os demais povos do continente.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Conflitos da Guerra Fria (Coreia, Vietnã, Cuba)",
-      "tags": [
-        "Revolução Cubana",
-        "EUA",
-        "América Latina",
-        "Aliança para o Progresso"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "43",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Nessa passagem, o presidente Campos Salles (1898-1902) sintetiza a estrutura de funcionamento político formulada em seu governo para a Primeira República brasileira. Sobre essa estrutura, assinale a alternativa correta:\n\n\\begin{choices}\n\\choice O comando da política republicana estava exclusivamente nas mãos dos coronéis que controlavam os municípios de acordo com seus interesses particulares.\n\\choice A despeito dos acordos políticos inerentes ao pacto oligárquico, o livre exercício do voto e a participação eleitoral possibilitavam a constante alternância de poder.\n\\choice Os últimos anos foram marcados por diversas tensões e sérios conflitos como a Revolta da Armada e a Revolução Federalista ocorrida no Rio Grande do Sul.\n\\choice Os debates e as articulações políticas na Capital Federal foram incentivados, valorizando-se, assim, um dos princípios republicanos fundamentais.\n\\CorrectChoice A concessão de verbas somada às interferências no processo eleitoral garantiam a perpetuação das oligarquias estaduais e seu apoio à política do governo federal.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "República Velha e Política do Café com Leite",
-      "tags": [
-        "Campos Salles",
-        "política dos governadores",
-        "oligarquias",
-        "coronelismo"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "44",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question Analise as afirmativas abaixo acerca do período Estado Novo (1937-1945) no Brasil.\n\n\\begin{romanitems}\n\\item O Estado Novo se estabeleceu a partir de um golpe que dissolveu o Congresso e da outorga de uma nova Constituição que suprimiu liberdades civis. Em meio a um período de turbulência política, o pretexto definitivo para o fechamento do regime foi o crescimento da Ação Integralista Brasileira (AIB) e suas marchas populares.\n\\item No âmbito do Ministério de Educação e Saúde (MES), elaborou-se um projeto cultural que visou a incentivar pesquisas sobre o Brasil e preservar suas raízes culturais. Em torno do ministro Gustavo Capanema, reuniram-se intelectuais de variadas correntes de pensamento nem sempre próximos ao regime, mas que compartilhavam um projeto nacionalista.\n\\item O Departamento de Imprensa e Propaganda (DIP), criado em 1939, controlava e censurava previamente os meios de comunicação. Subordinada ao poder público pela Constituição de 1937, a imprensa foi usada como instrumento de propaganda do regime, sendo obrigada a divulgar informes e comunicados oficiais.\n\\item O Estado Novo valorizou manifestações da cultura popular como o samba e o carnaval, transformando-os em símbolos da cultura nacional. As festas, os ritmos populares e temas como a sensualidade, a boemia carioca e a \"malandragem\", passaram a ser vistos como expressões de uma brasilidade que deveria ser exaltada.\n\\end{romanitems}\n\nEstão corretas SOMENTE as afirmativas:\n\n\\begin{choices}\n\\choice I e III.\n\\CorrectChoice II e III.\n\\choice II e IV.\n\\choice II, III e IV.\n\\choice I e IV.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Era Vargas e Estado Novo",
-      "tags": [
-        "DIP",
-        "Capanema",
-        "Estado Novo",
-        "cultura"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "45",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Sobre as condições que permitiram o desenvolvimento da economia cafeeira no Império do Brasil e o domínio do mercado mundial pelo café produzido no Brasil, assinale a alternativa INCORRETA:\n\n\\begin{choices}\n\\choice O desenvolvimento da cafeicultura no Vale do Paraíba se beneficiou da grande disponibilidade de terras com sua distribuição ainda não implementada.\n\\choice A Revolução do Haiti (entre 1791 e 1804) desestabilizou a produção cafeeira da ilha, retirando-a do mercado mundial de café.\n\\choice A existência prévia de vias que cruzavam a região e de um sistema de transportes baseado em tropas de mulas, que serviram ao escoamento da produção aurífera no século XVIII, facilitou o escoamento da produção cafeeira do Vale do Paraíba em direção aos portos de exportação.\n\\CorrectChoice As leis que proibiam o tráfico de escravos para o território do Império do Brasil, frutos da pressão inglesa, acabaram por beneficiar a produção cafeeira do Vale do Paraíba, uma vez que a utilização da mão de obra de imigrantes se mostrou muito mais produtiva.\n\\choice Um conflito fiscal entre Espanha e Estados Unidos na década de 1830 retirou a produção cafeeira cubana do principal mercado consumidor mundial de café à época, o mercado norte-americano.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
+    "isSet": true,
+    "baseLatex": "O movimento de mulheres é hoje o espelho onde se reflete a ambiguidade feminina, benfazejo espelho que, tendo o papel passivo de receber a imagem, tem o papel ativo de devolvê-la. Esse espelho deve permitir à mulher que nele se contempla reconhecer seu rosto fragmentado, que se faz e se refaz desses mesmos fragmentos, insolitamente reencontrados, e que tem, nesse reencontro, seu enigma e desafio. Só esse espelho poderá tornar a ambiguidade, inscrita nos fatos e transcrita no psiquismo feminino, visível àquela que a vive, abrindo assim caminho para sua transformação em ambivalência assumida, consciência da contradição, do sim e do não, das tensões que decorrem desse sim e desse não, da paralisia que se instala entre eles.\n\nA imagem refletida é a de quem tenta fazer coexistirem em si desejos que se anulam e se superpõem sem integração possível — alguém que se desloca de um desejo a outro, de uma existência a outra, de uma personalidade a outra, em um esforço desesperado de ser tudo ao mesmo tempo.\n\n\\credits{OLIVEIRA, Rosiska Darcy de. Elogio da diferença: o feminino emergente. 3.ed. São Paulo: Brasiliense, 1993. p. 88.}",
+    "items": [
+      {
+        "latex": "O que a metáfora do espelho revela acerca do movimento das mulheres, no Texto 1?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Interpretação de Texto",
+          "tags": [
+            "metáfora",
+            "espelho",
+            "movimento feminino",
+            "ambiguidade"
+          ],
+          "resposta": "A metáfora do espelho revela que o movimento de mulheres tem um papel duplo: passivo (ao receber a imagem da ambiguidade feminina) e ativo (ao devolvê-la transformada), permitindo que a mulher reconheça sua própria condição fragmentada e contraditória. O espelho, portanto, não apenas reflete a realidade da mulher, mas possibilita a tomada de consciência de suas contradições internas, abrindo caminho para a transformação da ambiguidade em ambivalência assumida."
+        }
+      },
+      {
+        "latex": "Destaque do Texto 1 um substantivo que revele, no contexto, ideia de inexatidão e imprecisão.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Gramática",
+          "tags": [
+            "substantivo",
+            "inexatidão",
+            "imprecisão",
+            "semântica"
+          ],
+          "resposta": "Enigma (ou: ambiguidade / ambivalência / fragmentos / contradição / paralisia). O substantivo \"enigma\" revela, no contexto, ideia de inexatidão e imprecisão porque se refere a algo que não tem resposta definida, que permanece obscuro ou indefinido."
+        }
+      },
+      {
+        "latex": "Observe o sentido da seguinte passagem no Texto 1:\n\n\"benfazejo espelho que, tendo o papel passivo de receber a imagem, tem o papel ativo de devolvê-la.\"\n\nReescreva-a, empregando a oração reduzida de gerúndio na forma desenvolvida. Faça as modificações necessárias.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Gramática",
+          "tags": [
+            "oração reduzida",
+            "gerúndio",
+            "forma desenvolvida",
+            "reescrita"
+          ],
+          "resposta": "Benfazejo espelho que, embora tenha o papel passivo de receber a imagem, tem o papel ativo de devolvê-la."
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
       "dificuldade": "Difícil",
-      "disciplina": "História",
-      "assunto": "Segundo Reinado",
-      "tags": [
-        "cafeicultura",
-        "Vale do Paraíba",
-        "tráfico negreiro",
-        "mão de obra"
-      ],
+      "disciplina": "Língua Portuguesa",
       "fonte": "concurso",
       "concurso": "PUC-Rio",
       "banca": "PUC-Rio",
       "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "46",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Desde o último quartel do século XIX até o início da Primeira Guerra Mundial, no contexto de um capitalismo cada vez mais globalizado, grande parte do território africano foi partilhado entre um conjunto de Estados europeus. Indique qual destes Estados não fazia parte desse conjunto:\n\n\\begin{oneparchoices}\n\\choice Bélgica\n\\choice Grã-Bretanha\n\\CorrectChoice Império Russo\n\\choice Itália\n\\choice Países Baixos\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Partilha da África e Ásia",
-      "tags": [
-        "imperialismo",
-        "África",
-        "Estados europeus",
-        "século XIX"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "47",
-      "gabarito": "C"
-    }
-  },
-  {
-    "latex": "\\question De acordo com essa crônica de 1920 sobre o projeto do prefeito Carlos Sampaio para a cidade do Rio de Janeiro, é INCORRETO afirmar que o autor:\n\n\\begin{choices}\n\\CorrectChoice questiona no projeto elementos antidemocráticos e contrários ao princípio da igualdade social, os quais não correspondiam à concepção de República das elites da época.\n\\choice critica projetos de reforma urbana que não atendem aos interesses reais da maioria da população e promovem obras de caráter superficial no espaço.\n\\choice contesta a pretendida remodelação espacial, dentre outros motivos, pelo aumento da crise habitacional decorrente da demolição de casas populares.\n\\choice combate o arrasamento do morro do Castelo, obra que continuava o processo de expulsão dos trabalhadores do Centro, observado na Reforma Passos.\n\\choice discorda da ideia de que o Rio de Janeiro deveria ser uma espécie de Paris tropical, observando-se que, na época, a capital francesa era um centro irradiador de novidades.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "República Velha e Política do Café com Leite",
-      "tags": [
-        "Lima Barreto",
-        "reforma urbana",
-        "morro do Castelo",
-        "Rio de Janeiro"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "48",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Com base nessa música gravada por Chico Buarque, em 1984, ano que marcou o auge da campanha pelas Diretas Já, é INCORRETO afirmar que a canção:\n\n\\begin{choices}\n\\choice compara a ditadura à escravidão, lembrando antepassados, pés sangrados, calçamentos de paralelepípedo e até o samba como dança de escravizados.\n\\choice sugere a presença do povo nas ruas, num contexto em que as grandes manifestações de massa voltaram à cena política.\n\\choice trata a ditadura como uma \"página infeliz\" do Brasil, manifestação crítica essa favorecida pela revogação do AI-5 e pelo abrandamento da censura prévia, em 1978.\n\\CorrectChoice apresenta a luta pelas Diretas Já como um \"samba popular\", considerando o apoio nas ruas e a vitória da Emenda Dante de Oliveira, no Congresso Nacional.\n\\choice cita as \"tenebrosas transações\", uma referência aos casos de corrupção revelados na fase final da ditadura, com a maior liberdade aos meios de comunicação.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Ditadura Militar (1964–1985)",
-      "tags": [
-        "Diretas Já",
-        "Chico Buarque",
-        "Emenda Dante de Oliveira",
-        "canção"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "49",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Tendo como referência a notícia sobre Mbanza Congo e os conhecimentos históricos pertinentes, analise as afirmativas seguintes com relação à história do antigo Reino do Congo.\n\n\\begin{romanitems}\n\\item O Reino do Congo foi um dos mais conhecidos reinos da região centro-ocidental da África. Fundado no final do século XIII, chegou a abranger parte dos atuais países de Angola, República do Congo, República Democrática do Congo e Gabão.\n\\item A partir do século XV ocorreram os primeiros contatos dos portugueses com as autoridades políticas do Reino do Congo, transformando essa região em uma das maiores exportadoras de africanos escravizados para as Américas.\n\\item A capital do Reino do Congo era Mbanza Congo ou São Salvador, como ficou conhecida após a conversão ao catolicismo do manicongo (rei do Congo) e a construção da Catedral de São Salvador do Congo.\n\\item A organização política do Reino do Congo somente ocorreu após a chegada dos portugueses na região, quando estes influenciaram a formação de uma \"elite burocrática\" que ajudava o manicongo (rei do Congo) a governar.\n\\end{romanitems}\n\nEstão corretas SOMENTE as afirmativas:\n\n\\begin{choices}\n\\choice II, III e IV.\n\\CorrectChoice I, II e III.\n\\choice I, II e IV.\n\\choice I e II.\n\\choice I e III.\n\\end{choices}\n\n% ── BIOLOGIA DISCURSIVA ──────────────────────────────────────────────────",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "História",
-      "assunto": "Escravidão Africana e Tráfico Negreiro",
-      "tags": [
-        "Reino do Congo",
-        "Mbanza Congo",
-        "manicongo",
-        "África centro-ocidental"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "50",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question A edição genética vem-se tornando cada vez mais uma realidade. Uma das grandes responsáveis por esse avanço é a tecnologia de CRISPR-Cas9, técnica que permite que sequências possam ser eliminadas ou inseridas em um genoma com altas taxas de sucesso. As possibilidades para essa metodologia são infinitas, desde tratamento de doenças até a possibilidade do entendimento de eventos evolutivos.\n\nO gene AGAP007280 de \\textit{Anopheles gambiae}, transmissor da malária, é importante para garantir a fertilidade de fêmeas dessa espécie de mosquito.\n\nExplique como a manipulação do gene AGAP007280, através da edição genética, poderia ser utilizada para o controle de doenças transmitidas por este inseto vetor.",
-    "tipo": "Discursiva",
-    "gabarito": null,
-    "meta": {
-      "tipo": "Discursiva",
-      "dificuldade": "Média",
-      "disciplina": "Biologia",
-      "assunto": "Mutações Gênicas e Cromossômicas",
-      "tags": [
-        "CRISPR-Cas9",
-        "malária",
-        "Anopheles gambiae",
-        "fertilidade"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "1",
-      "resposta": "|"
-    }
-  },
-  {
-    "latex": "\\question A Figura abaixo representa a resposta imune de um indivíduo após dois contatos com o sorotipo I do vírus da Dengue (DENVI).\n\n\\includegraphics{figura-bio-q2-disc}\n\nLevando em consideração os dados representados no gráfico, explique as diferenças nas respostas imunes apresentadas por esse indivíduo após os dois momentos de contato com DENVI.",
-    "tipo": "Discursiva",
-    "gabarito": null,
-    "meta": {
-      "tipo": "Discursiva",
-      "dificuldade": "Média",
-      "disciplina": "Biologia",
-      "assunto": "Antígenos, Anticorpos e Vacinas",
-      "tags": [
-        "dengue",
-        "memória imunológica",
-        "DENVI",
-        "anticorpos"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "2",
-      "resposta": "|"
+      "prova": "G2 Manhã",
+      "numero": "Port-1"
     }
   },
   {
     "isSet": true,
-    "baseLatex": "Segundo o IBGE, existem, no Brasil, seis biomas terrestres, distribuídos conforme a Figura abaixo:\n\n\\includegraphics{figura-bio-q3-disc}\n\nConsiderando a Figura acima,",
+    "baseLatex": "É interessante observar como na história das ideias e dos saberes algumas noções ou definições parecem intocáveis, melhor dizendo, têm uma vitalidade histórica contínua, apesar das rupturas epistemológicas que ocorreram no campo das ciências naturais e humanas, especialmente neste nosso século. Ainda hoje prevalece a representação corpórea e sexualizada da mulher em oposição à representação cerebral e racionalizada do homem. Apesar de esta dicotomia não ser restrita aos espaços de produção do conhecimento científico, as dicotomias de gênero, fundadas na diferença sexual, têm uma história que se enraíza no processo de constituição dos saberes médico e científico sobre estas diferenças. Na verdade, acostumamo-nos com a representação corpórea e sexualizada da mulher através do sutil mecanismo ideológico da naturalização. Evidentemente não se trata de negar as diferenças sexuais, nem a corporalidade, mas sim de questionar a naturalização destas representações e explicitar seu conteúdo ideológico. Expressões como \"a mulher é o seu corpo\" ou \"tudo no corpo da mulher é sexualizado\" não são (ou dificilmente seriam) traduzíveis para a definição da masculinidade, não porque sejam representações de fatos naturais, mas porque são representações de uma construção humana e histórica de relações sociais fundadas sobre a oposição e a assimetria entre os dois sexos biológicos. [...]\n\nA 'descoberta' do sexo como um fenômeno natural e sua circunscrição ao domínio do saber científico e médico foram de grande importância para a consolidação do sistema sexo-gênero, porque enraizaram na Natureza as hierarquias e as desigualdades que dividiam a espécie humana em duas partes opostas, dois sexos cujos corpos eram radicalmente marcados pela diferença. No entanto, a equação sexo-gênero não foi utilizada para definir o homem da mesma forma como o foi para a mulher. A palavra homem nunca teve a mesma conotação sexual, nem mesmo quando anatomistas e fisiologistas do século XVIII iniciaram suas investigações sobre as distinções físicas entre os dois sexos. Muito pelo contrário, quase sempre, mesmo em nossos dias, o vocábulo homem significa humanidade, é sinônimo da espécie humana. Podemos dizer que no binômio sexo-gênero o homem foi dessexualizado, tornando-se um ideal, uma representação dos valores distintivos da espécie humana muito valorizada pelo ideário iluminista, como a razão, a inteligência e a moral. A antiga visão dualista que opunha corpo e mente ou carne e espírito foi reatualizada nos discursos médico e filosófico do século XVIII, articulando sexo e corpo à feminilidade em oposição à articulação razão e mente, predicativos da masculinidade.\n\n\\credits{MARTINS, Ana Paula Vosne. Visões do Feminino: a medicina da mulher nos séculos XIX e XX. Rio de Janeiro: Fiocruz, 2004. p. 107-111.}",
     "items": [
       {
-        "latex": "identifique quais são os biomas 1, 4 e 6.",
+        "latex": "Mantendo o mesmo sentido, reescreva o período abaixo, iniciando-o com a conjunção \"embora\". Faça as alterações necessárias.\n\n\"Algumas noções parecem intocáveis, apesar de diversas rupturas epistemológicas terem ocorrido no campo das ciências.\"",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
-          "assunto": "Biomas Brasileiros",
+          "assunto": "Gramática",
           "tags": [
-            "Amazônia",
-            "Pantanal",
-            "Pampas",
-            "identificação"
+            "conjunção concessiva",
+            "embora",
+            "reescrita",
+            "subordinação"
           ],
-          "resposta": "|"
+          "resposta": "Embora diversas rupturas epistemológicas tenham ocorrido no campo das ciências, algumas noções parecem intocáveis."
         }
       },
       {
-        "latex": "descreva dois fatores bióticos e dois fatores abióticos que caracterizam os biomas 5 e 3.",
+        "latex": "Pontue a frase abaixo, usando apenas vírgula(s).\n\n\"Quando refletimos sobre a história das mulheres temos de considerar que ao longo dos séculos boa parte dos documentos oficiais foi escrita por homens.\"",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
-          "assunto": "Biomas Brasileiros",
+          "assunto": "Gramática",
           "tags": [
-            "Mata Atlântica",
-            "Caatinga",
-            "fatores bióticos",
-            "fatores abióticos"
+            "pontuação",
+            "vírgula",
+            "período composto"
           ],
-          "resposta": "|"
+          "resposta": "Quando refletimos sobre a história das mulheres, temos de considerar que, ao longo dos séculos, boa parte dos documentos oficiais foi escrita por homens."
+        }
+      },
+      {
+        "latex": "Observe as frases abaixo e indique a informação acrescentada pelo emprego do advérbio \"ainda\" em (ii).\n\n(i) Hoje prevalece a representação corpórea e sexualizada da mulher.\n(ii) Ainda hoje prevalece a representação corpórea e sexualizada da mulher.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Interpretação de Texto",
+          "tags": [
+            "advérbio",
+            "ainda",
+            "continuidade",
+            "persistência",
+            "sentido"
+          ],
+          "resposta": "O advérbio \"ainda\" acrescenta à frase a ideia de continuidade ou persistência de algo que já deveria ter mudado. Enquanto (i) simplesmente afirma que a representação prevalece hoje, (ii) indica que essa representação, apesar do tempo decorrido e das transformações históricas, continua prevalecendo — sugerindo uma permanência inesperada ou indesejada."
         }
       }
     ],
     "sharedMeta": {
       "tipo": "Discursiva",
-      "disciplina": "Biologia",
-      "dificuldade": "Média",
+      "dificuldade": "Difícil",
+      "disciplina": "Língua Portuguesa",
       "fonte": "concurso",
       "concurso": "PUC-Rio",
       "banca": "PUC-Rio",
       "ano": 2018,
-      "prova": "Tarde G5"
+      "prova": "G2 Manhã",
+      "numero": "Port-2"
     }
   },
   {
     "isSet": true,
-    "baseLatex": "A reconstrução da filogenia das formigas (família Formicidae), combinando dados moleculares e o registro fóssil, demonstra que o período de diversificação da família coincide com a diversificação das angiospermas e da maioria dos insetos herbívoros. As florestas dominadas por angiospermas proporcionaram alimento para os insetos herbívoros e, por gerarem uma serrapilheira mais diversa, possibilitaram o estabelecimento de uma maior variedade de nichos, o que resultou na diversificação destes insetos.",
+    "baseLatex": "\\begin{poem}\n\\verse{Anjo no nome, Angélica na cara!}\n\\verse{Isso é ser flor, e Anjo juntamente:}\n\\verse{Ser Angélica flor, e Anjo florente,}\n\\verse{Em quem, senão em vós, se uniformara:}\n\\verse{}\n\\verse{Quem vira uma tal flor, que a não cortara,}\n\\verse{De verde pé, da rama florescente;}\n\\verse{E quem um Anjo vira tão luzente,}\n\\verse{Que por seu Deus o não idolatrara?}\n\\verse{}\n\\verse{Se pois como Anjo sois dos meus altares,}\n\\verse{Foreis o meu Custódio, e a minha guarda,}\n\\verse{Livrara eu de diabólicos azares.}\n\\verse{}\n\\verse{Mas vejo, que por bela, e por galharda,}\n\\verse{Posto que os Anjos nunca dão pesares,}\n\\verse{Sois Anjo, que me tenta, e não me guarda.}\n\\end{poem}\n\n\\credits{MATOS, Gregório de. Poemas escolhidos. São Paulo: Cultrix, 1976, p.202.}\n\n2 de maio de 1958.\nEu não sou indolente. Há tempos que eu pretendia fazer o meu diario. Mas eu pensava que não tinha valor e achei que era perder tempo.\n… Eu fiz uma reforma em mim. Quero tratar as pessoas que eu conheço com mais atenção. Quero enviar um sorriso amavel as crianças e aos operarios.\n… Recebi intimação para comparecer as 8 horas da noite na Delegacia do 12. Passei o dia catando papel. A noite os meus pés doiam tanto que eu não podia andar. Começou chover. Eu ia na Delegacia, ia levar o José Carlos. A intimação era para ele. O José Carlos está com 9 anos.\n\n3 de maio.\n... Fui na feira da Rua Carlos de Campos, catar qualquer coisa. Ganhei bastante verdura. Mas ficou sem efeito, porque eu não tenho gordura. Os meninos estão nervosos por não ter o que comer.\n\n6 de maio.\nDe manhã não fui buscar agua. Mandei o João carregar. Eu estava contente. Recebi outra intimação. Eu estava inspirada e os versos eram bonitos e eu esqueci de ir na Delegacia. Era 11 horas quando eu recordei do convite do ilustre tenente da 12ª Delegacia.\n... O que eu aviso aos pretendentes a politica, é que o povo não tolera a fome. E preciso conhecer a fome para saber descrevê-la.\nEstão construindo um circo aqui na Rua Araguaia, Circo Theatro Nilo.\n\n9 de maio.\nEu cato papel, mas não gosto. Então eu penso: Faz de conta que eu estou sonhando.\n\n10 de maio.\nFui na delegacia e falei com o tenente. Que homem amavel! Se eu soubesse que ele era tão amavel, eu teria ido na delegacia na primeira intimação. (...) O tenente interessou-se pela educação dos meus filhos. Disse-me que a favela é um ambiente propenso, que as pessoas tem mais possibilidades de delinquir do que tornar-se util a patria e ao país. Pensei: Se ele sabe disso, porque não faz um relatorio e envia para os politicos? O senhor Janio Quadros, o Kubstchek e o Dr. Adhemar de Barros? Agora falar para mim, que sou uma pobre lixeira. Não posso resolver nem as minhas dificuldades.\n... O Brasil precisa ser dirigido por uma pessoa que já passou fome. A fome também é professora.\nQuem passa fome aprende a pensar no proximo, e nas crianças.\n\n11 de maio.\nDia das Mães. O céu está azul e branco. Parece que até a Natureza quer homenagear as mães que atualmente se sentem infeliz por não realisar os desejos dos seus filhos.\n... O sol vai galgando. Hoje não vai chover. Hoje é o nosso dia.\n... A D. Teresinha veio visitar-me. Ela deu-me 15 cruzeiros. Disse-me que era para a Vera ir no circo. Mas eu vou deixar o dinheiro para comprar pão amanhã, porque eu só tenho 4 cruzeiros.\n... Ontem eu ganhei metade de uma cabeça de porco no Frigorifico. Comemos a carne e guardei os ossos. E hoje puis os ossos para ferver. E com o caldo fiz as batatas. Os meus filhos estão sempre com fome. Quando eles passam muita fome eles não são exigentes no paladar.\n... Surgiu a noite. As estrelas estão ocultas. O barraco está cheio de pernilongos. Eu vou acender uma folha de jornal e passar pelas paredes. É assim que os favelados matam mosquitos.\n\n\\credits{DE JESUS, Carolina Maria. Quarto de despejo. Diário de uma favelada. São Paulo: Ática, 2007, p.29-31.}\n\nNota dos editores: Esta edição respeita fielmente a linguagem da autora, que muitas vezes contraria a gramática, mas que por isso mesmo traduz com realismo a forma de o povo enxergar e expressar seu mundo.",
     "items": [
       {
-        "latex": "Que força evolutiva estaria atuando na radiação adaptativa descrita acima? Explique.",
+        "latex": "Determine o estilo de época do Texto 3, justificando a sua resposta.",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
-          "assunto": "Seleção Natural",
+          "assunto": "Literatura Brasileira",
           "tags": [
-            "radiação adaptativa",
-            "insetos",
-            "angiospermas",
-            "nicho ecológico"
+            "Barroco",
+            "Gregório de Matos",
+            "estilo de época",
+            "justificativa"
           ],
-          "resposta": "|"
+          "resposta": "O Texto 3 pertence ao Barroco brasileiro (século XVII). Justificativa: presença de antíteses e paradoxos (\"tendo o papel passivo... tem o papel ativo\", \"Sois Anjo, que me tenta, e não me guarda\"), uso da forma soneto (estrutura clássica de 14 versos em quartetos e tercetos), linguagem culta e rebuscada com jogos de palavras (Anjo/Angélica, flor/florente), além de temas tipicamente barrocos como o conflito entre o sagrado e o profano (a amada é simultaneamente anjo e tentação)."
         }
       },
       {
-        "latex": "Identifique e exemplifique dois tipos de interações ecológicas entre plantas e insetos que podem estar envolvidas nos processos de coevolução.",
+        "latex": "A partir da leitura do Texto 4, comente a relevância do livro \"Quarto de despejo\", de Carolina Maria de Jesus, como uma narrativa que reforça a tendência neorrealista no panorama da literatura brasileira contemporânea.",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
-          "assunto": "Relações Ecológicas",
+          "assunto": "Literatura Brasileira",
           "tags": [
-            "coevolução",
-            "insetos",
-            "plantas",
-            "mutualismo",
-            "herbivoria"
+            "neorrealismo",
+            "Carolina Maria de Jesus",
+            "Quarto de despejo",
+            "literatura contemporânea"
           ],
-          "resposta": "|"
+          "resposta": "Quarto de despejo\" insere-se na tendência neorrealista por retratar de forma crua e direta a realidade social marginalizada da favela paulistana dos anos 1950. A obra valoriza a experiência concreta e cotidiana de uma catadora de papel negra e favelada, mostrando a luta diária pela sobrevivência, a fome, a pobreza extrema e a exclusão social. A narrativa em forma de diário autentica o olhar de dentro da favela, confrontando as estruturas sociais e políticas que sustentam a desigualdade — características centrais do neorrealismo, que prioriza a denúncia social e o realismo documental em detrimento do refinamento estético."
+        }
+      },
+      {
+        "latex": "Segundo seus editores, o Texto 4, por vezes, \"contraria a gramática\". Levando em conta a entrada do dia 11 de maio, transcreva dois exemplos de desvios gramaticais, um deles relacionado à ortografia e o outro, à concordância.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Gramática",
+          "tags": [
+            "desvios gramaticais",
+            "ortografia",
+            "concordância",
+            "Carolina Maria de Jesus"
+          ],
+          "resposta": "Ortografia: \"realisar\" (deveria ser \"realizar\") ou \"diario\" (sem acento), \"amavel\" (sem acento), \"agua\" (sem acento). Concordância: \"as mães que atualmente se sentem infeliz\" (deveria ser \"infelizes\" — concordância do predicativo com o sujeito plural)."
+        }
+      },
+      {
+        "latex": "A ideia de feminino, expressa no texto de Carolina Maria de Jesus (Texto 4), distancia-se, em parte, do que é posto no último período do Texto 2. Explique por quê.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Interpretação de Texto",
+          "tags": [
+            "feminino",
+            "Carolina Maria de Jesus",
+            "Texto 2",
+            "distanciamento",
+            "representação"
+          ],
+          "resposta": "O último período do Texto 2 apresenta a mulher sob o signo da corporalidade, sexualidade e feminilidade, em oposição à racionalidade atribuída ao homem — uma visão marcada pelo ideário iluminista do século XVIII que reduz a mulher ao seu corpo. Já no Texto 4, Carolina Maria de Jesus apresenta uma identidade feminina definida pelo trabalho, pela luta cotidiana, pela capacidade política de reflexão crítica (\"O Brasil precisa ser dirigido por uma pessoa que já passou fome\") e pela responsabilidade materna. Sua feminilidade não se reduz ao corpo ou à sexualidade, mas se afirma pela ação, pela escrita e pela resistência diante da miséria — distanciando-se da representação corpórea e passiva descrita no Texto 2."
+        }
+      }
+    ],
+    "groups": [
+      {
+        "itemIndexes": [
+          0,
+          1
+        ]
+      },
+      {
+        "itemIndexes": [
+          2,
+          3
+        ]
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Língua Portuguesa",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2018,
+      "prova": "G2 Manhã",
+      "numero": "Port-3-4"
+    }
+  },
+  {
+    "isSet": true,
+    "baseLatex": "\\begin{poem}\n\\verse{Soneto}\n\\verse{}\n\\verse{Pálida, à luz da lâmpada sombria,}\n\\verse{Sobre o leito de flores reclinada,}\n\\verse{Como a lua por noite embalsamada,}\n\\verse{Entre as nuvens do amor ela dormia!}\n\\verse{}\n\\verse{Era a virgem do mar, na escuma fria}\n\\verse{Pela maré das águas embalada!}\n\\verse{Era um anjo entre nuvens d'alvorada}\n\\verse{Que em sonhos se banhava e se esquecia!}\n\\verse{}\n\\verse{Era mais bela! o seio palpitando...}\n\\verse{Negros olhos as pálpebras abrindo...}\n\\verse{Formas nuas no leito resvalando...}\n\\verse{}\n\\verse{Não te rias de mim, meu anjo lindo!}\n\\verse{Por ti as noites eu velei chorando,}\n\\verse{Por ti nos sonhos morrerei sorrindo!}\n\\end{poem}\n\n\\credits{AZEVEDO, Álvares de. Disponível em: <http://www.academia.org.br/academicos/alvares-de-azevedo/textos-escolhidos>. Acesso em: 11 ago. 2017.}\n\n\\begin{poem}\n\\verse{Com licença poética}\n\\verse{}\n\\verse{Quando nasci um anjo esbelto,}\n\\verse{desses que tocam trombeta, anunciou:}\n\\verse{vai carregar bandeira.}\n\\verse{Cargo muito pesado pra mulher,}\n\\verse{esta espécie ainda envergonhada.}\n\\verse{Aceito os subterfúgios que me cabem,}\n\\verse{sem precisar mentir.}\n\\verse{Não sou tão feia que não possa casar,}\n\\verse{acho o Rio de Janeiro uma beleza e}\n\\verse{ora sim, ora não, creio em parto sem dor.}\n\\verse{Mas o que sinto escrevo. Cumpro a sina.}\n\\verse{Inauguro linhagens, fundo reinos}\n\\verse{(dor não é amargura).}\n\\verse{Minha tristeza não tem pedigree,}\n\\verse{já a minha vontade de alegria,}\n\\verse{sua raiz vai ao meu mil avô.}\n\\verse{Vai ser coxo na vida, é maldição pra homem.}\n\\verse{Mulher é desdobrável. Eu sou.}\n\\end{poem}\n\n\\credits{PRADO, Adélia. Bagagem. São Paulo: Siciliano, 1993, p.11.}",
+    "items": [
+      {
+        "latex": "Cite duas diferenças em relação aos aspectos formais que caracterizam os Textos 5 e 6, tomando como referência o período literário de cada um deles.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Literatura Brasileira",
+          "tags": [
+            "Romantismo",
+            "Modernismo",
+            "aspectos formais",
+            "soneto",
+            "verso livre",
+            "Álvares de Azevedo",
+            "Adélia Prado"
+          ],
+          "resposta": "Duas diferenças formais: 1) Estrutura: o Texto 5 (Romantismo) segue a forma fixa do soneto — 14 versos distribuídos em dois quartetos e dois tercetos, com esquema de rimas regulares (ABBA/ABBA/CDC/DCD). O Texto 6 (Modernismo — Terceira Fase / Pós-modernismo) apresenta verso livre, sem métrica ou rima fixas, com estrofes irregulares. 2) Linguagem: o Texto 5 usa linguagem culta e elevada, com vocabulário rebuscado e figuras clássicas (imagens da lua, virgem do mar, anjo). O Texto 6 usa linguagem coloquial e direta (\"pra mulher\", \"não sou tão feia\"), incorporando o registro cotidiano e popular, característico do modernismo."
+        }
+      },
+      {
+        "latex": "Observa-se, nos poemas de Álvares de Azevedo e Adélia Prado, a presença de uma relação de aproximação e/ou distanciamento entre o lugar de enunciação do eu poético e o da temática enunciada. A partir da leitura comparativa dos Textos 5 e 6, determine a maneira como a figura feminina é apresentada em cada um deles.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Literatura Brasileira",
+          "tags": [
+            "figura feminina",
+            "eu poético",
+            "Álvares de Azevedo",
+            "Adélia Prado",
+            "romantismo",
+            "modernismo"
+          ],
+          "resposta": "No Texto 5 (Álvares de Azevedo), a figura feminina é apresentada pelo olhar masculino do eu poético: a mulher é objeto passivo de contemplação, idealizada e erotizada (pálida, adormecida, com \"formas nuas\"), posicionada como anjo inatingível que ao mesmo tempo inspira desejo e sofrimento. O eu poético masculino está distanciado da amada, que ocupa o lugar de musa. No Texto 6 (Adélia Prado), o eu poético é a própria mulher, que fala de si em primeira pessoa com voz ativa e autônoma. A figura feminina não é objeto do olhar alheio, mas sujeito que afirma sua identidade (\"Mulher é desdobrável. Eu sou.\"), reconhece os papéis impostos à mulher e os subverte com ironia e leveza — aproximando o lugar de enunciação e o da temática, pois a poeta fala de dentro da experiência feminina."
         }
       }
     ],
     "sharedMeta": {
       "tipo": "Discursiva",
-      "disciplina": "Biologia",
-      "dificuldade": "Média",
+      "dificuldade": "Difícil",
+      "disciplina": "Língua Portuguesa",
       "fonte": "concurso",
       "concurso": "PUC-Rio",
       "banca": "PUC-Rio",
       "ano": 2018,
-      "prova": "Tarde G5"
-    }
-  },
-  {
-    "latex": "\\question A determinação do sexo nas tartarugas marinhas depende exclusivamente da temperatura de incubação dos ovos. Em um determinado estágio do desenvolvimento embrionário, a temperatura do ambiente influencia a síntese de enzimas que irão atuar na diferenciação dos sexos. As temperaturas mais quentes produzem maior proporção de fêmeas, enquanto temperaturas mais frias produzem maior proporção de machos.\n\nNo atual cenário de mudanças climáticas, em que vem sendo constatado um aumento de temperatura, explique de que forma o sucesso reprodutivo dessas espécies pode ser afetado.",
-    "tipo": "Discursiva",
-    "gabarito": null,
-    "meta": {
-      "tipo": "Discursiva",
-      "dificuldade": "Média",
-      "disciplina": "Biologia",
-      "assunto": "Herança e Determinação do Sexo",
-      "tags": [
-        "tartarugas marinhas",
-        "temperatura",
-        "mudanças climáticas",
-        "sucesso reprodutivo"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2018,
-      "prova": "Tarde G5",
-      "numero": "5",
-      "resposta": "|"
+      "prova": "G2 Manhã",
+      "numero": "Port-5"
     }
   }
 ]

@@ -53,6 +53,13 @@ type YamlMeta = {
   numero?: string;
   cargo?: string;
   prova?: string;
+  // Metadados do texto base
+  autor_texto?: string;
+  titulo_texto?: string;
+  ano_publicacao?: number;
+  tema?: string;
+  genero?: string;
+  movimento?: string;
 };
 
 type ImportItem = {
@@ -64,14 +71,14 @@ type ImportItem = {
 
 type ImportSetItem = {
   isSet: true;
+  isMcqSet?: boolean;
   baseLatex: string;
   items: Array<{
     latex: string;
     tipo: "Múltipla Escolha" | "Discursiva";
     gabarito: string | null;
-    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta">;
+    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta" | "numero">;
   }>;
-  groups?: Array<{ itemIndexes: number[] }>;
   sharedMeta?: YamlMeta;
 };
 
@@ -273,6 +280,24 @@ function parseToStatementNode(text: string) {
   ]);
 }
 
+/** Retorna [statement, options?] para um item de conjunto — preserva as alternativas MCQ */
+function parseToItemNodes(text: string): PMNode[] {
+  try {
+    const parsed = parseQuestionFromLatexText("\\question " + text);
+    if (parsed) {
+      const questionNode = buildQuestionNodeLatex(schema, parsed);
+      const nodes: PMNode[] = [];
+      (questionNode.content ?? []).forEach((n: PMNode) => {
+        if (n.type === schema.nodes.statement || n.type === schema.nodes.options) nodes.push(n);
+      });
+      if (nodes.length > 0) return nodes;
+    }
+  } catch {}
+  return [schema.nodes.statement.create(null, [
+    schema.nodes.paragraph.create(null, text.trim() ? [schema.text(text.trim())] : []),
+  ])];
+}
+
 function buildInitialSet(
   item: ImportSetItem,
   batch: BatchConfig,
@@ -308,29 +333,17 @@ function buildInitialSet(
         ? { kind: "essay", rubric: parseRespostaToDoc(it.meta.resposta.trim()) }
         : { kind: "essay" };
 
-    const stmtNode = parseToStatementNode(it.latex);
+    const itemNodes = parseToItemNodes(it.latex);
     const itemAssunto = normalizeAssunto(it.meta?.assunto ?? "") || null;
     return schema.nodes.question_item.create(
       { answerKey, assunto: itemAssunto, tags: it.meta?.tags ?? null },
-      [stmtNode]
+      itemNodes
     );
   });
 
   const hasChoices = item.items.some(it => it.tipo === "Múltipla Escolha");
 
-  // Se houver grupos definidos, envolve os items em question_group nodes
-  let setChildren;
-  if (item.groups?.length) {
-    const groupNodes = item.groups.map(grp =>
-      schema.nodes.question_group.create(
-        null,
-        grp.itemIndexes.map(idx => questionItemNodes[idx])
-      )
-    );
-    setChildren = [baseTextNode, ...groupNodes];
-  } else {
-    setChildren = [baseTextNode, ...questionItemNodes];
-  }
+  const setChildren = [baseTextNode, ...questionItemNodes];
 
   const setNode = schema.nodes.set_questions.create(
     { mode: hasChoices ? "set" : null },
@@ -364,6 +377,115 @@ function buildInitialSet(
   };
 
   return { metadata, content };
+}
+
+// ─── Banco de textos base ────────────────────────────────────────────────────
+
+/** Converte baseLatex em doc ProseMirror JSON (só os blocos, sem wrapper) */
+function buildBaseTextDoc(baseLatex: string): any {
+  const stmtNode = parseToStatementNode(baseLatex);
+  const baseTextNode = schema.nodes.base_text.create(null, stmtNode.content);
+  const baseTextJson = baseTextNode.toJSON();
+  return {
+    type: "doc",
+    content: baseTextJson.content ?? [],
+  };
+}
+
+/** Cria uma questão MCQ simples com baseTextId */
+function buildMcqQuestion(
+  it: ImportSetItem["items"][number],
+  parent: ImportSetItem,
+  baseTextId: string,
+  batch: BatchConfig,
+  author?: { id?: string; name?: string }
+) {
+  const now = new Date().toISOString();
+  const m = parent.sharedMeta;
+
+  const itemNodes = parseToItemNodes(it.latex);
+  const questionNode = schema.nodes.question.create(
+    { tipo: "Múltipla Escolha", baseTextId },
+    itemNodes
+  );
+  const doc = schema.nodes.doc.create(null, [questionNode]);
+  const content = doc.toJSON();
+
+  const VALID_DIFIC = ["Fácil", "Média", "Difícil"] as const;
+  const dificuldade =
+    (m?.dificuldade && VALID_DIFIC.find(d => d.toLowerCase() === m.dificuldade!.toLowerCase())) ||
+    batch.dificuldade;
+
+  const source =
+    m?.concurso || m?.banca || m?.ano || m?.fonte
+      ? {
+          kind: (m!.fonte === "concurso" ? "concurso" : "original") as "original" | "concurso",
+          concurso: m!.concurso || batch.source.concurso,
+          banca: m!.banca || batch.source.banca,
+          ano: m!.ano || batch.source.ano,
+          cargo: m!.cargo || batch.source.cargo,
+          numero: it.meta?.numero || m?.numero || undefined,
+          prova: m?.prova || undefined,
+        }
+      : { ...batch.source };
+
+  const tags = [
+    ...(m?.tags ?? []),
+    ...(it.meta?.tags ?? []),
+  ].filter((v, i, a) => v && a.indexOf(v) === i);
+
+  const metadata = {
+    schemaVersion: 1,
+    id: newId(),
+    createdAt: now,
+    updatedAt: now,
+    tipo: "Múltipla Escolha",
+    disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina),
+    dificuldade,
+    assunto: normalizeAssunto(it.meta?.assunto || m?.assunto || batch.assunto || "") || undefined,
+    gabarito: it.gabarito
+      ? { kind: "mcq" as const, correct: it.gabarito as "A"|"B"|"C"|"D"|"E" }
+      : { kind: "mcq" as const, correct: null },
+    tags,
+    source,
+    author,
+    baseTextId,
+  };
+
+  return { metadata, content };
+}
+
+async function postBaseText(
+  payload: {
+    id: string;
+    content: any;
+    autor?: string;
+    titulo?: string;
+    ano_pub?: number;
+    disciplina?: string;
+    tema?: string;
+    genero?: string;
+    movimento?: string;
+    tags?: string[];
+    source?: any;
+    author?: any;
+  },
+  apiBase: string,
+  token: string
+): Promise<{ ok: boolean; baseTextId: string; tag?: string; error?: string }> {
+  try {
+    const res = await fetch(`${apiBase}/create.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Questions-Token": token },
+      body: JSON.stringify(payload),
+    });
+    const json: any = await res.json();
+    if (json.success) return { ok: true, baseTextId: payload.id, tag: json.tag };
+    if (json.duplicate) return { ok: true, baseTextId: json.existing_id, tag: json.existing_tag };
+    return { ok: false, baseTextId: payload.id, error: json.error ?? `HTTP ${res.status}` };
+  } catch (e: any) {
+    return { ok: false, baseTextId: payload.id, error: e.message };
+  }
 }
 
 // ─── POST para create.php ────────────────────────────────────────────────────
@@ -413,6 +535,7 @@ async function main() {
     process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ||
     envLocal.get("NEXT_PUBLIC_QUESTIONS_API_BASE") ||
     "https://mpfaraujo.com.br/guardafiguras/api/questoes";
+  const apiBaseTexts = apiBase.replace(/\/questoes\/?$/, "/base_texts");
 
   if (!token && !dryRun) {
     console.error("❌ Token não encontrado. Passe --token TOKEN ou configure .env.local");
@@ -489,13 +612,111 @@ async function main() {
   const errors: Array<{ idx: number; id: string; error: string }> = [];
   const dupList: Array<{ idx: number; existingId: string; similarity: number }> = [];
 
+  // Cache de deduplicação de textos base dentro do batch (baseLatex → baseTextId)
+  const baseTextCache = new Map<string, string>();
+
   for (let i = 0; i < filtered.length; i++) {
     const entry = filtered[i];
     const isSet = "isSet" in entry && entry.isSet;
+    const isMcqSet = isSet && !!(entry as ImportSetItem).isMcqSet;
     const label = isSet
-      ? `[SET ${(entry as ImportSetItem).items.length}]`
+      ? isMcqSet
+        ? `[MCQ-SET ${(entry as ImportSetItem).items.length}]`
+        : `[SET ${(entry as ImportSetItem).items.length}]`
       : `[${(entry as ImportItem).tipo === "Múltipla Escolha" ? "MCQ" : "DIS"}]`;
 
+    const preview = isSet
+      ? (entry as ImportSetItem).baseLatex.slice(0, 50).replace(/\n/g, " ")
+      : (entry as ImportItem).latex.slice(0, 50).replace(/\n/g, " ");
+
+    // ── Caminho MCQ com texto base ────────────────────────────────────────────
+    if (isMcqSet) {
+      const setEntry = entry as ImportSetItem;
+
+      // 1. Resolve baseTextId (cache ou POST)
+      const cacheKey = setEntry.baseLatex.trim();
+      let baseTextId = baseTextCache.get(cacheKey);
+
+      if (!baseTextId) {
+        baseTextId = newId();
+        if (!dryRun) {
+          const m = setEntry.sharedMeta;
+          const btResult = await postBaseText(
+            {
+              id: baseTextId,
+              content: buildBaseTextDoc(setEntry.baseLatex),
+              autor: m?.autor_texto,
+              titulo: m?.titulo_texto,
+              ano_pub: m?.ano_publicacao,
+              disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina),
+              tema: m?.tema,
+              genero: m?.genero,
+              movimento: m?.movimento,
+              tags: m?.tags,
+              source: m?.concurso || m?.banca || m?.ano
+                ? { concurso: m?.concurso, banca: m?.banca, ano: m?.ano, prova: m?.prova }
+                : undefined,
+              author,
+            },
+            apiBaseTexts,
+            token
+          );
+          if (!btResult.ok) {
+            fail++;
+            errors.push({ idx: i + 1, id: "?", error: `base_text error: ${btResult.error}` });
+            console.log(`  ✗ ${i + 1}/${filtered.length} ${label} base_text error: ${btResult.error}`);
+            continue;
+          }
+          baseTextId = btResult.baseTextId;
+          console.log(`  📄 ${i + 1}/${filtered.length} ${label} texto base ${btResult.tag ?? "?"} | ${preview}…`);
+        }
+        baseTextCache.set(cacheKey, baseTextId);
+      }
+
+      // 2. Cria N questões simples com baseTextId
+      let batchOk = 0;
+      for (const it of setEntry.items) {
+        let payload: { metadata: any; content: any };
+        try {
+          payload = buildMcqQuestion(it, setEntry, baseTextId!, batch, author);
+        } catch (e: any) {
+          fail++;
+          errors.push({ idx: i + 1, id: "?", error: `build error: ${e.message}` });
+          console.log(`  ✗ ${i + 1}/${filtered.length} ${label} build error: ${e.message}`);
+          continue;
+        }
+
+        if (dryRun) {
+          batchOk++;
+          continue;
+        }
+
+        const result = await postQuestion(payload, apiBase, token);
+        if (result.ok) {
+          batchOk++;
+        } else if (result.duplicate) {
+          dups++;
+          dupList.push({ idx: i + 1, existingId: result.duplicate.existingId, similarity: result.duplicate.similarity });
+          console.log(`  ⚠ ${i + 1}/${filtered.length} ${label} DUPLICATA → ${result.duplicate.existingId.slice(0, 8)}… — pulada`);
+        } else {
+          fail++;
+          errors.push({ idx: i + 1, id: result.id, error: result.error ?? "?" });
+          console.log(`  ✗ ${i + 1}/${filtered.length} ${label} ${result.error}`);
+        }
+      }
+
+      if (batchOk > 0) {
+        ok += batchOk;
+        if (dryRun) {
+          console.log(`  ✓ ${i + 1}/${filtered.length} ${label} [dry] ${batchOk} questões | ${preview}…`);
+        } else {
+          console.log(`  ✓ ${i + 1}/${filtered.length} ${label} ${batchOk} questões importadas | ${preview}…`);
+        }
+      }
+      continue;
+    }
+
+    // ── Caminho normal (discursivo set ou questão individual) ─────────────────
     let payload: { metadata: any; content: any };
     try {
       if (isSet) {
@@ -512,9 +733,6 @@ async function main() {
 
     if (dryRun) {
       ok++;
-      const preview = isSet
-        ? (entry as ImportSetItem).baseLatex.slice(0, 60).replace(/\n/g, " ")
-        : (entry as ImportItem).latex.slice(0, 60).replace(/\n/g, " ");
       console.log(`  ✓ ${i + 1}/${filtered.length} ${label} [dry] ${preview}…`);
       continue;
     }
@@ -522,9 +740,6 @@ async function main() {
     const result = await postQuestion(payload, apiBase, token);
     if (result.ok) {
       ok++;
-      const preview = isSet
-        ? (entry as ImportSetItem).baseLatex.slice(0, 50).replace(/\n/g, " ")
-        : (entry as ImportItem).latex.slice(0, 50).replace(/\n/g, " ");
       console.log(`  ✓ ${i + 1}/${filtered.length} ${label} ${result.id.slice(0, 8)}… | ${preview}…`);
     } else if (result.duplicate) {
       dups++;

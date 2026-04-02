@@ -29,12 +29,20 @@ type YamlMeta = {
   numero?: string;
   cargo?: string;
   prova?: string;
+  // Metadados do texto base (para banco de textos)
+  autor_texto?: string;
+  titulo_texto?: string;
+  ano_publicacao?: number;
+  tema?: string;
+  genero?: string;
+  movimento?: string;
   // Por item (set_questions)
   items?: Array<{
     assunto?: string;
     tags?: string[];
     gabarito?: string;
     resposta?: string;
+    numero?: string;
   }>;
 };
 
@@ -47,14 +55,14 @@ type ImportItem = {
 
 type ImportSetItem = {
   isSet: true;
+  isMcqSet: boolean;
   baseLatex: string;
   items: Array<{
     latex: string;
     tipo: "Múltipla Escolha" | "Discursiva";
     gabarito: string | null;
-    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta">;
+    meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta" | "numero">;
   }>;
-  groups?: Array<{ itemIndexes: number[] }>;  // agrupamento por question_group
   sharedMeta?: YamlMeta;
 };
 
@@ -93,9 +101,9 @@ function parseYamlBlock(block: string): YamlMeta {
     if (!val && key !== "tags" && !key.startsWith("tags")) continue;
 
     // Campos por item: assunto1, tags1, gabarito1, assunto2, ...
-    const itemMatch = key.match(/^(assunto|tags|gabarito|resposta)(\d+)$/);
+    const itemMatch = key.match(/^(assunto|tags|gabarito|resposta|numero)(\d+)$/);
     if (itemMatch) {
-      const field = itemMatch[1] as "assunto" | "tags" | "gabarito" | "resposta";
+      const field = itemMatch[1] as "assunto" | "tags" | "gabarito" | "resposta" | "numero";
       const idx = parseInt(itemMatch[2], 10) - 1; // 0-based
       if (!itemsMap.has(idx)) itemsMap.set(idx, {});
       const entry = itemsMap.get(idx)!;
@@ -132,6 +140,16 @@ function parseYamlBlock(block: string): YamlMeta {
         let s = val;
         if (s.startsWith("[") && s.endsWith("]")) s = s.slice(1, -1);
         result.tags = s.split(",").map(t => t.trim().replace(/^["']|["']$/g, "")).filter(Boolean);
+        break;
+      }
+      case "autor_texto": result.autor_texto = val; break;
+      case "titulo_texto": result.titulo_texto = val; break;
+      case "tema": result.tema = val; break;
+      case "genero": result.genero = val; break;
+      case "movimento": result.movimento = val; break;
+      case "ano_publicacao": {
+        const n = parseInt(val, 10);
+        if (!isNaN(n)) result.ano_publicacao = n;
         break;
       }
     }
@@ -237,7 +255,7 @@ function extractGabaritoFromChoices(chunk: string): string | null {
 function parsePartsBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
   const partsMatch = chunk.match(/^([\s\S]*?)\\begin\{parts\}([\s\S]*?)\\end\{parts\}([\s\S]*)$/);
   if (!partsMatch) {
-    return { isSet: true, baseLatex: chunk, items: [], ...(meta ? { sharedMeta: meta } : {}) };
+    return { isSet: true, isMcqSet: false, baseLatex: chunk, items: [], ...(meta ? { sharedMeta: meta } : {}) };
   }
 
   const beforeParts = partsMatch[1].trim();
@@ -268,7 +286,8 @@ function parsePartsBlock(chunk: string, meta: YamlMeta | null): ImportSetItem {
     return { latex: itemChunk, tipo, gabarito, ...(itemMeta ? { meta: itemMeta } : {}) };
   });
 
-  return { isSet: true, baseLatex, items, ...(meta ? { sharedMeta: meta } : {}) };
+  const isMcqSet = items.length > 0 && items.every(it => it.tipo === "Múltipla Escolha");
+  return { isSet: true, isMcqSet, baseLatex, items, ...(meta ? { sharedMeta: meta } : {}) };
 }
 
 /** Processa um bloco de \setquestion...\questionitem...\questionitem... */
@@ -300,24 +319,28 @@ function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSe
   const baseLatex = effectiveChunk.slice(0, firstTokenIdx).trim();
 
   const itemChunks: string[] = [];
-  // groupBoundaries[i] = índice do item (em itemChunks) onde começa o grupo i
-  const groupBoundaries: number[] = [];
-  let hasGroups = false;
 
   for (let i = 0; i < tokens.length; i++) {
     const tok = tokens[i];
     if (tok.kind === "questiongroup") {
-      hasGroups = true;
-      groupBoundaries.push(itemChunks.length);
-      continue;
+      continue;  // \questiongroup é agora um separador sem efeito
     }
     // questionitem
     const start = tok.index + tok.len;
     const end = i + 1 < tokens.length ? tokens[i + 1].index : effectiveChunk.length;
     let raw = effectiveChunk.slice(start, end).trim();
     // Desembrulha {conteúdo} do formato \questionitem{conteúdo}
-    const bracesM = raw.match(/^\{([\s\S]*)\}\s*$/);
-    if (bracesM) raw = bracesM[1].trim();
+    // Usa brace-matching em vez de regex para não falhar quando há comentários LaTeX após o } final
+    if (raw.startsWith('{')) {
+      let depth = 0;
+      let closeIdx = -1;
+      for (let ci = 0; ci < raw.length; ci++) {
+        if (raw[ci] === '\\') { ci++; continue; } // pula chars escapados
+        if (raw[ci] === '{') depth++;
+        else if (raw[ci] === '}') { depth--; if (depth === 0) { closeIdx = ci; break; } }
+      }
+      if (closeIdx !== -1) raw = raw.slice(1, closeIdx).trim();
+    }
     itemChunks.push(raw);
   }
 
@@ -344,8 +367,9 @@ function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSe
       ? extractGabaritoFromChoices(itemLatex)
       : (gabaritoFromYaml?.toUpperCase() ?? null);
 
-    const itemMeta = assunto || tags?.length || resposta
-      ? { assunto, tags, gabarito: gabarito ?? undefined, resposta }
+    const numero = itemYaml?.numero ?? sharedItemMeta?.numero;
+    const itemMeta = assunto || tags?.length || resposta || numero
+      ? { assunto, tags, gabarito: gabarito ?? undefined, resposta, numero }
       : undefined;
 
     return {
@@ -356,20 +380,13 @@ function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSe
     };
   });
 
-  // Constrói grupos a partir dos groupBoundaries
-  let groups: Array<{ itemIndexes: number[] }> | undefined;
-  if (hasGroups && groupBoundaries.length > 0) {
-    groups = groupBoundaries.map((startIdx, gi) => {
-      const endIdx = gi + 1 < groupBoundaries.length ? groupBoundaries[gi + 1] : items.length;
-      return { itemIndexes: Array.from({ length: endIdx - startIdx }, (_, k) => startIdx + k) };
-    });
-  }
+  const isMcqSet = items.length > 0 && items.every(it => it.tipo === "Múltipla Escolha");
 
   return {
     isSet: true,
+    isMcqSet,
     baseLatex,
     items,
-    ...(groups ? { groups } : {}),
     ...(meta ? { sharedMeta: meta } : {}),
   };
 }

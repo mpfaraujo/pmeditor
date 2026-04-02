@@ -98,8 +98,8 @@ describe('pagination - layout e regressões', () => {
 
   // ─── Aproveitamento de espaço residual (tryFragmentResidual) ────────────────
 
-  test('[residual] fragmenta texto-base quando espaço residual >= 50%', () => {
-    // Set A (idxs 0,1): 200+200=400px → coluna1 remaining=531px (57% de 931) >= 50% ✓
+  test('[residual] fragmenta texto-base quando espaço residual >= 30%', () => {
+    // Set A (idxs 0,1): 200+200=400px → coluna1 remaining=531px (57% de 931) >= 30% ✓
     // Set B (idxs 2,3): base=700px (não cabe em 531), item=200px
     // Esperado: base B fragmentado — frag0 em coluna1, frag1+item em coluna2
     const m = createMeasurementContainer([
@@ -123,32 +123,32 @@ describe('pagination - layout e regressões', () => {
     expect(pages[0].coluna2.some((x: any) => x.q === 3)).toBe(true)
   })
 
-  test('[residual] NÃO fragmenta quando espaço residual < 50%', () => {
-    // Set A (idxs 0,1): 400+200=600px → coluna1 remaining=331px (35.5% de 931) < 50% ✗
-    // Set B (idxs 2,3): base=700px, item=200px
+  test('[residual] NÃO fragmenta quando espaço restante é insuficiente para qualquer fragmento', () => {
+    // Set A (idxs 0,1): 700+200=900px → coluna1 remaining=31px
+    // Set B base=500px: 31px não comporta nem o prefixHeight → buildFragmentsForQuestion retorna null
     // Esperado: base B colocado inteiro em coluna2 (sem fragmentação)
     const m = createMeasurementContainer([
-      { wrapperHeight: 400, blockHeights: [250, 130], noOptions: true },
+      { wrapperHeight: 700, blockHeights: [400, 300], noOptions: true },
       { wrapperHeight: 200, blockHeights: [120, 80], noOptions: true },
-      { wrapperHeight: 700, blockHeights: [300, 300, 80], noOptions: true },
+      { wrapperHeight: 500, blockHeights: [250, 200, 50], noOptions: true },
       { wrapperHeight: 200, blockHeights: [120, 80], noOptions: true },
     ])
     const pages = distributeQuestionsOptimized(
-      4, [400, 200, 700, 200], 931, 931, 2, m,
+      4, [700, 200, 500, 200], 931, 931, 2, m,
       [{ baseIndex: 0, itemIndexes: [1] }, { baseIndex: 2, itemIndexes: [3] }]
     )
     const baseB = flattenItems(pages).filter((x) => x.q === 2)
     // Base B não deve ter sido fragmentada
     expect(baseB).toHaveLength(1)
     expect(baseB[0]).toMatchObject({ kind: 'full' })
-    // Coluna1 só tem set A
+    // Coluna1 tem set A
     expect(pages[0].coluna1).toHaveLength(2)
     // Base B começa em coluna2
     expect(pages[0].coluna2[0]).toMatchObject({ kind: 'full', q: 2 })
   })
 
   test('[residual] NÃO fragmenta quando fragmento inicial < 30% do total', () => {
-    // Set A (idxs 0,1): 200+200=400px → remaining=600px (60% de 1000) >= 50% ✓
+    // Set A (idxs 0,1): 200+200=400px → remaining=600px
     // Set B (idxs 2,3): base=700px com blocks=[150,500,50]
     //   → frag0 caberia apenas o block[0]=150px (150/700=21% < 30%) ✗
     // Esperado: sem fragmentação — base B colocado inteiro em coluna2

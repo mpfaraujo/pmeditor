@@ -34,6 +34,8 @@ import QuestionRendererProva from "@/components/Questions/QuestionRendererProva"
 import "@/app/editor/prova/montar/prova.css";
 
 import { ensureImageIds } from "./ensureImageIds";
+import { BaseTextPickerModal } from "./BaseTextPickerModal";
+import { getBaseText } from "@/lib/baseTexts";
 type QuestionEditorProps = {
   modal?: boolean;
   onSaved?: (info: { questionId: string; kind: "base" | "variant" }) => void;
@@ -406,98 +408,6 @@ function removeCurrentQuestionItem(v: EditorView) {
   v.focus();
 }
 
-/* ---------- question_group helpers ---------- */
-
-function isSetInGroupMode(state: any): boolean {
-  const root = state.doc.childCount ? state.doc.child(0) : null;
-  if (!root || root.type !== schema.nodes.set_questions) return false;
-  for (let i = 0; i < root.childCount; i++) {
-    if (schema.nodes.question_group && root.child(i).type === schema.nodes.question_group) return true;
-  }
-  return false;
-}
-
-function findCurrentGroup(state: any): { pos: number; node: any } | null {
-  const $head = state.selection.$head;
-  for (let d = $head.depth; d > 0; d--) {
-    const n = $head.node(d);
-    if (schema.nodes.question_group && n.type === schema.nodes.question_group) {
-      return { pos: $head.before(d), node: n };
-    }
-  }
-  return null;
-}
-
-function countGroups(state: any): number {
-  const root = state.doc.childCount ? state.doc.child(0) : null;
-  if (!root || root.type !== schema.nodes.set_questions) return 0;
-  let count = 0;
-  for (let i = 0; i < root.childCount; i++) {
-    if (schema.nodes.question_group && root.child(i).type === schema.nodes.question_group) count++;
-  }
-  return count;
-}
-
-function convertFlatToGroups(v: EditorView) {
-  if (!schema.nodes.question_group) return;
-  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
-  if (!root || root.type !== schema.nodes.set_questions) return;
-
-  const newChildren: any[] = [];
-  for (let i = 0; i < root.childCount; i++) {
-    const child = root.child(i);
-    if (child.type === schema.nodes.question_item) {
-      newChildren.push(schema.nodes.question_group.create(null, [child]));
-    } else {
-      newChildren.push(child);
-    }
-  }
-
-  const newSet = schema.nodes.set_questions.create(root.attrs, newChildren);
-  v.dispatch(v.state.tr.replaceWith(0, v.state.doc.content.size, newSet));
-  v.focus();
-}
-
-function addQuestionGroup(v: EditorView) {
-  if (!schema.nodes.question_group) return;
-  ensureSetQuestionsRoot(v);
-
-  const root = v.state.doc.childCount ? v.state.doc.child(0) : null;
-  if (!root || root.type !== schema.nodes.set_questions) return;
-
-  const emptyItem = schema.nodes.question_item.create({ answerKey: null }, [
-    schema.nodes.statement.create(null, [schema.nodes.paragraph.create()]),
-  ]);
-  const newGroup = schema.nodes.question_group.create(null, [emptyItem]);
-
-  if (!isSetInGroupMode(v.state)) {
-    convertFlatToGroups(v);
-    // v.state updated after dispatch; insert new group at end of new set_questions
-    const newRoot = v.state.doc.childCount ? v.state.doc.child(0) : null;
-    if (!newRoot) return;
-    v.dispatch(v.state.tr.insert(newRoot.nodeSize - 1, newGroup));
-    v.focus();
-    return;
-  }
-
-  // Group mode: insert after current group (or at end)
-  const cur = findCurrentGroup(v.state);
-  const insertPos = cur ? cur.pos + cur.node.nodeSize : root.nodeSize - 1;
-  v.dispatch(v.state.tr.insert(insertPos, newGroup));
-  v.focus();
-}
-
-function removeCurrentQuestionGroup(v: EditorView) {
-  if (!schema.nodes.question_group) return;
-  if (countGroups(v.state) <= 1) return;
-
-  const cur = findCurrentGroup(v.state);
-  if (!cur) return;
-
-  v.dispatch(v.state.tr.delete(cur.pos, cur.pos + cur.node.nodeSize));
-  v.focus();
-}
-
 /* ---------- answerKey helpers (set_questions) ---------- */
 
 function findActiveQuestionItemPos(state: any): number | null {
@@ -582,8 +492,11 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewColumns, setPreviewColumns] = useState<1 | 2>(1);
+  const [previewBaseTextContent, setPreviewBaseTextContent] = useState<any>(null);
+  const [previewBaseTextTag, setPreviewBaseTextTag] = useState<string | null>(null);
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
+  const [baseTextPickerOpen, setBaseTextPickerOpen] = useState(false);
   const [duplicateDialog, setDuplicateDialog] = useState<{
     open: boolean;
     existingId: string;
@@ -933,19 +846,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
         force((n) => n + 1);
         return;
       }
-      case "add-question-group": {
-        addQuestionGroup(view);
-        recompute(view);
-        force((n) => n + 1);
-        return;
-      }
-      case "remove-question-group": {
-        removeCurrentQuestionGroup(view);
-        recompute(view);
-        force((n) => n + 1);
-        return;
-      }
-
       case "set-type-discursiva": {
         const nextTipo = "Discursiva" as QuestionMetadataV1["tipo"];
         setMeta((m) => ({ ...m, tipo: nextTipo, updatedAt: new Date().toISOString() }));
@@ -1006,6 +906,10 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
         return;
       }
 
+      case "basetext":
+        setBaseTextPickerOpen(true);
+        return;
+
       default:
         return;
     }
@@ -1026,11 +930,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
 
   const allItems =
     docKind === "set_questions" && view ? findAllQuestionItems(view.state) : [];
-
-  const isGroupMode =
-    docKind === "set_questions" && view ? isSetInGroupMode(view.state) : false;
-  const groupCount =
-    docKind === "set_questions" && view ? countGroups(view.state) : 0;
 
   const writeActiveItemAnswerKey = (answerKey: any | null) => {
     if (!view) return;
@@ -1077,11 +976,20 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           onOpenMetadata={() => setMetaDialog({ open: true, saveAfter: false })}
           onSave={handleSave}
           onAction={handleToolbarAction}
-          onPreview={() => setPreviewOpen(true)}
+          onPreview={() => {
+            setPreviewBaseTextContent(null);
+            setPreviewBaseTextTag(null);
+            const btId = metaRef.current?.baseTextId;
+            if (btId) {
+              getBaseText(btId).then((bt) => {
+                setPreviewBaseTextContent(bt?.content ?? null);
+                setPreviewBaseTextTag(bt?.tag ?? null);
+              });
+            }
+            setPreviewOpen(true);
+          }}
           optionsCount={optionCount}
           isSetQuestions={docKind === "set_questions"}
-          isGroupMode={isGroupMode}
-          groupCount={groupCount}
           itemCount={allItems.length}
         />
 
@@ -1131,6 +1039,17 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           allItems={allItems}
           onItemAnswerKeyChangeAtPos={writeItemAnswerKeyAtPos}
           onItemMetaChangeAtPos={handleItemMetaChangeAtPos}
+        />
+
+        <BaseTextPickerModal
+          open={baseTextPickerOpen}
+          onOpenChange={setBaseTextPickerOpen}
+          disciplina={meta.disciplina}
+          authorId={meta.author?.id}
+          authorName={meta.author?.name}
+          onSelect={(id, tag) => {
+            setMeta((m) => ({ ...m, baseTextId: id, updatedAt: new Date().toISOString() }));
+          }}
         />
 
         {/* Modal de Descrição de Mudança (ao criar variante) */}
@@ -1205,7 +1124,22 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
               <div className="prova-page bg-white shadow-md" style={{ height: "auto", minHeight: "auto", overflow: "visible" }}>
                 <div style={{ maxWidth: previewColumns === 2 ? "8.5cm" : "18cm" }}>
                   {previewOpen && view && (
-                    <QuestionRendererProva content={view.state.doc.toJSON()} />
+                    <>
+                      {previewBaseTextContent && (
+                        <div className="mb-3 space-y-1">
+                          {previewBaseTextTag && (
+                            <div className="text-xs font-bold text-black">
+                              Texto {previewBaseTextTag}
+                            </div>
+                          )}
+                          <QuestionRendererProva content={{
+                            type: "doc",
+                            content: [{ type: "question", content: [{ type: "base_text", content: previewBaseTextContent?.content ?? [] }] }],
+                          }} />
+                        </div>
+                      )}
+                      <QuestionRendererProva content={view.state.doc.toJSON()} />
+                    </>
                   )}
                 </div>
               </div>

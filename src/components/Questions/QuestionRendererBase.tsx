@@ -183,10 +183,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
     // Se não houver marcação, mantém o comportamento antigo (não quebra nada).
     const ak = setNode?.attrs?.answerKey ?? parentQuestionAttrs?.answerKey;
 
-    // Essay set = nenhum item tem choices (independe do mode attr)
-    const isEssaySet = !items.some((it) =>
-      (it.content ?? []).some((n) => n?.type === "options")
-    );
+    // Essay set: mode="set" indica MCQ (bulk-import seta isso); fallback: verifica options nos items
+    const isEssaySet = setNode?.attrs?.mode !== "set" &&
+      !items.some((it) => (it.content ?? []).some((n) => n?.type === "options"));
 
     if (isEssaySet) {
       // Set discursivo com question_groups: cada grupo entra como questão, itens como a), b), c)

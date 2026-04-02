@@ -68,16 +68,16 @@
  *
  * Critérios para ativar: slot.remaining >= colCap * 0.50 E
  * slot.items.length > 0 (coluna não vazia — mesma proteção do item 1) E
- * fragmento inicial >= 30% do total (evita fragmento minúsculo/feio).
+ * fragmento inicial >= 30% do total (evita fragmento minúsculo/feio)
  *
  * Só se aplica ao PRIMEIRO elemento do set (texto base). Itens intermediários
  * nunca são fragmentados por esse mecanismo — quebraria a coesão visual.
  *
  * Testes: src/tests/pagination/layout.test.ts
- *   "[otimizado] fragmenta texto base no espaço residual >= 50%"
- *   "[otimizado] não fragmenta quando espaço residual < 50%"
- *   "[otimizado] não fragmenta quando fragmento inicial < 30% do total"
- *   "[otimizado] não fragmenta quando coluna está vazia"
+ *   "[residual] fragmenta texto-base quando espaço residual >= 30%"
+ *   "[residual] NÃO fragmenta quando espaço residual < 30%"
+ *   "[residual] NÃO fragmenta quando fragmento inicial < 30% do total"
+ *   "[residual] NÃO fragmenta quando coluna está vazia"
  * ════════════════════════════════════════════════════════════════════════
  */
 
@@ -647,15 +647,20 @@ export function distributeQuestionsOptimized(
 ): PageLayout[] {
   const groups = buildGroups(questionCount, questionHeights, setGroups);
 
-  // Separa sets (ordem fixa) e livres (otimizáveis)
+  // Separa sets e livres
   const fixedGroups = groups.filter((g) => g.isSet);
   const freeGroups = groups.filter((g) => !g.isSet);
 
-  // Ordena livres por altura decrescente (FFD)
-  freeGroups.sort((a, b) => b.totalHeight - a.totalHeight);
-
-  // Ordem final: sets primeiro (na ordem original), depois livres (por altura desc)
-  const orderedGroups = [...fixedGroups, ...freeGroups];
+  // Sem sets: FFD puro — ordena livres por altura desc para maximizar aproveitamento
+  // Com sets: preserva ordem original para manter fluxo de leitura da prova
+  // (FFD colocaria questões livres *depois* dos sets, quebrando a ordem visual)
+  let orderedGroups: typeof groups;
+  if (fixedGroups.length === 0) {
+    freeGroups.sort((a, b) => b.totalHeight - a.totalHeight);
+    orderedGroups = freeGroups;
+  } else {
+    orderedGroups = groups;
+  }
 
   // --- Alocação em slots ---
   // Estrutura de páginas com espaço restante por coluna
@@ -701,7 +706,7 @@ export function distributeQuestionsOptimized(
    *   - slot não está vazio (items.length > 0)
    *   - slot.remaining >= 50% da capacidade da coluna
    *   - questão não cabe inteira (h > slot.remaining)
-   *   - fragmento inicial >= 30% da altura total
+   *   - fragmento inicial >= 30% da altura total (evita fragmento minúsculo)
    * Retorna null se não for possível/válido fragmentar.
    */
   function tryFragmentResidual(
@@ -778,9 +783,16 @@ export function distributeQuestionsOptimized(
     // anterior pra que questões livres não entrem no meio do set.
     let setCol: "coluna1" | "coluna2" = "coluna1";
 
+    // Se col1 está esgotada (remaining=0), inicia o set em col2 para que a
+    // tentativa de fragmentação e o loop principal aproveitem o espaço residual
+    // de col2 (gerado pelo grupo anterior que terminou cedo nessa coluna).
+    if (columns === 2 && pages[pages.length - 1].coluna1.remaining === 0) {
+      setCol = "coluna2";
+    }
+
     // --- Aproveitamento de espaço residual antes de iniciar o set ---
-    // Tenta fragmentar o texto-base (indexes[0]) para preencher espaço
-    // residual >= 50% da coluna antes de iniciar o conjunto.
+    // Tenta fragmentar o texto-base (indexes[0]) se não couber inteiro,
+    // desde que o primeiro fragmento seja >= 30% do total.
     let startIdx = 0;
     if (group.indexes.length > 0) {
       const slot = pages[pages.length - 1][setCol];

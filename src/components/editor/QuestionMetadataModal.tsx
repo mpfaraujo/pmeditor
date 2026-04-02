@@ -22,6 +22,9 @@ import {
 import { QuestionMetadataV1, normalizeGabaritoForTipo } from "./QuestionMetaBar";
 import { RichTextMiniEditor } from "./RichTextMiniEditor";
 import { AssuntoCombobox } from "./AssuntoCombobox";
+import { BaseTextPickerModal } from "./BaseTextPickerModal";
+import { getBaseText } from "@/lib/baseTexts";
+import QuestionRenderer from "@/components/Questions/QuestionRenderer";
 
 type Difficulty = "Fácil" | "Média" | "Difícil";
 type QuestionType = "Múltipla Escolha" | "Certo/Errado" | "Discursiva";
@@ -87,6 +90,25 @@ export function QuestionMetadataModal({
   onItemMetaChangeAtPos,
 }: QuestionMetadataModalProps) {
   const tipo = value.tipo ?? "Múltipla Escolha";
+
+  // ── Texto base ──────────────────────────────────────────────────────────────
+  const [baseTextPickerOpen, setBaseTextPickerOpen] = useState(false);
+  const [baseTextTag, setBaseTextTag] = useState<string | null>(null);
+  const [baseTextPreviewContent, setBaseTextPreviewContent] = useState<any>(null);
+  const [baseTextPreviewOpen, setBaseTextPreviewOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open || !value.baseTextId) {
+      setBaseTextTag(null);
+      setBaseTextPreviewContent(null);
+      return;
+    }
+    getBaseText(value.baseTextId).then((bt) => {
+      setBaseTextTag(bt?.tag ?? null);
+      setBaseTextPreviewContent(bt?.content ?? null);
+    });
+  }, [open, value.baseTextId]);
+  // ───────────────────────────────────────────────────────────────────────────
 
   const set = (patch: Partial<QuestionMetadataV1>) => {
     onChange({
@@ -312,6 +334,42 @@ export function QuestionMetadataModal({
             </div>
           )}
 
+          {/* Texto base */}
+          <div className="col-span-2 space-y-2">
+            <label className="text-sm font-medium">Texto base</label>
+            <div className="flex items-center gap-2">
+              {value.baseTextId && baseTextTag ? (
+                <span className="font-mono text-xs bg-primary/10 text-primary px-2 py-1 rounded font-bold">
+                  {baseTextTag}
+                </span>
+              ) : (
+                <span className="text-xs text-muted-foreground">(sem texto base)</span>
+              )}
+              <Button size="sm" variant="outline" onClick={() => setBaseTextPickerOpen(true)}>
+                {value.baseTextId ? "Alterar" : "Vincular"}
+              </Button>
+              {value.baseTextId && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setBaseTextPreviewOpen(true)}
+                >
+                  Visualizar
+                </Button>
+              )}
+              {value.baseTextId && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-destructive hover:text-destructive"
+                  onClick={() => { set({ baseTextId: null }); setBaseTextTag(null); setBaseTextPreviewContent(null); }}
+                >
+                  Remover
+                </Button>
+              )}
+            </div>
+          </div>
+
           {/* Campos de Concurso (condicional) */}
           {value.source?.kind === "concurso" && (
             <>
@@ -481,6 +539,40 @@ export function QuestionMetadataModal({
           {onSave && <Button onClick={handleSave}>Salvar Questão</Button>}
         </DialogFooter>
       </DialogContent>
+
+      <BaseTextPickerModal
+        open={baseTextPickerOpen}
+        onOpenChange={setBaseTextPickerOpen}
+        disciplina={value.disciplina}
+        authorId={value.author?.id}
+        authorName={value.author?.name}
+        onSelect={(id, tag) => {
+          set({ baseTextId: id });
+          setBaseTextTag(tag);
+          setBaseTextPreviewContent(null); // será recarregado no próximo open
+        }}
+      />
+
+      {/* Preview do texto base vinculado */}
+      <Dialog open={baseTextPreviewOpen} onOpenChange={setBaseTextPreviewOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              Texto base{baseTextTag ? ` — ${baseTextTag}` : ""}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="print-mode text-sm">
+            {baseTextPreviewContent ? (
+              <QuestionRenderer content={{
+                type: "doc",
+                content: [{ type: "question", content: [{ type: "base_text", content: baseTextPreviewContent?.content ?? [] }] }],
+              }} />
+            ) : (
+              <p className="text-muted-foreground text-sm">Sem conteúdo disponível.</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 }

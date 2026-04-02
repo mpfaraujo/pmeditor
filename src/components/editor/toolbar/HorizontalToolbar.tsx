@@ -18,8 +18,7 @@ interface HorizontalToolbarProps {
   onAction: (action: string) => void;
   optionsCount: number;
   isSetQuestions?: boolean;
-  isGroupMode?: boolean;
-  groupCount?: number;
+
   itemCount?: number;
 }
 
@@ -27,8 +26,6 @@ export function HorizontalToolbar({
   onAction,
   optionsCount,
   isSetQuestions = false,
-  isGroupMode = false,
-  groupCount = 0,
   itemCount = 0,
 }: HorizontalToolbarProps) {
   const clampedOptions = Math.max(0, Math.min(5, Math.floor(optionsCount || 0)));
@@ -210,18 +207,6 @@ export function HorizontalToolbar({
                 )}
                 {isSetQuestions && (
                   <>
-                    <DropdownMenuItem onClick={() => onAction("add-question-group")}>
-                      <Icons.FolderPlus className="h-4 w-4 mr-2" />
-                      {isGroupMode ? "Adicionar grupo" : "Criar grupos"}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => onAction("remove-question-group")}
-                      disabled={!isGroupMode || groupCount <= 1}
-                    >
-                      <Icons.FolderMinus className="h-4 w-4 mr-2" />
-                      Remover grupo atual
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => onAction("add-question-item")}>
                       <Icons.PlusSquare className="h-4 w-4 mr-2" />
                       Adicionar item

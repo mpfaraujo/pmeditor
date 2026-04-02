@@ -31,10 +31,8 @@ interface EditorToolbarProps {
   // contagem real de opções (2..5); se não vier, deriva do container atual
   optionsCount?: number;
 
-  // estado de conjunto / grupos
+  // estado de conjunto
   isSetQuestions?: boolean;
-  isGroupMode?: boolean;
-  groupCount?: number;
   itemCount?: number;
 }
 
@@ -66,8 +64,6 @@ export function EditorToolbar({
   onPreview,
   optionsCount: optionsCountProp,
   isSetQuestions,
-  isGroupMode,
-  groupCount,
   itemCount,
 }: EditorToolbarProps) {
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
@@ -420,9 +416,7 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
       action === "toggle-options" ||
       action === "convert-to-setquestions" ||
       action === "add-question-item" ||
-      action === "remove-question-item" ||
-      action === "add-question-group" ||
-      action === "remove-question-group"
+      action === "remove-question-item"
     ) {
       onAction?.(action);
       return;
@@ -484,7 +478,7 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
         handleInsertCodeBlock();
         break;
       case "basetext":
-        handleInsertBaseText();
+        onAction?.("basetext");
         break;
       case "symbols":
         setSymbolPickerOpen(true);
@@ -533,8 +527,6 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
             onAction={handleAction}
             optionsCount={optionsCount}
             isSetQuestions={isSetQuestions ?? false}
-            isGroupMode={isGroupMode ?? false}
-            groupCount={groupCount ?? 0}
             itemCount={itemCount ?? 0}
           />
 

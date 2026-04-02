@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import QuestionRenderer from "./QuestionRenderer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { VersionHistoryModal } from "./VersionHistoryModal";
 import { QuestionVersion } from "@/lib/questions";
+import { getBaseText } from "@/lib/baseTexts";
 
 type PMNode = {
   type: string;
@@ -29,6 +30,7 @@ type QuestionCardProps = {
       correct?: string;
       rubric?: string;
     };
+    baseTextId?: string | null;
   };
 
   content: any; // ativo (doc do ProseMirror)
@@ -200,6 +202,19 @@ export default function QuestionCard({
   const [itemIndex, setItemIndex] = useState(0);
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
 
+  // Texto base independente (questões MCQ com baseTextId)
+  const [baseTextContent, setBaseTextContent] = useState<PMNode | null>(null);
+  const [baseTextTag, setBaseTextTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    const btId = metadata.baseTextId;
+    if (!btId) { setBaseTextContent(null); setBaseTextTag(null); return; }
+    getBaseText(btId).then((bt) => {
+      if (bt?.content) setBaseTextContent(bt.content as PMNode);
+      if (bt?.tag) setBaseTextTag(bt.tag);
+    });
+  }, [metadata.baseTextId]);
+
   const isShowingVariant = active?.kind === "variant" && view === "active";
 
   const renderedContent = view === "base" && hasBase ? base!.content : content;
@@ -319,6 +334,21 @@ export default function QuestionCard({
 
       {/* Conteúdo */}
       <div className="print-mode space-y-3">
+        {/* Texto base independente (questões com baseTextId) */}
+        {!isSet && baseTextContent && (
+          <div className="space-y-1">
+            {baseTextTag && (
+              <div className="text-xs font-bold text-black">
+                Texto {baseTextTag}
+              </div>
+            )}
+            <QuestionRenderer content={wrapAsQuestionDoc([{
+              type: "base_text",
+              content: (baseTextContent as any).content ?? [],
+            }])} />
+          </div>
+        )}
+
         {/* Caso normal: questão */}
         {!isSet && <QuestionRenderer content={renderedContent} />}
 

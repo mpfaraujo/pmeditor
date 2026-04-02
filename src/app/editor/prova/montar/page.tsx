@@ -38,6 +38,7 @@ import {
   type Alt as AltGera,
 } from "@/lib/GeraTiposDeProva";
 
+import { getBaseText } from "@/lib/baseTexts";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
@@ -133,16 +134,21 @@ function findSetNode(doc: PMNode | null): PMNode | null {
 function splitSetNode(setNode: PMNode | null): {
   baseText: PMNode | null;
   items: PMNode[];
+  groups: PMNode[] | null;
 } {
   const content = setNode?.content ?? [];
   const baseText = content.find((n) => n?.type === "base_text") ?? null;
+  const hasGroups = content.some((n) => n?.type === "question_group");
   const items: PMNode[] = [];
+  const groups: PMNode[] = [];
   for (const child of content) {
     if (child.type === "question_item") items.push(child);
-    else if (child.type === "question_group")
+    else if (child.type === "question_group") {
+      groups.push(child);
       (child.content ?? []).forEach((qi: PMNode) => { if (qi.type === "question_item") items.push(qi); });
+    }
   }
-  return { baseText, items };
+  return { baseText, items, groups: hasGroups ? groups : null };
 }
 
 function wrapAsQuestionDoc(nodes: PMNode[]): PMNode {
@@ -161,6 +167,7 @@ function buildBaseDoc(baseText: PMNode | null): PMNode | null {
   if (!baseText) return null;
   return wrapAsQuestionDoc([baseText]);
 }
+
 
 function buildItemDoc(item: PMNode | null): PMNode | null {
   if (!item) return null;
@@ -246,6 +253,33 @@ export default function MontarProvaPage() {
 
   // Questões com opções em linha (oneparchoices)
   const [inlineOptionsSet, setInlineOptionsSet] = useState<Set<string>>(new Set());
+
+  // Cache de textos base (baseTextId → conteúdo PMNode)
+  const [baseTextCache, setBaseTextCache] = useState<Map<string, PMNode>>(new Map());
+
+  // Carrega textos base de questões individuais com baseTextId
+  useEffect(() => {
+    const ids = new Set<string>();
+    for (const q of orderedList as any[]) {
+      const btId = q?.metadata?.baseTextId;
+      if (btId && typeof btId === "string") ids.add(btId);
+    }
+    // Busca apenas os que ainda não estão no cache
+    const missing = [...ids].filter(id => !baseTextCache.has(id));
+    if (missing.length === 0) return;
+
+    Promise.all(
+      missing.map(id => getBaseText(id).then(bt => ({ id, bt })))
+    ).then(results => {
+      setBaseTextCache(prev => {
+        const next = new Map(prev);
+        for (const { id, bt } of results) {
+          if (bt?.content) next.set(id, bt as any);
+        }
+        return next;
+      });
+    });
+  }, [orderedList]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Tabela Periódica
   const [showTabelaPeriodica, setShowTabelaPeriodica] = useState(false);
@@ -333,10 +367,75 @@ export default function MontarProvaPage() {
 
   const expandedQuestions = useMemo(() => {
     const out: any[] = [];
+    const qs = orderedQuestions as any[];
+    const processed = new Set<number>();
 
-    for (const q of orderedQuestions as any[]) {
+    for (let i = 0; i < qs.length; i++) {
+      if (processed.has(i)) continue;
+
+      const q = qs[i];
       const id = q?.metadata?.id;
       if (!id) continue;
+
+      const btId = q?.metadata?.baseTextId;
+      const isIndividual = !findSetNode(safeParseDoc(q?.content));
+
+      // ── Questões individuais com baseTextId ──────────────────────────────────
+      if (btId && isIndividual) {
+        // Coleta TODAS as questões com mesmo baseTextId (não apenas consecutivas)
+        // As não-consecutivas são "puxadas" para junto da primeira
+        const group: number[] = [i];
+        for (let j = i + 1; j < qs.length; j++) {
+          if (processed.has(j)) continue;
+          const next = qs[j];
+          const nextBtId = next?.metadata?.baseTextId;
+          const nextIsIndividual = !findSetNode(safeParseDoc(next?.content));
+          if (nextBtId === btId && nextIsIndividual) group.push(j);
+        }
+
+        group.forEach(idx => processed.add(idx));
+
+        const bt = baseTextCache.get(btId);
+
+        if (bt) {
+          const btContent = (bt as any).content ?? bt;
+          const baseTextNode: PMNode = {
+            type: "base_text",
+            content: Array.isArray(btContent.content) ? btContent.content : [],
+          };
+
+          if (group.length >= 2) {
+            // 2+ questões: __setBase separado com banner + questões individuais
+            const baseDoc: PMNode = {
+              type: "doc",
+              content: [{ type: "question", content: [baseTextNode] }],
+            };
+            out.push({
+              ...qs[group[0]],
+              metadata: { ...(qs[group[0]]?.metadata ?? {}), id: `${btId}#base` },
+              content: baseDoc,
+              __setBase: { parentId: btId, headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.` },
+            });
+            for (const idx of group) out.push({ ...qs[idx], __set: { parentId: btId } });
+          } else {
+            // 1 questão: base_text dentro do doc → atômico, numeração vem antes do texto
+            const q0 = qs[group[0]];
+            const doc0 = safeParseDoc(q0?.content);
+            const newDoc: PMNode = {
+              type: "doc",
+              content: (doc0?.content ?? []).map((n) => {
+                if (n.type !== "question") return n;
+                return { ...n, content: [baseTextNode, ...(n.content ?? [])] };
+              }),
+            };
+            out.push({ ...q0, content: newDoc });
+          }
+        } else {
+          // Cache ainda não carregou — passa sem texto base, memo re-executa quando chegar
+          for (const idx of group) out.push(qs[idx]);
+        }
+        continue;
+      }
 
       const sel = selections.find((s) => s.id === id);
 
@@ -347,13 +446,38 @@ export default function MontarProvaPage() {
 
       const doc = safeParseDoc(q.content);
       const setNode = findSetNode(doc);
-      const { baseText, items } = splitSetNode(setNode);
+      const { baseText, items, groups } = splitSetNode(setNode);
 
-      const isEssaySet =
-        (setNode as any)?.attrs?.mode === "essay" ||
-        !items.some((it) => (it.content ?? []).some((n) => n?.type === "options"));
+      const tipoMeta = (q.metadata as any)?.tipo ?? "";
+      const isEssaySet = tipoMeta.toLowerCase().includes("discursiva") ||
+        (!tipoMeta && !items.some((it) => (it.content ?? []).some((n) => n?.type === "options")));
 
       if (isEssaySet) {
+        // Conjuntos discursivos: unidade atômica
+        // Se o base_text foi removido do doc pela migração mas existe no cache,
+        // reinjeta dentro do set_questions para o renderer funcionar como antes
+        const essayBtId = (q.metadata as any)?.baseTextId;
+        if (!baseText && essayBtId) {
+          const bt = baseTextCache.get(essayBtId);
+          if (bt) {
+            const btContent = (bt as any).content ?? bt;
+            const baseTextNode: PMNode = {
+              type: "base_text",
+              content: Array.isArray(btContent.content) ? btContent.content : [],
+            };
+            // Reconstrói o doc com base_text no início do set_questions
+            const doc2 = safeParseDoc(q.content);
+            const newDoc: PMNode = {
+              type: "doc",
+              content: (doc2?.content ?? []).map((n) => {
+                if (n.type !== "set_questions") return n;
+                return { ...n, content: [baseTextNode, ...(n.content ?? [])] };
+              }),
+            };
+            out.push({ ...q, content: newDoc });
+            continue;
+          }
+        }
         out.push(q);
         continue;
       }
@@ -419,7 +543,7 @@ export default function MontarProvaPage() {
     }
 
     return out as QuestionData[];
-  }, [orderedQuestions, selections]);
+  }, [orderedQuestions, selections, baseTextCache]);
 
   // Reset dos spacers ao mudar o conjunto de questões (IDs mudam → spacers zerados)
   const expandedQuestionsKey = useMemo(() =>
