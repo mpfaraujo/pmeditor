@@ -281,13 +281,13 @@ function parseToStatementNode(text: string) {
 }
 
 /** Retorna [statement, options?] para um item de conjunto — preserva as alternativas MCQ */
-function parseToItemNodes(text: string): PMNode[] {
+function parseToItemNodes(text: string): any[] {
   try {
     const parsed = parseQuestionFromLatexText("\\question " + text);
     if (parsed) {
       const questionNode = buildQuestionNodeLatex(schema, parsed);
-      const nodes: PMNode[] = [];
-      (questionNode.content ?? []).forEach((n: PMNode) => {
+      const nodes: any[] = [];
+      (questionNode.content ?? []).forEach((n: any) => {
         if (n.type === schema.nodes.statement || n.type === schema.nodes.options) nodes.push(n);
       });
       if (nodes.length > 0) return nodes;
