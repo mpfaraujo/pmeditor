@@ -155,7 +155,12 @@ function measureOuterHeight(el: HTMLElement): number {
   const cs = window.getComputedStyle(el);
   const mt = parseFloat(cs.marginTop || "0") || 0;
   const mb = parseFloat(cs.marginBottom || "0") || 0;
-  return Math.ceil(px(el.offsetHeight + mt + mb));
+  const visual = Math.max(
+    el.offsetHeight,
+    el.scrollHeight,
+    Math.ceil(el.getBoundingClientRect().height)
+  );
+  return Math.ceil(px(visual + mt + mb));
 }
 function measureBlockHeight(el: HTMLElement): number {
   return Math.max(Math.ceil(el.getBoundingClientRect().height), 1);
@@ -211,6 +216,23 @@ function pickBlockElementsFromWrapper(
     }
     blocks.push(options);
     return undefined;
+  }
+
+  // Regressão: set discursivo renderizado como um único wrapper pode conter
+  // vários `.question-text` em sequência (texto base + partes). O caminho
+  // antigo via querySelector pegava só o primeiro `.question-text`, inflava o
+  // prefixHeight com o restante do conteúdo e inviabilizava a fragmentação.
+  //
+  // Mantemos o caso estrito: só ativa quando NÃO há `.question-options`,
+  // preservando a lógica atual de MCQ e de opções expandidas.
+  const allQuestionTexts = Array.from(
+    conteudo.querySelectorAll(".question-text")
+  ) as HTMLElement[];
+  if (allQuestionTexts.length > 1 && !conteudo.querySelector(".question-options")) {
+    const blocks = allQuestionTexts.flatMap((qt) => Array.from(qt.children) as HTMLElement[]);
+    if (blocks.length >= 1) {
+      return { blocks, textBlockCount: blocks.length };
+    }
   }
 
   const qt = conteudo.querySelector(".question-text") as HTMLElement | null;
@@ -867,6 +889,24 @@ export function distributeQuestionsOptimized(
       // Tenta coluna atual da última página
       if (tryPlaceInSlot(lastPage[setCol], qIdx, h)) continue;
 
+      const colCap = pages.length === 1 ? firstPageCapacity : otherPageCapacity;
+      const capNext =
+        columns === 2 && setCol === "coluna1" && lastPage.coluna2.remaining > 0
+          ? lastPage.coluna2.remaining
+          : otherPageCapacity;
+      const residualInCurrentSlot = tryFragmentResidual(
+        qIdx,
+        h,
+        lastPage[setCol],
+        colCap,
+        capNext,
+        canUseEmptySlotResidual(lastPage, setCol)
+      );
+      if (residualInCurrentSlot) {
+        setCol = placeResidualFragments(residualInCurrentSlot, setCol);
+        continue;
+      }
+
       // Antes de fechar a coluna: se a página ainda está vazia e h > firstPageCapacity,
       // tenta fragmentar — evita que a página fique vazia, seja removida e a próxima
       // vire a página 0 renderizada sem espaço para o cabeçalho → overflow.
@@ -883,7 +923,6 @@ export function distributeQuestionsOptimized(
         setCol = "coluna2";
         if (tryPlaceInSlot(lastPage.coluna2, qIdx, h)) continue;
 
-        const colCap = pages.length === 1 ? firstPageCapacity : otherPageCapacity;
         const residualInEmptyCol2 = tryFragmentResidual(
           qIdx,
           h,
@@ -943,6 +982,21 @@ export function distributeQuestionsOptimized(
       return;
     }
 
+    const tryBuildFragment = (
+      baseSplit: SplitInfo,
+      capFirst: number,
+      capNext: number
+    ) => {
+      let built = buildFragmentsForQuestion(qIndex, baseSplit, capFirst, capNext);
+      if (!built) {
+        const splitExpanded = measureSplitInfo(measureItemsRef, qIndex, true);
+        if (splitExpanded) {
+          built = buildFragmentsForQuestion(qIndex, splitExpanded, capFirst, capNext);
+        }
+      }
+      return built;
+    };
+
     // Encontra o melhor slot para começar a fragmentação
     let targetPage = pages[pages.length - 1];
     let targetCol: "coluna1" | "coluna2" = "coluna1";
@@ -962,16 +1016,44 @@ export function distributeQuestionsOptimized(
       capHere = targetPage.coluna1.remaining;
     }
 
-    // capNext = capacidade garantida do próximo fragmento (sempre pode ir pra nova página)
-    const capNext = otherPageCapacity;
+    // capNext precisa respeitar o PRÓXIMO slot real.
+    // Se o primeiro fragmento começa na coluna1, o próximo destino preferencial
+    // é a coluna2 da mesma página. Usar otherPageCapacity aqui pode gerar um
+    // segundo fragmento grande demais para a coluna2 da primeira página,
+    // fazendo o algoritmo pular indevidamente para a próxima página.
+    //
+    // Usamos a capacidade do próximo slot imediato quando ele existe; isso pode
+    // gerar fragmentos um pouco menores do que o estritamente necessário, mas
+    // preserva o fluxo coluna1 -> coluna2 -> próxima página sem overflow.
+    const capNext =
+      columns === 2 && targetCol === "coluna1" && targetPage.coluna2.remaining > 0
+        ? targetPage.coluna2.remaining
+        : otherPageCapacity;
 
-    let frag = buildFragmentsForQuestion(qIndex, split, capHere, capNext);
+    let frag = tryBuildFragment(split, capHere, capNext);
 
-    // Fallback: se não fragmentou, tenta expandindo opções individuais
+    if (!frag && columns === 2 && targetCol === "coluna1" && targetPage.coluna2.remaining > 0) {
+      const col2CapHere = targetPage.coluna2.remaining;
+      const col2CapNext = otherPageCapacity;
+      const retryCol2 = tryBuildFragment(split, col2CapHere, col2CapNext);
+      if (retryCol2) {
+        targetCol = "coluna2";
+        capHere = col2CapHere;
+        frag = retryCol2;
+      }
+    }
+
     if (!frag) {
-      const splitExpanded = measureSplitInfo(measureItemsRef, qIndex, true);
-      if (splitExpanded) {
-        frag = buildFragmentsForQuestion(qIndex, splitExpanded, capHere, capNext);
+      const cleanPage = newPage(pages.length);
+      const cleanCapHere = cleanPage.coluna1.remaining;
+      const cleanCapNext = columns === 2 ? cleanPage.coluna2.remaining : otherPageCapacity;
+      const retryCleanPage = tryBuildFragment(split, cleanCapHere, cleanCapNext);
+      if (retryCleanPage) {
+        pages.push(cleanPage);
+        targetPage = cleanPage;
+        targetCol = "coluna1";
+        capHere = cleanCapHere;
+        frag = retryCleanPage;
       }
     }
 
@@ -990,15 +1072,26 @@ export function distributeQuestionsOptimized(
       return;
     }
 
+    const sealFragmentSlot = (slot: PageSlots["coluna1"]) => {
+      // Quando uma questão continua em outro slot, o espaço visual restante
+      // deste slot não pode ser reutilizado por outra questão, senão ela entra
+      // "no meio" da continuidade do texto fragmentado.
+      slot.remaining = 0;
+    };
+
     for (let k = 0; k < frag.items.length; k++) {
       const item = frag.items[k];
       const h = frag.heights[k];
+      const isLastFragment = k === frag.items.length - 1;
 
       if (k === 0) {
         const slot = targetCol === "coluna1" ? targetPage.coluna1 : targetPage.coluna2;
         slot.items.push(item);
         slot.remaining -= h;
         slot.usedHeight += h;
+        if (!isLastFragment) {
+          sealFragmentSlot(slot);
+        }
       } else {
         // Fragmentos seguintes: tenta coluna2 ou nova página
         let placed = false;
@@ -1010,6 +1103,9 @@ export function distributeQuestionsOptimized(
             lastP.coluna2.items.push(item);
             lastP.coluna2.remaining -= h;
             lastP.coluna2.usedHeight += h;
+            if (!isLastFragment) {
+              sealFragmentSlot(lastP.coluna2);
+            }
             placed = true;
           }
         }
@@ -1020,6 +1116,9 @@ export function distributeQuestionsOptimized(
           newP.coluna1.items.push(item);
           newP.coluna1.remaining -= h;
           newP.coluna1.usedHeight += h;
+          if (!isLastFragment) {
+            sealFragmentSlot(newP.coluna1);
+          }
         }
       }
     }

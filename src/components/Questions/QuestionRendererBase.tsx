@@ -188,36 +188,90 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
       !items.some((it) => (it.content ?? []).some((n) => n?.type === "options"));
 
     if (isEssaySet) {
+      const selectedTextBlocks = fragmentRender?.textBlocks ?? null;
+
+      const renderEssaySetBlocks = (
+        localBaseTextNode: PMNode | null,
+        localItems: PMNode[],
+        localKeyPrefix: string
+      ) => {
+        let cursor = 1;
+
+        const pickBlocks = (blocks: React.ReactNode[]) => {
+          if (!selectedTextBlocks) {
+            const start = cursor;
+            cursor += blocks.length;
+            return { picked: blocks, hasAny: blocks.length > 0, firstIncluded: start };
+          }
+
+          const picked: React.ReactNode[] = [];
+          let firstIncluded: number | null = null;
+          blocks.forEach((block, idx) => {
+            const globalIndex = cursor + idx;
+            if (selectedTextBlocks.includes(globalIndex)) {
+              picked.push(block);
+              if (firstIncluded == null) firstIncluded = globalIndex;
+            }
+          });
+          cursor += blocks.length;
+          return { picked, hasAny: picked.length > 0, firstIncluded };
+        };
+
+        const renderedParts: React.ReactNode[] = [];
+
+        if (localBaseTextNode) {
+          const baseBlocks = renderBlock(localBaseTextNode, `${localKeyPrefix}-base`);
+          const { picked } = pickBlocks(baseBlocks);
+          if (picked.length > 0) {
+            renderedParts.push(
+              <div key={`${localKeyPrefix}-base`} className="question-readonly">
+                <div className="question-text space-y-2">{picked}</div>
+              </div>
+            );
+          }
+        }
+
+        const showLabels = shouldShowEssayPartLabels(localItems.length);
+        localItems.forEach((it, idx) => {
+          const itemBlocks = (it.content ?? [])
+            .filter((n) => n.type === "statement")
+            .flatMap((n, j) => renderBlock(n, `${localKeyPrefix}-essay-${idx}-blk-${j}`));
+          const { picked, hasAny } = pickBlocks(itemBlocks);
+          if (!hasAny) return;
+
+          renderedParts.push(
+            <div
+              key={`${localKeyPrefix}-essay-${idx}`}
+              className="flex items-start gap-2"
+            >
+              {showLabels ? (
+                <div className="font-semibold">{essayPartLabel(idx)}</div>
+              ) : null}
+              <div className="flex-1">
+                <div className="question-readonly">
+                  <div className="question-text space-y-2">{picked}</div>
+                </div>
+              </div>
+            </div>
+          );
+        });
+
+        return renderedParts;
+      };
+
       // Set discursivo com question_groups: cada grupo entra como questão, itens como a), b), c)
       if (groups) {
         return (
           <div key={keyPrefix} className="question-set-readonly space-y-3">
-            {baseTextNode ? (
-              <div className="question-readonly">
-                <div className="question-text space-y-2">
-                  {renderBlock(baseTextNode, `${keyPrefix}-base`)}
-                </div>
-              </div>
-            ) : null}
-
             {groups.map((grp, grpIdx) => {
               const grpItems = (grp.content ?? []).filter((n: PMNode) => n?.type === "question_item");
-              const showLabels = shouldShowEssayPartLabels(grpItems.length);
               return (
                 <div key={`${keyPrefix}-grp-${grpIdx}`} className="question-group-readonly space-y-2">
-                  {grpItems.map((it: PMNode, idx: number) => (
-                    <div
-                      key={`${keyPrefix}-grp-${grpIdx}-essay-${idx}`}
-                      className="flex items-start gap-2"
-                    >
-                      {showLabels ? (
-                        <div className="font-semibold">{essayPartLabel(idx)}</div>
-                      ) : null}
-                      <div className="flex-1">
-                        {renderQuestionLike(it.content ?? [], `${keyPrefix}-grp-${grpIdx}-essay-${idx}`)}
-                      </div>
-                    </div>
-                  ))}
+                  {renderEssaySetBlocks(
+                    grpIdx === 0 ? baseTextNode : null,
+                    grpItems,
+                    `${keyPrefix}-grp-${grpIdx}`
+                  )}
                 </div>
               );
             })}
@@ -225,32 +279,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
         );
       }
 
-      const showLabels = shouldShowEssayPartLabels(items.length);
-
       return (
         <div key={keyPrefix} className="question-set-readonly space-y-3">
-          {baseTextNode ? (
-            <div className="question-readonly">
-              <div className="question-text space-y-2">
-                {renderBlock(baseTextNode, `${keyPrefix}-base`)}
-              </div>
-            </div>
-          ) : null}
-
-          {items.map((it, idx) => (
-            <div
-              key={`${keyPrefix}-essay-${idx}`}
-              className="flex items-start gap-2"
-            >
-              {showLabels ? (
-                <div className="font-semibold">{essayPartLabel(idx)}</div>
-              ) : null}
-
-              <div className="flex-1">
-                {renderQuestionLike(it.content ?? [], `${keyPrefix}-essay-${idx}`)}
-              </div>
-            </div>
-          ))}
+          {renderEssaySetBlocks(baseTextNode, items, keyPrefix)}
         </div>
       );
     }

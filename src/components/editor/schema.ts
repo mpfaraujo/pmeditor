@@ -56,7 +56,7 @@ question: {
   
 set_questions: {
   // contexto obrigatório e compartilhado
-  content: "base_text question_item+",
+  content: "base_text? question_item+",
   attrs: {
     mode: { default: null }, // "essay" | null
   },

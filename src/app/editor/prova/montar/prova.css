@@ -320,6 +320,7 @@
 }
 
 .questao-item-wrapper {
+  display: flow-root;
   break-inside: avoid;
   page-break-inside: avoid;
   -webkit-column-break-inside: avoid;

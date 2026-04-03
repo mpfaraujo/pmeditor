@@ -162,4 +162,20 @@ describe('usePagination - controle de disparo', () => {
     expect(calculatePageLayout).not.toHaveBeenCalled()
   })
 
+  test('recalcula quando uma chave de conteúdo entra nas dependencies e muda', async () => {
+    const { rerender } = render(
+      <PaginationConsumer dependencies={[0, 'content:v1']} questionCount={2} />
+    )
+    await waitFor(() => expect(calculatePageLayout).toHaveBeenCalledTimes(1), { timeout: 3000 })
+
+    ;(calculatePageLayout as Mock).mockClear()
+    rerender(
+      <PaginationConsumer dependencies={[0, 'content:v2']} questionCount={2} />
+    )
+
+    await waitFor(() => {
+      expect(calculatePageLayout).toHaveBeenCalledTimes(1)
+    }, { timeout: 3000 })
+  })
+
 })

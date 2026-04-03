@@ -168,6 +168,53 @@ function buildBaseDoc(baseText: PMNode | null): PMNode | null {
   return wrapAsQuestionDoc([baseText]);
 }
 
+function buildCombinedBaseTextNode(
+  ids: string[],
+  cache: Map<string, PMNode>
+): PMNode | null {
+  const combinedContent: PMNode[] = [];
+  for (const id of ids) {
+    const bt = cache.get(id);
+    if (!bt) return null;
+    const btContent = (bt as any).content ?? bt;
+    const nodes: PMNode[] = Array.isArray(btContent.content) ? btContent.content : [];
+    combinedContent.push(...nodes);
+  }
+  if (combinedContent.length === 0) return null;
+  return { type: "base_text", content: combinedContent };
+}
+
+function injectBaseTextIntoSetDoc(content: any, baseTextNode: PMNode): PMNode | null {
+  const doc = safeParseDoc(content);
+  if (!doc) return null;
+  return {
+    type: "doc",
+    content: (doc.content ?? []).map((n) => {
+      if (n.type !== "set_questions") return n;
+      const withoutBase = (n.content ?? []).filter((child) => child?.type !== "base_text");
+      return { ...n, content: [baseTextNode, ...withoutBase] };
+    }),
+  };
+}
+
+function stripBaseTextFromSetDoc(content: any): PMNode | null {
+  const doc = safeParseDoc(content);
+  if (!doc) return null;
+  return {
+    type: "doc",
+    content: (doc.content ?? []).map((n) => {
+      if (n.type !== "set_questions") return n;
+      return { ...n, content: (n.content ?? []).filter((child) => child?.type !== "base_text") };
+    }),
+  };
+}
+
+function buildBaseTextLabelFromTags(tags: string[]): string | null {
+  const clean = tags.filter((tag) => typeof tag === "string" && tag.trim() !== "");
+  if (clean.length === 0) return null;
+  if (clean.length === 1) return `Texto ${clean[0]}`;
+  return `Textos ${clean.join(", ")}`;
+}
 
 function buildItemDoc(item: PMNode | null): PMNode | null {
   if (!item) return null;
@@ -417,6 +464,11 @@ export default function MontarProvaPage() {
             const nodes: PMNode[] = Array.isArray(btContent.content) ? btContent.content : [];
             combinedContent.push(...nodes);
           }
+          const baseTextLabel = buildBaseTextLabelFromTags(
+            btIds
+              .map((id) => (baseTextCache.get(id) as any)?.tag)
+              .filter((tag): tag is string => typeof tag === "string" && tag !== "")
+          );
           const baseTextNode: PMNode = { type: "base_text", content: combinedContent };
 
           if (group.length >= 2) {
@@ -429,7 +481,11 @@ export default function MontarProvaPage() {
               ...qs[group[0]],
               metadata: { ...(qs[group[0]]?.metadata ?? {}), id: `${btKey}#base` },
               content: baseDoc,
-              __setBase: { parentId: btKey, headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.` },
+              __setBase: {
+                parentId: btKey,
+                headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.`,
+                ...(baseTextLabel ? { labelText: baseTextLabel } : null),
+              },
             });
             for (const idx of group) out.push({ ...qs[idx], __set: { parentId: btKey } });
           } else {
@@ -452,6 +508,10 @@ export default function MontarProvaPage() {
         continue;
       }
 
+      const doc = safeParseDoc(q.content);
+      const setNode = findSetNode(doc);
+      const { baseText, items, groups } = splitSetNode(setNode);
+
       const sel = selections.find((s) => s.id === id);
 
       if (!sel || sel.kind === "question") {
@@ -459,13 +519,84 @@ export default function MontarProvaPage() {
         continue;
       }
 
-      const doc = safeParseDoc(q.content);
-      const setNode = findSetNode(doc);
-      const { baseText, items, groups } = splitSetNode(setNode);
-
       const tipoMeta = (q.metadata as any)?.tipo ?? "";
       const isEssaySet = tipoMeta.toLowerCase().includes("discursiva") ||
         (!tipoMeta && !items.some((it) => (it.content ?? []).some((n) => n?.type === "options")));
+      const baseTextLabel = buildBaseTextLabelFromTags(
+        btIds
+          .map((id) => (baseTextCache.get(id) as any)?.tag)
+          .filter((tag): tag is string => typeof tag === "string" && tag !== "")
+      );
+
+      const baseDoc = buildBaseDoc(baseText);
+      const selectedIdxs = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
+      const validIdxs = selectedIdxs
+        .filter((n) => Number.isInteger(n) && n >= 0 && n < items.length)
+        .sort((a, b) => a - b);
+
+      if (btKey && isEssaySet) {
+        const group: number[] = [i];
+        for (let j = i + 1; j < qs.length; j++) {
+          if (processed.has(j)) continue;
+          const next = qs[j];
+          const nextId = next?.metadata?.id;
+          if (!nextId) continue;
+          const nextSel = selections.find((s) => s.id === nextId);
+          if (!nextSel || nextSel.kind !== "set") continue;
+          const nextMeta = next?.metadata ?? {};
+          const nextBtIds: string[] = Array.isArray(nextMeta.baseTextIds)
+            ? nextMeta.baseTextIds.filter((id: any) => typeof id === "string" && id !== "")
+            : (nextMeta.baseTextId ? [nextMeta.baseTextId] : []);
+          if (nextBtIds.join(",") !== btKey) continue;
+
+          const nextDoc = safeParseDoc(next?.content);
+          const nextSetNode = findSetNode(nextDoc);
+          const { items: nextItems } = splitSetNode(nextSetNode);
+          const nextTipoMeta = (next.metadata as any)?.tipo ?? "";
+          const nextIsEssaySet = nextTipoMeta.toLowerCase().includes("discursiva") ||
+            (!nextTipoMeta && !nextItems.some((it) => (it.content ?? []).some((n) => n?.type === "options")));
+          if (!nextIsEssaySet) continue;
+
+          group.push(j);
+        }
+
+        if (group.length >= 2) {
+          group.forEach((idx) => processed.add(idx));
+
+          const allLoaded = btIds.every((id) => baseTextCache.has(id));
+          if (!allLoaded) {
+            for (const idx of group) out.push(qs[idx]);
+            continue;
+          }
+
+          const baseTextNode = buildCombinedBaseTextNode(btIds, baseTextCache);
+          const sharedBaseDoc = buildBaseDoc(baseTextNode);
+
+          if (sharedBaseDoc) {
+            out.push({
+              ...qs[group[0]],
+              metadata: { ...(qs[group[0]]?.metadata ?? {}), id: `${btKey}#base` },
+              content: sharedBaseDoc,
+              __setBase: {
+                parentId: btKey,
+                headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.`,
+                ...(baseTextLabel ? { labelText: baseTextLabel } : null),
+              },
+            });
+          }
+
+          for (const idx of group) {
+            const groupedQuestion = qs[idx];
+            const strippedDoc = stripBaseTextFromSetDoc(groupedQuestion?.content);
+            out.push({
+              ...groupedQuestion,
+              content: strippedDoc ?? groupedQuestion?.content,
+              __set: { parentId: btKey },
+            });
+          }
+          continue;
+        }
+      }
 
       if (isEssaySet) {
         // Conjuntos discursivos: unidade atômica
@@ -478,35 +609,15 @@ export default function MontarProvaPage() {
         if (!baseText && essayBtIds.length > 0) {
           const allEssayLoaded = essayBtIds.every((id: string) => baseTextCache.has(id));
           if (allEssayLoaded) {
-            const combinedContent: PMNode[] = [];
-            for (const eid of essayBtIds) {
-              const bt = baseTextCache.get(eid)!;
-              const btContent = (bt as any).content ?? bt;
-              combinedContent.push(...(Array.isArray(btContent.content) ? btContent.content : []));
-            }
-            const baseTextNode: PMNode = { type: "base_text", content: combinedContent };
-            // Reconstrói o doc com base_text no início do set_questions
-            const doc2 = safeParseDoc(q.content);
-            const newDoc: PMNode = {
-              type: "doc",
-              content: (doc2?.content ?? []).map((n) => {
-                if (n.type !== "set_questions") return n;
-                return { ...n, content: [baseTextNode, ...(n.content ?? [])] };
-              }),
-            };
-            out.push({ ...q, content: newDoc });
+            const baseTextNode = buildCombinedBaseTextNode(essayBtIds, baseTextCache);
+            const newDoc = baseTextNode ? injectBaseTextIntoSetDoc(q.content, baseTextNode) : null;
+            out.push({ ...q, content: newDoc, ...(baseTextLabel ? { __baseTextLabel: baseTextLabel } : null) });
             continue;
           }
         }
-        out.push(q);
+        out.push({ ...q, ...(baseTextLabel ? { __baseTextLabel: baseTextLabel } : null) });
         continue;
       }
-
-      const baseDoc = buildBaseDoc(baseText);
-      const selectedIdxs = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
-      const validIdxs = selectedIdxs
-        .filter((n) => Number.isInteger(n) && n >= 0 && n < items.length)
-        .sort((a, b) => a - b);
 
       if (validIdxs.length < 2) {
         out.push(q);
@@ -570,6 +681,15 @@ export default function MontarProvaPage() {
     expandedQuestions.map((q: any) => q.metadata?.id ?? "").join(","),
     [expandedQuestions]
   );
+  const expandedQuestionsContentKey = useMemo(() =>
+    expandedQuestions.map((q: any) => {
+      const id = q?.metadata?.id ?? "";
+      const kind = q?.__setBase ? "base" : q?.__set ? "item" : "single";
+      const content = typeof q?.content === "string" ? q.content : JSON.stringify(q?.content ?? null);
+      return `${id}:${kind}:${content}`;
+    }).join("|"),
+    [expandedQuestions]
+  );
   useEffect(() => {
     setSpacers(new Map());
     setCommittedSpacers(new Map());
@@ -615,6 +735,7 @@ const { pages, refs } = usePagination({
   questionCount: expandedQuestions.length,
   dependencies: [
     repaginateVersion,
+    expandedQuestionsContentKey,
   ],
 });
 
@@ -711,8 +832,9 @@ const { pages, refs } = usePagination({
 
     const isSetBase = !!(question as any).__setBase;
     const setBaseMeta = (question as any).__setBase as
-      | { parentId: string; headerText: string }
+      | { parentId: string; headerText: string; labelText?: string }
       | undefined;
+    const baseTextLabel = (question as any).__baseTextLabel as string | undefined;
 
     const baseKey = (question as any).metadata?.id ?? printedIndex;
     const fragKey =
@@ -772,6 +894,11 @@ const { pages, refs } = usePagination({
         {/* ✅ item do texto base: banner + conteúdo, sem cabeçalho de questão */}
 {isSetBase ? (
   <div className="mb-3 space-y-2">
+    {setBaseMeta?.labelText && (
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">
+        {setBaseMeta.labelText}
+      </div>
+    )}
     {( !frag || frag.first ) && (
       <div className="text-sm font-semibold">{setBaseMeta?.headerText}</div>
     )}
@@ -808,6 +935,12 @@ const { pages, refs } = usePagination({
                   suppressContentEditableWarning
                   className="pontos-editavel"
                 />
+              </div>
+            )}
+
+            {baseTextLabel && (!frag || frag.first) && (
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">
+                {baseTextLabel}
               </div>
             )}
 

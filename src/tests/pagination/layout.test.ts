@@ -5,7 +5,14 @@ import {
   calculateFirstPageCapacity,
   calculateOtherPageCapacity,
 } from '@/lib/pagination'
-import { createMeasurementContainer, createPageFixture, flattenItems } from './helpers'
+import {
+  createMeasurementContainer,
+  createPageFixture,
+  flattenItems,
+  setComputedMargins,
+  setOffsetHeight,
+  setRect,
+} from './helpers'
 
 describe('pagination - layout e regressões', () => {
   afterEach(() => { document.body.innerHTML = '' })
@@ -85,6 +92,111 @@ describe('pagination - layout e regressões', () => {
     // Base deve ser fragmentada
     expect(baseItems.length).toBeGreaterThan(1)
     expect(baseItems.every((x: any) => x.kind === 'frag')).toBe(true)
+  })
+
+  test('[otimizado] fragmenta wrapper com múltiplos .question-text no mesmo conteúdo (regressão set discursivo)', () => {
+    const wrapper = document.createElement('div')
+    wrapper.className = 'questao-item-wrapper'
+    setOffsetHeight(wrapper, 1000)
+    setComputedMargins(wrapper, 0, 0)
+
+    const content = document.createElement('div')
+    content.className = 'questao-conteudo'
+
+    const root = document.createElement('div')
+    root.className = 'question-readonly-root'
+
+    const baseReadonly = document.createElement('div')
+    baseReadonly.className = 'question-readonly'
+    const baseText = document.createElement('div')
+    baseText.className = 'question-text'
+    ;[200, 200].forEach((h) => {
+      const p = document.createElement('p')
+      setRect(p, { height: h })
+      baseText.appendChild(p)
+    })
+    baseReadonly.appendChild(baseText)
+
+    const itemWrapper = document.createElement('div')
+    itemWrapper.className = 'flex-1'
+    const itemReadonly = document.createElement('div')
+    itemReadonly.className = 'question-readonly'
+    const itemText = document.createElement('div')
+    itemText.className = 'question-text'
+    ;[180, 180, 180].forEach((h) => {
+      const p = document.createElement('p')
+      setRect(p, { height: h })
+      itemText.appendChild(p)
+    })
+    itemReadonly.appendChild(itemText)
+    itemWrapper.appendChild(itemReadonly)
+
+    root.appendChild(baseReadonly)
+    root.appendChild(itemWrapper)
+    content.appendChild(root)
+    wrapper.appendChild(content)
+
+    const m = document.createElement('div')
+    m.appendChild(wrapper)
+    document.body.appendChild(m)
+
+    const pages = distributeQuestionsOptimized(1, [1000], 742, 931, 1, m, [])
+    const items = flattenItems(pages).filter((x) => x.q === 0)
+    expect(items.length).toBeGreaterThan(1)
+    expect(items.every((x: any) => x.kind === 'frag')).toBe(true)
+  })
+
+  test('[otimizado] fragmento seguinte vai para coluna2 da primeira página quando cabe', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 900, blockHeights: [400, 300, 180], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(1, [900], 742, 931, 2, m, [])
+    const items = flattenItems(pages).filter((x) => x.q === 0)
+    expect(items.length).toBeGreaterThan(1)
+    expect(pages).toHaveLength(1)
+    expect(pages[0].coluna1[0]).toMatchObject({ kind: 'frag', q: 0, first: true })
+    expect(pages[0].coluna2[0]).toMatchObject({ kind: 'frag', q: 0, first: false })
+  })
+
+  test('[otimizado] não pula a coluna2 da primeira página quando o próximo fragmento precisa ser menor que otherPageCapacity', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 1200, blockHeights: [400, 400, 400], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(1, [1200], 742, 931, 2, m, [])
+    const items = flattenItems(pages).filter((x) => x.q === 0)
+    expect(items.length).toBeGreaterThan(2)
+    expect(pages[0].coluna1[0]).toMatchObject({ kind: 'frag', q: 0, first: true })
+    expect(pages[0].coluna2[0]).toMatchObject({ kind: 'frag', q: 0, first: false })
+    expect(pages[1].coluna1[0]).toMatchObject({ kind: 'frag', q: 0, first: false })
+  })
+
+  test('[otimizado] recomeça a fragmentação em página limpa quando o residual atual é pequeno demais', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 300, blockHeights: [180, 100], noOptions: true },
+      { wrapperHeight: 1000, blockHeights: [250, 250, 250], noOptions: true },
+      { wrapperHeight: 120, blockHeights: [70, 40], noOptions: true },
+      { wrapperHeight: 120, blockHeights: [70, 40], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(
+      4, [300, 1000, 120, 120], 742, 931, 1, m,
+      [{ baseIndex: 2, itemIndexes: [3] }]
+    )
+    const q1Items = flattenItems(pages).filter((x) => x.q === 1)
+    expect(q1Items.length).toBeGreaterThan(1)
+    expect(pages[0].coluna1[0]).toMatchObject({ kind: 'full', q: 0 })
+    expect(pages[1].coluna1[0]).toMatchObject({ kind: 'frag', q: 1, first: true })
+  })
+
+  test('[otimizado] não coloca outra questão abaixo de fragmento que ainda continua', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 1000, blockHeights: [400, 400, 180], noOptions: true },
+      { wrapperHeight: 200, blockHeights: [120, 60], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(2, [1000, 200], 742, 931, 2, m, [])
+
+    expect(pages[0].coluna1[0]).toMatchObject({ kind: 'frag', q: 0, first: true })
+    expect(pages[0].coluna1.some((x: any) => x.q === 1)).toBe(false)
+    expect(flattenItems(pages).filter((x) => x.q === 0).length).toBeGreaterThan(1)
   })
 
   // ─── Bin-packing geral ─────────────────────────────────────────────────────
@@ -229,5 +341,21 @@ describe('pagination - layout e regressões', () => {
     const idxItem = col2.findIndex((x: any) => x.q === 3)
     expect(idxLastFrag).toBeGreaterThanOrEqual(0)
     expect(idxItem).toBeGreaterThan(idxLastFrag)
+  })
+
+  test('[residual] fragmenta item seguinte do mesmo grupo antes de fechar a coluna atual', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 200, blockHeights: [120, 60], noOptions: true }, // base
+      { wrapperHeight: 200, blockHeights: [120, 60], noOptions: true }, // item 1
+      { wrapperHeight: 700, blockHeights: [300, 300, 80], noOptions: true }, // item 2
+    ])
+    const pages = distributeQuestionsOptimized(
+      3, [200, 200, 700], 931, 931, 2, m,
+      [{ baseIndex: 0, itemIndexes: [1, 2] }]
+    )
+    const item2 = flattenItems(pages).filter((x) => x.q === 2)
+    expect(item2.length).toBeGreaterThan(1)
+    expect(pages[0].coluna1[2]).toMatchObject({ kind: 'frag', q: 2, first: true })
+    expect(pages[0].coluna2[0]).toMatchObject({ kind: 'frag', q: 2, first: false })
   })
 })
