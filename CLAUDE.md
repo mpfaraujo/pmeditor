@@ -18,6 +18,16 @@ criar uma nova pagina causa overflow porque a pagina 0 fica vazia, e removida,
 e a nova pagina vira a pagina 0 renderizada — mas com o cabecalho, so ha
 firstPageCapacity disponivel. Solucao: fragmentar quando `currentPageEmpty === true`.
 
+## Memoria operacional do projeto
+
+Antes de trabalhar em areas amplas do produto, ler:
+1. `memory/project_operational_map.md`
+2. `memory/pagination_critico.md` quando houver qualquer impacto em prova/impressao/paginacao
+
+`memory/project_operational_map.md` concentra o mapa funcional do sistema:
+rotas, componentes principais, libs, endpoints PHP, fluxos de edicao/importacao/
+montagem de prova e pontos de acoplamento importantes.
+
 ## Idioma
 
 **SEMPRE se comunicar em portugues (pt-BR).** Nunca responder em ingles — nem parcialmente. Isso inclui:

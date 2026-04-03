@@ -29,6 +29,12 @@ export type BaseTextItem = {
   updatedAt: string;
 };
 
+export async function getBaseTexts(ids: string[]): Promise<BaseTextItem[]> {
+  if (ids.length === 0) return [];
+  const results = await Promise.all(ids.map(getBaseText));
+  return results.filter((r): r is BaseTextItem => r !== null);
+}
+
 export async function getBaseText(id: string): Promise<BaseTextItem | null> {
   try {
     const res = await fetch(`${BT_BASE}/get.php?id=${encodeURIComponent(id)}`, {
@@ -109,6 +115,27 @@ export async function listQuestionsByBaseText(
     });
   } catch {
     return [];
+  }
+}
+
+const Q_BASE = (
+  process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ??
+  "https://mpfaraujo.com.br/guardafiguras/api/questoes"
+);
+
+export async function linkBaseTexts(
+  questionId: string,
+  baseTextIds: string[]
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const res = await fetch(`${Q_BASE}/link-base-texts.php`, {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify({ question_id: questionId, base_text_ids: baseTextIds }),
+    });
+    return await res.json();
+  } catch (e: any) {
+    return { success: false, error: e.message };
   }
 }
 

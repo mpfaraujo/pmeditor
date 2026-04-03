@@ -257,12 +257,15 @@ export default function MontarProvaPage() {
   // Cache de textos base (baseTextId → conteúdo PMNode)
   const [baseTextCache, setBaseTextCache] = useState<Map<string, PMNode>>(new Map());
 
-  // Carrega textos base de questões individuais com baseTextId
+  // Carrega textos base de questões individuais com baseTextIds[] (ou baseTextId legado)
   useEffect(() => {
     const ids = new Set<string>();
     for (const q of orderedList as any[]) {
-      const btId = q?.metadata?.baseTextId;
-      if (btId && typeof btId === "string") ids.add(btId);
+      const meta = q?.metadata ?? {};
+      const btIds: string[] = Array.isArray(meta.baseTextIds)
+        ? meta.baseTextIds
+        : (meta.baseTextId ? [meta.baseTextId] : []);
+      for (const id of btIds) if (id && typeof id === "string") ids.add(id);
     }
     // Busca apenas os que ainda não estão no cache
     const missing = [...ids].filter(id => !baseTextCache.has(id));
@@ -377,32 +380,44 @@ export default function MontarProvaPage() {
       const id = q?.metadata?.id;
       if (!id) continue;
 
-      const btId = q?.metadata?.baseTextId;
+      // baseTextIds[] com fallback para legado baseTextId
+      const metaQ = q?.metadata ?? {};
+      const btIds: string[] = Array.isArray(metaQ.baseTextIds)
+        ? metaQ.baseTextIds.filter((id: any) => typeof id === "string" && id !== "")
+        : (metaQ.baseTextId ? [metaQ.baseTextId] : []);
+      const btKey = btIds.join(","); // chave canônica de agrupamento
       const isIndividual = !findSetNode(safeParseDoc(q?.content));
 
-      // ── Questões individuais com baseTextId ──────────────────────────────────
-      if (btId && isIndividual) {
-        // Coleta TODAS as questões com mesmo baseTextId (não apenas consecutivas)
-        // As não-consecutivas são "puxadas" para junto da primeira
+      // ── Questões individuais com baseTextIds ─────────────────────────────────
+      if (btKey && isIndividual) {
+        // Coleta TODAS as questões com mesmo conjunto de textos base
         const group: number[] = [i];
         for (let j = i + 1; j < qs.length; j++) {
           if (processed.has(j)) continue;
           const next = qs[j];
-          const nextBtId = next?.metadata?.baseTextId;
+          const nextMeta = next?.metadata ?? {};
+          const nextBtIds: string[] = Array.isArray(nextMeta.baseTextIds)
+            ? nextMeta.baseTextIds.filter((id: any) => typeof id === "string" && id !== "")
+            : (nextMeta.baseTextId ? [nextMeta.baseTextId] : []);
           const nextIsIndividual = !findSetNode(safeParseDoc(next?.content));
-          if (nextBtId === btId && nextIsIndividual) group.push(j);
+          if (nextBtIds.join(",") === btKey && nextIsIndividual) group.push(j);
         }
 
         group.forEach(idx => processed.add(idx));
 
-        const bt = baseTextCache.get(btId);
+        // Verifica se TODOS os textos base já estão no cache
+        const allLoaded = btIds.every(id => baseTextCache.has(id));
 
-        if (bt) {
-          const btContent = (bt as any).content ?? bt;
-          const baseTextNode: PMNode = {
-            type: "base_text",
-            content: Array.isArray(btContent.content) ? btContent.content : [],
-          };
+        if (allLoaded) {
+          // Concatena todos os textos base em sequência dentro de um único base_text
+          const combinedContent: PMNode[] = [];
+          for (const id of btIds) {
+            const bt = baseTextCache.get(id)!;
+            const btContent = (bt as any).content ?? bt;
+            const nodes: PMNode[] = Array.isArray(btContent.content) ? btContent.content : [];
+            combinedContent.push(...nodes);
+          }
+          const baseTextNode: PMNode = { type: "base_text", content: combinedContent };
 
           if (group.length >= 2) {
             // 2+ questões: __setBase separado com banner + questões individuais
@@ -412,13 +427,13 @@ export default function MontarProvaPage() {
             };
             out.push({
               ...qs[group[0]],
-              metadata: { ...(qs[group[0]]?.metadata ?? {}), id: `${btId}#base` },
+              metadata: { ...(qs[group[0]]?.metadata ?? {}), id: `${btKey}#base` },
               content: baseDoc,
-              __setBase: { parentId: btId, headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.` },
+              __setBase: { parentId: btKey, headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.` },
             });
-            for (const idx of group) out.push({ ...qs[idx], __set: { parentId: btId } });
+            for (const idx of group) out.push({ ...qs[idx], __set: { parentId: btKey } });
           } else {
-            // 1 questão: base_text dentro do doc → atômico, numeração vem antes do texto
+            // 1 questão: base_text dentro do doc → atômico
             const q0 = qs[group[0]];
             const doc0 = safeParseDoc(q0?.content);
             const newDoc: PMNode = {
@@ -456,15 +471,20 @@ export default function MontarProvaPage() {
         // Conjuntos discursivos: unidade atômica
         // Se o base_text foi removido do doc pela migração mas existe no cache,
         // reinjeta dentro do set_questions para o renderer funcionar como antes
-        const essayBtId = (q.metadata as any)?.baseTextId;
-        if (!baseText && essayBtId) {
-          const bt = baseTextCache.get(essayBtId);
-          if (bt) {
-            const btContent = (bt as any).content ?? bt;
-            const baseTextNode: PMNode = {
-              type: "base_text",
-              content: Array.isArray(btContent.content) ? btContent.content : [],
-            };
+        const essayMeta = q.metadata as any;
+        const essayBtIds: string[] = Array.isArray(essayMeta?.baseTextIds)
+          ? essayMeta.baseTextIds.filter((id: any) => typeof id === "string" && id !== "")
+          : (essayMeta?.baseTextId ? [essayMeta.baseTextId] : []);
+        if (!baseText && essayBtIds.length > 0) {
+          const allEssayLoaded = essayBtIds.every((id: string) => baseTextCache.has(id));
+          if (allEssayLoaded) {
+            const combinedContent: PMNode[] = [];
+            for (const eid of essayBtIds) {
+              const bt = baseTextCache.get(eid)!;
+              const btContent = (bt as any).content ?? bt;
+              combinedContent.push(...(Array.isArray(btContent.content) ? btContent.content : []));
+            }
+            const baseTextNode: PMNode = { type: "base_text", content: combinedContent };
             // Reconstrói o doc com base_text no início do set_questions
             const doc2 = safeParseDoc(q.content);
             const newDoc: PMNode = {

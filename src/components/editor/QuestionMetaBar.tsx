@@ -40,7 +40,9 @@ export interface QuestionMetadataV1 {
 
   gabarito: AnswerKey;
   resolucao?: any; // ProseMirror doc (miniSchema) — resolução comentada, opcional
+  /** @deprecated use baseTextIds */
   baseTextId?: string | null;
+  baseTextIds?: string[];
 
   source?: {
     kind?: "original" | "concurso";

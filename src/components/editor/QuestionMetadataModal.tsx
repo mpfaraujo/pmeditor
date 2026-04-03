@@ -93,21 +93,48 @@ export function QuestionMetadataModal({
 
   // ── Texto base ──────────────────────────────────────────────────────────────
   const [baseTextPickerOpen, setBaseTextPickerOpen] = useState(false);
-  const [baseTextTag, setBaseTextTag] = useState<string | null>(null);
-  const [baseTextPreviewContent, setBaseTextPreviewContent] = useState<any>(null);
-  const [baseTextPreviewOpen, setBaseTextPreviewOpen] = useState(false);
+  const [baseTextTags, setBaseTextTags] = useState<Map<string, string>>(new Map()); // id → tag
+  const [baseTextPreviews, setBaseTextPreviews] = useState<Map<string, any>>(new Map()); // id → content
+  const [baseTextPreviewId, setBaseTextPreviewId] = useState<string | null>(null);
+
+  // IDs canônicos: novo formato (baseTextIds[]) com fallback legado (baseTextId)
+  const btIds: string[] = Array.isArray(value.baseTextIds) && value.baseTextIds.length > 0
+    ? value.baseTextIds
+    : (value.baseTextId ? [value.baseTextId] : []);
 
   useEffect(() => {
-    if (!open || !value.baseTextId) {
-      setBaseTextTag(null);
-      setBaseTextPreviewContent(null);
+    if (!open || btIds.length === 0) {
+      setBaseTextTags(new Map());
+      setBaseTextPreviews(new Map());
       return;
     }
-    getBaseText(value.baseTextId).then((bt) => {
-      setBaseTextTag(bt?.tag ?? null);
-      setBaseTextPreviewContent(bt?.content ?? null);
+    const missing = btIds.filter(id => !baseTextTags.has(id));
+    if (missing.length === 0) return;
+    Promise.all(missing.map(id => getBaseText(id).then(bt => ({ id, bt })))).then(results => {
+      setBaseTextTags(prev => {
+        const next = new Map(prev);
+        for (const { id, bt } of results) if (bt?.tag) next.set(id, bt.tag);
+        return next;
+      });
+      setBaseTextPreviews(prev => {
+        const next = new Map(prev);
+        for (const { id, bt } of results) if (bt?.content) next.set(id, bt.content);
+        return next;
+      });
     });
-  }, [open, value.baseTextId]);
+  }, [open, btIds.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const addBaseText = (id: string, tag: string) => {
+    if (btIds.includes(id)) return;
+    const next = [...btIds, id];
+    set({ baseTextIds: next, baseTextId: next[0] });
+    setBaseTextTags(prev => new Map(prev).set(id, tag));
+  };
+
+  const removeBaseText = (id: string) => {
+    const next = btIds.filter(x => x !== id);
+    set({ baseTextIds: next.length ? next : undefined, baseTextId: next[0] ?? null });
+  };
   // ───────────────────────────────────────────────────────────────────────────
 
   const set = (patch: Partial<QuestionMetadataV1>) => {
@@ -337,36 +364,36 @@ export function QuestionMetadataModal({
           {/* Texto base */}
           <div className="col-span-2 space-y-2">
             <label className="text-sm font-medium">Texto base</label>
-            <div className="flex items-center gap-2">
-              {value.baseTextId && baseTextTag ? (
-                <span className="font-mono text-xs bg-primary/10 text-primary px-2 py-1 rounded font-bold">
-                  {baseTextTag}
-                </span>
-              ) : (
+            <div className="flex flex-wrap items-center gap-2">
+              {btIds.length === 0 && (
                 <span className="text-xs text-muted-foreground">(sem texto base)</span>
               )}
+              {btIds.map((id) => (
+                <div key={id} className="flex items-center gap-1 bg-primary/10 rounded px-2 py-0.5">
+                  <span className="font-mono text-xs text-primary font-bold">
+                    {baseTextTags.get(id) ?? id.slice(0, 8) + "…"}
+                  </span>
+                  <button
+                    type="button"
+                    className="text-muted-foreground hover:text-primary text-xs ml-1"
+                    title="Visualizar"
+                    onClick={() => setBaseTextPreviewId(id)}
+                  >
+                    &#128065;
+                  </button>
+                  <button
+                    type="button"
+                    className="text-muted-foreground hover:text-destructive text-xs ml-0.5"
+                    title="Remover"
+                    onClick={() => removeBaseText(id)}
+                  >
+                    &#x2715;
+                  </button>
+                </div>
+              ))}
               <Button size="sm" variant="outline" onClick={() => setBaseTextPickerOpen(true)}>
-                {value.baseTextId ? "Alterar" : "Vincular"}
+                {btIds.length > 0 ? "+ Adicionar texto" : "Vincular texto base"}
               </Button>
-              {value.baseTextId && (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setBaseTextPreviewOpen(true)}
-                >
-                  Visualizar
-                </Button>
-              )}
-              {value.baseTextId && (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => { set({ baseTextId: null }); setBaseTextTag(null); setBaseTextPreviewContent(null); }}
-                >
-                  Remover
-                </Button>
-              )}
             </div>
           </div>
 
@@ -547,25 +574,23 @@ export function QuestionMetadataModal({
         authorId={value.author?.id}
         authorName={value.author?.name}
         onSelect={(id, tag) => {
-          set({ baseTextId: id });
-          setBaseTextTag(tag);
-          setBaseTextPreviewContent(null); // será recarregado no próximo open
+          addBaseText(id, tag);
         }}
       />
 
-      {/* Preview do texto base vinculado */}
-      <Dialog open={baseTextPreviewOpen} onOpenChange={setBaseTextPreviewOpen}>
+      {/* Preview do texto base selecionado */}
+      <Dialog open={baseTextPreviewId !== null} onOpenChange={(o) => { if (!o) setBaseTextPreviewId(null); }}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              Texto base{baseTextTag ? ` — ${baseTextTag}` : ""}
+              Texto base{baseTextPreviewId && baseTextTags.get(baseTextPreviewId) ? ` — ${baseTextTags.get(baseTextPreviewId)}` : ""}
             </DialogTitle>
           </DialogHeader>
           <div className="print-mode text-sm">
-            {baseTextPreviewContent ? (
+            {baseTextPreviewId && baseTextPreviews.get(baseTextPreviewId) ? (
               <QuestionRenderer content={{
                 type: "doc",
-                content: [{ type: "question", content: [{ type: "base_text", content: baseTextPreviewContent?.content ?? [] }] }],
+                content: [{ type: "question", content: [{ type: "base_text", content: baseTextPreviews.get(baseTextPreviewId)?.content ?? [] }] }],
               }} />
             ) : (
               <p className="text-muted-foreground text-sm">Sem conteúdo disponível.</p>

@@ -714,9 +714,10 @@ export function distributeQuestionsOptimized(
     h: number,
     slot: PageSlots["coluna1"],
     colCap: number,
-    capNext: number
+    capNext: number,
+    allowEmptySlot = false
   ): { firstItem: LayoutItem; firstHeight: number; restItems: LayoutItem[]; restHeights: number[] } | null {
-    if (slot.items.length === 0) return null;
+    if (slot.items.length === 0 && !allowEmptySlot) return null;
     if (slot.remaining < colCap * 0.50) return null;
     if (h <= slot.remaining) return null; // cabe inteira — loop normal trata
 
@@ -732,6 +733,49 @@ export function distributeQuestionsOptimized(
       restItems: frags.items.slice(1),
       restHeights: frags.heights.slice(1),
     };
+  }
+
+  /**
+   * Só permite fragmentar em slot vazio quando estamos iniciando na coluna2
+   * de uma página que já tem conteúdo na coluna1. Isso evita reabrir o bug
+   * da página inteira vazia, mas aproveita a coluna2 que hoje fica em branco.
+   */
+  function canUseEmptySlotResidual(
+    page: PageSlots,
+    col: "coluna1" | "coluna2"
+  ): boolean {
+    return columns === 2 &&
+      col === "coluna2" &&
+      page.coluna1.items.length > 0 &&
+      page.coluna2.items.length === 0;
+  }
+
+  function placeResidualFragments(
+    result: { firstItem: LayoutItem; firstHeight: number; restItems: LayoutItem[]; restHeights: number[] },
+    startCol: "coluna1" | "coluna2"
+  ): "coluna1" | "coluna2" {
+    let currentCol = startCol;
+    let slot = pages[pages.length - 1][currentCol];
+
+    slot.items.push(result.firstItem);
+    slot.remaining -= result.firstHeight;
+    slot.usedHeight += result.firstHeight;
+    slot.remaining = 0;
+
+    for (let k = 0; k < result.restItems.length; k++) {
+      if (columns === 2 && currentCol === "coluna1") {
+        currentCol = "coluna2";
+      } else {
+        pages.push(newPage(pages.length));
+        currentCol = "coluna1";
+      }
+      slot = pages[pages.length - 1][currentCol];
+      slot.items.push(result.restItems[k]);
+      slot.remaining -= result.restHeights[k];
+      slot.usedHeight += result.restHeights[k];
+    }
+
+    return currentCol;
   }
 
   /**
@@ -795,30 +839,21 @@ export function distributeQuestionsOptimized(
     // desde que o primeiro fragmento seja >= 30% do total.
     let startIdx = 0;
     if (group.indexes.length > 0) {
-      const slot = pages[pages.length - 1][setCol];
+      const page = pages[pages.length - 1];
+      const slot = page[setCol];
       const colCap = pages.length === 1 ? firstPageCapacity : otherPageCapacity;
       const baseIdx = group.indexes[0];
       const baseH = questionHeights[baseIdx] ?? 0;
-      const result = tryFragmentResidual(baseIdx, baseH, slot, colCap, otherPageCapacity);
+      const result = tryFragmentResidual(
+        baseIdx,
+        baseH,
+        slot,
+        colCap,
+        otherPageCapacity,
+        canUseEmptySlotResidual(page, setCol)
+      );
       if (result) {
-        // Coloca fragmento 0 na coluna atual e fecha o slot
-        slot.items.push(result.firstItem);
-        slot.remaining -= result.firstHeight;
-        slot.usedHeight += result.firstHeight;
-        slot.remaining = 0;
-        // Coloca fragmentos restantes nos slots seguintes
-        for (let k = 0; k < result.restItems.length; k++) {
-          if (columns === 2 && setCol === "coluna1") {
-            setCol = "coluna2";
-          } else {
-            pages.push(newPage(pages.length));
-            setCol = "coluna1";
-          }
-          const nextSlot = pages[pages.length - 1][setCol];
-          nextSlot.items.push(result.restItems[k]);
-          nextSlot.remaining -= result.restHeights[k];
-          nextSlot.usedHeight += result.restHeights[k];
-        }
+        setCol = placeResidualFragments(result, setCol);
         startIdx = 1; // texto-base já tratado — pula no loop principal
       }
     }
@@ -847,6 +882,20 @@ export function distributeQuestionsOptimized(
         lastPage[setCol].remaining = 0;
         setCol = "coluna2";
         if (tryPlaceInSlot(lastPage.coluna2, qIdx, h)) continue;
+
+        const colCap = pages.length === 1 ? firstPageCapacity : otherPageCapacity;
+        const residualInEmptyCol2 = tryFragmentResidual(
+          qIdx,
+          h,
+          lastPage.coluna2,
+          colCap,
+          otherPageCapacity,
+          canUseEmptySlotResidual(lastPage, "coluna2")
+        );
+        if (residualInEmptyCol2) {
+          setCol = placeResidualFragments(residualInEmptyCol2, "coluna2");
+          continue;
+        }
 
         if (h > firstPageCapacity && currentPageEmpty && lastPage.coluna2.remaining > 0) {
           placeWithFragmentation(qIdx, h);

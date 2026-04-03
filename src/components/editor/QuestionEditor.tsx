@@ -1077,8 +1077,14 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
           disciplina={meta.disciplina}
           authorId={meta.author?.id}
           authorName={meta.author?.name}
-          onSelect={(id, tag) => {
-            setMeta((m) => ({ ...m, baseTextId: id, updatedAt: new Date().toISOString() }));
+          onSelect={(id, _tag) => {
+            setMeta((m) => {
+              const prev = Array.isArray(m.baseTextIds) && m.baseTextIds.length > 0
+                ? m.baseTextIds
+                : (m.baseTextId ? [m.baseTextId] : []);
+              const next = prev.includes(id) ? prev : [...prev, id];
+              return { ...m, baseTextIds: next, baseTextId: next[0], updatedAt: new Date().toISOString() };
+            });
           }}
         />
 

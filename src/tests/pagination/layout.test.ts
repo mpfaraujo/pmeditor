@@ -184,6 +184,28 @@ describe('pagination - layout e regressões', () => {
     expect(baseItems[0]).toMatchObject({ kind: 'full' })
   })
 
+  test('[residual] fragmenta texto-base em coluna2 vazia quando coluna1 da mesma página já tem conteúdo', () => {
+    // Questões livres ocupam 500px da coluna1 -> remaining=431 (< 50% da coluna),
+    // então a fragmentação residual inicial em coluna1 não dispara.
+    // O texto-base do set não cabe inteiro em coluna2 vazia (1000 > 931),
+    // mas deve aproveitar essa coluna vazia em vez de pular direto para a próxima página.
+    const m = createMeasurementContainer([
+      { wrapperHeight: 300, blockHeights: [180, 100], noOptions: true },
+      { wrapperHeight: 200, blockHeights: [120, 60], noOptions: true },
+      { wrapperHeight: 1000, blockHeights: [300, 300, 300, 80], noOptions: true },
+      { wrapperHeight: 200, blockHeights: [120, 60], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(
+      4, [300, 200, 1000, 200], 931, 931, 2, m,
+      [{ baseIndex: 2, itemIndexes: [3] }]
+    )
+    const baseItems = flattenItems(pages).filter((x) => x.q === 2)
+    expect(baseItems.length).toBeGreaterThan(1)
+    expect(baseItems.every((x: any) => x.kind === 'frag')).toBe(true)
+    expect(pages[0].coluna1.map((x: any) => x.q)).toEqual([0, 1])
+    expect(pages[0].coluna2[0]).toMatchObject({ kind: 'frag', q: 2, first: true })
+  })
+
   test('[residual] coesão do conjunto preservada — itens aparecem após todos os fragmentos do base', () => {
     // Mesmo cenário do teste de fragmentação ativada:
     // coluna2: [frag1_de_base_B, item_B] — item vem DEPOIS do fragmento

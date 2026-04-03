@@ -1,6 +1,7 @@
 [
   {
     "isSet": true,
+    "isMcqSet": true,
     "baseLatex": "HOW TO BE WISER\n\nWisdom is something that is hard to define and yet somehow we know it when we see it. Wise people stay calm in a crisis. They can step back and see the bigger picture. They are thoughtful and self-reflective. Although intelligence helps, you can be intelligent without being wise. Wise people tolerate uncertainty and remain optimistic that even tricky problems do have solutions.\n\nWise reasoning is associated with a whole lot of positives: higher life satisfaction, fewer negative feelings, better relationships and less depressive rumination, according to Igor Grossman of the University of Waterloo in Canada. He and his colleagues even found evidence that the wisest people might live longer. The wiser people were, the higher their levels of well-being, particularly as they got older. Intelligence made no difference to well-being, probably because IQ levels do not reflect a person's ability to foster good relationships or make decisions in everyday life.\n\nGrossman is convinced that wisdom is not simply a stable trait that you either possess or don't. It means that at least we are wise some of the time. Think back to yesterday. What was the most challenging situation you faced in your day? And how did you work out what to do? Grossman put questions like these to the participants in his recent study. People wrote about being late for meetings because of the traffic or the arguments they had with families and colleagues. The researchers examined their styles of reasoning in order to assess their wisdom. Did they recognise that their knowledge was limited? Did they see any positives in what seemed on the face of it to be a negative situation? He found that some people appeared to be wise sages in one situation, but not in another.\n\nSo why the difference in different situations? People were wiser when they were with their friends. It made them more likely to consider the bigger picture, to think of other perspectives and to recognise the limits of their own knowledge. When people were alone they seemed to get so involved in a situation, that they did not even think about alternatives. \"We are possibly all capable of some aspect of wisdom. It's just not all the time,\" says Grossman. If we can be wise sometimes, maybe we can learn to be wise more often.\n\nFor Cornell University psychologist Robert Sternberg, wisdom is all about balance. A wise person is able to complete a mental juggling act — to balance the short-term with the long-term, self-interest with the interests of others, while considering all the options. Following Sternberg's model, what you need to do is to remember to work out what all the different interests are in a given dilemma, both in the short and long-term and to pay attention to the changing environment and how it might be shaped.\n\nIn a kind of school of wisdom, Grossman has experimented with different strategies in the lab. People were taught to take a different perspective by imagining they were taking a bird's-eye-view of the situation or as if they were watching events as a fly on the wall. The idea is to try to distance yourself from the immediate experience. Even talking about yourself in the third person can help. Sometimes we could take it a step further than speaking in the third person and actually ask someone else what they think we should do. We are often wiser about other people's lives than about our own.\n\nAlthough we are bad at judging our own time-frames, we are much better at working out other people's. In one study, students were asked to estimate when they were likely to finish an assignment and when other students would finish theirs. They were far better at guessing other people's timings, because they took into account unpredictable interruptions such as getting the flu or coming home to find the washing machine has flooded the kitchen. When it comes to our own lives, our natural optimism seems to stop us factoring in potential problems.\n\nSo can you set out to be wise? Yes, but you need to take into account that people will have different goals, priorities and responses to your own, across the short- and long-term. If you can juggle all that, you probably are showing wisdom. But the complexity should not stop us from trying. As Grossman told me, \"It's not that you suddenly become the next Buddha, but you do become a little bit wiser.\"\n\n\\credits{Available at: <http://www.bbc.com/future/story/20170124-how-to-be-wiser>. Retrieved on: 24 Jan. 2017. Adapted.}",
     "items": [
       {
@@ -14,7 +15,8 @@
             "communicative intention",
             "text purpose"
           ],
-          "gabarito": "E"
+          "gabarito": "E",
+          "numero": "1"
         }
       },
       {
@@ -29,7 +31,8 @@
             "well-being",
             "life expectancy"
           ],
-          "gabarito": "D"
+          "gabarito": "D",
+          "numero": "2"
         }
       },
       {
@@ -43,7 +46,8 @@
             "phrasal verb",
             "work out"
           ],
-          "gabarito": "B"
+          "gabarito": "B",
+          "numero": "3"
         }
       },
       {
@@ -58,7 +62,8 @@
             "context",
             "self-distancing"
           ],
-          "gabarito": "D"
+          "gabarito": "D",
+          "numero": "4"
         }
       },
       {
@@ -72,7 +77,8 @@
             "balance",
             "mental juggling"
           ],
-          "gabarito": "B"
+          "gabarito": "B",
+          "numero": "5"
         }
       },
       {
@@ -86,7 +92,8 @@
             "perspective",
             "vocabulary"
           ],
-          "gabarito": "D"
+          "gabarito": "D",
+          "numero": "6"
         }
       },
       {
@@ -100,7 +107,8 @@
             "time",
             "boldfaced expression"
           ],
-          "gabarito": "C"
+          "gabarito": "C",
+          "numero": "7"
         }
       },
       {
@@ -117,7 +125,8 @@
             "foster",
             "assess"
           ],
-          "gabarito": "B"
+          "gabarito": "B",
+          "numero": "8"
         }
       },
       {
@@ -132,11 +141,12 @@
             "complexity",
             "should"
           ],
-          "gabarito": "E"
+          "gabarito": "E",
+          "numero": "9"
         }
       },
       {
-        "latex": "The message contained in the fragment \"It's not that you suddenly become the next Buddha, but you do become a little bit wiser.\" (lines 87-88) is that people\n\n\\begin{choices}\n  \\CorrectChoice can always improve their personal skills.\n  \\choice need to keep their feelings to themselves.\n  \\choice will never learn how to find balance in life.\n  \\choice must learn how to define their top priorities.\n  \\choice ought to try their best to become more self-controlled.\n\\end{choices}",
+        "latex": "The message contained in the fragment \"It's not that you suddenly become the next Buddha, but you do become a little bit wiser.\" (lines 87-88) is that people\n\n\\begin{choices}\n  \\CorrectChoice can always improve their personal skills.\n  \\choice need to keep their feelings to themselves.\n  \\choice will never learn how to find balance in life.\n  \\choice must learn how to define their top priorities.\n  \\choice ought to try their best to become more self-controlled.\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  LÍNGUA ESTRANGEIRA — ESPANHOL\n% ═══════════════════════════════════════════════════════════════",
         "tipo": "Múltipla Escolha",
         "gabarito": "A",
         "meta": {
@@ -147,7 +157,8 @@
             "personal growth",
             "improvement"
           ],
-          "gabarito": "A"
+          "gabarito": "A",
+          "numero": "10"
         }
       }
     ],
@@ -165,6 +176,7 @@
   },
   {
     "isSet": true,
+    "isMcqSet": true,
     "baseLatex": "Tecnología para el verano: wifi en la playa y drones salvavidas\n\n[…] La playa está en el punto de mira del 41,8% de los españoles, ya que, según el Barómetro de junio del Centro de Investigaciones Sociológicas (CIS), los destinos de sol y playa siguen siendo la primera opción a la hora de viajar. Ante este auge turístico de costa también surgen un buen número de ingenios tecnológicos pensados para hacernos más fácil, segura y conectada nuestra estancia sobre la arena.\n\n\\textbf{Drones 'in the air'}\n\nEl Ayuntamiento de Torrevieja, Alicante, intentó poner en marcha el año pasado un sistema pionero de vigilancia y seguridad en zonas de baño mediante drones denominado SalvaDron. Este servicio consistía en usar de aeronaves no tripuladas y controladas de forma remota que pueden acudir rápidamente hasta las personas en riesgo y lazarles un salvavidas mientras llegan los medios tradicionales de rescate. Desgraciadamente la regulación del uso de estas aeronaves está por llegar y debido a la proximidad del aeropuerto San Javier de Murcia no se pudo llevar a cabo la iniciativa. Aun así el Ayuntamiento de Torrevieja no solo volverá este año a intentar poner en marcha su proyecto de salvamento, en zonas permitidas, sino que pretende fomentar el uso continuo de drones en el municipio para regular el tráfico, velar por el medio ambiente y tomar medidas de disciplina urbanística.\n\nA raíz de esta han surgido otras iniciativas en el litoral español. Fuengirola, por ejemplo, ha anunciado que este verano pondrá en marcha un proyecto similar con drones pilotados a distancia que, a través de vectores de posición y una cámara de alta calidad que lleva incorporada, pueden localizar a un bañista en situación de peligro y lanzarle un salvavidas que se hincha en dos segundos automáticamente, e incluso lleva otro más por si fuera necesario usarlo. Fuengirola se ha puesto las pilas en cuestión de experiencia de usuario, ya que además de ofrecer wifi a pie de toalla, ha incorporado taquillas tecnológicas donde los bañistas pueden guardar sus pertenencias y cargar sus móviles con la energía solar que nutre a éstas.\n\n\\textbf{Un poco de 'wifi playero'}\n\nSon varias las localidades costeras que, conscientes del auge del uso del móvil, instalan zonas wifi gratuitas en sus playas para atraer turistas. Algunas de ellas como Punta Umbría (Huelva), Barcelona o Calvià (Mallorca) llevan haciéndolo varias temporadas. Para localizar cuales son los puntos de wifi más cercanos o incluir los nuevos que nos vayamos encontrando podemos usar Wifium, una web colaborativa que aporta un mapa para mejor localización de estos puntos de conexión.[…]\n\n\\textbf{Protección ante todo}\n\nUno de los riesgos más comunes cuando se visita una playa en verano es el índice de radiación ultravioleta (UV). Para evitar que nos afecte se han creado diversas iniciativas tecnológicas como la aplicación UV-Derma, una herramienta gratuita que previene que los usuarios sufran quemaduras solares. Creada por expertos en dermatología de la Fundación Piel Sana de la Academia Española de Dermatología y Venereología, nos dice cuanto tiempo podemos estar al sol sin dañar nuestra piel, tomando como referencia el lugar en el que nos encontramos, nuestro tipo de piel y el índice de radicación UV. UVLens, por su parte, es otra aplicación móvil que accede en tiempo real a los informes meteorológicos sobre radiación ultravioleta y nos dice el tiempo que podemos tomar el sol y qué factor de protección necesitamos en cada momento.\n\nEn cuanto a seguridad en la playa, existe una forma rápida de avisar a los servicios de emergencia a través de la aplicación Alpify. Con ella podemos enviar una alerta a los servicios de emergencia del 112 simplemente pulsando un botón rojo que aparece en la pantalla del móvil. De esta forma se envía información imprescindible para localizar al afectado como: las coordenadas en las que se sitúa, el porcentaje de batería del móvil y todos los datos que se hayan incluido previamente en la app como alergias u otro tipo de problemas médicos. Lo mejor es que se activa un localizador que envía nuestra posición cada tres minutos, muy útil también para no despistarse en una playa demasiado concurrida.\n\nPrecisamente para evitar que los más pequeños se pierdan, los wearables también facilitan que nuestra estancia en la playa sea más segura. El Ayuntamiento de Castellón de la Plana ofrece cada año una pulsera inteligente para poner a los pequeños y que contiene un chip con los datos de contacto de los familiares, algo que hace más fácil su localización en caso de que el niño se pierda en la playa.\n\nPero si necesitamos un artilugio más personal, existen los relojes infantiles Pikavú que permiten localizar al niño por geolocalización GPS. Es resistente a los golpes, al agua y lleva un cierre de seguridad que dificulta que el niño lo pierda. El reloj se comercializa junto a una cuota mensual que permite el uso de su plataforma.\n\nSi nos ponemos en el peor de los casos es crucial tener algunos conocimientos de primeros auxilios. Es importante haber asistido personalmente a algún cursillo previo sobre técnicas de reanimación, pero si no hay más alternativa podremos echar mano de la app Manual de Primeros Auxilios, que además de indicarnos estas prácticas, nos informa de lo que hay que hacer en caso de deshidratación, golpes de calor, esguinces o quemaduras, entre otros, que pueden estropear un feliz día de playa.\n\n\\textbf{Bañador, toalla y aplicaciones}\n\nSi lo que queremos es información puntual para saber a qué playa dirigirnos hay aplicaciones como iBeach donde encontraremos fotografías y una descripción de las playas con sus características, servicios, información sobre el oleaje, el viento o incluso la temperatura del mar. Playea, por su lado, es otra app que nos indica qué playas son óptimas para ir con niños, las que tienen bandera azul, cuales admiten el baño a perros, si cuentan con chiringuito o si son nudistas. Su buscador permite filtrar a través de 35 parámetros que harán que nos acerquemos lo máximo posible a encontrar la playa de nuestros sueños. […]\n\n\\credits{Texto adaptado de Miguel Ángel Corcobado, publicado en El País, el 12/07/2017.}",
     "items": [
       {
@@ -179,7 +191,8 @@
             "playas",
             "España"
           ],
-          "gabarito": "E"
+          "gabarito": "E",
+          "numero": "1"
         }
       },
       {
@@ -195,7 +208,8 @@
             "tecnología",
             "España"
           ],
-          "gabarito": "A"
+          "gabarito": "A",
+          "numero": "2"
         }
       },
       {
@@ -210,7 +224,8 @@
             "no solo sino que",
             "Torrevieja"
           ],
-          "gabarito": "C"
+          "gabarito": "C",
+          "numero": "3"
         }
       },
       {
@@ -226,7 +241,8 @@
             "chiringuito",
             "sinónimos"
           ],
-          "gabarito": "D"
+          "gabarito": "D",
+          "numero": "4"
         }
       },
       {
@@ -241,7 +257,8 @@
             "wifi",
             "playas"
           ],
-          "gabarito": "B"
+          "gabarito": "B",
+          "numero": "5"
         }
       },
       {
@@ -255,7 +272,8 @@
             "echar mano de",
             "recurrir a"
           ],
-          "gabarito": "E"
+          "gabarito": "E",
+          "numero": "6"
         }
       },
       {
@@ -271,7 +289,8 @@
             "regulación",
             "aeropuerto"
           ],
-          "gabarito": "B"
+          "gabarito": "B",
+          "numero": "7"
         }
       },
       {
@@ -286,7 +305,8 @@
             "ante",
             "conectores"
           ],
-          "gabarito": "E"
+          "gabarito": "E",
+          "numero": "8"
         }
       },
       {
@@ -300,11 +320,12 @@
             "u antes de o",
             "fonética"
           ],
-          "gabarito": "A"
+          "gabarito": "A",
+          "numero": "9"
         }
       },
       {
-        "latex": "\"Fuengirola se ha puesto las pilas en cuestión de experiencia de usuario, ya que además de ofrecer wifi a pie de toalla, ha incorporado taquillas tecnológicas donde los bañistas pueden guardar sus pertenencias y cargar sus móviles con la energía solar que nutre a éstas.\" (líneas 38-43)\n\nLeído el fragmento, se percibe que Fuengirola\n\n\\begin{choices}\n  \\choice ha ofrecido pilas recargables para los móviles de los bañistas.\n  \\choice se ha dispuesto a ofrecer wi fi, toallas y taquillas a los turistas.\n  \\CorrectChoice se ha dedicado a disponer comodidad y tecnología a los bañistas.\n  \\choice ha ofrecido móviles con energía solar a los turistas en la playa.\n  \\choice se ha preocupado por ofrecer toallas para los pies de los bañistas.\n\\end{choices}",
+        "latex": "\"Fuengirola se ha puesto las pilas en cuestión de experiencia de usuario, ya que además de ofrecer wifi a pie de toalla, ha incorporado taquillas tecnológicas donde los bañistas pueden guardar sus pertenencias y cargar sus móviles con la energía solar que nutre a éstas.\" (líneas 38-43)\n\nLeído el fragmento, se percibe que Fuengirola\n\n\\begin{choices}\n  \\choice ha ofrecido pilas recargables para los móviles de los bañistas.\n  \\choice se ha dispuesto a ofrecer wi fi, toallas y taquillas a los turistas.\n  \\CorrectChoice se ha dedicado a disponer comodidad y tecnología a los bañistas.\n  \\choice ha ofrecido móviles con energía solar a los turistas en la playa.\n  \\choice se ha preocupado por ofrecer toallas para los pies de los bañistas.\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  PROVA DISCURSIVA — PORTUGUÊS E LITERATURA BRASILEIRA\n% ═══════════════════════════════════════════════════════════════\n\n% ── Questão 1 — Texto 1 (Rosiska Darcy de Oliveira) ────────────",
         "tipo": "Múltipla Escolha",
         "gabarito": "C",
         "meta": {
@@ -317,7 +338,8 @@
             "tecnología",
             "bañistas"
           ],
-          "gabarito": "C"
+          "gabarito": "C",
+          "numero": "10"
         }
       }
     ],
@@ -335,6 +357,7 @@
   },
   {
     "isSet": true,
+    "isMcqSet": false,
     "baseLatex": "O movimento de mulheres é hoje o espelho onde se reflete a ambiguidade feminina, benfazejo espelho que, tendo o papel passivo de receber a imagem, tem o papel ativo de devolvê-la. Esse espelho deve permitir à mulher que nele se contempla reconhecer seu rosto fragmentado, que se faz e se refaz desses mesmos fragmentos, insolitamente reencontrados, e que tem, nesse reencontro, seu enigma e desafio. Só esse espelho poderá tornar a ambiguidade, inscrita nos fatos e transcrita no psiquismo feminino, visível àquela que a vive, abrindo assim caminho para sua transformação em ambivalência assumida, consciência da contradição, do sim e do não, das tensões que decorrem desse sim e desse não, da paralisia que se instala entre eles.\n\nA imagem refletida é a de quem tenta fazer coexistirem em si desejos que se anulam e se superpõem sem integração possível — alguém que se desloca de um desejo a outro, de uma existência a outra, de uma personalidade a outra, em um esforço desesperado de ser tudo ao mesmo tempo.\n\n\\credits{OLIVEIRA, Rosiska Darcy de. Elogio da diferença: o feminino emergente. 3.ed. São Paulo: Brasiliense, 1993. p. 88.}",
     "items": [
       {
@@ -368,7 +391,7 @@
         }
       },
       {
-        "latex": "Observe o sentido da seguinte passagem no Texto 1:\n\n\"benfazejo espelho que, tendo o papel passivo de receber a imagem, tem o papel ativo de devolvê-la.\"\n\nReescreva-a, empregando a oração reduzida de gerúndio na forma desenvolvida. Faça as modificações necessárias.",
+        "latex": "Observe o sentido da seguinte passagem no Texto 1:\n\n\"benfazejo espelho que, tendo o papel passivo de receber a imagem, tem o papel ativo de devolvê-la.\"\n\nReescreva-a, empregando a oração reduzida de gerúndio na forma desenvolvida. Faça as modificações necessárias.\n\n\n% ── Questão 2 — Texto 2 (Ana Paula Vosne Martins) ────────────",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
@@ -397,6 +420,7 @@
   },
   {
     "isSet": true,
+    "isMcqSet": false,
     "baseLatex": "É interessante observar como na história das ideias e dos saberes algumas noções ou definições parecem intocáveis, melhor dizendo, têm uma vitalidade histórica contínua, apesar das rupturas epistemológicas que ocorreram no campo das ciências naturais e humanas, especialmente neste nosso século. Ainda hoje prevalece a representação corpórea e sexualizada da mulher em oposição à representação cerebral e racionalizada do homem. Apesar de esta dicotomia não ser restrita aos espaços de produção do conhecimento científico, as dicotomias de gênero, fundadas na diferença sexual, têm uma história que se enraíza no processo de constituição dos saberes médico e científico sobre estas diferenças. Na verdade, acostumamo-nos com a representação corpórea e sexualizada da mulher através do sutil mecanismo ideológico da naturalização. Evidentemente não se trata de negar as diferenças sexuais, nem a corporalidade, mas sim de questionar a naturalização destas representações e explicitar seu conteúdo ideológico. Expressões como \"a mulher é o seu corpo\" ou \"tudo no corpo da mulher é sexualizado\" não são (ou dificilmente seriam) traduzíveis para a definição da masculinidade, não porque sejam representações de fatos naturais, mas porque são representações de uma construção humana e histórica de relações sociais fundadas sobre a oposição e a assimetria entre os dois sexos biológicos. [...]\n\nA 'descoberta' do sexo como um fenômeno natural e sua circunscrição ao domínio do saber científico e médico foram de grande importância para a consolidação do sistema sexo-gênero, porque enraizaram na Natureza as hierarquias e as desigualdades que dividiam a espécie humana em duas partes opostas, dois sexos cujos corpos eram radicalmente marcados pela diferença. No entanto, a equação sexo-gênero não foi utilizada para definir o homem da mesma forma como o foi para a mulher. A palavra homem nunca teve a mesma conotação sexual, nem mesmo quando anatomistas e fisiologistas do século XVIII iniciaram suas investigações sobre as distinções físicas entre os dois sexos. Muito pelo contrário, quase sempre, mesmo em nossos dias, o vocábulo homem significa humanidade, é sinônimo da espécie humana. Podemos dizer que no binômio sexo-gênero o homem foi dessexualizado, tornando-se um ideal, uma representação dos valores distintivos da espécie humana muito valorizada pelo ideário iluminista, como a razão, a inteligência e a moral. A antiga visão dualista que opunha corpo e mente ou carne e espírito foi reatualizada nos discursos médico e filosófico do século XVIII, articulando sexo e corpo à feminilidade em oposição à articulação razão e mente, predicativos da masculinidade.\n\n\\credits{MARTINS, Ana Paula Vosne. Visões do Feminino: a medicina da mulher nos séculos XIX e XX. Rio de Janeiro: Fiocruz, 2004. p. 107-111.}",
     "items": [
       {
@@ -429,7 +453,7 @@
         }
       },
       {
-        "latex": "Observe as frases abaixo e indique a informação acrescentada pelo emprego do advérbio \"ainda\" em (ii).\n\n(i) Hoje prevalece a representação corpórea e sexualizada da mulher.\n(ii) Ainda hoje prevalece a representação corpórea e sexualizada da mulher.",
+        "latex": "Observe as frases abaixo e indique a informação acrescentada pelo emprego do advérbio \"ainda\" em (ii).\n\n(i) Hoje prevalece a representação corpórea e sexualizada da mulher.\n(ii) Ainda hoje prevalece a representação corpórea e sexualizada da mulher.\n\n\n% ── Questão 3 e 4 — Texto 3 (Gregório de Matos) + Texto 4 (Carolina Maria de Jesus) ────────────",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
@@ -459,6 +483,7 @@
   },
   {
     "isSet": true,
+    "isMcqSet": false,
     "baseLatex": "\\begin{poem}\n\\verse{Anjo no nome, Angélica na cara!}\n\\verse{Isso é ser flor, e Anjo juntamente:}\n\\verse{Ser Angélica flor, e Anjo florente,}\n\\verse{Em quem, senão em vós, se uniformara:}\n\\verse{}\n\\verse{Quem vira uma tal flor, que a não cortara,}\n\\verse{De verde pé, da rama florescente;}\n\\verse{E quem um Anjo vira tão luzente,}\n\\verse{Que por seu Deus o não idolatrara?}\n\\verse{}\n\\verse{Se pois como Anjo sois dos meus altares,}\n\\verse{Foreis o meu Custódio, e a minha guarda,}\n\\verse{Livrara eu de diabólicos azares.}\n\\verse{}\n\\verse{Mas vejo, que por bela, e por galharda,}\n\\verse{Posto que os Anjos nunca dão pesares,}\n\\verse{Sois Anjo, que me tenta, e não me guarda.}\n\\end{poem}\n\n\\credits{MATOS, Gregório de. Poemas escolhidos. São Paulo: Cultrix, 1976, p.202.}\n\n2 de maio de 1958.\nEu não sou indolente. Há tempos que eu pretendia fazer o meu diario. Mas eu pensava que não tinha valor e achei que era perder tempo.\n… Eu fiz uma reforma em mim. Quero tratar as pessoas que eu conheço com mais atenção. Quero enviar um sorriso amavel as crianças e aos operarios.\n… Recebi intimação para comparecer as 8 horas da noite na Delegacia do 12. Passei o dia catando papel. A noite os meus pés doiam tanto que eu não podia andar. Começou chover. Eu ia na Delegacia, ia levar o José Carlos. A intimação era para ele. O José Carlos está com 9 anos.\n\n3 de maio.\n... Fui na feira da Rua Carlos de Campos, catar qualquer coisa. Ganhei bastante verdura. Mas ficou sem efeito, porque eu não tenho gordura. Os meninos estão nervosos por não ter o que comer.\n\n6 de maio.\nDe manhã não fui buscar agua. Mandei o João carregar. Eu estava contente. Recebi outra intimação. Eu estava inspirada e os versos eram bonitos e eu esqueci de ir na Delegacia. Era 11 horas quando eu recordei do convite do ilustre tenente da 12ª Delegacia.\n... O que eu aviso aos pretendentes a politica, é que o povo não tolera a fome. E preciso conhecer a fome para saber descrevê-la.\nEstão construindo um circo aqui na Rua Araguaia, Circo Theatro Nilo.\n\n9 de maio.\nEu cato papel, mas não gosto. Então eu penso: Faz de conta que eu estou sonhando.\n\n10 de maio.\nFui na delegacia e falei com o tenente. Que homem amavel! Se eu soubesse que ele era tão amavel, eu teria ido na delegacia na primeira intimação. (...) O tenente interessou-se pela educação dos meus filhos. Disse-me que a favela é um ambiente propenso, que as pessoas tem mais possibilidades de delinquir do que tornar-se util a patria e ao país. Pensei: Se ele sabe disso, porque não faz um relatorio e envia para os politicos? O senhor Janio Quadros, o Kubstchek e o Dr. Adhemar de Barros? Agora falar para mim, que sou uma pobre lixeira. Não posso resolver nem as minhas dificuldades.\n... O Brasil precisa ser dirigido por uma pessoa que já passou fome. A fome também é professora.\nQuem passa fome aprende a pensar no proximo, e nas crianças.\n\n11 de maio.\nDia das Mães. O céu está azul e branco. Parece que até a Natureza quer homenagear as mães que atualmente se sentem infeliz por não realisar os desejos dos seus filhos.\n... O sol vai galgando. Hoje não vai chover. Hoje é o nosso dia.\n... A D. Teresinha veio visitar-me. Ela deu-me 15 cruzeiros. Disse-me que era para a Vera ir no circo. Mas eu vou deixar o dinheiro para comprar pão amanhã, porque eu só tenho 4 cruzeiros.\n... Ontem eu ganhei metade de uma cabeça de porco no Frigorifico. Comemos a carne e guardei os ossos. E hoje puis os ossos para ferver. E com o caldo fiz as batatas. Os meus filhos estão sempre com fome. Quando eles passam muita fome eles não são exigentes no paladar.\n... Surgiu a noite. As estrelas estão ocultas. O barraco está cheio de pernilongos. Eu vou acender uma folha de jornal e passar pelas paredes. É assim que os favelados matam mosquitos.\n\n\\credits{DE JESUS, Carolina Maria. Quarto de despejo. Diário de uma favelada. São Paulo: Ática, 2007, p.29-31.}\n\nNota dos editores: Esta edição respeita fielmente a linguagem da autora, que muitas vezes contraria a gramática, mas que por isso mesmo traduz com realismo a forma de o povo enxergar e expressar seu mundo.",
     "items": [
       {
@@ -507,7 +532,7 @@
         }
       },
       {
-        "latex": "A ideia de feminino, expressa no texto de Carolina Maria de Jesus (Texto 4), distancia-se, em parte, do que é posto no último período do Texto 2. Explique por quê.",
+        "latex": "A ideia de feminino, expressa no texto de Carolina Maria de Jesus (Texto 4), distancia-se, em parte, do que é posto no último período do Texto 2. Explique por quê.\n\n\n% ── Questão 5 — Texto 5 (Álvares de Azevedo) + Texto 6 (Adélia Prado) ────────────",
         "tipo": "Discursiva",
         "gabarito": null,
         "meta": {
@@ -521,20 +546,6 @@
           ],
           "resposta": "O último período do Texto 2 apresenta a mulher sob o signo da corporalidade, sexualidade e feminilidade, em oposição à racionalidade atribuída ao homem — uma visão marcada pelo ideário iluminista do século XVIII que reduz a mulher ao seu corpo. Já no Texto 4, Carolina Maria de Jesus apresenta uma identidade feminina definida pelo trabalho, pela luta cotidiana, pela capacidade política de reflexão crítica (\"O Brasil precisa ser dirigido por uma pessoa que já passou fome\") e pela responsabilidade materna. Sua feminilidade não se reduz ao corpo ou à sexualidade, mas se afirma pela ação, pela escrita e pela resistência diante da miséria — distanciando-se da representação corpórea e passiva descrita no Texto 2."
         }
-      }
-    ],
-    "groups": [
-      {
-        "itemIndexes": [
-          0,
-          1
-        ]
-      },
-      {
-        "itemIndexes": [
-          2,
-          3
-        ]
       }
     ],
     "sharedMeta": {
@@ -551,6 +562,7 @@
   },
   {
     "isSet": true,
+    "isMcqSet": false,
     "baseLatex": "\\begin{poem}\n\\verse{Soneto}\n\\verse{}\n\\verse{Pálida, à luz da lâmpada sombria,}\n\\verse{Sobre o leito de flores reclinada,}\n\\verse{Como a lua por noite embalsamada,}\n\\verse{Entre as nuvens do amor ela dormia!}\n\\verse{}\n\\verse{Era a virgem do mar, na escuma fria}\n\\verse{Pela maré das águas embalada!}\n\\verse{Era um anjo entre nuvens d'alvorada}\n\\verse{Que em sonhos se banhava e se esquecia!}\n\\verse{}\n\\verse{Era mais bela! o seio palpitando...}\n\\verse{Negros olhos as pálpebras abrindo...}\n\\verse{Formas nuas no leito resvalando...}\n\\verse{}\n\\verse{Não te rias de mim, meu anjo lindo!}\n\\verse{Por ti as noites eu velei chorando,}\n\\verse{Por ti nos sonhos morrerei sorrindo!}\n\\end{poem}\n\n\\credits{AZEVEDO, Álvares de. Disponível em: <http://www.academia.org.br/academicos/alvares-de-azevedo/textos-escolhidos>. Acesso em: 11 ago. 2017.}\n\n\\begin{poem}\n\\verse{Com licença poética}\n\\verse{}\n\\verse{Quando nasci um anjo esbelto,}\n\\verse{desses que tocam trombeta, anunciou:}\n\\verse{vai carregar bandeira.}\n\\verse{Cargo muito pesado pra mulher,}\n\\verse{esta espécie ainda envergonhada.}\n\\verse{Aceito os subterfúgios que me cabem,}\n\\verse{sem precisar mentir.}\n\\verse{Não sou tão feia que não possa casar,}\n\\verse{acho o Rio de Janeiro uma beleza e}\n\\verse{ora sim, ora não, creio em parto sem dor.}\n\\verse{Mas o que sinto escrevo. Cumpro a sina.}\n\\verse{Inauguro linhagens, fundo reinos}\n\\verse{(dor não é amargura).}\n\\verse{Minha tristeza não tem pedigree,}\n\\verse{já a minha vontade de alegria,}\n\\verse{sua raiz vai ao meu mil avô.}\n\\verse{Vai ser coxo na vida, é maldição pra homem.}\n\\verse{Mulher é desdobrável. Eu sou.}\n\\end{poem}\n\n\\credits{PRADO, Adélia. Bagagem. São Paulo: Siciliano, 1993, p.11.}",
     "items": [
       {
