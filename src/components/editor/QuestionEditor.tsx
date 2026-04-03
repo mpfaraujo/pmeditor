@@ -339,6 +339,36 @@ function ensureSetQuestionsRoot(v: EditorView) {
   v.focus();
 }
 
+function isSetInGroupMode(state: any): boolean {
+  let found = false;
+  state.doc.descendants((node: any) => {
+    if (schema.nodes.question_group && node.type === schema.nodes.question_group) {
+      found = true;
+      return false;
+    }
+  });
+  return found;
+}
+
+function countGroups(state: any): number {
+  let count = 0;
+  state.doc.descendants((node: any) => {
+    if (schema.nodes.question_group && node.type === schema.nodes.question_group) count++;
+  });
+  return count;
+}
+
+function findCurrentGroup(state: any): { pos: number; node: any } | null {
+  const $from = state.selection.$from;
+  for (let d = $from.depth; d > 0; d--) {
+    const n = $from.node(d);
+    if (schema.nodes.question_group && n?.type === schema.nodes.question_group) {
+      return { pos: $from.before(d), node: n };
+    }
+  }
+  return null;
+}
+
 function addQuestionItem(v: EditorView) {
   if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
 
