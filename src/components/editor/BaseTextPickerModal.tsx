@@ -10,8 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { RichTextMiniEditor } from "./RichTextMiniEditor";
-import { listBaseTexts, createBaseText, getBaseText, listQuestionsByBaseText, type BaseTextItem, type LinkedQuestion } from "@/lib/baseTexts";
+import { listBaseTexts, getBaseText, listQuestionsByBaseText, type BaseTextItem, type LinkedQuestion } from "@/lib/baseTexts";
 import QuestionRenderer from "@/components/Questions/QuestionRenderer";
 import { ChevronDown, ChevronUp, Pencil, ExternalLink } from "lucide-react";
 
@@ -19,8 +18,6 @@ interface BaseTextPickerModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   disciplina?: string;
-  authorId?: string;
-  authorName?: string;
   onSelect: (baseTextId: string, tag: string) => void;
 }
 
@@ -100,8 +97,6 @@ export function BaseTextPickerModal({
   open,
   onOpenChange,
   disciplina,
-  authorId,
-  authorName,
   onSelect,
 }: BaseTextPickerModalProps) {
   // ── Aba buscar ──────────────────────────────────────────────────────────────
@@ -127,49 +122,6 @@ export function BaseTextPickerModal({
     if (!open) return;
     doSearch();
   }, [open, doSearch]);
-
-  // ── Aba criar novo ──────────────────────────────────────────────────────────
-  const [newTitulo, setNewTitulo] = useState("");
-  const [newAutor, setNewAutor] = useState("");
-  const [newDisciplina, setNewDisciplina] = useState(disciplina ?? "");
-  const [newTema, setNewTema] = useState("");
-  const [newGenero, setNewGenero] = useState("");
-  const [newContent, setNewContent] = useState<any>(null);
-  const [creating, setCreating] = useState(false);
-  const [createError, setCreateError] = useState<string | null>(null);
-
-  const handleCreate = async () => {
-    if (!newContent) {
-      setCreateError("Escreva o conteúdo do texto antes de salvar.");
-      return;
-    }
-    setCreating(true);
-    setCreateError(null);
-
-    const id = crypto.randomUUID();
-    const result = await createBaseText({
-      id,
-      content: newContent,
-      titulo: newTitulo.trim() || undefined,
-      autor: newAutor.trim() || undefined,
-      disciplina: newDisciplina.trim() || undefined,
-      tema: newTema.trim() || undefined,
-      genero: newGenero.trim() || undefined,
-      author: authorId ? { id: authorId, name: authorName } : undefined,
-    });
-
-    setCreating(false);
-
-    if (result.success) {
-      onSelect(result.id, result.tag);
-      onOpenChange(false);
-    } else if (result.duplicate && result.existing_id && result.existing_tag) {
-      onSelect(result.existing_id, result.existing_tag);
-      onOpenChange(false);
-    } else {
-      setCreateError(result.error ?? "Erro ao salvar texto base.");
-    }
-  };
 
   const handleSelect = (item: BaseTextItem) => {
     onSelect(item.id, item.tag);
@@ -276,47 +228,14 @@ return (
           </TabsContent>
 
           {/* ── Criar novo ── */}
-          <TabsContent value="novo" className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="col-span-2 space-y-1">
-                <label className="text-sm font-medium">Conteúdo do texto <span className="text-destructive">*</span></label>
-                <RichTextMiniEditor
-                  value={newContent}
-                  onChange={setNewContent}
-                  expandable={false}
-                  expandedMode={true}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Título</label>
-                <Input placeholder="Ex: Texto I" value={newTitulo} onChange={(e) => setNewTitulo(e.target.value)} />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Autor</label>
-                <Input placeholder="Ex: Machado de Assis" value={newAutor} onChange={(e) => setNewAutor(e.target.value)} />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Disciplina</label>
-                <Input placeholder="Ex: Língua Portuguesa" value={newDisciplina} onChange={(e) => setNewDisciplina(e.target.value)} />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Tema</label>
-                <Input placeholder="Ex: meio ambiente, IA" value={newTema} onChange={(e) => setNewTema(e.target.value)} />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Gênero</label>
-                <Input placeholder="Ex: crônica, poema, artigo" value={newGenero} onChange={(e) => setNewGenero(e.target.value)} />
-              </div>
-            </div>
-
-            {createError && (
-              <p className="text-sm text-destructive">{createError}</p>
-            )}
-
-            <div className="flex justify-end gap-2 pt-1">
-              <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
-              <Button onClick={handleCreate} disabled={creating}>
-                {creating ? "Salvando…" : "Salvar e vincular"}
+          <TabsContent value="novo">
+            <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
+              <p className="text-sm text-muted-foreground">
+                O editor completo de textos base abre em uma nova aba.<br />
+                Após salvar, volte aqui e busque o texto pelo conteúdo ou disciplina.
+              </p>
+              <Button onClick={() => window.open("/editor/texto-base/novo", "_blank")}>
+                Abrir editor de texto base
               </Button>
             </div>
           </TabsContent>

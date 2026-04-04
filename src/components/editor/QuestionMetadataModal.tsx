@@ -571,8 +571,6 @@ export function QuestionMetadataModal({
         open={baseTextPickerOpen}
         onOpenChange={setBaseTextPickerOpen}
         disciplina={value.disciplina}
-        authorId={value.author?.id}
-        authorName={value.author?.name}
         onSelect={(id, tag) => {
           addBaseText(id, tag);
         }}

@@ -1082,8 +1082,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
           open={baseTextPickerOpen}
           onOpenChange={setBaseTextPickerOpen}
           disciplina={meta.disciplina}
-          authorId={meta.author?.id}
-          authorName={meta.author?.name}
           onSelect={(id, _tag) => {
             setMeta((m) => {
               const prev = Array.isArray(m.baseTextIds) && m.baseTextIds.length > 0
