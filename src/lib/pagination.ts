@@ -1172,14 +1172,17 @@ export function distributeQuestionsOptimized(
       if (!rebuilt) return null;
 
       return {
-        items: rebuilt.items.map((fragItem) => ({
-          ...fragItem,
-          q: qIndex,
-          from: fragItem.from + fromBlockIndex,
-          to: fragItem.to + fromBlockIndex,
-          first: false,
-          textBlockCount: split.textBlockCount,
-        })),
+        items: rebuilt.items.map((fragItem) => {
+          const fi = fragItem as Extract<LayoutItem, { kind: "frag" }>;
+          return {
+            ...fi,
+            q: qIndex,
+            from: fi.from + fromBlockIndex,
+            to: fi.to + fromBlockIndex,
+            first: false,
+            textBlockCount: split.textBlockCount,
+          };
+        }),
         heights: rebuilt.heights,
       };
     };
@@ -1188,7 +1191,7 @@ export function distributeQuestionsOptimized(
     let currentCol = targetCol;
 
     for (let k = 0; k < frag.items.length; k++) {
-      const item = frag.items[k];
+      const item = frag.items[k] as Extract<LayoutItem, { kind: "frag" }>;
       const h = frag.heights[k];
       const isLastFragment = k === frag.items.length - 1;
 
