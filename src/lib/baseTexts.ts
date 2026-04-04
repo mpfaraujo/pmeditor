@@ -139,6 +139,31 @@ export async function linkBaseTexts(
   }
 }
 
+export async function updateBaseText(payload: {
+  id: string;
+  content?: any;
+  autor?: string | null;
+  titulo?: string | null;
+  disciplina?: string | null;
+  tema?: string | null;
+  genero?: string | null;
+  movimento?: string | null;
+  ano_pub?: number | null;
+  tags?: string[] | null;
+  source?: any | null;
+}): Promise<{ success: true; id: string; tag: string; updatedAt: string } | { success: false; error?: string }> {
+  try {
+    const res = await fetch(`${BT_BASE}/update.php`, {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify(payload),
+    });
+    return await res.json();
+  } catch (e: any) {
+    return { success: false, error: e.message };
+  }
+}
+
 export async function createBaseText(payload: {
   id: string;
   content: any;

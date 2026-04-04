@@ -13,7 +13,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { RichTextMiniEditor } from "./RichTextMiniEditor";
 import { listBaseTexts, createBaseText, getBaseText, listQuestionsByBaseText, type BaseTextItem, type LinkedQuestion } from "@/lib/baseTexts";
 import QuestionRenderer from "@/components/Questions/QuestionRenderer";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, ExternalLink } from "lucide-react";
 
 interface BaseTextPickerModalProps {
   open: boolean;
@@ -31,7 +31,7 @@ function wrapBaseTextForRender(content: any) {
   };
 }
 
-function BaseTextPreview({ id }: { id: string }) {
+function BaseTextPreview({ id, item }: { id: string; item: BaseTextItem }) {
   const [content, setContent] = useState<any>(null);
   const [questions, setQuestions] = useState<LinkedQuestion[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,13 +49,25 @@ function BaseTextPreview({ id }: { id: string }) {
 
   return (
     <div className="space-y-3">
-      {content ? (
-        <div className="border rounded bg-white p-3 max-h-64 overflow-y-auto text-sm print-mode">
-          <QuestionRenderer content={wrapBaseTextForRender(content)} />
-        </div>
-      ) : (
-        <p className="text-xs text-muted-foreground">Sem conteúdo.</p>
-      )}
+      <div className="flex items-start justify-between gap-2">
+        {content ? (
+          <div className="border rounded bg-white p-3 max-h-64 overflow-y-auto text-sm print-mode flex-1">
+            <QuestionRenderer content={wrapBaseTextForRender(content)} />
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground flex-1">Sem conteúdo.</p>
+        )}
+        <Button
+          size="sm"
+          variant="ghost"
+          title="Editar texto base"
+          className="shrink-0"
+          onClick={() => window.open(`/editor/texto-base/${item.id}`, "_blank")}
+        >
+          <Pencil className="h-3.5 w-3.5" />
+          <ExternalLink className="h-3 w-3 ml-0.5 opacity-60" />
+        </Button>
+      </div>
 
       <div>
         <p className="text-xs font-semibold text-muted-foreground mb-1">
@@ -168,7 +180,7 @@ export function BaseTextPickerModal({
     setExpandedId((prev) => (prev === id ? null : id));
   };
 
-  return (
+return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
@@ -255,7 +267,7 @@ export function BaseTextPickerModal({
                   {/* Prévia expandida */}
                   {expandedId === item.id && (
                     <div className="border-t px-3 pb-3 pt-2 bg-slate-50">
-                      <BaseTextPreview id={item.id} />
+                      <BaseTextPreview id={item.id} item={item} />
                     </div>
                   )}
                 </div>

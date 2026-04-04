@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, User, Users, FileText, ClipboardList, ShieldCheck, BookOpen } from "lucide-react";
+import { ArrowLeft, User, Users, FileText, ClipboardList, ShieldCheck, BookOpen, AlignLeft } from "lucide-react";
 import Link from "next/link";
 import { ProfileTab } from "@/components/minha-area/ProfileTab";
 import { TurmasTab } from "@/components/minha-area/TurmasTab";
@@ -92,6 +92,17 @@ function MinhaAreaContent() {
           </div>
           <Button variant="outline" size="sm" asChild>
             <Link href="/editor/assuntos">Propor ajustes</Link>
+          </Button>
+        </div>
+
+        {/* Textos base */}
+        <div className="mb-6 p-4 border border-slate-200 bg-slate-50 rounded-xl flex items-center justify-between">
+          <div className="flex items-center gap-2 text-slate-600">
+            <AlignLeft className="h-4 w-4" />
+            <span className="text-sm">Gerencie os textos base vinculados às suas questões.</span>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/editor/textos-base">Textos base</Link>
           </Button>
         </div>
 

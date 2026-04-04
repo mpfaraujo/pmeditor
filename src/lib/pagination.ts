@@ -123,6 +123,30 @@ export interface PaginationConfig {
 // Altura reservada para o footer (margin + padding + texto): ~1.1cm = 31px
 const FOOTER_HEIGHT = 35;
 
+function isPaginationDebugEnabled(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage?.getItem("pmeditor:pagination-debug") === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writePaginationDebug(payload: any) {
+  if (!isPaginationDebugEnabled() || typeof window === "undefined") return;
+  (window as any).__PMEDITOR_PAGINATION_DEBUG__ = payload;
+  console.log("[pagination-debug]", payload);
+}
+
+function appendPaginationDebugTrace(entry: any) {
+  if (!isPaginationDebugEnabled() || typeof window === "undefined") return;
+  const key = "__PMEDITOR_PAGINATION_DEBUG_TRACE__";
+  const current = Array.isArray((window as any)[key]) ? (window as any)[key] : [];
+  current.push(entry);
+  (window as any)[key] = current;
+  console.log("[pagination-debug:trace]", entry);
+}
+
 export function calculateFirstPageCapacity(
   firstPageElement: HTMLElement,
   questionsContainerElement: HTMLElement,
@@ -291,6 +315,14 @@ function measureSplitInfo(
 
   const { blocks: blockEls, textBlockCount } = pickBlockElementsFromWrapper(wrapper, expandOptions);
   const blocksHeights = blockEls.map((b) => measureBlockHeight(b));
+  for (let i = 0; i < blockEls.length - 1; i++) {
+    const currentRect = blockEls[i].getBoundingClientRect();
+    const nextRect = blockEls[i + 1].getBoundingClientRect();
+    const gap = Math.max(0, Math.ceil(nextRect.top - currentRect.bottom));
+    if (gap > 0) {
+      blocksHeights[i] += gap;
+    }
+  }
 
   const contentBlocksSum = blocksHeights.reduce((a, b) => a + b, 0);
 
@@ -300,6 +332,18 @@ function measureSplitInfo(
   // Prefix = tudo que não é blocos; mas tira a margem-bottom do wrapper
   // (para não "cobrar" essa margem em todo fragmento).
   const prefixHeight = Math.max(0, total - contentBlocksSum - mb);
+
+  appendPaginationDebugTrace({
+    type: "measureSplitInfo",
+    index,
+    expandOptions,
+    total,
+    suffixHeight: mb,
+    prefixHeight,
+    textBlockCount,
+    blocksHeights,
+    blockCount: blockEls.length,
+  });
 
   return { prefixHeight, suffixHeight: mb, blocksHeights, textBlockCount };
 }
@@ -369,6 +413,19 @@ if (used + h > cap + FIT_EPS) break;
 
     first = false;
   }
+
+  appendPaginationDebugTrace({
+    type: "buildFragmentsForQuestion",
+    qIndex,
+    capFirstFrag,
+    capNextFrag,
+    prefixHeight,
+    suffixHeight,
+    textBlockCount,
+    blocksHeights,
+    items,
+    heights,
+  });
 
   return { items, heights };
 }
@@ -966,6 +1023,8 @@ export function distributeQuestionsOptimized(
    * Usa a mesma lógica de buildFragmentsForQuestion.
    */
   function placeWithFragmentation(qIndex: number, fullH: number): void {
+    const SLOT_FIT_EPS = 10;
+
     let split = measureSplitInfo(measureItemsRef, qIndex);
     if (!split) {
       // ALTERAÇÃO DOCUMENTADA:
@@ -996,6 +1055,18 @@ export function distributeQuestionsOptimized(
       }
       return built;
     };
+
+    const isTinyInitialFragment = (
+      built: { items: LayoutItem[]; heights: number[] } | null
+    ) => {
+      if (!built || built.items.length < 2) return false;
+      return built.heights[0] / Math.max(fullH, 1) < 0.30;
+    };
+
+    const isFreshStart = (
+      page: PageSlots,
+      col: "coluna1" | "coluna2"
+    ) => col === "coluna1" && page.coluna1.items.length === 0 && page.coluna2.items.length === 0;
 
     // Encontra o melhor slot para começar a fragmentação
     let targetPage = pages[pages.length - 1];
@@ -1031,12 +1102,15 @@ export function distributeQuestionsOptimized(
         : otherPageCapacity;
 
     let frag = tryBuildFragment(split, capHere, capNext);
+    if (frag && isTinyInitialFragment(frag) && !isFreshStart(targetPage, targetCol)) {
+      frag = null;
+    }
 
     if (!frag && columns === 2 && targetCol === "coluna1" && targetPage.coluna2.remaining > 0) {
       const col2CapHere = targetPage.coluna2.remaining;
       const col2CapNext = otherPageCapacity;
       const retryCol2 = tryBuildFragment(split, col2CapHere, col2CapNext);
-      if (retryCol2) {
+      if (retryCol2 && !(isTinyInitialFragment(retryCol2) && !isFreshStart(targetPage, "coluna2"))) {
         targetCol = "coluna2";
         capHere = col2CapHere;
         frag = retryCol2;
@@ -1079,13 +1153,47 @@ export function distributeQuestionsOptimized(
       slot.remaining = 0;
     };
 
+    const buildRemainingFromBlock = (
+      fromBlockIndex: number,
+      capFirst: number,
+      capNextLocal: number
+    ) => {
+      const remainingSplit: SplitInfo = {
+        prefixHeight: 0,
+        suffixHeight: split.suffixHeight,
+        blocksHeights: split.blocksHeights.slice(fromBlockIndex),
+        textBlockCount:
+          split.textBlockCount == null
+            ? undefined
+            : Math.max(0, split.textBlockCount - fromBlockIndex),
+      };
+
+      const rebuilt = tryBuildFragment(remainingSplit, capFirst, capNextLocal);
+      if (!rebuilt) return null;
+
+      return {
+        items: rebuilt.items.map((fragItem) => ({
+          ...fragItem,
+          q: qIndex,
+          from: fragItem.from + fromBlockIndex,
+          to: fragItem.to + fromBlockIndex,
+          first: false,
+          textBlockCount: split.textBlockCount,
+        })),
+        heights: rebuilt.heights,
+      };
+    };
+
+    let currentPage = targetPage;
+    let currentCol = targetCol;
+
     for (let k = 0; k < frag.items.length; k++) {
       const item = frag.items[k];
       const h = frag.heights[k];
       const isLastFragment = k === frag.items.length - 1;
 
       if (k === 0) {
-        const slot = targetCol === "coluna1" ? targetPage.coluna1 : targetPage.coluna2;
+        const slot = currentCol === "coluna1" ? currentPage.coluna1 : currentPage.coluna2;
         slot.items.push(item);
         slot.remaining -= h;
         slot.usedHeight += h;
@@ -1093,18 +1201,40 @@ export function distributeQuestionsOptimized(
           sealFragmentSlot(slot);
         }
       } else {
-        // Fragmentos seguintes: tenta coluna2 ou nova página
+        // Fragmentos seguintes: avançam para o próximo slot real do fluxo
         let placed = false;
 
-        // Tenta coluna2 da página atual se disponível
-        if (columns === 2) {
-          const lastP = pages[pages.length - 1];
-          if (lastP.coluna2.remaining >= h) {
-            lastP.coluna2.items.push(item);
-            lastP.coluna2.remaining -= h;
-            lastP.coluna2.usedHeight += h;
+        if (columns === 2 && currentCol === "coluna1") {
+          if (
+            currentPage.coluna2.remaining > 0 &&
+            currentPage.coluna2.remaining + SLOT_FIT_EPS < h
+          ) {
+            const rebuilt = buildRemainingFromBlock(item.from - 1, currentPage.coluna2.remaining, otherPageCapacity);
+            if (rebuilt) {
+              frag.items.splice(k, frag.items.length - k, ...rebuilt.items);
+              frag.heights.splice(k, frag.heights.length - k, ...rebuilt.heights);
+              const rebuiltItem = frag.items[k];
+              const rebuiltHeight = frag.heights[k];
+              const rebuiltIsLast = k === frag.items.length - 1;
+
+              currentPage.coluna2.items.push(rebuiltItem);
+              currentPage.coluna2.remaining -= rebuiltHeight;
+              currentPage.coluna2.usedHeight += rebuiltHeight;
+              currentCol = "coluna2";
+              if (!rebuiltIsLast) {
+                sealFragmentSlot(currentPage.coluna2);
+              }
+              placed = true;
+            }
+          }
+
+          if (!placed && currentPage.coluna2.remaining + SLOT_FIT_EPS >= h) {
+            currentPage.coluna2.items.push(item);
+            currentPage.coluna2.remaining -= h;
+            currentPage.coluna2.usedHeight += h;
+            currentCol = "coluna2";
             if (!isLastFragment) {
-              sealFragmentSlot(lastP.coluna2);
+              sealFragmentSlot(currentPage.coluna2);
             }
             placed = true;
           }
@@ -1112,7 +1242,32 @@ export function distributeQuestionsOptimized(
 
         if (!placed) {
           const newP = newPage(pages.length);
+          const rebuilt = buildRemainingFromBlock(
+            item.from - 1,
+            newP.coluna1.remaining,
+            columns === 2 ? newP.coluna2.remaining : otherPageCapacity
+          );
+          if (rebuilt) {
+            pages.push(newP);
+            currentPage = newP;
+            currentCol = "coluna1";
+            frag.items.splice(k, frag.items.length - k, ...rebuilt.items);
+            frag.heights.splice(k, frag.heights.length - k, ...rebuilt.heights);
+            const rebuiltItem = frag.items[k];
+            const rebuiltHeight = frag.heights[k];
+            const rebuiltIsLast = k === frag.items.length - 1;
+
+            newP.coluna1.items.push(rebuiltItem);
+            newP.coluna1.remaining -= rebuiltHeight;
+            newP.coluna1.usedHeight += rebuiltHeight;
+            if (!rebuiltIsLast) {
+              sealFragmentSlot(newP.coluna1);
+            }
+            continue;
+          }
           pages.push(newP);
+          currentPage = newP;
+          currentCol = "coluna1";
           newP.coluna1.items.push(item);
           newP.coluna1.remaining -= h;
           newP.coluna1.usedHeight += h;
@@ -1168,6 +1323,10 @@ export function calculatePageLayout(
   },
   questionCount: number
 ): PageLayout[] | null {
+  if (isPaginationDebugEnabled() && typeof window !== "undefined") {
+    (window as any).__PMEDITOR_PAGINATION_DEBUG_TRACE__ = [];
+  }
+
   if (
     !refs.firstPageRef ||
     !refs.firstQuestoesRef ||
@@ -1216,7 +1375,7 @@ export function calculatePageLayout(
   };
 
   if (config.optimizeLayout) {
-    return adjustRemaining(distributeQuestionsOptimized(
+    const layout = adjustRemaining(distributeQuestionsOptimized(
       questionCount,
       questionHeights,
       firstPageCapacity,
@@ -1225,9 +1384,27 @@ export function calculatePageLayout(
       refs.measureItemsRef,
       config.setGroups ?? []
     ));
+    writePaginationDebug({
+      mode: "optimized",
+      questionCount,
+      firstPageCapacity,
+      otherPageCapacity,
+      rawHeights,
+      questionHeights,
+      setGroups: config.setGroups ?? [],
+      pages: layout.map((p, pageIndex) => ({
+        pageIndex,
+        coluna1: p.coluna1,
+        coluna2: p.coluna2,
+        remainingHeight: p.remainingHeight,
+        col1Remaining: p.col1Remaining,
+        col2Remaining: p.col2Remaining,
+      })),
+    });
+    return layout;
   }
 
-  return adjustRemaining(distributeQuestionsAcrossPages(
+  const layout = adjustRemaining(distributeQuestionsAcrossPages(
     questionCount,
     questionHeights,
     firstPageCapacity,
@@ -1235,4 +1412,21 @@ export function calculatePageLayout(
     config.columns,
     refs.measureItemsRef
   ));
+  writePaginationDebug({
+    mode: "linear",
+    questionCount,
+    firstPageCapacity,
+    otherPageCapacity,
+    rawHeights,
+    questionHeights,
+    pages: layout.map((p, pageIndex) => ({
+      pageIndex,
+      coluna1: p.coluna1,
+      coluna2: p.coluna2,
+      remainingHeight: p.remainingHeight,
+      col1Remaining: p.col1Remaining,
+      col2Remaining: p.col2Remaining,
+    })),
+  });
+  return layout;
 }

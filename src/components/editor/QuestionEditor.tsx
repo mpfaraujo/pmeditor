@@ -44,6 +44,7 @@ type QuestionEditorProps = {
     metadata: QuestionMetadataV1;
     content: any;
   };
+  overrideSave?: (doc: any) => Promise<void>;
 };
 
 const LINE_LIMIT = 10;
@@ -480,7 +481,7 @@ function writeItemMetaAtPos(v: EditorView, pos: number, patch: { assunto?: strin
 
 /* ---------- component ---------- */
 
-export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: QuestionEditorProps) {
+export function QuestionEditor({ modal, onSaved, onNewRequest, initial, overrideSave }: QuestionEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const { user, isLoggedIn, defaultDisciplina, isAdmin } = useAuth();
   const [changeDescription, setChangeDescription] = useState("");
@@ -800,6 +801,12 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial }: Questi
   };
 
   const handleSave = () => {
+    if (overrideSave) {
+      if (!view) return;
+      const doc = ensureImageIds(view.state.doc, view.state.schema);
+      void overrideSave(doc.toJSON());
+      return;
+    }
     if (!isLoggedIn) {
       window.alert("Faça login para salvar questões.");
       return;

@@ -17,6 +17,7 @@ import {
   Save,
   RefreshCw,
 } from "lucide-react";
+import DevDebugTools from "@/components/dev/DevDebugTools";
 import { LogoPicker } from "@/components/editor/LogoPicker";
 import { ReorderModal } from "@/components/prova/ReorderModal";
 import { SalvarProvaDialog } from "@/components/prova/SalvarProvaDialog";
@@ -37,6 +38,11 @@ import {
   type ProvaTypeConfig,
   type Alt as AltGera,
 } from "@/lib/GeraTiposDeProva";
+import {
+  measureQuestionHeights,
+  calculateFirstPageCapacity,
+  calculateOtherPageCapacity,
+} from "@/lib/pagination";
 
 import { getBaseText } from "@/lib/baseTexts";
 import "./prova.css";
@@ -184,6 +190,29 @@ function buildCombinedBaseTextNode(
   return { type: "base_text", content: combinedContent };
 }
 
+type BaseTextSection = {
+  id: string;
+  tag: string;
+  blockCount: number;
+};
+
+function buildBaseTextSections(
+  ids: string[],
+  cache: Map<string, PMNode>
+): BaseTextSection[] {
+  if (ids.length <= 1) return [];
+
+  return ids.flatMap((id) => {
+    const bt = cache.get(id);
+    if (!bt) return [];
+    const btContent = (bt as any).content ?? bt;
+    const nodes: PMNode[] = Array.isArray(btContent.content) ? btContent.content : [];
+    const tag = (bt as any).tag;
+    if (!tag || nodes.length === 0) return [];
+    return [{ id, tag, blockCount: nodes.length }];
+  });
+}
+
 function injectBaseTextIntoSetDoc(content: any, baseTextNode: PMNode): PMNode | null {
   const doc = safeParseDoc(content);
   if (!doc) return null;
@@ -209,12 +238,6 @@ function stripBaseTextFromSetDoc(content: any): PMNode | null {
   };
 }
 
-function buildBaseTextLabelFromTags(tags: string[]): string | null {
-  const clean = tags.filter((tag) => typeof tag === "string" && tag.trim() !== "");
-  if (clean.length === 0) return null;
-  if (clean.length === 1) return `Texto ${clean[0]}`;
-  return `Textos ${clean.join(", ")}`;
-}
 
 function buildItemDoc(item: PMNode | null): PMNode | null {
   if (!item) return null;
@@ -255,6 +278,7 @@ export default function MontarProvaPage() {
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
   const [salvarDialogOpen, setSalvarDialogOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [devMontarDebugEnabled, setDevMontarDebugEnabled] = useState(false);
 
   // Estados para tipos de prova
   const [numTipos, setNumTipos] = useState<number>(2);
@@ -275,6 +299,15 @@ export default function MontarProvaPage() {
 
   // Larguras de imagens comprometidas (dispara re-paginação no pointerup)
   const [committedImageWidths, setCommittedImageWidths] = useState<Record<string, number>>({});
+  const [hiddenBaseTextLabels, setHiddenBaseTextLabels] = useState<Set<string>>(new Set());
+  const makeBaseTextLabelKey = (scopeKey: string, textId: string) => `${scopeKey}::${textId}`;
+  const toggleBaseTextLabel = (scopeKey: string, textId: string) =>
+    setHiddenBaseTextLabels(prev => {
+      const next = new Set(prev);
+      const key = makeBaseTextLabelKey(scopeKey, textId);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
 
   const handleImageResizeCommit = (id: string, width: number) =>
     setCommittedImageWidths(prev => ({ ...prev, [id]: width }));
@@ -456,22 +489,10 @@ export default function MontarProvaPage() {
         const allLoaded = btIds.every(id => baseTextCache.has(id));
 
         if (allLoaded) {
-          // Concatena todos os textos base em sequência dentro de um único base_text
-          const combinedContent: PMNode[] = [];
-          for (const id of btIds) {
-            const bt = baseTextCache.get(id)!;
-            const btContent = (bt as any).content ?? bt;
-            const nodes: PMNode[] = Array.isArray(btContent.content) ? btContent.content : [];
-            combinedContent.push(...nodes);
-          }
-          const baseTextLabel = buildBaseTextLabelFromTags(
-            btIds
-              .map((id) => (baseTextCache.get(id) as any)?.tag)
-              .filter((tag): tag is string => typeof tag === "string" && tag !== "")
-          );
-          const baseTextNode: PMNode = { type: "base_text", content: combinedContent };
+          const baseTextNode = buildCombinedBaseTextNode(btIds, baseTextCache);
+          const baseTextSections = buildBaseTextSections(btIds, baseTextCache);
 
-          if (group.length >= 2) {
+          if (baseTextNode && group.length >= 2) {
             // 2+ questões: __setBase separado com banner + questões individuais
             const baseDoc: PMNode = {
               type: "doc",
@@ -484,11 +505,11 @@ export default function MontarProvaPage() {
               __setBase: {
                 parentId: btKey,
                 headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.`,
-                ...(baseTextLabel ? { labelText: baseTextLabel } : null),
+                textSections: baseTextSections,
               },
             });
             for (const idx of group) out.push({ ...qs[idx], __set: { parentId: btKey } });
-          } else {
+          } else if (baseTextNode) {
             // 1 questão: base_text dentro do doc → atômico
             const q0 = qs[group[0]];
             const doc0 = safeParseDoc(q0?.content);
@@ -499,7 +520,9 @@ export default function MontarProvaPage() {
                 return { ...n, content: [baseTextNode, ...(n.content ?? [])] };
               }),
             };
-            out.push({ ...q0, content: newDoc });
+            out.push({ ...q0, content: newDoc, __baseTextSections: baseTextSections });
+          } else {
+            for (const idx of group) out.push(qs[idx]);
           }
         } else {
           // Cache ainda não carregou — passa sem texto base, memo re-executa quando chegar
@@ -522,11 +545,6 @@ export default function MontarProvaPage() {
       const tipoMeta = (q.metadata as any)?.tipo ?? "";
       const isEssaySet = tipoMeta.toLowerCase().includes("discursiva") ||
         (!tipoMeta && !items.some((it) => (it.content ?? []).some((n) => n?.type === "options")));
-      const baseTextLabel = buildBaseTextLabelFromTags(
-        btIds
-          .map((id) => (baseTextCache.get(id) as any)?.tag)
-          .filter((tag): tag is string => typeof tag === "string" && tag !== "")
-      );
 
       const baseDoc = buildBaseDoc(baseText);
       const selectedIdxs = Array.isArray(sel.itemIndexes) ? sel.itemIndexes : [];
@@ -570,6 +588,7 @@ export default function MontarProvaPage() {
           }
 
           const baseTextNode = buildCombinedBaseTextNode(btIds, baseTextCache);
+          const baseTextSections = buildBaseTextSections(btIds, baseTextCache);
           const sharedBaseDoc = buildBaseDoc(baseTextNode);
 
           if (sharedBaseDoc) {
@@ -580,7 +599,7 @@ export default function MontarProvaPage() {
               __setBase: {
                 parentId: btKey,
                 headerText: `Use o texto a seguir para responder às próximas ${group.length} questões.`,
-                ...(baseTextLabel ? { labelText: baseTextLabel } : null),
+                textSections: baseTextSections,
               },
             });
           }
@@ -610,12 +629,13 @@ export default function MontarProvaPage() {
           const allEssayLoaded = essayBtIds.every((id: string) => baseTextCache.has(id));
           if (allEssayLoaded) {
             const baseTextNode = buildCombinedBaseTextNode(essayBtIds, baseTextCache);
+            const baseTextSections = buildBaseTextSections(essayBtIds, baseTextCache);
             const newDoc = baseTextNode ? injectBaseTextIntoSetDoc(q.content, baseTextNode) : null;
-            out.push({ ...q, content: newDoc, ...(baseTextLabel ? { __baseTextLabel: baseTextLabel } : null) });
+            out.push({ ...q, content: newDoc, __baseTextSections: baseTextSections });
             continue;
           }
         }
-        out.push({ ...q, ...(baseTextLabel ? { __baseTextLabel: baseTextLabel } : null) });
+        out.push({ ...q, __baseTextSections: buildBaseTextSections(essayBtIds, baseTextCache) });
         continue;
       }
 
@@ -739,6 +759,178 @@ const { pages, refs } = usePagination({
   ],
 });
 
+  useEffect(() => {
+    if (!devMontarDebugEnabled || typeof window === "undefined") return;
+
+    const rawHeights = refs.measureItemsRef.current
+      ? measureQuestionHeights(refs.measureItemsRef.current)
+      : [];
+    const questionHeights = rawHeights.map((h, i) => h + (committedSpacers.get(`q${i}`) ?? 0));
+    const wrapperDebug = refs.measureItemsRef.current
+      ? Array.from(refs.measureItemsRef.current.querySelectorAll(".questao-item-wrapper")).map((wrapper, idx) => {
+          const el = wrapper as HTMLElement;
+          const content = el.querySelector(".questao-conteudo") as HTMLElement | null;
+          const qTexts = content
+            ? Array.from(content.querySelectorAll(".question-text")) as HTMLElement[]
+            : [];
+          const qOptions = content?.querySelector(".question-options") as HTMLElement | null;
+          const questionTextBlocks = qTexts.map((qt, textIdx) => ({
+            textIdx,
+            children: Array.from(qt.children).map((child, childIdx) => {
+              const childEl = child as HTMLElement;
+              const rect = childEl.getBoundingClientRect();
+              return {
+                childIdx,
+                tagName: childEl.tagName,
+                top: Math.ceil(rect.top),
+                bottom: Math.ceil(rect.bottom),
+                height: Math.ceil(rect.height),
+                text: (childEl.textContent ?? "").trim().slice(0, 80),
+              };
+            }),
+          }));
+          return {
+            idx,
+            offsetHeight: el.offsetHeight,
+            scrollHeight: el.scrollHeight,
+            rectHeight: Math.ceil(el.getBoundingClientRect().height),
+            contentHeight: content ? Math.ceil(content.getBoundingClientRect().height) : null,
+            questionTextCount: qTexts.length,
+            questionTextChildrenCounts: qTexts.map((qt) => qt.children.length),
+            questionTextBlocks,
+            hasQuestionOptions: !!qOptions,
+            questionOptionsChildrenCount: qOptions ? qOptions.children.length : 0,
+          };
+        })
+      : [];
+    const firstPageCapacity =
+      refs.measureFirstPageRef.current && refs.measureFirstQuestoesRef.current
+        ? calculateFirstPageCapacity(
+            refs.measureFirstPageRef.current,
+            refs.measureFirstQuestoesRef.current,
+            PAGE_HEIGHT,
+            SAFETY_PX
+          )
+        : null;
+    const otherPageCapacity =
+      refs.measureOtherPageRef.current && refs.measureOtherQuestoesRef.current
+        ? calculateOtherPageCapacity(
+            refs.measureOtherPageRef.current,
+            refs.measureOtherQuestoesRef.current,
+            PAGE_HEIGHT,
+            SAFETY_PX
+          )
+        : null;
+    const renderedPagesDebug = Array.from(
+      document.querySelectorAll(".a4-sheet .prova-page")
+    )
+      .map((pageEl, pageIndex) => {
+        const page = pageEl as HTMLElement;
+        const questionsContainer = page.querySelector(".questoes-container") as HTMLElement | null;
+        const footer = page.querySelector(".prova-footer") as HTMLElement | null;
+        if (!questionsContainer || !footer || !questionsContainer.querySelector(".questao-item-wrapper")) {
+          return null;
+        }
+
+        const pageRect = page.getBoundingClientRect();
+        const footerRect = footer.getBoundingClientRect();
+        const containerRect = questionsContainer.getBoundingClientRect();
+        const footerTop = Math.ceil(footerRect.top - pageRect.top);
+
+        const columnsDebug = Array.from(
+          questionsContainer.querySelectorAll(":scope > .coluna")
+        ).map((colEl, colIndex) => {
+          const col = colEl as HTMLElement;
+          const colRect = col.getBoundingClientRect();
+          const items = Array.from(col.querySelectorAll(":scope > .questao-item-wrapper")).map((itemEl, itemIndex) => {
+            const item = itemEl as HTMLElement;
+            const itemRect = item.getBoundingClientRect();
+            const header = item.querySelector(".questao-header-linha") as HTMLElement | null;
+            const bottom = Math.ceil(itemRect.bottom - pageRect.top);
+            const overflowPastFooter = Math.max(0, bottom - footerTop);
+            return {
+              itemIndex,
+              qIndex: item.dataset.qIndex ? Number(item.dataset.qIndex) : null,
+              qId: item.dataset.qId ?? null,
+              isSetBase: item.dataset.isSetBase === "1",
+              fragKind: item.dataset.fragKind ?? null,
+              fragFrom: item.dataset.fragFrom ? Number(item.dataset.fragFrom) : null,
+              fragTo: item.dataset.fragTo ? Number(item.dataset.fragTo) : null,
+              fragFirst: item.dataset.fragFirst === "1",
+              hasQuestionHeader: !!header,
+              questionHeaderText: header ? (header.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 80) : null,
+              top: Math.ceil(itemRect.top - pageRect.top),
+              bottom,
+              height: Math.ceil(itemRect.height),
+              overflowPastFooter,
+            };
+          });
+
+          return {
+            colIndex,
+            top: Math.ceil(colRect.top - pageRect.top),
+            bottom: Math.ceil(colRect.bottom - pageRect.top),
+            itemCount: items.length,
+            maxOverflowPastFooter: items.reduce(
+              (max, item) => Math.max(max, item.overflowPastFooter),
+              0
+            ),
+            items,
+          };
+        });
+
+        return {
+          pageIndex,
+          footerTop,
+          footerHeight: Math.ceil(footerRect.height),
+          containerTop: Math.ceil(containerRect.top - pageRect.top),
+          containerBottom: Math.ceil(containerRect.bottom - pageRect.top),
+          columns: columnsDebug,
+        };
+      })
+      .filter(Boolean);
+
+    const payload = {
+      firstPageCapacity,
+      otherPageCapacity,
+      rawHeights,
+      questionHeights,
+      wrapperDebug,
+      renderedPagesDebug,
+      selections: selections.map((s: any) => ({
+        kind: s.kind,
+        id: s.id,
+        itemIndexes: Array.isArray(s.itemIndexes) ? [...s.itemIndexes] : undefined,
+      })),
+      expandedQuestions: expandedQuestions.map((q: any, idx) => ({
+        idx,
+        id: q?.metadata?.id ?? "",
+        tipo: q?.metadata?.tipo ?? "",
+        isSetBase: !!q?.__setBase,
+        isSetItem: !!q?.__set,
+        parentId: q?.__setBase?.parentId ?? q?.__set?.parentId ?? null,
+        baseTextSections: q?.__setBase?.textSections ?? q?.__baseTextSections ?? [],
+      })),
+      setGroups,
+      pages: pages.map((p: any, pageIndex: number) => ({
+        pageIndex,
+        coluna1: (p.coluna1 ?? []).map((it: any) =>
+          typeof it === "number"
+            ? { kind: "number", q: it }
+            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to }
+        ),
+        coluna2: (p.coluna2 ?? []).map((it: any) =>
+          typeof it === "number"
+            ? { kind: "number", q: it }
+            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to }
+        ),
+      })),
+    };
+
+    (window as any).__PMEDITOR_MONTAR_DEBUG__ = payload;
+    console.log("[montar-debug]", payload);
+  }, [devMontarDebugEnabled, selections, expandedQuestions, setGroups, pages, refs, committedSpacers]);
+
   // Mapa: índice original (q) → número impresso (1-based, ignorando setBase)
   // Baseado na ordem real de aparição nos pages (após bin-packing)
   const printNumberMap = useMemo(() => {
@@ -832,11 +1024,32 @@ const { pages, refs } = usePagination({
 
     const isSetBase = !!(question as any).__setBase;
     const setBaseMeta = (question as any).__setBase as
-      | { parentId: string; headerText: string; labelText?: string }
+      | { parentId: string; headerText: string; textSections?: BaseTextSection[] }
       | undefined;
-    const baseTextLabel = (question as any).__baseTextLabel as string | undefined;
-
+    const baseTextSectionsMeta = ((question as any).__baseTextSections ?? []) as BaseTextSection[];
     const baseKey = (question as any).metadata?.id ?? printedIndex;
+
+    const isSetItem = !!(question as any).__set; // questão filha — botão fica só no __setBase
+
+    // Seções de texto para toggles individuais
+    const textSections: Array<{id: string; tag: string}> = isSetBase
+      ? (setBaseMeta?.textSections ?? [])
+      : baseTextSectionsMeta;
+
+    const labelScopeKey = isSetBase
+      ? setBaseMeta?.parentId ?? String(baseKey)
+      : String((question as any).metadata?.id ?? baseKey);
+
+    const baseTextSectionsForRender = textSections.map((section) => ({
+      ...section,
+      hidden: hiddenBaseTextLabels.has(makeBaseTextLabelKey(labelScopeKey, section.id)),
+    }));
+
+    const canToggleBaseTextSections = textSections.length > 0 && !isSetItem;
+    const handleToggleBaseTextSection = canToggleBaseTextSections
+      ? (textId: string) => toggleBaseTextLabel(labelScopeKey, textId)
+      : undefined;
+
     const fragKey =
       frag?.kind === "frag"
         ? `${baseKey}__frag_${frag.from}_${frag.to}_${frag.first ? 1 : 0}`
@@ -889,18 +1102,20 @@ const { pages, refs } = usePagination({
       <div
         key={fragKey}
         className="questao-item-wrapper allow-break"
+        data-q-index={globalIndex}
+        data-q-id={questionId ?? ""}
+        data-is-set-base={isSetBase ? "1" : "0"}
+        data-frag-kind={frag?.kind ?? "full"}
+        data-frag-from={frag?.from}
+        data-frag-to={frag?.to}
+        data-frag-first={frag?.first ? "1" : "0"}
         data-frag-info={frag ? `from=${frag.from} to=${frag.to} N=${frag.textBlockCount ?? 'none'} first=${frag.first}` : undefined}
       >
         {/* ✅ item do texto base: banner + conteúdo, sem cabeçalho de questão */}
 {isSetBase ? (
   <div className="mb-3 space-y-2">
-    {setBaseMeta?.labelText && (
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">
-        {setBaseMeta.labelText}
-      </div>
-    )}
-    {( !frag || frag.first ) && (
-      <div className="text-sm font-semibold">{setBaseMeta?.headerText}</div>
+    {( !frag || frag.first ) && setBaseMeta?.headerText && (
+      <div className="text-sm font-semibold print:block">{setBaseMeta.headerText}</div>
     )}
 
     <div
@@ -911,7 +1126,7 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} baseTextSections={baseTextSectionsForRender} onToggleBaseTextSection={handleToggleBaseTextSection} />
     </div>
   </div>
 ) : (
@@ -938,12 +1153,6 @@ const { pages, refs } = usePagination({
               </div>
             )}
 
-            {baseTextLabel && (!frag || frag.first) && (
-              <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">
-                {baseTextLabel}
-              </div>
-            )}
-
             <div
               className="
                 questao-conteudo
@@ -952,7 +1161,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} baseTextSections={baseTextSectionsForRender} onToggleBaseTextSection={handleToggleBaseTextSection} />
             </div>
           </div>
         )}
@@ -1104,6 +1313,15 @@ const { pages, refs } = usePagination({
               <RefreshCw className="h-4 w-4 mr-2" />
               Repaginar
             </Button>
+
+            <DevDebugTools
+              enabled={devMontarDebugEnabled}
+              onEnabledChange={setDevMontarDebugEnabled}
+              storageKey="pmeditor:montar-debug"
+              snapshotKey="__PMEDITOR_MONTAR_DEBUG__"
+              filePrefix="montar-debug"
+              title="Debug do montar"
+            />
 
             <Button onClick={handlePrint} className="btn-primary">
               <Printer className="h-4 w-4 mr-2" />

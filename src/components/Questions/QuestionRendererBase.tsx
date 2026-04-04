@@ -24,6 +24,13 @@ type Props = {
     textBlocks?: number[];  // quais blocos de texto renderizar
     options?: number[];     // quais opções renderizar
   };
+  baseTextSections?: Array<{
+    id: string;
+    tag: string;
+    blockCount: number;
+    hidden?: boolean;
+  }>;
+  onToggleBaseTextSection?: (id: string) => void;
   // Permutação de alternativas (tipos de prova)
   permutation?: OptionPermutation | null;
   /** Larguras comprometidas vindas do pai (sobrepõe localStorage na renderização) */
@@ -40,7 +47,7 @@ type Props = {
   onToggleInlineOptions?: () => void;
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, baseTextSections, onToggleBaseTextSection, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -220,7 +227,10 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
         const renderedParts: React.ReactNode[] = [];
 
         if (localBaseTextNode) {
-          const baseBlocks = renderBlock(localBaseTextNode, `${localKeyPrefix}-base`);
+          const baseBlocks = renderBaseTextNode(
+            localBaseTextNode,
+            `${localKeyPrefix}-base`
+          );
           const { picked } = pickBlocks(baseBlocks);
           if (picked.length > 0) {
             renderedParts.push(
@@ -334,7 +344,11 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
 
     nodes.forEach((qNode, j) => {
       if (qNode.type === "base_text" || qNode.type === "statement") {
-        allBlocks.push(...renderBlock(qNode, `${keyPrefix}-blk-${j}`));
+        if (qNode.type === "base_text") {
+          allBlocks.push(...renderBaseTextNode(qNode, `${keyPrefix}-blk-${j}`));
+        } else {
+          allBlocks.push(...renderBlock(qNode, `${keyPrefix}-blk-${j}`));
+        }
       }
 
       if (qNode.type === "options") {
@@ -392,6 +406,66 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, pe
         )}
       </div>
     );
+  }
+
+  function renderBaseTextNode(
+    node: PMNode,
+    keyPrefix: string
+  ): React.ReactNode[] {
+    const blocks = renderBlock(node, keyPrefix);
+    if (!baseTextSections || baseTextSections.length === 0) return blocks;
+
+    const rendered: React.ReactNode[] = [];
+    let cursor = 1;
+
+    baseTextSections.forEach((section, sectionIdx) => {
+      const sectionBlocks = blocks.slice(cursor - 1, cursor - 1 + section.blockCount);
+      const sectionStart = cursor;
+      sectionBlocks.forEach((block, blockIdx) => {
+        const globalIndex = sectionStart + blockIdx;
+        const isSectionStart = globalIndex === sectionStart;
+        if (isSectionStart) {
+          const showLabel = !section.hidden;
+          const showToggle = mode === "prova" && !!onToggleBaseTextSection;
+          rendered.push(
+            <div
+              key={`${keyPrefix}-section-${section.id}-${sectionIdx}`}
+              className="space-y-1"
+            >
+              {(showLabel || showToggle) ? (
+                <div className="flex items-center gap-2">
+                  {showLabel ? (
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">
+                      {`Texto ${section.tag}`}
+                    </div>
+                  ) : null}
+                  {showToggle ? (
+                    <button
+                      type="button"
+                      className="no-print text-[10px] text-slate-400 hover:text-slate-600 border border-slate-200 rounded px-1"
+                      onClick={() => onToggleBaseTextSection(section.id)}
+                      title={section.hidden ? `Mostrar label "Texto ${section.tag}"` : `Ocultar label "Texto ${section.tag}"`}
+                    >
+                      {section.hidden ? `+ Texto ${section.tag}` : `× Texto ${section.tag}`}
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
+              {block}
+            </div>
+          );
+          return;
+        }
+        rendered.push(block);
+      });
+      cursor += section.blockCount;
+    });
+
+    if (cursor - 1 < blocks.length) {
+      rendered.push(...blocks.slice(cursor - 1));
+    }
+
+    return rendered;
   }
 
   function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {

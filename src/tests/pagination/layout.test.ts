@@ -187,6 +187,37 @@ describe('pagination - layout e regressões', () => {
     expect(pages[1].coluna1[0]).toMatchObject({ kind: 'frag', q: 1, first: true })
   })
 
+  test('[otimizado] continua fragmentando mesmo quando o primeiro fragmento é pequeno', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 950, blockHeights: [150, 400, 380], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(1, [950], 300, 600, 1, m, [])
+    const items = flattenItems(pages).filter((x) => x.q === 0)
+    expect(items.length).toBeGreaterThan(1)
+    expect(items.every((x: any) => x.kind === 'frag')).toBe(true)
+  })
+
+  test('[otimizado] não começa questão com fragmento minúsculo em coluna já ocupada', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 1179, blockHeights: [13, 384, 35, 13, 421, 12, 74, 129], noOptions: true },
+      { wrapperHeight: 2060, blockHeights: [13, 347, 23, 13, 220, 74, 184, 37, 293, 330, 23, 92, 92, 74], noOptions: true },
+      { wrapperHeight: 120, blockHeights: [70, 40], noOptions: true },
+      { wrapperHeight: 120, blockHeights: [70, 40], noOptions: true },
+    ])
+    const pages = distributeQuestionsOptimized(
+      4,
+      [1179, 2060, 120, 120],
+      742,
+      931,
+      2,
+      m,
+      [{ baseIndex: 2, itemIndexes: [3] }]
+    )
+
+    expect(pages[0].coluna2.some((x: any) => x.q === 1)).toBe(false)
+    expect(pages[1].coluna1[0]).toMatchObject({ kind: 'frag', q: 1, first: true })
+  })
+
   test('[otimizado] não coloca outra questão abaixo de fragmento que ainda continua', () => {
     const m = createMeasurementContainer([
       { wrapperHeight: 1000, blockHeights: [400, 400, 180], noOptions: true },
@@ -197,6 +228,90 @@ describe('pagination - layout e regressões', () => {
     expect(pages[0].coluna1[0]).toMatchObject({ kind: 'frag', q: 0, first: true })
     expect(pages[0].coluna1.some((x: any) => x.q === 1)).toBe(false)
     expect(flattenItems(pages).filter((x) => x.q === 0).length).toBeGreaterThan(1)
+  })
+
+  test('[otimizado] com setGroups preserva a ordem de primeira aparição das questões livres (regressão do montar)', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 1179, blockHeights: [401, 35, 438, 12, 74, 129], noOptions: true },
+      { wrapperHeight: 2064, blockHeights: [364, 23, 237, 74, 184, 37, 293, 330, 23, 92, 37, 92, 92, 74], noOptions: true },
+      { wrapperHeight: 1461, blockHeights: [532, 495, 35, 55, 55, 19, 74, 55, 55], noOptions: true },
+      { wrapperHeight: 717, blockHeights: [275, 110, 23, 37, 37, 37, 55, 55], noOptions: true },
+      { wrapperHeight: 2282, blockHeights: [37, 19, 19, 330, 275, 19, 184, 19, 312, 257, 147, 129, 184, 19, 239, 23], noOptions: true },
+      { wrapperHeight: 246, blockHeights: [92, 92], noOptions: true },
+      { wrapperHeight: 356, blockHeights: [110, 19, 92], noOptions: true },
+    ])
+
+    const pages = distributeQuestionsOptimized(
+      7,
+      [1179, 2064, 1461, 717, 2282, 246, 356],
+      820,
+      991,
+      2,
+      m,
+      [{ baseIndex: 4, itemIndexes: [5, 6] }]
+    )
+
+    const firstAppearance = Array.from(
+      new Set(flattenItems(pages).map((item) => item.q))
+    )
+
+    expect(firstAppearance).toEqual([0, 1, 2, 3, 4, 5, 6])
+  })
+
+  test('[otimizado] conta gaps reais entre blocos de um único question-text ao fragmentar', () => {
+    const wrapper = document.createElement('div')
+    wrapper.className = 'questao-item-wrapper'
+    setOffsetHeight(wrapper, 900)
+    setComputedMargins(wrapper, 0, 0)
+
+    const content = document.createElement('div')
+    content.className = 'questao-conteudo'
+    setRect(content, { top: 0, height: 860, bottom: 860 })
+
+    const text = document.createElement('div')
+    text.className = 'question-text'
+
+    const blocks = [
+      { top: 0, height: 200, bottom: 200 },
+      { top: 220, height: 200, bottom: 420 },
+      { top: 440, height: 200, bottom: 640 },
+      { top: 660, height: 200, bottom: 860 },
+    ]
+
+    blocks.forEach((rect, idx) => {
+      const p = document.createElement('p')
+      p.textContent = `Bloco ${idx + 1}`
+      setRect(p, rect)
+      text.appendChild(p)
+    })
+
+    content.appendChild(text)
+    wrapper.appendChild(content)
+
+    const short = document.createElement('div')
+    short.className = 'questao-item-wrapper'
+    setOffsetHeight(short, 40)
+    setComputedMargins(short, 0, 0)
+    const shortContent = document.createElement('div')
+    shortContent.className = 'questao-conteudo'
+    const shortText = document.createElement('div')
+    shortText.className = 'question-text'
+    const shortP = document.createElement('p')
+    setRect(shortP, { top: 0, height: 40, bottom: 40 })
+    shortText.appendChild(shortP)
+    shortContent.appendChild(shortText)
+    short.appendChild(shortContent)
+
+    const m = document.createElement('div')
+    m.appendChild(wrapper)
+    m.appendChild(short)
+    document.body.appendChild(m)
+
+    const pages = distributeQuestionsOptimized(2, [900, 40], 450, 450, 1, m, [])
+    const q0Items = flattenItems(pages).filter((x) => x.q === 0)
+    expect(q0Items.length).toBeGreaterThan(1)
+    expect(pages[1].coluna1[0]).toMatchObject({ kind: 'frag', q: 0, first: false })
+    expect(pages[1].coluna1.some((x: any) => x.q === 1)).toBe(false)
   })
 
   // ─── Bin-packing geral ─────────────────────────────────────────────────────
