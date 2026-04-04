@@ -1032,7 +1032,7 @@ const { pages, refs } = usePagination({
     const isSetItem = !!(question as any).__set; // questão filha — botão fica só no __setBase
 
     // Seções de texto para toggles individuais
-    const textSections: Array<{id: string; tag: string}> = isSetBase
+    const textSections: BaseTextSection[] = isSetBase
       ? (setBaseMeta?.textSections ?? [])
       : baseTextSectionsMeta;
 
