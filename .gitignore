@@ -56,3 +56,6 @@ teste.yaml
 
 # fila de importação gerada pelo parse-tex
 /public/data/import-queue.json
+
+# diário de bordo compartilhado entre agentes (Claude + GPT) — local only
+/AGENTS.md

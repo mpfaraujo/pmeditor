@@ -200,8 +200,6 @@ function buildBaseTextSections(
   ids: string[],
   cache: Map<string, PMNode>
 ): BaseTextSection[] {
-  if (ids.length <= 1) return [];
-
   return ids.flatMap((id) => {
     const bt = cache.get(id);
     if (!bt) return [];

@@ -164,6 +164,25 @@ export async function updateBaseText(payload: {
   }
 }
 
+export async function deleteBaseText(
+  id: string,
+  force = false
+): Promise<
+  | { success: true; id: string; tag: string }
+  | { success: false; linked?: true; linkedCount?: number; error?: string }
+> {
+  try {
+    const res = await fetch(`${BT_BASE}/delete.php`, {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify({ id, force }),
+    });
+    return await res.json();
+  } catch (e: any) {
+    return { success: false, error: e.message };
+  }
+}
+
 export async function createBaseText(payload: {
   id: string;
   content: any;

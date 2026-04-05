@@ -3,11 +3,11 @@
 import { Suspense, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
-import { getBaseText, updateBaseText, createBaseText, type BaseTextItem } from "@/lib/baseTexts";
+import { getBaseText, updateBaseText, createBaseText, deleteBaseText, type BaseTextItem } from "@/lib/baseTexts";
 import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 function BaseTextEditorInner() {
@@ -32,6 +32,11 @@ function BaseTextEditorInner() {
   const [savedOk, setSavedOk] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  const [deleteState, setDeleteState] = useState<
+    "idle" | "confirm" | "linked" | "deleting"
+  >("idle");
+  const [linkedCount, setLinkedCount] = useState(0);
+
   useEffect(() => {
     if (isNew) return;
     getBaseText(id).then((bt) => {
@@ -45,6 +50,23 @@ function BaseTextEditorInner() {
       setLoading(false);
     });
   }, [id, isNew]);
+
+  const handleDelete = async (force = false) => {
+    if (!item) return;
+    setDeleteState("deleting");
+    const result = await deleteBaseText(item.id, force);
+    if (result.success) {
+      router.replace("/editor/textos-base");
+      return;
+    }
+    if ("linked" in result && result.linked) {
+      setLinkedCount(result.linkedCount ?? 0);
+      setDeleteState("linked");
+      return;
+    }
+    setDeleteState("idle");
+    setSaveError(result.error ?? "Erro ao excluir.");
+  };
 
   const handleSave = async (baseTextContent: any) => {
     setSaving(true);
@@ -85,8 +107,12 @@ function BaseTextEditorInner() {
 
     setSaving(false);
     if (result.success) {
-      setSavedOk(true);
-      setTimeout(() => setSavedOk(false), 3000);
+      window.close();
+      // fallback: se window.close() foi bloqueado (aba não aberta por script), redireciona
+      setTimeout(() => {
+        setSavedOk(true);
+        setTimeout(() => setSavedOk(false), 3000);
+      }, 300);
     } else {
       setSaveError(result.error ?? "Erro ao salvar.");
     }
@@ -152,6 +178,43 @@ function BaseTextEditorInner() {
             <span className="text-xs text-green-600 flex items-center gap-1">
               <Check className="h-3.5 w-3.5" /> Salvo
             </span>
+          )}
+          {!isNew && deleteState === "idle" && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={() => setDeleteState("confirm")}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+          {!isNew && deleteState === "confirm" && (
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-destructive font-medium">Excluir texto base?</span>
+              <Button size="sm" variant="destructive" onClick={() => handleDelete(false)}>
+                Excluir
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setDeleteState("idle")}>
+                Cancelar
+              </Button>
+            </div>
+          )}
+          {!isNew && deleteState === "linked" && (
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-destructive font-medium">
+                Vinculado a {linkedCount} questão{linkedCount > 1 ? "ões" : ""}. Excluir mesmo assim?
+              </span>
+              <Button size="sm" variant="destructive" onClick={() => handleDelete(true)}>
+                Excluir mesmo assim
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setDeleteState("idle")}>
+                Cancelar
+              </Button>
+            </div>
+          )}
+          {deleteState === "deleting" && (
+            <span className="text-xs text-muted-foreground">Excluindo…</span>
           )}
         </div>
       </div>

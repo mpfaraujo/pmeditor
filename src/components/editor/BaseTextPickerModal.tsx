@@ -102,6 +102,7 @@ export function BaseTextPickerModal({
   // ── Aba buscar ──────────────────────────────────────────────────────────────
   const [search, setSearch] = useState("");
   const [filterDisciplina, setFilterDisciplina] = useState(disciplina ?? "");
+  const [filterAutor, setFilterAutor] = useState("");
   const [results, setResults] = useState<BaseTextItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -112,11 +113,12 @@ export function BaseTextPickerModal({
     const { items } = await listBaseTexts({
       search: search.trim() || undefined,
       disciplina: filterDisciplina.trim() || undefined,
+      autor: filterAutor.trim() || undefined,
       limit: 30,
     });
     setResults(items);
     setLoading(false);
-  }, [search, filterDisciplina]);
+  }, [search, filterDisciplina, filterAutor]);
 
   useEffect(() => {
     if (!open) return;
@@ -134,31 +136,40 @@ export function BaseTextPickerModal({
 
 return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl flex flex-col" style={{ height: "80vh" }}>
+        <DialogHeader className="shrink-0">
           <DialogTitle>Texto Base</DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue="buscar">
-          <TabsList className="mb-3">
+        <Tabs defaultValue="buscar" className="flex flex-col flex-1 min-h-0">
+          <TabsList className="mb-3 shrink-0">
             <TabsTrigger value="buscar">Buscar existente</TabsTrigger>
             <TabsTrigger value="novo">Criar novo</TabsTrigger>
           </TabsList>
 
           {/* ── Buscar ── */}
-          <TabsContent value="buscar" className="space-y-3">
-            <div className="flex gap-2">
+          <TabsContent value="buscar" className="flex flex-col flex-1 min-h-0 gap-3">
+            <div className="flex gap-2 shrink-0 flex-wrap">
               <Input
-                placeholder="Buscar por trecho do texto…"
+                placeholder="Trecho do texto…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}
+                className="flex-1 min-w-32"
+              />
+              <Input
+                placeholder="Autor"
+                value={filterAutor}
+                onChange={(e) => setFilterAutor(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}
+                className="w-36"
               />
               <Input
                 placeholder="Disciplina"
                 value={filterDisciplina}
                 onChange={(e) => setFilterDisciplina(e.target.value)}
-                className="w-40"
+                onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}
+                className="w-36"
               />
               <Button variant="outline" onClick={doSearch} disabled={loading}>
                 {loading ? "…" : "Buscar"}
@@ -166,12 +177,12 @@ return (
             </div>
 
             {results.length === 0 && !loading && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="shrink-0 text-sm text-muted-foreground text-center py-4">
                 Nenhum texto encontrado.
               </p>
             )}
 
-            <div className="space-y-2">
+            <div className="space-y-2 overflow-y-auto flex-1 min-h-0">
               {results.map((item) => (
                 <div key={item.id} className="border rounded-md overflow-hidden">
                   {/* Cabeçalho do item */}
