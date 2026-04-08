@@ -485,8 +485,10 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
             ? { textAlign: align }
             : undefined;
 
+          const numbered = !!child.attrs?.numbered;
+
           return (
-            <p key={key} className="leading-snug" style={style}>
+            <p key={key} className="leading-snug" style={style} {...(numbered ? { "data-numbered": "true" } : {})}>
               {renderInline(child)}
             </p>
           );
@@ -509,11 +511,13 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
             const isEmpty = !verse.content || verse.content.length === 0;
             if (!isEmpty) nonEmptyCount++;
             const lineNum = numbered && !isEmpty && nonEmptyCount % 5 === 0 ? nonEmptyCount : undefined;
+            const verseNumbered = !!verse.attrs?.numbered && !isEmpty;
             return (
               <div
                 key={vi}
                 className="verse"
                 {...(lineNum ? { "data-line-num": String(lineNum) } : {})}
+                {...(verseNumbered ? { "data-numbered": "true" } : {})}
               >
                 {renderInline(verse)}
               </div>

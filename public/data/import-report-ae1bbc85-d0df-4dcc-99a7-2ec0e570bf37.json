@@ -1,0 +1,17 @@
+{
+  "batch": "CEDERJ 2022.1",
+  "runId": "ae1bbc85-d0df-4dcc-99a7-2ec0e570bf37",
+  "queuePath": "C:\\Projetos\\pmeditor\\public\\data\\import-queue-cederj-2022-1.json",
+  "createdAt": "2026-04-06T22:08:24.789Z",
+  "dryRun": false,
+  "summary": {
+    "imported": 48,
+    "duplicates": 0,
+    "failed": 0,
+    "skipped": 0,
+    "totalQueue": 46,
+    "processed": 46
+  },
+  "duplicates": [],
+  "errors": []
+}

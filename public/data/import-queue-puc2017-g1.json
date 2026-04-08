@@ -1,0 +1,1206 @@
+[
+  {
+    "latex": "\\question \\includegraphics{figura-geo-g1-q1}\n\n\\credits{Disponível em: <www.ibge.gov.br>. Acesso em: 15 set. 2016.}\n\nA Constituição brasileira de 1988 definiu um federalismo tripartite no país, que é representado por três níveis de divisão político-territorial.\n\nO menor desses níveis, apresentado no cartograma acima, é o(a)\n\\begin{oneparchoices}\n  \\choice Distrito\n  \\choice Estado\n  \\choice Macrorregião\n  \\choice Mesorregião\n  \\CorrectChoice Município\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Organização Territorial do Brasil",
+      "gabarito": "E",
+      "tags": [
+        "federalismo-tripartite",
+        "divisão-administrativa",
+        "cartograma",
+        "município"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "1"
+    }
+  },
+  {
+    "latex": "\\question Os modelos de industrialização tardia podem ser classificados com base em alguns indicadores. A partir das diversas estratégias de investimentos em capitais industriais, modelos de industrialização tardia podem ser identificados por grupos de países, em momentos diversos da expansão do modelo industrial, por todo planeta, desde a segunda metade do século XX.\n\nNo caso do modelo implementado nos Tigres Asiáticos, este se diferencia do modelo latino-americano por ter sido baseado:\n\\begin{choices}\n  \\choice mais na consolidação do mercado interno e na poupança do que na conquista do mercado internacional.\n  \\choice mais na conquista do mercado externo e na substituição de importações do que na consolidação do mercado interno.\n  \\choice mais na retração das exportações e no controle das importações do que na retirada de subsídios dos setores de base e militar.\n  \\CorrectChoice mais na conquista do mercado externo e no fortalecimento da poupança interna do que na substituição de importações.\n  \\choice mais na eliminação das importações e no crescimento dos investimentos internacionais do que no fortalecimento da poupança.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Industrialização e Desenvolvimento",
+      "gabarito": "D",
+      "tags": [
+        "Tigres-Asiáticos",
+        "industrialização-tardia",
+        "poupança-interna",
+        "mercado-externo",
+        "substituição-de-importações"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "2"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-geo-g1-q3}\n\n\\credits{Disponível em: <http://i.imgur.com/TpT3LiQ.jpg>. Acesso em: 15 set. 2016. Adaptado.}\n\nSobre as \"cercas\" na charge, ao longo do tempo, conclui-se que elas:\n\\begin{choices}\n  \\choice limitavam o acesso das pessoas aos recursos naturais e atualmente tornam a natureza uma mercadoria fundamental.\n  \\choice se estenderam através do desenvolvimento técnico do homem e se tornaram, nos dias de hoje, um artifício de destruição da biosfera.\n  \\choice controlavam no passado as civilizações e hoje têm a função de definir os ecossistemas terrestres e marinhos.\n  \\CorrectChoice permitiam a sobrevivência do homem na natureza e hoje protegem a \"natureza natural\" da predação do homem.\n  \\choice eliminavam sempre a biodiversidade da mesma forma que hoje transformam a \"natureza natural\" em artificial.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Questões Ambientais",
+      "gabarito": "D",
+      "tags": [
+        "charge",
+        "preservação-ambiental",
+        "cerca",
+        "natureza",
+        "predação"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "3"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-geo-g1-q4}\n\n\\credits{Disponível em: <http://geoemsaladeaula.blogspot.com.br/2011/11/mapa-fusos-horarios-mundo.html>. Acesso em: 15 set. 2016. Adaptado.}\n\nConhecendo-se a lógica dos fusos horários na definição das horas oficiais dos países do globo (sem as condições temporárias dos horários de verão), sabe-se que, quando for meio-dia (12h) em Brasília (Brasil), serão:\n\\begin{choices}\n  \\CorrectChoice 07h em Los Angeles (EUA), 15h em Argel (Argélia), 18h em Moscou (Rússia), 01h do dia seguinte em Sidney (Austrália).\n  \\choice 01h do dia seguinte em Los Angeles (EUA), 16h em Argel (Argélia), 13h em Moscou (Rússia), 06h em Sidney (Austrália).\n  \\choice 17h em Los Angeles (EUA), 09h em Argel (Argélia), 06h em Moscou (Rússia), 23h do dia anterior em Sidney (Austrália).\n  \\choice 12h em Los Angeles (EUA), 09h em Argel (Argélia), 06h em Moscou (Rússia), 01h do dia anterior em Sidney (Austrália).\n  \\choice 19h em Los Angeles (EUA), 13h em Argel (Argélia), 09h em Moscou (Rússia), 02h do dia seguinte em Sydney (Austrália).\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Fusos Horários",
+      "gabarito": "A",
+      "tags": [
+        "fuso-horário",
+        "horário-oficial",
+        "Brasília",
+        "Los-Angeles",
+        "Moscou",
+        "Sidney"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "4"
+    }
+  },
+  {
+    "latex": "\\question Uma crítica ao modelo tradicional de desenvolvimento proposto pela Integração da Infraestrutura Regional Sul-Americana (IIRSA) no continente sul-americano refere-se à:\n\\begin{choices}\n  \\choice ampliação do poder das agências norte-americanas como o FMI.\n  \\choice limitação de circulação de pessoas entre as fronteiras dos países.\n  \\choice acumulação de poder na mão das potências tradicionais: Brasil e Argentina.\n  \\choice redução das soberanias nacionais devido à abertura das fronteiras nacionais.\n  \\CorrectChoice flexibilização das leis ambientais, afetando agricultores, indígenas e quilombolas.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Integração Regional Sul-Americana",
+      "gabarito": "E",
+      "tags": [
+        "IIRSA",
+        "infraestrutura",
+        "leis-ambientais",
+        "indígenas",
+        "quilombolas",
+        "integração-sul-americana"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "5"
+    }
+  },
+  {
+    "latex": "\\question Nos trechos da crosta terrestre onde as placas tectônicas colidem e a placa mais densa penetra por baixo da de menor densidade, forma-se uma fossa chamada de:\n\\begin{oneparchoices}\n  \\choice justaposição.\n  \\choice geossinclinal.\n  \\CorrectChoice subducção.\n  \\choice indução.\n  \\choice abissal.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Geografia",
+      "assunto": "Tectônica de Placas",
+      "gabarito": "C",
+      "tags": [
+        "subducção",
+        "fossa-oceânica",
+        "crosta-terrestre",
+        "placas-tectônicas"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "6"
+    }
+  },
+  {
+    "latex": "\\question Os hemisférios da Terra têm diferentes porcentagens de águas marítimas. O hemisfério sul tem mais águas do que o hemisfério norte.\n\nAssim sendo, o hemisfério norte tende a ter:\n\\begin{choices}\n  \\choice verões mais brandos e invernos mais intensos.\n  \\choice verões mais amenos e invernos mais brandos.\n  \\choice verões mais chuvosos e invernos mais secos.\n  \\choice verões mais secos e invernos mais úmidos.\n  \\CorrectChoice verões mais quentes e invernos mais frios.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Climatologia",
+      "gabarito": "E",
+      "tags": [
+        "hemisférios",
+        "oceano",
+        "temperatura",
+        "estações-do-ano",
+        "hemisfério-norte"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "7"
+    }
+  },
+  {
+    "latex": "\\question \\textit{\"Brasil pode se tornar o país mais obeso do mundo em 15 anos\"}\n\n\\credits{DELLA BARBA, Mariana. BBC Brasil, 26 ago. 2015.}\n\nA reportagem feita com profissionais de alta qualificação sobre os temas nutricionais em todo mundo aponta para um fenômeno chamado de transição nutricional no país. Tal fenômeno está associado ao:\n\\begin{choices}\n  \\choice acréscimo de produtos de baixo valor nutricional à rica dieta da população que, a partir da melhoria de renda, deixa de comer frutas e legumes para aumentar o consumo de carne vermelha.\n  \\CorrectChoice aumento da renda média das famílias brasileiras e a substituição da escassez alimentar anterior por produtos industrializados mais baratos, que possuem baixo valor nutricional e são altamente calóricos.\n  \\choice redirecionamento da renda média dos habitantes do país para o consumo, em quantidades elevadas, de bens alimentares geneticamente modificados que eliminam a fome utilizando-se de meios não seguros.\n  \\choice fortalecimento do consumo de produtos da agricultura orgânica pelas populações que melhoram os seus recursos econômicos, aumentando-se a acumulação de bens materiais e reduzindo-se os cuidados com a alimentação.\n  \\choice encarecimento dos bens de primeira necessidade aumentando-se o consumo de produtos industrializados com alta concentração de açúcar, mais caros do que as frutas e verduras, e altamente calóricos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Dinâmica Demográfica e Saúde",
+      "gabarito": "B",
+      "tags": [
+        "obesidade",
+        "transição-nutricional",
+        "alimentação",
+        "renda",
+        "alimentos-industrializados"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "8"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-geo-g1-q9}\n\n\\credits{Disponível em: <http://meu-cachorro-kowalsky.tumbir.com>. Acesso em: 15 set. 2016.}\n\nO belo fenômeno ótico da Aurora boreal é comum no céu noturno das latitudes polares da Terra. Tal fenômeno, de grande apelo visual, é causado por contato:\n\\begin{choices}\n  \\CorrectChoice dos ventos solares com o campo magnético do planeta.\n  \\choice da gravidade da Lua com a estação inverno no polo Norte.\n  \\choice dos raios solares com as águas congeladas das montanhas.\n  \\choice das massas de ar polares com os raios do sol da meia-noite.\n  \\choice das massas oceânicas frias com a radiação solar no inverno.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "Geografia",
+      "assunto": "Fenômenos Geográficos e Astronômicos",
+      "gabarito": "A",
+      "tags": [
+        "aurora-boreal",
+        "polo-norte",
+        "campo-magnético",
+        "vento-solar"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "9"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-geo-g1-q10}\n\n\\credits{Disponível em: <http://engenhariacivildiaria.com/2015/12/02/o-canal-do-panama>. Acesso em: 15 set. 2016.}\n\nO Canal do Panamá, uma obra de engenharia iniciada na década de 1880 e finalizada no início do século XX, ainda hoje é um trajeto fundamental para o comércio mercante internacional.\n\nPara o cruzamento do continente centro-americano através do canal (do Pacífico para o Atlântico e vice-versa), é importante o controle dos pontos 1, 2 e 3, que são:\n\\begin{choices}\n  \\choice rios encaixados em vales e desviados para os lagos artificiais.\n  \\choice lagos artificiais controlados por grandes barragens hidrelétricas.\n  \\CorrectChoice eclusas que nivelam a água do trajeto por um sistema de comportas.\n  \\choice barragens de concreto para a água dos oceanos trazidas pelas marés.\n  \\choice comportas naturais alargadas pela engenharia por encachoeiramento.\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  HISTÓRIA — OBJETIVA\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Geografia",
+      "assunto": "Geopolítica e Obras de Engenharia",
+      "gabarito": "C",
+      "tags": [
+        "Canal-do-Panamá",
+        "eclusa",
+        "nível-do-mar",
+        "engenharia",
+        "comporta"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "10"
+    }
+  },
+  {
+    "latex": "\\question O varguismo, no Brasil, e o peronismo, na Argentina, caracterizaram-se pela introdução de uma política de massas que resultou na configuração de uma nova cultura política na América Latina do século XX. Assinale a alternativa que apresenta de modo correto as características comuns dessas experiências.\n\\begin{choices}\n  \\choice A configuração de um Estado liberal, tendo à frente um líder carismático.\n  \\choice A mobilização das massas por meio da propaganda política e da maior autonomia dos sindicatos.\n  \\choice A ascensão desses governos por meio de um golpe de Estado que pôs fim a uma ordem política de natureza corporativa e autoritária.\n  \\choice A introdução de uma política social que ampliou os direitos dos trabalhadores, mas restringiu sua participação política.\n  \\CorrectChoice O desenvolvimento de políticas econômicas de cunho nacionalista e que visavam a garantir maior autonomia internacional.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Populismo na América Latina",
+      "gabarito": "E",
+      "tags": [
+        "varguismo",
+        "peronismo",
+        "trabalhismo",
+        "nacionalismo",
+        "Estado-Novo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "11"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-hist-g1-q12}\n\n\\credits{Disponível em: <http://en.natmus.dk/footermenu/organisation/>. Acesso em: 19 set. 2016.}\n\nAs pinturas acima foram produzidas no século XVII por Albert Eckhout, um dos estudiosos que esteve no nordeste brasileiro na corte de Maurício de Nassau, durante a ocupação holandesa. Elas são representações de algumas mulheres encontradas na colônia: a mulher tapuia, a mulher tupi, a mameluca e a mulher negra, respectivamente.\n\nA partir de tais referências, assinale a alternativa INCORRETA.\n\\begin{choices}\n  \\choice O contraste entre a mulher tupi e a mulher tapuia sugere que o colonizador mantinha diferentes formas de se relacionar com os indígenas.\n  \\CorrectChoice O contraste entre as vegetações são representações fidedignas dos lugares onde essas mulheres eram encontradas.\n  \\choice O contraste entre vestimentas das mulheres tupi e mameluca sugere que o colonizador identificava diferenças culturais entre elas.\n  \\choice A presença de crianças na representação das mulheres tupi e negra alude à maternidade e poderia ser lida como a possibilidade de reprodução da mão de obra.\n  \\choice As imagens são representações da experiência dos holandeses e de suas intenções colonizadoras.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Brasil Colonial",
+      "gabarito": "B",
+      "tags": [
+        "Albert-Eckhout",
+        "Nassau",
+        "holandeses",
+        "mulher-tupi",
+        "mameluca",
+        "tapuia",
+        "representação-colonial"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "12"
+    }
+  },
+  {
+    "latex": "\\question Os humanistas e artistas do Renascimento italiano apregoavam a \"volta aos Antigos\" como fundamento de suas ações no presente.\n\nAssinale a alternativa que expressa o que era entendido por \"volta aos Antigos\".\n\\begin{choices}\n  \\choice Dar continuidade ao pensamento medieval, em particular aos preceitos da Escolástica que apregoava a conciliação da fé cristã com a razão fundada na tradição grega de Platão e Aristóteles.\n  \\choice Tomar como fundamento exclusivamente as Escrituras Sagradas — o Antigo e o Novo Testamento — na medida em que as formas culturais deveriam estar a serviço da religião.\n  \\CorrectChoice Inspirar-se na arte e na cultura da civilização greco-romana que teria sido desvalorizada pelo pensamento medieval, o qual limitava a liberdade do indivíduo.\n  \\choice Imitar fielmente as atitudes dos homens da antiguidade, em seu modo de escrever, falar, esculpir, pintar, construir, se vestir, entre outras. Assim, sentiam-se alcançando as glórias do passado.\n  \\choice Reagir ao movimento que defendia a autoridade do presente em relação ao Antigo e exigia uma ruptura total com o passado.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Renascimento",
+      "gabarito": "C",
+      "tags": [
+        "humanismo",
+        "Petrarca",
+        "greco-romano",
+        "arte-clássica",
+        "Idade-Média",
+        "liberdade-individual"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "13"
+    }
+  },
+  {
+    "latex": "\\question \"Pernambucanos [...] o povo está contente, já não há distinção entre brasileiros e europeus, todos se conhecem irmãos, descendentes da mesma origem, habitantes do mesmo país, professos na mesma religião. Um governo provisório iluminado, escolhido entre todas as ordens do Estado, preside a vossa felicidade; confiai no seu zelo e no seu patriotismo. Vós vereis consolidar-se a vossa fortuna, vós sereis livres do peso de enormes tributos que gravam sobre vós; o vosso, e nosso país subirá ao ponto de grandeza que há muito o espera, e vós colhereis o fruto dos trabalhos e do zelo dos vossos cidadãos. [...] A pátria é a nossa mãe comum; vós sois seus filhos, sois descendentes dos valorosos lusos, sois portugueses, sois americanos, sois brasileiros, sois pernambucanos\".\n\n\\credits{Proclamação do Governo Provisório Revolucionário de Pernambuco. 9 mar. 1817.}\n\nA partir da leitura do documento e dos seus conhecimentos sobre o assunto, marque a alternativa INCORRETA a respeito das propostas dos revolucionários pernambucanos de 1817.\n\\begin{choices}\n  \\choice Expressavam a insatisfação com o aumento e a criação de novos tributos (impostos) para o sustento da Corte sediada no Rio de Janeiro.\n  \\choice Inspiravam-se nos ideais liberais e republicanos que se disseminavam a partir dos exemplos da Revolução de Independência dos Estados Unidos e da Revolução Francesa.\n  \\CorrectChoice Propunham a igualdade de direitos políticos e civis, a tolerância religiosa e a abolição da escravidão.\n  \\choice Buscavam fortalecer os vínculos com as capitanias vizinhas, como Alagoas, Paraíba e Rio Grande do Norte, com a intenção de constituírem uma República independente do restante da América portuguesa.\n  \\choice Buscavam construir uma nova pátria fundada em uma identidade comum entre \"portugueses\" e \"brasileiros\", \"europeus\" e \"americanos\" que aderissem ao movimento.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Revoltas e Movimentos no Brasil Colonial",
+      "gabarito": "C",
+      "tags": [
+        "Revolução-Pernambucana-1817",
+        "governo-provisório",
+        "liberalismo",
+        "escravidão",
+        "independência"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "14"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-hist-g1-q15}\n\n\\credits{AQUINO, Rubim et al. História das Sociedades Americanas. Rio de Janeiro: Record, 1981.}\n\nA charge acima faz referência a uma frase atribuída a Porfírio Díaz, presidente do México, entre 1876 e 1910, com breves intervalos. Ela descreve com ironia as conturbadas relações entre os Estados Unidos e o México no século XIX que mantêm a sua atualidade.\n\nDentre as alternativas abaixo, assinale a que melhor expressa esta ideia.\n\\begin{choices}\n  \\choice Durante a Revolução Mexicana, grande parte do território do México foi ocupado pelo exército norte-americano, e seu líder Emiliano Zapata foi capturado e preso.\n  \\choice Em 1848, ao final da guerra com os Estados Unidos, o México foi obrigado a permitir a construção de uma base naval norte-americana em seu território.\n  \\choice Durante a Segunda Guerra Mundial, o México manteve uma política de não alinhamento e de neutralidade, provocando grande tensão com os Estados Unidos.\n  \\CorrectChoice Em 1994, teve início a construção de um muro na fronteira entre os Estados Unidos e o México, com o objetivo de barrar a entrada ilegal de imigrantes, atraídos pelas possibilidades de trabalho e enriquecimento.\n  \\choice A não adesão do México ao NAFTA (Acordo Norte-Americano de Livre Comércio) provocou o embargo econômico decretado pelo governo norte-americano que vem prejudicando a economia mexicana.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "América Latina e Estados Unidos",
+      "gabarito": "D",
+      "tags": [
+        "Porfírio-Díaz",
+        "México",
+        "muro-fronteira",
+        "imigrantes",
+        "imperialismo-norte-americano"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "15"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-hist-g1-q16}\n\n\\credits{Disponível em: <http://www.iwmshop.org.uk/images/prod_12784.jpg>. Acesso em: 19 set. 2016.}\n\nO cartaz acima mostra Lord Kitchener, Secretário de Estado da Guerra do governo britânico, entre 1914 e 1916, conclamando a população a se alistar nas forças armadas britânicas por ocasião da Primeira Guerra Mundial.\n\nO cartaz põe em destaque:\n\\begin{oneparchoices}\n  \\choice o igualitarismo.\n  \\CorrectChoice o nacionalismo.\n  \\choice o eurocentrismo.\n  \\choice o regionalismo.\n  \\choice a xenofobia.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Fácil",
+      "disciplina": "História",
+      "assunto": "Primeira Guerra Mundial",
+      "gabarito": "B",
+      "tags": [
+        "Lord-Kitchener",
+        "alistamento",
+        "propaganda-de-guerra",
+        "nacionalismo",
+        "identidade-britânica"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "16"
+    }
+  },
+  {
+    "latex": "\\question No Brasil, entre os anos de 1945 e 1964, vivenciou-se um momento de ampliação da participação popular na política e de renovação da possibilidade de livre associação e circulação de ideias. Ainda assim, os limites impostos pelo ambiente da Guerra Fria e pelas resistências de determinados setores da sociedade à experiência democrática brasileira de 1945–1964 não podem ser desconsiderados.\n\nSobre este período, é INCORRETO afirmar que:\n\\begin{choices}\n  \\choice embora todos os presidentes eleitos no período tenham tomado posse, ocorreram diversas tentativas de golpe e de anulação de eleições.\n  \\choice a despeito do contingente eleitoral ter aumentado significativamente, uma ampla parcela da população composta por analfabetos não tinha direito ao voto.\n  \\choice diversos jornais com distintas orientações políticas e partidárias mantinham expressiva circulação e buscavam aproximar-se do grande público.\n  \\CorrectChoice a participação do Partido Comunista do Brasil (PCB) em todos os pleitos eleitorais evidencia a livre organização partidária então vigente.\n  \\choice instrumentos de combate às fraudes e coação eleitorais como a cédula única oficial, instituída em 1955, visavam a garantir o livre exercício do voto.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Difícil",
+      "disciplina": "História",
+      "assunto": "Democracia no Brasil (1945–1964)",
+      "gabarito": "D",
+      "tags": [
+        "Guerra-Fria",
+        "PCB",
+        "partido-comunista",
+        "voto",
+        "democracia-populista",
+        "analfabetos"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "17"
+    }
+  },
+  {
+    "latex": "\\question \"Todos os anos, no Dia da Europa, comemorado a 9 de maio, festeja-se a paz e a unidade do continente europeu. Esta data assinala o aniversário da histórica «Declaração Schuman». Num discurso proferido em Paris, em 1950, Robert Schuman, o então Ministro dos Negócios Estrangeiros francês, expôs a sua visão de uma nova forma de cooperação política na Europa, que tornaria impensável a eclosão de uma guerra entre países europeus.\"\n\n\\credits{Disponível em: <http://europa.eu/index_pt.htm>.}\n\nSobre a formação da União Europeia (UE), analise as seguintes afirmativas:\n\n\\begin{romanitems}\n  \\item A construção da UE foi iniciada após a Segunda Guerra Mundial com a intenção de incentivar a cooperação econômica, do que resultou a criação da Comunidade Econômica Europeia (CEE).\n  \\item A UE regula, através de um governo comum, a política externa, a política econômica e a política interna dos países membros, além de garantir a segurança coletiva através de uma força militar própria.\n  \\item Todos os membros da UE devem obedecer aos termos assinados no Tratado de Lisboa de 2009, que visa a construir uma homogeneidade continental em termos ideológicos, políticos e religiosos.\n  \\item O mercado único é o principal motor da UE, permitindo a livre circulação de pessoas, bens, serviços e capitais.\n\\end{romanitems}\n\nEstá correto SOMENTE o que se afirma em:\n\\begin{oneparchoices}\n  \\choice II e III\n  \\choice I e III\n  \\choice II e IV\n  \\choice I e II\n  \\CorrectChoice I e IV\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "União Europeia e Integração Europeia",
+      "gabarito": "E",
+      "tags": [
+        "CEE",
+        "Tratado-de-Lisboa",
+        "mercado-único",
+        "Declaração-Schuman",
+        "integração-europeia"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "18"
+    }
+  },
+  {
+    "latex": "\\question \\begin{poem}\n\\verse{Ouro de Tolo}\n\\verse{}\n\\verse{Eu devia estar contente}\n\\verse{Porque eu tenho um emprego}\n\\verse{Sou um dito cidadão respeitável}\n\\verse{E ganho quatro mil cruzeiros por mês}\n\\verse{Eu devia agradecer ao Senhor}\n\\verse{Por ter tido sucesso na vida como artista}\n\\verse{Eu devia estar feliz}\n\\verse{Porque consegui comprar um Corcel 73}\n\\verse{Eu devia estar alegre e satisfeito}\n\\verse{Por morar em Ipanema}\n\\verse{Depois de ter passado fome por dois anos}\n\\verse{Aqui na Cidade Maravilhosa [...]}\n\\end{poem}\n\n\\credits{SEIXAS, Raul. Ouro de Tolo. 1973.}\n\nEssa canção do ano de 1973 dialoga com aspectos associados ao crescimento da economia brasileira durante o período da ditadura militar, o chamado milagre econômico.\n\nAssinale a alternativa INCORRETA.\n\\begin{choices}\n  \\choice A canção satiriza a promoção da mencionada política econômica e, inclusive, cita uma característica do período, que foi o acréscimo na geração de postos de trabalho.\n  \\choice A canção se refere indiretamente à intensificação do fenômeno da urbanização e da migração interna — quadro relacionado com a explosão das megalópoles na ditadura militar —, por meio da citação da experiência do narrador no meio urbano.\n  \\choice A canção parodia os efeitos do desenvolvimento econômico ao citar a realização dos sonhos de consumo da classe média, como ter um carro do ano (Corcel 73) e morar em Ipanema.\n  \\choice A canção sugere a discordância do narrador em relação ao clima de euforia decorrente do surto econômico, pelo tempo verbal empregado no começo de cada estrofe e também pela lembrança de que ele passou fome na cidade grande.\n  \\CorrectChoice A canção enfatiza a eficácia da ditadura militar na área do planejamento da economia, ressaltando a promoção do desenvolvimento nacional e as possibilidades de elevação do nível de vida da população em um novo cenário.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Ditadura Militar Brasileira",
+      "gabarito": "E",
+      "tags": [
+        "Raul-Seixas",
+        "milagre-econômico",
+        "urbanização",
+        "Ipanema",
+        "crítica-ao-desenvolvimentismo"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "19"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-hist-g1-q20}\n\n\\credits{Disponível em: <http://www.expo.fiocruz.br/revolta/pereira/paginas/71.htm>. Acesso em: 19 set. 2016.}\n\nA charge acima foi publicada na revista O Malho, em 1905, quando as reformas urbanas de Pereira Passos se encontravam em estágio avançado. Assinale a alternativa que melhor se relaciona com a imagem.\n\\begin{choices}\n  \\CorrectChoice Um dos principais custos sociais das obras de renovação urbana carioca foi o desalojamento de um elevado número de pessoas, em função da demolição de suas casas pelos poderes públicos, para a abertura de avenidas e alargamento de ruas.\n  \\choice Um grande contingente populacional foi atraído pela oferta de empregos nas obras da cidade do Rio de Janeiro, onde se pagava a trabalhadores não qualificados salários razoavelmente compatíveis com o custo da moradia popular.\n  \\choice Houve melhoria nas condições de vida da classe trabalhadora, que foi beneficiada pelos avanços na estrutura urbana da cidade e, assim, pôde mudar-se para casas mais estruturadas, próximas dos locais de trabalho e de equipamentos culturais.\n  \\choice Ocorreu um movimento voluntário dos trabalhadores pobres, cientes de que suas formas de morar (em cortiços e morros) não correspondiam à chamada \"regeneração\" da capital da República, tendo por esse motivo abandonado suas habitações no Centro da cidade, sem conflitos.\n  \\choice Aconteceu uma marcha dos moradores removidos de suas casas pela Prefeitura para as muitas vilas operárias custeadas por essa mesma instância governamental, que tratou a habitação de tipo social como prioridade de 1902 a 1906.\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  FÍSICA — DISCURSIVA\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "História",
+      "assunto": "Urbanização no Brasil República",
+      "gabarito": "A",
+      "tags": [
+        "Pereira-Passos",
+        "reforma-urbana",
+        "Rio-de-Janeiro",
+        "cortiços",
+        "remoção-forçada",
+        "Belle-Époque"
+      ],
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1",
+      "numero": "20"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Um longo tubo cilíndrico e vertical possui uma seção reta de 10,0 cm². São colocados dentro dele 100 cm³ de água (densidade \\( d_A = 1{,}00 \\) g/cm³) e 100 cm³ de óleo (\\( d_O = 0{,}800 \\) g/cm³), que não se mistura com a água.\n\n\\begin{databox}\n\\( g = 10{,}0 \\) m/s²\n\\end{databox}"
+    ],
+    "items": [
+      {
+        "latex": "Calcule a altura total da coluna de óleo + água.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Hidrostática",
+          "tags": [
+            "pressão",
+            "coluna-de-fluido",
+            "densidade",
+            "volume"
+          ],
+          "resposta": "V_total = 200 cm³, A = 10 cm². H = V/A = 200/10 = 20 cm.",
+          "numero": "1"
+        }
+      },
+      {
+        "latex": "Dentro do cilindro com óleo e água, coloca-se uma esfera de plástico com densidade \\( d_E = 0{,}900 \\) g/cm³, massa 15,0 g e raio menor que o do cilindro. O que acontece com a esfera? Ela cai no fundo do recipiente ou flutua? Justifique e faça um desenho da posição da esfera dentro do tubo, no equilíbrio.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Hidrostática",
+          "tags": [
+            "empuxo",
+            "flutuação",
+            "densidade-relativa",
+            "equilíbrio"
+          ],
+          "resposta": "A esfera tem densidade 0,900 g/cm³, maior que a do óleo (0,800) e menor que a da água (1,00). Portanto flutua na interface entre água e óleo — não cai no fundo.",
+          "numero": "1"
+        }
+      },
+      {
+        "latex": "Calcule a pressão manométrica \\( (P - P_{atm}) \\) no fundo do recipiente cilíndrico contendo o óleo, a água e a esfera.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Hidrostática",
+          "tags": [
+            "pressão-manométrica",
+            "peso",
+            "força",
+            "área"
+          ],
+          "resposta": "P_man = (m_A + m_O + M) · g / A = (100 + 80 + 15) × 10⁻³ × 10 / (10 × 10⁻⁴) = 1,95 × 10³ Pa.",
+          "numero": "1"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Física",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Considere o circuito da figura abaixo em que as resistências são dadas em kΩ e a bateria é considerada ideal com uma força eletromotriz de 12 Volts. \\( R_1 = 6{,}0 \\) kΩ e \\( R_4 = 2{,}0 \\) kΩ estão em série com a combinação paralela de \\( R_2 = 20 \\) kΩ e \\( R_3 = 30 \\) kΩ.\n\n\\includegraphics{figura-fis-g1-q2}"
+    ],
+    "items": [
+      {
+        "latex": "Qual é a diferença de potencial no resistor \\( R_2 \\)?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Circuitos Elétricos",
+          "tags": [
+            "resistência-equivalente",
+            "paralelo",
+            "série",
+            "diferença-de-potencial"
+          ],
+          "resposta": "R_{eq} do paralelo R2||R3 = (20 × 30)/(20 + 30) = 12 kΩ. R_{total} = 6 + 12 + 2 = 20 kΩ. I = 12 V / 20 kΩ = 0,60 mA. ΔV_{R2} = 12 kΩ × 0,60 mA = 7,2 V.",
+          "numero": "2"
+        }
+      },
+      {
+        "latex": "Qual é a potência dissipada pelo circuito?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Circuitos Elétricos",
+          "tags": [
+            "potência-elétrica",
+            "corrente",
+            "tensão"
+          ],
+          "resposta": "P = V · I = 12 V × 0,60 mA = 7,2 mW.",
+          "numero": "2"
+        }
+      },
+      {
+        "latex": "A resistência \\( R_3 \\) agora é retirada do circuito e substituída por um fio sem resistência. Qual é a nova corrente que passa por \\( R_1 \\)?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Circuitos Elétricos",
+          "tags": [
+            "curto-circuito",
+            "corrente",
+            "resistência"
+          ],
+          "resposta": "Com R3 em curto, R2 também fica em curto. O circuito tem apenas R1 e R4 em série: R_{eq} = 6 + 2 = 8 kΩ. I = 12 V / 8 kΩ = 1,5 mA.",
+          "numero": "2"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Física",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Um sistema de dois blocos é montado como mostrado na figura. A polia e o fio são ideais. A configuração inicial do sistema é tal que o bloco 1 está inicialmente a uma altura vertical \\( h = 3{,}0 \\) m e a uma distância de \\( d = 5{,}0 \\) m em relação à base da rampa. Há atrito entre o bloco 1 e a rampa, com coeficiente de atrito cinético \\( \\mu = 0{,}25 \\).\n\n\\includegraphics{figura-fis-g1-q3}\n\n\\begin{databox}\n\\( g = 10 \\) m/s²\n\\end{databox}"
+    ],
+    "items": [
+      {
+        "latex": "Observa-se que o bloco 1 desce. Faça os diagramas de forças que atuam nos blocos 1 e 2.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Dinâmica e Forças",
+          "tags": [
+            "diagrama-de-forças",
+            "tensão",
+            "normal",
+            "peso",
+            "atrito"
+          ],
+          "resposta": "Bloco 1 (na rampa): peso (m₁g↓), normal (N₁ ⊥ rampa), tensão (T subindo a rampa), atrito cinético (descendo a rampa, oposto ao movimento). Bloco 2 (suspenso): peso (m₂g↓), tensão (T↑).",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Partindo do repouso, o bloco 1 desce a rampa atingindo a base com uma velocidade escalar final de 2,5 m/s. Qual é o tempo gasto na descida?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Dinâmica e Forças",
+          "tags": [
+            "movimento-uniformemente-acelerado",
+            "tempo",
+            "velocidade",
+            "cinemática"
+          ],
+          "resposta": "O movimento é uniformemente acelerado com v₀ = 0 e v_f = 2,5 m/s. d = (v₀ + v_f)/2 × t → t = 2d/v_f = 2 × 5,0 / 2,5 = 4,0 s.",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Tomando a energia potencial gravitacional como zero na base da rampa, que distância terá percorrido o bloco 1 tal que a energia dissipada pelo atrito seja igual a 10% da sua energia potencial inicial?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Energia e Trabalho",
+          "tags": [
+            "energia-potencial",
+            "atrito",
+            "trabalho",
+            "percentual"
+          ],
+          "resposta": "E_P = m₁gh. Trabalho do atrito: |W_fat| = μ · N₁ · x = μ · m₁g · (4/5) · x. |W_fat| = 0,10 E_P → μ · m₁g · (4/5) · x = 0,1 · m₁g · h. Com μ = 0,25 e h = 3,0 m: x = 0,1 × 3,0 / (0,25 × 4/5) = 1,5 m.",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Qual deveria ser o valor da razão \\( m_2/m_1 \\) para que o bloco 1 descesse com velocidade constante?\n\n\n% ═══════════════════════════════════════════════════════════════\n%  MATEMÁTICA — DISCURSIVA\n% ═══════════════════════════════════════════════════════════════",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Dinâmica e Forças",
+          "tags": [
+            "velocidade-constante",
+            "equilíbrio-de-forças",
+            "razão-de-massas"
+          ],
+          "resposta": "Velocidade constante → resultante nula. Bloco 1: m₁g sin θ = T + μ m₁g cos θ → T = m₁g(sin θ − μ cos θ). Bloco 2: T = m₂g. m₂/m₁ = sin θ − μ cos θ = 3/5 − 0,25 × 4/5 = 3/5 − 1/5 = 2/5 = 0,4.",
+          "numero": "3"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Física",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Considere a parábola de equação \\( y = x^2 - x + 1 \\)."
+    ],
+    "items": [
+      {
+        "latex": "Encontre os pontos de interseção da parábola com a reta de equação \\( y = x + 1 \\).",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Funções Quadráticas",
+          "tags": [
+            "parábola",
+            "reta",
+            "interseção",
+            "sistema-de-equações"
+          ],
+          "resposta": "x² − x + 1 = x + 1 ⟺ x² − 2x = 0 ⟺ x = 0 ou x = 2. Pontos de interseção: (0, 1) e (2, 3).",
+          "numero": "1"
+        }
+      },
+      {
+        "latex": "Encontre \\( b \\) para o qual a parábola intercepta a reta de equação \\( y = x + b \\) em um único ponto.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Funções Quadráticas",
+          "tags": [
+            "discriminante",
+            "tangência",
+            "reta-tangente",
+            "raiz-dupla"
+          ],
+          "resposta": "x² − x + 1 = x + b ⟺ x² − 2x + (1 − b) = 0. Para raiz dupla: Δ = 4 − 4(1 − b) = 0 ⟺ b = 0.",
+          "numero": "1"
+        }
+      },
+      {
+        "latex": "Encontre as retas que passam pelo ponto \\( (1, 0) \\) e que interceptam a parábola em um único ponto.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Funções Quadráticas",
+          "tags": [
+            "reta-tangente",
+            "ponto-externo",
+            "discriminante",
+            "sistema"
+          ],
+          "resposta": "A reta vertical x = 1 satisfaz a condição. Para retas y = mx − b passando por (1, 0): x² − x + 1 = mx − b ⟺ x² + (−1 − m)x + (1 + b) = 0, Δ = 0. Δ = (−1 − m)² − 4(1 + b) = 0 ⟺ m = −1 (b = 2) e m = 3 (b = −3). Retas: x = 1, y = −x + 1 e y = 3x − 3.",
+          "numero": "1"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Temos uma urna com 100 bolas numeradas de 1 a 100."
+    ],
+    "items": [
+      {
+        "latex": "Escolhendo duas bolas distintas simultaneamente, qual a probabilidade de que a soma seja 3?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Probabilidade",
+          "tags": [
+            "combinação",
+            "urna",
+            "soma",
+            "probabilidade-clássica"
+          ],
+          "resposta": "Total de pares: C(100,2) = 4950. Soma 3: apenas o par {1, 2}. P[S = 3] = 1/4950.",
+          "numero": "2"
+        }
+      },
+      {
+        "latex": "Escolhendo duas bolas distintas simultaneamente, qual a probabilidade de que a soma seja menor ou igual a 7?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Probabilidade",
+          "tags": [
+            "combinação",
+            "urna",
+            "soma",
+            "contagem"
+          ],
+          "resposta": "Pares com soma ≤ 7: {1,2}, {1,3}, {1,4}, {1,5}, {1,6}, {2,3}, {2,4}, {2,5}, {3,4} → 9 pares. P[S ≤ 7] = 9/4950 = 1/550.",
+          "numero": "2"
+        }
+      },
+      {
+        "latex": "Escolhendo duas bolas distintas simultaneamente, qual a probabilidade de que o produto seja um número par?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Probabilidade",
+          "tags": [
+            "produto",
+            "par",
+            "complementar",
+            "combinação",
+            "ímpares"
+          ],
+          "resposta": "Produto par se ao menos uma bola for par. Complementar: ambas ímpares. Bolas ímpares: 50. Pares com ambas ímpares: C(50,2) = 1250. P[produto par] = 1 − 1250/4950 = 3700/4950 = 149/198.",
+          "numero": "2"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Considere, como na figura, um quadrado ABCD de lado 2 e um círculo inscrito de centro O e raio 1. Sejam E e F os pontos médios dos lados AB e AD, respectivamente.\n\n\\includegraphics{figura-mat-g1-q3}"
+    ],
+    "items": [
+      {
+        "latex": "Calcule a área do quadrado e a área do círculo.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "área",
+            "quadrado",
+            "círculo-inscrito",
+            "raio"
+          ],
+          "resposta": "Área (quadrado) = 2² = 4. Área (círculo) = π · 1² = π.",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Calcule a área da região limitada pelos segmentos AE, AF e pelo arco EF.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "área",
+            "setor-circular",
+            "triângulo",
+            "segmento"
+          ],
+          "resposta": "A região limitada por AE, AF e arco EF é um quadrado de lado 1 menos um quarto do círculo. Área = 1 − π/4.",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Seja GH um segmento de reta paralelo ao lado AD, em que G pertence ao segmento AE e H pertence ao arco EF. Sabendo que os pontos A, H e C são colineares, calcule a área da região limitada pelos segmentos AF, AG, GH e pelo arco FH.\n\n\n% FIXME: fórmulas de g₀ e g₁ precisam ser verificadas no PDF original —\n% o pdftotext corrompeu a notação das frações com valor absoluto.\n% Pelo gabarito: para 1 ≤ x ≤ 2, g₁(x) = 2x − 2;\n% soluções de g₁(x) = x/2 são x = −4, −4/3, 4/3, 4.\n% A fórmula mais provável (não verificada) está abaixo.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Geometria Plana",
+          "tags": [
+            "colinearidade",
+            "segmento-paralelo",
+            "área",
+            "cálculo-geométrico"
+          ],
+          "resposta": "A, H, C colineares e GH ∥ AD. |GH| = 1 − √2/2. Área do triângulo AGH = (1/2)(1 − √2/2)². Área da região (AF, AG, GH, arco FH) = (1/2)(1 − √2/2)² + (1 − π/4) − (1/8) = 5/4 − √2/2 − π/8.",
+          "numero": "3"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "Sejam \\( g_0, g_1 : \\mathbb{R} \\to \\mathbb{R} \\) as seguintes funções:\n\n\\[\n  g_0(x) = \\frac{|x + 2| + x}{2}\n\\]\n\n\\[\n  g_1(x) = \\frac{g_0(|4x| + 6) - g_0(|4x| - 6)}{2}\n\\]"
+    ],
+    "items": [
+      {
+        "latex": "Faça o esboço do gráfico de \\( g_0 \\).",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Funções",
+          "tags": [
+            "valor-absoluto",
+            "função-modular",
+            "esboço-de-gráfico"
+          ],
+          "resposta": "g₀(x) = (|x+2| + x)/2. Para x ≥ −2: g₀(x) = x + 1. Para x < −2: g₀(x) = −1. Gráfico: reta de inclinação 1 para x ≥ −2, constante −1 para x < −2.",
+          "numero": "4"
+        }
+      },
+      {
+        "latex": "Faça o esboço do gráfico de \\( g_1 \\).",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Funções",
+          "tags": [
+            "valor-absoluto",
+            "composição-de-funções",
+            "esboço-de-gráfico"
+          ],
+          "resposta": "Calcular g₁ por casos. Para 1 ≤ x ≤ 2: g₁(x) = 2x − 2. (Ver gabarito original para esboço completo.)",
+          "numero": "4"
+        }
+      },
+      {
+        "latex": "Resolva a inequação \\( g_1(x) \\leq \\dfrac{x}{2} \\).\n\n\n% ═══════════════════════════════════════════════════════════════\n%  QUÍMICA — DISCURSIVA\n% ═══════════════════════════════════════════════════════════════",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Funções",
+          "tags": [
+            "inequação",
+            "valor-absoluto",
+            "conjunto-solução"
+          ],
+          "resposta": "As soluções de g₁(x) = x/2 são x = −4, −4/3, 4/3, 4. g₁(x) ≤ x/2 ⟺ x ∈ (−4, −4/3] ∪ [0, 4/3] ∪ [4, +∞).",
+          "numero": "4"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Matemática",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "A partir da combustão de alcanos, é possível gerar energia na forma de calor. A equação química balanceada representa a combustão completa de 2 mol do alcano \\ce{C_xH_y}, no qual as letras \\textit{x} e \\textit{y} representam, respectivamente, quantidades de átomos de carbono e hidrogênio da molécula do alcano.\n\n\\[\n  \\ce{2 C_xH_y + 13 O2 -> 8 CO2 + 10 H2O + calor}\n\\]\n\n\\begin{databox}\n1 mol de \\ce{O2} = 32 g = \\( 6{,}0 \\times 10^{23} \\) moléculas\n\\end{databox}"
+    ],
+    "items": [
+      {
+        "latex": "De acordo com as regras de nomenclatura da IUPAC, escreva o nome do alcano \\ce{C_xH_y} e represente sob notação bastão a estrutura de um isômero de cadeia desse alcano.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Alcanos e Nomenclatura IUPAC",
+          "tags": [
+            "nomenclatura",
+            "alcano",
+            "isomeria-de-cadeia",
+            "butano",
+            "metilpropano"
+          ],
+          "resposta": "2 mol de C_xH_y formam 8 mol de CO₂ → x = 4. Fórmula geral de alcanos: CₙH₂ₙ₊₂ → C₄H₁₀ = butano. Isômero de cadeia: metilpropano (CH₃-CH(CH₃)-CH₃).",
+          "numero": "1"
+        }
+      },
+      {
+        "latex": "Represente a molécula de \\ce{CO2} de acordo com a fórmula eletrônica de Lewis.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Ligações Químicas e Estrutura Molecular",
+          "tags": [
+            "Lewis",
+            "CO2",
+            "ligação-dupla",
+            "estrutura-eletrônica"
+          ],
+          "resposta": "Fórmula eletrônica de Lewis do CO₂: O=C=O (duas ligações duplas), com pares de elétrons não-ligantes nos oxigênios.",
+          "numero": "1"
+        }
+      },
+      {
+        "latex": "Calcule a massa, em gramas, de uma molécula de \\ce{O2}.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Estequiometria",
+          "tags": [
+            "massa-molar",
+            "Avogadro",
+            "massa-de-uma-molécula",
+            "O2"
+          ],
+          "resposta": "Massa de 1 molécula de O₂ = 32,0 g/mol ÷ (6,0 × 10²³ moléculas/mol) = 5,3 × 10⁻²³ g/molécula.",
+          "numero": "1"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Química",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "A equação a seguir descreve o equilíbrio reacional entre o dióxido de carbono e o monóxido de carbono na presença de carbono sólido em um reator de 1 L. Na temperatura de 1000°C o \\( K_P \\) da reação é igual a 4.\n\n\\[\n  \\ce{C(s) + CO2(g) <=> 2 CO(g)} \\quad \\Delta H > 0\n\\]"
+    ],
+    "items": [
+      {
+        "latex": "Escreva a expressão da constante de equilíbrio (\\( K_P \\)) da reação.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Equilíbrio Químico",
+          "tags": [
+            "constante-de-equilíbrio",
+            "Kp",
+            "pressão-parcial",
+            "expressão-do-equilíbrio"
+          ],
+          "resposta": "K_P = (P_{CO})² / P_{CO₂}",
+          "numero": "2"
+        }
+      },
+      {
+        "latex": "Explique o que acontece quando o equilíbrio é perturbado pelo aumento da temperatura do reator.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Equilíbrio Químico",
+          "tags": [
+            "Le-Chatelier",
+            "temperatura",
+            "endotérmico",
+            "deslocamento-do-equilíbrio"
+          ],
+          "resposta": "ΔH > 0 → reação endotérmica. Aumento de temperatura desloca o equilíbrio para a direita (produtos), aumentando a concentração de CO.",
+          "numero": "2"
+        }
+      },
+      {
+        "latex": "Se a pressão parcial do \\ce{CO2} é 0,04 atm no equilíbrio, calcule a pressão total no reator. Expresse o valor com duas casas decimais.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Equilíbrio Químico",
+          "tags": [
+            "Kp",
+            "pressão-parcial",
+            "pressão-total",
+            "cálculo"
+          ],
+          "resposta": "K_P = (P_{CO})² / 0,04 = 4 → (P_{CO})² = 0,16 → P_{CO} = 0,4 atm. Pressão total = 0,4 + 0,04 = 0,44 atm.",
+          "numero": "2"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Química",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  },
+  {
+    "isSet": true,
+    "isMcqSet": false,
+    "baseLatexes": [
+      "O processo de produção do manganês em autoforno pode ser simplificado em duas etapas; a primeira ocorre em uma temperatura mais baixa (500°C) e a segunda reação, em uma temperatura mais elevada.\n\n\\[\n  \\ce{2 MnO2(s) + C(s) -> 2 MnO(s) + CO2(g)} \\quad \\Delta H° = +123 \\text{ kJ mol}^{-1}\n\\]\n\\[\n  \\ce{2 MnO(s) + C(s) -> 2 Mn(s) + CO2(g)} \\quad \\Delta H° = +357 \\text{ kJ mol}^{-1}\n\\]\n\n\\begin{databox}\n\\( M_{Mn} = 55 \\) g mol\\textsuperscript{−1} \\quad \\( M_C = 12 \\) g mol\\textsuperscript{−1} \\quad \\( M_O = 16 \\) g mol\\textsuperscript{−1}\n\n\\( R = 0{,}082 \\) atm L mol\\textsuperscript{−1} K\\textsuperscript{−1}\n\\end{databox}"
+    ],
+    "items": [
+      {
+        "latex": "Considerando o processo completo, escreva a equação global e calcule o valor da variação de entalpia padrão para formação de 1 mol de Mn.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Termoquímica",
+          "tags": [
+            "Lei-de-Hess",
+            "equação-global",
+            "entalpia",
+            "soma-de-reações"
+          ],
+          "resposta": "Equação global: 2 MnO₂(s) + 2 C(s) → 2 Mn(s) + 2 CO₂(g). ΔH° = +123 + 357 = +480 kJ para 2 mol de Mn. Para 1 mol de Mn: ΔH° = +240 kJ mol⁻¹. (Gabarito original indica +117 kJ mol⁻¹ — verificar equação no PDF)",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Se o processo reacional total gerou uma massa igual a 10,12 ton de \\ce{CO2}, calcule a massa, em ton, de \\ce{MnO2} originalmente no minério.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Estequiometria",
+          "tags": [
+            "mol",
+            "massa-molar",
+            "MnO2",
+            "CO2",
+            "estequiometria-em-massa"
+          ],
+          "resposta": "n(CO₂) = 10,12 × 10⁶ g / 44 g mol⁻¹ = 230 000 mol. Relação 1:1 (MnO₂ : CO₂ na reação global). m(MnO₂) = 230 000 mol × 87 g mol⁻¹ = 20,01 × 10⁶ g = 20,01 ton.",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Considerando a massa de 10,12 ton de \\ce{CO2} resultante no processo completo, calcule o volume desse gás produzido, medido na CNTP. Expresse o valor em notação científica com duas casas decimais.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Gases e Estequiometria",
+          "tags": [
+            "CNTP",
+            "volume-de-gás",
+            "equação-de-estado",
+            "notação-científica"
+          ],
+          "resposta": "V = nRT/P = (230 000 × 0,082 × 273) / 1 ≈ 5,15 × 10⁶ L.",
+          "numero": "3"
+        }
+      },
+      {
+        "latex": "Escreva a variação do número de oxidação (Nox) do manganês na reação global do processo de produção do elemento.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Termoquímica",
+          "tags": [
+            "Nox",
+            "número-de-oxidação",
+            "variação-de-Nox",
+            "manganês"
+          ],
+          "resposta": "Na equação global, Mn passa de Nox +4 (em MnO₂) para Nox 0 (Mn metálico). ΔNox = −4.",
+          "numero": "3"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "disciplina": "Química",
+      "fonte": "concurso",
+      "concurso": "PUC-Rio",
+      "banca": "PUC-Rio",
+      "ano": 2017,
+      "prova": "Tarde G1"
+    }
+  }
+]

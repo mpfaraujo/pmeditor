@@ -185,6 +185,42 @@
   line-height: inherit;
 }
 
+/* ====== NUMERAÇÃO DE LINHAS (data-numbered) ====== */
+
+.questao-conteudo,
+.question-readonly,
+.question-text {
+  counter-reset: linha-texto;
+}
+
+.questao-conteudo p[data-numbered="true"],
+.question-readonly p[data-numbered="true"],
+.question-text p[data-numbered="true"],
+.questao-conteudo .verse[data-numbered="true"],
+.question-readonly .verse[data-numbered="true"],
+.question-text .verse[data-numbered="true"] {
+  counter-increment: linha-texto;
+  position: relative;
+  padding-left: 2.2em;
+}
+
+.questao-conteudo p[data-numbered="true"]::before,
+.question-readonly p[data-numbered="true"]::before,
+.question-text p[data-numbered="true"]::before,
+.questao-conteudo .verse[data-numbered="true"]::before,
+.question-readonly .verse[data-numbered="true"]::before,
+.question-text .verse[data-numbered="true"]::before {
+  content: counter(linha-texto);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.8em;
+  text-align: right;
+  font-size: 0.78em;
+  color: #555;
+  line-height: inherit;
+}
+
 /* ====== CRÉDITOS ====== */
 .questao-conteudo .credits,
 .question-readonly .credits,

@@ -87,6 +87,7 @@ paragraph: {
   group: "block",
   attrs: {
     textAlign: { default: null as null | "left" | "center" | "right" | "justify" },
+    numbered: { default: false },
   },
   parseDOM: [
     {
@@ -96,7 +97,7 @@ paragraph: {
         const a = (el.style?.textAlign || "").trim();
         const textAlign =
           a === "left" || a === "center" || a === "right" || a === "justify" ? a : null;
-        return { textAlign };
+        return { textAlign, numbered: el.getAttribute("data-numbered") === "true" };
       },
     },
   ],
@@ -104,6 +105,7 @@ paragraph: {
     const attrs: Record<string, string> = {};
     const a = node.attrs.textAlign;
     if (a) attrs.style = `text-align:${a};`;
+    if (node.attrs.numbered) attrs["data-numbered"] = "true";
     return ["p", attrs, 0];
   },
 },
@@ -318,9 +320,20 @@ image: {
   verse: {
     // Linha individual de poema — só válido dentro de poem
     content: "inline*",
-    parseDOM: [{ tag: "div.verse" }],
-    toDOM(): DOMOutputSpec {
-      return ["div", { class: "verse" }, 0];
+    attrs: {
+      numbered: { default: false },
+    },
+    parseDOM: [{
+      tag: "div.verse",
+      getAttrs(dom: Node | string) {
+        const el = dom as HTMLElement;
+        return { numbered: el.getAttribute("data-numbered") === "true" };
+      },
+    }],
+    toDOM(node): DOMOutputSpec {
+      const attrs: Record<string, string> = { class: "verse" };
+      if (node.attrs.numbered) attrs["data-numbered"] = "true";
+      return ["div", attrs, 0];
     },
   },
 

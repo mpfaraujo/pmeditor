@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuestionRenderer from "@/components/Questions/QuestionRenderer";
 import { ArrowLeft, ChevronDown, ChevronUp, Plus, Pencil } from "lucide-react";
+import "@/app/editor/prova/montar/prova.css";
 import Link from "next/link";
 
 function wrapBaseTextForRender(content: any) {

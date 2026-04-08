@@ -46,15 +46,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  // A restauração da sessão acontece no client após o mount. Enquanto isso,
+  // páginas protegidas não devem decidir que o usuário "não é admin".
+  const [loading, setLoading] = useState(true);
 
   // restaurar sessão no mount (client-only, evita hydration mismatch)
   useEffect(() => {
     const stored = localStorage.getItem(LS_SESSION_KEY);
-    if (!stored) return;
+    if (!stored) {
+      setLoading(false);
+      return;
+    }
 
     setSessionToken(stored);
-    setLoading(true);
 
     let cancelled = false;
     apiGetProfile(stored)

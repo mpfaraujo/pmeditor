@@ -27,7 +27,7 @@ import {
   Bold, Italic, Underline as UnderlineIcon,
   Superscript, Subscript, Sigma, Image,
   List, ListOrdered, Undo2, Redo2, Save,
-  AlignLeft, Quote, Box, Code, BookOpen,
+  AlignLeft, AlignCenter, AlignJustify, Quote, Box, Code, BookOpen, Hash,
 } from "lucide-react";
 
 /* ---------- MathInlineView ---------- */
@@ -252,6 +252,67 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
     view.focus();
   };
 
+  const toggleLineNumbers = () => {
+    if (!view) return;
+    const { from, to } = view.state.selection;
+    // Verifica se todos os nós selecionados já estão numerados
+    let allNumbered = true;
+    let found = false;
+    view.state.doc.nodesBetween(from, to, (node) => {
+      if (node.type === schema.nodes.paragraph || node.type === schema.nodes.verse) {
+        found = true;
+        if (!node.attrs.numbered) allNumbered = false;
+      }
+    });
+    if (!found) return;
+    const newValue = !allNumbered;
+    const tr = view.state.tr;
+    view.state.doc.nodesBetween(from, to, (node, pos) => {
+      if (node.type === schema.nodes.paragraph || node.type === schema.nodes.verse) {
+        const isEmpty = node.textContent.trim() === "";
+        // Versos/parágrafos vazios nunca são numerados (separam estrofes)
+        tr.setNodeMarkup(pos, undefined, { ...node.attrs, numbered: newValue && !isEmpty });
+      }
+    });
+    view.dispatch(tr);
+    view.focus();
+  };
+
+  const isLineNumbered = (): boolean => {
+    if (!view) return false;
+    const { from, to } = view.state.selection;
+    let found = false;
+    view.state.doc.nodesBetween(from, to, (node) => {
+      if ((node.type === schema.nodes.paragraph || node.type === schema.nodes.verse) && node.attrs.numbered) {
+        found = true;
+      }
+    });
+    return found;
+  };
+
+  const setTextAlign = (align: "left" | "center" | "justify") => {
+    if (!view) return;
+    const { from, to } = view.state.selection;
+    const tr = view.state.tr;
+    view.state.doc.nodesBetween(from, to, (node, pos) => {
+      if (node.type === schema.nodes.paragraph) {
+        tr.setNodeMarkup(pos, undefined, { ...node.attrs, textAlign: align });
+      }
+    });
+    view.dispatch(tr);
+    view.focus();
+  };
+
+  const getTextAlign = (): string | null => {
+    if (!view) return null;
+    const { $from } = view.state.selection;
+    for (let d = $from.depth; d >= 0; d--) {
+      const node = $from.node(d);
+      if (node.type === schema.nodes.paragraph) return node.attrs.textAlign ?? null;
+    }
+    return null;
+  };
+
   const wrapList = (listType: "bullet_list" | "ordered_list" | "roman_list" | "alpha_list" | "assertive_list") => {
     if (!view) return;
     wrapInList(schema.nodes[listType])(view.state, view.dispatch);
@@ -333,6 +394,14 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
 
         <div className="w-px h-4 bg-gray-300 mx-1" />
 
+        {/* Alinhamento */}
+        <TBtn icon={AlignLeft} title="Alinhar à esquerda" active={getTextAlign() === "left" || getTextAlign() === null} onClick={() => setTextAlign("left")} />
+        <TBtn icon={AlignCenter} title="Centralizar" active={getTextAlign() === "center"} onClick={() => setTextAlign("center")} />
+        <TBtn icon={AlignJustify} title="Justificar" active={getTextAlign() === "justify"} onClick={() => setTextAlign("justify")} />
+        <TBtn icon={Hash} title="Numerar linhas selecionadas" active={isLineNumbered()} onClick={toggleLineNumbers} />
+
+        <div className="w-px h-4 bg-gray-300 mx-1" />
+
         {/* Inserções */}
         <TBtn icon={Sigma} title="Fórmula matemática" onClick={() => setMathDialog({ open: true, pos: null, latex: "" })} />
         <TBtn icon={Image} title="Imagem" onClick={() => setImageOpen(true)} />
@@ -342,14 +411,14 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
         {/* Listas */}
         <TBtn icon={List} title="Lista com marcadores" onClick={() => wrapList("bullet_list")} />
         <TBtn icon={ListOrdered} title="Lista numerada" onClick={() => wrapList("ordered_list")} />
-        <TBtn icon={BookOpen} title="Lista em algarismos romanos" onClick={() => wrapList("roman_list")} />
-        <TBtn icon={AlignLeft} title="Lista alfabética (a, b, c…)" onClick={() => wrapList("alpha_list")} />
+        <TBtn label="i ii" title="Lista em algarismos romanos" onClick={() => wrapList("roman_list")} />
+        <TBtn label="a b" title="Lista alfabética (a, b, c…)" onClick={() => wrapList("alpha_list")} />
         <TBtn label="( )" title="Lista VF (assertiva)" onClick={() => wrapList("assertive_list")} />
 
         <div className="w-px h-4 bg-gray-300 mx-1" />
 
         {/* Blocos especiais */}
-        <TBtn icon={AlignLeft} title="Poema / Verso" onClick={insertPoem} />
+        <TBtn icon={BookOpen} title="Poema / Verso" onClick={insertPoem} />
         <TBtn icon={Quote} title="Créditos" onClick={insertCredits} />
         <TBtn icon={Box} title="Caixa de dados" onClick={insertDataBox} />
         <TBtn icon={Code} title="Bloco de código" onClick={insertCodeBlock} />
@@ -368,7 +437,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
       {/* Editor */}
       <div
         ref={editorRef}
-        className="w-full [&_.ProseMirror]:!w-full [&_.ProseMirror]:!max-w-none [&_.ProseMirror]:!min-h-[400px] [&_.ProseMirror]:!shadow-none [&_.ProseMirror]:!p-6 [&_.ProseMirror]:outline-none [&_.ProseMirror]:cursor-text"
+        className="base-text-editor w-full [&_.ProseMirror]:!w-full [&_.ProseMirror]:!max-w-none [&_.ProseMirror]:!min-h-[400px] [&_.ProseMirror]:!shadow-none [&_.ProseMirror]:!p-6 [&_.ProseMirror]:outline-none [&_.ProseMirror]:cursor-text"
       />
 
       <MathInsert

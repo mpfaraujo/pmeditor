@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { schema } from "@/components/editor/schema";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
@@ -462,8 +463,9 @@ function BatchConfigForm({
 
 /* ======================== Página principal ======================== */
 
-export default function ImportarPage() {
+function ImportarPageInner() {
   const { isAdmin, user } = useAuth();
+  const searchParams = useSearchParams();
   const [queue, setQueue] = useState<QueueEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -471,11 +473,22 @@ export default function ImportarPage() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [editorKey, setEditorKey] = useState(0);
   const [showLatex, setShowLatex] = useState(false);
+  const [activeQueueFile, setActiveQueueFile] = useState<string>("import-queue.json");
 
   useEffect(() => {
-    fetch("/data/import-queue.json")
+    // Aceita ?queue=<slug> ou ?queue=<nome-completo>.json para carregar batch específico
+    const queueParam = searchParams.get("queue");
+    let queueFile = "import-queue.json";
+    if (queueParam) {
+      // Aceita tanto slug puro ("puc-rio-2017-g1") quanto nome completo ("import-queue-puc-rio-2017-g1.json")
+      queueFile = queueParam.endsWith(".json")
+        ? queueParam
+        : `import-queue-${queueParam}.json`;
+    }
+    setActiveQueueFile(queueFile);
+    fetch(`/data/${queueFile}`)
       .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        if (!r.ok) throw new Error(`HTTP ${r.status} — ${queueFile}`);
         return r.json();
       })
       .then((data: QueueEntry[]) => {
@@ -486,7 +499,7 @@ export default function ImportarPage() {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [searchParams]);
 
   // useMemo ANTES de qualquer return condicional (Rules of Hooks)
   const item = queue.length > 0 && currentIdx < queue.length ? queue[currentIdx] : null;
@@ -595,6 +608,11 @@ export default function ImportarPage() {
               <ArrowLeft className="h-4 w-4" />
             </Link>
             <h1 className="text-lg font-bold whitespace-nowrap">Importar Questões</h1>
+            {activeQueueFile !== "import-queue.json" && (
+              <span className="text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-mono">
+                {activeQueueFile}
+              </span>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -694,5 +712,13 @@ export default function ImportarPage() {
         onSaved={handleNext}
       />
     </div>
+  );
+}
+
+export default function ImportarPage() {
+  return (
+    <Suspense>
+      <ImportarPageInner />
+    </Suspense>
   );
 }

@@ -1,1456 +1,1208 @@
 [
   {
-    "isSet": true,
-    "isMcqSet": true,
-    "baseLatexes": [
-      "FALCON SOARS INTO SPACE AND LANDS IN THE OCEAN\n\nMusk's Falcon 9 rocket had just shot 200 km up into space and flown almost horizontal to the planet at six times the speed of sound, before falling back to Earth. Then, somehow, it landed like a feather on a robotic barge in the ocean. The Falcon even found time to put an inflatable space habitat into orbit, too.\n\nEngines and boosters have been dropping into the big drink from the moment NASA began launching Mercury astronauts into space. Most of those rockets sunk to the bottom of the ocean. Some components of the space shuttle were recovered, of course, and the orbiter itself landed on a runway. But never before Friday has a rocket blasted into space and then returned to make a vertical landing at sea.\n\nThese are heady times for a new generation of private spaceflight companies. It was only five months ago that Blue Origin launched its New Shepard rocket to space before landing it vertically in West Texas. SpaceX followed suit in December when its larger and more powerful Falcon 9 not only flew to space, but delivered a satellite into orbit and touched down at a landing site along the Florida coast near its launch pad. Now SpaceX has taken the significant step of landing at sea.\n\nThat's critical, because it's much more fuel efficient for a rocket to touchdown on a ship below the point where it releases its payload into orbit, rather than go all the way back to a landing site near the Florida coast. SpaceX estimates that only one-half of its launches will have enough fuel to fly back to the coast after fulfilling their primary missions.\n\nAfter trying reusability with the space shuttle, which proved far more expensive to refurbish for subsequent flights, NASA has largely given up on reusable spaceflight. Russia, Europe, and other government agencies have too. So it fell to the new space companies, with their ethos of low-cost, to make frequent launches as a means of opening up access to space, in order to push the technology forward.\n\nSpaceX and Blue Origin have been the most visible proponents of reusable launch vehicles. But other firms, including XCOR, Masten Space Systems, and Virgin Galactic, are interested too. They do not seek so much to win lucrative government contracts, but to get lots of people and stuff into space, to create a space economy, and to set about the business of colonizing the solar system. \"This was a really good milestone for the future of spaceflight,\" Musk said. \"This is another step to the stars\", he added.\n\nDespite SpaceX's arresting success on Friday, the job is not yet done. The venerable space shuttle offers a sobering lesson for these new space companies. Whereas NASA said in the 1970s the shuttle would slash the cost of delivering payloads into space to $25 a pound, it ended up costing closer to $25,000 a pound. It's one thing to land a rocket, and it's another thing to fly it again without spending a lot of time and money.\n\nMusk must prove that his Falcon 9 rocket can be re-flown with modest modifications. After the first SpaceX landing in December, the company performed a static firing test of the vehicle, which went well until one of the nine engines showed thrust fluctuations. That rocket will stand as a monument outside the company's headquarters in Hawthorne, California. Perhaps the Falcon 9 that landed at sea will be flown again.\n\n\"It should fly again,\" Musk said Friday. SpaceX will try to return the booster back to Cape Canaveral, in Florida, by Sunday. After running a series of tests on the Falcon, the company plans to fire its engines 10 times in a row on the ground. \"If things look good, it will be qualified for reuse,\" Musk said. \"We're hoping to relaunch it on an orbital mission, let's say by June\", he added.\n\nInitially SpaceX plans to reduce the cost of a Falcon 9 rocket with a reused booster to $43 million per flight, a savings of 30 percent. But this is only the beginning. Musk wants to make nearly all of the Falcon 9 launch system reusable, and he wants to make launches and landings routine. \"Rapid and complete reusability is really important to make a rocket cost effective, like an airplane,\" he said. \"We've got to ultimately get rockets to that point.\" \"A Falcon 9 might fly as many as 100 times before retirement\", he added.\n\n\\credits{BERGER, Eric. Falcon Soars Into Space and Lands in the Ocean. Ars Technica, 2016. Adaptado.}"
-    ],
-    "items": [
-      {
-        "latex": "The author's main purpose in the text is to\n\\begin{choices}\n\\choice list possible reasons that explain why previous attempts of landing a rocket in the ocean did not succeed.\n\\choice inform readers of the difficulties which are involved in launching a rocket.\n\\CorrectChoice highlight Falcon's achievement in flying into space and landing vertically at sea.\n\\choice defend the relevance of continuous investments in spacecraft programs.\n\\choice criticize those spacecraft programs which are not fuel efficient.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "main idea",
-            "text purpose",
-            "Falcon 9"
-          ],
-          "gabarito": "C",
-          "numero": "1"
-        }
-      },
-      {
-        "latex": "In terms of reference, it is correct to affirm that\n\\begin{choices}\n\\choice \"its\" refers to \"five months ago\".\n\\CorrectChoice \"it\" refers to \"New Shepard rocket\".\n\\choice \"which\" refers to \"space\".\n\\choice \"They\" refers to \"Masten Space Systems\".\n\\choice \"which\" refers to \"vehicle\".\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Grammar",
-          "tags": [
-            "reference",
-            "pronouns",
-            "antecedent"
-          ],
-          "gabarito": "B",
-          "numero": "2"
-        }
-      },
-      {
-        "latex": "The fragment that contains a boldfaced expression introducing an idea of contrast is\n\\begin{choices}\n\\choice \"That's critical, because it's much more fuel efficient....\"\n\\choice \"So it fell to the new space companies...\"\n\\choice \"Despite SpaceX's arresting success on Friday the job is not yet done\"\n\\CorrectChoice \"Whereas NASA said in the 1970s the shuttle would slash the cost of....\"\n\\choice \"Initially SpaceX plans to reduce the cost of a Falcon 9 rocket...\"\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "assunto": "Grammar",
-          "tags": [
-            "contrast",
-            "connectors"
-          ],
-          "gabarito": "D",
-          "numero": "3"
-        }
-      },
-      {
-        "latex": "According to the second paragraph, what makes Musk's Falcon 9 rocket a true success is the fact that this is the first time in history that\n\\begin{choices}\n\\choice a rocket falls back to Earth at the speed of sound.\n\\choice NASA launches astronauts into space and has them land on a runway.\n\\CorrectChoice a rocket is sent to space and lands vertically on a platform at sea.\n\\choice components of space shuttles are recovered after landing in the ocean.\n\\choice an inflatable space habitat is put into orbit.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "specific information",
-            "Falcon 9"
-          ],
-          "gabarito": "C",
-          "numero": "4"
-        }
-      },
-      {
-        "latex": "In the context of the article, the word \"heady\" can be replaced with no change in meaning by\n\\begin{choices}\n\\choice frivolous.\n\\CorrectChoice stimulating.\n\\choice heavy.\n\\choice dull.\n\\choice light-headed.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Vocabulary",
-          "tags": [
-            "vocabulary in context",
-            "heady"
-          ],
-          "gabarito": "B",
-          "numero": "5"
-        }
-      },
-      {
-        "latex": "According to the author, one positive side-effect of the high costs involved in reusing space shuttles in subsequent launches is the fact that\n\\begin{choices}\n\\choice NASA has given up launching rockets.\n\\choice NASA has largely given up on reusable spaceflight.\n\\choice NASA has made an alliance with Russian and European companies.\n\\choice Russia and European countries are now investing on refurbishing shuttles.\n\\CorrectChoice new space companies have been developing technology to reuse space shuttles with low costs.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "inference",
-            "reusable spaceflight"
-          ],
-          "gabarito": "E",
-          "numero": "6"
-        }
-      },
-      {
-        "latex": "According to the article, some of the companies which are proponents of reusable launch vehicles are, among other things, in fact looking forward to\n\\begin{choices}\n\\CorrectChoice sending people and things into space.\n\\choice resuming the past Star Wars Program.\n\\choice obtaining financial advantages from the American government.\n\\choice surpassing NASA as a leading center for space research.\n\\choice making profitable contracts with the Russian and European companies.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "A",
-        "meta": {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "companies",
-            "reusable launch vehicles"
-          ],
-          "gabarito": "A",
-          "numero": "7"
-        }
-      },
-      {
-        "latex": "In the context of the article, the \"sobering lesson\" that \"the venerable space shuttle offers\" for new space companies is to\n\\begin{choices}\n\\choice land a rocket at sea.\n\\choice make SpaceX an arresting success.\n\\choice prove the existence of life in other planets.\n\\choice reestablish payloads into space to $25 a pound.\n\\CorrectChoice re-fly a rocket without spending too much time and money.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "lesson",
-            "reusability",
-            "costs"
-          ],
-          "gabarito": "E",
-          "numero": "8"
-        }
-      },
-      {
-        "latex": "In the fragment '\"It should fly again,\" Musk said Friday' the modal verb \"should\" implies an idea of\n\\begin{choices}\n\\choice advice.\n\\choice necessity.\n\\choice permission.\n\\CorrectChoice possibility.\n\\choice request.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "assunto": "Grammar",
-          "tags": [
-            "modal verbs",
-            "should"
-          ],
-          "gabarito": "D",
-          "numero": "9"
-        }
-      },
-      {
-        "latex": "Taking into consideration the last paragraph of the article, one can say that currently Musk's main ambition is to\n\\begin{choices}\n\\choice produce airplanes as well.\n\\CorrectChoice make a rocket cost effective through reusability.\n\\choice reduce the cost of the Falcon 9 in $43 million per flight.\n\\choice make rockets 100 times cheaper than they are now.\n\\choice save 30\\% of what is now spent with the project in future launches.\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  LÍNGUA ESTRANGEIRA — FRANCÊS\n% ═══════════════════════════════════════════════════════════════",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "author's conclusion",
-            "ambition"
-          ],
-          "gabarito": "B",
-          "numero": "10"
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Inglesa",
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "titulo_texto": "Falcon Soars Into Space and Lands in the Ocean",
-      "autor_texto": "Eric Berger",
-      "genero": "artigo jornalístico",
-      "tema": "exploração espacial, foguetes reutilizáveis",
-      "items": [
-        {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "main idea",
-            "text purpose",
-            "Falcon 9"
-          ],
-          "gabarito": "C",
-          "numero": "1"
-        },
-        {
-          "assunto": "Grammar",
-          "tags": [
-            "reference",
-            "pronouns",
-            "antecedent"
-          ],
-          "gabarito": "B",
-          "numero": "2"
-        },
-        {
-          "assunto": "Grammar",
-          "tags": [
-            "contrast",
-            "connectors"
-          ],
-          "gabarito": "D",
-          "numero": "3"
-        },
-        {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "specific information",
-            "Falcon 9"
-          ],
-          "gabarito": "C",
-          "numero": "4"
-        },
-        {
-          "assunto": "Vocabulary",
-          "tags": [
-            "vocabulary in context",
-            "heady"
-          ],
-          "gabarito": "B",
-          "numero": "5"
-        },
-        {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "inference",
-            "reusable spaceflight"
-          ],
-          "gabarito": "E",
-          "numero": "6"
-        },
-        {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "companies",
-            "reusable launch vehicles"
-          ],
-          "gabarito": "A",
-          "numero": "7"
-        },
-        {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "lesson",
-            "reusability",
-            "costs"
-          ],
-          "gabarito": "E",
-          "numero": "8"
-        },
-        {
-          "assunto": "Grammar",
-          "tags": [
-            "modal verbs",
-            "should"
-          ],
-          "gabarito": "D",
-          "numero": "9"
-        },
-        {
-          "assunto": "Reading Comprehension",
-          "tags": [
-            "author's conclusion",
-            "ambition"
-          ],
-          "gabarito": "B",
-          "numero": "10"
-        }
-      ]
-    }
-  },
-  {
-    "isSet": true,
-    "isMcqSet": true,
-    "baseLatexes": [
-      "L'objectif \"zero déchet\" n'est plus une utopie\n\nJusqu'à samedi à Paris, le festival Zero Waste va faire le tour de toutes les idées pour éviter de jeter des déchets, ou à défaut, de les réutiliser, de les recycler ou de les composter. Un secteur dynamisé par une nouvelle génération d'inventeurs et d'entrepreneurs.\n\nA la surprise même des organisateurs, le Cabaret sauvage, près de la Cité des Sciences dans le 19e arrondissement de Paris, était très fréquenté dès jeudi matin à l'ouverture du festival Zero Waste. Et il ne devrait pas désemplir d'ici samedi soir. Belle réussite pour la déclinaison française de l'organisation internationale qui milite pour une économie circulaire non productrice de déchets. Il y a deux ans encore, le Centre national d'information indépendante sur les déchets (CNIID) était une association très marginale. Son succès ne tient pas seulement au changement de son nom, aujourd'hui Zero Waste France. Il témoigne de l'émergence d'une jeune génération d'inventeurs et d'entrepreneurs. Ceux-ci agissent à la fois sur la conception des produits pour éviter \"l'obsolescence programmée\", c'est-à-dire la mise hors service rapide du produit vendu, et sur les circuits de réutilisation, de recyclage et de compostage des objets en fin de vie.\n\nLe festival fait donc la part belle à des idées dont certaines ont vraiment de l'avenir. Et il accueille aussi des industriels et distributeurs qui ont décidé d'entrer dans la démarche. Ainsi, le fabricant de robot ménager Seb communique aujourd'hui sur le fait que 73\\% de ses appareils sont réparables et la Camif met en avant dans ses catalogues les produits à durée de vie garantie longue. La loi de transition énergétique adoptée en France en août dernier appuie ce dynamisme en donnant des objectifs contraignants avec notamment l'orientation vers des filières de recyclage et de compostage de 55\\% des volumes de déchets en 2020 et de 65\\% en 2025. Le festival Zero Waste est donc une bourse aux idées et aux réalisations innovantes pour aller beaucoup plus loin. En voici deux exemples.\n\nIl y a deux ans, pour leur diplôme de fin de cursus de l'Ecole nationale supérieure de création industrielle (ENSCI), Julien Phedyaeff et Christopher Santerre ont présenté \"l'increvable\" conçue pour durer 50 ans. \"C'est une machine à laver qui se monte en kit et qui ne comporte aucune pièce collée ou soudée qui empêcherait une réparation\", explique le duo. L'idée, c'est évidemment de fournir un appareil dont on peut changer facilement les pièces. \"Aujourd'hui, réparer une machine à laver est tellement compliqué et onéreux qu'on préfère souvent en acheter une neuve, alors que souvent la pièce à changer vaut cinq euros\", s'emportent-ils. L'idée peut paraître simple. En réalité, elle change tout dans la construction et la distribution d'un équipement d'électroménager. La première \"increvable\" sera construite cette année.\n\nStéphane Martinez est encore restaurateur parisien. Mais son activité principale aujourd'hui, c'est de récupérer les déchets des cuisines chez ses anciens collègues. Le fondateur de \"Moulinot compost biogaz\" a créé en octobre 2013 le premier système de collecte et de compostage des restes de repas, épluchures et rebuts de cuisine. \"Nous avons démarré avec une opération pilote de 80 professionnels épaulée par le syndicat de la restauration, précise Stéphane Martinez. On y trouvait autant des restaurants étoilés que des petits bistrots de quartiers et des traiteurs\". Cette entreprise sociale et solidaire qui accueille des personnes éloignées du marché de l'emploi distribue dans les cuisines des sacs transparents, \"pour que les erreurs de tri se voient\", forme les cuisiniers et assure la collecte des poubelles, un service facturé de 275 à 300 euros la tonne. Les déchets sont acheminés vers les unités de compostage de la banlieue parisienne. Avec ses 14 salariés, l'entreprise sort aujourd'hui 15 tonnes de biodéchets par jour. C'est encore une goutte d'eau par rapport aux 300 000 tonnes de déchets organiques produits tous les ans par la restauration de Paris et de la proche banlieue. Mais nul doute que ce marché potentiel sera un jour exploité par cette société seule sur ce créneau.\n\n\\credits{CHAUVEAU, Loïc. L'objectif \"zero déchet\" n'est plus une utopie. Sciences et Avenir, 2016. Adaptado.}"
-    ],
-    "items": [
-      {
-        "latex": "Le festival Zero Waste présenté dans le texte a comme motivation principale ...\n\\begin{choices}\n\\choice la restauration parisienne.\n\\choice la production d'appareils modernes.\n\\choice la créativité de jeunes universitaires.\n\\choice l'inaccessibilité de l'utopie écologiste.\n\\CorrectChoice le développement durable sans gaspillage.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "idée principale",
-            "développement durable",
-            "zero waste"
-          ],
-          "gabarito": "E",
-          "numero": "1"
-        }
-      },
-      {
-        "latex": "Ce festival dure ...\n\\begin{choices}\n\\choice un jour.\n\\choice deux jours.\n\\CorrectChoice trois jours.\n\\choice quatre jours.\n\\choice cinq jours.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "assunto": "Vocabulaire",
-          "tags": [
-            "jours de la semaine",
-            "durée"
-          ],
-          "gabarito": "C",
-          "numero": "2"
-        }
-      },
-      {
-        "latex": "La réussite du festival est due, entre autres raisons, ...\n\\begin{choices}\n\\choice au succès du sigle CNIID.\n\\choice au fait qu'il se passe à Paris.\n\\choice à l'accueil d'un public marginalisé.\n\\CorrectChoice à l'action de jeunes entrepreneurs.\n\\choice à la proximité de la Cité des Sciences.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "cause",
-            "succès du festival"
-          ],
-          "gabarito": "D",
-          "numero": "3"
-        }
-      },
-      {
-        "latex": "Les industriels contribuent à cette initiative en ...\n\\begin{choices}\n\\choice offrant d'emplois aux inventeurs.\n\\CorrectChoice fabriquant des produits plus durables.\n\\choice finançant des festivals tels Zero Waste.\n\\choice stimulant l'obsolescence programmée.\n\\choice remplaçant complètement les appareils cassés.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "industrie",
-            "durabilité"
-          ],
-          "gabarito": "B",
-          "numero": "4"
-        }
-      },
-      {
-        "latex": "A partir de la phrase « La loi de transition énergétique adoptée en France en août dernier appuie ce dynamisme ... », on peut dire que le gouvernement français ...\n\\begin{choices}\n\\choice est pour le recyclage mais contre le compostage.\n\\choice se préoccupe des effets inconnus du compostage.\n\\choice accepte le contrôle des déchets mais n'y intervient pas.\n\\CorrectChoice est favorable à la mise en place d'une économie circulaire.\n\\choice s'occupe tout seul des circuits de recyclage et de compostage.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "loi",
-            "économie circulaire"
-          ],
-          "gabarito": "D",
-          "numero": "5"
-        }
-      },
-      {
-        "latex": "Dans le troisième paragraphe, le terme « increvable » désigne un(e) ...\n\\begin{choices}\n\\choice machine à laver jetable.\n\\choice équipement qui peut être personnalisé.\n\\choice électroménager qui n'utilise pas de détergent.\n\\choice robot ménager qui ne tombe jamais en panne.\n\\CorrectChoice appareil dont la structure favorise la réparation.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "assunto": "Vocabulaire",
-          "tags": [
-            "increvable",
-            "réparation"
-          ],
-          "gabarito": "E",
-          "numero": "6"
-        }
-      },
-      {
-        "latex": "Selon Julien Phedyaeff et Christopher Santerre, fréquemment, au lieu de restaurer une machine à laver, les gens en achètent une neuve parce que ...\n\\begin{choices}\n\\CorrectChoice dépanner une machine coûte cher.\n\\choice les pièces à changer sont importées.\n\\choice les machines neuves sont bon marché.\n\\choice les machines actuelles se montent en kit.\n\\choice une machine à longue durée de vie devient démodée.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "A",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "machine à laver",
-            "coût"
-          ],
-          "gabarito": "A",
-          "numero": "7"
-        }
-      },
-      {
-        "latex": "L'entreprise sociale « Moulinot compost biogaz » ...\n\\begin{choices}\n\\choice a reçu l'appui des supermarchés parisiens.\n\\CorrectChoice envoie ses collectes vers la périphérie de Paris.\n\\choice distribue des restes de repas aux gens nécessités.\n\\choice était, avant 2013, la principale activité de Martinez.\n\\choice a été fondée par Martinez qui a toujours travaillé seul.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "banlieue",
-            "collecte"
-          ],
-          "gabarito": "B",
-          "numero": "8"
-        }
-      },
-      {
-        "latex": "Le passage « ... pour que les erreurs de tri se voient ... » explique que l'on distribue des sacs transparents dans les cuisines ...\n\\begin{choices}\n\\choice pour ne pas faire de publicité.\n\\CorrectChoice pour aider la collecte sélective.\n\\choice parce qu'ils sont biodégradables.\n\\choice parce qu'ils sont les moins onéreux.\n\\choice afin de ne pas contaminer la nourriture.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "tri",
-            "sacs transparents"
-          ],
-          "gabarito": "B",
-          "numero": "9"
-        }
-      },
-      {
-        "latex": "Les informations sur le festival Zero Waste et les deux exemples mentionnés par l'auteur permettent de conclure que ce texte est ...\n\\begin{choices}\n\\choice alarmiste.\n\\choice utopique.\n\\CorrectChoice optimiste.\n\\choice pessimiste.\n\\choice mensonger.\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  LÍNGUA ESTRANGEIRA — ESPANHOL\n% ═══════════════════════════════════════════════════════════════",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "ton du texte",
-            "conclusion"
-          ],
-          "gabarito": "C",
-          "numero": "10"
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Francesa",
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "titulo_texto": "L'objectif «zero déchet» n'est plus une utopie",
-      "autor_texto": "Loïc Chauveau",
-      "genero": "artigo jornalístico",
-      "tema": "economia circular, desperdício zero, sustentabilidade",
-      "items": [
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "idée principale",
-            "développement durable",
-            "zero waste"
-          ],
-          "gabarito": "E",
-          "numero": "1"
-        },
-        {
-          "assunto": "Vocabulaire",
-          "tags": [
-            "jours de la semaine",
-            "durée"
-          ],
-          "gabarito": "C",
-          "numero": "2"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "cause",
-            "succès du festival"
-          ],
-          "gabarito": "D",
-          "numero": "3"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "industrie",
-            "durabilité"
-          ],
-          "gabarito": "B",
-          "numero": "4"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "loi",
-            "économie circulaire"
-          ],
-          "gabarito": "D",
-          "numero": "5"
-        },
-        {
-          "assunto": "Vocabulaire",
-          "tags": [
-            "increvable",
-            "réparation"
-          ],
-          "gabarito": "E",
-          "numero": "6"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "machine à laver",
-            "coût"
-          ],
-          "gabarito": "A",
-          "numero": "7"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "banlieue",
-            "collecte"
-          ],
-          "gabarito": "B",
-          "numero": "8"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "tri",
-            "sacs transparents"
-          ],
-          "gabarito": "B",
-          "numero": "9"
-        },
-        {
-          "assunto": "Compréhension Écrite",
-          "tags": [
-            "ton du texte",
-            "conclusion"
-          ],
-          "gabarito": "C",
-          "numero": "10"
-        }
-      ]
-    }
-  },
-  {
-    "isSet": true,
-    "isMcqSet": true,
-    "baseLatexes": [
-      "Cuál es la relación entre la publicidad y la alimentación de los chicos\n\nDe un tiempo a esta parte, numerosos estudios locales e internacionales han comenzado a señalar una verdad que se adivinaba: el impacto que el marketing de productos a través de comerciales tiene en los hábitos alimenticios de niños y adolescentes. Situación que se ve agravada por el contexto, ya que según la Organización Mundial de la Salud el sobrepeso y la obesidad infantil no sólo constituyen uno de los principales problemas de salud pública de este siglo, sino que además se calcula que la obesidad infantil se ha triplicado en los últimos 30 años.\n\nSin ir más lejos, esta misma semana y según anunciaba el periódico británico The Guardian, un estudio realizado por el Cancer Research UK analiza el efecto que los avisos publicitarios en TV de dulces, papitas y comida chatarra tenían en los niños de edad escolar, pidiendo más regulación al respecto. El estudio del CRUK tomó una base de 137 niños en 6 escuelas diferentes en Inglaterra y Escocia. La mayoría de los niños manifestó que luego de ver los comerciales podía reproducir la música de los mismos, y 4 de cada 6 chicos de entre 8 y 12 años dijeron que estos avisos, que por lo general tienen colores brillantes, personajes graciosos o apariciones de celebridades, los hacían sentir hambre. Un dato para poner en perspectiva: actualmente un tercio de los chicos en el último año de primaria en el Reino Unido sufre de sobrepeso.\n\nEn nuestro país hay pocos estudios independientes sobre el tema, pero informes recientes de la FIC, Fundación InterAmericana del Corazón Argentina, revelan que la gran mayoría de los publicidades, 88\\%, no cumplen con los requisitos nutricionales necesarios para ser publicitados. Es decir, que el 80\\% de los alimentos publicitados a niños es comida chatarra, alimentos altos en grasas, azúcares, sodio, etc.\n\nLos puntos de contacto entre la exposición a la televisión y el sobrepeso o la obesidad involucran variables como el tiempo que se pasa frente a la TV en detrimento de la actividad física, la relación entre el visionado de TV y el aumento en el consumo de alimentos de bajo valor nutricional, que son por lo general los productos publicitados, y finalmente, la incidencia de los niños en la decisión de compra de sus padres.\n\nLa TV, la primer vía de entrada. Los estudios internacionales establecen que los niños de entre 2 y 17 años ocupan un promedio de 2,5 horas por día viendo televisión, y que en ese tiempo están expuestos a un anuncio de comida cada cinco minutos, principalmente de alimentos poco saludables en los rubros postres, lácteos, bebidas azucaradas, cadenas de comida rápida y snacks salados. De todas formas estos números deben además combinarse con la exposición a la web y otros medios.\n\nAnte la pregunta de por qué la publicidad puede ser perniciosa un clip viralizado el año pasado titulado « Este es tu cerebro bajo los efectos de la publicidad », basado en The Case for Make-Believe: Saving Play in a Commercialized World, de Susan Linn, explica que en promedio un niño verá aproximadamente 25.000 comerciales antes de cumplir los 12 años, y que no es hasta esta edad cuando los chicos pueden reconocer cuando alguien les está tratando de vender algo. Por debajo de esta edad, dicen los expertos, hay escaso discernimiento en cuanto a lo que puede ser verdad o no, así como poder distinguir un mensaje comercial, con intención de venta, de uno que no lo es.\n\nUn estudio longitudinal realizado en EEUU encontró un aumento del 0,6\\% en la obesidad por cada hora extra de TV, y otro estudio realizado en el mismo país mostró que más del 60\\% de la incidencia de sobrepeso en una muestra representativa de niños podría estar asociado a las horas dedicadas a mirar televisión.\n\nEn contraste, otras investigaciones muestran el impacto que las restricciones de publicidad en el peso de los niños: al reducir la exposición a la publicidad de alimentos en televisión a cero en EEUU resultaría en una disminución del 12\\% en el consumo total, una reducción en el peso del 5,6\\% y una reducción en la prevalencia de obesidad del 6,8\\% en los niños y 6\\% en las niñas.\n\n\\credits{MARAJOFSKY, Laura. ¿Cuál es la relación entre la publicidad y la alimentación de los chicos? La Nación, 2015. Adaptado.}"
-    ],
-    "items": [
-      {
-        "latex": "El tema del artículo es\n\\begin{choices}\n\\choice la gran calidad de las publicidades de alimentos para chicos.\n\\CorrectChoice el efecto que tiene la publicidad en la alimentación de los chicos.\n\\choice la falta de relación entre hábitos alimenticios y publicidad.\n\\choice la cantidad de publicidades que consumen los chicos por día.\n\\choice la mala costumbre de los chicos de comer frente a la televisión.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "tema",
-            "publicidad",
-            "alimentación"
-          ],
-          "gabarito": "B",
-          "numero": "1"
-        }
-      },
-      {
-        "latex": "El objetivo del artículo es\n\\begin{choices}\n\\choice evaluar cuáles son las mejores publicidades sobre productos alimenticios.\n\\choice analizar por qué los chicos pasan tantas horas frente a la pantalla de la televisión.\n\\choice criticar el excesivo espacio televisivo que tienen las publicidades en los canales infantiles.\n\\CorrectChoice explicar los nexos que existen entre la mala alimentación y la publicidad.\n\\choice concientizar a los padres sobre el problema del sobrepeso y la obesidad infantil.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "objetivo",
-            "explicación"
-          ],
-          "gabarito": "D",
-          "numero": "2"
-        }
-      },
-      {
-        "latex": "Señale la única alternativa en que la palabra entre paréntesis se corresponde semánticamente con la palabra subrayada.\n\\begin{choices}\n\\choice « de niños y adolescentes » (ancianos).\n\\choice « anunciaba el periódico » (el programa).\n\\choice « personajes graciosos » (aburridos).\n\\choice « apariciones de celebridades » (desconocidos).\n\\CorrectChoice « poco saludables » (sanos).\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "assunto": "Vocabulario",
-          "tags": [
-            "sinónimos",
-            "saludable"
-          ],
-          "gabarito": "E",
-          "numero": "3"
-        }
-      },
-      {
-        "latex": "Marque el enunciado cuyo verbo se refiere a una acción pasada próxima o vinculada al presente de la enunciación.\n\\begin{choices}\n\\CorrectChoice « numerosos estudios locales e internacionales han comenzado a señalar una verdad ... »\n\\choice « además se calcula que la obesidad infantil... »\n\\choice « La mayoría de los niños manifestó... »\n\\choice « un niño verá aproximadamente 25.000... »\n\\choice « en EEUU resultaría en una disminución... »\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "A",
-        "meta": {
-          "assunto": "Gramática",
-          "tags": [
-            "pretérito perfecto",
-            "presente"
-          ],
-          "gabarito": "A",
-          "numero": "4"
-        }
-      },
-      {
-        "latex": "Marque la alternativa que NO se menciona en el texto:\n\\begin{choices}\n\\choice Los niños ingleses sienten ganas de comer después de ver una publicidad sobre alimentos.\n\\choice El sobrepeso y la obesidad infantil han aumentado en las últimas décadas.\n\\CorrectChoice Estudios muestran que la reducción de la publicidad en la televisión no disminuye el consumo.\n\\choice Las horas de inactividad frente al televisor agravan el problema del sobrepeso y de la obesidad infantil.\n\\choice Un niño con menos de 12 años no discierne aún cuando le están intentando vender algo.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "información explícita"
-          ],
-          "gabarito": "C",
-          "numero": "5"
-        }
-      },
-      {
-        "latex": "La primera parte del segundo párrafo se relaciona con el párrafo inicial del texto. Elija la opción que mejor represente la función de este segundo párrafo con respecto al anterior:\n\\begin{choices}\n\\choice Expone un contrargumento.\n\\choice Cambia de tema.\n\\choice Cita un especialista.\n\\choice Hace una síntesis.\n\\CorrectChoice Da un ejemplo.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "E",
-        "meta": {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "función del párrafo",
-            "ejemplo"
-          ],
-          "gabarito": "E",
-          "numero": "6"
-        }
-      },
-      {
-        "latex": "Marque la única alternativa donde la correspondencia semántica está correcta:\n\\begin{choices}\n\\CorrectChoice « salud pública de este siglo » — espacio de cien años.\n\\choice « comida chatarra » — de buena calidad.\n\\choice « los hacían sentir hambre » — ganas de tumbarse.\n\\choice « pero informes recientes » — carta informal.\n\\choice « alimentos altos en grasas » — proteínas.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "A",
-        "meta": {
-          "assunto": "Vocabulario",
-          "tags": [
-            "campo semántico",
-            "siglo"
-          ],
-          "gabarito": "A",
-          "numero": "7"
-        }
-      },
-      {
-        "latex": "La información referente al fragmento « La mayoría de los niños manifestó que luego de ver los comerciales podía reproducir la música de los mismos » es importante porque muestra:\n\\begin{choices}\n\\choice que la publicidad puede inspirar grandes talentos musicales.\n\\CorrectChoice el gran impacto que tiene la publicidad en los niños.\n\\choice que a los niños les gusta mucho la música.\n\\choice que hay una estrecha relación entre música y comida.\n\\choice que los niños suelen cantar después de ver la televisión.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "B",
-        "meta": {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "publicidad",
-            "niños"
-          ],
-          "gabarito": "B",
-          "numero": "8"
-        }
-      },
-      {
-        "latex": "Marque el único infinitivo que NO sustituye el verbo « adivinar » que aparece en el fragmento « ... una verdad que se adivinaba... »:\n\\begin{choices}\n\\choice auspiciar.\n\\choice prever.\n\\choice vislumbrar.\n\\CorrectChoice equivocar.\n\\choice vaticinar.\n\\end{choices}",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "D",
-        "meta": {
-          "assunto": "Vocabulario",
-          "tags": [
-            "infinitivo",
-            "adivinar"
-          ],
-          "gabarito": "D",
-          "numero": "9"
-        }
-      },
-      {
-        "latex": "La conjunción « pero » que aparece en el fragmento « En nuestro país hay pocos estudios independientes sobre el tema, pero informes recientes de la FIC ... » podría reemplazarse por:\n\\begin{choices}\n\\choice y\n\\choice además\n\\CorrectChoice sin embargo\n\\choice entonces\n\\choice asimismo\n\\end{choices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  MATEMÁTICA\n% ═══════════════════════════════════════════════════════════════",
-        "tipo": "Múltipla Escolha",
-        "gabarito": "C",
-        "meta": {
-          "assunto": "Gramática",
-          "tags": [
-            "conjunciones",
-            "adversativa"
-          ],
-          "gabarito": "C",
-          "numero": "10"
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Espanhola",
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "titulo_texto": "¿Cuál es la relación entre la publicidad y la alimentación de los chicos?",
-      "autor_texto": "Laura Marajofsky",
-      "genero": "artigo jornalístico",
-      "tema": "publicidade infantil, obesidade, alimentação",
-      "items": [
-        {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "tema",
-            "publicidad",
-            "alimentación"
-          ],
-          "gabarito": "B",
-          "numero": "1"
-        },
-        {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "objetivo",
-            "explicación"
-          ],
-          "gabarito": "D",
-          "numero": "2"
-        },
-        {
-          "assunto": "Vocabulario",
-          "tags": [
-            "sinónimos",
-            "saludable"
-          ],
-          "gabarito": "E",
-          "numero": "3"
-        },
-        {
-          "assunto": "Gramática",
-          "tags": [
-            "pretérito perfecto",
-            "presente"
-          ],
-          "gabarito": "A",
-          "numero": "4"
-        },
-        {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "información explícita"
-          ],
-          "gabarito": "C",
-          "numero": "5"
-        },
-        {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "función del párrafo",
-            "ejemplo"
-          ],
-          "gabarito": "E",
-          "numero": "6"
-        },
-        {
-          "assunto": "Vocabulario",
-          "tags": [
-            "campo semántico",
-            "siglo"
-          ],
-          "gabarito": "A",
-          "numero": "7"
-        },
-        {
-          "assunto": "Comprensión Lectora",
-          "tags": [
-            "publicidad",
-            "niños"
-          ],
-          "gabarito": "B",
-          "numero": "8"
-        },
-        {
-          "assunto": "Vocabulario",
-          "tags": [
-            "infinitivo",
-            "adivinar"
-          ],
-          "gabarito": "D",
-          "numero": "9"
-        },
-        {
-          "assunto": "Gramática",
-          "tags": [
-            "conjunciones",
-            "adversativa"
-          ],
-          "gabarito": "C",
-          "numero": "10"
-        }
-      ]
-    }
-  },
-  {
-    "latex": "\\question Em uma pesquisa, constatou-se que, das 345 pessoas de um determinado local, 195 jogavam tênis, 105 jogavam tênis e vôlei, e 80 não jogavam nem vôlei nem tênis. Qual é o número de pessoas que jogavam vôlei e não jogavam tênis?\n\n\\begin{oneparchoices}\n\\CorrectChoice 70\n\\choice 75\n\\choice 105\n\\choice 180\n\\choice 195\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Conjuntos",
-      "tags": [
-        "tênis",
-        "vôlei",
-        "união",
-        "interseção"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "11",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Um professor calculou a média das notas de seus 30 alunos e encontrou 5,6. Percebeu, no entanto, que 2 dos 30 alunos tinham tirado nota zero. Sendo assim, decidiu encontrar a média dos alunos que não tiraram zero. Assinale a média que o professor, assim, obteve.\n\n\\begin{oneparchoices}\n\\choice 5,7\n\\choice 5,8\n\\CorrectChoice 6\n\\choice 6,2\n\\choice 6,4\n\\end{oneparchoices}",
+    "latex": "\\question A diferença entre ciência e fé é a seguinte: em ciência, a gente tem que ver para crer. Você observa a natureza, você observa o mundo, obtém dados sobre como o mundo funciona, analisa esses dados e entende. Pela fé, você crê para ver. A crença vem antes da visão. Você acredita naquilo, nem precisa ver nada, acredita naquilo e esse, essencialmente, é o cerne da fé, que é uma outra maneira de se relacionar com a realidade, muito diferente da ciência.\n\nInfelizmente, hoje em dia, parece que essa questão está novamente a mil com a chamada 'guerra' entre a ciência e a religião. Na verdade, essa é uma guerra fabricada, porque, por exemplo, se você pergunta aos cientistas, mais ou menos 40% deles, ao menos nos Estados Unidos — não sei se existe essa estatística no Brasil, talvez seja até maior aqui —, acreditam em alguma forma de divindade, de Deus.\n\n(...)\n\nPara esses cientistas, existe um compromisso, uma complementaridade entre o seu trabalho e a sua fé. Não existe nenhum problema nesse caso. Mas, infelizmente, existe conflito em outras situações.\n\n(...)\n\nA criança aprende numa aula que houve toda uma evolução da vida, os fósseis etc., 3,5 bilhões de anos de evolução da vida aqui na Terra enquanto, na outra aula, o professor diz que não. Que em seis dias Deus fez o mundo, que nós somos todos descendentes de Adão e Eva e o mundo tem apenas dez mil anos.\n\nNote que a proposta é que isso seja ensinado em pé de igualdade. São duas versões da mesma história e nenhuma é melhor do que a outra. Mas são, sim, duas histórias muito diferentes, com um objetivo muito diferente. Então, a questão é como é construída a informação na ciência.\n\n(...) Não existe a possibilidade de um cientista afirmar: eu acho que esse pedaço de osso aqui tem três milhões de anos. Você sabe que tem três milhões de anos, com grande precisão.\n\n(...)\n\\credits{Disponível em https://www.fronteiras.com/artigos/21-ideias-marcelo-gleiser-e-a-complementaridade-entre-religiao-e-ciencia — adaptado. Acesso em: 05 de maio de 2021.}\n\nO texto I estabelece uma relação entre ciência e religião. De acordo com o autor, é possível afirmar que tanto a ciência quanto a religião são\n\\begin{choices}\n\\choice visões numéricas, logo precisam ser respeitadas.\n\\choice pontos de vista equivalentes, portanto, indiscutíveis.\n\\CorrectChoice olhares distintos, porém sem o aspecto belicoso.\n\\choice noções inviáveis como teorias universais, mas importantes.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Portuguesa",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Médias (Aritmética, Geométrica, Harmônica, Ponderada)",
+      "assunto": "Interpretação de Texto",
       "tags": [
-        "média aritmética",
-        "notas",
-        "zeros"
+        "ciência",
+        "religião",
+        "complementaridade",
+        "Marcelo Gleiser"
       ],
+      "gabarito": "C",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "12",
-      "gabarito": "C"
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "01",
+      "titulo_texto": "A complementaridade entre religião e ciência",
+      "autor_texto": "Marcelo Gleiser"
     }
   },
   {
-    "latex": "\\question Três números positivos proporcionais a 5, 8 e 9 são tais que a diferença do maior para o menor supera o módulo da diferença entre os dois menores em 5 unidades. Assinale o maior deles.\n\n\\begin{oneparchoices}\n\\CorrectChoice 45\n\\choice 54\n\\choice 63\n\\choice 72\n\\choice 81\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Razões e Proporções",
-      "tags": [
-        "proporcionalidade",
-        "números positivos"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "13",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Ao lançar um dado 3 vezes sucessivas, qual é a probabilidade de obter ao menos um número ímpar?\n\n\\begin{oneparchoices}\n\\choice \\(\\frac{1}{8}\\)\n\\choice \\(\\frac{1}{4}\\)\n\\choice \\(\\frac{3}{8}\\)\n\\choice \\(\\frac{5}{8}\\)\n\\CorrectChoice \\(\\frac{7}{8}\\)\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Simples",
-      "tags": [
-        "dado",
-        "números ímpares",
-        "lançamentos sucessivos"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "14",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question Os termos da soma \\(S = 4 + 8 + 16 + \\cdots + 2048\\) estão em progressão geométrica. Assinale o valor de \\(S\\).\n\n\\begin{oneparchoices}\n\\CorrectChoice 4092\n\\choice 4100\n\\choice 8192\n\\choice 65536\n\\choice 196883\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Progressão Geométrica",
-      "tags": [
-        "soma de termos",
-        "PG",
-        "potência de 2"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "15",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Um vendedor de picolés verificou que a quantidade diária de picolés vendidos (\\(y\\)) varia de acordo com o preço unitário de venda (\\(p\\)), conforme a lei \\(y = 90 - 20p\\). Seja \\(P\\) o preço pelo qual o picolé deve ser vendido para que a receita seja máxima. Assinale o valor de \\(P\\).\n\n\\begin{oneparchoices}\n\\CorrectChoice R$ 2,25\n\\choice R$ 3,25\n\\choice R$ 4,25\n\\choice R$ 5,25\n\\choice R$ 6,25\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Função Quadrática",
-      "tags": [
-        "receita máxima",
-        "vendedor",
-        "parábola"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "16",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Numa pirâmide de base quadrada, todas as arestas medem \\(x\\). Quanto vale o volume da pirâmide?\n\n\\begin{choices}\n\\CorrectChoice \\(\\frac{\\sqrt{2}}{6}x^3\\)\n\\choice \\(\\pi x^2\\)\n\\choice \\(x^3 + x^2 + x + 1\\)\n\\choice \\(x^3\\)\n\\choice \\(\\frac{\\sqrt{6}}{3}x^3\\)\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Pirâmides",
-      "tags": [
-        "volume",
-        "base quadrada",
-        "arestas"
-      ],
-      "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "17",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Considere o quadrado \\(ABCD\\) como na figura.\n\n\\includegraphics{figura-mat-q18}\n\nSabendo que \\(E\\) é o ponto médio do lado \\(AB\\), assinale o valor de \\(\\cos(\\widehat{CDE})\\).\n\n\\begin{choices}\n\\choice \\(\\frac{1}{2}\\)\n\\CorrectChoice \\(\\frac{\\sqrt{5}}{5}\\)\n\\choice \\(\\frac{\\sqrt{2}}{2}\\)\n\\choice \\(\\frac{1+\\sqrt{5}}{2}\\)\n\\choice \\(\\frac{\\sqrt{3}}{2}\\)\n\\end{choices}",
+    "latex": "\\question A diferença entre ciência e fé é a seguinte: em ciência, a gente tem que ver para crer. Você observa a natureza, você observa o mundo, obtém dados sobre como o mundo funciona, analisa esses dados e entende. Pela fé, você crê para ver. A crença vem antes da visão. Você acredita naquilo, nem precisa ver nada, acredita naquilo e esse, essencialmente, é o cerne da fé, que é uma outra maneira de se relacionar com a realidade, muito diferente da ciência.\n\nInfelizmente, hoje em dia, parece que essa questão está novamente a mil com a chamada 'guerra' entre a ciência e a religião. Na verdade, essa é uma guerra fabricada, porque, por exemplo, se você pergunta aos cientistas, mais ou menos 40% deles, ao menos nos Estados Unidos — não sei se existe essa estatística no Brasil, talvez seja até maior aqui —, acreditam em alguma forma de divindade, de Deus.\n\n(...)\n\nPara esses cientistas, existe um compromisso, uma complementaridade entre o seu trabalho e a sua fé. Não existe nenhum problema nesse caso. Mas, infelizmente, existe conflito em outras situações.\n\n(...)\n\nA criança aprende numa aula que houve toda uma evolução da vida, os fósseis etc., 3,5 bilhões de anos de evolução da vida aqui na Terra enquanto, na outra aula, o professor diz que não. Que em seis dias Deus fez o mundo, que nós somos todos descendentes de Adão e Eva e o mundo tem apenas dez mil anos.\n\nNote que a proposta é que isso seja ensinado em pé de igualdade. São duas versões da mesma história e nenhuma é melhor do que a outra. Mas são, sim, duas histórias muito diferentes, com um objetivo muito diferente. Então, a questão é como é construída a informação na ciência.\n\n(...) Não existe a possibilidade de um cientista afirmar: eu acho que esse pedaço de osso aqui tem três milhões de anos. Você sabe que tem três milhões de anos, com grande precisão.\n\n(...)\n\\credits{Disponível em https://www.fronteiras.com/artigos/21-ideias-marcelo-gleiser-e-a-complementaridade-entre-religiao-e-ciencia — adaptado. Acesso em: 05 de maio de 2021.}\n\n\"A criança aprende numa aula que houve toda uma evolução da vida, os fósseis etc., 3,5 bilhões de anos de evolução da vida aqui na Terra enquanto, na outra aula, o professor diz que não.\"\n\nO fragmento em destaque sinaliza uma estratégia argumentativa com base em\n\\begin{choices}\n\\choice adição\n\\CorrectChoice exemplo\n\\choice estatística\n\\choice autoridade\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Portuguesa",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Relações Métricas em Triângulos Quaisquer",
+      "assunto": "Estratégias Argumentativas",
       "tags": [
-        "quadrado",
-        "ponto médio",
-        "cosseno"
+        "argumentação",
+        "exemplo",
+        "estratégia argumentativa"
       ],
+      "gabarito": "B",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "18",
-      "gabarito": "B"
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "02",
+      "titulo_texto": "A complementaridade entre religião e ciência",
+      "autor_texto": "Marcelo Gleiser"
     }
   },
   {
-    "latex": "\\question O técnico da seleção brasileira de futebol precisa convocar mais 4 jogadores, dentre os quais exatamente um deve ser goleiro. Sabendo que na sua lista de possibilidades para essa convocação existem 15 nomes, dos quais 3 são goleiros, qual é o número de maneiras possíveis de ele escolher os 4 jogadores?\n\n\\begin{oneparchoices}\n\\choice 220\n\\CorrectChoice 660\n\\choice 1980\n\\choice 3960\n\\choice 7920\n\\end{oneparchoices}",
+    "latex": "\\question A diferença entre ciência e fé é a seguinte: em ciência, a gente tem que ver para crer. Você observa a natureza, você observa o mundo, obtém dados sobre como o mundo funciona, analisa esses dados e entende. Pela fé, você crê para ver. A crença vem antes da visão. Você acredita naquilo, nem precisa ver nada, acredita naquilo e esse, essencialmente, é o cerne da fé, que é uma outra maneira de se relacionar com a realidade, muito diferente da ciência.\n\nInfelizmente, hoje em dia, parece que essa questão está novamente a mil com a chamada 'guerra' entre a ciência e a religião. Na verdade, essa é uma guerra fabricada, porque, por exemplo, se você pergunta aos cientistas, mais ou menos 40% deles, ao menos nos Estados Unidos — não sei se existe essa estatística no Brasil, talvez seja até maior aqui —, acreditam em alguma forma de divindade, de Deus.\n\n(...)\n\nPara esses cientistas, existe um compromisso, uma complementaridade entre o seu trabalho e a sua fé. Não existe nenhum problema nesse caso. Mas, infelizmente, existe conflito em outras situações.\n\n(...)\n\nA criança aprende numa aula que houve toda uma evolução da vida, os fósseis etc., 3,5 bilhões de anos de evolução da vida aqui na Terra enquanto, na outra aula, o professor diz que não. Que em seis dias Deus fez o mundo, que nós somos todos descendentes de Adão e Eva e o mundo tem apenas dez mil anos.\n\nNote que a proposta é que isso seja ensinado em pé de igualdade. São duas versões da mesma história e nenhuma é melhor do que a outra. Mas são, sim, duas histórias muito diferentes, com um objetivo muito diferente. Então, a questão é como é construída a informação na ciência.\n\n(...) Não existe a possibilidade de um cientista afirmar: eu acho que esse pedaço de osso aqui tem três milhões de anos. Você sabe que tem três milhões de anos, com grande precisão.\n\n(...)\n\\credits{Disponível em https://www.fronteiras.com/artigos/21-ideias-marcelo-gleiser-e-a-complementaridade-entre-religiao-e-ciencia — adaptado. Acesso em: 05 de maio de 2021.}\n\n\"Você sabe que tem três milhões de anos, com grande precisão.\"\n\nNo fragmento em destaque, assim como em outras passagens do texto I, percebe-se o uso do \"você\". O objetivo do uso desse pronome de tratamento é\n\\begin{choices}\n\\CorrectChoice estabelecer uma aproximação maior com o leitor, de modo a fazer com que haja uma sensação de interação no texto.\n\\choice definir uma participação obrigatória do leitor, a fim de que ele construa uma opinião sobre o fato em discussão e se expresse.\n\\choice determinar uma relação de lugar de fala ao leitor que, por sua vez, se sente comprometido com o debate em foco.\n\\choice eleger o leitor como referência entre o enunciador e a mensagem pretendida, para que ele possa mediar o debate e opinar.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Portuguesa",
+      "dificuldade": "Média",
+      "assunto": "Funções da Linguagem",
+      "tags": [
+        "pronome de tratamento",
+        "você",
+        "função fática",
+        "interação"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "03",
+      "titulo_texto": "A complementaridade entre religião e ciência",
+      "autor_texto": "Marcelo Gleiser"
+    }
+  },
+  {
+    "latex": "\\question A diferença entre ciência e fé é a seguinte: em ciência, a gente tem que ver para crer. Você observa a natureza, você observa o mundo, obtém dados sobre como o mundo funciona, analisa esses dados e entende. Pela fé, você crê para ver. A crença vem antes da visão. Você acredita naquilo, nem precisa ver nada, acredita naquilo e esse, essencialmente, é o cerne da fé, que é uma outra maneira de se relacionar com a realidade, muito diferente da ciência.\n\nInfelizmente, hoje em dia, parece que essa questão está novamente a mil com a chamada 'guerra' entre a ciência e a religião. Na verdade, essa é uma guerra fabricada, porque, por exemplo, se você pergunta aos cientistas, mais ou menos 40% deles, ao menos nos Estados Unidos — não sei se existe essa estatística no Brasil, talvez seja até maior aqui —, acreditam em alguma forma de divindade, de Deus.\n\n(...)\n\nPara esses cientistas, existe um compromisso, uma complementaridade entre o seu trabalho e a sua fé. Não existe nenhum problema nesse caso. Mas, infelizmente, existe conflito em outras situações.\n\n(...)\n\nA criança aprende numa aula que houve toda uma evolução da vida, os fósseis etc., 3,5 bilhões de anos de evolução da vida aqui na Terra enquanto, na outra aula, o professor diz que não. Que em seis dias Deus fez o mundo, que nós somos todos descendentes de Adão e Eva e o mundo tem apenas dez mil anos.\n\nNote que a proposta é que isso seja ensinado em pé de igualdade. São duas versões da mesma história e nenhuma é melhor do que a outra. Mas são, sim, duas histórias muito diferentes, com um objetivo muito diferente. Então, a questão é como é construída a informação na ciência.\n\n(...) Não existe a possibilidade de um cientista afirmar: eu acho que esse pedaço de osso aqui tem três milhões de anos. Você sabe que tem três milhões de anos, com grande precisão.\n\n(...)\n\\credits{Disponível em https://www.fronteiras.com/artigos/21-ideias-marcelo-gleiser-e-a-complementaridade-entre-religiao-e-ciencia — adaptado. Acesso em: 05 de maio de 2021.}\n\nO texto I é um artigo de opinião de natureza jornalística. Dessa forma, é possível afirmar que a função da linguagem predominante no texto é a\n\\begin{choices}\n\\choice emotiva.\n\\CorrectChoice referencial.\n\\choice metalinguística.\n\\choice fática.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Portuguesa",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Análise Combinatória",
+      "assunto": "Funções da Linguagem",
       "tags": [
-        "combinação",
-        "goleiros",
-        "convocação"
+        "função referencial",
+        "artigo de opinião",
+        "jornalismo"
       ],
+      "gabarito": "B",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "19",
-      "gabarito": "B"
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "04",
+      "titulo_texto": "A complementaridade entre religião e ciência",
+      "autor_texto": "Marcelo Gleiser"
     }
   },
   {
-    "latex": "\\question Assinale o gráfico que melhor representa a curva de equação \\(y = \\frac{1}{x^2}\\).\n\n\\includegraphics{figura-mat-q20}\n\n\\begin{oneparchoices}\n\\choice Gráfico A\n\\choice Gráfico B\n\\choice Gráfico C\n\\CorrectChoice Gráfico D\n\\choice Gráfico E\n\\end{oneparchoices}\n\n\n% ═══════════════════════════════════════════════════════════════\n%  PORTUGUÊS E LITERATURA BRASILEIRA\n% ═══════════════════════════════════════════════════════════════",
+    "latex": "\\question Sujeito de Sorte\n\n\\textit{Belchior}\n\n\\begin{poem}\n\\verse{Presentemente eu posso me}\n\\verse{Considerar um sujeito de sorte}\n\\verse{Porque apesar de muito moço}\n\\verse{Me sinto são, e salvo, e forte.}\n\\verse{}\n\\verse{E tenho comigo pensado}\n\\verse{Deus é brasileiro e anda do meu lado}\n\\verse{E assim já não posso sofrer}\n\\verse{No ano passado.}\n\\verse{}\n\\verse{Tenho sangrado demais}\n\\verse{Tenho chorado pra cachorro}\n\\verse{Ano passado eu morri}\n\\verse{Mas esse ano eu não morro}\n\\verse{(...)}\n\\end{poem}\n\\credits{Disponível em https://www.letraz.com.br/belchior/sujeito-de-sorte/. Acesso em: 04 de maio de 2021.}\n\n\"Ano passado eu morri / Mas esse ano eu não morro.\"\n\nA relação entre os versos destacados do texto II, com base na presença da conjunção \"mas\", define um valor semântico de\n\\begin{choices}\n\\CorrectChoice oposição.\n\\choice adição.\n\\choice consequência.\n\\choice tempo.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Portuguesa",
+      "dificuldade": "Média",
+      "assunto": "Semântica",
+      "tags": [
+        "conjunção",
+        "valor semântico",
+        "oposição",
+        "adversativa",
+        "Belchior"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "05",
+      "titulo_texto": "Sujeito de Sorte",
+      "autor_texto": "Belchior",
+      "genero": "canção"
+    }
+  },
+  {
+    "latex": "\\question Sujeito de Sorte\n\n\\textit{Belchior}\n\n\\begin{poem}\n\\verse{Presentemente eu posso me}\n\\verse{Considerar um sujeito de sorte}\n\\verse{Porque apesar de muito moço}\n\\verse{Me sinto são, e salvo, e forte.}\n\\verse{}\n\\verse{E tenho comigo pensado}\n\\verse{Deus é brasileiro e anda do meu lado}\n\\verse{E assim já não posso sofrer}\n\\verse{No ano passado.}\n\\verse{}\n\\verse{Tenho sangrado demais}\n\\verse{Tenho chorado pra cachorro}\n\\verse{Ano passado eu morri}\n\\verse{Mas esse ano eu não morro}\n\\verse{(...)}\n\\end{poem}\n\\credits{Disponível em https://www.letraz.com.br/belchior/sujeito-de-sorte/. Acesso em: 04 de maio de 2021.}\n\n\"Me sinto são, e salvo, e forte.\"\n\nNo verso em destaque, percebe-se a repetição da conjunção \"e\". Tal recurso linguístico tem uma função dentro do texto II, que se traduz como o objetivo de se\n\\begin{choices}\n\\choice convencer o leitor sobre a negligência do eu lírico, ainda que o texto demonstre o contrário.\n\\choice promover autoconfiança por parte do coenunciador, apesar do contexto em discussão.\n\\choice impor as características do coenunciador, embora o quadro não valorize esses aspectos sentimentais.\n\\CorrectChoice reforçar as sensações do eu lírico, mesmo que o contexto traga à tona muitas dificuldades.\n\\end{choices}\n\n% ═══════════════════════════════════════════════════════════════\n%  BIOLOGIA — Q07–Q12\n% ═══════════════════════════════════════════════════════════════",
     "tipo": "Múltipla Escolha",
     "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Portuguesa",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Matemática",
-      "assunto": "Gráficos e Transformações",
+      "assunto": "Recursos Estilísticos",
       "tags": [
-        "função racional",
-        "gráfico"
+        "polissíndeto",
+        "conjunção",
+        "reforço",
+        "eu lírico",
+        "Belchior"
       ],
+      "gabarito": "D",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "20",
-      "gabarito": "D"
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "06",
+      "titulo_texto": "Sujeito de Sorte",
+      "autor_texto": "Belchior",
+      "genero": "canção"
     }
   },
   {
-    "isSet": true,
-    "isMcqSet": false,
-    "baseLatexes": [
-      "Os filósofos chineses viam a realidade, a cuja essência primária chamaram tao, como um processo de contínuo fluxo e mudança. Na concepção deles, todos os fenômenos que observamos participam desse processo cósmico e são, pois, intrinsecamente dinâmicos. A principal característica do tao é a natureza cíclica de seu movimento incessante; a natureza, em todos os seus aspectos — tanto os do mundo físico quanto os dos domínios psicológico e social —, exibe padrões cíclicos. Os chineses atribuem a essa ideia de padrões cíclicos uma estrutura definida, mediante a introdução dos opostos yin e yang, os dois polos que fixam os limites para os ciclos de mudança: “Tendo yang atingido seu clímax, retira-se em favor do yin; tendo o yin atingido seu clímax, retira-se em favor do yang”.\n\nNa concepção chinesa, todas as manifestações do tao são geradas pela interação dinâmica desses dois polos arquetípicos, os quais estão associados a numerosas imagens de opostos colhidas na natureza e na vida social. É importante, e muito difícil para nós, ocidentais, entender que esses opostos não pertencem a diferentes categorias, mas são polos extremos de um único todo. Nada é apenas yin ou apenas yang. Todos os fenômenos naturais são manifestações de uma contínua oscilação entre os dois polos; todas as transições ocorrem gradualmente e numa progressão ininterrupta. A ordem natural é de equilíbrio dinâmico entre o yin e o yang.\n\n\\credits{CAPRA, Fritjof. O Ponto de Mutação. Tradução de Álvaro Cabral.}\n\nMantendo o sentido dos trechos em destaque, reescreva-os atendendo ao que é solicitado. Faça as modificações necessárias."
-    ],
-    "items": [
-      {
-        "latex": "Não use gerúndio:\n\n“Tendo yang atingido seu clímax, retira-se em favor do yin; tendo o yin atingido seu clímax, retira-se em favor do yang”.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Verbos e Conjugação",
-          "tags": [
-            "gerúndio",
-            "reescrita"
-          ],
-          "resposta": "Quando yang atinge seu clímax, retira-se em favor do yin; quando o yin atinge o seu clímax, retira-se em favor do yang."
-        }
-      },
-      {
-        "latex": "Inicie por “A interação”.\n\n“Na concepção chinesa, todas as manifestações do tao são geradas pela interação dinâmica desses dois polos arquetípicos.”",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Sintaxe",
-          "tags": [
-            "reescrita",
-            "ordem dos termos"
-          ],
-          "resposta": "A interação dinâmica desses dois polos arquetípicos gera todas as manifestações do tao na concepção chinesa."
-        }
-      },
-      {
-        "latex": "Proponha uma nova pontuação para o trecho abaixo, substituindo apenas o sinal de ponto e vírgula e os travessões.\n\n“A principal característica do tao é a natureza cíclica de seu movimento incessante; a natureza, em todos os seus aspectos — tanto os do mundo físico quanto os dos domínios psicológico e social —, exibe padrões cíclicos.”",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Pontuação",
-          "tags": [
-            "ponto e vírgula",
-            "travessão",
-            "reescrita"
-          ],
-          "resposta": "A principal característica do tao é a natureza cíclica de seu movimento incessante. A natureza, em todos os seus aspectos (tanto os do mundo físico quanto os dos domínios psicológico e social), exibe padrões cíclicos."
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Discursiva",
+    "latex": "\\question As briófitas são pequenas plantas herbáceas (a maioria até 10 cm) representadas por três filos: hepáticas (filo Hepatophyta), musgos (filo Bryophyta) e antóceros (filo Anthocerophyta). Os pesquisadores acreditam que as hepáticas, os musgos e os antóceros foram as primeiras linhagens a divergirem do ancestral comum das plantas terrestres. Dessa forma, são consideradas as pioneiras na transição do ambiente aquático para o terrestre. No mundo, são conhecidas cerca de 17.900 espécies e, no Brasil, aproximadamente 2.950 espécies.\n\nA característica que impede que esses vegetais consigam atingir uma grande estatura é\n\\begin{choices}\n\\choice a ausência de um gametófito como fase dominante.\n\\CorrectChoice a ausência de vasos condutores.\n\\choice a presença de uma semente que protege o embrião.\n\\choice a presença de um gameta masculino flagelado.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Biologia",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Portuguesa",
+      "assunto": "Briófitas e Evolução das Plantas",
+      "tags": [
+        "briófitas",
+        "vasos condutores",
+        "plantas terrestres",
+        "evolução vegetal"
+      ],
+      "gabarito": "B",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "1",
-      "titulo_texto": "O Ponto de Mutação",
-      "autor_texto": "Fritjof Capra",
-      "genero": "ensaio filosófico",
-      "tema": "taoísmo, yin e yang, física moderna",
-      "items": [
-        {
-          "assunto": "Verbos e Conjugação",
-          "tags": [
-            "gerúndio",
-            "reescrita"
-          ],
-          "resposta": "Quando yang atinge seu clímax, retira-se em favor do yin; quando o yin atinge o seu clímax, retira-se em favor do yang."
-        },
-        {
-          "assunto": "Sintaxe",
-          "tags": [
-            "reescrita",
-            "ordem dos termos"
-          ],
-          "resposta": "A interação dinâmica desses dois polos arquetípicos gera todas as manifestações do tao na concepção chinesa."
-        },
-        {
-          "assunto": "Pontuação",
-          "tags": [
-            "ponto e vírgula",
-            "travessão",
-            "reescrita"
-          ],
-          "resposta": "A principal característica do tao é a natureza cíclica de seu movimento incessante. A natureza, em todos os seus aspectos (tanto os do mundo físico quanto os dos domínios psicológico e social), exibe padrões cíclicos."
-        }
-      ]
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "07"
     }
   },
   {
-    "isSet": true,
-    "isMcqSet": false,
-    "baseLatexes": [
-      "Tenho, até o presente, falado de mudanças — tão comuns e tão diversas nos seres orgânicos reduzidos ao estado doméstico e, em menor escala, naqueles que se encontram em estado selvagem — como se elas fossem fortuitas. É, sem objeção, uma expressão muito incorreta; talvez, contudo, seja suficiente para demonstrar a nossa total ignorância sobre as razões de cada variação particular.\n\nAlguns cientistas julgam que uma das funções do sistema reprodutor consiste tanto em produzir diferenças individuais, ou pequenos desvios de estrutura, como em produzir descendentes semelhantes aos pais. Mas o fato de as variações e de as deformações se apresentarem em maior número no estado doméstico que no estado natural, o fato de as espécies que têm um habitat muito extenso serem mais variáveis que as que têm um habitat restrito, permitem-nos concluir que a variabilidade deve ter, comumente, qualquer analogia com as condições de sobrevida às quais cada espécie foi submetida durante algumas gerações sucessivas. Tentei provar que as mudanças de condições atuam de duas maneiras: diretamente, sobre toda a organização, ou sobre algumas partes unicamente do organismo; e indiretamente, por meio do sistema reprodutor. Em todos os casos, há dois fatores: a natureza do organismo, que é a mais importante das duas, e a natureza das condições ambientes. Neste último caso, o organismo parece tornar-se plástico e encontramos uma grande variabilidade incerta. No primeiro caso, a natureza do organismo é tal que cede facilmente, quando submetido a certas condições, e todos, ou quase todos os indivíduos, se modificam da mesma maneira.\n\nÉ difícil delimitar até que ponto a alteração das condições — por exemplo, a alteração do clima, da alimentação etc. — atua de uma maneira definida. Há razão para se acreditar que, no decurso do tempo, os efeitos destas alterações sejam tão marcantes que possam ser provados por evidências claras. Contudo, podemos concluir, sem receio de engano, que não se pode atribuir unicamente a uma tal causa atualmente as adaptações de estrutura, tão numerosas e tão complicadas, que observamos na natureza entre os diferentes seres orgânicos.\n\n\\credits{DARWIN, Charles. A origem das espécies. Tradução de Eduardo Fonseca.}"
-    ],
-    "items": [
-      {
-        "latex": "Darwin e alguns cientistas mencionados por ele no texto têm crenças diferentes quanto aos fatores que promovem mudanças nos organismos da natureza. Explicite tal diferença.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Inferência e Subentendido",
-          "tags": [
-            "Darwin",
-            "sistema reprodutor",
-            "variabilidade"
-          ],
-          "resposta": "Alguns cientistas creem que o sistema reprodutor seria o responsável por produzir diferenças nos organismos. Já Darwin acredita que as mudanças seriam decorrentes não só da natureza do organismo, mas também da natureza das condições ambientes."
-        }
-      },
-      {
-        "latex": "Complete, de acordo com o texto: o trecho “fossem fortuitas”, no primeiro período, pode ser substituído, sem alteração de sentido, por:",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Semântica",
-          "tags": [
-            "fortuitas",
-            "sinonímia"
-          ],
-          "resposta": "acontecessem ao acaso"
-        }
-      },
-      {
-        "latex": "Complete, de acordo com o texto: no que diz respeito à variabilidade dos seres orgânicos, estado doméstico relaciona-se a um habitat (1) \\underline{\\hspace{2cm}} e estado selvagem relaciona-se a um habitat (2) \\underline{\\hspace{2cm}}.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Inferência e Subentendido",
-          "tags": [
-            "estado doméstico",
-            "habitat"
-          ],
-          "resposta": "(1) extenso; (2) restrito"
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Discursiva",
+    "latex": "\\question Coronavírus é uma família de vírus envelopados de RNA com senso positivo, responsável por provocar, em humanos, doenças respiratórias. Em 2019, a Organização Mundial da Saúde (OMS) foi alertada sobre vários casos de pneumonia causada por um novo coronavírus na cidade de Wuhan, na China. A nova cepa do vírus, atualmente identificada como SARS-CoV-2, se espalhou rapidamente para diversos países do mundo e, em março de 2020, a OMS declarou pandemia de COVID-19, a doença causada pelo novo coronavírus.\n\nO SARS-CoV-2 é capaz de infectar as células da via respiratória a partir da interação das espículas de glicoproteínas virais com os receptores de angiotensina 2 (ACE2), como mostrado na figura abaixo.\n\n\\includegraphics{figura-q08}\n\n\\credits{Fonte: http://proec.ufabc.edu.br. Acesso em: 26/05/2021.}\n\nApós entrar nas células, o vírus libera o seu genoma que, por sua vez, comandará o processo de síntese das proteínas virais. Para que isso ocorra, é importante a participação de uma estrutura celular que está associada à síntese de proteína.\n\nO componente celular envolvido nesse processo é\n\\begin{choices}\n\\CorrectChoice o retículo endoplasmático rugoso.\n\\choice o lisossomo.\n\\choice o retículo endoplasmático liso.\n\\choice a mitocôndria.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Biologia",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Portuguesa",
+      "assunto": "Síntese de Proteínas",
+      "tags": [
+        "coronavírus",
+        "SARS-CoV-2",
+        "COVID-19",
+        "síntese de proteínas",
+        "retículo endoplasmático rugoso"
+      ],
+      "gabarito": "A",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "2",
-      "titulo_texto": "A origem das espécies",
-      "autor_texto": "Charles Darwin",
-      "genero": "ensaio científico",
-      "tema": "evolução, variabilidade, condições ambientais",
-      "items": [
-        {
-          "assunto": "Inferência e Subentendido",
-          "tags": [
-            "Darwin",
-            "sistema reprodutor",
-            "variabilidade"
-          ],
-          "resposta": "Alguns cientistas creem que o sistema reprodutor seria o responsável por produzir diferenças nos organismos. Já Darwin acredita que as mudanças seriam decorrentes não só da natureza do organismo, mas também da natureza das condições ambientes."
-        },
-        {
-          "assunto": "Semântica",
-          "tags": [
-            "fortuitas",
-            "sinonímia"
-          ],
-          "resposta": "acontecessem ao acaso"
-        },
-        {
-          "assunto": "Inferência e Subentendido",
-          "tags": [
-            "estado doméstico",
-            "habitat"
-          ],
-          "resposta": "(1) extenso; (2) restrito"
-        }
-      ]
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "08"
     }
   },
   {
-    "isSet": true,
-    "isMcqSet": false,
-    "baseLatexes": [
-      "Os filósofos chineses viam a realidade, a cuja essência primária chamaram tao, como um processo de contínuo fluxo e mudança. Na concepção deles, todos os fenômenos que observamos participam desse processo cósmico e são, pois, intrinsecamente dinâmicos. A principal característica do tao é a natureza cíclica de seu movimento incessante; a natureza, em todos os seus aspectos — tanto os do mundo físico quanto os dos domínios psicológico e social —, exibe padrões cíclicos. Os chineses atribuem a essa ideia de padrões cíclicos uma estrutura definida, mediante a introdução dos opostos yin e yang, os dois polos que fixam os limites para os ciclos de mudança: “Tendo yang atingido seu clímax, retira-se em favor do yin; tendo o yin atingido seu clímax, retira-se em favor do yang”.\n\nNa concepção chinesa, todas as manifestações do tao são geradas pela interação dinâmica desses dois polos arquetípicos, os quais estão associados a numerosas imagens de opostos colhidas na natureza e na vida social. É importante, e muito difícil para nós, ocidentais, entender que esses opostos não pertencem a diferentes categorias, mas são polos extremos de um único todo. Nada é apenas yin ou apenas yang. Todos os fenômenos naturais são manifestações de uma contínua oscilação entre os dois polos; todas as transições ocorrem gradualmente e numa progressão ininterrupta. A ordem natural é de equilíbrio dinâmico entre o yin e o yang.",
-      "Tenho, até o presente, falado de mudanças — tão comuns e tão diversas nos seres orgânicos reduzidos ao estado doméstico e, em menor escala, naqueles que se encontram em estado selvagem — como se elas fossem fortuitas. É, sem objeção, uma expressão muito incorreta; talvez, contudo, seja suficiente para demonstrar a nossa total ignorância sobre as razões de cada variação particular.\n\nAlguns cientistas julgam que uma das funções do sistema reprodutor consiste tanto em produzir diferenças individuais, ou pequenos desvios de estrutura, como em produzir descendentes semelhantes aos pais. Mas o fato de as variações e de as deformações se apresentarem em maior número no estado doméstico que no estado natural, o fato de as espécies que têm um habitat muito extenso serem mais variáveis que as que têm um habitat restrito, permitem-nos concluir que a variabilidade deve ter, comumente, qualquer analogia com as condições de sobrevida às quais cada espécie foi submetida durante algumas gerações sucessivas. Tentei provar que as mudanças de condições atuam de duas maneiras: diretamente, sobre toda a organização, ou sobre algumas partes unicamente do organismo; e indiretamente, por meio do sistema reprodutor. Em todos os casos, há dois fatores: a natureza do organismo, que é a mais importante das duas, e a natureza das condições ambientes. Neste último caso, o organismo parece tornar-se plástico e encontramos uma grande variabilidade incerta. No primeiro caso, a natureza do organismo é tal que cede facilmente, quando submetido a certas condições, e todos, ou quase todos os indivíduos, se modificam da mesma maneira.\n\nÉ difícil delimitar até que ponto a alteração das condições — por exemplo, a alteração do clima, da alimentação etc. — atua de uma maneira definida. Há razão para se acreditar que, no decurso do tempo, os efeitos destas alterações sejam tão marcantes que possam ser provados por evidências claras. Contudo, podemos concluir, sem receio de engano, que não se pode atribuir unicamente a uma tal causa atualmente as adaptações de estrutura, tão numerosas e tão complicadas, que observamos na natureza entre os diferentes seres orgânicos."
-    ],
-    "items": [
-      {
-        "latex": "Reescreva o trecho abaixo, substituindo o verbo “pertencer” por “derivar”. Faça as modificações necessárias.\n\nOs opostos não pertencem a diferentes categorias.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Semântica",
-          "tags": [
-            "derivar",
-            "reescrita"
-          ],
-          "resposta": "Os opostos não derivam de diferentes categorias."
-        }
-      },
-      {
-        "latex": "Destaque do Texto 1 a palavra em que o prefixo “in” apresenta o mesmo sentido que na palavra “incessante”.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Semântica",
-          "tags": [
-            "prefixo",
-            "ininterrupta"
-          ],
-          "resposta": "A palavra cujo prefixo apresenta o mesmo sentido é “ininterrupta”."
-        }
-      },
-      {
-        "latex": "Indique a palavra ou expressão a que se refere a última ocorrência de “que” no Texto 2.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Coerência e Coesão",
-          "tags": [
-            "referenciação",
-            "pronome relativo"
-          ],
-          "resposta": "A palavra “que” se refere à expressão “as adaptações de estrutura”."
-        }
-      },
-      {
-        "latex": "No Texto 2, o enunciador apresenta suas reflexões acerca do que está sendo observado e das investigações que vem desenvolvendo. Destaque, do último parágrafo, a expressão que, em si mesma, denota certeza a respeito do que é enunciado.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Inferência e Subentendido",
-          "tags": [
-            "certeza",
-            "modalização"
-          ],
-          "resposta": "A expressão é “sem receio de engano”."
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Discursiva",
+    "latex": "\\question A Árvore Solar é um produto criado pela empresa Sunew e é capaz de converter a luz do sol em energia elétrica. Isso é possível graças às placas compostas de filmes fotovoltaicos orgânicos (OPV), que permitem que essa tecnologia funcione como uma miniusina solar, mas em uma versão aperfeiçoada. Além de produzir energia elétrica de forma sustentável e ter um baixo custo, os materiais orgânicos são facilmente recicláveis quando chegam ao fim de sua vida útil. A energia elétrica produzida pela Árvore Solar pode ser utilizada para iluminação de locais públicos e, até mesmo, ser usada para carregar smartphones.\n\\credits{Fonte: https://sunew.com.br/cases/optree/. Acesso em: 29/05/21 (adaptado).}\n\nA Árvore Solar foi projetada para captar a energia luminosa e transformá-la em energia elétrica. O nome escolhido para essa tecnologia remete aos organismos autotróficos fotossintetizantes, como as plantas, que também têm a capacidade de absorver energia luminosa e transformá-la em uma nova forma de energia, através de um mecanismo chamado de fotossíntese.\n\nEm relação à fotossíntese, uma substância essencial para esse processo, e sua respectiva função, é\n\\begin{choices}\n\\choice o gás oxigênio, para a geração de ATP na fase clara.\n\\choice o gás carbônico, para a formação de \\ce{O2} na fase escura.\n\\CorrectChoice a água, para repor os elétrons perdidos pela clorofila na fase fotoquímica.\n\\choice a clorofila, para absorção de fótons durante a fase química.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Biologia",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Portuguesa",
+      "assunto": "Fotossíntese",
+      "tags": [
+        "fotossíntese",
+        "clorofila",
+        "fase fotoquímica",
+        "elétrons",
+        "água"
+      ],
+      "gabarito": "C",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "3",
-      "titulo_texto": "O Ponto de Mutação",
-      "autor_texto": "Fritjof Capra",
-      "genero": "ensaio filosófico",
-      "tema": "taoísmo, yin e yang, física moderna",
-      "items": [
-        {
-          "assunto": "Semântica",
-          "tags": [
-            "derivar",
-            "reescrita"
-          ],
-          "resposta": "Os opostos não derivam de diferentes categorias."
-        },
-        {
-          "assunto": "Semântica",
-          "tags": [
-            "prefixo",
-            "ininterrupta"
-          ],
-          "resposta": "A palavra cujo prefixo apresenta o mesmo sentido é “ininterrupta”."
-        },
-        {
-          "assunto": "Coerência e Coesão",
-          "tags": [
-            "referenciação",
-            "pronome relativo"
-          ],
-          "resposta": "A palavra “que” se refere à expressão “as adaptações de estrutura”."
-        },
-        {
-          "assunto": "Inferência e Subentendido",
-          "tags": [
-            "certeza",
-            "modalização"
-          ],
-          "resposta": "A expressão é “sem receio de engano”."
-        }
-      ]
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "09"
     }
   },
   {
-    "isSet": true,
-    "isMcqSet": false,
-    "baseLatexes": [
-      "Arte\n\n\\begin{poem}\n\\verse{Busca palavras límpidas e castas,}\n\\verse{novas e raras, de clarões radiosos,}\n\\verse{dentre as ondas mais pródigas, mais vastas}\n\\verse{dos sentimentos mais maravilhosos.}\n\\verse{}\n\\verse{Busca também palavras velhas, busca,}\n\\verse{limpa-as, dá-lhes o brilho necessário}\n\\verse{e então verás que cada qual corusca}\n\\verse{com dobrado fulgor extraordinário.}\n\\verse{}\n\\verse{Assim terás o culto pela Forma,}\n\\verse{culto que prende os belos gregos da Arte}\n\\verse{e levarás no teu ginete, a norma}\n\\verse{dessa transformação, por toda a parte.}\n\\verse{}\n\\verse{Enche de estranhas vibrações sonoras}\n\\verse{a tua Estrofe, majestosamente...}\n\\verse{Põe nela todo o incêndio das auroras}\n\\verse{para torná-la emocional e ardente.}\n\\end{poem}\n\\credits{CRUZ E SOUSA. Arte. In: Broquéis, 1893.}",
-      "Sofre ainda o mundo de tirania e de opressão, da riqueza de alguns para a miséria de muitos, da arrogância de certos para a humilhação de quase todos. Sofre o mundo da transformação dos pés em borracha, das pernas em couro, do corpo em pano e da cabeça em aço. Sofre o mundo da transformação das mãos em instrumentos de castigo e em símbolos de força. Sofre o mundo da transformação da pá em fuzil, do arado em tanque de guerra, da imagem do semeador que semeia na do autômato com seu lança-chamas, de cuja sementeira brotam solidões.\n\nA esse mundo, só a poesia poderá salvar, e a humildade diante da sua voz. Parece tão vago, tão gratuito, e no entanto eu o sinto de maneira tão fatal! Não se trata de desencantá-la, porque creio na sua aparição espontânea, inelutável. Surgirá de vozes jovens fazendo ciranda em torno de um mundo caduco; de vozes de homens simples, operários, artistas, lavradores, marítimos, brancos e negros, cantando o seu labor de edificar, criar, plantar, navegar um novo mundo; de vozes de mães, esposas, amantes e filhas, procriando, lidando, fazendo amor, drama, perdão. E contra essas vozes não prevalecerão as vozes ásperas de mando dos senhores nem as vozes soberbas das elites. Porque a poesia ácida lhes terá corroído as roupas. E o povo então poderá cantar seus próprios cantos, porque os poetas serão em maior número e a poesia há de velar.\n\n\\credits{MORAES, Vinicius de. Para viver um grande amor.}"
-    ],
-    "items": [
-      {
-        "latex": "Determine o estilo de época a que Cruz e Sousa se vincula, destacando dois aspectos presentes no Texto 3 que o caracterizam.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Parnasianismo e Simbolismo",
-          "tags": [
-            "Cruz e Sousa",
-            "Simbolismo"
-          ],
-          "resposta": "Cruz e Sousa vincula-se ao Simbolismo, estilo que marcou o final do século XIX. No texto 3 observam-se os seguintes aspectos: a presença da sonoridade/musicalidade; o predomínio da emoção e da imaginação; o culto da forma."
-        }
-      },
-      {
-        "latex": "A partir de uma leitura comparativa entre o poema de Cruz e Sousa e a prosa de Vinicius de Moraes, discuta, com suas próprias palavras, a concepção de poesia presente em ambos os textos.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Texto Lírico e Poesia",
-          "tags": [
-            "concepção de poesia",
-            "comparação",
-            "Vinicius de Moraes"
-          ],
-          "resposta": "A concepção de poesia evidente no poema de Cruz e Sousa é predominantemente estética, atenta ao cuidado com a linguagem e a forma. Em contraposição, percebe-se na prosa de Vinicius de Moraes a defesa da função social da poesia como instrumento idealizado de transformação do mundo."
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Discursiva",
+    "latex": "\\question A Universidade Federal de Minas Gerais (UFMG), em conjunto com instituições de ensino e pesquisa de diversos países, aderiu a um estudo para testar a eficácia e a proteção da vacina contra o vírus HIV. Esse vírus é o agente responsável pela Síndrome da Imunodeficiência Adquirida (AIDS), que é transmitido através de sangue, sêmen ou fluidos vaginais contaminados. No organismo humano, o vírus é capaz de infectar e destruir células do sistema imunológico, interferindo na capacidade do organismo de combater outras infecções.\n\nA vacina estudada pela UFMG e outros centros de pesquisa, além de ser segura para a população, tem como objetivo\n\\begin{choices}\n\\choice induzir uma imunidade passiva nos indivíduos através da inoculação de anticorpos específicos.\n\\choice induzir uma imunidade passiva nos indivíduos, estimulando a produção de anticorpos específicos.\n\\choice induzir um efeito inibitório na replicação viral, através da inoculação de medicamentos antivirais.\n\\CorrectChoice induzir uma imunidade ativa nos indivíduos, estimulando a produção de anticorpos específicos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Biologia",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Portuguesa",
+      "assunto": "Sistema Imunológico",
+      "tags": [
+        "HIV",
+        "AIDS",
+        "vacina",
+        "imunidade ativa",
+        "anticorpos"
+      ],
+      "gabarito": "D",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "4",
-      "titulo_texto": "Arte",
-      "autor_texto": "Cruz e Sousa",
-      "genero": "poema",
-      "tema": "Simbolismo, culto à forma, linguagem poética",
-      "items": [
-        {
-          "assunto": "Parnasianismo e Simbolismo",
-          "tags": [
-            "Cruz e Sousa",
-            "Simbolismo"
-          ],
-          "resposta": "Cruz e Sousa vincula-se ao Simbolismo, estilo que marcou o final do século XIX. No texto 3 observam-se os seguintes aspectos: a presença da sonoridade/musicalidade; o predomínio da emoção e da imaginação; o culto da forma."
-        },
-        {
-          "assunto": "Texto Lírico e Poesia",
-          "tags": [
-            "concepção de poesia",
-            "comparação",
-            "Vinicius de Moraes"
-          ],
-          "resposta": "A concepção de poesia evidente no poema de Cruz e Sousa é predominantemente estética, atenta ao cuidado com a linguagem e a forma. Em contraposição, percebe-se na prosa de Vinicius de Moraes a defesa da função social da poesia como instrumento idealizado de transformação do mundo."
-        }
-      ]
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "10"
     }
   },
   {
-    "isSet": true,
-    "isMcqSet": false,
-    "baseLatexes": [
-      "No fim de um ano de trabalho, joão obteve uma redução de quinze por cento em seus vencimentos.\n\njoão era moço. Aquele era seu primeiro emprego. Não se mostrou orgulhoso, embora tenha sido um dos poucos contemplados. Afinal, esforçara-se. Não tivera uma só falta ou atraso. Limitou-se a sorrir, a agradecer ao chefe.\n\nNo dia seguinte, mudou-se para um quarto mais distante do centro da cidade. Com o salário reduzido, podia pagar um aluguel menor.\n\nPassou a tomar duas conduções para chegar ao trabalho. No entanto, estava satisfeito. Acordava mais cedo, e isto parecia aumentar-lhe a disposição.\n\nDois anos mais tarde, veio outra recompensa.\n\nO chefe chamou-o e lhe comunicou o segundo corte salarial.\n\nDesta vez, a empresa atravessava um período excelente. A redução foi um pouco maior: dezessete por cento.\n\nNovos sorrisos, novos agradecimentos, nova mudança.\n\nAgora, joão acordava às cinco da manhã. Esperava três conduções. Em compensação, comia menos. Ficou mais esbelto. Sua pele tornou-se menos rosada. O contentamento aumentou.\n\nProsseguiu a luta.\n\nPorém, nos quatro anos seguintes, nada de extraordinário aconteceu.\n\njoão preocupava-se. Perdia o sono, envenenado em intrigas de colegas invejosos. Odiava-os. Torturava-se com a incompreensão do chefe. Mas não desistia. Passou a trabalhar mais duas horas diárias.\n\nUma tarde, quase ao fim do expediente, foi chamado ao escritório principal.\n\nRespirou descompassado.\n\n— Seu joão. Nossa firma tem uma grande dívida com o senhor.\n\njoão baixou a cabeça em sinal de modéstia.\n\n— Sabemos de todos os seus esforços. É nosso desejo dar-lhe uma prova substancial de nosso reconhecimento.\n\nO coração parava.\n\n— Além de uma redução de dezesseis por cento em seu ordenado, resolvemos, na reunião de ontem, rebaixá-lo de posto.\n\nA revelação deslumbrou-o. Todos sorriram.\n\n— De hoje em diante, o senhor passará a auxiliar de contabilidade, com menos cinco dias de férias. Contente?\n\nRadiante, joão gaguejou alguma coisa ininteligível, cumprimentou a diretoria, voltou ao trabalho.\n\nNesta noite, joão não pensou em nada. Dormiu pacífico, no silêncio do subúrbio.\n\nMais uma vez, mudou-se. Finalmente, deixara de jantar. O almoço reduzira-se a um sanduíche. Emagrecia, sentia-se mais leve, mais ágil. Não havia necessidade de muita roupa. Eliminara certas despesas inúteis, lavadeira, pensão.\n\nChegava em casa às onze da noite, levantava-se às três da madrugada. Esfarelava-se num trem e dois ônibus para garantir meia hora de antecedência.\n\nA vida foi passando, com novos prêmios.\n\nAos sessenta anos, o ordenado equivalia a dois por cento do inicial. O organismo acomodara-se à fome. Uma vez ou outra, saboreava alguma raiz das estradas. Dormia apenas quinze minutos. Não tinha mais problemas de moradia ou vestimenta. Vivia nos campos, entre árvores refrescantes, cobria-se com os farrapos de um lençol adquirido há muito tempo.\n\nO corpo era um monte de rugas sorridentes.\n\nTodos os dias, um caminhão anônimo transportava-o ao trabalho.\n\nQuando completou quarenta anos de serviço, foi convocado pela chefia:\n\n— Seu joão. O senhor acaba de ter seu salário eliminado. Não haverá mais férias. E sua função, a partir de amanhã, será a de limpador de nossos sanitários.\n\nO crânio seco comprimiu-se. Do olho amarelado, escorreu um líquido tênue. A boca tremeu, mas nada disse. Sentia-se cansado. Enfim, atingira todos os objetivos. Tentou sorrir:\n\n— Agradeço tudo que fizeram em meu benefício. Mas desejo requerer minha aposentadoria.\n\nO chefe não compreendeu:\n\n— Mas seu joão, logo agora que o senhor está desassalariado? Por quê? Dentro de alguns meses terá de pagar a taxa inicial para permanecer em nosso quadro. Desprezar tudo isto? Quarenta anos de convívio? O senhor ainda está forte. Que acha?\n\nA emoção impediu qualquer resposta.\n\njoão afastou-se. O lábio murcho se estendeu. A pele enrijeceu, ficou lisa. A estatura regrediu. A cabeça se fundiu ao corpo. As formas desumanizaram-se, planas, compactas. Nos lados, duas arestas. Tornou-se cinzento.\n\njoão transformou-se num arquivo de metal.\n\n\\credits{GIUDICE, Victor. Necrológio.}"
-    ],
-    "items": [
-      {
-        "latex": "O nome próprio João é grafado no Texto 5 de uma maneira singular, com a letra inicial minúscula. Comente a relação entre esse dispositivo estilístico e o conteúdo do conto.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Texto Narrativo",
-          "tags": [
-            "ironia",
-            "desumanização",
-            "personagem"
-          ],
-          "resposta": "Por meio da ironia, o autor destaca, na relação capital–trabalho, o processo de despersonalização/coisificação/desumanização da personagem. Por esse motivo, seu nome é grafado com letra minúscula, como se fosse um substantivo comum."
-        }
-      },
-      {
-        "latex": "Um dos procedimentos críticos necessários à análise da obra literária é o entendimento da relação entre o narrador, as personagens e o leitor no desenvolvimento da narrativa. Determine o foco narrativo utilizado por Victor Giudice no Texto 5.",
-        "tipo": "Discursiva",
-        "gabarito": null,
-        "meta": {
-          "assunto": "Texto Narrativo",
-          "tags": [
-            "foco narrativo",
-            "terceira pessoa"
-          ],
-          "resposta": "O foco narrativo é de terceira pessoa."
-        }
-      }
-    ],
-    "sharedMeta": {
-      "tipo": "Discursiva",
+    "latex": "\\question A sinalização química por hormônios é a função do sistema endócrino, um dos dois sistemas básicos para comunicação e regulação no corpo animal. Os hormônios produzidos por esse sistema são responsáveis por regular muitas propriedades corporais como pressão e volume sanguíneos, metabolismo de energia, concentrações de soluto nos líquidos corporais, crescimento e desenvolvimento, alterações físicas e comportamentais relacionadas à maturidade sexual, além de outros fatores. Dessa forma, a disfunção na produção e secreção de algum hormônio pode desencadear-se em sérios distúrbios.\n\nDentre as doenças associadas a distúrbios na produção de hormônios, pode-se citar o feocromocitoma. Essa doença é causada por um tumor nas glândulas suprarrenais, que produz, em grandes concentrações, o hormônio adrenalina. A maioria dos sintomas encontrados em pacientes portadores de feocromocitoma é consequência direta do aumento na produção desse hormônio.\n\nUm efeito do aumento na produção de adrenalina é\n\\begin{choices}\n\\CorrectChoice o aumento da frequência cardíaca.\n\\choice a contração das pupilas.\n\\choice o aumento do peristaltismo.\n\\choice a diminuição dos batimentos cardíacos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Biologia",
       "dificuldade": "Média",
-      "nivel": "médio",
-      "disciplina": "Língua Portuguesa",
+      "assunto": "Sistema Endócrino e Hormônios",
+      "tags": [
+        "hormônio",
+        "adrenalina",
+        "feocromocitoma",
+        "glândulas suprarrenais",
+        "frequência cardíaca"
+      ],
+      "gabarito": "A",
       "fonte": "concurso",
-      "concurso": "PUC-Rio",
-      "banca": "PUC-Rio",
-      "ano": 2017,
-      "prova": "Tarde G5",
-      "numero": "5",
-      "titulo_texto": "O arquivo",
-      "autor_texto": "Victor Giudice",
-      "genero": "conto",
-      "tema": "trabalho, desumanização, capitalismo, ironia",
-      "items": [
-        {
-          "assunto": "Texto Narrativo",
-          "tags": [
-            "ironia",
-            "desumanização",
-            "personagem"
-          ],
-          "resposta": "Por meio da ironia, o autor destaca, na relação capital–trabalho, o processo de despersonalização/coisificação/desumanização da personagem. Por esse motivo, seu nome é grafado com letra minúscula, como se fosse um substantivo comum."
-        },
-        {
-          "assunto": "Texto Narrativo",
-          "tags": [
-            "foco narrativo",
-            "terceira pessoa"
-          ],
-          "resposta": "O foco narrativo é de terceira pessoa."
-        }
-      ]
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "11"
+    }
+  },
+  {
+    "latex": "\\question O Pantanal, umas das maiores planícies sedimentares alagáveis do mundo, está localizado na bacia hidrográfica do Alto Paraguai. O bioma possui uma área de aproximadamente 150.355 km² (IBGE, 2021), estando entre os Estados de Mato Grosso e Mato Grosso do Sul, e ainda, ocupando uma pequena região da Bolívia e Paraguai.\n\nAs inundações periódicas nos períodos de chuvas, ocasionadas pelas cheias do Rio Paraguai e seus afluentes, é o fenômeno ecológico mais significativo desse bioma. A biodiversidade faunística está representada por mais de 650 espécies de aves; inúmeras espécies de peixes, mamíferos, répteis e, dentre os insetos, são mais de mil espécies de borboletas catalogadas.\n\nApesar de o Pantanal ter sido, em 2000, considerado como a Reserva da Biosfera e Patrimônio Natural da Humanidade pela Unesco, a sua biodiversidade corre riscos. Toda sua vegetação vem sendo destruída, e as queimadas são as principais responsáveis por isso.\n\nEm 2020, foram registrados mais de 15 mil focos de incêndios no Pantanal, o que ocasionou a destruição de milhões de hectares do bioma.\n\nO período extremamente seco e as altas temperaturas contribuem para as queimadas, mas uma significativa parte dos focos de incêndio é causada por ações antrópicas ilegais com objetivo de remover a vegetação nativa e substituir por pastagem.\n\\credits{Fonte: https://www.bbc.com/portuguese/brasil-53662968. Acesso em: 25/05/21 (adaptado).}\n\nUm dos fatores associados à falta de chuva no Pantanal e em outros biomas brasileiros é\n\\begin{choices}\n\\choice a intensificação do processo de lixiviação e perda dos nutrientes no solo.\n\\choice a diminuição do processo de desertificação das florestas tropicais.\n\\CorrectChoice o desmatamento da Amazônia, diminuindo a corrente de umidade que surge na floresta.\n\\choice a intensificação dos processos erosivos por interferências antrópicas.\n\\end{choices}\n\n% ═══════════════════════════════════════════════════════════════\n%  FÍSICA — Q13–Q18\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Biologia",
+      "dificuldade": "Média",
+      "assunto": "Biomas Brasileiros",
+      "tags": [
+        "Pantanal",
+        "desmatamento",
+        "Amazônia",
+        "rios voadores",
+        "queimadas",
+        "biodiversidade"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "12"
+    }
+  },
+  {
+    "latex": "\\question Um carro de passeio viaja em uma estrada retilínea e, ao sofrer uma pane no motor, para no meio da estrada. Um veículo de transporte de carga a 20 m/s, que não teve tempo para frear, colide em sua traseira arrastando o conjunto por diversos metros antes de pararem totalmente. A massa do carro e do veículo são, respectivamente, M e 2M.\n\nSobre a quantidade de movimento total antes e logo após a colisão, pode-se dizer que são\n\\begin{choices}\n\\choice diferentes, porque após a colisão a massa do conjunto é 3M.\n\\CorrectChoice iguais, mesmo as massas do carro e veículo sendo diferentes.\n\\choice diferentes, pois as massas do carro e veículo são diferentes.\n\\choice iguais, pois a energia cinética antes e após a colisão se conserva.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Quantidade de Movimento e Colisões",
+      "tags": [
+        "colisão",
+        "quantidade de movimento",
+        "impulso",
+        "conservação do momento"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "13"
+    }
+  },
+  {
+    "latex": "\\question % RECONSTRUÍDO: trecho corrompido pelo OCR (layout duas colunas do PDF).\n% Velocidade em B = (2/3)VA inferida pelo gabarito A e pela lógica de refração.\nUm feixe de luz se propaga em um meio material A com uma velocidade \\( V_A \\) e passa para um meio B, onde a sua velocidade é \\( \\frac{2}{3}V_A \\). Sobre os índices de refração dos meios A e B, pode-se afirmar que\n\\begin{choices}\n\\CorrectChoice o índice de refração de B é maior que o de A.\n\\choice os índices de refração do meio A e B são iguais.\n\\choice o índice de refração de B é menor que o de A.\n\\choice os índices de refração não dependem da velocidade de propagação do meio.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Refração da Luz e Índice de Refração",
+      "tags": [
+        "refração",
+        "índice de refração",
+        "velocidade da luz",
+        "meios materiais"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "14"
+    }
+  },
+  {
+    "latex": "\\question Testes de segurança e conforto são comuns na fase de desenvolvimento tecnológico de veículos automotores. O teste de conforto garante que a aceleração máxima do veículo não ultrapasse o valor de \\( \\frac{1}{10} \\) da aceleração da gravidade (g). Durante o teste, o veículo partiu do repouso e manteve a aceleração máxima permitida percorrendo uma distância de 50 metros em linha reta.\n\nConsiderando g = 10 m/s², o módulo da variação de velocidade, em m/s, nesse teste foi de\n\\begin{oneparchoices}\n\\CorrectChoice 10.\n\\choice 50.\n\\choice 100.\n\\choice 150.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Movimento Uniformemente Variado (MUV)",
+      "tags": [
+        "aceleração",
+        "gravidade",
+        "cinemática",
+        "variação de velocidade",
+        "MUV"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "15"
+    }
+  },
+  {
+    "latex": "\\question Para facilitar a tarefa de carregar um caminhão com caixas, um entregador decide instalar uma rampa entre o chão e o baú do caminhão de forma que possa lançar as caixas até a altura final H, como representado no esquema abaixo.\n\n\\includegraphics{figura-q16}\n\nA caixa é lançada do ponto A com velocidade de 5 m/s no intuito de atingir o ponto C no baú do caminhão. Quando a caixa passar pelo ponto B, estará a uma altura equivalente à metade da altura final.\n\nDesprezando-se forças de atrito e considerando g = 10 m/s², a partir dos dados apresentados, a velocidade com que uma caixa de 1 kg passa pelo ponto B é\n\\begin{choices}\n\\choice 10 km/h.\n\\CorrectChoice 14,4 km/h.\n\\choice 18 km/h.\n\\choice 20,2 km/h.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Conservação de Energia Mecânica",
+      "tags": [
+        "energia mecânica",
+        "energia cinética",
+        "energia potencial",
+        "rampa",
+        "conservação"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "16"
+    }
+  },
+  {
+    "latex": "\\question Em um dia sem vento, para colocar a pipa no ar, um garoto corre horizontalmente com a pipa amarrada em um fio ideal, fazendo-a subir a uma altura constante em relação ao solo. A pipa e o garoto se deslocam com velocidade vetorial constante. As forças aplicadas sobre a pipa são as forças peso da pipa (Pp), tensão do fio (T), força de resistência ao movimento horizontalmente (Fa) e sustentação do ar vertical e ascendente (Fs).\n\nSobre a força resultante pode-se afirmar que\n\\begin{choices}\n\\choice o módulo da tensão no fio não influencia na força resultante, pois ela é decomposta na componente horizontal e vertical.\n\\choice a força de sustentação que é exercida sobre a pipa tem o mesmo valor em módulo do peso da pipa.\n\\CorrectChoice o somatório das forças que atuam sobre a pipa é nulo e por isso a velocidade vetorial é constante.\n\\choice a força resultante sobre a pipa sempre será nula, visto que a força de resistência e de sustentação equilibram a força peso.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Equilíbrio de Forças",
+      "tags": [
+        "força resultante",
+        "pipa",
+        "equilíbrio",
+        "forças",
+        "velocidade constante"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "17"
+    }
+  },
+  {
+    "latex": "\\question Em uma residência, os dois dispositivos com maior consumo de energia são ligados conforme o esquema abaixo em uma rede elétrica de 120 V.\n\n\\includegraphics{figura-q18}\n\nAs correntes elétricas nos dispositivos 1 e 2 são, respectivamente, 10 A e 20 A.\n\nA corrente elétrica total e a resistência equivalente do circuito são\n\\begin{oneparchoices}\n\\choice 10 A e 6 Ω\n\\choice 20 A e 4 Ω\n\\choice 30 A e 6 Ω\n\\CorrectChoice 30 A e 4 Ω\n\\end{oneparchoices}\n\n% ═══════════════════════════════════════════════════════════════\n%  GEOGRAFIA — Q19–Q24\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Circuitos Elétricos",
+      "tags": [
+        "circuito elétrico",
+        "corrente elétrica",
+        "resistência equivalente",
+        "lei de Ohm"
+      ],
+      "gabarito": "D",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "18"
+    }
+  },
+  {
+    "latex": "\\question % OCR: \"uma série de mortíferos atiça ambos os lados\" — provável omissão de substantivo (ex.: \"ataques\")\n\"Conflito entre Israel e Hamas – o que se deve saber sobre o tema.\n\nEnquanto palestinos e israelenses entram na segunda semana de um intenso conflito, uma série de mortíferos atiça ambos os lados, em uma região em que perder a vida na guerra é algo comum.\"\n\\credits{Fonte: https://www.google.com/amp/s/internacional.estadao.com.br/noticias/geral,conflito-entre-israel-e-hamas-o-que-se-deve-saber-sobre-o-tema,70003719274.amp. Acesso: 21/05/2021.}\n\nOs violentos confrontos ocorridos no mês de maio de 2021 entre Hamas e Israel geraram mais de duzentas mortes de civis, incluindo crianças. Contudo, os conflitos entre palestinos e israelenses já se desenrolam há décadas.\n\nA causa central dos conflitos entre palestinos e israelenses é\n\\begin{choices}\n\\choice a intervenção militar dos Estados Unidos contra Israel.\n\\CorrectChoice a disputa pelo controle de territórios na região.\n\\choice a impossibilidade de coexistência pacífica entre judeus e muçulmanos.\n\\choice a rivalidade entre dois estados soberanos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Geografia",
+      "dificuldade": "Média",
+      "assunto": "Geopolítica Mundial",
+      "tags": [
+        "Israel",
+        "Hamas",
+        "Palestina",
+        "conflito territorial",
+        "Oriente Médio"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "19"
+    }
+  },
+  {
+    "latex": "\\question \"Cientistas preveem uma temporada 'acima do normal' de furacões no Atlântico em 2021.\n\nNOVA YORK — Cientistas americanos previram que 2021 pode ter entre 13 e 20 tempestades, de seis a dez furacões sendo que três a cinco grandes, de categoria 3 ou superior, no Atlântico. (...) O anúncio deste ano vem depois de uma temporada recorde de 2020 com 30 tempestades que foram batizadas (o que acontece quando elas são impactantes).\"\n\\credits{Fonte: https://oglobo.globo.com/sociedade/meio-ambiente/cientistas-preveem-uma-temporada-acima-do-normal-de-furacoes-no-atlantico-em-2021-1-25027320.}\n\nA intensificação do aquecimento global e a consequente elevação do nível médio dos oceanos estão associadas ao aumento da ocorrência de tempestades e furacões de alto potencial destrutivo.\n\nUma ação antrópica que pode agravar os danos causados pelas tempestades é\n\\begin{choices}\n\\choice a redução das emissões industriais de gases-estufa.\n\\choice a preservação de parques e áreas verdes.\n\\CorrectChoice a ocupação de áreas costeiras vulneráveis.\n\\choice a recuperação de superfícies permeáveis.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Geografia",
+      "dificuldade": "Média",
+      "assunto": "Questões Ambientais e Aquecimento Global",
+      "tags": [
+        "aquecimento global",
+        "furacões",
+        "ocupação costeira",
+        "ação antrópica",
+        "nível do mar"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "20"
+    }
+  },
+  {
+    "latex": "\\question \"Câmara tira de assentados da reforma agrária prioridade para fornecer itens da merenda escolar\n\nA Câmara dos Deputados aprovou nesta quinta-feira (6) um projeto de lei que retira a prioridade de assentamentos da reforma agrária e comunidades indígenas e quilombolas no fornecimento de alimentos da merenda escolar. (..)\n\nAtualmente, a legislação define que pelo menos 30% da merenda adquirida com recursos do PNAE (Programa Nacional de Alimentação Escolar) venham diretamente da agricultura familiar e do empreendedor familiar rural ou de organizações, priorizando os assentamentos de reforma agrária, comunidades e comunidades quilombolas. (...)\n\nO projeto também determina que 40% da compra de leite para merenda escolar seja feita na modalidade líquida. Nesse caso, a aquisição deve ser feita em laticínios locais registrados, com a possibilidade de dispensa de licitação quando os preços forem compatíveis com os do mercado local.\"\n\\credits{Fonte: https://g1.globo.com/politica/noticia/2021/05/06/camara-tira-de-assentados-da-reforma-agraria-prioridade-para-fornecer-itens-da-merenda-escolar.ghtml.}\n\nA medida proposta, se efetivada, pode reduzir\n\\begin{choices}\n\\CorrectChoice os meios de subsistência de trabalhadores assentados, indígenas e quilombolas.\n\\choice o desenvolvimento econômico das empresas agroindustriais.\n\\choice a concentração fundiária.\n\\choice as disparidades socioeconômicas no campo.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Geografia",
+      "dificuldade": "Média",
+      "assunto": "Reforma Agrária e Políticas Públicas",
+      "tags": [
+        "reforma agrária",
+        "assentamentos",
+        "merenda escolar",
+        "PNAE",
+        "agricultura familiar"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "21"
+    }
+  },
+  {
+    "latex": "\\question A tabela a seguir, com dados do ano de 2017, apresenta a situação demográfica de alguns países.\n\\credits{Fonte: IBGE. Disponível em https://atlasescolar.ibge.gov.br/images/atlas/mapas_mundo/mundo_nivel_de_densidade_demografica.pdf.}\n\n\\begin{tabular}{|l|r|r|}\n\\hline\n\\textbf{País} & \\textbf{População total} & \\textbf{Área total (km²)} \\\\\n\\hline\nBangladesh & 164.669.751 & 147.630 \\\\\nChina & 1.409.517.397 & 9.600.010 \\\\\nÍndia & 1.333.180.127 & 3.287.259 \\\\\nNigéria & 190.886.311 & 923.770 \\\\\nRússia & 143.989.754 & 17.098.250 \\\\\n\\hline\n\\end{tabular}\n\nO país de território mais extenso, o país mais populoso e o país mais populado, respectivamente, são\n\\begin{choices}\n\\choice China, Rússia e Bangladesh.\n\\choice Rússia, Índia e China.\n\\choice Índia, Nigéria e China.\n\\CorrectChoice Rússia, China e Bangladesh.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Geografia",
+      "dificuldade": "Média",
+      "assunto": "Densidade Demográfica",
+      "tags": [
+        "densidade demográfica",
+        "população",
+        "território",
+        "Bangladesh",
+        "China",
+        "Rússia"
+      ],
+      "gabarito": "D",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "22"
+    }
+  },
+  {
+    "latex": "\\question O mapa a seguir mostra o uso de energia renovável no mundo.\n\n\\includegraphics{figura-q23}\n\n\\credits{Fonte: IBGE. Disponível em https://atlasescolar.ibge.gov.br/images/atlas/mapas_mundo/mundo_energia_renovavel.pdf.}\n\nO uso predominante de fontes renováveis de energia contribui para um modelo de desenvolvimento mais sustentável.\n\nCom base nessa informação e nos dados do mapa, é correto afirmar que\n\\begin{choices}\n\\choice o desenvolvimento e a sustentabilidade são diretamente proporcionais.\n\\CorrectChoice a matriz energética é menos sustentável nos países mais ricos.\n\\choice a maior parcela da energia primária é renovável.\n\\choice os combustíveis fósseis têm baixa participação na matriz energética.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Física",
+      "dificuldade": "Média",
+      "assunto": "Matriz Energética e Sustentabilidade",
+      "tags": [
+        "energia renovável",
+        "matriz energética",
+        "sustentabilidade",
+        "combustíveis fósseis"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "23"
+    }
+  },
+  {
+    "latex": "\\question \"Indústria 4.0: a profunda transformação que impacta o chão de fábrica\n\nPatricia Knebel — O leitor é daqueles adeptos do café em cápsula? Se pudesse personalizar a sua caixa, que hoje é vendida com apenas um sabor, escolhendo a variedade da sua preferência, entre expresso, capuccino e chá verde, seria uma boa, não é mesmo? Pois isso já é possível. (...)\n\nBem-vindo ao maravilhoso mundo da Indústria 4.0, que traz a automação industrial e a integração de diferentes tecnologias, como Inteligência Artificial, Robótica e Internet das Coisas (IoT) para promover a digitalização das atividades industriais, melhorando os processos e aumentando a produtividade.\"\n\\credits{Fonte: https://www.jornaldocomercio.com/_conteudo/especiais/dia_da_industria/2021/05/793610-industria-4-0-a-profunda-transformacao-que-impacta-o-chao-de-fabrica.html.}\n\nA transição para uma quarta revolução industrial vem sendo marcada pela integração de sistemas ciberfísicos, com tecnologias como a inteligência artificial, a realidade aumentada e a internet das coisas, criando não apenas produtos novos, mas uma nova forma de produzir.\n\nUm possível impacto dessas transformações sobre o mundo do trabalho é\n\\begin{choices}\n\\choice a redução da demanda de mão de obra qualificada.\n\\choice o controle da expansão da informalidade no setor terciário.\n\\CorrectChoice o avanço do desemprego estrutural.\n\\choice a minimização do uso do teletrabalho ou home-office.\n\\end{choices}\n\n% ═══════════════════════════════════════════════════════════════\n%  HISTÓRIA — Q25–Q30\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Geografia",
+      "dificuldade": "Média",
+      "assunto": "Indústria e Trabalho",
+      "tags": [
+        "Indústria 4.0",
+        "automação",
+        "inteligência artificial",
+        "desemprego estrutural",
+        "trabalho"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "24"
+    }
+  },
+  {
+    "latex": "\\question \"Resumindo as ideias centrais do nosso programa de reconstrução nacional, podemos destacar, como mais oportunas e de imediata utilidade:\n\n[...] 7) reforma do sistema eleitoral, tendo em vista, precipuamente, a garantia do voto\n\n8) reorganização do aparelho judiciário, no sentido de tornar uma realidade a independência moral e material da magistratura, que terá competência para conhecer do processo eleitoral em todas as suas fases\n\n9) feita a reforma eleitoral, consultar a nação sobre a escolha de seus representantes, com poderes amplos de constituintes, a fim de procederem à revisão do Estatuto Federal, melhor amparando as liberdades, públicas e individuais [...]\"\n\\credits{VARGAS, Getúlio. Discurso de Tomada de Posse do Presidente Getúlio Vargas (3 de novembro de 1930). Disponível em: http://www.biblioteca.presidencia.gov.br/presidencia/ex-presidentes/getulio-vargas/discursos/discursos-de-posse/discurso-de-posse-1930/view. Acesso em: 29/05/2021.}\n\nO discurso acima foi proferido no momento da posse de Getúlio Vargas, no governo provisório, em novembro de 1930. Nesse discurso, o chefe de estado brasileiro revela que as motivações para a realização da Revolução de 1930 consistiam em combater\n\\begin{choices}\n\\CorrectChoice o poder das oligarquias paulistas.\n\\choice a influência das forças armadas gaúchas.\n\\choice o positivismo dos acadêmicos mineiros.\n\\choice o conservadorismo da classe média carioca.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "História",
+      "dificuldade": "Média",
+      "assunto": "República Velha e Revolução de 1930",
+      "tags": [
+        "Getúlio Vargas",
+        "Revolução de 1930",
+        "oligarquia",
+        "reforma eleitoral"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "25"
+    }
+  },
+  {
+    "latex": "\\question \"Antes que o primeiro homem fosse criado, Deus, por um decreto, determinou o que aconteceria a toda a raça humana. Através deste oculto decreto de Deus, foi decidido que Adão cairia do seu perfeito estado de sua natureza e arrastaria toda a sua posteridade em culpa e morte eterna.\"\n\\credits{CALVINO, João apud B. B. Warfield, \\textit{Studies in Theology}. Grand Rapids: Baker Books, 2002.}\n\nO trecho acima, escrito pelo reformador João Calvino, revela uma característica fundamental da compreensão calvinista acerca do Cristianismo, que é a\n\\begin{choices}\n\\choice condenação da usura.\n\\CorrectChoice defesa da predestinação.\n\\choice mortificação da alma.\n\\choice inclusão da iconofilia.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "História",
+      "dificuldade": "Média",
+      "assunto": "Reforma Protestante",
+      "tags": [
+        "Calvino",
+        "calvinismo",
+        "predestinação",
+        "Reforma Protestante",
+        "cristianismo"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "26"
+    }
+  },
+  {
+    "latex": "\\question \"São conflitantes as informações sobre o número de construções demolidas para dar passagem à nova avenida, variando entre setecentas e três mil. Ao atuar sobre velhas freguesias e distritos centrais, esse conjunto de intervenções urbanísticas resultou na destruição de quarteirões inteiros de hospedagens, cortiços, casas de cômodos e estalagens, além de armazéns e trapiches de áreas junto ao mar, forçando boa parte da população que aí vivia e trabalhava a se deslocar.\"\n\\credits{MOTTA, Marly. O Bota-Abaixo. In: \\textit{Atlas histórico do Brasil}. Rio de Janeiro: FGV/CPDOC, 2016. Disponível em: https://atlas.fgv.br/verbetes/o-bota-abaixo. Acesso em: 29/05/2021.}\n\nA Reforma Urbana realizada pelo prefeito Pereira Passos (1902-1906), no Rio de Janeiro, acarretou consequências sérias para a então capital da República.\n\nCom relação ao processo descrito no texto, a principal consequência foi\n\\begin{choices}\n\\CorrectChoice a aceleração da favelização.\n\\choice o combate à imigração.\n\\choice o investimento em educação.\n\\choice a perseguição à imoralidade.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "História",
+      "dificuldade": "Média",
+      "assunto": "Brasil República",
+      "tags": [
+        "Reforma Urbana",
+        "Pereira Passos",
+        "Rio de Janeiro",
+        "favelização",
+        "cortiços"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "27"
+    }
+  },
+  {
+    "latex": "\\question \"Não podemos ver com bons olhos os selvagens vivendo ao seu lado livres e em pleno gozo dos seus direitos de homens, quando podiam tê-los por escravos [...]\"\n\\credits{Trecho de reportagem publicada no jornal \\textit{Gazeta de Campinas} (1871). Disponível em: http://eventoscopq.mackenzie.br/index.php/jornada/xvjornada/paper/viewPDFInterstitial/1388/1003. Acesso em: 29/05/2021.}\n\nO trecho acima é parte de uma reportagem de um jornal da cidade de Campinas, repercutindo a aprovação da Lei do Ventre Livre em 1871. A posição do jornal e a própria aprovação da referida lei mostram que o processo de abolição da escravidão no Brasil foi\n\\begin{choices}\n\\CorrectChoice lento e gradual, com resistência das elites.\n\\choice pacífico e excludente, com participação popular.\n\\choice desigual e inesperado, com oposição do Exército.\n\\choice longo e inexpressivo, com apoio da Igreja Católica.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "História",
+      "dificuldade": "Média",
+      "assunto": "Abolição da Escravidão no Brasil",
+      "tags": [
+        "Lei do Ventre Livre",
+        "abolição",
+        "escravidão",
+        "elite",
+        "resistência"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "28"
+    }
+  },
+  {
+    "latex": "\\question \"Art. 4 — No interesse de preservar a Revolução, o Presidente da República, ouvido o Conselho de Segurança Nacional, e sem as limitações previstas na Constituição, poderá suspender os direitos políticos de quaisquer cidadãos pelo prazo de 10 anos e cassar mandatos eletivos federais, estaduais e municipais.\n\nArt. 10. Fica suspensa a garantia de habeas corpus, nos casos de crimes políticos, contra a segurança nacional, a ordem econômica e social e a economia popular.\n\nArt. 11. Excluem-se de qualquer apreciação judicial todos os atos praticados de acordo com este Ato Institucional Complementares, bem como os respectivos efeitos.\"\n\\credits{Ato Institucional Nº 5 (AI-5), 13/12/1968. Disponível em: http://www.planalto.gov.br/ccivil_03/ait/ait-05-68.htm. Acesso em: 29/05/2021.}\n\nO AI-5 foi responsável pelo endurecimento da ditadura militar brasileira, dando início a um período histórico comumente conhecido como \"os anos de chumbo\". Uma consequência das medidas criadas pelo AI-5 foi a\n\\begin{choices}\n\\choice manutenção do cenário econômico.\n\\choice reconstrução da identidade brasileira.\n\\choice intensificação das mudanças culturais.\n\\CorrectChoice institucionalização da perseguição à oposição.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "História",
+      "dificuldade": "Média",
+      "assunto": "Ditadura Militar Brasileira",
+      "tags": [
+        "AI-5",
+        "ditadura militar",
+        "anos de chumbo",
+        "perseguição política",
+        "habeas corpus"
+      ],
+      "gabarito": "D",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "29"
+    }
+  },
+  {
+    "latex": "\\question \\begin{poem}\n\\verse{Avante, filhos da pátria}\n\\verse{O dia da glória chegou}\n\\verse{Contra nós, da tirania}\n\\verse{O estandarte ensanguentado é levantado}\n\\verse{O estandarte ensanguentado é levantado!}\n\\verse{}\n\\verse{Ouvis nos campos}\n\\verse{Rugirem estes ferozes soldados?}\n\\verse{Vêm eles até aos vossos braços}\n\\verse{Degolar vossos filhos, vossas mulheres!}\n\\verse{}\n\\verse{Às armas, cidadãos!}\n\\verse{Formai vossos batalhões!}\n\\verse{}\n\\verse{Marchem, marchem!}\n\\verse{Que um sangue impuro}\n\\verse{Ague o nosso arado!}\n\\end{poem}\n\\credits{LISLE, Claude. A Marselhesa (Hino Nacional Francês) – 1792. Disponível em: https://www.letras.mus.br/hinos-de-paises/1186858/traducao.html.}\n\nA Marselhesa foi um canto de guerra composto em 1792, durante as Guerras das Coligações, no contexto da Revolução Francesa. A canção acabou sendo convertida em Hino Nacional pelos franceses. Nela, estão presentes valores que inspiraram os revolucionários franceses no final do séc. XVIII, que se expressam no desejo de\n\\begin{choices}\n\\CorrectChoice participação política e enfrentamento do absolutismo monárquico.\n\\choice desenvolvimento econômico e aliança com a Igreja Católica.\n\\choice afirmação étnica e combate aos valores burgueses.\n\\choice manutenção escravista e valorização da cultura local.\n\\end{choices}\n\n% ═══════════════════════════════════════════════════════════════\n%  MATEMÁTICA — Q31–Q36\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "História",
+      "dificuldade": "Média",
+      "assunto": "Revolução Francesa",
+      "tags": [
+        "Revolução Francesa",
+        "Marselhesa",
+        "absolutismo",
+        "iluminismo",
+        "participação política"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "30",
+      "titulo_texto": "A Marselhesa (Hino Nacional Francês)",
+      "autor_texto": "Claude de Lisle",
+      "genero": "hino / canção de guerra"
+    }
+  },
+  {
+    "latex": "\\question A sequência \\( (2x+3,\\ 3x+4,\\ 4x+5,\\ \\ldots) \\) é uma progressão aritmética de razão 6. O quarto termo dessa progressão é\n\\begin{oneparchoices}\n\\CorrectChoice 31.\n\\choice 33.\n\\choice 35.\n\\choice 37.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Matemática",
+      "dificuldade": "Média",
+      "assunto": "Progressão Aritmética",
+      "tags": [
+        "PA",
+        "progressão aritmética",
+        "razão",
+        "sequência"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "31"
+    }
+  },
+  {
+    "latex": "\\question Um reservatório de água tem a forma de um cilindro circular reto de altura 2,5 metros e raio 4 metros. Para calcular o volume desse reservatório, em metros cúbicos, deve-se multiplicar o número \\( \\pi \\) pela expressão\n\\begin{oneparchoices}\n\\choice \\( 2{,}5^2 + 4 \\)\n\\choice \\( 2{,}5 + 4^2 \\)\n\\choice \\( 2{,}5^2 \\times 4 \\)\n\\CorrectChoice \\( 2{,}5 \\times 4^2 \\)\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Matemática",
+      "dificuldade": "Média",
+      "assunto": "Volume de Cilindro",
+      "tags": [
+        "cilindro",
+        "volume",
+        "geometria espacial"
+      ],
+      "gabarito": "D",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "32"
+    }
+  },
+  {
+    "latex": "\\question % FUNÇÃO: definição não capturada pelo OCR — reconstruir a partir do PDF original (pág. 11 da prova)\nA partir de um instante t, denominado instante zero, ou seja, t = 0, a temperatura interna de um forno, em graus centígrados, pode ser determinada pela seguinte função:\n\n\\includegraphics{figura-q33}\n\nA temperatura interna do forno será igual a 144°C para um valor de t pertencente ao intervalo\n\\begin{oneparchoices}\n\\choice \\( [0,\\ 8[ \\)\n\\choice \\( [8,\\ 16[ \\)\n\\CorrectChoice \\( [16,\\ 24[ \\)\n\\choice \\( [24,\\ 28[ \\)\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Matemática",
+      "dificuldade": "Média",
+      "assunto": "Funções",
+      "tags": [
+        "função",
+        "temperatura",
+        "intervalo",
+        "domínio"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "33"
+    }
+  },
+  {
+    "latex": "\\question Um professor de Matemática leciona em três turmas de uma escola e deve selecionar apenas dois alunos para representar essa escola em uma gincana. A tabela a seguir mostra o número de alunos de cada uma das turmas.\n\n\\begin{tabular}{|c|c|c|}\n\\hline\n\\textbf{Turma A} & \\textbf{Turma B} & \\textbf{Turma C} \\\\\n\\hline\n24 & 32 & 18 \\\\\n\\hline\n\\end{tabular}\n\nSeja k o número máximo de duplas possíveis de serem formadas de modo que os dois alunos sejam de turmas diferentes. O valor de k é\n\\begin{oneparchoices}\n\\CorrectChoice 1776.\n\\choice 1784.\n\\choice 1836.\n\\choice 1884.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Matemática",
+      "dificuldade": "Média",
+      "assunto": "Análise Combinatória",
+      "tags": [
+        "combinação",
+        "contagem",
+        "duplas",
+        "turmas diferentes"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "34"
+    }
+  },
+  {
+    "latex": "\\question Em um grupo de turistas brasileiros, 27% falam alemão, 85% falam inglês e 25% falam esses dois idiomas. Conclui-se então, que o número de turistas que não fala inglês é igual a k vezes o número de turistas que fala inglês e que não fala alemão. O valor de k é\n\\begin{oneparchoices}\n\\choice 1/3.\n\\CorrectChoice 1/4.\n\\choice 1/5.\n\\choice 1/6.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Matemática",
+      "dificuldade": "Média",
+      "assunto": "Probabilidade e Conjuntos",
+      "tags": [
+        "porcentagem",
+        "conjunto",
+        "probabilidade",
+        "idiomas"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "35"
+    }
+  },
+  {
+    "latex": "\\question Estudando para uma prova de trigonometria, Júlia aprendeu que \\( \\text{sen}^2\\,72° \\) é igual a\n\\begin{oneparchoices}\n\\CorrectChoice \\( 1 - \\cos^2 72° \\)\n\\choice \\( \\cos^2 72° - 1 \\)\n\\choice \\( \\text{tg}^2 72° - 1 \\)\n\\choice \\( 1 - \\text{tg}^2 72° \\)\n\\end{oneparchoices}\n\n% ═══════════════════════════════════════════════════════════════\n%  QUÍMICA — Q37–Q42\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Matemática",
+      "dificuldade": "Média",
+      "assunto": "Trigonometria",
+      "tags": [
+        "identidade trigonométrica",
+        "seno",
+        "cosseno",
+        "Pitágoras"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "36"
+    }
+  },
+  {
+    "latex": "\\question Recentemente, em meio à busca por tratamentos que sejam eficazes no combate à infecção causada pelo Coronavírus SARS-CoV-2 (COVID-19), a Agência Nacional de Vigilância Sanitária (ANVISA) autorizou o uso do medicamento antiviral Remdesivir em pacientes, tornando-se este o primeiro medicamento a apresentar na bula a indicação de uso, e considerado promissor no combate à infecção, apesar do seu alto custo.\n\nA estrutura da molécula do Remdesivir é apresentada a seguir.\n\n\\includegraphics{figura-q37}\n\nEm relação à estrutura apresentada, é correto afirmar que\n\nDados: C = 12, H = 1, N = 14, O = 16, P = 31\n\\begin{choices}\n\\choice os átomos de carbono presentes na estrutura apresentam hibridização do tipo \\( sp^3 \\) ou \\( sp^2 \\).\n\\choice a molécula apresenta as funções éster, amina, fenol, éter e nitrila.\n\\CorrectChoice o Remdesivir apresenta massa molar igual a 602 g/mol.\n\\choice há seis átomos de carbono assimétricos na molécula do Remdesivir.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Química",
+      "dificuldade": "Média",
+      "assunto": "Funções Orgânicas e Massa Molar",
+      "tags": [
+        "Remdesivir",
+        "massa molar",
+        "COVID-19",
+        "funções orgânicas",
+        "estrutura molecular"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "37"
+    }
+  },
+  {
+    "latex": "\\question Suplementos minerais à base de zinco têm sido muito usados atualmente, em função da divulgação da ação deste elemento no organismo com efeito de auxílio no fortalecimento do sistema imunológico. Um dos tipos de suplementos vendidos é o ZMC, suplemento que, além de zinco, apresenta magnésio e vitamina C na sua composição.\n\nA seguir é mostrada a tabela de informações nutricionais presente em um frasco de ZMC:\n\n\\begin{tabular}{|l|c|c|}\n\\hline\n\\multicolumn{3}{|c|}{\\textbf{Porção de 980 mg — Dose (2 cápsulas)}} \\\\\n\\hline\n & \\textbf{Quantidade por Dose} & \\textbf{\\% Valores Diários} \\\\\n\\hline\nZinco & 7 mg & 100 \\\\\nMagnésio & 260 mg & 100 \\\\\nVitamina C & 45 mg & 100 \\\\\n\\hline\n\\end{tabular}\n\nConsiderando que zinco metálico puro reagiu completamente com 200 mL de solução 1,0 mol/L de ácido clorídrico e que todo o íon zinco resultante, após tratamento adequado para eliminação de impurezas, foi usado para a produção de frascos de ZMC com 90 cápsulas cada um, com a composição citada na tabela, a quantidade máxima de frascos que se pode produzir é\n\nDados: Zn = 65,4; H = 1; Cl = 35,5\n\\begin{oneparchoices}\n\\CorrectChoice 20.\n\\choice 10.\n\\choice 25.\n\\choice 15.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Química",
+      "dificuldade": "Média",
+      "assunto": "Estequiometria",
+      "tags": [
+        "zinco",
+        "ácido clorídrico",
+        "estequiometria",
+        "moles",
+        "suplemento"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "38"
+    }
+  },
+  {
+    "latex": "\\question O monóxido de carbono e o dióxido de nitrogênio são gases muito tóxicos, capazes de levar à morte ao serem inalados, principalmente o monóxido, pois é incolor e inodoro, sendo inalado sem que se perceba, enquanto o dióxido de nitrogênio é um gás castanho, de odor forte e irritante das vias aéreas e respiratórias. Esses gases podem reagir entre si, a 540 K, produzindo dióxido de carbono e óxido nítrico, gases menos tóxicos, conforme a equação a seguir.\n\n\\[ \\ce{CO(g) + NO2(g) -> CO2(g) + NO(g)} \\]\n\nA reação teve sua cinética estudada e os dados obtidos em alguns experimentos estão indicados na tabela abaixo.\n\n\\begin{tabular}{|c|c|c|}\n\\hline\n\\textbf{[CO] mol/L} & \\textbf{[\\ce{NO2}] mol/L} & \\textbf{Velocidade inicial (mol/L·min)} \\\\\n\\hline\n\\( 5{,}0 \\times 10^{-4} \\) & \\( 0{,}35 \\times 10^{-4} \\) & \\( 5{,}65 \\times 10^{-10} \\) \\\\\n\\( 5{,}0 \\times 10^{-4} \\) & \\( 0{,}70 \\times 10^{-4} \\) & \\( 1{,}13 \\times 10^{-9} \\) \\\\\n\\( 1{,}0 \\times 10^{-3} \\) & \\( 0{,}35 \\times 10^{-4} \\) & \\( 1{,}13 \\times 10^{-9} \\) \\\\\n\\hline\n\\end{tabular}\n\nEm relação ao que foi descrito, é correto concluir que a reação apresenta\n\\begin{choices}\n\\choice cinética de 1ª ordem global, e a constante de velocidade é igual a \\( 3{,}23 \\times 10^{-2} \\).\n\\CorrectChoice cinética de 2ª ordem global, e a constante de velocidade é igual a \\( 3{,}23 \\times 10^{-2} \\).\n\\choice cinética de 1ª ordem global, e a constante de velocidade é igual a \\( 1{,}75 \\times 10^{-3} \\).\n\\choice cinética de 2ª ordem global, e a constante de velocidade é igual a \\( 1{,}75 \\times 10^{-3} \\).\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Química",
+      "dificuldade": "Média",
+      "assunto": "Cinética Química",
+      "tags": [
+        "cinética química",
+        "ordem de reação",
+        "constante de velocidade",
+        "lei de velocidade"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "39"
+    }
+  },
+  {
+    "latex": "\\question A osmose é, para os organismos, a mais importante das propriedades coligativas, pois as paredes das células agem como membranas semipermeáveis, permitindo e selecionando a troca de matéria com o meio extracelular, em função da concentração dos meios (conceitos de hipertônico e hipotônico).\n\nNesse sentido, 500 mL de uma solução aquosa de manitol (isômero da glicose — \\ce{C6H12O6}) deve ser administrada por um veterinário em um cão que passará por tratamento neurológico, a fim de tentar diminuir a pressão intracraniana, devido à sua ação diurética por osmose. Sabendo que o sangue tem pressão osmótica de 7,6 atm, a 38°C (temperatura corporal do cão), e que a solução injetada deve ser isotônica ao sangue do animal, a concentração da solução de manitol a ser injetada deve ser, em mol/L, aproximadamente igual a\n\\begin{oneparchoices}\n\\choice 0,25.\n\\CorrectChoice 0,15.\n\\choice 1,5.\n\\choice 2,5.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Química",
+      "dificuldade": "Média",
+      "assunto": "Propriedades Coligativas e Osmose",
+      "tags": [
+        "osmose",
+        "pressão osmótica",
+        "propriedades coligativas",
+        "manitol",
+        "solução isotônica"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "40"
+    }
+  },
+  {
+    "latex": "\\question O segundo postulado da teoria atômica de Dalton estabelecia que \"átomos de um mesmo elemento químico são idênticos e iguais em peso\". Por mais de um século essa concepção foi hegemônica, o que levou a um problema, aparentemente sem solução, relacionado à determinação das massas atômicas dos elementos químicos, cujos valores variavam de um experimento para outro. O surgimento da espectrometria de massas, no início do século XX, solucionou o problema com a grande contribuição de Francis W. Aston, que recebeu o Prêmio Nobel de Química em 1922. A técnica analítica consiste em separar íons no estado gasoso, por meio da relação massa/carga de átomos e moléculas. Tal ferramenta permitiu a determinação precisa das massas atômicas dos elementos.\n\nO desenvolvimento da espectrometria de massas levou à confirmação da existência dos\n\\begin{choices}\n\\CorrectChoice isótopos, que são átomos de um mesmo elemento que possuem diferentes números de nêutrons, tendo, assim, relação carga/massa diferentes.\n\\choice isótonos, que são átomos de um mesmo elemento que possuem mesmo número de nêutrons, tendo, assim, relação carga/massa diferentes.\n\\choice isóbaros, que são átomos de um mesmo elemento que possuem mesmo número de massa, tendo, assim, relação carga/massa diferentes.\n\\choice isoeletrônicos, que são átomos e íons de um mesmo elemento que possuem mesmo número de elétrons, tendo, assim, relação carga/massa diferentes.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "A",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Química",
+      "dificuldade": "Média",
+      "assunto": "Estrutura Atômica",
+      "tags": [
+        "isótopos",
+        "espectrometria de massas",
+        "Dalton",
+        "nêutrons",
+        "massa atômica"
+      ],
+      "gabarito": "A",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "41"
+    }
+  },
+  {
+    "latex": "\\question O luminol (5-amino-2,3-di-hidro-1,4-ftalazinadiona) é muito utilizado em perícias criminais a fim de identificar a presença de sangue em locais de crimes contra pessoas, mesmo que o local tenha sido lavado, sendo uma ferramenta muito útil no auxílio ao trabalho pericial. A ação do luminol ocorre por meio de uma reação de quimiluminescência na presença de peróxido de hidrogênio em meio básico, catalisada pelo íon ferro presente na hemoglobina, emitindo luz de cor azul e revelando as manchas de sangue. A reação, de forma simplificada, é representada a seguir.\n\n\\includegraphics{figura-q42}\n\nEm relação a esta reação, pode-se afirmar corretamente que\n\\begin{choices}\n\\choice o luminol é o agente oxidante na reação.\n\\choice o íon ferro da hemoglobina é consumido, já que sofre oxidação, pois o catalisador também participa da reação.\n\\CorrectChoice o íon ferro da hemoglobina acelera a reação entre o luminol e o peróxido ao diminuir a energia de ativação da reação.\n\\choice o peróxido de hidrogênio é o agente redutor da reação.\n\\end{choices}\n\n% ═══════════════════════════════════════════════════════════════\n%  LÍNGUA INGLESA — Q43–Q45\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Química",
+      "dificuldade": "Média",
+      "assunto": "Reações Orgânicas e Catálise",
+      "tags": [
+        "luminol",
+        "quimiluminescência",
+        "catálise",
+        "agente oxidante",
+        "hemoglobina",
+        "energia de ativação"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "42"
+    }
+  },
+  {
+    "latex": "\\question NAMATALE, Uganda — Dr. Eva Kabwongera's job is to make sure life-saving Covid-19 vaccines reach Uganda's 45 million people. On a recent morning, that journey took her to a tiny island that is home to less than 2,000 people.\n\nThe 40 doses Kabwongera brought with her to Namatale had traveled more than 3,000 miles via plane, truck, ferry and boat from Pune, India, to get to the outcrop in Africa's vast Lake Victoria.\n\n\"We are delivering hope,\" said Kabwongera, who is UNICEF's immunization chief for Uganda, as she stepped into shallow water and walked to shore soaking wet. Dozens of small, smiling children greeted her. \"The people there are waiting for it,\" she added.\n\nDr. Eva Kabwongera says the country is struggling to finance deliveries to remote locations, such as Namatale. But hope does not defeat a pandemic — vaccines do. And Uganda doesn't have enough to vaccinate even a tiny portion of its population. With the severe international shortage, Uganda and countries like it look set to have to wait to inoculate even its front-line health workers and most vulnerable groups to help stop Covid-19 and prevent the development of dangerous vaccine-resistant variants.\n\nThe result has been an extreme gap in vaccine distribution, with almost 1 in 4 people receiving a vaccine in high-income countries and a staggering 1 in more than 500 in low-income ones, according to the World Health Organization. Uganda, for example, has so far received only 864,000 vaccine doses — enough to fully vaccinate 400,000 people with two doses, or less than 1 percent of the country's 45 million population.\n\nIt wasn't supposed to be like this.\n\\credits{In https://www.nbcnews.com/specials/uganda-covid-vaccine-struggle/index.html.}\n\nAccording to the text, it is incorrect to state that\n\\begin{choices}\n\\choice there has been great inequality in vaccine distribution all over the world.\n\\choice countries such as Uganda still have not received as many vaccine doses as high-income ones.\n\\CorrectChoice all front-line health workers from Uganda have already been vaccinated.\n\\choice Dr. Eva Kabwongera is critical to vaccination short distribution.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Inglesa",
+      "dificuldade": "Média",
+      "assunto": "Reading Comprehension",
+      "tags": [
+        "COVID-19",
+        "Uganda",
+        "vacina",
+        "distribuição",
+        "UNICEF"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "43",
+      "titulo_texto": "Uganda Covid vaccine struggle"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{figura-q44-en}\n\n\\credits{In https://www.thecomicstrips.com/properties/thatslife/art_images/tl1040427.jpg.}\n\nIf I wanted to discard an old flashdrive, a few margarine tubs, and written post-it, where should I place these items, respectively,\n\\begin{choices}\n\\choice electronics, paper, and plastic bins.\n\\CorrectChoice electronics, plastic, and paper bins.\n\\choice paper, electronics, and plastic bins.\n\\choice electronics and paper bins.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Inglesa",
+      "dificuldade": "Média",
+      "assunto": "Reading Comprehension",
+      "tags": [
+        "reciclagem",
+        "lixo eletrônico",
+        "comic strip",
+        "resíduos"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "44"
+    }
+  },
+  {
+    "latex": "\\question \\textbf{Empathy}\n\nEmpathy is the ability to recognize, understand, and share the thoughts and feelings of another person, animal, or fictional character. Developing empathy is crucial for establishing relationships and behaving compassionately. It involves experiencing another person's point of view, rather than just one's own, and enables prosocial or helping behaviors that come from within, rather than being forced.\n\nSome surveys indicate that empathy is on the decline in the United States and elsewhere, findings that motivate parents, schools, and communities to support programs that help people of all ages enhance and maintain their ability to walk in each other's shoes.\n\\credits{https://www.psychologytoday.com/us/basics/empathy.}\n\nEmpathy can be defined as ...\n\\begin{choices}\n\\choice ... the inability to recognize, understand, and share the thoughts and feelings of another person.\n\\choice ... establishing relationships and behaving dishonestly.\n\\choice ... deconstruct the idea of putting yourself in someone else's shoes.\n\\CorrectChoice ... enhance and maintain the ability to walk in each other's shoes.\n\\end{choices}\n\n% ═══════════════════════════════════════════════════════════════\n%  LÍNGUA ESPANHOLA — Q43–Q45\n% ═══════════════════════════════════════════════════════════════",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Inglesa",
+      "dificuldade": "Média",
+      "assunto": "Reading Comprehension",
+      "tags": [
+        "empatia",
+        "empathy",
+        "psicologia",
+        "relações humanas"
+      ],
+      "gabarito": "D",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "45",
+      "titulo_texto": "Empathy"
+    }
+  },
+  {
+    "latex": "\\question \\textbf{Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida}\n\n\\textit{Laura G. de Rivera}\n\nCuando el niño empieza a ir al colegio, los profesores comienzan a advertir que se mueve demasiado, que no presta atención y que ello le lleva a no seguir el mismo ritmo que sus compañeros\", nos explica Fátima Guzmán, directora de Educación Activa, una fundación dedicada a dotar de recursos y formación a familias y a docentes para abordar este y otros problemas del aprendizaje. Por si fuera poco, \"la impulsividad a menudo les lleva a hacer las cosas sin reflexionar en las consecuencias, una actitud que hace que parezca que son niños conflictivos, que no obedecen\", añade.\n\nEn la misma línea, la psicóloga clínica Teresa Aguilar, con larga experiencia en colegios y niños diagnosticados de TDAH (las siglas del Trastorno por Déficit de Atención con Hiperactividad), cuenta a MUY que \"desde pequeños, les cuelgan el sambenito de niños inquietos, revoltosos, inútiles para los estudios.\n\nY esto tiene consecuencias inmediatas y prolongadas a lo largo de su vida. \"La falta de motivación es una de las cosas que más nos impacta. Le preguntamos a los niños qué les gusta y la respuesta es 'pues no sé'. No hay nada que les ilusione\", nos explica el doctor Antoni Ramos Quiroga, jefe de Psiquiatría del hospital Vall d'Ebron de Barcelona.\n\nHasta aquí las malas noticias, pero no todo está perdido. Lo primero es conocer en qué consiste realmente el trastorno por déficit de atención e hiperactividad, que según la OMS padece un 7% de la población infantil y que en la edad adulta llega al 5%. Como señala el doctor Ramos, \"es un trastorno neurológico que afecta al desarrollo del cerebro. Se inicia en la infancia y, en un 70% de los casos, continúa en la edad adulta. De mayores, son personas que tienen dificultades para organizarse o para valorar los riesgos y las consecuencias de sus acciones. Como contrapeso, tienen muy desarrollada la capacidad de improvisación. En el trabajo, por ejemplo, son excelentes para apagar fuegos, pero sufren si se les encarga coordinar o planificar tareas\".\n\n\"Hay varias hipótesis –añade Ramos–. De todas las causas de TDAH, el 76% son genéticas. Cuando hay en la familia adultos que lo padecen, es más fácil que los niños lo sigan teniendo al crecer. Los factores ambientales también tienen un papel relevante en su aparición y continuidad: situaciones de gran estrés socioeconómico o el maltrato en la infancia\".\n\n\"Las causas ambientales tienen que ver, a veces, con el mismo momento del nacimiento: si el niño es prematuro o si es parto con fórceps, hay más probabilidades de desarrollar TDAH\", nos dice Ramos. Asimismo, el riesgo se incrementa \"cuando hay consumo de alcohol, tabaco o ciertos medicamentos, como paracetamol, durante el embarazo\". Otros factores pueden ser el estrés y la dieta. De hecho, varios estudios han demostrado que la malnutrición en los primeros años es un llamativo factor de riesgo para el TDAH.\n\nPor supuesto, el papel de la familia es clave en todo este proceso. \"Cuando los niños no son acompañados de forma saludable por los padres, el trastorno empeora\". –advierte Aguilar.\n\nPor eso, acompañar a los menores con un apoyo psicoterapéutico adecuado es fundamental, aun cuando por su gravedad tenga que ser un complemento a la medicación.\n\nEn palabras de Fátima Guzmán, \"el papel de los padres y educadores es tratarlos con mucho cariño, mucho refuerzo positivo, teniendo siempre en cuenta que no son así porque quieren, sino porque no pueden hacer las cosas de otra manera\".\n\nEn la misma línea, todos los especialistas coinciden es en que es fundamental tratar al niño cuanto antes. \"Es un error pensar que, a los cinco años, la repercusión que puede tener no es tan elevada. En la infancia, estás configurando tu propia personalidad: por eso es tan importante evitar que estos niños crezcan con la idea de que no son buenos estudiantes, que las cosas no les salen bien por mucho que se esfuercen. Además, es muy importante prevenir para que no se complique con otras alteraciones de salud mental, como depresión o ansiedad\", alerta el psiquiatra.\n\nEntonces, ¿se puede llevar una vida normal teniendo TDAH? Según este psiquiatra, \"se puede y se debe, si haces un buen manejo de ese trastorno\".\n\\credits{MUY INTERESANTE.ES. Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida. Disponible en: https://www.muyinteresante.es/salud/articulo/print-trastorno-por-deficit-de-atencion-con-hiperactividad-en-busca-de-la-motivacion-perdida-571621446714. Adaptado. Acceso en: 21 mai. 2021.}\n\nDe acuerdo con el texto, los niños con TDAH tienen como característica\n\\begin{choices}\n\\choice estar siempre en conflito con los amigos.\n\\choice nunca obedecer a sus padres y professores.\n\\CorrectChoice tener falta de motivación para las tareas.\n\\choice alimentarse mal y dormir pocas horas.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Espanhola",
+      "dificuldade": "Média",
+      "assunto": "Comprensión Lectora",
+      "tags": [
+        "TDAH",
+        "hiperactividad",
+        "déficit de atención",
+        "motivación",
+        "infancia"
+      ],
+      "gabarito": "C",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "43",
+      "titulo_texto": "Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida",
+      "autor_texto": "Laura G. de Rivera"
+    }
+  },
+  {
+    "latex": "\\question \\textbf{Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida}\n\n\\textit{Laura G. de Rivera}\n\nCuando el niño empieza a ir al colegio, los profesores comienzan a advertir que se mueve demasiado, que no presta atención y que ello le lleva a no seguir el mismo ritmo que sus compañeros\", nos explica Fátima Guzmán, directora de Educación Activa, una fundación dedicada a dotar de recursos y formación a familias y a docentes para abordar este y otros problemas del aprendizaje. Por si fuera poco, \"la impulsividad a menudo les lleva a hacer las cosas sin reflexionar en las consecuencias, una actitud que hace que parezca que son niños conflictivos, que no obedecen\", añade.\n\nEn la misma línea, la psicóloga clínica Teresa Aguilar, con larga experiencia en colegios y niños diagnosticados de TDAH (las siglas del Trastorno por Déficit de Atención con Hiperactividad), cuenta a MUY que \"desde pequeños, les cuelgan el sambenito de niños inquietos, revoltosos, inútiles para los estudios.\n\nY esto tiene consecuencias inmediatas y prolongadas a lo largo de su vida. \"La falta de motivación es una de las cosas que más nos impacta. Le preguntamos a los niños qué les gusta y la respuesta es 'pues no sé'. No hay nada que les ilusione\", nos explica el doctor Antoni Ramos Quiroga, jefe de Psiquiatría del hospital Vall d'Ebron de Barcelona.\n\nHasta aquí las malas noticias, pero no todo está perdido. Lo primero es conocer en qué consiste realmente el trastorno por déficit de atención e hiperactividad, que según la OMS padece un 7% de la población infantil y que en la edad adulta llega al 5%. Como señala el doctor Ramos, \"es un trastorno neurológico que afecta al desarrollo del cerebro. Se inicia en la infancia y, en un 70% de los casos, continúa en la edad adulta. De mayores, son personas que tienen dificultades para organizarse o para valorar los riesgos y las consecuencias de sus acciones. Como contrapeso, tienen muy desarrollada la capacidad de improvisación. En el trabajo, por ejemplo, son excelentes para apagar fuegos, pero sufren si se les encarga coordinar o planificar tareas\".\n\n\"Hay varias hipótesis –añade Ramos–. De todas las causas de TDAH, el 76% son genéticas. Cuando hay en la familia adultos que lo padecen, es más fácil que los niños lo sigan teniendo al crecer. Los factores ambientales también tienen un papel relevante en su aparición y continuidad: situaciones de gran estrés socioeconómico o el maltrato en la infancia\".\n\n\"Las causas ambientales tienen que ver, a veces, con el mismo momento del nacimiento: si el niño es prematuro o si es parto con fórceps, hay más probabilidades de desarrollar TDAH\", nos dice Ramos. Asimismo, el riesgo se incrementa \"cuando hay consumo de alcohol, tabaco o ciertos medicamentos, como paracetamol, durante el embarazo\". Otros factores pueden ser el estrés y la dieta. De hecho, varios estudios han demostrado que la malnutrición en los primeros años es un llamativo factor de riesgo para el TDAH.\n\nPor supuesto, el papel de la familia es clave en todo este proceso. \"Cuando los niños no son acompañados de forma saludable por los padres, el trastorno empeora\". –advierte Aguilar.\n\nPor eso, acompañar a los menores con un apoyo psicoterapéutico adecuado es fundamental, aun cuando por su gravedad tenga que ser un complemento a la medicación.\n\nEn palabras de Fátima Guzmán, \"el papel de los padres y educadores es tratarlos con mucho cariño, mucho refuerzo positivo, teniendo siempre en cuenta que no son así porque quieren, sino porque no pueden hacer las cosas de otra manera\".\n\nEn la misma línea, todos los especialistas coinciden es en que es fundamental tratar al niño cuanto antes. \"Es un error pensar que, a los cinco años, la repercusión que puede tener no es tan elevada. En la infancia, estás configurando tu propia personalidad: por eso es tan importante evitar que estos niños crezcan con la idea de que no son buenos estudiantes, que las cosas no les salen bien por mucho que se esfuercen. Además, es muy importante prevenir para que no se complique con otras alteraciones de salud mental, como depresión o ansiedad\", alerta el psiquiatra.\n\nEntonces, ¿se puede llevar una vida normal teniendo TDAH? Según este psiquiatra, \"se puede y se debe, si haces un buen manejo de ese trastorno\".\n\\credits{MUY INTERESANTE.ES. Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida. Disponible en: https://www.muyinteresante.es/salud/articulo/print-trastorno-por-deficit-de-atencion-con-hiperactividad-en-busca-de-la-motivacion-perdida-571621446714. Adaptado. Acceso en: 21 mai. 2021.}\n\nSegún la lectura del texto, la persona que sufre el trastorno TDAH no está condenada al fracaso. Una de las ventajas que la persona adulta puede presentar en su trabajo es\n\\begin{choices}\n\\choice el potencial de organización.\n\\CorrectChoice la capacidad de improvisación.\n\\choice la coordinación de tareas.\n\\choice la intuición desarrollada.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Espanhola",
+      "dificuldade": "Média",
+      "assunto": "Comprensión Lectora",
+      "tags": [
+        "TDAH",
+        "hiperactividad",
+        "adultos",
+        "improvisación",
+        "trabajo"
+      ],
+      "gabarito": "B",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "44",
+      "titulo_texto": "Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida",
+      "autor_texto": "Laura G. de Rivera"
+    }
+  },
+  {
+    "latex": "\\question \\textbf{Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida}\n\n\\textit{Laura G. de Rivera}\n\nCuando el niño empieza a ir al colegio, los profesores comienzan a advertir que se mueve demasiado, que no presta atención y que ello le lleva a no seguir el mismo ritmo que sus compañeros\", nos explica Fátima Guzmán, directora de Educación Activa, una fundación dedicada a dotar de recursos y formación a familias y a docentes para abordar este y otros problemas del aprendizaje. Por si fuera poco, \"la impulsividad a menudo les lleva a hacer las cosas sin reflexionar en las consecuencias, una actitud que hace que parezca que son niños conflictivos, que no obedecen\", añade.\n\nEn la misma línea, la psicóloga clínica Teresa Aguilar, con larga experiencia en colegios y niños diagnosticados de TDAH (las siglas del Trastorno por Déficit de Atención con Hiperactividad), cuenta a MUY que \"desde pequeños, les cuelgan el sambenito de niños inquietos, revoltosos, inútiles para los estudios.\n\nY esto tiene consecuencias inmediatas y prolongadas a lo largo de su vida. \"La falta de motivación es una de las cosas que más nos impacta. Le preguntamos a los niños qué les gusta y la respuesta es 'pues no sé'. No hay nada que les ilusione\", nos explica el doctor Antoni Ramos Quiroga, jefe de Psiquiatría del hospital Vall d'Ebron de Barcelona.\n\nHasta aquí las malas noticias, pero no todo está perdido. Lo primero es conocer en qué consiste realmente el trastorno por déficit de atención e hiperactividad, que según la OMS padece un 7% de la población infantil y que en la edad adulta llega al 5%. Como señala el doctor Ramos, \"es un trastorno neurológico que afecta al desarrollo del cerebro. Se inicia en la infancia y, en un 70% de los casos, continúa en la edad adulta. De mayores, son personas que tienen dificultades para organizarse o para valorar los riesgos y las consecuencias de sus acciones. Como contrapeso, tienen muy desarrollada la capacidad de improvisación. En el trabajo, por ejemplo, son excelentes para apagar fuegos, pero sufren si se les encarga coordinar o planificar tareas\".\n\n\"Hay varias hipótesis –añade Ramos–. De todas las causas de TDAH, el 76% son genéticas. Cuando hay en la familia adultos que lo padecen, es más fácil que los niños lo sigan teniendo al crecer. Los factores ambientales también tienen un papel relevante en su aparición y continuidad: situaciones de gran estrés socioeconómico o el maltrato en la infancia\".\n\n\"Las causas ambientales tienen que ver, a veces, con el mismo momento del nacimiento: si el niño es prematuro o si es parto con fórceps, hay más probabilidades de desarrollar TDAH\", nos dice Ramos. Asimismo, el riesgo se incrementa \"cuando hay consumo de alcohol, tabaco o ciertos medicamentos, como paracetamol, durante el embarazo\". Otros factores pueden ser el estrés y la dieta. De hecho, varios estudios han demostrado que la malnutrición en los primeros años es un llamativo factor de riesgo para el TDAH.\n\nPor supuesto, el papel de la familia es clave en todo este proceso. \"Cuando los niños no son acompañados de forma saludable por los padres, el trastorno empeora\". –advierte Aguilar.\n\nPor eso, acompañar a los menores con un apoyo psicoterapéutico adecuado es fundamental, aun cuando por su gravedad tenga que ser un complemento a la medicación.\n\nEn palabras de Fátima Guzmán, \"el papel de los padres y educadores es tratarlos con mucho cariño, mucho refuerzo positivo, teniendo siempre en cuenta que no son así porque quieren, sino porque no pueden hacer las cosas de otra manera\".\n\nEn la misma línea, todos los especialistas coinciden es en que es fundamental tratar al niño cuanto antes. \"Es un error pensar que, a los cinco años, la repercusión que puede tener no es tan elevada. En la infancia, estás configurando tu propia personalidad: por eso es tan importante evitar que estos niños crezcan con la idea de que no son buenos estudiantes, que las cosas no les salen bien por mucho que se esfuercen. Además, es muy importante prevenir para que no se complique con otras alteraciones de salud mental, como depresión o ansiedad\", alerta el psiquiatra.\n\nEntonces, ¿se puede llevar una vida normal teniendo TDAH? Según este psiquiatra, \"se puede y se debe, si haces un buen manejo de ese trastorno\".\n\\credits{MUY INTERESANTE.ES. Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida. Disponible en: https://www.muyinteresante.es/salud/articulo/print-trastorno-por-deficit-de-atencion-con-hiperactividad-en-busca-de-la-motivacion-perdida-571621446714. Adaptado. Acceso en: 21 mai. 2021.}\n\nDe acuerdo con la lectura del texto, los expertos en TDAH\n\\begin{choices}\n\\choice piensan que ese trastorno neurológico sólo afecta la vida de los niños.\n\\choice creen que un apoyo psicoterapéutico puede solucionar el problema.\n\\choice señalan que el ambiente familiar no importa en el proceso.\n\\CorrectChoice advierten ser fundamental el tratamiento en la infancia.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "disciplina": "Língua Espanhola",
+      "dificuldade": "Média",
+      "assunto": "Comprensión Lectora",
+      "tags": [
+        "TDAH",
+        "tratamiento",
+        "infancia",
+        "expertos",
+        "psicoterapia"
+      ],
+      "gabarito": "D",
+      "fonte": "concurso",
+      "concurso": "CEDERJ",
+      "banca": "CECIERJ",
+      "ano": 2021,
+      "prova": "2021.2",
+      "numero": "45",
+      "titulo_texto": "Trastorno por déficit de atención con hiperactividad: en busca de la motivación perdida",
+      "autor_texto": "Laura G. de Rivera"
     }
   }
 ]

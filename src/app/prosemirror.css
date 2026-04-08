@@ -429,3 +429,32 @@
   user-select: none;
 }
 
+
+/* ===== NUMERAÇÃO DE LINHAS (editor de textos base) ===== */
+
+.base-text-editor .ProseMirror {
+  counter-reset: linha-texto;
+}
+
+.base-text-editor p[data-numbered="true"]:not(:empty),
+.base-text-editor .verse[data-numbered="true"]:not(:empty) {
+  counter-increment: linha-texto;
+  position: relative;
+  padding-left: 3rem;
+}
+
+.base-text-editor p[data-numbered="true"]::before,
+.base-text-editor .verse[data-numbered="true"]::before {
+  content: counter(linha-texto);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.2rem;
+  text-align: right;
+  color: #aaa;
+  font-size: 0.78em;
+  line-height: inherit;
+  user-select: none;
+  pointer-events: none;
+  font-family: monospace;
+}

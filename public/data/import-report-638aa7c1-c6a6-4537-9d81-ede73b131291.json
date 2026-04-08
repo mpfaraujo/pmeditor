@@ -1,0 +1,17 @@
+{
+  "batch": "Puc2017 - G1",
+  "runId": "638aa7c1-c6a6-4537-9d81-ede73b131291",
+  "queuePath": "C:\\Projetos\\pmeditor\\public\\data\\import-queue-puc2017-g1.json",
+  "createdAt": "2026-04-06T11:55:34.345Z",
+  "dryRun": false,
+  "summary": {
+    "imported": 30,
+    "duplicates": 0,
+    "failed": 0,
+    "skipped": 0,
+    "totalQueue": 30,
+    "processed": 30
+  },
+  "duplicates": [],
+  "errors": []
+}
