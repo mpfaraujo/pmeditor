@@ -94,10 +94,10 @@ export function MathInsert({
   return (
     <TooltipProvider>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[560px] p-3">
+        <DialogContent className="max-w-[560px] border border-white/10 bg-[#0B1020] p-3 text-white shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <DialogHeader className="space-y-1">
             <DialogTitle className="text-base">{title}</DialogTitle>
-            <DialogDescription className="text-xs">
+            <DialogDescription className="text-xs text-slate-300">
               Use a paleta ou edite diretamente o LaTeX.
             </DialogDescription>
           </DialogHeader>
@@ -113,18 +113,18 @@ export function MathInsert({
           <div className="space-y-2 mt-2">
             <textarea
               ref={textareaRef}
-              className="w-full h-[96px] rounded-md border px-2 py-1 text-xs"
+              className="h-[96px] w-full rounded-md border border-white/10 bg-[#121A2E] px-2 py-1 text-xs text-white placeholder:text-slate-400"
               value={latex}
               onChange={(e) => setLatex(e.target.value)}
               placeholder="LaTeX..."
             />
 
-            <div className="rounded-md border p-2 bg-white">
-              <div className="text-[11px] text-muted-foreground mb-1">
+            <div className="rounded-md border border-slate-200 bg-white p-2 text-slate-950">
+              <div className="mb-1 text-[11px] text-slate-500">
                 Preview
               </div>
               <div
-                className="text-sm overflow-x-auto"
+                className="min-h-[128px] text-sm overflow-x-auto"
                 dangerouslySetInnerHTML={{ __html: previewHtml }}
               />
             </div>
@@ -135,7 +135,7 @@ export function MathInsert({
           <DialogFooter className="gap-2 pt-1">
             <Button
               variant="outline"
-              className="h-7 px-3 text-xs"
+              className="h-7 border-white/12 bg-white/5 px-3 text-xs text-white hover:bg-white/10 hover:text-white"
               onClick={() => {
                 onOpenChange(false);
                 setErr("");
