@@ -120,43 +120,49 @@ export function TurmasTab() {
         </Card>
       )}
 
-      {turmas.map((turma) => (
-        <Card key={turma.id}>
-          <CardHeader>
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <CardTitle>{turma.nome}</CardTitle>
-                {turma.descricao && (
-                  <CardDescription className="mt-1">
-                    {turma.descricao}
-                  </CardDescription>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleEdit(turma.id)}
-                  title="Editar turma"
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setDeletingId(turma.id)}
-                  title="Deletar turma"
-                >
-                  <Trash className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <FilterPreview filtros={turma.filtros} />
-          </CardContent>
-        </Card>
-      ))}
+      {turmas.length > 0 && (
+        <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+          {turmas.map((turma) => (
+            <Card key={turma.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="truncate text-base">{turma.nome}</CardTitle>
+                    {turma.descricao && (
+                      <CardDescription className="mt-1 line-clamp-2">
+                        {turma.descricao}
+                      </CardDescription>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 gap-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleEdit(turma.id)}
+                      title="Editar turma"
+                      className="h-8 w-8 p-0"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setDeletingId(turma.id)}
+                      title="Deletar turma"
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <FilterPreview filtros={turma.filtros} />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <AlertDialog open={deletingId !== null} onOpenChange={() => setDeletingId(null)}>
         <AlertDialogContent>

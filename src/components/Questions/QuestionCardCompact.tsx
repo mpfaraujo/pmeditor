@@ -53,7 +53,7 @@ export function QuestionCardCompact({ metadata, content, selected, onSelect, onP
 
   return (
     <div
-      className={`relative flex flex-col h-[160px] rounded-lg border bg-white p-3 cursor-pointer transition-all hover:shadow-md ${
+      className={`relative flex flex-col h-[190px] rounded-xl border bg-white p-4 cursor-pointer transition-all hover:shadow-md ${
         selected ? "border-[var(--primary)] ring-1 ring-[var(--primary)]" : "border-gray-200"
       }`}
       onClick={() => onPreview?.()}
@@ -67,32 +67,32 @@ export function QuestionCardCompact({ metadata, content, selected, onSelect, onP
       </div>
 
       {/* Header: tipo + dificuldade */}
-      <div className="flex items-center gap-1.5 flex-wrap pr-6 mb-1">
+      <div className="flex items-center gap-1.5 flex-wrap pr-6 mb-2">
         {tipoLabel && (
-          <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">
+          <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-blue-50 text-blue-600">
             {isSet ? `Conjunto (${itemsCount ?? "?"} itens)` : tipoLabel}
           </span>
         )}
         {dificuldade && difColor && (
-          <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${difColor}`}>
+          <span className={`text-[11px] font-medium px-2 py-0.5 rounded ${difColor}`}>
             {dificuldade}
           </span>
         )}
       </div>
 
       {/* Disciplina / assunto */}
-      <div className="text-[11px] font-semibold text-gray-700 truncate mb-1">
+      <div className="text-[13px] font-semibold text-gray-700 truncate mb-2">
         {[disciplina, assunto].filter(Boolean).join(" · ")}
       </div>
 
       {/* Preview do enunciado */}
-      <div className="flex-1 overflow-hidden text-[11px] text-gray-500 leading-snug">
+      <div className="flex-1 overflow-hidden text-[13px] text-gray-600 leading-relaxed">
         {preview || <span className="italic">Sem enunciado</span>}
       </div>
 
       {/* Rodapé: origem */}
       {source?.kind === "concurso" && (source.concurso || source.ano) && (
-        <div className="text-[10px] text-gray-400 mt-1 truncate">
+        <div className="text-[11px] text-gray-400 mt-2 truncate">
           {[source.concurso, source.ano].filter(Boolean).join(" · ")}
         </div>
       )}

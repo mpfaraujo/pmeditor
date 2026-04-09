@@ -46,6 +46,7 @@ type QuestionCardProps = {
   active?: { kind: "base" | "variant"; id: string };
 
   onVersionChange?: (versionData: QuestionVersion) => void;
+  showMetaHeader?: boolean;
 };
 
 /* ---------------- helpers (somente leitura) ---------------- */
@@ -194,6 +195,7 @@ export default function QuestionCard({
   variantsCount = 0,
   active,
   onVersionChange,
+  showMetaHeader = true,
 }: QuestionCardProps) {
   const isEdited = variantsCount > 0;
   const hasBase = !!base?.content;
@@ -254,54 +256,55 @@ export default function QuestionCard({
   const headerLabel = isSet ? "Conjunto" : "Questão";
 
   return (
-    <div className="border rounded-lg p-4 bg-white space-y-3 text-black">
+    <div className="border rounded-xl p-5 bg-white space-y-4 text-black">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
+        {showMetaHeader ? (
+          <div className="min-w-0 flex-1">
+            <div className="text-xs text-muted-foreground space-y-1">
+              {metadata.disciplina && <div>{metadata.disciplina}</div>}
+              {metadata.assunto && <div>{metadata.assunto}</div>}
 
-          <div className="text-xs text-muted-foreground space-y-1">
-            {metadata.disciplina && <div>{metadata.disciplina}</div>}
-            {metadata.assunto && <div>{metadata.assunto}</div>}
+              {/* IMPORTANTE: set_questions não tem gabarito único */}
+              {!isSet &&
+                metadata.gabarito &&
+                (() => {
+                  const g = metadata.gabarito;
+                  if (g.kind === "mcq") return <div>Gabarito: {g.correct}</div>;
+                  if (g.kind === "tf")
+                    return (
+                      <div>Gabarito: {g.correct === "C" ? "Certo" : "Errado"}</div>
+                    );
+                  if (g.kind === "essay") return <div>Gabarito: Discursiva</div>;
+                  return null;
+                })()}
 
-            {/* IMPORTANTE: set_questions não tem gabarito único */}
-            {!isSet &&
-              metadata.gabarito &&
-              (() => {
-                const g = metadata.gabarito;
-                if (g.kind === "mcq") return <div>Gabarito: {g.correct}</div>;
-                if (g.kind === "tf")
-                  return (
-                    <div>Gabarito: {g.correct === "C" ? "Certo" : "Errado"}</div>
-                  );
-                if (g.kind === "essay") return <div>Gabarito: Discursiva</div>;
-                return null;
-              })()}
+              {metadata.dificuldade && <div>Dificuldade: {metadata.dificuldade}</div>}
+              {metadata.source?.kind && (
+                <div>
+                  Origem:{" "}
+                  {metadata.source.kind === "concurso"
+                    ? (metadata.source as any).concurso || "Concurso"
+                    : metadata.source.kind === "original"
+                    ? "Original"
+                    : metadata.source.kind}
+                  {metadata.source.kind === "concurso" && (metadata.source as any).ano && (
+                    <> ({(metadata.source as any).ano})</>
+                  )}
+                </div>
+              )}
+              {metadata.tags && metadata.tags.length > 0 && (
+                <div>Tags: {metadata.tags.join(", ")}</div>
+              )}
 
-            {metadata.dificuldade && <div>Dificuldade: {metadata.dificuldade}</div>}
-            {metadata.source?.kind && (
-              <div>
-                Origem:{" "}
-                {metadata.source.kind === "concurso"
-                  ? (metadata.source as any).concurso || "Concurso"
-                  : metadata.source.kind === "original"
-                  ? "Original"
-                  : metadata.source.kind}
-                {metadata.source.kind === "concurso" && (metadata.source as any).ano && (
-                  <> ({(metadata.source as any).ano})</>
-                )}
-              </div>
-            )}
-            {metadata.tags && metadata.tags.length > 0 && (
-              <div>Tags: {metadata.tags.join(", ")}</div>
-            )}
-
-            {isSet && itemsCount > 0 && (
-              <div>
-                Itens no conjunto: <span className="font-medium">{itemsCount}</span>
-              </div>
-            )}
+              {isSet && itemsCount > 0 && (
+                <div>
+                  Itens no conjunto: <span className="font-medium">{itemsCount}</span>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : <div className="min-w-0 flex-1" />}
 
         <div className="flex items-start gap-2">
           {isEdited && onVersionChange && (
@@ -333,7 +336,7 @@ export default function QuestionCard({
       </div>
 
       {/* Conteúdo */}
-      <div className="print-mode space-y-3">
+      <div className="print-mode space-y-3 text-[15px] leading-relaxed">
         {/* Texto base independente (questões com baseTextId) */}
         {!isSet && baseTextContent && (
           <div className="space-y-1">

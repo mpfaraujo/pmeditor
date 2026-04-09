@@ -146,20 +146,22 @@ export default function NovaTurmaPage() {
   };
 
   return (
-    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="pm-shell p-4 md:p-8">
+      <div className="pm-shell-inner max-w-6xl">
         <div className="mb-6">
-          <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4">
+          <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4 border border-slate-200 bg-white hover:bg-slate-50">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar para Turmas
           </Button>
-          <h1 className="text-3xl font-bold text-slate-900">Nova Turma</h1>
-          <p className="text-slate-600 mt-2">Configure os filtros que serão aplicados automaticamente</p>
+          <div className="pm-topbar-dark pm-work-header">
+            <h1 className="pm-work-title text-white">Nova Turma</h1>
+            <p className="pm-work-subtitle">Configure os filtros que serão aplicados automaticamente</p>
+          </div>
         </div>
 
         <div className="space-y-6">
           {/* Informações Básicas */}
-          <Card>
+          <Card className="rounded-2xl border-0 shadow-none pm-surface">
             <CardHeader>
               <CardTitle>Informações da Turma</CardTitle>
             </CardHeader>
@@ -189,7 +191,7 @@ export default function NovaTurmaPage() {
           </Card>
 
           {/* Filtros */}
-          <Card>
+          <Card className="rounded-2xl border-0 shadow-none pm-surface">
             <CardHeader>
               <CardTitle>Filtros da Turma</CardTitle>
               <CardDescription>
@@ -331,7 +333,7 @@ export default function NovaTurmaPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleSave} disabled={!nome.trim() || saving}>
+            <Button onClick={handleSave} disabled={!nome.trim() || saving} className="pm-accent-button">
               {saving ? "Salvando..." : "Salvar Turma"}
             </Button>
           </div>

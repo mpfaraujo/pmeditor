@@ -178,7 +178,7 @@ export function ProvasTab() {
             Suas provas montadas aparecerão aqui.
           </p>
           <Button asChild className="mt-6 btn-primary">
-            <Link href="/editor/questoes/filtro">
+            <Link href="/editor/questoes">
               <BookOpen className="h-4 w-4 mr-2" />
               Nova Prova
             </Link>
@@ -194,52 +194,55 @@ export function ProvasTab() {
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Provas Salvas</h3>
           <Button asChild className="btn-primary">
-            <Link href="/editor/questoes/filtro">
+            <Link href="/editor/questoes">
               <BookOpen className="h-4 w-4 mr-2" />
               Nova Prova
             </Link>
           </Button>
         </div>
 
-        {provas.map((prova) => (
-          <Card key={prova.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle>{prova.nome}</CardTitle>
-                  <CardDescription>
-                    {prova.disciplina && `${prova.disciplina} • `}
-                    {prova.selections.length} questão(ões)
-                    {" • "}
-                    {format(new Date(prova.created_at), "dd/MM/yyyy")}
-                  </CardDescription>
+        <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+          {provas.map((prova) => (
+            <Card key={prova.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <CardTitle className="truncate text-base">{prova.nome}</CardTitle>
+                    <CardDescription>
+                      {prova.disciplina && `${prova.disciplina} • `}
+                      {prova.selections.length} questão(ões)
+                      {" • "}
+                      {format(new Date(prova.created_at), "dd/MM/yyyy")}
+                    </CardDescription>
+                  </div>
+                  <div className="flex shrink-0 gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => handleCarregar(prova)}
+                      disabled={loadingProva !== null}
+                    >
+                      {loadingProva === prova.id ? (
+                        <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                      ) : (
+                        <Play className="h-4 w-4 mr-1" />
+                      )}
+                      Carregar
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleDeleteClick(prova.id)}
+                      disabled={loadingProva !== null || deleting}
+                      className="h-9 w-9 p-0"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    onClick={() => handleCarregar(prova)}
-                    disabled={loadingProva !== null}
-                  >
-                    {loadingProva === prova.id ? (
-                      <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                    ) : (
-                      <Play className="h-4 w-4 mr-1" />
-                    )}
-                    Carregar
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleDeleteClick(prova.id)}
-                    disabled={loadingProva !== null || deleting}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-        ))}
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
       </div>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

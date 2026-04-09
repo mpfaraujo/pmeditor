@@ -129,28 +129,34 @@ useEffect(() => {
 if (!mounted) return null;
 
   return (
-    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8 animate-fade-in-up">
-          <Button variant="ghost" onClick={handleVoltar} className="mb-4 hover:bg-white/60">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar
-          </Button>
-          <h1 className="text-4xl font-bold text-slate-800">
-            Configurar Prova
-          </h1>
-          <p className="text-slate-600 mt-2">
-            Escolha o layout e preencha os dados
-          </p>
+    <div className="min-h-screen bg-[#070B1D] text-white p-4 md:p-8">
+      <div className="pm-shell-inner max-w-6xl">
+        <div className="mb-5 animate-fade-in-up">
+          <div className="flex items-start gap-5 border border-white/6 bg-[#0B1020] px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.22)]">
+            <div className="shrink-0">
+              <Button variant="ghost" onClick={handleVoltar} className="h-9 text-[#9eb4d1] hover:bg-white/10 hover:text-white">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-[1.85rem] font-bold leading-tight text-white">
+                Configurar Prova
+              </h1>
+              <p className="mt-0.5 text-[0.95rem] leading-relaxed text-[#9eb4d1]">
+                Escolha o layout e preencha os dados
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up">
           {/* Layout */}
           <div className="lg:col-span-1">
-            <Card className="h-full stripe-card hover-lift">
-              <CardHeader>
-                <CardTitle>Layout</CardTitle>
-                <CardDescription>Formato e colunas</CardDescription>
+            <Card className="h-full rounded-2xl border border-white/8 bg-[#10172B] text-[#F4F4F2] shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-white">Layout</CardTitle>
+                <CardDescription className="text-[#9eb4d1]">Formato e colunas</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
@@ -159,8 +165,8 @@ if (!mounted) return null;
                     onClick={() => setLayoutType("prova")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "prova"
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 bg-white"
+                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
+                        : "border-white/10 bg-white/4 text-white"
                     }`}
                   >
                     <div className="font-semibold">Prova</div>
@@ -170,8 +176,8 @@ if (!mounted) return null;
                     onClick={() => setLayoutType("exercicio")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "exercicio"
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 bg-white"
+                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
+                        : "border-white/10 bg-white/4 text-white"
                     }`}
                   >
                     <div className="font-semibold">Lista de Exercício</div>
@@ -181,12 +187,12 @@ if (!mounted) return null;
                     onClick={() => setLayoutType("acessivel")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "acessivel"
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 bg-white"
+                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
+                        : "border-white/10 bg-white/4 text-white"
                     }`}
                   >
                     <div className="font-semibold">Acessível (TEA / TDAH)</div>
-                    <div className="text-xs text-slate-500 mt-0.5">1 coluna, tipografia ampliada, espaçamento aumentado</div>
+                    <div className={`mt-0.5 text-xs ${layoutType === "acessivel" ? "text-[#2D3436]/75" : "text-[#9eb4d1]"}`}>1 coluna, tipografia ampliada, espaçamento aumentado</div>
                   </button>
                 </div>
 
@@ -197,8 +203,8 @@ if (!mounted) return null;
                     onClick={() => setColumns(1)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       columns === 1
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 bg-white"
+                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
+                        : "border-white/10 bg-white/4 text-white"
                     }`}
                   >
                     1 Coluna
@@ -208,8 +214,8 @@ if (!mounted) return null;
                     onClick={() => setColumns(2)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       columns === 2
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 bg-white"
+                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
+                        : "border-white/10 bg-white/4 text-white"
                     }`}
                   >
                     2 Colunas
@@ -218,7 +224,7 @@ if (!mounted) return null;
 
                 {/* Header */}
                 <div className="space-y-2">
-                  <Label>Modelo de cabeçalho</Label>
+                  <Label className="text-[#F4F4F2]">Modelo de cabeçalho</Label>
                   <DotPicker
                     value={headerLayout}
                     options={headerOptions}
@@ -227,7 +233,7 @@ if (!mounted) return null;
                 </div>
                 {/* Decorador da questão */}
                 <div className="space-y-2">
-                  <Label>Decorador da questão</Label>
+                  <Label className="text-[#F4F4F2]">Decorador da questão</Label>
                   <DotPicker
                   value={questionHeaderVariant}
                   options={decoratorOptions}
@@ -243,7 +249,7 @@ if (!mounted) return null;
                     checked={showGabarito}
                     onCheckedChange={(v) => setShowGabarito(Boolean(v))}
                   />
-                  <Label htmlFor="showGabarito">Mostrar gabaritos</Label>
+                  <Label htmlFor="showGabarito" className="text-[#F4F4F2]">Mostrar gabaritos</Label>
                 </div>
               </CardContent>
             </Card>
@@ -251,10 +257,10 @@ if (!mounted) return null;
 
           {/* Dados */}
           <div className="lg:col-span-2">
-            <Card className="stripe-card hover-lift">
+            <Card className="rounded-2xl border border-white/8 bg-[#F8FAFC] text-[#0F172A] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
               <CardHeader>
                 <CardTitle>Dados da Prova</CardTitle>
-                <CardDescription>Cabeçalho</CardDescription>
+                <CardDescription className="text-[#64748B]">Cabeçalho</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-3">

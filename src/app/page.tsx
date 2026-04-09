@@ -75,7 +75,7 @@ const STEPS: Step[] = [
     title: "Encontre as questões certas",
     desc: "Filtre o banco por disciplina, assunto, banca ou ano — e selecione exatamente o que precisa para a próxima prova.",
     svgIdx: 3,
-    href: "/editor/questoes/filtro",
+    href: "/editor/questoes",
     hrefLabel: "Ver banco de questões",
   },
   {

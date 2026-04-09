@@ -153,21 +153,22 @@ function BaseTextEditorInner() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#070B1D]">
       {/* Barra superior */}
-      <div className="sticky top-0 z-10 bg-white border-b px-4 py-2 flex items-center justify-between gap-4">
+      <div className="sticky top-0 z-10 px-4 pt-4">
+        <div className="max-w-6xl mx-auto pm-topbar-dark px-5 py-3 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => router.back()}>
+          <Button variant="ghost" size="sm" onClick={() => router.back()} className="text-[#F4F4F2] hover:bg-white/10 hover:text-white">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Voltar
           </Button>
           <div className="flex items-center gap-2 flex-wrap">
             {item?.tag && (
-              <span className="font-mono text-xs bg-primary/10 text-primary px-2 py-0.5 rounded font-bold">
+              <span className="font-mono text-xs bg-[#FFF4CC] text-[#5A4500] border border-[#FBC02D]/35 px-2 py-0.5 rounded-md font-bold">
                 {item.tag}
               </span>
             )}
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-[#9eb4d1]">
               {isNew ? "Novo texto base" : "Editar texto base"}
             </span>
           </div>
@@ -214,14 +215,15 @@ function BaseTextEditorInner() {
             </div>
           )}
           {deleteState === "deleting" && (
-            <span className="text-xs text-muted-foreground">Excluindo…</span>
+            <span className="text-xs text-[#9eb4d1]">Excluindo…</span>
           )}
+        </div>
         </div>
       </div>
 
       {/* Metadados */}
-      <div className="max-w-5xl mx-auto px-4 pt-6 pb-4">
-        <div className="bg-white border rounded-lg p-4 grid grid-cols-2 gap-3">
+      <div className="max-w-6xl mx-auto px-4 pt-6 pb-4">
+        <div className="pm-surface rounded-2xl p-4 grid grid-cols-2 gap-3">
           <h2 className="col-span-2 text-sm font-semibold text-muted-foreground">Metadados</h2>
           <div className="space-y-1">
             <label className="text-xs font-medium">Título</label>
@@ -247,7 +249,7 @@ function BaseTextEditorInner() {
       </div>
 
       {/* Editor */}
-      <div className="max-w-5xl mx-auto px-4 pb-12">
+      <div className="max-w-6xl mx-auto px-4 pb-12">
         <BaseTextEditorView
           value={isNew ? null : item?.content}
           onSave={handleSave}

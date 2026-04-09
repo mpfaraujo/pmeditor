@@ -85,27 +85,29 @@ function TextosBaseContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="pm-shell">
       {/* Cabeçalho */}
-      <div className="sticky top-0 z-10 bg-white border-b px-4 py-3 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/minha-area")}>
+      <div className="sticky top-0 z-10 px-4 pt-4">
+        <div className="max-w-6xl mx-auto pm-topbar-dark px-5 py-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => router.push("/minha-area")} className="text-[#F4F4F2] hover:bg-white/10 hover:text-white">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Minha área
           </Button>
-          <h1 className="text-sm font-semibold">Textos Base</h1>
+          <h1 className="text-sm font-semibold text-white">Textos Base</h1>
         </div>
-        <Button size="sm" asChild>
+        <Button size="sm" asChild className="border border-[#E0B22A] bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]">
           <Link href="/editor/texto-base/novo">
             <Plus className="h-4 w-4 mr-1" />
             Novo texto base
           </Link>
         </Button>
+        </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 py-6 space-y-4">
+      <div className="max-w-6xl mx-auto px-4 py-6 space-y-4">
         {/* Filtros */}
-        <div className="flex gap-2">
+        <div className="pm-surface rounded-2xl p-4 flex gap-2">
           <Input
             placeholder="Buscar por trecho do texto…"
             value={search}
@@ -135,11 +137,11 @@ function TextosBaseContent() {
 
         <div className="space-y-2">
           {items.map((item) => (
-            <div key={item.id} className="border rounded-lg overflow-hidden bg-white">
+            <div key={item.id} className="pm-surface rounded-2xl overflow-hidden">
               <div className="flex items-start justify-between gap-3 p-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-mono text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-bold">
+                    <span className="font-mono text-xs bg-[#FFF4CC] text-[#5A4500] border border-[#FBC02D]/35 px-1.5 py-0.5 rounded-md font-bold">
                       {item.tag}
                     </span>
                     {item.titulo && <span className="text-sm font-medium">{item.titulo}</span>}
@@ -169,7 +171,7 @@ function TextosBaseContent() {
               </div>
 
               {expandedId === item.id && (
-                <div className="border-t px-3 pb-3 pt-2 bg-slate-50">
+                <div className="border-t px-3 pb-3 pt-2 bg-slate-50/80">
                   <BaseTextPreviewInline id={item.id} />
                 </div>
               )}

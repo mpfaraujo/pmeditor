@@ -3,13 +3,18 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import QuestionCard from "@/components/Questions/QuestionCard";
-import { QuestionsFilter } from "@/components/Questions/QuestionsFilter";
-import { QuestionsFilterMobile } from "@/components/Questions/QuestionsFilterMobile";
+import {
+  useQuestionsFilter,
+  QuestionsFilterLeft,
+  QuestionsFilterRight,
+  ActiveFilterChips,
+  EMPTY_FILTERS,
+} from "@/components/Questions/QuestionsFilter";
+import type { FilterValues } from "@/components/Questions/QuestionsFilter";
 import { useProva } from "@/contexts/ProvaContext";
 import { listQuestions, QuestionVersion } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, LayoutGrid, Rows3, Plus } from "lucide-react";
+import { LayoutGrid, Rows3, Plus, X, CheckSquare, LayoutDashboard, UserRound } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -41,19 +46,7 @@ type QuestionItem = {
   active?: { kind: "base" | "variant"; id: string };
 };
 
-type FilterValues = {
-  disciplinas: string[];
-  assuntos: string[];
-  tipos: string[];
-  dificuldades: string[];
-  niveis: string[];
-  tags: string;
-  sourceKind: string;
-  rootType: string;
-  concursos: string[];
-  anos: string[];
-  myQuestions?: boolean;
-};
+type FilterValuesWithMy = FilterValues & { myQuestions?: boolean };
 
 const ITEMS_PER_PAGE = 30;
 
@@ -73,31 +66,20 @@ export default function QuestoesPage() {
   const [previewItem, setPreviewItem] = useState<QuestionItem | null>(null);
   const [pendingRemoveId, setPendingRemoveId] = useState<string | null>(null);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<FilterValues>(EMPTY_FILTERS);
+
+  const filterState = useQuestionsFilter({
+    onFilter: (f) => { setActiveFilters(f); load(f, 1); },
+    initialFilters: EMPTY_FILTERS,
+  });
   const [viewMode, setViewMode] = useState<"carousel" | "grid">(() => {
     if (typeof window === "undefined") return "carousel";
     return (localStorage.getItem("questaoViewMode") as "carousel" | "grid") ?? "carousel";
   });
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const filters: Partial<FilterValues> = {
-      disciplinas: searchParams.getAll("disciplinas"),
-      assuntos: searchParams.getAll("assuntos"),
-      tipos: searchParams.getAll("tipos"),
-      dificuldades: searchParams.getAll("dificuldades"),
-      niveis: searchParams.getAll("niveis"),
-      tags: searchParams.get("tags") || "",
-      sourceKind: searchParams.get("source_kind") || "",
-      rootType: searchParams.get("root_type") || "",
-      concursos: searchParams.getAll("concursos"),
-      anos: searchParams.getAll("anos"),
-      myQuestions: searchParams.get("myQuestions") === "1",
-    };
-    load(filters, 1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { load(EMPTY_FILTERS, 1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const load = async (filters: Partial<FilterValues>, page: number = 1) => {
+  const load = async (filters: Partial<FilterValuesWithMy>, page: number = 1) => {
     setLoading(true);
     try {
       const baseParams: any = {
@@ -205,44 +187,12 @@ export default function QuestoesPage() {
   };
 
   const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      const searchParams = new URLSearchParams(window.location.search);
-      const filters: Partial<FilterValues> = {
-        disciplinas: searchParams.getAll("disciplinas"),
-        assuntos: searchParams.getAll("assuntos"),
-        tipos: searchParams.getAll("tipos"),
-        dificuldades: searchParams.getAll("dificuldades"),
-        niveis: searchParams.getAll("niveis"),
-        tags: searchParams.get("tags") || "",
-        sourceKind: searchParams.get("source_kind") || "",
-        rootType: searchParams.get("root_type") || "",
-        concursos: searchParams.getAll("concursos"),
-        anos: searchParams.getAll("anos"),
-        myQuestions: searchParams.get("myQuestions") === "1",
-      };
-      load(filters, currentPage - 1);
-    }
+    if (currentPage > 1) load(activeFilters, currentPage - 1);
   };
 
   const handleNextPage = () => {
     const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE);
-    if (currentPage < totalPages) {
-      const searchParams = new URLSearchParams(window.location.search);
-      const filters: Partial<FilterValues> = {
-        disciplinas: searchParams.getAll("disciplinas"),
-        assuntos: searchParams.getAll("assuntos"),
-        tipos: searchParams.getAll("tipos"),
-        dificuldades: searchParams.getAll("dificuldades"),
-        niveis: searchParams.getAll("niveis"),
-        tags: searchParams.get("tags") || "",
-        sourceKind: searchParams.get("source_kind") || "",
-        rootType: searchParams.get("root_type") || "",
-        concursos: searchParams.getAll("concursos"),
-        anos: searchParams.getAll("anos"),
-        myQuestions: searchParams.get("myQuestions") === "1",
-      };
-      load(filters, currentPage + 1);
-    }
+    if (currentPage < totalPages) load(activeFilters, currentPage + 1);
   };
 
   // Filtrar questões se toggle ativo
@@ -252,6 +202,53 @@ export default function QuestoesPage() {
     if (!showOnlySelected) return items;
     return selectedQuestions as QuestionItem[];
   }, [items, showOnlySelected, selectedQuestions]);
+
+  const currentDisplayItem = useMemo(() => {
+    if (displayItems.length === 0) return null;
+    return displayItems[Math.min(currentIndex, displayItems.length - 1)] ?? displayItems[0];
+  }, [displayItems, currentIndex]);
+
+  const topBarFilters = useMemo(
+    () => ({
+      ...activeFilters,
+      disciplinas: [],
+      assuntos: [],
+      tipos: [],
+      dificuldades: [],
+      sourceKind: "",
+      rootType: "",
+      concursos: [],
+      anos: [],
+    }),
+    [activeFilters]
+  );
+
+  const currentMetaChips = useMemo(() => {
+    const q = currentDisplayItem;
+    if (!q) return [] as string[];
+
+    const chips: string[] = [];
+    if (q.metadata.disciplina) chips.push(q.metadata.disciplina);
+    if (q.metadata.assunto) chips.push(q.metadata.assunto);
+    if (q.metadata.tipo) chips.push(q.metadata.tipo === "Múltipla Escolha" ? "MCQ" : q.metadata.tipo);
+    if (q.metadata.dificuldade) chips.push(q.metadata.dificuldade);
+
+    const g = q.metadata.gabarito;
+    if (g?.kind === "mcq" && g.correct) chips.push(`Gabarito ${g.correct}`);
+    if (g?.kind === "tf" && g.correct) chips.push(`Gabarito ${g.correct === "C" ? "Certo" : "Errado"}`);
+    if (g?.kind === "essay") chips.push("Discursiva");
+
+    if (q.metadata.source?.kind === "concurso") {
+      const concurso = (q.metadata.source as any)?.concurso;
+      const ano = (q.metadata.source as any)?.ano;
+      if (concurso || ano) chips.push([concurso, ano].filter(Boolean).join(" · "));
+    } else if (q.metadata.source?.kind === "original") {
+      chips.push("Original");
+    }
+
+    if (q.metadata.tags?.length) chips.push(...q.metadata.tags.slice(0, 3));
+    return [...new Set(chips.map(c => c.trim()).filter(Boolean))];
+  }, [currentDisplayItem]);
 
   // Reset index quando toggle muda
   useEffect(() => {
@@ -267,163 +264,228 @@ export default function QuestoesPage() {
   }, [selectedCount, showOnlySelected]);
 
   return (
-    <div className="flex h-screen stripe-grid-bg">
-      <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto overflow-x-hidden">
-        <div className="w-full max-w-full md:max-w-[12cm] mx-auto mb-4 animate-fade-in-up">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/editor/questoes/filtro")} className="hover:bg-white/60">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar para Filtros
-          </Button>
-        </div>
-        {loading && <div className="text-sm">Carregando…</div>}
-        {!loading && items.length === 0 && (
-          <div className="text-sm">Nenhuma questão encontrada.</div>
-        )}
+    // Layout 3 colunas: [Filtros esq] | [Questões] | [Filtros dir]
+    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: "#F4F4F2" }}>
 
-        {!loading && items.length > 0 && (
-          <div className={`w-full mx-auto ${viewMode === "grid" ? "max-w-5xl" : "max-w-full md:max-w-[12cm]"}`}>
-            {/* Toolbar */}
-            <div className="flex flex-col gap-2 mb-3">
-              {/* Linha 1: Toggle + Botões de ação */}
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="show-only-selected"
-                    checked={showOnlySelected}
-                    onCheckedChange={(checked) => setShowOnlySelected(checked === true)}
-                  />
-                  <label
-                    htmlFor="show-only-selected"
-                    className="text-sm font-medium leading-none cursor-pointer"
-                  >
-                    Selecionadas ({selectedCount})
-                  </label>
+      {/* ── Coluna esquerda: busca + disciplina + assunto ── */}
+      <QuestionsFilterLeft
+        state={filterState}
+        totalResults={totalResults}
+        loading={loading}
+      />
+
+      {/* ── Coluna central: Questões ── */}
+      <div
+        className="flex-1 flex flex-col min-w-0 overflow-hidden"
+        style={{ backgroundColor: "#F4F4F2" }}
+      >
+
+        {/* Barra de topo: chips ativos + controles */}
+        <div
+          className="border-b px-4 py-2 shrink-0"
+          style={{ backgroundColor: "#2D3436", borderColor: "rgba(255,255,255,0.08)" }}
+        >
+          <div className="flex items-stretch gap-4">
+            <div className="min-w-0 flex-1 py-1">
+              <div className="flex items-center gap-2 px-1 pb-2">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => router.push("/dashboard")}
+                  className="h-7 px-2 text-[11px] text-[#9eb4d1] hover:bg-white/10 hover:text-white"
+                >
+                  <LayoutDashboard className="mr-1 h-3.5 w-3.5" />
+                  Dashboard
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => router.push("/minha-area")}
+                  className="h-7 px-2 text-[11px] text-[#9eb4d1] hover:bg-white/10 hover:text-white"
+                >
+                  <UserRound className="mr-1 h-3.5 w-3.5" />
+                  Minha Área
+                </Button>
+              </div>
+              <ActiveFilterChips
+                filters={topBarFilters}
+                onChange={(f) => {
+                  const next = {
+                    ...f,
+                    disciplinas: activeFilters.disciplinas,
+                    assuntos: activeFilters.assuntos,
+                    tipos: activeFilters.tipos,
+                    dificuldades: activeFilters.dificuldades,
+                    sourceKind: activeFilters.sourceKind,
+                    rootType: activeFilters.rootType,
+                    concursos: activeFilters.concursos,
+                    anos: activeFilters.anos,
+                  };
+                  setActiveFilters(next);
+                  load(next, 1);
+                  filterState.setAndDispatch(() => next);
+                }}
+              />
+              {viewMode === "carousel" && currentMetaChips.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1.5 px-1 pb-1">
+                  {currentMetaChips.map((chip, idx) => (
+                    <span
+                      key={`${chip}-${idx}`}
+                      className="inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-medium"
+                      style={{ backgroundColor: "#FFF4CC", borderColor: "rgba(251, 192, 45, 0.34)", color: "#5A4500" }}
+                    >
+                      {chip}
+                    </span>
+                  ))}
                 </div>
-
-                <div className="shrink-0 flex items-center gap-2">
-                  <Button size="sm" variant="ghost" onClick={toggleViewMode} title={viewMode === "carousel" ? "Modo grade" : "Modo carrossel"} className="px-2">
-                    {viewMode === "carousel" ? <LayoutGrid className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}
+              )}
+            </div>
+            <div className="shrink-0 w-[360px] flex flex-col justify-between gap-2 py-1">
+              <div className="flex items-center justify-end gap-1.5 min-h-9">
+                <button
+                  type="button"
+                  title={viewMode === "carousel" ? "Modo grade compacta" : "Modo carrossel"}
+                  onClick={toggleViewMode}
+                  className="p-1.5 rounded transition-colors hover:bg-white/10"
+                  style={{ color: "#F4F4F2" }}
+                >
+                  {viewMode === "carousel" ? <LayoutGrid className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}
+                </button>
+                {viewMode === "carousel" ? (
+                  <Button size="sm" variant="ghost" onClick={handleEditAtual} className="text-xs min-w-[72px] justify-center text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+                    Editar
                   </Button>
-                  {viewMode === "carousel" && (
-                    <Button size="sm" variant="secondary" onClick={handleEditAtual}>
-                      Editar
-                    </Button>
-                  )}
-                  <Button size="sm" variant="secondary" onClick={handleNovaQuestao}>
-                    <Plus className="h-4 w-4 mr-1" />
-                    Nova questão
-                  </Button>
-
-                  <Button
-                    onClick={handleMontarProva}
-                    disabled={selectedCount === 0}
-                    className="btn-primary"
-                  >
-                    Nova Prova ({selectedCount})
-                  </Button>
-                </div>
+                ) : (
+                  <div className="w-[72px]" />
+                )}
+                <Button size="sm" variant="ghost" onClick={handleNovaQuestao} className="text-xs gap-1 min-w-[84px] justify-center text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+                  <Plus className="h-3.5 w-3.5" /> Nova
+                </Button>
+                <div className="w-px h-4 bg-white/15 mx-1" />
+                <Button
+                  onClick={handleMontarProva}
+                  disabled={selectedCount === 0}
+                  size="sm"
+                  className="text-xs gap-1 min-w-[138px] justify-center border border-[#E0B22A] bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]"
+                >
+                  <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums min-w-[26px] text-center ${selectedCount > 0 ? "bg-black/10 opacity-100" : "opacity-0"}`}>
+                    {selectedCount > 0 ? selectedCount : "0"}
+                  </span>
+                  Montar Prova
+                </Button>
               </div>
 
-              {/* Linha 2: Limpar */}
-              <div>
+              <div className="flex items-center justify-end gap-2 min-h-8">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setShowOnlySelected(v => !v)}
+                  disabled={selectedCount === 0}
+                  className={`text-xs min-w-[148px] justify-center border ${showOnlySelected ? "border-[#FBC02D]/50 bg-white/12 text-[#FFD93D]" : "border-white/10 text-[#D7E2EE] hover:bg-white/10 hover:text-white"}`}
+                >
+                  <CheckSquare className="h-3.5 w-3.5" />
+                  {showOnlySelected ? "Ver todas" : "Mostrar selecionadas"}
+                </Button>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={clearAll}
                   disabled={selectedCount === 0}
-                  className="text-xs text-muted-foreground"
+                  className="text-xs min-w-[120px] justify-center border border-white/10 text-[#D7E2EE] hover:bg-white/10 hover:text-white disabled:opacity-40"
                 >
-                  Limpar
+                  <X className="h-3.5 w-3.5" />
+                  Limpar seleção
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Paginação entre páginas de resultados */}
-            {totalResults > ITEMS_PER_PAGE && (
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                  title="Página anterior"
-                  className="px-2 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50"
-                >
-                  ‹
-                </button>
-                <span className="text-xs text-muted-foreground px-2">
-                  {currentPage} / {Math.ceil(totalResults / ITEMS_PER_PAGE)}
-                </span>
-                <button
-                  onClick={handleNextPage}
-                  disabled={currentPage >= Math.ceil(totalResults / ITEMS_PER_PAGE)}
-                  title="Próxima página"
-                  className="px-2 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50"
-                >
-                  ›
-                </button>
+        {/* Lista de questões */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+          <div className="px-4 py-4 relative">
+
+            {loading && items.length > 0 && (
+              <div className="absolute right-4 top-4 z-10 rounded-full border bg-white px-3 py-1 text-xs text-[#4f4f4d] shadow-sm" style={{ borderColor: "rgba(45,52,54,0.12)" }}>
+                Carregando…
               </div>
             )}
+            {loading && items.length === 0 && (
+              <div className="text-sm text-muted-foreground py-6 text-center">Carregando…</div>
+            )}
+            {!loading && items.length === 0 && (
+              <div className="text-sm text-muted-foreground py-16 text-center">Nenhuma questão encontrada.</div>
+            )}
 
-            {viewMode === "carousel" ? (
+            {(loading || items.length > 0) && (
               <>
-                {/* Navegação dentro do carrossel */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-                  <button
-                    onClick={() => api?.scrollTo(currentIndex - 1)}
-                    disabled={currentIndex === 0}
-                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex === 0 ? 0.3 : 1 }}
-                  >
-                    ‹ Anterior
+                {/* Paginação */}
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <button onClick={handlePreviousPage} disabled={currentPage === 1}
+                    className="px-3 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50 bg-white">
+                    ‹
                   </button>
-                  <span style={{ fontSize: 13, fontWeight: 500, minWidth: 60, textAlign: "center" as const }}>
-                    {currentIndex + 1} / {displayItems.length}
+                  <span className="text-xs text-muted-foreground px-2 tabular-nums">
+                    {currentPage} / {Math.max(1, Math.ceil(totalResults / ITEMS_PER_PAGE))}
                   </span>
-                  <button
-                    onClick={() => api?.scrollTo(currentIndex + 1)}
-                    disabled={currentIndex >= displayItems.length - 1}
-                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 13, opacity: currentIndex >= displayItems.length - 1 ? 0.3 : 1 }}
-                  >
-                    Próxima ›
+                  <button onClick={handleNextPage} disabled={currentPage >= Math.max(1, Math.ceil(totalResults / ITEMS_PER_PAGE))}
+                    className="px-3 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50 bg-white">
+                    ›
                   </button>
                 </div>
 
-                <Carousel opts={{ align: "center", duration: 60 }} className="w-full" setApi={setApi}>
-                  <CarouselContent>
+                {viewMode === "carousel" ? (
+                  <div className="rounded-[28px] border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)] px-7 py-7 border-t-[4px]" style={{ borderTopColor: "#FBC02D" }}>
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <button onClick={() => api?.scrollTo(currentIndex - 1)} disabled={currentIndex === 0}
+                        className="px-4 py-1.5 text-sm border rounded-md bg-[#F8F9FA] text-[#5C6468] hover:bg-[#EEF1F4] disabled:opacity-30">
+                        ‹ Anterior
+                      </button>
+                      <span className="text-sm font-medium tabular-nums text-slate-600 min-w-16 text-center">
+                        {currentIndex + 1} / {displayItems.length}
+                      </span>
+                      <button onClick={() => api?.scrollTo(currentIndex + 1)} disabled={currentIndex >= displayItems.length - 1}
+                        className="px-4 py-1.5 text-sm border rounded-md bg-[#F8F9FA] text-[#5C6468] hover:bg-[#EEF1F4] disabled:opacity-30">
+                        Próxima ›
+                      </button>
+                    </div>
+                    <Carousel opts={{ align: "center", duration: 60 }} className="w-full" setApi={setApi}>
+                      <CarouselContent>
+                        {displayItems.map((q) => (
+                          <CarouselItem key={q.metadata.id}>
+                            <div className="question-readable-preview mx-auto px-2 w-[20.5cm] max-w-[20.5cm]">
+                              <QuestionCard
+                                metadata={q.metadata} content={q.content} base={q.base}
+                                variantsCount={q.variantsCount} active={q.active}
+                                selected={isSelected(q.metadata.id)} onSelect={toggleSelect}
+                                onVersionChange={(v) => handleVersionChange(q.metadata.id, v)}
+                                showMetaHeader={false}
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
+                  </div>
+                ) : (
+                  <div className="grid gap-3 grid-cols-1 xl:grid-cols-2">
                     {displayItems.map((q) => (
-                      <CarouselItem key={q.metadata.id}>
-                        <div className="w-full md:w-[10cm] mx-auto px-2">
-                          <QuestionCard
-                            metadata={q.metadata}
-                            content={q.content}
-                            base={q.base}
-                            variantsCount={q.variantsCount}
-                            active={q.active}
-                            selected={isSelected(q.metadata.id)}
-                            onSelect={toggleSelect}
-                            onVersionChange={(versionData) => handleVersionChange(q.metadata.id, versionData)}
-                          />
-                        </div>
-                      </CarouselItem>
+                      <QuestionCardCompact key={q.metadata.id}
+                        metadata={q.metadata} content={q.content}
+                        selected={isSelected(q.metadata.id)} onSelect={toggleSelect}
+                        onPreview={() => setPreviewItem(q)}
+                      />
                     ))}
-                  </CarouselContent>
-                </Carousel>
+                  </div>
+                )}
               </>
-            ) : (
-              <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
-                {displayItems.map((q) => (
-                  <QuestionCardCompact
-                    key={q.metadata.id}
-                    metadata={q.metadata}
-                    content={q.content}
-                    selected={isSelected(q.metadata.id)}
-                    onSelect={toggleSelect}
-                    onPreview={() => setPreviewItem(q)}
-                  />
-                ))}
-              </div>
             )}
           </div>
-        )}
+        </div>
       </div>
+
+      {/* ── Coluna direita: tipo + dificuldade + estrutura + fonte ── */}
+      <QuestionsFilterRight state={filterState} />
 
       {/* Confirmação de remoção da seleção */}
       <Dialog open={!!pendingRemoveId} onOpenChange={(open) => { if (!open) setPendingRemoveId(null); }}>
@@ -442,24 +504,27 @@ export default function QuestoesPage() {
 
       {/* Modal de preview (modo grade) */}
       <Dialog open={!!previewItem} onOpenChange={(open) => { if (!open) setPreviewItem(null); }}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-4">
-          <DialogTitle className="sr-only">Visualizar questão</DialogTitle>
-          {previewItem && (
-            <>
-              <div className="flex justify-end mb-2">
+          <DialogContent className="w-[min(96vw,22.5cm)] max-w-[22.5cm] max-h-[90vh] overflow-y-auto p-4">
+            <DialogTitle className="sr-only">Visualizar questão</DialogTitle>
+            {previewItem && (
+              <>
+                <div className="flex justify-end mb-2">
                 <Button size="sm" variant="secondary" onClick={() => { setEditing(previewItem); setEditorOpen(true); setPreviewItem(null); }}>
                   Editar
                 </Button>
               </div>
-              <QuestionCard
-                metadata={previewItem.metadata}
-                content={previewItem.content}
-                base={previewItem.base}
-                variantsCount={previewItem.variantsCount}
-                active={previewItem.active}
-                selected={isSelected(previewItem.metadata.id)}
-                onSelect={(id, checked) => { toggleSelect(id, checked); }}
-              />
+              <div className="question-readable-preview">
+                <QuestionCard
+                  metadata={previewItem.metadata}
+                  content={previewItem.content}
+                  base={previewItem.base}
+                  variantsCount={previewItem.variantsCount}
+                  active={previewItem.active}
+                  selected={isSelected(previewItem.metadata.id)}
+                  onSelect={(id, checked) => { toggleSelect(id, checked); }}
+                  showMetaHeader={false}
+                />
+              </div>
             </>
           )}
         </DialogContent>

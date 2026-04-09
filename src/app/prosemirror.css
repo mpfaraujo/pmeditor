@@ -434,6 +434,13 @@
 
 .base-text-editor .ProseMirror {
   counter-reset: linha-texto;
+  padding: 1.1rem 1.35rem;
+}
+
+/* ===== EDITOR DE QUESTÕES: MENOS BORDA BRANCA NA "FOLHA" ===== */
+
+.question-editor-sheet .ProseMirror {
+  padding: 0.95cm 1.45cm 1.2cm;
 }
 
 .base-text-editor p[data-numbered="true"]:not(:empty),

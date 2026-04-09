@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,40 @@ import { ProfileTab } from "@/components/minha-area/ProfileTab";
 import { TurmasTab } from "@/components/minha-area/TurmasTab";
 import { QuestoesTab } from "@/components/minha-area/QuestoesTab";
 import { ProvasTab } from "@/components/minha-area/ProvasTab";
+
+function ShortcutItem({
+  icon,
+  title,
+  description,
+  actionLabel,
+  href,
+}: {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  actionLabel: string;
+  href: string;
+}) {
+  return (
+    <div className="rounded-xl border border-white/8 bg-white/4 p-3">
+      <div className="flex items-start gap-2">
+        <div className="mt-0.5 shrink-0">{icon}</div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-[#F4F4F2]">{title}</p>
+          <p className="mt-0.5 text-sm leading-snug text-[#9eb4d1]">{description}</p>
+        </div>
+      </div>
+      <Button
+        variant="outline"
+        size="sm"
+        asChild
+        className="mt-3 w-full border-white/15 bg-white/6 text-white hover:bg-white/12 hover:text-white"
+      >
+        <Link href={href}>{actionLabel}</Link>
+      </Button>
+    </div>
+  );
+}
 
 function MinhaAreaContent() {
   const router = useRouter();
@@ -37,125 +71,139 @@ function MinhaAreaContent() {
   }
 
   return (
-    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header ProvaMarela */}
-        <div className="mb-8 animate-fade-in-up">
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/dashboard")}
-            className="mb-6 hover:bg-white/80 transition-all"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar
-          </Button>
+    <div className="min-h-screen bg-[#F4F4F2] xl:h-screen xl:overflow-hidden">
+      <div className="h-full xl:grid xl:grid-cols-[220px_minmax(0,1fr)_260px]">
+        <Tabs defaultValue={defaultTab} className="space-y-0 xl:contents">
+          <div className="xl:contents">
+            <aside className="border-r border-white/6 bg-[#0B1020] px-4 py-5 xl:overflow-y-auto">
+              <div className="space-y-4">
+                <Button
+                  variant="ghost"
+                  onClick={() => router.push("/dashboard")}
+                  className="-ml-2 h-8 px-2 text-[#9eb4d1] hover:bg-white/10 hover:text-white"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Voltar
+                </Button>
 
-          <div className="stripe-card-gradient p-8 mb-6">
-            <h1 className="text-4xl font-bold text-slate-800">
-              Minha Área
-            </h1>
-            <p className="text-slate-600 mt-2 text-lg">{user?.email}</p>
-          </div>
-        </div>
+                <TabsList className="h-auto w-full flex-col items-stretch bg-transparent gap-2 p-0">
+                  <TabsTrigger
+                    value="perfil"
+                    className="w-full justify-start gap-2 rounded-xl border border-white/8 bg-white/4 px-3 py-2.5 text-left text-[#c9d7ea] data-[state=active]:border-[#FBC02D]/50 data-[state=active]:bg-[#FBC02D] data-[state=active]:text-[#2D3436] data-[state=active]:shadow-md transition-all"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Perfil</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="turmas"
+                    className="w-full justify-start gap-2 rounded-xl border border-white/8 bg-white/4 px-3 py-2.5 text-left text-[#c9d7ea] data-[state=active]:border-[#FBC02D]/50 data-[state=active]:bg-[#FBC02D] data-[state=active]:text-[#2D3436] data-[state=active]:shadow-md transition-all"
+                  >
+                    <Users className="h-4 w-4" />
+                    <span>Turmas</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="questoes"
+                    className="w-full justify-start gap-2 rounded-xl border border-white/8 bg-white/4 px-3 py-2.5 text-left text-[#c9d7ea] data-[state=active]:border-[#FBC02D]/50 data-[state=active]:bg-[#FBC02D] data-[state=active]:text-[#2D3436] data-[state=active]:shadow-md transition-all"
+                  >
+                    <FileText className="h-4 w-4" />
+                    <span>Questões</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="provas"
+                    className="w-full justify-start gap-2 rounded-xl border border-white/8 bg-white/4 px-3 py-2.5 text-left text-[#c9d7ea] data-[state=active]:border-[#FBC02D]/50 data-[state=active]:bg-[#FBC02D] data-[state=active]:text-[#2D3436] data-[state=active]:shadow-md transition-all"
+                  >
+                    <ClipboardList className="h-4 w-4" />
+                    <span>Provas</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </aside>
 
-        {/* Área admin — só visível para admins */}
-        {isAdmin && (
-          <div className="mb-6 p-4 border border-amber-200 bg-amber-50 rounded-xl flex items-center justify-between">
-            <div className="flex items-center gap-2 text-amber-800">
-              <ShieldCheck className="h-4 w-4" />
-              <span className="text-sm font-medium">Administrador</span>
+            <div className="min-w-0 xl:overflow-y-auto">
+              <div className="border-b border-[#11182a] bg-[#0B1020] px-5 py-4 animate-fade-in-up xl:px-6">
+                <h1 className="pm-work-title text-white">Minha Área</h1>
+                <p className="pm-work-subtitle">{user?.email}</p>
+              </div>
+              <TabsContent value="perfil" className="mt-0 animate-fade-in-up px-4 py-5 xl:px-6">
+                <ProfileTab />
+              </TabsContent>
+
+              <TabsContent value="turmas" className="mt-0 animate-fade-in-up px-4 py-5 xl:px-6">
+                <TurmasTab />
+              </TabsContent>
+
+              <TabsContent value="questoes" className="mt-0 animate-fade-in-up px-4 py-5 xl:px-6">
+                <QuestoesTab />
+              </TabsContent>
+
+              <TabsContent value="provas" className="mt-0 animate-fade-in-up px-4 py-5 xl:px-6">
+                <ProvasTab />
+              </TabsContent>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/admin/usuarios")}
-              >
-                Usuários
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/admin/gerenciar")}
-              >
-                Gerenciar Questões
-              </Button>
-            </div>
+
+            <aside className="border-l border-white/6 bg-[#0B1020] px-4 py-5 xl:overflow-y-auto">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3 border-b border-white/8 pb-2">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#9eb4d1]">
+                    Atalhos
+                  </p>
+                  {isAdmin && (
+                    <span className="rounded-full border border-[#FBC02D]/30 bg-[#FBC02D]/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[#FBC02D]">
+                      Admin
+                    </span>
+                  )}
+                </div>
+
+                <ShortcutItem
+                  icon={<BookOpen className="h-4 w-4 text-[#FBC02D]" />}
+                  title="Assuntos"
+                  description="Ajustes na árvore da sua disciplina."
+                  actionLabel="Abrir"
+                  href="/editor/assuntos"
+                />
+
+                <ShortcutItem
+                  icon={<AlignLeft className="h-4 w-4 text-[#FBC02D]" />}
+                  title="Textos base"
+                  description="Gerencie textos vinculados às suas questões."
+                  actionLabel="Abrir"
+                  href="/editor/textos-base"
+                />
+
+                {isAdmin && (
+                  <div className="rounded-xl border border-[#FBC02D]/20 bg-[#FBC02D]/8 p-3">
+                    <div className="flex items-start gap-2">
+                      <ShieldCheck className="mt-0.5 h-4 w-4 text-[#FBC02D]" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-[#F4F4F2]">Administrador</p>
+                        <p className="mt-0.5 text-sm leading-snug text-[#9eb4d1]">
+                          Rotas de manutenção e gestão.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-white/15 bg-white/6 text-white hover:bg-white/12 hover:text-white"
+                        onClick={() => router.push("/admin/usuarios")}
+                      >
+                        Usuários
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-white/15 bg-white/6 text-white hover:bg-white/12 hover:text-white"
+                        onClick={() => router.push("/admin/gerenciar")}
+                      >
+                        Questões
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </aside>
           </div>
-        )}
-
-        {/* Colaborar com assuntos */}
-        <div className="mb-6 p-4 border border-slate-200 bg-slate-50 rounded-xl flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-600">
-            <BookOpen className="h-4 w-4" />
-            <span className="text-sm">Quer propor ajustes nos assuntos da sua disciplina?</span>
-          </div>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/editor/assuntos">Propor ajustes</Link>
-          </Button>
-        </div>
-
-        {/* Textos base */}
-        <div className="mb-6 p-4 border border-slate-200 bg-slate-50 rounded-xl flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-600">
-            <AlignLeft className="h-4 w-4" />
-            <span className="text-sm">Gerencie os textos base vinculados às suas questões.</span>
-          </div>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/editor/textos-base">Textos base</Link>
-          </Button>
-        </div>
-
-        {/* Tabs com identidade ProvaMarela */}
-        <Tabs defaultValue={defaultTab} className="space-y-6">
-          <div className="glass rounded-xl p-2">
-            <TabsList className="w-full bg-transparent gap-2">
-              <TabsTrigger
-                value="perfil"
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
-              >
-                <User className="h-4 w-4" />
-                <span className="hidden sm:inline">Perfil</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="turmas"
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
-              >
-                <Users className="h-4 w-4" />
-                <span className="hidden sm:inline">Turmas</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="questoes"
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
-              >
-                <FileText className="h-4 w-4" />
-                <span className="hidden sm:inline">Questões</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="provas"
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
-              >
-                <ClipboardList className="h-4 w-4" />
-                <span className="hidden sm:inline">Provas</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
-
-          <TabsContent value="perfil" className="mt-6 animate-fade-in-up">
-            <ProfileTab />
-          </TabsContent>
-
-          <TabsContent value="turmas" className="mt-6 animate-fade-in-up">
-            <TurmasTab />
-          </TabsContent>
-
-          <TabsContent value="questoes" className="mt-6 animate-fade-in-up">
-            <QuestoesTab />
-          </TabsContent>
-
-          <TabsContent value="provas" className="mt-6 animate-fade-in-up">
-            <ProvasTab />
-          </TabsContent>
         </Tabs>
       </div>
     </div>

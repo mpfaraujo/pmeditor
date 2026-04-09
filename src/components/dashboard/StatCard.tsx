@@ -23,7 +23,7 @@ export function StatCard(props: {
       : "text-violet-700";
 
   return (
-    <Card className="border shadow-sm">
+    <Card className="rounded-2xl border border-white/8 bg-[#10172B] shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
@@ -34,7 +34,7 @@ export function StatCard(props: {
             <div className="mt-3 text-4xl font-semibold tracking-tight">
               <span className={valueClass}>{props.value}</span>
             </div>
-            <div className="mt-1 text-sm text-muted-foreground">{props.label}</div>
+            <div className="mt-1 text-sm text-[#9eb4d1]">{props.label}</div>
           </div>
 
           <div className={`h-12 w-12 rounded-xl border ${toneClasses} flex items-center justify-center`} aria-hidden>

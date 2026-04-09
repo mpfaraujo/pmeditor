@@ -1041,7 +1041,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       <div className="overflow-x-auto pb-4">
         <div
           ref={editorRef}
-          className="focus:outline-none shadow-2xl mx-auto"
+          className="question-editor-sheet focus:outline-none shadow-2xl mx-auto"
           style={{ width: "210mm" }}
         />
       </div>

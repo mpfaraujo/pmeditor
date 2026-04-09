@@ -23,37 +23,37 @@ export default function TemplatePage() {
   };
 
   return (
-    <main className="min-h-screen stripe-grid-bg">
-      <header className="sticky top-0 z-40 border-b glass">
-        <div className="mx-auto max-w-3xl px-4 py-4 animate-fade-in-up">
+    <main className="pm-shell">
+      <header className="sticky top-0 z-40 px-4 pt-4">
+        <div className="mx-auto max-w-5xl px-6 py-5 animate-fade-in-up pm-topbar-dark">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 transition-colors mb-2"
+            className="mb-2 inline-flex items-center gap-1 text-sm text-[#9eb4d1] transition-colors hover:text-white"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-slate-800">
+          <h1 className="text-3xl font-bold text-white">
             Modelo de Informações da Questão
           </h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-[#9eb4d1]">
             Copie o modelo abaixo, preencha num editor de texto e cole ao criar
             a questão.
           </p>
         </div>
       </header>
 
-      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6 animate-fade-in-up">
+      <div className="mx-auto max-w-5xl px-4 py-6 space-y-6 animate-fade-in-up">
         {/* Template com tabs */}
-        <div className="relative stripe-card-gradient overflow-hidden">
+        <div className="relative overflow-hidden rounded-2xl pm-surface pm-surface-accent">
           {/* Tabs */}
-          <div className="flex items-center justify-between px-4 py-2 border-b bg-slate-50">
+          <div className="flex items-center justify-between border-b bg-slate-50/80 px-4 py-3">
             <div className="flex gap-1">
               <button
                 onClick={() => { setTab("individual"); setCopied(false); }}
                 className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
                   tab === "individual"
-                    ? "bg-white border border-slate-200 text-slate-800 shadow-sm"
+                    ? "border border-[#FBC02D]/40 bg-[#FFF4CC] text-[#3A2C00] shadow-sm"
                     : "text-slate-500 hover:text-slate-700"
                 }`}
               >
@@ -63,7 +63,7 @@ export default function TemplatePage() {
                 onClick={() => { setTab("conjunto"); setCopied(false); }}
                 className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
                   tab === "conjunto"
-                    ? "bg-white border border-slate-200 text-slate-800 shadow-sm"
+                    ? "border border-[#FBC02D]/40 bg-[#FFF4CC] text-[#3A2C00] shadow-sm"
                     : "text-slate-500 hover:text-slate-700"
                 }`}
               >
@@ -93,7 +93,7 @@ export default function TemplatePage() {
         </div>
 
         {/* Instruções */}
-        <div className="stripe-card p-6 space-y-4">
+        <div className="pm-surface rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-semibold">Como usar</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
             <li>
@@ -183,7 +183,7 @@ export default function TemplatePage() {
         {/* CTA */}
         <div className="flex justify-center">
           <Link href="/editor">
-            <Button size="lg" className="gap-2 btn-primary">
+            <Button size="lg" className="gap-2 pm-accent-button">
               Ir para o editor <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

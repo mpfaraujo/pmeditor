@@ -382,9 +382,9 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
   };
 
   return (
-    <div className="border rounded-lg overflow-hidden bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-white/8 bg-[#0B1020] shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
       {/* Toolbar */}
-      <div className="flex items-center gap-0.5 px-2 py-1.5 border-b bg-gray-50 flex-wrap">
+      <div className="flex items-center gap-0.5 border-b border-white/8 bg-[#0F1629] px-2 py-1.5 flex-wrap">
         {/* Formatação de texto */}
         <TBtn icon={Bold} title="Negrito" active={hasMark("strong")} onClick={() => toggleMarkCmd("strong")} />
         <TBtn icon={Italic} title="Itálico" active={hasMark("em")} onClick={() => toggleMarkCmd("em")} />
@@ -392,7 +392,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
         <TBtn icon={Superscript} title="Sobrescrito" active={hasMark("superscript")} onClick={() => toggleMarkCmd("superscript")} />
         <TBtn icon={Subscript} title="Subscrito" active={hasMark("subscript")} onClick={() => toggleMarkCmd("subscript")} />
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+        <div className="mx-1 h-4 w-px bg-white/12" />
 
         {/* Alinhamento */}
         <TBtn icon={AlignLeft} title="Alinhar à esquerda" active={getTextAlign() === "left" || getTextAlign() === null} onClick={() => setTextAlign("left")} />
@@ -400,13 +400,13 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
         <TBtn icon={AlignJustify} title="Justificar" active={getTextAlign() === "justify"} onClick={() => setTextAlign("justify")} />
         <TBtn icon={Hash} title="Numerar linhas selecionadas" active={isLineNumbered()} onClick={toggleLineNumbers} />
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+        <div className="mx-1 h-4 w-px bg-white/12" />
 
         {/* Inserções */}
         <TBtn icon={Sigma} title="Fórmula matemática" onClick={() => setMathDialog({ open: true, pos: null, latex: "" })} />
         <TBtn icon={Image} title="Imagem" onClick={() => setImageOpen(true)} />
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+        <div className="mx-1 h-4 w-px bg-white/12" />
 
         {/* Listas */}
         <TBtn icon={List} title="Lista com marcadores" onClick={() => wrapList("bullet_list")} />
@@ -415,7 +415,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
         <TBtn label="a b" title="Lista alfabética (a, b, c…)" onClick={() => wrapList("alpha_list")} />
         <TBtn label="( )" title="Lista VF (assertiva)" onClick={() => wrapList("assertive_list")} />
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+        <div className="mx-1 h-4 w-px bg-white/12" />
 
         {/* Blocos especiais */}
         <TBtn icon={BookOpen} title="Poema / Verso" onClick={insertPoem} />
@@ -423,7 +423,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
         <TBtn icon={Box} title="Caixa de dados" onClick={insertDataBox} />
         <TBtn icon={Code} title="Bloco de código" onClick={insertCodeBlock} />
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+        <div className="mx-1 h-4 w-px bg-white/12" />
 
         <TBtn icon={Undo2} title="Desfazer" onClick={() => { if (!view) return; undo(view.state, view.dispatch); view.focus(); }} />
         <TBtn icon={Redo2} title="Refazer" onClick={() => { if (!view) return; redo(view.state, view.dispatch); view.focus(); }} />
@@ -431,13 +431,13 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
         <div className="flex-1" />
 
         <TBtn icon={Save} title="Salvar" variant="save" onClick={handleSave} />
-        {saving && <span className="text-xs text-muted-foreground ml-1">Salvando…</span>}
+        {saving && <span className="ml-1 text-xs text-[#9eb4d1]">Salvando…</span>}
       </div>
 
       {/* Editor */}
       <div
         ref={editorRef}
-        className="base-text-editor w-full [&_.ProseMirror]:!w-full [&_.ProseMirror]:!max-w-none [&_.ProseMirror]:!min-h-[400px] [&_.ProseMirror]:!shadow-none [&_.ProseMirror]:!p-6 [&_.ProseMirror]:outline-none [&_.ProseMirror]:cursor-text"
+        className="base-text-editor w-full [&_.ProseMirror]:!w-full [&_.ProseMirror]:!max-w-none [&_.ProseMirror]:!min-h-[400px] [&_.ProseMirror]:!shadow-none [&_.ProseMirror]:outline-none [&_.ProseMirror]:cursor-text"
       />
 
       <MathInsert

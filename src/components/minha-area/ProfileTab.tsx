@@ -6,13 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { LogoPicker } from "@/components/editor/LogoPicker";
 import { Plus, Trash2, X } from "lucide-react";
 import type { Institution } from "@/types/user";
@@ -73,84 +66,82 @@ export function ProfileTab() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Nome */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Dados Pessoais</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
+      <section className="border-b border-slate-200 px-7 py-6">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
           <div>
-            <Label>Nome do professor</Label>
-            <Input
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              placeholder="Seu nome completo"
-            />
+            <div className="mb-4">
+              <h2 className="text-[1rem] font-semibold text-slate-950">Dados Pessoais</h2>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <Label>Nome do professor</Label>
+                <Input
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  placeholder="Seu nome completo"
+                />
+              </div>
+            </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Disciplinas */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Disciplinas</CardTitle>
-          <CardDescription>
-            Suas disciplinas principais (usadas como default na criação de questões)
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex flex-wrap gap-2">
-            {disciplinas.map((d, i) => (
-              <Badge
-                key={i}
-                variant="secondary"
-                className="flex items-center gap-1 pr-1"
-              >
-                {d}
-                <button
+          <div>
+            <div className="mb-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-[1rem] font-semibold text-slate-950">Disciplinas</h2>
+                {disciplinas.map((d, i) => (
+                  <Badge
+                    key={i}
+                    variant="secondary"
+                    className="flex items-center gap-1 pr-1"
+                  >
+                    {d}
+                    <button
+                      type="button"
+                      onClick={() => removeDisciplina(i)}
+                      className="ml-1 rounded-full p-0.5 hover:bg-slate-300"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <Input
+                  value={newDisciplina}
+                  onChange={(e) => setNewDisciplina(e.target.value)}
+                  placeholder="Ex.: Matemática"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addDisciplina();
+                    }
+                  }}
+                />
+                <Button
                   type="button"
-                  onClick={() => removeDisciplina(i)}
-                  className="ml-1 rounded-full p-0.5 hover:bg-slate-300"
+                  variant="outline"
+                  size="icon"
+                  onClick={addDisciplina}
                 >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <Input
-              value={newDisciplina}
-              onChange={(e) => setNewDisciplina(e.target.value)}
-              placeholder="Ex.: Matemática"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  addDisciplina();
-                }
-              }}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={addDisciplina}
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      {/* Instituições */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Instituições</CardTitle>
-          <CardDescription>
-            Suas escolas/universidades (nome + logo para o cabeçalho da prova)
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <section className="px-7 py-6">
+        <div className="mb-4">
+          <h2 className="text-[1rem] font-semibold text-slate-950">Instituições</h2>
+          <p className="mt-1 text-sm text-[#5876a4]">
+            Suas escolas ou universidades, com nome e logo para o cabeçalho da prova.
+          </p>
+        </div>
+        <div className="space-y-4">
           {instituicoes.map((inst, i) => (
             <div key={i} className="flex items-start gap-3 p-3 rounded-lg border bg-slate-50">
               <div className="flex-1 space-y-2">
@@ -200,17 +191,15 @@ export function ProfileTab() {
             <Plus className="h-4 w-4 mr-2" />
             Adicionar instituição
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      {/* Salvar */}
-      <div className="flex justify-end">
+      <div className="flex justify-end border-t border-slate-200 bg-slate-50 px-7 py-4">
         <Button onClick={handleSave} disabled={saving} className="px-8">
           {saving ? "Salvando..." : "Salvar perfil"}
         </Button>
       </div>
 
-      {/* Dialog de upload de logo */}
       {logoDialogOpen !== null && (
         <LogoPicker
           open

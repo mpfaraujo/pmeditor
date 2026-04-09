@@ -181,7 +181,7 @@ export default function EditarTurmaPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen stripe-grid-bg p-4 md:p-8 flex items-center justify-center">
+      <div className="pm-shell p-4 md:p-8 flex items-center justify-center">
         <p className="text-slate-600">Carregando...</p>
       </div>
     );
@@ -192,20 +192,22 @@ export default function EditarTurmaPage() {
   }
 
   return (
-    <div className="min-h-screen stripe-grid-bg p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="pm-shell p-4 md:p-8">
+      <div className="pm-shell-inner max-w-6xl">
         <div className="mb-6">
-          <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4">
+          <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4 border border-slate-200 bg-white hover:bg-slate-50">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar para Turmas
           </Button>
-          <h1 className="text-3xl font-bold text-slate-900">Editar Turma</h1>
-          <p className="text-slate-600 mt-2">Atualize os filtros da turma</p>
+          <div className="pm-topbar-dark pm-work-header">
+            <h1 className="pm-work-title text-white">Editar Turma</h1>
+            <p className="pm-work-subtitle">Atualize os filtros da turma</p>
+          </div>
         </div>
 
         <div className="space-y-6">
           {/* Informações Básicas */}
-          <Card>
+          <Card className="rounded-2xl border-0 shadow-none pm-surface">
             <CardHeader>
               <CardTitle>Informações da Turma</CardTitle>
             </CardHeader>
@@ -235,7 +237,7 @@ export default function EditarTurmaPage() {
           </Card>
 
           {/* Filtros */}
-          <Card>
+          <Card className="rounded-2xl border-0 shadow-none pm-surface">
             <CardHeader>
               <CardTitle>Filtros da Turma</CardTitle>
               <CardDescription>
@@ -377,7 +379,7 @@ export default function EditarTurmaPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleSave} disabled={!nome.trim() || saving}>
+            <Button onClick={handleSave} disabled={!nome.trim() || saving} className="pm-accent-button">
               {saving ? "Salvando..." : "Salvar Alterações"}
             </Button>
           </div>

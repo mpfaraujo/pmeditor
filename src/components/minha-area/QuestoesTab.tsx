@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   FileText,
   PlusCircle,
   Edit,
+  Eye,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { listQuestions } from "@/lib/questions";
+import { getQuestion, listQuestions } from "@/lib/questions";
 import { useToast } from "@/hooks/use-toast";
+import QuestionRenderer from "@/components/Questions/QuestionRenderer";
 
 interface Question {
   id: string;
@@ -26,6 +29,11 @@ interface Question {
   tags: string[] | null;
 }
 
+interface PreviewQuestion {
+  metadata?: any;
+  content: any;
+}
+
 export function QuestoesTab() {
   const router = useRouter();
   const { toast } = useToast();
@@ -34,6 +42,9 @@ export function QuestoesTab() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewQuestion, setPreviewQuestion] = useState<PreviewQuestion | null>(null);
 
   const limit = 10;
   const totalPages = Math.ceil(total / limit);
@@ -67,6 +78,28 @@ export function QuestoesTab() {
 
   const handleEdit = (id: string) => {
     router.push(`/editor?id=${id}`);
+  };
+
+  const handlePreview = async (id: string) => {
+    setPreviewOpen(true);
+    setPreviewLoading(true);
+    setPreviewQuestion(null);
+    try {
+      const response: any = await getQuestion(id);
+      const item = response?.item ?? response;
+      if (!item?.content) throw new Error("Questão sem conteúdo");
+      setPreviewQuestion(item);
+    } catch (err) {
+      console.error("Erro ao carregar preview da questão:", err);
+      toast({
+        title: "Erro ao carregar questão",
+        description: "Não foi possível abrir a visualização.",
+        variant: "destructive",
+      });
+      setPreviewOpen(false);
+    } finally {
+      setPreviewLoading(false);
+    }
   };
 
   if (loading && questions.length === 0) {
@@ -109,10 +142,9 @@ export function QuestoesTab() {
         </Button>
       </div>
 
-      {/* Lista de questões */}
-      <div className="space-y-3">
+      <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
         {questions.map((q) => (
-          <Card key={q.id} className="hover:shadow-md transition-shadow">
+          <Card key={q.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)] transition-shadow hover:shadow-md">
             <CardContent className="p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
@@ -161,6 +193,14 @@ export function QuestoesTab() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    onClick={() => handlePreview(q.id)}
+                    title="Visualizar"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => handleEdit(q.id)}
                     title="Editar"
                   >
@@ -197,6 +237,22 @@ export function QuestoesTab() {
           </Button>
         </div>
       )}
+
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="w-[min(96vw,22.5cm)] max-w-[22.5cm] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Visualizar questão</DialogTitle>
+          </DialogHeader>
+          {previewLoading && (
+            <div className="py-8 text-center text-sm text-muted-foreground">Carregando…</div>
+          )}
+          {!previewLoading && previewQuestion?.content && (
+            <div className="rounded-xl border border-slate-200 bg-white p-4">
+              <QuestionRenderer content={previewQuestion.content} />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -36,32 +36,32 @@ export default function ConsultaAssuntosPage() {
   };
 
   return (
-    <main className="min-h-screen stripe-grid-bg">
-      <header className="sticky top-0 z-40 border-b glass">
-        <div className="mx-auto max-w-2xl px-4 py-4 flex items-start justify-between animate-fade-in-up">
+    <main className="pm-shell">
+      <header className="sticky top-0 z-40 px-4 pt-4">
+        <div className="mx-auto max-w-5xl px-6 py-5 flex items-start justify-between animate-fade-in-up pm-topbar-dark">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">
+            <h1 className="text-2xl font-bold text-white">
               Assuntos por Disciplina
             </h1>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <p className="mt-0.5 text-sm text-[#9eb4d1]">
               Referência para preencher o campo{" "}
-              <code className="bg-slate-100 px-1 rounded font-mono text-xs">assunto:</code>{" "}
+              <code className="rounded bg-white/10 px-1 font-mono text-xs text-white">assunto:</code>{" "}
               do modelo de informações.
             </p>
           </div>
           <button
             onClick={() => window.close()}
             title="Fechar aba"
-            className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors mt-0.5 shrink-0"
+            className="mt-0.5 shrink-0 rounded-md p-1.5 text-[#9eb4d1] transition-colors hover:bg-white/10 hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto py-8 px-4 animate-fade-in-up">
+      <div className="mx-auto max-w-5xl px-4 py-6 animate-fade-in-up">
         {/* Seletor de disciplina e nível */}
-        <div className="flex gap-3 mb-6">
+        <div className="mb-6 flex gap-3 rounded-2xl pm-surface p-4">
           <select
             value={disciplina}
             onChange={(e) => setDisciplina(e.target.value)}
@@ -91,8 +91,8 @@ export default function ConsultaAssuntosPage() {
         ) : (
           <div className="space-y-4">
             {areas.map(([area, { subareas }]) => (
-              <div key={area} className="stripe-card overflow-hidden">
-                <div className="px-4 py-2 bg-slate-50 border-b">
+              <div key={area} className="overflow-hidden rounded-2xl pm-surface">
+                <div className="border-b bg-slate-50/80 px-4 py-3">
                   <span className="text-sm font-semibold text-slate-700">{area}</span>
                 </div>
                 <ul className="divide-y">

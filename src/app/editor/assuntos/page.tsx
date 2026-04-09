@@ -69,9 +69,9 @@ function AreaCard({
   };
 
   return (
-    <div className="border rounded-lg mb-3 overflow-hidden bg-white shadow-sm">
+    <div className="mb-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.05)]">
       {/* Cabeçalho da área */}
-      <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 border-b">
+      <div className="flex items-center gap-2 border-b bg-slate-50/90 px-4 py-3">
         <button
           onClick={() => setExpanded((e) => !e)}
           className="text-slate-400 hover:text-slate-700 text-xs w-4"
@@ -109,7 +109,7 @@ function AreaCard({
 
         <button
           onClick={onAddSubarea}
-          className="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
+          className="rounded-lg border border-[#FBC02D]/40 bg-[#FFF4CC] px-2 py-1 text-xs text-[#5A4500] hover:bg-[#FFE082]"
         >
           + Assunto
         </button>
@@ -423,7 +423,7 @@ export default function AssuntosPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-100">
+      <div className="pm-shell flex items-center justify-center">
         <span className="text-sm text-slate-400">Carregando...</span>
       </div>
     );
@@ -431,8 +431,8 @@ export default function AssuntosPage() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-100">
-        <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm text-center">
+      <div className="pm-shell flex items-center justify-center p-4">
+        <div className="w-full max-w-sm rounded-2xl p-8 text-center pm-surface">
           <h1 className="text-xl font-bold text-slate-800 mb-2">Editar Assuntos</h1>
           <p className="text-sm text-slate-500 mb-6">
             Você precisa estar logado para editar os assuntos.
@@ -451,26 +451,28 @@ export default function AssuntosPage() {
   const niveisDisponiveis = NIVEIS.filter(n => BASE_DATA[disciplinaAtual]?.[n.value] !== undefined);
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <div className="max-w-3xl mx-auto py-8 px-4">
+    <div className="pm-shell">
+      <div className="max-w-5xl mx-auto py-6 px-4">
         {/* Cabeçalho */}
         <div className="mb-6">
-          <button
-            onClick={() => router.push("/minha-area")}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-4 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Voltar para Minha Área
-          </button>
-          <h1 className="text-2xl font-bold text-slate-800">Editar Assuntos por Disciplina</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Edite as áreas e assuntos de cada disciplina e nível. Ao terminar, clique em{" "}
-            <strong>Gerar JSON</strong> e envie para o administrador.
-          </p>
+          <div className="pm-topbar-dark pm-work-header">
+            <button
+              onClick={() => router.push("/minha-area")}
+              className="mb-4 flex items-center gap-1.5 text-sm text-[#9eb4d1] transition-colors hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Voltar para Minha Área
+            </button>
+            <h1 className="pm-work-title text-white">Editar Assuntos por Disciplina</h1>
+            <p className="pm-work-subtitle">
+              Edite as áreas e assuntos de cada disciplina e nível. Ao terminar, clique em{" "}
+              <strong className="text-white">Gerar JSON</strong> e envie para o administrador.
+            </p>
+          </div>
         </div>
 
         {/* Seletor de disciplina e nível */}
-        <div className="bg-white rounded-xl shadow-sm border p-4 mb-4">
+        <div className="mb-4 rounded-2xl p-5 pm-surface">
           <div className="flex gap-3">
             <div className="flex-1">
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
@@ -518,7 +520,7 @@ export default function AssuntosPage() {
         </div>
 
         {/* Áreas */}
-        <div className="bg-white rounded-xl shadow-sm border p-4 mb-4">
+        <div className="mb-4 rounded-2xl p-5 pm-surface">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-slate-700">
               Áreas de {disciplinaAtual} — {NIVEIS.find(n => n.value === nivelAtual)?.label}{" "}
@@ -526,7 +528,7 @@ export default function AssuntosPage() {
             </h2>
             <button
               onClick={handleAddArea}
-              className="text-sm px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium"
+              className="rounded-lg px-3 py-1.5 text-sm font-medium pm-accent-button"
             >
               + Nova área
             </button>
@@ -553,11 +555,11 @@ export default function AssuntosPage() {
         </div>
 
         {/* Exportar */}
-        <div className="bg-white rounded-xl shadow-sm border p-4">
+        <div className="rounded-2xl p-5 pm-surface">
           <div className="flex items-center gap-3 mb-3 flex-wrap">
             <button
               onClick={gerarJson}
-              className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
+              className="rounded-lg px-4 py-2 text-sm font-medium pm-accent-button"
             >
               Gerar JSON
             </button>

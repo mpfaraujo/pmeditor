@@ -19,26 +19,26 @@ export function ProtectedActionCard(props: {
 
   if (loading) {
     return (
-      <div className="rounded-xl border bg-white shadow-sm p-6 animate-pulse">
-        <div className="h-12 w-12 rounded-xl bg-slate-200 mb-3" />
-        <div className="h-4 w-32 bg-slate-200 rounded mb-2" />
-        <div className="h-3 w-48 bg-slate-100 rounded" />
+      <div className="rounded-2xl border border-white/8 bg-[#10172B] p-6 animate-pulse">
+        <div className="mb-3 h-12 w-12 rounded-2xl bg-white/10" />
+        <div className="mb-2 h-4 w-32 rounded bg-white/10" />
+        <div className="h-3 w-48 rounded bg-white/6" />
       </div>
     );
   }
 
   if (!isLoggedIn) {
     return (
-      <div className="rounded-xl border bg-white/60 shadow-sm p-6 opacity-60">
+      <div className="rounded-2xl border border-white/8 bg-[#10172B]/75 p-6 opacity-80">
         <div className="flex items-start gap-4">
-          <div className="h-12 w-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/6 text-[#7f90ab]">
             {props.icon}
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="text-lg font-semibold tracking-tight text-slate-400">
+            <h2 className="text-lg font-semibold tracking-tight text-[#d8e2f0]">
               {props.title}
             </h2>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-[#8ea2bf]">
               Faça login para criar questões.
             </p>
           </div>

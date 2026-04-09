@@ -10,42 +10,36 @@ export function ActionCard(props: {
   accent: "blue" | "green" | "purple" | "gray";
   badge?: string;
 }) {
-  const accent =
-    props.accent === "blue"
-      ? "hover:border-blue-300"
-      : props.accent === "green"
-      ? "hover:border-emerald-300"
-      : props.accent === "purple"
-      ? "hover:border-purple-300"
-      : "hover:border-slate-300";
-
   const iconBg =
     props.accent === "blue"
-      ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
+      ? "bg-[#0F172A] text-[#FBC02D]"
       : props.accent === "green"
-      ? "bg-gradient-to-br from-emerald-500 to-teal-500 text-white"
+      ? "bg-[#10261F] text-[#FBC02D]"
       : props.accent === "purple"
-      ? "bg-gradient-to-br from-purple-500 to-pink-500 text-white"
-      : "bg-gradient-to-br from-slate-500 to-gray-500 text-white";
+      ? "bg-[#17142B] text-[#FBC02D]"
+      : "bg-[#1B1F2D] text-[#FBC02D]";
 
   return (
-    <Link href={props.href} className={`group block stripe-card hover-lift ${accent}`}>
+    <Link
+      href={props.href}
+      className="group block rounded-2xl border border-white/8 bg-[#10172B] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#FBC02D]/45 hover:bg-[#121B31] hover:shadow-[0_22px_46px_rgba(0,0,0,0.3)]"
+    >
       <div className="p-6">
         <div className="flex items-start gap-4">
-          <div className={`h-12 w-12 rounded-xl ${iconBg} flex items-center justify-center`}>
+          <div className={`h-12 w-12 rounded-2xl ${iconBg} flex items-center justify-center shadow-sm`}>
             {props.icon}
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold tracking-tight">{props.title}</h2>
-              {props.badge ? <Badge variant="secondary">{props.badge}</Badge> : null}
+              <h2 className="text-lg font-semibold tracking-tight text-white">{props.title}</h2>
+              {props.badge ? <Badge variant="secondary" className="border-white/10 bg-white/8 text-[#d8e2f0]">{props.badge}</Badge> : null}
             </div>
-            <p className="mt-1 text-sm text-muted-foreground">{props.description}</p>
+            <p className="mt-1 text-sm text-[#9eb4d1]">{props.description}</p>
 
-            <div className="mt-4 inline-flex items-center text-sm font-medium">
+            <div className="mt-4 inline-flex items-center text-sm font-medium text-[#F4F4F2]">
               Acessar
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="ml-2 h-4 w-4 text-[#FBC02D] transition-transform group-hover:translate-x-0.5" />
             </div>
           </div>
         </div>

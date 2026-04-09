@@ -93,4 +93,41 @@
   display: inline;
 }
 
+/* =========================================================
+   Modo de leitura acessível na seleção de questões
+   ========================================================= */
+
+.question-readable-preview .print-mode {
+  width: 18cm;
+  max-width: 18cm;
+  box-sizing: border-box;
+  font-family: "Noto Sans", "Source Sans Pro", Calibri, Arial, sans-serif;
+  font-size: 12.5pt;
+  line-height: 1.5;
+  margin: 0 auto;
+}
+
+.question-readable-preview .print-mode p:not([style*="text-align"]) {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.question-readable-preview .print-mode .question-options {
+  margin-top: 0.6rem;
+}
+
+.question-readable-preview .print-mode .question-options > *,
+.question-readable-preview .print-mode li,
+.question-readable-preview .print-mode .option {
+  line-height: 1.45;
+}
+
+.question-readable-preview .print-mode img {
+  max-width: min(100%, 16cm);
+}
+
+.question-readable-preview .print-mode .math-inline,
+.question-readable-preview .print-mode .math-inline .katex {
+  line-height: 1.35;
+}
 

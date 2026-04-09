@@ -107,19 +107,25 @@ function EditorContent() {
 
   if (step === "editor") {
     return (
-      <div className="min-h-screen stripe-grid-bg py-8">
-        <div className="container mx-auto animate-fade-in-up">
-          <div className="mb-8">
-            <Link
-              href="/minha-area"
-              className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 transition-colors mb-3"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              Minha Área
-            </Link>
-            <h1 className="text-4xl font-bold text-center text-slate-800">
-              Editor de Questões
-            </h1>
+      <div className="min-h-screen bg-[#070B1D] py-6">
+        <div className="pm-shell-inner animate-fade-in-up">
+          <div className="mb-5">
+            <div className="pm-topbar-dark flex items-start gap-5 px-5 py-4">
+              <div className="shrink-0">
+                <Link
+                  href="/minha-area"
+                  className="inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm text-[#9eb4d1] transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  Minha Área
+                </Link>
+              </div>
+              <div className="min-w-0">
+                <h1 className="pm-work-title">
+                  Editor de Questões
+                </h1>
+              </div>
+            </div>
           </div>
           <QuestionEditor
             initial={
@@ -143,29 +149,35 @@ function EditorContent() {
   }
 
   return (
-    <div className="min-h-screen stripe-grid-bg">
-      <header className="sticky top-0 z-40 border-b glass">
-        <div className="mx-auto max-w-3xl px-4 py-4 animate-fade-in-up">
-          <Link
-            href="/minha-area"
-            className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 transition-colors mb-2"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Minha Área
-          </Link>
-          <h1 className="text-3xl font-bold text-slate-800">
-            Nova Questão
-          </h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Preencha as informações da questão no modelo abaixo e cole aqui, ou
-            pule direto para o editor.
-          </p>
+    <div className="min-h-screen bg-[#070B1D]">
+      <header className="sticky top-0 z-40 px-4 pt-4">
+        <div className="mx-auto max-w-5xl animate-fade-in-up pm-topbar-dark px-5 py-4">
+          <div className="flex items-start gap-5">
+            <div className="shrink-0">
+              <Link
+                href="/minha-area"
+                className="inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm text-[#9eb4d1] transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                Minha Área
+              </Link>
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-[2rem] font-bold leading-tight text-white">
+                Nova Questão
+              </h1>
+              <p className="mt-1 text-sm leading-relaxed text-[#9eb4d1]">
+                Preencha as informações da questão no modelo abaixo e cole aqui, ou
+                pule direto para o editor.
+              </p>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6 animate-fade-in-up">
+      <div className="mx-auto max-w-5xl px-4 py-5 space-y-5 animate-fade-in-up">
         {/* Botão copiar modelo */}
-        <div className="flex items-center justify-between">
+        <div className="pm-surface rounded-2xl px-5 py-4 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
             Primeira vez? Copie o modelo, preencha no Bloco de Notas e cole
             abaixo.
@@ -193,13 +205,13 @@ function EditorContent() {
           value={yamlText}
           onChange={(e) => setYamlText(e.target.value)}
           placeholder={template}
-          className="w-full h-72 rounded-lg border border-slate-300 bg-white text-slate-800 font-mono text-sm p-4 resize-y placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-72 rounded-2xl border border-slate-300 bg-white text-slate-800 font-mono text-sm p-4 resize-y placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-[0_12px_30px_rgba(15,23,42,0.04)]"
           spellCheck={false}
         />
 
         {/* Preview dos campos parseados */}
         {yamlText.trim() && (
-          <div className="stripe-card-gradient p-4 space-y-3">
+          <div className="pm-surface pm-surface-accent p-4 space-y-3">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               {parsed ? (
                 <Check className="h-4 w-4 text-green-600" />
