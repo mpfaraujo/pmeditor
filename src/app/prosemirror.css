@@ -80,7 +80,7 @@
   margin: 1rem 0;
 }
 
-.base-text {
+.ProseMirror .base-text {
   background: #f0f4f8;
   padding: 1rem;
   border-radius: 4px;
@@ -96,8 +96,8 @@
   line-height: 1.5;
 }
 
-.base-text[data-numbered="true"],
-.statement[data-numbered="true"] {
+.ProseMirror .base-text[data-numbered="true"],
+.ProseMirror .statement[data-numbered="true"] {
   position: relative;
   overflow: visible;
 }
