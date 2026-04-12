@@ -574,6 +574,27 @@ POST https://mpfaraujo.com.br/guardafiguras/api/upload.php
     - Comportamento atual deve ser preservado integralmente para todos os casos fora dessa janela
     - Exige novos testes de regressão cobrindo o cenário com e sem o novo critério ANTES de implementar
 
+- [ ] Paginação híbrida manual 1 coluna / 2 colunas
+  - 0% implementado — este é o plano correto discutido mais recentemente
+  - NÃO é decisão por `question_item`
+  - NÃO é alternância automática por heurística no fluxo normal
+  - O professor escolhe no modal de repaginação quais unidades/grupos vão para `1 coluna`; o restante fica em `2 colunas`
+  - Unidades de seleção:
+    - questão individual
+    - `set_question` inteira (continua sendo uma única questão)
+  - Restrição estrutural:
+    - questões que compartilham o mesmo texto base devem ficar no MESMO tipo de paginação
+  - Ordem configurável pelo professor:
+    - renderizar primeiro o bloco de `1 coluna` e depois o de `2 colunas`
+    - ou primeiro `2 colunas` e depois `1 coluna`
+  - Estratégia prevista:
+    - rodar paginação em dois passes independentes
+    - medir/renderizar o bloco de `1 coluna` com capacidade de `1 coluna`
+    - medir/renderizar o bloco de `2 colunas` com capacidade de `2 colunas`
+    - concatenar os conjuntos de páginas na ordem escolhida
+  - Implicação de UX:
+    - o modal precisa operar sobre grupos pagináveis e explicar quando uma seleção arrasta outras questões por compartilharem texto base
+
 - [ ] Sistema de curtidas e flags (plano em `C:\Users\mpfar\.claude\plans\keen-leaping-lampson.md`)
   - 0% implementado — precisa de back (tabela + vote.php + list.php) e front (QuestionCard)
   - Coração: toggle (curtir/descurtir), pois acidente e comum

@@ -6,6 +6,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
 import QuestionRendererProva from "@/components/Questions/QuestionRendererProva";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -68,6 +76,10 @@ type DuplicateCandidate = {
   };
   existingQuestion?: QuestionItem | null;
 };
+
+type DuplicateMetaField = "disciplina" | "assunto" | "dificuldade" | "tipo" | "tags" | "gabarito";
+type DuplicateMetaSelection = Record<DuplicateMetaField, boolean>;
+type DuplicateMetaDraft = Record<DuplicateMetaField, string>;
 
 // Severidade: error > attention > info
 type WarningSeverity = "error" | "attention" | "info";
@@ -287,6 +299,285 @@ function getBaseTextIds(metadata: any): string[] {
 
 function getDuplicateCandidateKey(item: DuplicateCandidate): string {
   return item.payload?.metadata?.id ?? `${item.existingId}:${item.idx}:${item.preview}`;
+}
+
+function extractQuestionSortNumber(...candidates: unknown[]): number | null {
+  for (const candidate of candidates) {
+    if (typeof candidate === "number" && Number.isFinite(candidate)) {
+      return candidate;
+    }
+    if (typeof candidate !== "string") continue;
+    const trimmed = candidate.trim();
+    if (!trimmed) continue;
+    const exact = trimmed.match(/^Q\.?\s*(\d+)$/i) ?? trimmed.match(/^(\d+)$/);
+    if (exact) return Number(exact[1]);
+    const loose = trimmed.match(/(?:quest[aã]o|q\.?)\s*[:.\-]?\s*(\d+)/i);
+    if (loose) return Number(loose[1]);
+  }
+  return null;
+}
+
+function compareByQuestionNumber(
+  aNum: number | null,
+  bNum: number | null,
+  aIndex: number,
+  bIndex: number
+): number {
+  if (aNum != null && bNum != null && aNum !== bNum) return aNum - bNum;
+  if (aNum != null && bNum == null) return -1;
+  if (aNum == null && bNum != null) return 1;
+  return aIndex - bIndex;
+}
+
+const DUPLICATE_META_FIELDS: DuplicateMetaField[] = [
+  "disciplina",
+  "assunto",
+  "dificuldade",
+  "tipo",
+  "tags",
+  "gabarito",
+];
+
+const DUPLICATE_META_LABELS: Record<DuplicateMetaField, string> = {
+  disciplina: "Disciplina",
+  assunto: "Assunto",
+  dificuldade: "Dificuldade",
+  tipo: "Tipo",
+  tags: "Tags",
+  gabarito: "Gabarito",
+};
+
+function normalizeMetaText(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function normalizeMetaTags(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => (typeof item === "string" ? item.trim() : ""))
+    .filter(Boolean);
+}
+
+function normalizeMetaGabarito(value: unknown): any | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const raw = value as Record<string, unknown>;
+  const kind = typeof raw.kind === "string" ? raw.kind : null;
+  const correct = typeof raw.correct === "string" ? raw.correct.trim() : "";
+  const rubric = raw.rubric ?? null;
+
+  if (kind === "mcq" || kind === "tf") {
+    return correct ? { kind, correct } : null;
+  }
+  if (kind === "essay") {
+    if (typeof rubric === "string" && rubric.trim()) return { kind, rubric: rubric.trim() };
+    if (rubric && typeof rubric === "object") return { kind, rubric };
+    return { kind };
+  }
+  return null;
+}
+
+function getMetaFieldValue(meta: any, field: DuplicateMetaField): any {
+  if (field === "tags") return normalizeMetaTags(meta?.tags);
+  if (field === "gabarito") return normalizeMetaGabarito(meta?.gabarito);
+  return normalizeMetaText(meta?.[field]);
+}
+
+function isMetaFieldEmpty(meta: any, field: DuplicateMetaField): boolean {
+  const value = getMetaFieldValue(meta, field);
+  if (field === "tags") return value.length === 0;
+  if (field === "gabarito") return !value;
+  return value === "";
+}
+
+function areMetaFieldValuesEqual(aMeta: any, bMeta: any, field: DuplicateMetaField): boolean {
+  const a = getMetaFieldValue(aMeta, field);
+  const b = getMetaFieldValue(bMeta, field);
+
+  if (field === "tags") {
+    return JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+  }
+  if (field === "gabarito") {
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+  return a === b;
+}
+
+function formatMetaFieldValue(meta: any, field: DuplicateMetaField): string {
+  const value = getMetaFieldValue(meta, field);
+  if (field === "tags") return value.length ? value.join(", ") : "—";
+  if (field === "gabarito") {
+    if (!value) return "—";
+    if (value.kind === "essay") return "Discursiva";
+    return value.correct || "—";
+  }
+  return value || "—";
+}
+
+function getDraftValueFromMeta(meta: any, field: DuplicateMetaField): string {
+  if (field === "tags") return normalizeMetaTags(meta?.tags).join(", ");
+  if (field === "gabarito") {
+    const value = normalizeMetaGabarito(meta?.gabarito);
+    if (!value) return "";
+    if (value.kind === "essay") return "essay";
+    return value.correct ?? "";
+  }
+  return normalizeMetaText(meta?.[field]);
+}
+
+function buildDraftFromMeta(meta: any): DuplicateMetaDraft {
+  return {
+    disciplina: getDraftValueFromMeta(meta, "disciplina"),
+    assunto: getDraftValueFromMeta(meta, "assunto"),
+    dificuldade: getDraftValueFromMeta(meta, "dificuldade"),
+    tipo: getDraftValueFromMeta(meta, "tipo"),
+    tags: getDraftValueFromMeta(meta, "tags"),
+    gabarito: getDraftValueFromMeta(meta, "gabarito"),
+  };
+}
+
+function parseDraftTags(value: string): string[] {
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function buildDraftMetadataPatch(
+  selection: DuplicateMetaSelection,
+  drafts: DuplicateMetaDraft,
+  existingMeta: any,
+  attemptedMeta: any
+): FixPatch {
+  const patch: FixPatch = {};
+
+  if (selection.disciplina) patch.disciplina = drafts.disciplina.trim();
+  if (selection.assunto) patch.assunto = drafts.assunto.trim();
+  if (selection.dificuldade) patch.dificuldade = drafts.dificuldade.trim();
+  if (selection.tipo) patch.tipo = drafts.tipo.trim();
+  if (selection.tags) patch.tags = parseDraftTags(drafts.tags);
+
+  if (selection.gabarito) {
+    const normalized = drafts.gabarito.trim().toUpperCase();
+    const baseKind =
+      normalizeMetaGabarito(attemptedMeta?.gabarito)?.kind ??
+      normalizeMetaGabarito(existingMeta?.gabarito)?.kind ??
+      "mcq";
+    if (normalized === "ESSAY" || normalized === "DISCURSIVA") {
+      patch.gabarito = { kind: "essay" };
+    } else if ((baseKind === "tf" && (normalized === "C" || normalized === "E"))) {
+      patch.gabarito = { kind: "tf", correct: normalized };
+    } else if (/^[A-E]$/.test(normalized)) {
+      patch.gabarito = { kind: "mcq", correct: normalized };
+    }
+  }
+
+  return patch;
+}
+
+function getFillMissingSelection(existingMeta: any, attemptedMeta: any): DuplicateMetaSelection {
+  return {
+    disciplina: isMetaFieldEmpty(existingMeta, "disciplina") && !isMetaFieldEmpty(attemptedMeta, "disciplina"),
+    assunto: isMetaFieldEmpty(existingMeta, "assunto") && !isMetaFieldEmpty(attemptedMeta, "assunto"),
+    dificuldade: isMetaFieldEmpty(existingMeta, "dificuldade") && !isMetaFieldEmpty(attemptedMeta, "dificuldade"),
+    tipo: isMetaFieldEmpty(existingMeta, "tipo") && !isMetaFieldEmpty(attemptedMeta, "tipo"),
+    tags: isMetaFieldEmpty(existingMeta, "tags") && !isMetaFieldEmpty(attemptedMeta, "tags"),
+    gabarito: isMetaFieldEmpty(existingMeta, "gabarito") && !isMetaFieldEmpty(attemptedMeta, "gabarito"),
+  };
+}
+
+function getDifferentSelection(existingMeta: any, attemptedMeta: any): DuplicateMetaSelection {
+  return {
+    disciplina:
+      !isMetaFieldEmpty(attemptedMeta, "disciplina") &&
+      !areMetaFieldValuesEqual(existingMeta, attemptedMeta, "disciplina"),
+    assunto:
+      !isMetaFieldEmpty(attemptedMeta, "assunto") &&
+      !areMetaFieldValuesEqual(existingMeta, attemptedMeta, "assunto"),
+    dificuldade:
+      !isMetaFieldEmpty(attemptedMeta, "dificuldade") &&
+      !areMetaFieldValuesEqual(existingMeta, attemptedMeta, "dificuldade"),
+    tipo:
+      !isMetaFieldEmpty(attemptedMeta, "tipo") &&
+      !areMetaFieldValuesEqual(existingMeta, attemptedMeta, "tipo"),
+    tags:
+      !isMetaFieldEmpty(attemptedMeta, "tags") &&
+      !areMetaFieldValuesEqual(existingMeta, attemptedMeta, "tags"),
+    gabarito:
+      !isMetaFieldEmpty(attemptedMeta, "gabarito") &&
+      !areMetaFieldValuesEqual(existingMeta, attemptedMeta, "gabarito"),
+  };
+}
+
+function buildSelectedMetadataPatch(
+  existingMeta: any,
+  attemptedMeta: any,
+  selection: DuplicateMetaSelection
+): FixPatch {
+  const patch: FixPatch = {};
+
+  if (selection.disciplina && !isMetaFieldEmpty(attemptedMeta, "disciplina")) {
+    patch.disciplina = getMetaFieldValue(attemptedMeta, "disciplina");
+  }
+  if (selection.assunto && !isMetaFieldEmpty(attemptedMeta, "assunto")) {
+    patch.assunto = getMetaFieldValue(attemptedMeta, "assunto");
+  }
+  if (selection.dificuldade && !isMetaFieldEmpty(attemptedMeta, "dificuldade")) {
+    patch.dificuldade = getMetaFieldValue(attemptedMeta, "dificuldade");
+  }
+  if (selection.tipo && !isMetaFieldEmpty(attemptedMeta, "tipo")) {
+    patch.tipo = getMetaFieldValue(attemptedMeta, "tipo");
+  }
+  if (selection.tags && !isMetaFieldEmpty(attemptedMeta, "tags")) {
+    patch.tags = getMetaFieldValue(attemptedMeta, "tags");
+  }
+  if (selection.gabarito && !isMetaFieldEmpty(attemptedMeta, "gabarito")) {
+    patch.gabarito = getMetaFieldValue(attemptedMeta, "gabarito");
+  }
+
+  return patch;
+}
+
+function buildFillMissingMetadataPatch(existingMeta: any, attemptedMeta: any): FixPatch {
+  return buildSelectedMetadataPatch(
+    existingMeta,
+    attemptedMeta,
+    getFillMissingSelection(existingMeta, attemptedMeta)
+  );
+}
+
+function buildMergeTagsPatch(existingMeta: any, attemptedMeta: any): FixPatch | null {
+  const existingTags = normalizeMetaTags(existingMeta?.tags);
+  const attemptedTags = normalizeMetaTags(attemptedMeta?.tags);
+  const missing = attemptedTags.filter((tag) => !existingTags.includes(tag));
+  if (missing.length === 0) return null;
+  return { tagsAdd: missing };
+}
+
+function patchHasChanges(patch: FixPatch): boolean {
+  return Object.keys(patch).length > 0;
+}
+
+function applyFixPatchToMetadata(currentMeta: any, patch: FixPatch): any {
+  const next = { ...(currentMeta ?? {}) };
+
+  for (const field of ["disciplina", "assunto", "dificuldade", "tipo"] as const) {
+    if (patch[field] !== undefined) next[field] = patch[field];
+  }
+
+  if (patch.reviewed !== undefined) next.reviewed = patch.reviewed;
+  if (patch.gabarito !== undefined) next.gabarito = patch.gabarito;
+
+  if (patch.tags !== undefined) {
+    next.tags = [...patch.tags];
+  } else if (patch.tagsAdd || patch.tagsRemove) {
+    const currentTags = normalizeMetaTags(next.tags);
+    const added = patch.tagsAdd ? [...currentTags, ...patch.tagsAdd] : currentTags;
+    next.tags = Array.from(new Set(added)).filter(
+      (tag) => !(patch.tagsRemove ?? []).includes(tag)
+    );
+  }
+
+  return next;
 }
 
 function buildCombinedBaseTextNode(
@@ -1043,19 +1334,246 @@ function BaseTextCard({
   );
 }
 
+function DuplicateMetadataModal({
+  open,
+  onOpenChange,
+  item,
+  onApplyPatch,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  item: DuplicateCandidate;
+  onApplyPatch: (questionId: string, patch: FixPatch) => Promise<{ ok: boolean; error?: string }>;
+}) {
+  const existingMeta = item.existingQuestion?.metadata ?? {};
+  const attemptedMeta = item.payload?.metadata ?? {};
+  const [selection, setSelection] = useState<DuplicateMetaSelection>(() =>
+    getFillMissingSelection(existingMeta, attemptedMeta)
+  );
+  const [drafts, setDrafts] = useState<DuplicateMetaDraft>(() => buildDraftFromMeta(attemptedMeta));
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (open) {
+      setSelection(getFillMissingSelection(existingMeta, attemptedMeta));
+      setDrafts(buildDraftFromMeta(attemptedMeta));
+      setError("");
+      setSaving(false);
+    }
+  }, [open, item.existingId, item.idx]);
+
+  const selectedPatch = useMemo(
+    () => buildDraftMetadataPatch(selection, drafts, existingMeta, attemptedMeta),
+    [selection, drafts, existingMeta, attemptedMeta]
+  );
+  const fillMissingPatch = useMemo(
+    () => buildFillMissingMetadataPatch(existingMeta, attemptedMeta),
+    [existingMeta, attemptedMeta]
+  );
+  const mergeTagsPatch = useMemo(
+    () => buildMergeTagsPatch(existingMeta, attemptedMeta),
+    [existingMeta, attemptedMeta]
+  );
+
+  async function runPatch(patch: FixPatch, closeAfter = true) {
+    if (!patchHasChanges(patch)) return;
+    setSaving(true);
+    setError("");
+    const result = await onApplyPatch(item.existingId, patch);
+    setSaving(false);
+    if (!result.ok) {
+      setError(result.error ?? "Falha ao aplicar alterações.");
+      return;
+    }
+    if (closeAfter) onOpenChange(false);
+  }
+
+  async function applySelected() {
+    await runPatch(selectedPatch);
+  }
+
+  async function fillMissingNow() {
+    await runPatch(fillMissingPatch, false);
+    setSelection({
+      disciplina: false,
+      assunto: false,
+      dificuldade: false,
+      tipo: false,
+      tags: false,
+      gabarito: false,
+    });
+  }
+
+  async function mergeTagsNow() {
+    if (!mergeTagsPatch) return;
+    await runPatch(mergeTagsPatch, false);
+    setSelection((prev) => ({ ...prev, tags: false }));
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-[min(96vw,1000px)] max-h-[88vh] overflow-hidden flex flex-col">
+        <DialogHeader className="shrink-0">
+          <DialogTitle>Comparar metadados da duplicata</DialogTitle>
+          <DialogDescription>
+            Compare os metadados da tentativa importada com a questão já existente e aplique apenas o que fizer sentido.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 text-xs"
+            disabled={saving || !patchHasChanges(fillMissingPatch)}
+            onClick={fillMissingNow}
+          >
+            {saving && <Loader2 size={12} className="animate-spin mr-1" />}
+            Preencher vazios
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 text-xs"
+            disabled={saving}
+            onClick={() => setSelection(getDifferentSelection(existingMeta, attemptedMeta))}
+          >
+            Selecionar divergentes
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 text-xs"
+            disabled={saving || !mergeTagsPatch}
+            onClick={mergeTagsNow}
+          >
+            Mesclar tags
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 text-xs"
+            disabled={saving}
+            onClick={() =>
+              setSelection({
+                disciplina: false,
+                assunto: false,
+                dificuldade: false,
+                tipo: false,
+                tags: false,
+                gabarito: false,
+              })
+            }
+          >
+            Limpar seleção
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto pr-1 space-y-2">
+          <div className="grid grid-cols-[auto,1fr,1fr,1fr] gap-2 text-[11px] font-semibold uppercase tracking-wide text-gray-500 px-1">
+            <div>Campo</div>
+            <div>Questão existente</div>
+            <div>Tentativa importada</div>
+            <div>Aplicar</div>
+          </div>
+
+          {DUPLICATE_META_FIELDS.map((field) => {
+            const existingText = formatMetaFieldValue(existingMeta, field);
+            const attemptedText = formatMetaFieldValue(attemptedMeta, field);
+            const isDifferent = !areMetaFieldValuesEqual(existingMeta, attemptedMeta, field);
+            const canSelect = !isMetaFieldEmpty(attemptedMeta, field) && isDifferent;
+
+            return (
+              <div
+                key={field}
+                className={`grid grid-cols-[auto,1fr,1fr,1fr] gap-2 rounded-lg border p-2 ${
+                  isDifferent ? "border-orange-200 bg-orange-50/50" : "border-slate-200 bg-slate-50/70"
+                }`}
+              >
+                <label className="flex items-start gap-2 text-sm pt-1 min-w-0">
+                  <Checkbox
+                    checked={selection[field]}
+                    disabled={!canSelect || saving}
+                    onCheckedChange={(checked) =>
+                      setSelection((prev) => ({ ...prev, [field]: !!checked }))
+                    }
+                    className="mt-0.5"
+                  />
+                  <div className="min-w-0">
+                    <div className="font-medium text-slate-800">{DUPLICATE_META_LABELS[field]}</div>
+                    <div className="text-[11px] text-slate-500">
+                      {isDifferent ? "Divergente" : "Igual"}
+                    </div>
+                  </div>
+                </label>
+
+                <div className="rounded border bg-white p-2 text-xs text-slate-700 whitespace-pre-wrap break-words">
+                  {existingText}
+                </div>
+
+                <div className="rounded border bg-white p-2 text-xs text-slate-700 whitespace-pre-wrap break-words">
+                  {attemptedText}
+                </div>
+
+                <div className="rounded border border-dashed bg-white/70 p-2">
+                  <label className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-slate-500">
+                    Valor a aplicar
+                  </label>
+                  <Input
+                    value={drafts[field]}
+                    disabled={saving}
+                    onChange={(e) =>
+                      setDrafts((prev) => ({ ...prev, [field]: e.target.value }))
+                    }
+                    className="h-8 text-xs"
+                    placeholder={
+                      field === "tags"
+                        ? "tag1, tag2, tag3"
+                        : field === "gabarito"
+                          ? "A-E, C/E ou essay"
+                          : "Editar valor"
+                    }
+                  />
+                </div>
+              </div>
+            );
+          })}
+
+          {error && <div className="rounded border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">{error}</div>}
+        </div>
+
+        <DialogFooter className="shrink-0 border-t pt-3">
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
+            Fechar
+          </Button>
+          <Button disabled={saving || !patchHasChanges(selectedPatch)} onClick={applySelected}>
+            {saving && <Loader2 size={14} className="animate-spin mr-2" />}
+            Aplicar selecionados
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function DuplicateCard({
   item,
   onOpenEditor,
   onToggleReviewed,
+  onApplyMetadataPatch,
   baseTextCache,
   reviewed,
 }: {
   item: DuplicateCandidate;
   onOpenEditor: (question: QuestionItem) => void;
   onToggleReviewed: (duplicateKey: string, reviewed: boolean) => void;
+  onApplyMetadataPatch: (questionId: string, patch: FixPatch) => Promise<{ ok: boolean; error?: string }>;
   baseTextCache: Map<string, BaseTextItem>;
   reviewed: boolean;
 }) {
+  const [metadataModalOpen, setMetadataModalOpen] = useState(false);
+  const [mergingTags, setMergingTags] = useState(false);
   const attemptedQuestion: QuestionItem = {
     id: item.payload.metadata?.id ?? `dup-${item.idx}`,
     metadata: item.payload.metadata ?? {},
@@ -1076,7 +1594,20 @@ function DuplicateCard({
     onToggleReviewed(getDuplicateCandidateKey(item), !reviewed);
   }
 
+  const mergeTagsPatch = useMemo(
+    () => buildMergeTagsPatch(item.existingQuestion?.metadata ?? {}, item.payload?.metadata ?? {}),
+    [item.existingQuestion?.metadata, item.payload?.metadata]
+  );
+
+  async function handleMergeTags() {
+    if (!mergeTagsPatch) return;
+    setMergingTags(true);
+    await onApplyMetadataPatch(item.existingId, mergeTagsPatch);
+    setMergingTags(false);
+  }
+
   return (
+    <>
     <div className="border rounded-lg bg-white p-3 space-y-3">
       <div className="flex items-center gap-2 flex-wrap text-xs">
         <span className="font-mono text-gray-500">#{item.idx}</span>
@@ -1107,6 +1638,25 @@ function DuplicateCard({
               Editar existente
             </Button>
           )}
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 text-xs"
+            onClick={() => setMetadataModalOpen(true)}
+          >
+            Comparar metadados
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 text-xs"
+            disabled={!mergeTagsPatch || mergingTags}
+            onClick={handleMergeTags}
+          >
+            {mergingTags && <Loader2 size={12} className="animate-spin mr-1" />}
+            <Tag size={12} className="mr-1" />
+            Mesclar tags
+          </Button>
           <a
             href={`/editor/questoes?id=${item.existingId}`}
             target="_blank"
@@ -1159,6 +1709,13 @@ function DuplicateCard({
         </div>
       </div>
     </div>
+    <DuplicateMetadataModal
+      open={metadataModalOpen}
+      onOpenChange={setMetadataModalOpen}
+      item={item}
+      onApplyPatch={onApplyMetadataPatch}
+    />
+    </>
   );
 }
 
@@ -1550,51 +2107,71 @@ export default function FixesPage() {
 
   // ── Filtros locais ─────────────────────────────────────────────────────────
   const filteredQuestions = useMemo(() => {
-    return questions.filter((q) => {
-      const meta = q.metadata ?? {};
-      const preview = getPreview(q.content).toLowerCase();
-      const warnings = detectWarnings(q);
-      const severity = worstSeverity(warnings);
+    return questions
+      .map((q, index) => ({ q, index }))
+      .filter(({ q }) => {
+        const meta = q.metadata ?? {};
+        const preview = getPreview(q.content).toLowerCase();
+        const warnings = detectWarnings(q);
+        const severity = worstSeverity(warnings);
 
-      if (
-        searchText &&
-        !preview.includes(searchText.toLowerCase()) &&
-        !meta.assunto?.toLowerCase().includes(searchText.toLowerCase()) &&
-        !meta.source?.numero?.includes(searchText)
-      )
-        return false;
-      if (filterDisciplina !== "all" && meta.disciplina !== filterDisciplina) return false;
-      if (filterTipo !== "all" && meta.tipo !== filterTipo) return false;
-      if (filterSeverity !== "all" && severity !== filterSeverity) return false;
-      if (filterReviewed === "reviewed" && !meta.reviewed) return false;
-      if (filterReviewed === "pending" && meta.reviewed) return false;
-      return true;
-    });
+        if (
+          searchText &&
+          !preview.includes(searchText.toLowerCase()) &&
+          !meta.assunto?.toLowerCase().includes(searchText.toLowerCase()) &&
+          !meta.source?.numero?.includes(searchText)
+        )
+          return false;
+        if (filterDisciplina !== "all" && meta.disciplina !== filterDisciplina) return false;
+        if (filterTipo !== "all" && meta.tipo !== filterTipo) return false;
+        if (filterSeverity !== "all" && severity !== filterSeverity) return false;
+        if (filterReviewed === "reviewed" && !meta.reviewed) return false;
+        if (filterReviewed === "pending" && meta.reviewed) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const aMeta = a.q.metadata ?? {};
+        const bMeta = b.q.metadata ?? {};
+        const aNum = extractQuestionSortNumber(aMeta.source?.numero, aMeta.numero);
+        const bNum = extractQuestionSortNumber(bMeta.source?.numero, bMeta.numero);
+        return compareByQuestionNumber(aNum, bNum, a.index, b.index);
+      })
+      .map(({ q }) => q);
   }, [questions, searchText, filterDisciplina, filterTipo, filterSeverity, filterReviewed]);
 
   const filteredDuplicates = useMemo(() => {
-    return duplicates.filter((item) => {
-      const attempted = duplicateToAttemptedQuestion(item);
-      const meta = attempted.metadata ?? {};
-      const preview = getPreview(attempted.content).toLowerCase();
-      const warnings = detectWarnings(attempted);
-      const severity = worstSeverity(warnings);
-      const reviewed = !!duplicateReviewed[getDuplicateCandidateKey(item)];
+    return duplicates
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => {
+        const attempted = duplicateToAttemptedQuestion(item);
+        const meta = attempted.metadata ?? {};
+        const preview = getPreview(attempted.content).toLowerCase();
+        const warnings = detectWarnings(attempted);
+        const severity = worstSeverity(warnings);
+        const reviewed = !!duplicateReviewed[getDuplicateCandidateKey(item)];
 
-      if (
-        searchText &&
-        !preview.includes(searchText.toLowerCase()) &&
-        !meta.assunto?.toLowerCase().includes(searchText.toLowerCase()) &&
-        !meta.source?.numero?.includes(searchText)
-      )
-        return false;
-      if (filterDisciplina !== "all" && meta.disciplina !== filterDisciplina) return false;
-      if (filterTipo !== "all" && meta.tipo !== filterTipo) return false;
-      if (filterSeverity !== "all" && severity !== filterSeverity) return false;
-      if (filterReviewed === "reviewed" && !reviewed) return false;
-      if (filterReviewed === "pending" && reviewed) return false;
-      return true;
-    });
+        if (
+          searchText &&
+          !preview.includes(searchText.toLowerCase()) &&
+          !meta.assunto?.toLowerCase().includes(searchText.toLowerCase()) &&
+          !meta.source?.numero?.includes(searchText)
+        )
+          return false;
+        if (filterDisciplina !== "all" && meta.disciplina !== filterDisciplina) return false;
+        if (filterTipo !== "all" && meta.tipo !== filterTipo) return false;
+        if (filterSeverity !== "all" && severity !== filterSeverity) return false;
+        if (filterReviewed === "reviewed" && !reviewed) return false;
+        if (filterReviewed === "pending" && reviewed) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const aMeta = a.item.payload?.metadata ?? {};
+        const bMeta = b.item.payload?.metadata ?? {};
+        const aNum = extractQuestionSortNumber(aMeta.source?.numero, aMeta.numero, a.item.label);
+        const bNum = extractQuestionSortNumber(bMeta.source?.numero, bMeta.numero, b.item.label);
+        return compareByQuestionNumber(aNum, bNum, a.index, b.index);
+      })
+      .map(({ item }) => item);
   }, [duplicates, duplicateReviewed, searchText, filterDisciplina, filterTipo, filterSeverity, filterReviewed]);
 
   const filteredBaseTexts = useMemo(() => {
@@ -1872,6 +2449,54 @@ export default function FixesPage() {
           : item
       )
     );
+  }
+
+  async function applyDuplicateMetadataPatch(
+    questionId: string,
+    patch: FixPatch
+  ): Promise<{ ok: boolean; error?: string }> {
+    if (!patchHasChanges(patch)) return { ok: true };
+
+    try {
+      const res = await fetch(`${API_BASE}/fix.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...phpHeaders() },
+        body: JSON.stringify({ ids: [questionId], patch, dry_run: false }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        return { ok: false, error: data?.error ?? "Falha ao aplicar patch de metadados." };
+      }
+
+      setQuestions((prev) =>
+        prev.map((q) =>
+          q.id === questionId
+            ? { ...q, metadata: applyFixPatchToMetadata(q.metadata ?? {}, patch) }
+            : q
+        )
+      );
+
+      setDuplicates((prev) =>
+        prev.map((item) =>
+          item.existingId === questionId && item.existingQuestion
+            ? {
+                ...item,
+                existingQuestion: {
+                  ...item.existingQuestion,
+                  metadata: applyFixPatchToMetadata(item.existingQuestion.metadata ?? {}, patch),
+                },
+              }
+            : item
+        )
+      );
+
+      return { ok: true };
+    } catch (error) {
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Falha ao aplicar patch de metadados.",
+      };
+    }
   }
 
   function toggleReviewedByBaseTextId(baseTextId: string, reviewed: boolean) {
@@ -2308,6 +2933,7 @@ export default function FixesPage() {
                       item={item}
                       onOpenEditor={setEditingQuestion}
                       onToggleReviewed={toggleReviewedByDuplicateKey}
+                      onApplyMetadataPatch={applyDuplicateMetadataPatch}
                       baseTextCache={baseTextCache}
                       reviewed={!!duplicateReviewed[getDuplicateCandidateKey(item)]}
                     />

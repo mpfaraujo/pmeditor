@@ -1,0 +1,17 @@
+{
+  "batch": "ENEM 2025 recortes bloco 91-125",
+  "runId": "5d90b6f9-9627-445d-b0d9-4720e5631d01",
+  "queuePath": "C:\\Projetos\\pmeditor\\public\\data\\import-queue.json",
+  "createdAt": "2026-04-10T21:28:36.803Z",
+  "dryRun": true,
+  "summary": {
+    "imported": 35,
+    "duplicates": 0,
+    "failed": 0,
+    "skipped": 0,
+    "totalQueue": 35,
+    "processed": 35
+  },
+  "duplicates": [],
+  "errors": []
+}

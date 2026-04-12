@@ -36,6 +36,7 @@ import "@/app/editor/prova/montar/prova.css";
 import { ensureImageIds } from "./ensureImageIds";
 import { BaseTextPickerModal } from "./BaseTextPickerModal";
 import { getBaseText } from "@/lib/baseTexts";
+import { useLineRefMeasure } from "@/hooks/useLineRefMeasure";
 type QuestionEditorProps = {
   modal?: boolean;
   onSaved?: (info: { questionId: string; kind: "base" | "variant" }) => void;
@@ -304,6 +305,22 @@ function isRootSetQuestions(doc: any) {
   return !!root && schema.nodes.set_questions && root.type === schema.nodes.set_questions;
 }
 
+function docHasBaseText(doc: any): boolean {
+  let found = false;
+  try {
+    doc.descendants((node: any) => {
+      if (node.type === schema.nodes.base_text) {
+        found = true;
+        return false;
+      }
+      return true;
+    });
+  } catch {
+    return false;
+  }
+  return found;
+}
+
 function ensureSetQuestionsRoot(v: EditorView) {
   if (!schema.nodes.set_questions || !schema.nodes.question_item) return;
 
@@ -525,6 +542,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   const [previewColumns, setPreviewColumns] = useState<1 | 2>(1);
   const [previewBaseTextContent, setPreviewBaseTextContent] = useState<any>(null);
   const [previewBaseTextTag, setPreviewBaseTextTag] = useState<string | null>(null);
+  const previewContainerRef = useLineRefMeasure(previewOpen, [previewColumns]);
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
   const [baseTextPickerOpen, setBaseTextPickerOpen] = useState(false);
@@ -1162,11 +1180,15 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
               </div>
             </DialogHeader>
             <div className="flex justify-center py-6 px-4 bg-slate-100">
-              <div className="prova-page bg-white shadow-md" style={{ height: "auto", minHeight: "auto", overflow: "visible" }}>
+              <div
+                ref={previewContainerRef}
+                className="prova-page bg-white shadow-md"
+                style={{ height: "auto", minHeight: "auto", overflow: "visible" }}
+              >
                 <div style={{ maxWidth: previewColumns === 2 ? "8.5cm" : "18cm" }}>
                   {previewOpen && view && (
                     <>
-                      {previewBaseTextContent && (
+                      {previewBaseTextContent && !docHasBaseText(view.state.doc) && (
                         <div className="mb-3 space-y-1">
                           {previewBaseTextTag && (
                             <div className="text-xs font-bold text-black">

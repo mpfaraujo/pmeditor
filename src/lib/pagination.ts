@@ -226,6 +226,19 @@ function pickBlockElementsFromWrapper(
   const conteudo = wrapper.querySelector(".questao-conteudo") as HTMLElement | null;
   if (!conteudo) return { blocks: [] };
 
+  function flattenTextChildren(children: HTMLElement[]): HTMLElement[] {
+    return children.flatMap((child) => {
+      if (
+        child.classList.contains("statement") ||
+        child.classList.contains("base-text")
+      ) {
+        const nested = Array.from(child.children) as HTMLElement[];
+        return nested.length > 0 ? nested : [child];
+      }
+      return [child];
+    });
+  }
+
   function appendOptions(blocks: HTMLElement[], root: HTMLElement): number | undefined {
     const options = root.querySelector(".question-options") as HTMLElement | null;
     if (!options) return blocks.length; // sem opções: todos os blocos são texto
@@ -253,7 +266,9 @@ function pickBlockElementsFromWrapper(
     conteudo.querySelectorAll(".question-text")
   ) as HTMLElement[];
   if (allQuestionTexts.length > 1 && !conteudo.querySelector(".question-options")) {
-    const blocks = allQuestionTexts.flatMap((qt) => Array.from(qt.children) as HTMLElement[]);
+    const blocks = allQuestionTexts.flatMap((qt) =>
+      flattenTextChildren(Array.from(qt.children) as HTMLElement[])
+    );
     if (blocks.length >= 1) {
       return { blocks, textBlockCount: blocks.length };
     }
@@ -261,7 +276,7 @@ function pickBlockElementsFromWrapper(
 
   const qt = conteudo.querySelector(".question-text") as HTMLElement | null;
   if (qt) {
-    const kids = Array.from(qt.children) as HTMLElement[];
+    const kids = flattenTextChildren(Array.from(qt.children) as HTMLElement[]);
     if (kids.length >= 1) {
       const blocks: HTMLElement[] = [...kids];
       const textBlockCount = appendOptions(blocks, conteudo);
@@ -281,7 +296,7 @@ function pickBlockElementsFromWrapper(
     } else {
       const innerQT = only.querySelector(".question-text") as HTMLElement | null;
       if (innerQT) {
-        const innerKids = Array.from(innerQT.children) as HTMLElement[];
+        const innerKids = flattenTextChildren(Array.from(innerQT.children) as HTMLElement[]);
         if (innerKids.length >= 1) {
           const blocks: HTMLElement[] = [...innerKids];
           const textBlockCount = appendOptions(blocks, conteudo);
@@ -346,6 +361,41 @@ function measureSplitInfo(
   });
 
   return { prefixHeight, suffixHeight: mb, blocksHeights, textBlockCount };
+}
+
+function shouldUseConservativeImageOptionFallback(
+  measurementContainer: HTMLElement,
+  index: number
+): boolean {
+  const wrappers = Array.from(
+    measurementContainer.querySelectorAll(".questao-item-wrapper")
+  ) as HTMLElement[];
+
+  const wrapper = wrappers[index];
+  if (!wrapper) return false;
+
+  const optionBlocks = Array.from(
+    wrapper.querySelectorAll(".question-options > *")
+  ) as HTMLElement[];
+  if (optionBlocks.length < 2) return false;
+
+  const optionImages = Array.from(
+    wrapper.querySelectorAll(".question-options img")
+  ) as HTMLImageElement[];
+  if (optionImages.length < 2) return false;
+
+  const avgImageWidth =
+    optionImages.reduce(
+      (sum, img) =>
+        sum +
+        Math.max(
+          img.offsetWidth || 0,
+          Math.ceil(img.getBoundingClientRect().width || 0)
+        ),
+      0
+    ) / optionImages.length;
+
+  return avgImageWidth >= 220;
 }
 
 function buildFragmentsForQuestion(
@@ -1024,6 +1074,8 @@ export function distributeQuestionsOptimized(
    */
   function placeWithFragmentation(qIndex: number, fullH: number): void {
     const SLOT_FIT_EPS = 10;
+    const useConservativeImageFallback =
+      shouldUseConservativeImageOptionFallback(measureItemsRef, qIndex);
 
     let split = measureSplitInfo(measureItemsRef, qIndex);
     if (!split) {
@@ -1206,6 +1258,26 @@ export function distributeQuestionsOptimized(
       } else {
         // Fragmentos seguintes: avançam para o próximo slot real do fluxo
         let placed = false;
+
+        if (useConservativeImageFallback) {
+          if (columns === 2 && currentCol === "coluna1") {
+            currentCol = "coluna2";
+          } else {
+            const newP = newPage(pages.length);
+            pages.push(newP);
+            currentPage = newP;
+            currentCol = "coluna1";
+          }
+
+          const slot = currentCol === "coluna1" ? currentPage.coluna1 : currentPage.coluna2;
+          slot.items.push(item);
+          slot.remaining -= h;
+          slot.usedHeight += h;
+          if (!isLastFragment) {
+            sealFragmentSlot(slot);
+          }
+          continue;
+        }
 
         if (columns === 2 && currentCol === "coluna1") {
           if (

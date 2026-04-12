@@ -6,21 +6,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { listBaseTexts, getBaseText, type BaseTextItem } from "@/lib/baseTexts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import QuestionRenderer from "@/components/Questions/QuestionRenderer";
+import QuestionRendererProva from "@/components/Questions/QuestionRendererProva";
+import { buildExternalBaseTextPreviewDoc } from "@/lib/questionRenderContent";
 import { ArrowLeft, ChevronDown, ChevronUp, Plus, Pencil } from "lucide-react";
 import "@/app/editor/prova/montar/prova.css";
 import Link from "next/link";
 
-function wrapBaseTextForRender(content: any) {
-  return {
-    type: "doc",
-    content: [{ type: "question", content: [{ type: "base_text", content: content?.content ?? [] }] }],
-  };
-}
-
 function BaseTextPreviewInline({ id }: { id: string }) {
   const [content, setContent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const previewDoc = buildExternalBaseTextPreviewDoc(content);
 
   useEffect(() => {
     getBaseText(id).then((bt) => {
@@ -34,7 +29,7 @@ function BaseTextPreviewInline({ id }: { id: string }) {
 
   return (
     <div className="border rounded bg-white p-3 max-h-64 overflow-y-auto text-sm print-mode">
-      <QuestionRenderer content={wrapBaseTextForRender(content)} />
+      {previewDoc ? <QuestionRendererProva content={previewDoc} /> : null}
     </div>
   );
 }

@@ -1,0 +1,17 @@
+{
+  "batch": "ENEM 2025 prova2 final4",
+  "runId": "a3768355-3ede-4e50-907e-3d7a9f645980",
+  "queuePath": "C:\\Projetos\\pmeditor\\public\\data\\import-queue.json",
+  "createdAt": "2026-04-10T16:54:32.766Z",
+  "dryRun": true,
+  "summary": {
+    "imported": 90,
+    "duplicates": 0,
+    "failed": 0,
+    "skipped": 0,
+    "totalQueue": 90,
+    "processed": 90
+  },
+  "duplicates": [],
+  "errors": []
+}

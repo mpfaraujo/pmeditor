@@ -650,6 +650,8 @@ function findNextLatexTokenIndex(s: string, from: number) {
     "\\emph",
     "\\underline",
     "\\ce",
+    "\\label",
+    "\\ref",
     "[[",
   ];
   let best = -1;
@@ -815,6 +817,46 @@ function parseInlineLatex(
       }
     }
 
+    // \ref{id} → line_ref node
+    if (s.startsWith("\\ref", i) && s[i + 4] === "{") {
+      const br = readBraced(i + 4);
+      if (br) {
+        const lineRef = schema.nodes["line_ref"];
+        if (lineRef) {
+          nodes.push(lineRef.create({ anchorId: br.content.trim() }));
+          i = br.end;
+          continue;
+        }
+      }
+    }
+
+    // \label{id}{texto} → text_anchor mark no texto
+    // \label{id} sem segundo arg → texto vazio com mark (marcador zero-width)
+    if (s.startsWith("\\label", i) && s[i + 6] === "{") {
+      const brId = readBraced(i + 6);
+      if (brId) {
+        const anchorId = brId.content.trim();
+        const textAnchorMark = schema.marks["text_anchor"];
+        if (textAnchorMark && anchorId) {
+          // Verifica se há segundo argumento {texto}
+          const afterId = skipSpaces(s, brId.end);
+          if (s[afterId] === "{") {
+            const brText = readBraced(afterId);
+            if (brText) {
+              const mark = textAnchorMark.create({ id: anchorId });
+              nodes.push(...parseInlineLatex(schema, brText.content, [...active, mark]));
+              i = brText.end;
+              continue;
+            }
+          }
+          // Sem segundo arg: insere como nó de âncora zero-width (texto vazio com mark)
+          // Melhor que nada — o usuário pode ajustar no editor
+          i = brId.end;
+          continue;
+        }
+      }
+    }
+
     if (s.startsWith("[[", i)) {
       const end = s.indexOf("]]", i + 2);
       if (end !== -1) {
@@ -842,7 +884,7 @@ function parseInlineLatex(
 type SpecialBlockKind =
   | "enumerate" | "itemize"
   | "assertiveitems" | "romanitems" | "alphaitems"
-  | "poem" | "databox" | "codeblock" | "credits";
+  | "poem" | "databox" | "codeblock" | "credits" | "title";
 
 function findNextSpecialBlock(src: string, from: number): { idx: number; kind: SpecialBlockKind } | null {
   const candidates: Array<{ search: string; kind: SpecialBlockKind }> = [
@@ -855,6 +897,7 @@ function findNextSpecialBlock(src: string, from: number): { idx: number; kind: S
     { search: "\\begin{databox}", kind: "databox" },
     { search: "\\begin{codeblock}", kind: "codeblock" },
     { search: "\\credits{", kind: "credits" },
+    { search: "\\title{", kind: "title" },
   ];
   let best: { idx: number; kind: SpecialBlockKind } | null = null;
   for (const { search, kind } of candidates) {
@@ -964,6 +1007,21 @@ export function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[]
       }
       const inlines = parseInlineLatex(schema, arg.content.trim());
       blocks.push(creditsType.create(null, inlines.length ? inlines : []));
+      i = arg.end;
+      continue;
+    }
+
+    // ── \title{...} ────────────────────────────────────────────────────────
+    if (kind === "title") {
+      const titleType = schema.nodes["title"];
+      const argStart = beginIdx + "\\title".length;
+      const arg = readBracedArgAt(src, argStart);
+      if (!arg || !titleType) {
+        i = beginIdx + 7; // skip past "\title{"
+        continue;
+      }
+      const inlines = parseInlineLatex(schema, arg.content.trim());
+      blocks.push(titleType.create(null, inlines.length ? inlines : []));
       i = arg.end;
       continue;
     }
@@ -1374,6 +1432,7 @@ function isProbablyLatexSource(text: string) {
     /\\begin\{(choices|oneparchoices|enumerate|itemize|tabular|table)\}/.test(t) ||
     /\\(textbf|textit|emph|underline|includegraphics)\b/.test(t) ||
     /\\(choice|correctchoice|CorrectChoice)\b/.test(t) ||
+    /\\(label|ref|title)\{/.test(t) ||
     /\$[^\$]+\$/.test(t) ||
     /\\\(|\\\)|\\\[|\\\]/.test(t) ||
     /\\question\b/.test(t)

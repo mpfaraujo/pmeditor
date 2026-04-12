@@ -24,7 +24,8 @@ import { RichTextMiniEditor } from "./RichTextMiniEditor";
 import { AssuntoCombobox } from "./AssuntoCombobox";
 import { BaseTextPickerModal } from "./BaseTextPickerModal";
 import { getBaseText } from "@/lib/baseTexts";
-import QuestionRenderer from "@/components/Questions/QuestionRenderer";
+import QuestionRendererProva from "@/components/Questions/QuestionRendererProva";
+import { buildExternalBaseTextPreviewDoc } from "@/lib/questionRenderContent";
 
 type Difficulty = "Fácil" | "Média" | "Difícil";
 type QuestionType = "Múltipla Escolha" | "Certo/Errado" | "Discursiva";
@@ -96,6 +97,9 @@ export function QuestionMetadataModal({
   const [baseTextTags, setBaseTextTags] = useState<Map<string, string>>(new Map()); // id → tag
   const [baseTextPreviews, setBaseTextPreviews] = useState<Map<string, any>>(new Map()); // id → content
   const [baseTextPreviewId, setBaseTextPreviewId] = useState<string | null>(null);
+  const activeBaseTextPreviewDoc = baseTextPreviewId
+    ? buildExternalBaseTextPreviewDoc(baseTextPreviews.get(baseTextPreviewId) ?? null)
+    : null;
 
   // IDs canônicos: novo formato (baseTextIds[]) com fallback legado (baseTextId)
   const btIds: string[] = Array.isArray(value.baseTextIds) && value.baseTextIds.length > 0
@@ -585,11 +589,8 @@ export function QuestionMetadataModal({
             </DialogTitle>
           </DialogHeader>
           <div className="print-mode text-sm">
-            {baseTextPreviewId && baseTextPreviews.get(baseTextPreviewId) ? (
-              <QuestionRenderer content={{
-                type: "doc",
-                content: [{ type: "question", content: [{ type: "base_text", content: baseTextPreviews.get(baseTextPreviewId)?.content ?? [] }] }],
-              }} />
+            {baseTextPreviewId && activeBaseTextPreviewDoc ? (
+              <QuestionRendererProva content={activeBaseTextPreviewDoc} />
             ) : (
               <p className="text-muted-foreground text-sm">Sem conteúdo disponível.</p>
             )}

@@ -24,15 +24,54 @@ question: {
 
   base_text: {
     content: "block+",
+    attrs: {
+      numbered: { default: false },
+    },
+    parseDOM: [
+      {
+        tag: "div.base-text",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { numbered: el.getAttribute("data-numbered") === "true" };
+        },
+      },
+    ],
+    toDOM(node): DOMOutputSpec {
+      const attrs: Record<string, string> = { class: "base-text" };
+      if (node.attrs.numbered) attrs["data-numbered"] = "true";
+      return ["div", attrs, 0];
+    },
+  },
+
+  // Título de texto ou poema — centralizado e negrito via CSS.
+  // Nunca entra na contagem de linhas.
+  title: {
+    content: "inline*",
+    group: "block",
+    parseDOM: [{ tag: "p.block-title" }],
     toDOM(): DOMOutputSpec {
-      return ["div", { class: "base-text" }, 0];
+      return ["p", { class: "block-title" }, 0];
     },
   },
 
   statement: {
     content: "block+",
-    toDOM(): DOMOutputSpec {
-      return ["div", { class: "statement" }, 0];
+    attrs: {
+      numbered: { default: false },
+    },
+    parseDOM: [
+      {
+        tag: "div.statement",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { numbered: el.getAttribute("data-numbered") === "true" };
+        },
+      },
+    ],
+    toDOM(node): DOMOutputSpec {
+      const attrs: Record<string, string> = { class: "statement" };
+      if (node.attrs.numbered) attrs["data-numbered"] = "true";
+      return ["div", attrs, 0];
     },
   },
 
@@ -407,6 +446,29 @@ image: {
       return ["div", { class: "data-box", "data-width": node.attrs.width }, 0];
     },
   },
+
+  // Referência de linha — node inline atom inserido no enunciado/opção.
+  // O texto "l. ?" é substituído pós-render pela medição do DOM.
+  line_ref: {
+    inline: true,
+    group: "inline",
+    atom: true,
+    attrs: {
+      anchorId: { default: "" },
+    },
+    parseDOM: [
+      {
+        tag: "span[data-line-ref]",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { anchorId: el.getAttribute("data-line-ref") || "" };
+        },
+      },
+    ],
+    toDOM(node): DOMOutputSpec {
+      return ["span", { class: "line-ref", "data-line-ref": node.attrs.anchorId }, "l. ?"];
+    },
+  },
 };
 
 export const marks: Record<string, MarkSpec> = {
@@ -490,6 +552,26 @@ export const marks: Record<string, MarkSpec> = {
     ] as readonly ParseRule[],
     toDOM(): DOMOutputSpec {
       return ["sup", 0];
+    },
+  },
+
+  // Âncora de linha — mark aplicado a texto no base_text para ser referenciado
+  // nos enunciados via line_ref. Visível no editor como sublinhado tracejado.
+  text_anchor: {
+    attrs: {
+      id: { default: "" },
+    },
+    parseDOM: [
+      {
+        tag: "span[data-anchor-id]",
+        getAttrs(dom: Node | string) {
+          const el = dom as HTMLElement;
+          return { id: el.getAttribute("data-anchor-id") || "" };
+        },
+      },
+    ],
+    toDOM(node): DOMOutputSpec {
+      return ["span", { class: "text-anchor", "data-anchor-id": node.attrs.id }, 0];
     },
   },
 };

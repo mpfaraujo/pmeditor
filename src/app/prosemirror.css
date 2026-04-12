@@ -96,6 +96,12 @@
   line-height: 1.5;
 }
 
+.base-text[data-numbered="true"],
+.statement[data-numbered="true"] {
+  position: relative;
+  overflow: visible;
+}
+
 /* ===== OPÇÕES ===== */
 .options {
   display: flex;
@@ -211,8 +217,8 @@
 
 /* Numeração de 5 em 5 (via plugin JS — data-line-num nos versos múltiplos de 5 não-vazios) */
 .poem[data-numbered="true"] {
-  padding-left: 2.5em;
   position: relative;
+  overflow: visible;
 }
 
 .poem[data-numbered="true"] .verse {
@@ -463,5 +469,48 @@
   line-height: inherit;
   user-select: none;
   pointer-events: none;
+  font-family: monospace;
+}
+
+/* ===== TÍTULO DE TEXTO/POEMA ===== */
+
+.ProseMirror .block-title {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ===== REFERÊNCIA DE LINHA ===== */
+
+/* Âncora no texto base: sublinhado tracejado visível no editor, sem destaque na impressão */
+.ProseMirror .text-anchor {
+  text-decoration: underline dashed #1a6680;
+  text-underline-offset: 3px;
+  cursor: default;
+}
+
+/* Node line_ref no enunciado: aparência de referência — cinza, sem serifa */
+.ProseMirror .line-ref {
+  font-size: 0.88em;
+  color: #555;
+  font-style: normal;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.ProseMirror .line-number-label {
+  position: absolute;
+  left: -2em;
+  line-height: inherit;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ProseMirror .line-number-label::before {
+  content: attr(data-line-number);
+  display: inline-block;
+  width: 1.8em;
+  text-align: right;
+  color: #aaa;
+  font-size: 0.72em;
   font-family: monospace;
 }

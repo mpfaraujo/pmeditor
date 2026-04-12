@@ -21,6 +21,7 @@ import { createSmartPastePlugin } from "./plugins/smartPastePlugin";
 import { MathInsert } from "./MathInsert";
 import { ImageUpload } from "./ImageUpload";
 import { ensureImageIds } from "./ensureImageIds";
+import { buildPoemFromSelection } from "./poemUtils";
 import "../../app/prosemirror.css";
 
 import {
@@ -321,21 +322,27 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
 
   const insertPoem = () => {
     if (!view) return;
-    const { $from, $to } = view.state.selection;
-    const sharedDepth = $from.sharedDepth($to.pos);
-    if (sharedDepth >= $from.depth) {
-      for (let d = $from.depth; d > 0; d--) {
-        const n = $from.node(d);
-        if (n.isTextblock) {
-          const blockStart = $from.before(d);
-          const verse = schema.nodes.verse.create(null, n.content);
-          const poem = schema.nodes.poem.create(null, [verse]);
-          view.dispatch(view.state.tr.replaceWith(blockStart, blockStart + n.nodeSize, poem));
-          view.focus();
-          return;
-        }
+
+    const selectionPoem = buildPoemFromSelection(view.state, schema);
+    if (selectionPoem) {
+      view.dispatch(view.state.tr.replaceSelectionWith(selectionPoem));
+      view.focus();
+      return;
+    }
+
+    const { $from } = view.state.selection;
+    for (let d = $from.depth; d > 0; d--) {
+      const n = $from.node(d);
+      if (n.isTextblock) {
+        const blockStart = $from.before(d);
+        const verse = schema.nodes.verse.create(null, n.content);
+        const poem = schema.nodes.poem.create(null, [verse]);
+        view.dispatch(view.state.tr.replaceWith(blockStart, blockStart + n.nodeSize, poem));
+        view.focus();
+        return;
       }
     }
+
     const verse = schema.nodes.verse.create();
     const poem = schema.nodes.poem.create(null, [verse]);
     view.dispatch(view.state.tr.replaceSelectionWith(poem));

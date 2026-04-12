@@ -7,14 +7,13 @@ import { Button } from "@/components/ui/button";
 import { VersionHistoryModal } from "./VersionHistoryModal";
 import { QuestionVersion } from "@/lib/questions";
 import { getBaseText } from "@/lib/baseTexts";
-
-type PMNode = {
-  type: string;
-  attrs?: any;
-  text?: string;
-  marks?: any[];
-  content?: PMNode[];
-};
+import {
+  type PMNode,
+  buildExternalBaseTextPreviewDoc,
+  questionDocHasBaseText,
+  safeParseQuestionDoc,
+  wrapNodesAsQuestionDoc,
+} from "@/lib/questionRenderContent";
 
 type QuestionCardProps = {
   metadata: {
@@ -51,17 +50,6 @@ type QuestionCardProps = {
 
 /* ---------------- helpers (somente leitura) ---------------- */
 
-function safeParseDoc(content: any): PMNode | null {
-  try {
-    const doc = typeof content === "string" ? JSON.parse(content) : content;
-    if (!doc || typeof doc !== "object") return null;
-    if (doc.type !== "doc") return null;
-    return doc as PMNode;
-  } catch {
-    return null;
-  }
-}
-
 function findSetNodeInDocOrQuestion(doc: PMNode | null): PMNode | null {
   if (!doc) return null;
 
@@ -88,18 +76,6 @@ function getSetPartsFromDoc(doc: PMNode | null): {
   return { baseText, items };
 }
 
-function wrapAsQuestionDoc(nodes: PMNode[]): PMNode {
-  return {
-    type: "doc",
-    content: [
-      {
-        type: "question",
-        content: nodes,
-      },
-    ],
-  };
-}
-
 const PREVIEW_PARAGRAPHS = 3;
 
 function buildBasePreviewDoc(baseText: PMNode | null): {
@@ -113,7 +89,7 @@ function buildBasePreviewDoc(baseText: PMNode | null): {
 
   if (paragraphs.length === 0) {
     // sem parágrafos: mantém tudo
-    return { doc: wrapAsQuestionDoc([baseText]), truncated: false };
+    return { doc: wrapNodesAsQuestionDoc([baseText]), truncated: false };
   }
 
   const previewParas = paragraphs.slice(0, PREVIEW_PARAGRAPHS);
@@ -125,7 +101,7 @@ function buildBasePreviewDoc(baseText: PMNode | null): {
   };
 
   return {
-    doc: wrapAsQuestionDoc([previewBaseText]),
+    doc: wrapNodesAsQuestionDoc([previewBaseText]),
     truncated,
   };
 }
@@ -139,7 +115,7 @@ function buildItemDoc(item: PMNode | null): PMNode | null {
   });
 
   if (nodes.length === 0) return null;
-  return wrapAsQuestionDoc(nodes);
+  return wrapNodesAsQuestionDoc(nodes);
 }
 
 type AnswerKey =
@@ -221,8 +197,9 @@ export default function QuestionCard({
 
   const renderedContent = view === "base" && hasBase ? base!.content : content;
 
-  const parsedDoc = useMemo(() => safeParseDoc(renderedContent), [renderedContent]);
+  const parsedDoc = useMemo(() => safeParseQuestionDoc(renderedContent), [renderedContent]);
   const setParts = useMemo(() => getSetPartsFromDoc(parsedDoc), [parsedDoc]);
+  const inlineBaseTextAlreadyPresent = useMemo(() => questionDocHasBaseText(parsedDoc), [parsedDoc]);
 
   const isSet = setParts.items.length > 0 || !!setParts.baseText;
   const itemsCount = isSet ? setParts.items.length : 0;
@@ -252,6 +229,11 @@ export default function QuestionCard({
     if (!isSet) return null;
     return extractAnswerKeyFromItemNode(currentItemNode);
   }, [isSet, currentItemNode]);
+
+  const externalBaseTextPreviewDoc = useMemo(
+    () => buildExternalBaseTextPreviewDoc(baseTextContent),
+    [baseTextContent]
+  );
 
   const headerLabel = isSet ? "Conjunto" : "Questão";
 
@@ -338,17 +320,14 @@ export default function QuestionCard({
       {/* Conteúdo */}
       <div className="print-mode space-y-3 text-[15px] leading-relaxed">
         {/* Texto base independente (questões com baseTextId) */}
-        {!isSet && baseTextContent && (
+        {!isSet && externalBaseTextPreviewDoc && !inlineBaseTextAlreadyPresent && (
           <div className="space-y-1">
             {baseTextTag && (
               <div className="text-xs font-bold text-black">
                 Texto {baseTextTag}
               </div>
             )}
-            <QuestionRenderer content={wrapAsQuestionDoc([{
-              type: "base_text",
-              content: (baseTextContent as any).content ?? [],
-            }])} />
+            <QuestionRenderer content={externalBaseTextPreviewDoc} />
           </div>
         )}
 

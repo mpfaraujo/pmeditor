@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useLineRefMeasure } from "@/hooks/useLineRefMeasure";
 import { useRouter } from "next/navigation";
 import QuestionCard from "@/components/Questions/QuestionCard";
 import {
@@ -64,6 +65,7 @@ export default function QuestoesPage() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [editing, setEditing] = useState<QuestionItem | null>(null);
   const [previewItem, setPreviewItem] = useState<QuestionItem | null>(null);
+  const previewMeasureRef = useLineRefMeasure(!!previewItem);
   const [pendingRemoveId, setPendingRemoveId] = useState<string | null>(null);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
   const [activeFilters, setActiveFilters] = useState<FilterValues>(EMPTY_FILTERS);
@@ -307,38 +309,40 @@ export default function QuestoesPage() {
                   Minha Área
                 </Button>
               </div>
-              <ActiveFilterChips
-                filters={topBarFilters}
-                onChange={(f) => {
-                  const next = {
-                    ...f,
-                    disciplinas: activeFilters.disciplinas,
-                    assuntos: activeFilters.assuntos,
-                    tipos: activeFilters.tipos,
-                    dificuldades: activeFilters.dificuldades,
-                    sourceKind: activeFilters.sourceKind,
-                    rootType: activeFilters.rootType,
-                    concursos: activeFilters.concursos,
-                    anos: activeFilters.anos,
-                  };
-                  setActiveFilters(next);
-                  load(next, 1);
-                  filterState.setAndDispatch(() => next);
-                }}
-              />
-              {viewMode === "carousel" && currentMetaChips.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5 px-1 pb-1">
-                  {currentMetaChips.map((chip, idx) => (
-                    <span
-                      key={`${chip}-${idx}`}
-                      className="inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-medium"
-                      style={{ backgroundColor: "#FFF4CC", borderColor: "rgba(251, 192, 45, 0.34)", color: "#5A4500" }}
-                    >
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-              )}
+              <div className="min-h-[4.5rem]">
+                <ActiveFilterChips
+                  filters={topBarFilters}
+                  onChange={(f) => {
+                    const next = {
+                      ...f,
+                      disciplinas: activeFilters.disciplinas,
+                      assuntos: activeFilters.assuntos,
+                      tipos: activeFilters.tipos,
+                      dificuldades: activeFilters.dificuldades,
+                      sourceKind: activeFilters.sourceKind,
+                      rootType: activeFilters.rootType,
+                      concursos: activeFilters.concursos,
+                      anos: activeFilters.anos,
+                    };
+                    setActiveFilters(next);
+                    load(next, 1);
+                    filterState.setAndDispatch(() => next);
+                  }}
+                />
+                {viewMode === "carousel" && currentMetaChips.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 px-1 pb-1">
+                    {currentMetaChips.map((chip, idx) => (
+                      <span
+                        key={`${chip}-${idx}`}
+                        className="inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-medium"
+                        style={{ backgroundColor: "#FFF4CC", borderColor: "rgba(251, 192, 45, 0.34)", color: "#5A4500" }}
+                      >
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="shrink-0 w-[360px] flex flex-col justify-between gap-2 py-1">
               <div className="flex items-center justify-end gap-1.5 min-h-9">
@@ -368,7 +372,7 @@ export default function QuestoesPage() {
                   size="sm"
                   className="text-xs gap-1 min-w-[138px] justify-center border border-[#E0B22A] bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]"
                 >
-                  <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums min-w-[26px] text-center ${selectedCount > 0 ? "bg-black/10 opacity-100" : "opacity-0"}`}>
+                  <span suppressHydrationWarning className={`rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums min-w-[26px] text-center ${selectedCount > 0 ? "bg-black/10 opacity-100" : "opacity-0"}`}>
                     {selectedCount > 0 ? selectedCount : "0"}
                   </span>
                   Montar Prova
@@ -513,7 +517,7 @@ export default function QuestoesPage() {
                   Editar
                 </Button>
               </div>
-              <div className="question-readable-preview">
+              <div className="question-readable-preview" ref={previewMeasureRef}>
                 <QuestionCard
                   metadata={previewItem.metadata}
                   content={previewItem.content}

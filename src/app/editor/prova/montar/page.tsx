@@ -45,6 +45,7 @@ import {
 } from "@/lib/pagination";
 
 import { getBaseText } from "@/lib/baseTexts";
+import { resolverRefs, injectLineNumbers } from "@/lib/lineRefMeasure";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
@@ -172,6 +173,21 @@ function wrapAsQuestionDoc(nodes: PMNode[]): PMNode {
 function buildBaseDoc(baseText: PMNode | null): PMNode | null {
   if (!baseText) return null;
   return wrapAsQuestionDoc([baseText]);
+}
+
+function stripBaseTextFromQuestionDoc(content: any): PMNode | null {
+  const doc = safeParseDoc(content);
+  if (!doc) return null;
+  return {
+    type: "doc",
+    content: (doc.content ?? []).map((n) => {
+      if (n.type !== "question") return n;
+      return {
+        ...n,
+        content: (n.content ?? []).filter((child) => child?.type !== "base_text"),
+      };
+    }),
+  };
 }
 
 function buildCombinedBaseTextNode(
@@ -392,11 +408,39 @@ export default function MontarProvaPage() {
 
   // ReorderModal: professor aplicou ordem manual
   const handleReorderApply = (reordered: QuestionData[]) => {
-    setOrderedList(reordered);
+    const originalById = new Map<string, QuestionData>();
+    (orderedList as any[]).forEach((q) => {
+      const id = q?.metadata?.id;
+      if (id) originalById.set(id, q);
+    });
+
+    const nextOrdered: QuestionData[] = [];
+    const seen = new Set<string>();
+
+    (reordered as any[]).forEach((q) => {
+      if ((q as any)?.__setBase) return;
+
+      const setParentId = (q as any)?.__set?.parentId;
+      if (setParentId && originalById.has(setParentId)) {
+        if (!seen.has(setParentId)) {
+          nextOrdered.push(originalById.get(setParentId)!);
+          seen.add(setParentId);
+        }
+        return;
+      }
+
+      const id = q?.metadata?.id;
+      if (id && originalById.has(id) && !seen.has(id)) {
+        nextOrdered.push(originalById.get(id)!);
+        seen.add(id);
+      }
+    });
+
+    setOrderedList(nextOrdered);
     setManualOrder(true);
     // Mantém compatibilidade com updateColumnLayout do contexto
     updateColumnLayout({
-      coluna1: reordered,
+      coluna1: nextOrdered,
       coluna2: [],
     });
   };
@@ -506,11 +550,18 @@ export default function MontarProvaPage() {
                 textSections: baseTextSections,
               },
             });
-            for (const idx of group) out.push({ ...qs[idx], __set: { parentId: btKey } });
+            for (const idx of group) {
+              const strippedDoc = stripBaseTextFromQuestionDoc(qs[idx]?.content);
+              out.push({
+                ...qs[idx],
+                content: strippedDoc ?? qs[idx]?.content,
+                __set: { parentId: btKey },
+              });
+            }
           } else if (baseTextNode) {
             // 1 questão: base_text dentro do doc → atômico
             const q0 = qs[group[0]];
-            const doc0 = safeParseDoc(q0?.content);
+            const doc0 = stripBaseTextFromQuestionDoc(q0?.content) ?? safeParseDoc(q0?.content);
             const newDoc: PMNode = {
               type: "doc",
               content: (doc0?.content ?? []).map((n) => {
@@ -756,6 +807,25 @@ const { pages, refs } = usePagination({
     expandedQuestionsContentKey,
   ],
 });
+
+  // Resolve line_ref e injeta numeração de linhas após cada re-render do layout
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const container = document.querySelector<HTMLElement>(".a4-sheet");
+    if (!container) return;
+    if (
+      !container.querySelector("[data-line-ref]") &&
+      !container.querySelector("[data-anchor-id]") &&
+      !container.querySelector("[data-numbered='true']")
+    ) {
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      resolverRefs(container);
+      injectLineNumbers(container);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [pages, columns, provaConfig.layoutType]);
 
   useEffect(() => {
     if (!devMontarDebugEnabled || typeof window === "undefined") return;

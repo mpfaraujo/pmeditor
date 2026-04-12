@@ -943,3 +943,64 @@
     padding: 2cm 2.2cm;
   }
 }
+
+
+/* ===== REFERÊNCIA DE LINHA ===== */
+
+/* Âncora: sublinhado tracejado apenas na tela de montagem, invisible na impressão */
+.text-anchor {
+  text-decoration: underline dashed #1a6680;
+  text-underline-offset: 3px;
+}
+
+@media print {
+  .text-anchor {
+    text-decoration: none;
+  }
+}
+
+/* Node line_ref: referência de linha no enunciado */
+.line-ref {
+  font-size: 0.88em;
+  color: #444;
+  white-space: nowrap;
+}
+
+/* ===== TÍTULO DE TEXTO/POEMA ===== */
+.block-title {
+  text-align: center;
+  font-weight: bold;
+}
+
+.base-text[data-numbered="true"],
+.statement[data-numbered="true"] {
+  position: relative;
+  overflow: visible;
+}
+
+/* ===== NUMERAÇÃO DE LINHAS ===== */
+
+/* Container numerado precisa de position:relative (setado via JS) */
+.line-number-label {
+  position: absolute;
+  left: -2em;
+  line-height: inherit;
+  user-select: none;
+  pointer-events: none;
+}
+
+.line-number-label::before {
+  content: attr(data-line-number);
+  display: inline-block;
+  width: 1.8em;
+  text-align: right;
+  font-size: 0.72em;
+  color: #888;
+  font-family: monospace;
+}
+
+@media print {
+  .line-number-label::before {
+    color: #666;
+  }
+}

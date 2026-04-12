@@ -18,8 +18,19 @@ interface HorizontalToolbarProps {
   onAction: (action: string) => void;
   optionsCount: number;
   isSetQuestions?: boolean;
-
   itemCount?: number;
+  isInPoem?: boolean;
+  isInBaseText?: boolean;
+  isInTitle?: boolean;
+  isNumbered?: boolean;
+  activeMarks?: {
+    strong?: boolean;
+    em?: boolean;
+    underline?: boolean;
+    superscript?: boolean;
+    subscript?: boolean;
+  };
+  textAlign?: "left" | "center" | "right" | "justify" | null;
 }
 
 export function HorizontalToolbar({
@@ -27,6 +38,12 @@ export function HorizontalToolbar({
   optionsCount,
   isSetQuestions = false,
   itemCount = 0,
+  isInPoem = false,
+  isInBaseText = false,
+  isInTitle = false,
+  isNumbered = false,
+  activeMarks,
+  textAlign = null,
 }: HorizontalToolbarProps) {
   const clampedOptions = Math.max(0, Math.min(5, Math.floor(optionsCount || 0)));
   const canDec = clampedOptions > 2;
@@ -67,41 +84,133 @@ export function HorizontalToolbar({
 
           {/* 3. FORMATAÇÃO */}
           <div className="flex items-center gap-1 border-r border-gray-300 px-2">
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("mark:strong")} title="Negrito (Ctrl+B)">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${activeMarks?.strong ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("mark:strong")}
+              title="Negrito (Ctrl+B)"
+            >
               <Icons.Bold className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("mark:em")} title="Itálico (Ctrl+I)">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${activeMarks?.em ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("mark:em")}
+              title="Itálico (Ctrl+I)"
+            >
               <Icons.Italic className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("mark:underline")} title="Sublinhado (Ctrl+U)">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${activeMarks?.underline ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("mark:underline")}
+              title="Sublinhado (Ctrl+U)"
+            >
               <Icons.Underline className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("mark:superscript")} title="Sobrescrito">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${activeMarks?.superscript ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("mark:superscript")}
+              title="Sobrescrito"
+            >
               <Icons.Superscript className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("mark:subscript")} title="Subscrito">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${activeMarks?.subscript ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("mark:subscript")}
+              title="Subscrito"
+            >
               <Icons.Subscript className="h-4 w-4" />
+            </Button>
+            {/* Título: toggle (ativo quando cursor está em title) */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 font-bold ${isInTitle ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("toggle-title")}
+              title={isInTitle ? "Remover título" : "Formatar como título"}
+            >
+              <Icons.Heading2 className="h-4 w-4" />
+            </Button>
+            {/* Poema: toggle (ativo quando cursor está num poem) */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${isInPoem ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("insert-poem")}
+              title={isInPoem ? "Sair do modo poema" : "Formatar como poema"}
+            >
+              <Icons.BookOpen className="h-4 w-4" />
+            </Button>
+            {/* Numerar linhas: disponível em poem e base_text */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${isNumbered ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : (isInPoem || isInBaseText) ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("toggle-numbered")}
+              title="Numerar linhas (a cada 5)"
+            >
+              <Icons.Hash className="h-4 w-4" />
             </Button>
           </div>
 
           {/* 4. ALINHAMENTO */}
           <div className="flex items-center gap-1 border-r border-gray-300 px-2">
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("align-left")} title="Alinhar à esquerda">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${(!textAlign || textAlign === "left") ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("align-left")}
+              title="Alinhar à esquerda"
+            >
               <Icons.AlignLeft className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("align-center")} title="Centralizar">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${textAlign === "center" ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("align-center")}
+              title="Centralizar"
+            >
               <Icons.AlignCenter className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("align-right")} title="Alinhar à direita">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${textAlign === "right" ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("align-right")}
+              title="Alinhar à direita"
+            >
               <Icons.AlignRight className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("align-justify")} title="Justificar">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 ${textAlign === "justify" ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
+              onClick={() => onAction("align-justify")}
+              title="Justificar"
+            >
               <Icons.AlignJustify className="h-4 w-4" />
             </Button>
           </div>
 
-          {/* 5. INSERIR (dropdown) */}
-          <div className="flex items-center gap-1 border-r border-gray-300 px-2">
+          {/* 5. INSERIR — movido para linha 2 */}
+
+
+        </div>
+
+        {/* ── LINHA 2 ── */}
+        <div className="flex items-center gap-1 flex-wrap border-t border-gray-200 pt-1">
+
+          {/* INSERIR (dropdown) */}
+          <div className="flex items-center gap-1 border-r border-gray-300 pr-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="h-8 px-2 hover:bg-gray-100">
@@ -126,15 +235,13 @@ export function HorizontalToolbar({
                 <DropdownMenuItem onClick={() => onAction("basetext")}>
                   <Icons.FileText className="h-4 w-4 mr-2" /> Texto-base
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAction("insert-poem")}>
-                  <Icons.BookOpen className="h-4 w-4 mr-2" /> Poema
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onAction("insert-credits")}>
                   <Icons.Quote className="h-4 w-4 mr-2" /> Créditos
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onAction("insert-databox")}>
                   <Icons.BoxSelect className="h-4 w-4 mr-2" /> Dados
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
                     <Icons.List className="h-4 w-4 mr-2" /> Listas
@@ -157,15 +264,26 @@ export function HorizontalToolbar({
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
+                <DropdownMenuSeparator />
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Icons.MapPin className="h-4 w-4 mr-2" /> Ref. de linha
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem onClick={() => onAction("mark-anchor")}>
+                      <Icons.Tag className="h-4 w-4 mr-2" /> Marcar expressão
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onAction("remove-anchor")}>
+                      <Icons.X className="h-4 w-4 mr-2" /> Remover marcador
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onAction("insert-line-ref")}>
+                      <Icons.Hash className="h-4 w-4 mr-2" /> Inserir (linha N)
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-
-
-        </div>
-
-        {/* ── LINHA 2 ── */}
-        <div className="flex items-center gap-1 flex-wrap border-t border-gray-200 pt-1">
 
           {/* TIPO */}
           <div className="flex items-center gap-1 border-r border-gray-300 pr-2">
@@ -224,7 +342,7 @@ export function HorizontalToolbar({
             </DropdownMenu>
           </div>
 
-          {/* TAMANHO DE IMAGEM + NUMERAÇÃO */}
+          {/* TAMANHO DE IMAGEM */}
           <div className="flex items-center gap-1 px-2">
             <span className="text-xs text-gray-500">Img</span>
             <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-dec")} title="Reduzir imagem (−1 cm)">
@@ -232,9 +350,6 @@ export function HorizontalToolbar({
             </Button>
             <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-inc")} title="Aumentar imagem (+1 cm)">
               <Plus className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("toggle-numbered")} title="Numerar linhas">
-              <Icons.Hash className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("preview")} title="Visualizar renderização">
               <Icons.Eye className="h-4 w-4" />

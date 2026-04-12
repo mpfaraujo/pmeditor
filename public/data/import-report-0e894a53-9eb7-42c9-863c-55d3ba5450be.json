@@ -1,0 +1,16 @@
+{
+  "runId": "0e894a53-9eb7-42c9-863c-55d3ba5450be",
+  "queuePath": "C:\\Projetos\\pmeditor\\public\\data\\import-queue.json",
+  "createdAt": "2026-04-11T15:11:28.347Z",
+  "dryRun": true,
+  "summary": {
+    "imported": 95,
+    "duplicates": 0,
+    "failed": 0,
+    "skipped": 0,
+    "totalQueue": 95,
+    "processed": 95
+  },
+  "duplicates": [],
+  "errors": []
+}

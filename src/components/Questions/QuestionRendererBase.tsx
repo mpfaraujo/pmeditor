@@ -245,7 +245,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         localItems.forEach((it, idx) => {
           const itemBlocks = (it.content ?? [])
             .filter((n) => n.type === "statement")
-            .flatMap((n, j) => renderBlock(n, `${localKeyPrefix}-essay-${idx}-blk-${j}`));
+            .flatMap((n, j) => renderStatementNode(n, `${localKeyPrefix}-essay-${idx}-blk-${j}`));
           const { picked, hasAny } = pickBlocks(itemBlocks);
           if (!hasAny) return;
 
@@ -322,7 +322,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         {baseTextNode ? (
           <div className="question-readonly">
             <div className="question-text space-y-2">
-              {renderBlock(baseTextNode, `${keyPrefix}-base`)}
+              {renderBaseTextNode(baseTextNode, `${keyPrefix}-base`)}
             </div>
           </div>
         ) : null}
@@ -347,7 +347,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         if (qNode.type === "base_text") {
           allBlocks.push(...renderBaseTextNode(qNode, `${keyPrefix}-blk-${j}`));
         } else {
-          allBlocks.push(...renderBlock(qNode, `${keyPrefix}-blk-${j}`));
+          allBlocks.push(...renderStatementNode(qNode, `${keyPrefix}-blk-${j}`));
         }
       }
 
@@ -412,8 +412,19 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     node: PMNode,
     keyPrefix: string
   ): React.ReactNode[] {
+    const numbered = !!node.attrs?.numbered;
+    const wrapBlocks = (inner: React.ReactNode[]): React.ReactNode[] => [
+      <div
+        key={`${keyPrefix}-bt-wrapper`}
+        className="base-text"
+        {...(numbered ? { "data-numbered": "true" } : {})}
+      >
+        {inner}
+      </div>,
+    ];
+
     const blocks = renderBlock(node, keyPrefix);
-    if (!baseTextSections || baseTextSections.length === 0) return blocks;
+    if (!baseTextSections || baseTextSections.length === 0) return wrapBlocks(blocks);
 
     const rendered: React.ReactNode[] = [];
     let cursor = 1;
@@ -465,7 +476,23 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
       rendered.push(...blocks.slice(cursor - 1));
     }
 
-    return rendered;
+    return wrapBlocks(rendered);
+  }
+
+  function renderStatementNode(
+    node: PMNode,
+    keyPrefix: string
+  ): React.ReactNode[] {
+    const numbered = !!node.attrs?.numbered;
+    return [
+      <div
+        key={`${keyPrefix}-statement-wrapper`}
+        className="statement"
+        {...(numbered ? { "data-numbered": "true" } : {})}
+      >
+        {renderBlock(node, keyPrefix)}
+      </div>,
+    ];
   }
 
   function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
@@ -670,6 +697,10 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
       return applyMarks(node.text ?? "", node.marks);
     }
 
+    if (node.type === "line_ref") {
+      return <span className="line-ref" data-line-ref={node.attrs?.anchorId}>l. ?</span>;
+    }
+
     if (node.type === "math_inline") {
       return (
         <span
@@ -789,6 +820,8 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
             position: "relative",
             display:
               align === "center" || align === "right" ? "table" : "inline-block",
+            verticalAlign:
+              align === "center" || align === "right" ? undefined : "top",
             marginLeft: align === "center" || align === "right" ? "auto" : undefined,
             marginRight:
               align === "center" ? "auto" : align === "right" ? 0 : undefined,
@@ -939,6 +972,8 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
       if (mark.type === "code") return <code>{acc}</code>;
       if (mark.type === "subscript") return <sub>{acc}</sub>;
       if (mark.type === "superscript") return <sup>{acc}</sup>;
+      if (mark.type === "text_anchor")
+        return <span className="text-anchor" data-anchor-id={mark.attrs?.id}>{acc}</span>;
       return acc;
     }, text);
   }

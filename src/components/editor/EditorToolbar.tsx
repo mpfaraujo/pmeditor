@@ -6,11 +6,13 @@ import { EditorView } from "prosemirror-view";
 import { toggleMark } from "prosemirror-commands";
 import { undo as undoCommand, redo as redoCommand } from "prosemirror-history";
 import { schema } from "./schema";
+import { injectLineNumbers } from "@/lib/lineRefMeasure";
 import { ImageUpload } from "./ImageUpload";
 import { SymbolPicker } from "./toolbar/SymbolPicker";
 import { HorizontalToolbar } from "./toolbar/HorizontalToolbar";
 import { createQuestion, getQuestion } from "@/lib/questions";
 import { wrapInList } from "prosemirror-schema-list";
+import { buildPoemFromSelection } from "./poemUtils";
 
 interface EditorToolbarProps {
   view: EditorView | null;
@@ -34,6 +36,9 @@ interface EditorToolbarProps {
   // estado de conjunto
   isSetQuestions?: boolean;
   itemCount?: number;
+
+  // lista de âncoras disponíveis (para inserir line_ref a partir do montar)
+  availableAnchors?: string[];
 }
 
 function clampInt(n: number, min: number, max: number) {
@@ -65,6 +70,7 @@ export function EditorToolbar({
   optionsCount: optionsCountProp,
   isSetQuestions,
   itemCount,
+  availableAnchors,
 }: EditorToolbarProps) {
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [symbolPickerOpen, setSymbolPickerOpen] = useState(false);
@@ -111,6 +117,84 @@ export function EditorToolbar({
     ? Math.max(0, Math.min(5, Math.floor(optionsCountProp as number)))
     : optionsCountFromDoc;
 
+  // Detecta contexto do cursor para habilitar botões contextuais
+  const isInPoem = (() => {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type === schema.nodes.poem) return true;
+    }
+    return false;
+  })();
+
+  const isInBaseText = (() => {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type === schema.nodes.base_text) return true;
+    }
+    return false;
+  })();
+
+  const isInStatement = (() => {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type === schema.nodes.statement) return true;
+    }
+    return false;
+  })();
+
+  const isInTitle = (() => {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type === schema.nodes.title) return true;
+    }
+    return false;
+  })();
+
+  const hasMark = (markType: string): boolean => {
+    const type = schema.marks[markType];
+    if (!type) return false;
+
+    const { from, to, empty, $from } = state.selection;
+    if (empty) return !!type.isInSet(state.storedMarks || $from.marks());
+
+    let found = false;
+    state.doc.nodesBetween(from, to, (node) => {
+      if (type.isInSet(node.marks)) {
+        found = true;
+        return false;
+      }
+      return true;
+    });
+    return found;
+  };
+
+  const isNumbered = (() => {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      if (
+        node.type === schema.nodes.poem ||
+        node.type === schema.nodes.base_text ||
+        node.type === schema.nodes.statement
+      ) {
+        return !!node.attrs?.numbered;
+      }
+    }
+    return false;
+  })();
+
+  const currentTextAlign = (() => {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      if (node.type === schema.nodes.paragraph) {
+        return (node.attrs?.textAlign as "left" | "center" | "right" | "justify" | null) ?? null;
+      }
+      if (node.type === schema.nodes.title) return "center" as const;
+    }
+    return null;
+  })();
+
   const handleToggleMark = (markType: string) => {
     const type = schema.marks[markType];
     if (!type) return;
@@ -132,44 +216,40 @@ export function EditorToolbar({
     view.focus();
   };
 
-  const handleInsertPoem = () => {
-    const { $from, $to } = view.state.selection;
+  const handleTogglePoem = () => {
+    const { $from } = view.state.selection;
 
-    // Seleção dentro de um único bloco ou cursor: converte o textblock atual em poem+verse
-    const sharedDepth = $from.sharedDepth($to.pos);
-    if (sharedDepth >= $from.depth) {
-      for (let d = $from.depth; d > 0; d--) {
-        const n = $from.node(d);
-        if (n.isTextblock) {
-          const blockStart = $from.before(d);
-          const verse = schema.nodes.verse.create(null, n.content);
-          const poem = schema.nodes.poem.create(null, [verse]);
-          view.dispatch(view.state.tr.replaceWith(blockStart, blockStart + n.nodeSize, poem));
-          view.focus();
-          return;
-        }
+    // Se cursor está dentro de poem → desfaz: cada verse vira paragraph
+    for (let d = $from.depth; d > 0; d--) {
+      const n = $from.node(d);
+      if (n.type === schema.nodes.poem) {
+        const pos = $from.before(d);
+        const paragraphs: ReturnType<typeof schema.nodes.paragraph.create>[] = [];
+        n.forEach((verse) => {
+          paragraphs.push(schema.nodes.paragraph.create(null, verse.content));
+        });
+        view.dispatch(view.state.tr.replaceWith(pos, pos + n.nodeSize, paragraphs));
+        view.focus();
+        return;
       }
-    } else {
-      // Seleção abrange múltiplos blocos: cada bloco vira um verse
-      const parentStart = $from.start(sharedDepth);
-      const parent = $from.node(sharedDepth);
-      const verses: any[] = [];
-      let rangeStart = -1;
-      let rangeEnd = -1;
+    }
 
-      parent.forEach((child: any, offset: number) => {
-        if (!child.isBlock) return;
-        const childStart = parentStart + offset;
-        const childEnd = childStart + child.nodeSize;
-        if (childEnd <= $from.pos || childStart >= $to.pos) return;
-        if (rangeStart === -1) rangeStart = childStart;
-        rangeEnd = childEnd;
-        verses.push(schema.nodes.verse.create(null, child.content));
-      });
+    // Não está em poem → converte / insere
+    const selectionPoem = buildPoemFromSelection(view.state, schema);
+    if (selectionPoem) {
+      view.dispatch(view.state.tr.replaceSelectionWith(selectionPoem));
+      view.focus();
+      return;
+    }
 
-      if (verses.length > 0 && rangeStart !== -1) {
-        const poem = schema.nodes.poem.create(null, verses);
-        view.dispatch(view.state.tr.replaceWith(rangeStart, rangeEnd, poem));
+    // Sem seleção: converte o textblock atual inteiro em poem+verse
+    for (let d = $from.depth; d > 0; d--) {
+      const n = $from.node(d);
+      if (n.isTextblock) {
+        const blockStart = $from.before(d);
+        const verse = schema.nodes.verse.create(null, n.content);
+        const poem = schema.nodes.poem.create(null, [verse]);
+        view.dispatch(view.state.tr.replaceWith(blockStart, blockStart + n.nodeSize, poem));
         view.focus();
         return;
       }
@@ -179,6 +259,96 @@ export function EditorToolbar({
     const verse = schema.nodes.verse.create();
     const poem = schema.nodes.poem.create(null, [verse]);
     view.dispatch(view.state.tr.replaceSelectionWith(poem));
+    view.focus();
+  };
+
+  // Remove o mark text_anchor da seleção (ou do trecho marcado sob o cursor)
+  const handleRemoveAnchor = () => {
+    const { from, to, empty } = view.state.selection;
+
+    if (empty) {
+      // Sem seleção: expande até os limites do mark sob o cursor
+      const $pos = view.state.doc.resolve(from);
+      const mark = $pos.marks().find((m) => m.type === schema.marks.text_anchor);
+      if (!mark) {
+        window.alert("Cursor não está sobre uma expressão marcada.");
+        return;
+      }
+      // Busca início e fim do mark contíguo
+      let start = from;
+      let end = from;
+      view.state.doc.nodesBetween(0, view.state.doc.content.size, (node, pos) => {
+        if (node.isText && node.marks.some((m) => m.type === schema.marks.text_anchor && m.attrs.id === mark.attrs.id)) {
+          start = Math.min(start, pos);
+          end = Math.max(end, pos + node.nodeSize);
+        }
+      });
+      view.dispatch(view.state.tr.removeMark(start, end, schema.marks.text_anchor));
+    } else {
+      view.dispatch(view.state.tr.removeMark(from, to, schema.marks.text_anchor));
+    }
+    view.focus();
+  };
+
+  // Marca o texto selecionado como âncora de linha (text_anchor mark)
+  const handleMarkAnchor = () => {
+    const { from, to } = view.state.selection;
+    if (from === to) {
+      window.alert("Selecione o texto que deseja marcar como referência de linha.");
+      return;
+    }
+    const selectedText = view.state.doc.textBetween(from, to);
+    const suggested = selectedText
+      .slice(0, 40)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+    const id = window.prompt("Nome da referência (ID):", suggested);
+    if (!id?.trim()) return;
+    const mark = schema.marks.text_anchor.create({ id: id.trim() });
+    view.dispatch(view.state.tr.addMark(from, to, mark));
+    view.focus();
+  };
+
+  // Insere um node line_ref na posição do cursor
+  const handleInsertLineRef = () => {
+    // Coleta âncoras disponíveis: prop externa (montar) OU do próprio doc
+    const fromProp = availableAnchors ?? [];
+    const fromDoc: string[] = [];
+    view.state.doc.descendants((node) => {
+      node.marks?.forEach((mark) => {
+        if (
+          mark.type === schema.marks.text_anchor &&
+          mark.attrs.id &&
+          !fromDoc.includes(mark.attrs.id)
+        ) {
+          fromDoc.push(mark.attrs.id);
+        }
+      });
+    });
+    const anchors = fromProp.length > 0 ? fromProp : fromDoc;
+
+    if (anchors.length === 0) {
+      window.alert(
+        "Nenhuma expressão marcada encontrada.\nMarque uma expressão no texto-base primeiro."
+      );
+      return;
+    }
+
+    const choices = anchors.map((a, i) => `${i + 1}. ${a}`).join("\n");
+    const input = window.prompt(`Qual referência inserir?\n\n${choices}\n\nDigite o número ou o ID:`);
+    if (!input?.trim()) return;
+
+    const num = parseInt(input.trim());
+    const anchorId =
+      Number.isFinite(num) && num >= 1 && num <= anchors.length
+        ? anchors[num - 1]
+        : input.trim();
+
+    const lineRef = schema.nodes.line_ref.create({ anchorId });
+    view.dispatch(view.state.tr.replaceSelectionWith(lineRef));
     view.focus();
   };
 
@@ -205,13 +375,48 @@ export function EditorToolbar({
     const $from = view.state.selection.$from;
     for (let d = $from.depth; d > 0; d--) {
       const node = $from.node(d);
-      if (node.type === schema.nodes.poem) {
+      if (
+        node.type === schema.nodes.poem ||
+        node.type === schema.nodes.base_text ||
+        node.type === schema.nodes.statement
+      ) {
         const pos = $from.before(d);
+        const newNumbered = !node.attrs.numbered;
         view.dispatch(
-          view.state.tr.setNodeMarkup(pos, undefined, {
-            ...node.attrs,
-            numbered: !node.attrs.numbered,
+          view.state.tr.setNodeMarkup(pos, undefined, { ...node.attrs, numbered: newNumbered })
+        );
+        // Injeta/remove labels de linha no editor após o layout estabilizar
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            injectLineNumbers(view.dom as HTMLElement);
+          });
+        });
+        view.focus();
+        return;
+      }
+    }
+  };
+
+  // Toggle título: converte parágrafo corrente ↔ title
+  const handleToggleTitle = () => {
+    const $from = view.state.selection.$from;
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      const pos = $from.before(d);
+      if (node.type === schema.nodes.title) {
+        // title → paragraph
+        view.dispatch(
+          view.state.tr.setNodeMarkup(pos, schema.nodes.paragraph, {
+            textAlign: "center",
           })
+        );
+        view.focus();
+        return;
+      }
+      if (node.isTextblock) {
+        // paragraph/verse → title
+        view.dispatch(
+          view.state.tr.setNodeMarkup(pos, schema.nodes.title, {})
         );
         view.focus();
         return;
@@ -484,7 +689,16 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
         setSymbolPickerOpen(true);
         break;
       case "insert-poem":
-        handleInsertPoem();
+        handleTogglePoem();
+        break;
+      case "mark-anchor":
+        handleMarkAnchor();
+        break;
+      case "remove-anchor":
+        handleRemoveAnchor();
+        break;
+      case "insert-line-ref":
+        handleInsertLineRef();
         break;
       case "insert-credits":
         handleInsertCredits();
@@ -494,6 +708,9 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
         break;
       case "toggle-numbered":
         handleToggleNumbered();
+        break;
+      case "toggle-title":
+        handleToggleTitle();
         break;
       case "preview":
         onPreview?.();
@@ -528,6 +745,18 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
             optionsCount={optionsCount}
             isSetQuestions={isSetQuestions ?? false}
             itemCount={itemCount ?? 0}
+            isInPoem={isInPoem}
+            isInBaseText={isInBaseText || isInStatement}
+            isInTitle={isInTitle}
+            isNumbered={isNumbered}
+            textAlign={currentTextAlign}
+            activeMarks={{
+              strong: hasMark("strong"),
+              em: hasMark("em"),
+              underline: hasMark("underline"),
+              superscript: hasMark("superscript"),
+              subscript: hasMark("subscript"),
+            }}
           />
 
 

@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { listBaseTexts, getBaseText, listQuestionsByBaseText, type BaseTextItem, type LinkedQuestion } from "@/lib/baseTexts";
-import QuestionRenderer from "@/components/Questions/QuestionRenderer";
+import QuestionRendererProva from "@/components/Questions/QuestionRendererProva";
+import { buildExternalBaseTextPreviewDoc } from "@/lib/questionRenderContent";
 import { ChevronDown, ChevronUp, Pencil, ExternalLink } from "lucide-react";
 
 interface BaseTextPickerModalProps {
@@ -21,17 +22,11 @@ interface BaseTextPickerModalProps {
   onSelect: (baseTextId: string, tag: string) => void;
 }
 
-function wrapBaseTextForRender(content: any) {
-  return {
-    type: "doc",
-    content: [{ type: "question", content: [{ type: "base_text", content: content?.content ?? [] }] }],
-  };
-}
-
 function BaseTextPreview({ id, item }: { id: string; item: BaseTextItem }) {
   const [content, setContent] = useState<any>(null);
   const [questions, setQuestions] = useState<LinkedQuestion[]>([]);
   const [loading, setLoading] = useState(true);
+  const previewDoc = buildExternalBaseTextPreviewDoc(content);
 
   useEffect(() => {
     setLoading(true);
@@ -49,7 +44,7 @@ function BaseTextPreview({ id, item }: { id: string; item: BaseTextItem }) {
       <div className="flex items-start justify-between gap-2">
         {content ? (
           <div className="border rounded bg-white p-3 max-h-64 overflow-y-auto text-sm print-mode flex-1">
-            <QuestionRenderer content={wrapBaseTextForRender(content)} />
+            {previewDoc ? <QuestionRendererProva content={previewDoc} /> : null}
           </div>
         ) : (
           <p className="text-xs text-muted-foreground flex-1">Sem conteúdo.</p>
