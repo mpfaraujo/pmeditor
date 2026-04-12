@@ -949,8 +949,7 @@
 
 /* Âncora: sublinhado tracejado apenas na tela de montagem, invisible na impressão */
 .text-anchor {
-  text-decoration: underline dashed #1a6680;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 @media print {
