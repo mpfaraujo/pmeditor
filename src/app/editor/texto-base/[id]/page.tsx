@@ -1,12 +1,22 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
 import { getBaseText, updateBaseText, createBaseText, deleteBaseText, type BaseTextItem } from "@/lib/baseTexts";
 import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ArrowLeft, Check, Trash2 } from "lucide-react";
 import Link from "next/link";
 
@@ -27,15 +37,71 @@ function BaseTextEditorInner() {
   const [disciplina, setDisciplina] = useState("");
   const [tema, setTema] = useState("");
   const [genero, setGenero] = useState("");
+  const [editorContent, setEditorContent] = useState<any>(null);
+  const [initialSnapshot, setInitialSnapshot] = useState<string | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [savedOk, setSavedOk] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
 
   const [deleteState, setDeleteState] = useState<
     "idle" | "confirm" | "linked" | "deleting"
   >("idle");
   const [linkedCount, setLinkedCount] = useState(0);
+
+  const trimOrNull = (value: string) => {
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  };
+
+  const buildSnapshot = (content: any) =>
+    JSON.stringify({
+      titulo: trimOrNull(titulo),
+      autor: trimOrNull(autor),
+      disciplina: trimOrNull(disciplina),
+      tema: trimOrNull(tema),
+      genero: trimOrNull(genero),
+      content: content ?? null,
+    });
+
+  const currentSnapshot = useMemo(
+    () => buildSnapshot(editorContent),
+    [titulo, autor, disciplina, tema, genero, editorContent]
+  );
+
+  const hasUnsavedChanges =
+    initialSnapshot !== null &&
+    currentSnapshot !== initialSnapshot &&
+    !saving;
+
+  const closeEditor = (fallbackHref = "/editor/textos-base") => {
+    window.close();
+    setTimeout(() => {
+      if (!window.closed) {
+        if (window.history.length > 1) router.back();
+        else router.replace(fallbackHref);
+      }
+    }, 250);
+  };
+
+  const finishAfterSave = (nextId?: string) => {
+    setSavedOk(true);
+    setSaveError(null);
+
+    const fallbackHref = nextId ? `/editor/texto-base/${nextId}` : "/editor/textos-base";
+
+    setTimeout(() => {
+      closeEditor(fallbackHref);
+    }, 150);
+  };
+
+  useEffect(() => {
+    if (isNew) {
+      setInitialSnapshot(buildSnapshot(null));
+      return;
+    }
+  }, [isNew]);
 
   useEffect(() => {
     if (isNew) return;
@@ -47,9 +113,29 @@ function BaseTextEditorInner() {
       setDisciplina(bt.disciplina ?? "");
       setTema(bt.tema ?? "");
       setGenero(bt.genero ?? "");
+      setEditorContent(bt.content ?? null);
+      setInitialSnapshot(JSON.stringify({
+        titulo: bt.titulo ?? null,
+        autor: bt.autor ?? null,
+        disciplina: bt.disciplina ?? null,
+        tema: bt.tema ?? null,
+        genero: bt.genero ?? null,
+        content: bt.content ?? null,
+      }));
       setLoading(false);
     });
   }, [id, isNew]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!hasUnsavedChanges) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const handleDelete = async (force = false) => {
     if (!item) return;
@@ -86,9 +172,11 @@ function BaseTextEditorInner() {
       });
       setSaving(false);
       if (result.success) {
-        router.replace(`/editor/texto-base/${result.id}`);
+        setInitialSnapshot(buildSnapshot(baseTextContent));
+        finishAfterSave(result.id);
       } else if ("duplicate" in result && result.duplicate && result.existing_id) {
-        router.replace(`/editor/texto-base/${result.existing_id}`);
+        setInitialSnapshot(buildSnapshot(baseTextContent));
+        finishAfterSave(result.existing_id);
       } else {
         setSaveError(result.error ?? "Erro ao salvar.");
       }
@@ -107,15 +195,24 @@ function BaseTextEditorInner() {
 
     setSaving(false);
     if (result.success) {
-      window.close();
-      // fallback: se window.close() foi bloqueado (aba não aberta por script), redireciona
-      setTimeout(() => {
-        setSavedOk(true);
-        setTimeout(() => setSavedOk(false), 3000);
-      }, 300);
+      setInitialSnapshot(buildSnapshot(baseTextContent));
+      finishAfterSave();
     } else {
       setSaveError(result.error ?? "Erro ao salvar.");
     }
+  };
+
+  const handleBack = () => {
+    if (hasUnsavedChanges) {
+      setLeaveDialogOpen(true);
+      return;
+    }
+    closeEditor();
+  };
+
+  const handleSaveAndLeave = async () => {
+    setLeaveDialogOpen(false);
+    await handleSave(editorContent);
   };
 
   if (authLoading) {
@@ -158,7 +255,7 @@ function BaseTextEditorInner() {
       <div className="sticky top-0 z-10 px-4 pt-4">
         <div className="max-w-6xl mx-auto pm-topbar-dark px-5 py-3 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => router.back()} className="text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+          <Button variant="ghost" size="sm" onClick={handleBack} className="text-[#F4F4F2] hover:bg-white/10 hover:text-white">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Voltar
           </Button>
@@ -177,7 +274,7 @@ function BaseTextEditorInner() {
           {saveError && <p className="text-xs text-destructive">{saveError}</p>}
           {savedOk && (
             <span className="text-xs text-green-600 flex items-center gap-1">
-              <Check className="h-3.5 w-3.5" /> Salvo
+              <Check className="h-3.5 w-3.5" /> Salvo. Fechando...
             </span>
           )}
           {!isNew && deleteState === "idle" && (
@@ -253,9 +350,37 @@ function BaseTextEditorInner() {
         <BaseTextEditorView
           value={isNew ? null : item?.content}
           onSave={handleSave}
+          onChange={setEditorContent}
+          closeAfterSave
           saving={saving}
         />
       </div>
+
+      <AlertDialog open={leaveDialogOpen} onOpenChange={setLeaveDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Salvar antes de sair?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Há alterações não salvas neste texto base. Você pode salvar e fechar, descartar as mudanças ou continuar editando.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continuar editando</AlertDialogCancel>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setLeaveDialogOpen(false);
+                closeEditor();
+              }}
+            >
+              Sair sem salvar
+            </Button>
+            <AlertDialogAction onClick={handleSaveAndLeave} disabled={saving}>
+              Salvar e sair
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

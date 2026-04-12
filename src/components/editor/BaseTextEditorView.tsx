@@ -10,6 +10,16 @@ import { splitListItem, liftListItem, sinkListItem } from "prosemirror-schema-li
 import { toggleMark } from "prosemirror-commands";
 import { wrapInList } from "prosemirror-schema-list";
 import { inputRules } from "prosemirror-inputrules";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -20,15 +30,17 @@ import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "./plugins/smartPastePlugin";
 import { MathInsert } from "./MathInsert";
 import { ImageUpload } from "./ImageUpload";
+import { SymbolPicker } from "./toolbar/SymbolPicker";
 import { ensureImageIds } from "./ensureImageIds";
 import { buildPoemFromSelection } from "./poemUtils";
 import "../../app/prosemirror.css";
 
 import {
   Bold, Italic, Underline as UnderlineIcon,
-  Superscript, Subscript, Sigma, Image,
+  Superscript, Subscript, Sigma, Image, Omega,
   List, ListOrdered, Undo2, Redo2, Save,
-  AlignLeft, AlignCenter, AlignJustify, Quote, Box, Code, BookOpen, Hash,
+  AlignLeft, AlignCenter, AlignRight, AlignJustify, Quote, Box, Code, BookOpen, Hash,
+  ChevronDown, Heading2, PlusCircle, MapPin, Tag, X,
 } from "lucide-react";
 
 /* ---------- MathInlineView ---------- */
@@ -80,11 +92,11 @@ function TBtn({
   onClick: () => void;
   variant?: "default" | "save";
 }) {
-  const base = "p-1.5 rounded transition-colors";
+  const base = "inline-flex items-center justify-center h-8 min-w-8 px-1.5 rounded-md border border-transparent transition-colors";
   const styles =
     variant === "save"
-      ? `${base} bg-primary text-white hover:bg-primary/90`
-      : `${base} hover:bg-gray-200 ${active ? "bg-gray-200 text-blue-600" : "text-gray-600"}`;
+      ? `${base} bg-slate-900 text-white hover:bg-slate-800 shadow-sm`
+      : `${base} hover:bg-slate-100 hover:text-slate-900 ${active ? "bg-blue-50 text-blue-700 border-blue-200 shadow-sm" : "text-slate-600"}`;
 
   return (
     <button
@@ -95,6 +107,14 @@ function TBtn({
     >
       {Icon ? <Icon className="h-4 w-4" /> : <span className="text-xs font-mono leading-none">{label}</span>}
     </button>
+  );
+}
+
+function ToolbarGroup({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white/90 px-1.5 py-1 shadow-sm">
+      {children}
+    </div>
   );
 }
 
@@ -128,10 +148,12 @@ interface BaseTextEditorViewProps {
   /** base_text node JSON (content armazenado no banco) */
   value?: any;
   onSave: (baseTextContent: any) => void;
+  onChange?: (baseTextContent: any) => void;
+  closeAfterSave?: boolean;
   saving?: boolean;
 }
 
-export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEditorViewProps) {
+export function BaseTextEditorView({ value, onSave, onChange, closeAfterSave = false, saving = false }: BaseTextEditorViewProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const [, forceUpdate] = useState(0);
@@ -140,6 +162,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
     open: false, pos: null, latex: "",
   });
   const [imageOpen, setImageOpen] = useState(false);
+  const [symbolPickerOpen, setSymbolPickerOpen] = useState(false);
 
   const createEditorDoc = useCallback((content: any) => {
     const json = baseTextToDoc(content);
@@ -199,16 +222,17 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
       dispatchTransaction(tr) {
         const ns = ev.state.apply(tr);
         ev.updateState(ns);
+        onChange?.(docToBaseTextContent(ns.doc.toJSON()));
         forceUpdate((n) => n + 1);
       },
     });
 
     viewRef.current = ev;
+    onChange?.(docToBaseTextContent(ev.state.doc.toJSON()));
     forceUpdate((n) => n + 1);
 
     return () => { ev.destroy(); viewRef.current = null; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [createEditorDoc, onChange, value]);
 
   const view = viewRef.current;
 
@@ -291,7 +315,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
     return found;
   };
 
-  const setTextAlign = (align: "left" | "center" | "justify") => {
+  const setTextAlign = (align: "left" | "center" | "right" | "justify") => {
     if (!view) return;
     const { from, to } = view.state.selection;
     const tr = view.state.tr;
@@ -318,6 +342,15 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
     if (!view) return;
     wrapInList(schema.nodes[listType])(view.state, view.dispatch);
     view.focus();
+  };
+
+  const isInTitle = (): boolean => {
+    if (!view) return false;
+    const { $from } = view.state.selection;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type === schema.nodes.title) return true;
+    }
+    return false;
   };
 
   const insertPoem = () => {
@@ -382,63 +415,249 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
     view.focus();
   };
 
+  const toggleTitle = () => {
+    if (!view) return;
+    const { $from } = view.state.selection;
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      const pos = $from.before(d);
+      if (node.type === schema.nodes.title) {
+        view.dispatch(
+          view.state.tr.setNodeMarkup(pos, schema.nodes.paragraph, {
+            textAlign: "center",
+            numbered: false,
+          })
+        );
+        view.focus();
+        return;
+      }
+      if (node.isTextblock) {
+        view.dispatch(view.state.tr.setNodeMarkup(pos, schema.nodes.title, {}));
+        view.focus();
+        return;
+      }
+    }
+  };
+
+  const insertSymbol = (symbol: string) => {
+    if (!view) return;
+    view.dispatch(view.state.tr.replaceSelectionWith(schema.text(symbol)));
+    view.focus();
+  };
+
+  const markAnchor = () => {
+    if (!view) return;
+    const { from, to } = view.state.selection;
+    if (from === to) {
+      window.alert("Selecione o texto que deseja marcar como referência de linha.");
+      return;
+    }
+    const selectedText = view.state.doc.textBetween(from, to);
+    const suggested = selectedText
+      .slice(0, 40)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+    const id = window.prompt("Nome da referência (ID):", suggested);
+    if (!id?.trim()) return;
+    const mark = schema.marks.text_anchor.create({ id: id.trim() });
+    view.dispatch(view.state.tr.addMark(from, to, mark));
+    view.focus();
+  };
+
+  const removeAnchor = () => {
+    if (!view) return;
+    const { from, to, empty } = view.state.selection;
+
+    if (empty) {
+      const $pos = view.state.doc.resolve(from);
+      const mark = $pos.marks().find((m) => m.type === schema.marks.text_anchor);
+      if (!mark) {
+        window.alert("Cursor não está sobre uma expressão marcada.");
+        return;
+      }
+      let start = from;
+      let end = from;
+      view.state.doc.nodesBetween(0, view.state.doc.content.size, (node, pos) => {
+        if (
+          node.isText &&
+          node.marks.some(
+            (m) => m.type === schema.marks.text_anchor && m.attrs.id === mark.attrs.id
+          )
+        ) {
+          start = Math.min(start, pos);
+          end = Math.max(end, pos + node.nodeSize);
+        }
+      });
+      view.dispatch(view.state.tr.removeMark(start, end, schema.marks.text_anchor));
+      view.focus();
+      return;
+    }
+
+    view.dispatch(view.state.tr.removeMark(from, to, schema.marks.text_anchor));
+    view.focus();
+  };
+
+  const insertLineRef = () => {
+    if (!view) return;
+    const anchors: string[] = [];
+    view.state.doc.descendants((node) => {
+      node.marks?.forEach((mark) => {
+        if (
+          mark.type === schema.marks.text_anchor &&
+          mark.attrs.id &&
+          !anchors.includes(mark.attrs.id)
+        ) {
+          anchors.push(mark.attrs.id);
+        }
+      });
+    });
+
+    if (anchors.length === 0) {
+      window.alert("Nenhuma expressão marcada encontrada.");
+      return;
+    }
+
+    const choices = anchors.map((a, i) => `${i + 1}. ${a}`).join("\n");
+    const input = window.prompt(`Qual referência inserir?\n\n${choices}\n\nDigite o número ou o ID:`);
+    if (!input?.trim()) return;
+
+    const num = parseInt(input.trim(), 10);
+    const anchorId =
+      Number.isFinite(num) && num >= 1 && num <= anchors.length
+        ? anchors[num - 1]
+        : input.trim();
+
+    view.dispatch(
+      view.state.tr.replaceSelectionWith(schema.nodes.line_ref.create({ anchorId }))
+    );
+    view.focus();
+  };
+
   const handleSave = () => {
     if (!view) return;
     const doc = ensureImageIds(view.state.doc, view.state.schema);
     onSave(docToBaseTextContent(doc.toJSON()));
   };
 
+  const textAlign = getTextAlign();
+  const titleActive = isInTitle();
+
   return (
-    <div className="overflow-hidden rounded-xl border border-white/8 bg-[#0B1020] shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
       {/* Toolbar */}
-      <div className="flex items-center gap-0.5 border-b border-white/8 bg-[#0F1629] px-2 py-1.5 flex-wrap">
-        {/* Formatação de texto */}
-        <TBtn icon={Bold} title="Negrito" active={hasMark("strong")} onClick={() => toggleMarkCmd("strong")} />
-        <TBtn icon={Italic} title="Itálico" active={hasMark("em")} onClick={() => toggleMarkCmd("em")} />
-        <TBtn icon={UnderlineIcon} title="Sublinhado" active={hasMark("underline")} onClick={() => toggleMarkCmd("underline")} />
-        <TBtn icon={Superscript} title="Sobrescrito" active={hasMark("superscript")} onClick={() => toggleMarkCmd("superscript")} />
-        <TBtn icon={Subscript} title="Subscrito" active={hasMark("subscript")} onClick={() => toggleMarkCmd("subscript")} />
+      <div className="flex items-center gap-2 border-b border-slate-200 bg-gradient-to-b from-slate-50 via-white to-slate-50 px-3 py-2 flex-wrap">
+        <ToolbarGroup>
+          <TBtn icon={Undo2} title="Desfazer" onClick={() => { if (!view) return; undo(view.state, view.dispatch); view.focus(); }} />
+          <TBtn icon={Redo2} title="Refazer" onClick={() => { if (!view) return; redo(view.state, view.dispatch); view.focus(); }} />
+        </ToolbarGroup>
 
-        <div className="mx-1 h-4 w-px bg-white/12" />
+        <ToolbarGroup>
+          <TBtn icon={Bold} title="Negrito" active={hasMark("strong")} onClick={() => toggleMarkCmd("strong")} />
+          <TBtn icon={Italic} title="Itálico" active={hasMark("em")} onClick={() => toggleMarkCmd("em")} />
+          <TBtn icon={UnderlineIcon} title="Sublinhado" active={hasMark("underline")} onClick={() => toggleMarkCmd("underline")} />
+          <TBtn icon={Superscript} title="Sobrescrito" active={hasMark("superscript")} onClick={() => toggleMarkCmd("superscript")} />
+          <TBtn icon={Subscript} title="Subscrito" active={hasMark("subscript")} onClick={() => toggleMarkCmd("subscript")} />
+          <TBtn icon={Heading2} title={titleActive ? "Remover título" : "Formatar como título"} active={titleActive} onClick={toggleTitle} />
+        </ToolbarGroup>
 
-        {/* Alinhamento */}
-        <TBtn icon={AlignLeft} title="Alinhar à esquerda" active={getTextAlign() === "left" || getTextAlign() === null} onClick={() => setTextAlign("left")} />
-        <TBtn icon={AlignCenter} title="Centralizar" active={getTextAlign() === "center"} onClick={() => setTextAlign("center")} />
-        <TBtn icon={AlignJustify} title="Justificar" active={getTextAlign() === "justify"} onClick={() => setTextAlign("justify")} />
-        <TBtn icon={Hash} title="Numerar linhas selecionadas" active={isLineNumbered()} onClick={toggleLineNumbers} />
+        <ToolbarGroup>
+          <TBtn icon={AlignLeft} title="Alinhar à esquerda" active={textAlign === "left" || textAlign === null} onClick={() => setTextAlign("left")} />
+          <TBtn icon={AlignCenter} title="Centralizar" active={textAlign === "center"} onClick={() => setTextAlign("center")} />
+          <TBtn icon={AlignRight} title="Alinhar à direita" active={textAlign === "right"} onClick={() => setTextAlign("right")} />
+          <TBtn icon={AlignJustify} title="Justificar" active={textAlign === "justify"} onClick={() => setTextAlign("justify")} />
+          <TBtn icon={Hash} title="Numerar linhas selecionadas" active={isLineNumbered()} onClick={toggleLineNumbers} />
+        </ToolbarGroup>
 
-        <div className="mx-1 h-4 w-px bg-white/12" />
-
-        {/* Inserções */}
-        <TBtn icon={Sigma} title="Fórmula matemática" onClick={() => setMathDialog({ open: true, pos: null, latex: "" })} />
-        <TBtn icon={Image} title="Imagem" onClick={() => setImageOpen(true)} />
-
-        <div className="mx-1 h-4 w-px bg-white/12" />
-
-        {/* Listas */}
-        <TBtn icon={List} title="Lista com marcadores" onClick={() => wrapList("bullet_list")} />
-        <TBtn icon={ListOrdered} title="Lista numerada" onClick={() => wrapList("ordered_list")} />
-        <TBtn label="i ii" title="Lista em algarismos romanos" onClick={() => wrapList("roman_list")} />
-        <TBtn label="a b" title="Lista alfabética (a, b, c…)" onClick={() => wrapList("alpha_list")} />
-        <TBtn label="( )" title="Lista VF (assertiva)" onClick={() => wrapList("assertive_list")} />
-
-        <div className="mx-1 h-4 w-px bg-white/12" />
-
-        {/* Blocos especiais */}
-        <TBtn icon={BookOpen} title="Poema / Verso" onClick={insertPoem} />
-        <TBtn icon={Quote} title="Créditos" onClick={insertCredits} />
-        <TBtn icon={Box} title="Caixa de dados" onClick={insertDataBox} />
-        <TBtn icon={Code} title="Bloco de código" onClick={insertCodeBlock} />
-
-        <div className="mx-1 h-4 w-px bg-white/12" />
-
-        <TBtn icon={Undo2} title="Desfazer" onClick={() => { if (!view) return; undo(view.state, view.dispatch); view.focus(); }} />
-        <TBtn icon={Redo2} title="Refazer" onClick={() => { if (!view) return; redo(view.state, view.dispatch); view.focus(); }} />
+        <ToolbarGroup>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"
+                onMouseDown={(e) => e.preventDefault()}
+                title="Inserir"
+              >
+                <PlusCircle className="h-4 w-4" />
+                <span>Inserir</span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem onClick={() => setImageOpen(true)}>
+                <Image className="mr-2 h-4 w-4" /> Imagem
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setMathDialog({ open: true, pos: null, latex: "" })}>
+                <Sigma className="mr-2 h-4 w-4" /> Fórmula
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSymbolPickerOpen(true)}>
+                <Omega className="mr-2 h-4 w-4" /> Símbolos
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={insertPoem}>
+                <BookOpen className="mr-2 h-4 w-4" /> Poema / Verso
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={toggleTitle}>
+                <Heading2 className="mr-2 h-4 w-4" /> Título
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={insertCredits}>
+                <Quote className="mr-2 h-4 w-4" /> Créditos
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={insertDataBox}>
+                <Box className="mr-2 h-4 w-4" /> Caixa de dados
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={insertCodeBlock}>
+                <Code className="mr-2 h-4 w-4" /> Bloco de código
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <List className="mr-2 h-4 w-4" /> Listas
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onClick={() => wrapList("bullet_list")}>
+                    <List className="mr-2 h-4 w-4" /> Lista •
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => wrapList("ordered_list")}>
+                    <ListOrdered className="mr-2 h-4 w-4" /> Lista 1, 2, 3…
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => wrapList("roman_list")}>
+                    <ListOrdered className="mr-2 h-4 w-4" /> Lista I, II, III…
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => wrapList("alpha_list")}>
+                    <ListOrdered className="mr-2 h-4 w-4" /> Lista a, b, c…
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => wrapList("assertive_list")}>
+                    <ListOrdered className="mr-2 h-4 w-4" /> Lista VF
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <MapPin className="mr-2 h-4 w-4" /> Ref. de linha
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onClick={markAnchor}>
+                    <Tag className="mr-2 h-4 w-4" /> Marcar expressão
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={removeAnchor}>
+                    <X className="mr-2 h-4 w-4" /> Remover marcador
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={insertLineRef}>
+                    <Hash className="mr-2 h-4 w-4" /> Inserir referência
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ToolbarGroup>
 
         <div className="flex-1" />
 
-        <TBtn icon={Save} title="Salvar" variant="save" onClick={handleSave} />
-        {saving && <span className="ml-1 text-xs text-[#9eb4d1]">Salvando…</span>}
+        <TBtn icon={Save} title={closeAfterSave ? "Salvar e fechar" : "Salvar"} variant="save" onClick={handleSave} />
+        {saving && <span className="ml-1 text-xs text-slate-500">Salvando…</span>}
       </div>
 
       {/* Editor */}
@@ -456,6 +675,7 @@ export function BaseTextEditorView({ value, onSave, saving = false }: BaseTextEd
       />
 
       <ImageUpload open={imageOpen} onOpenChange={setImageOpen} onImageInsert={insertImage} />
+      <SymbolPicker open={symbolPickerOpen} onOpenChange={setSymbolPickerOpen} onSelect={insertSymbol} />
     </div>
   );
 }
