@@ -84,7 +84,9 @@
           "Juros Compostos",
           "Progressão Aritmética",
           "Progressão Geométrica",
-          "Médias"
+          "Médias",
+          "Divisibilidade e MMC",
+          "Radicais"
         ]
       },
       "Álgebra": {
@@ -110,7 +112,8 @@
           "Inequação do Segundo Grau",
           "Inequações Produto e Quociente",
           "Inequações Modulares",
-          "Indução Finita"
+          "Indução Finita",
+          "Expressões Algébricas"
         ]
       },
       "Funções": {
@@ -213,7 +216,8 @@
           "Troncos",
           "Sólidos Inscritos e Circunscritos",
           "Superfície Poliédrica e Poliedros",
-          "Planificação de Sólidos"
+          "Planificação de Sólidos",
+          "Volume de Cilindro"
         ]
       },
       "Trigonometria": {
@@ -265,7 +269,6 @@
       }
     }
   },
-
   "Língua Portuguesa": {
     "fundamental": {
       "Leitura e Compreensão": {
@@ -324,7 +327,19 @@
           "Texto Narrativo",
           "Texto Argumentativo",
           "Texto Informativo e Jornalístico",
-          "Texto Publicitário e Midiático"
+          "Texto Publicitário e Midiático",
+          "Argumentação",
+          "Gêneros Textuais",
+          "Publicidade e Propaganda",
+          "Progressão Temática",
+          "Coesão Referencial",
+          "Reportagem",
+          "Meios de Comunicação",
+          "Campanha Social",
+          "Recursos Estilísticos",
+          "Discurso",
+          "Tipologia Textual",
+          "Poesia"
         ]
       },
       "Gramática": {
@@ -346,7 +361,12 @@
           "Semântica",
           "Figuras de Sintaxe",
           "Vícios de Linguagem",
-          "Estilística"
+          "Estilística",
+          "Formação de Palavras",
+          "Análise Linguística",
+          "Concordância Nominal",
+          "Norma-Padrão",
+          "Vozes Verbais"
         ]
       },
       "Literatura Brasileira": {
@@ -385,7 +405,10 @@
           "Coesão e Coerência Textual",
           "Introdução e Conclusão",
           "Norma Culta na Redação",
-          "Repertório Sociocultural"
+          "Repertório Sociocultural",
+          "Práticas de Escrita",
+          "Estratégias Argumentativas",
+          "Coesão Textual"
         ]
       },
       "Variação Linguística": {
@@ -394,12 +417,13 @@
           "Variedades Sociolinguísticas",
           "Registros Formais e Informais",
           "Língua Oral e Escrita",
-          "Preconceito Linguístico"
+          "Preconceito Linguístico",
+          "Patrimônio Linguístico",
+          "Oralidade"
         ]
       }
     }
   },
-
   "Língua Inglesa": {
     "medio": {
       "Reading Comprehension": {
@@ -425,7 +449,8 @@
           "Prepositions",
           "Conjunctions and Connectors",
           "Sentence Structure",
-          "Questions and Negation"
+          "Questions and Negation",
+          "Gramática Inglesa"
         ]
       },
       "Vocabulary": {
@@ -459,7 +484,6 @@
       }
     }
   },
-
   "Língua Espanhola": {
     "medio": {
       "Comprensión Lectora": {
@@ -483,7 +507,8 @@
           "Preposiciones",
           "Conjunciones",
           "Oraciones Subordinadas",
-          "Condicionales"
+          "Condicionales",
+          "Gramática Espanhola"
         ]
       },
       "Vocabulario": {
@@ -492,7 +517,8 @@
           "Expresiones Idiomáticas",
           "Formación de Palabras",
           "Campo Semántico",
-          "Vocabulario Temático"
+          "Vocabulario Temático",
+          "Vocabulário"
         ]
       },
       "Cultura Hispana": {
@@ -514,7 +540,6 @@
       }
     }
   },
-
   "Língua Francesa": {
     "medio": {
       "Compréhension Écrite": {
@@ -569,7 +594,6 @@
       }
     }
   },
-
   "Arte": {
     "fundamental": {
       "Artes Visuais": {
@@ -599,7 +623,9 @@
         "subareas": [
           "Arte Indígena",
           "Arte Afro-brasileira",
-          "Folclore e Manifestações Culturais"
+          "Folclore e Manifestações Culturais",
+          "Artes Indígenas",
+          "Artesanato Brasileiro"
         ]
       }
     },
@@ -673,12 +699,13 @@
           "Folclore e Cultura Popular",
           "Carnaval e Manifestações Culturais",
           "Arte Colonial Brasileira",
-          "Modernismo no Brasil"
+          "Modernismo no Brasil",
+          "Artes Indígenas",
+          "Artesanato Brasileiro"
         ]
       }
     }
   },
-
   "Educação Física": {
     "fundamental": {
       "Corpo e Movimento": {
@@ -726,7 +753,9 @@
           "Esportes Paralímpicos",
           "Esportes Radicais e de Aventura",
           "Jogos Cooperativos",
-          "Esportes de Origem Brasileira"
+          "Esportes de Origem Brasileira",
+          "Esporte e Mídia",
+          "Esporte Adaptado"
         ]
       },
       "Ginástica": {
@@ -747,7 +776,8 @@
           "Jiu-Jítsu",
           "Boxe e Muay Thai",
           "Wrestling e Lutas Olímpicas",
-          "Lutas na Cultura Brasileira"
+          "Lutas na Cultura Brasileira",
+          "Lutas"
         ]
       },
       "Dança": {
@@ -767,7 +797,8 @@
           "Doenças Crônicas e Atividade Física",
           "Primeiros Socorros",
           "Saúde Mental e Exercício",
-          "Doping e Substâncias Proibidas"
+          "Doping e Substâncias Proibidas",
+          "Saúde Mental no Esporte"
         ]
       },
       "Corpo Humano e Movimento": {
@@ -782,7 +813,6 @@
       }
     }
   },
-
   "Ciências": {
     "fundamental": {
       "Ser Vivo e Ambiente": {
@@ -831,7 +861,6 @@
       }
     }
   },
-
   "Biologia": {
     "medio": {
       "Citologia": {
@@ -845,7 +874,8 @@
           "Fotossíntese",
           "Respiração Celular e Fermentação",
           "Divisão Celular — Mitose",
-          "Divisão Celular — Meiose"
+          "Divisão Celular — Meiose",
+          "Divisão Celular"
         ]
       },
       "Genética": {
@@ -859,7 +889,14 @@
           "DNA — Estrutura e Replicação",
           "Síntese de Proteínas (Transcrição e Tradução)",
           "Mutações Gênicas e Cromossômicas",
-          "Biotecnologia e Engenharia Genética"
+          "Biotecnologia e Engenharia Genética",
+          "Genética Mendeliana",
+          "Biologia Molecular",
+          "Genética Molecular",
+          "Síntese de Proteínas",
+          "Biotecnologia",
+          "Herança e Determinação do Sexo",
+          "Genética de Populações"
         ]
       },
       "Evolução": {
@@ -869,7 +906,8 @@
           "Especiação",
           "Evidências da Evolução",
           "Evolução Humana",
-          "Genética de Populações e Equilíbrio de Hardy-Weinberg"
+          "Genética de Populações e Equilíbrio de Hardy-Weinberg",
+          "Seleção Natural"
         ]
       },
       "Ecologia": {
@@ -897,7 +935,8 @@
           "Sistema Reprodutor",
           "Sistema Imunológico",
           "Sistema Locomotor (Muscular e Esquelético)",
-          "Sistema Sensorial"
+          "Sistema Sensorial",
+          "Imunologia"
         ]
       },
       "Botânica": {
@@ -908,7 +947,8 @@
           "Morfologia Vegetal",
           "Fisiologia Vegetal",
           "Reprodução Vegetal",
-          "Histologia Vegetal"
+          "Histologia Vegetal",
+          "Briófitas e Evolução das Plantas"
         ]
       },
       "Zoologia": {
@@ -922,7 +962,8 @@
           "Répteis",
           "Aves",
           "Mamíferos",
-          "Classificação e Sistemática Animal"
+          "Classificação e Sistemática Animal",
+          "Classificação dos Seres Vivos"
         ]
       },
       "Microbiologia e Virologia": {
@@ -934,7 +975,9 @@
           "Fungos",
           "Protozoários e Doenças",
           "Antibióticos e Resistência",
-          "Vacinas e Imunização"
+          "Vacinas e Imunização",
+          "Virologia",
+          "Antígenos, Anticorpos e Vacinas"
         ]
       },
       "Embriologia e Histologia": {
@@ -944,12 +987,12 @@
           "Tecido Epitelial",
           "Tecido Conjuntivo",
           "Tecido Muscular",
-          "Tecido Nervoso"
+          "Tecido Nervoso",
+          "Embriologia"
         ]
       }
     }
   },
-
   "Física": {
     "medio": {
       "Mecânica": {
@@ -971,7 +1014,15 @@
           "Movimentos Circulares",
           "Estática e Equilíbrio",
           "Hidrostática",
-          "Hidrodinâmica"
+          "Hidrodinâmica",
+          "Cinemática",
+          "Dinâmica",
+          "Estática",
+          "Energia Mecânica",
+          "Equilíbrio de Forças",
+          "Dinâmica e Forças",
+          "Conservação de Energia Mecânica",
+          "Energia e Trabalho"
         ]
       },
       "Termodinâmica": {
@@ -984,7 +1035,8 @@
           "Gases Ideais e Transformações",
           "Primeiro Princípio da Termodinâmica",
           "Segundo Princípio da Termodinâmica",
-          "Máquinas Térmicas e Ciclo de Carnot"
+          "Máquinas Térmicas e Ciclo de Carnot",
+          "Calorimetria"
         ]
       },
       "Óptica": {
@@ -996,7 +1048,8 @@
           "Lentes Esféricas",
           "Óptica da Visão e Defeitos",
           "Dispersão da Luz",
-          "Polarização, Difração e Interferência"
+          "Polarização, Difração e Interferência",
+          "Óptica Geométrica"
         ]
       },
       "Ondulatória e Acústica": {
@@ -1008,7 +1061,8 @@
           "Efeito Doppler",
           "Acústica e Som",
           "Intensidade Sonora e Decibéis",
-          "Ondas Eletromagnéticas e Espectro"
+          "Ondas Eletromagnéticas e Espectro",
+          "Ondulatória"
         ]
       },
       "Eletrostática": {
@@ -1031,7 +1085,9 @@
           "Leis de Kirchhoff",
           "Potência e Energia Elétrica",
           "Geradores e Receptores",
-          "Efeito Joule"
+          "Efeito Joule",
+          "Circuitos Elétricos",
+          "Eletricidade"
         ]
       },
       "Magnetismo e Eletromagnetismo": {
@@ -1053,12 +1109,12 @@
           "Modelos Atômicos",
           "Radioatividade e Decaimento",
           "Fissão e Fusão Nuclear",
-          "Partículas Elementares e Modelo Padrão"
+          "Partículas Elementares e Modelo Padrão",
+          "Matriz Energética e Sustentabilidade"
         ]
       }
     }
   },
-
   "Química": {
     "medio": {
       "Química Geral": {
@@ -1070,7 +1126,12 @@
           "Pureza e Rendimento",
           "Substâncias e Misturas",
           "Separação de Misturas",
-          "Grandezas Químicas e Mol"
+          "Grandezas Químicas e Mol",
+          "Estrutura Atômica",
+          "Tabela Periódica",
+          "Cálculos Químicos",
+          "Reações Inorgânicas",
+          "Química Inorgânica"
         ]
       },
       "Ligações Químicas e Estrutura Molecular": {
@@ -1092,7 +1153,9 @@
           "Ácidos e Bases — Conceitos",
           "pH e pOH",
           "Neutralização e Titulação",
-          "Sais e Óxidos"
+          "Sais e Óxidos",
+          "Soluções",
+          "Ácido e Base"
         ]
       },
       "Termoquímica": {
@@ -1129,7 +1192,9 @@
           "Pilhas e Células Galvânicas",
           "Eletrólise",
           "Lei de Faraday na Eletroquímica",
-          "Corrosão e Proteção Metálica"
+          "Corrosão e Proteção Metálica",
+          "Número de Oxidação",
+          "Oxirredução"
         ]
       },
       "Química Orgânica": {
@@ -1141,7 +1206,10 @@
           "Funções Orgânicas Nitrogenadas",
           "Isomeria",
           "Reações Orgânicas",
-          "Reatividade e Mecanismos de Reação"
+          "Reatividade e Mecanismos de Reação",
+          "Funções Orgânicas",
+          "Alcanos e Nomenclatura IUPAC",
+          "Funções Orgânicas e Massa Molar"
         ]
       },
       "Polímeros e Materiais": {
@@ -1156,7 +1224,6 @@
       }
     }
   },
-
   "História": {
     "fundamental": {
       "Pré-História e Primeiros Humanos": {
@@ -1227,7 +1294,9 @@
           "Conquista da América",
           "Colonização da África e Ásia",
           "Escravidão Africana e Tráfico Negreiro",
-          "Mercantilismo"
+          "Mercantilismo",
+          "Colonização das Américas",
+          "Escravidão nas Américas"
         ]
       },
       "Idade Moderna": {
@@ -1237,7 +1306,11 @@
           "Absolutismo Monárquico",
           "Iluminismo",
           "Revolução Inglesa e Gloriosa",
-          "Formação do Estado Moderno"
+          "Formação do Estado Moderno",
+          "Reforma Protestante",
+          "Religião e Conhecimento",
+          "Revolução Científica",
+          "História Moderna"
         ]
       },
       "Revoluções Burguesas": {
@@ -1246,7 +1319,8 @@
           "Revolução Francesa",
           "Era Napoleônica",
           "Revolução Industrial",
-          "Liberalismo e Socialismo"
+          "Liberalismo e Socialismo",
+          "Independências na América"
         ]
       },
       "Imperialismo e Neocolonialismo": {
@@ -1255,7 +1329,9 @@
           "Partilha da África e Ásia",
           "Resistência dos Povos Colonizados",
           "Pan-Africanismo e Movimentos de Libertação",
-          "Industrialização e Capitalismo"
+          "Industrialização e Capitalismo",
+          "Imperialismo",
+          "História da África"
         ]
       },
       "Primeira Guerra Mundial": {
@@ -1273,7 +1349,9 @@
           "Nazismo Alemão",
           "Franquismo e Salazarismo",
           "Revolução Russa e Stalinismo",
-          "New Deal e Social-Democracia"
+          "New Deal e Social-Democracia",
+          "Fascismo e Nazismo",
+          "Primeira Metade do Século XX"
         ]
       },
       "Segunda Guerra Mundial": {
@@ -1293,7 +1371,9 @@
           "Conflitos da Guerra Fria (Coreia, Vietnã, Cuba)",
           "Descolonização da África e Ásia",
           "Movimentos de Direitos Civis",
-          "Fim da Guerra Fria e Dissolução da URSS"
+          "Fim da Guerra Fria e Dissolução da URSS",
+          "História Contemporânea",
+          "União Europeia e Integração Europeia"
         ]
       },
       "Brasil Colonial": {
@@ -1306,7 +1386,10 @@
           "Entradas e Bandeiras",
           "Ciclo do Ouro e Mineração",
           "Quilombos e Resistência",
-          "Invasões Estrangeiras"
+          "Invasões Estrangeiras",
+          "América Portuguesa",
+          "Revoltas e Movimentos no Brasil Colonial",
+          "História do Brasil Colonial"
         ]
       },
       "Brasil Imperial": {
@@ -1317,7 +1400,11 @@
           "Segundo Reinado",
           "Abolição da Escravidão",
           "Imigração Europeia",
-          "Crise do Império e Proclamação da República"
+          "Crise do Império e Proclamação da República",
+          "Período Joanino",
+          "Brasil Joanino",
+          "Abolição da Escravidão no Brasil",
+          "Brasil Império"
         ]
       },
       "Brasil República": {
@@ -1327,7 +1414,16 @@
           "Era Vargas e Estado Novo",
           "Democracia Populista (1945–1964)",
           "Ditadura Militar (1964–1985)",
-          "Redemocratização e Constituição de 1988"
+          "Redemocratização e Constituição de 1988",
+          "Brasil Republicano",
+          "República Populista",
+          "Ditadura Militar Brasileira",
+          "Ditadura Militar",
+          "Urbanização no Brasil República",
+          "Democracia no Brasil",
+          "Primeira República",
+          "República Oligárquica",
+          "República Velha e Revolução de 1930"
         ]
       },
       "Brasil Contemporâneo": {
@@ -1336,7 +1432,13 @@
           "Plano Real e Governo FHC",
           "Governos Lula e Dilma",
           "Crise Política e Impeachment",
-          "Agenda Social e Econômica Atual"
+          "Agenda Social e Econômica Atual",
+          "Nova República",
+          "Atualidades",
+          "Cidadania no Brasil",
+          "Memória Histórica",
+          "História Econômica",
+          "História do Cinema"
         ]
       },
       "América Latina": {
@@ -1346,12 +1448,12 @@
           "Revoluções Latino-americanas (México, Cuba)",
           "Ditaduras Militares na América Latina",
           "Democracia e Integração Regional",
-          "MERCOSUL e Relações Internacionais"
+          "MERCOSUL e Relações Internacionais",
+          "Populismo na América Latina"
         ]
       }
     }
   },
-
   "Geografia": {
     "fundamental": {
       "Espaço e Paisagem": {
@@ -1394,7 +1496,8 @@
           "Fusos Horários",
           "Coordenadas Geográficas",
           "Leitura e Interpretação de Mapas",
-          "Sensoriamento Remoto e SIG"
+          "Sensoriamento Remoto e SIG",
+          "Cartografia"
         ]
       },
       "Geomorfologia e Relevo": {
@@ -1404,7 +1507,8 @@
           "Vulcanismo e Terremotos",
           "Formação e Tipos de Relevo",
           "Agentes Exógenos (Erosão e Intemperismo)",
-          "Relevo Brasileiro"
+          "Relevo Brasileiro",
+          "Geomorfologia"
         ]
       },
       "Climatologia e Meteorologia": {
@@ -1415,7 +1519,9 @@
           "Tipos Climáticos do Mundo",
           "Clima do Brasil",
           "Mudanças Climáticas e Aquecimento Global",
-          "El Niño e La Niña"
+          "El Niño e La Niña",
+          "Climatologia",
+          "Fenômenos Geográficos e Astronômicos"
         ]
       },
       "Hidrologia e Recursos Hídricos": {
@@ -1426,7 +1532,8 @@
           "Oceanos e Correntes Marítimas",
           "Águas Subterrâneas",
           "Crise Hídrica e Saneamento",
-          "Bacias Hidrográficas Brasileiras"
+          "Bacias Hidrográficas Brasileiras",
+          "Hidrografia"
         ]
       },
       "Biomas e Vegetação": {
@@ -1437,7 +1544,8 @@
           "Desertos",
           "Tundra e Taiga",
           "Biomas Brasileiros",
-          "Desmatamento e Conservação"
+          "Desmatamento e Conservação",
+          "Biomas"
         ]
       },
       "Geopolítica Mundial": {
@@ -1448,7 +1556,10 @@
           "Blocos Econômicos",
           "Terrorismo e Questões de Segurança",
           "Oriente Médio e Geopolítica do Petróleo",
-          "África e Neocolonialismo Contemporâneo"
+          "África e Neocolonialismo Contemporâneo",
+          "Geopolítica",
+          "Geopolítica e Obras de Engenharia",
+          "Integração Regional Sul-Americana"
         ]
       },
       "Globalização e Economia": {
@@ -1459,7 +1570,9 @@
           "Fluxos Comerciais e Financeiros",
           "Multinacionais e Capital Financeiro",
           "IDH e Indicadores de Desenvolvimento",
-          "Desigualdade Global"
+          "Desigualdade Global",
+          "Blocos Econômicos",
+          "Geografia Econômica"
         ]
       },
       "População e Urbanização": {
@@ -1470,7 +1583,18 @@
           "Urbanização e Metropolização",
           "Problemas Urbanos",
           "Favelas e Segregação Socioespacial",
-          "População Brasileira"
+          "População Brasileira",
+          "Urbanização",
+          "Migração",
+          "Migrações",
+          "Migração e Memória",
+          "Densidade Demográfica",
+          "Habitação",
+          "Rede Urbana",
+          "Urbanismo",
+          "Dinâmica Demográfica e Saúde",
+          "Cidades Sustentáveis",
+          "Demografia"
         ]
       },
       "Brasil: Territórios e Regiões": {
@@ -1481,7 +1605,10 @@
           "Região Centro-Oeste",
           "Região Sudeste",
           "Região Sul",
-          "Fronteiras e Espaço Amazônico"
+          "Fronteiras e Espaço Amazônico",
+          "Amazônia",
+          "Organização Territorial do Brasil",
+          "População Brasileira"
         ]
       },
       "Questões Ambientais": {
@@ -1492,7 +1619,9 @@
           "Desertificação",
           "Lixo e Reciclagem",
           "Desenvolvimento Sustentável",
-          "Conferências Ambientais Internacionais"
+          "Conferências Ambientais Internacionais",
+          "Questão Ambiental",
+          "Meio Ambiente"
         ]
       },
       "Fontes de Energia": {
@@ -1502,7 +1631,8 @@
           "Energias Renováveis (Solar, Eólica, Hídrica, Biomassa)",
           "Matriz Energética Brasileira",
           "Pré-Sal e Petróleo",
-          "Geopolítica Energética"
+          "Geopolítica Energética",
+          "Matriz Energética"
         ]
       },
       "Agropecuária e Indústria": {
@@ -1512,12 +1642,18 @@
           "Reforma Agrária",
           "Industrialização e Desindustrialização",
           "Economia Brasileira",
-          "Comércio e Serviços"
+          "Comércio e Serviços",
+          "Agronegócio",
+          "Agricultura",
+          "Questão Agrária",
+          "Indústria e Trabalho",
+          "Transporte e Logística",
+          "Comércio Exterior",
+          "Industrialização e Desenvolvimento"
         ]
       }
     }
   },
-
   "Filosofia": {
     "medio": {
       "Filosofia Antiga": {
@@ -1527,7 +1663,9 @@
           "Platão e a Teoria das Ideias",
           "Aristóteles e a Lógica",
           "Helenismo (Estoicismo, Epicurismo, Ceticismo)",
-          "Filosofia e Mito"
+          "Filosofia e Mito",
+          "Retórica",
+          "Pré-Socráticos"
         ]
       },
       "Filosofia Medieval": {
@@ -1558,7 +1696,8 @@
           "Pragmatismo",
           "Filosofia Analítica",
           "Estruturalismo e Pós-Estruturalismo",
-          "Frankfurt e a Teoria Crítica"
+          "Frankfurt e a Teoria Crítica",
+          "Escola de Frankfurt"
         ]
       },
       "Ética e Moral": {
@@ -1569,7 +1708,11 @@
           "Ética Contemporânea",
           "Bioética",
           "Ética Ambiental",
-          "Moral e Sociedade"
+          "Moral e Sociedade",
+          "Altruísmo",
+          "Ética",
+          "Utilitarismo",
+          "Justiça"
         ]
       },
       "Filosofia Política": {
@@ -1580,7 +1723,10 @@
           "Liberdade e Igualdade",
           "Ideologias Políticas",
           "Hannah Arendt e Totalitarismo",
-          "Rawls e a Justiça como Equidade"
+          "Rawls e a Justiça como Equidade",
+          "Utopia",
+          "Poder e Disciplina",
+          "Formas de Governo"
         ]
       },
       "Epistemologia e Teoria do Conhecimento": {
@@ -1612,7 +1758,6 @@
       }
     }
   },
-
   "Sociologia": {
     "medio": {
       "Clássicos da Sociologia": {
@@ -1632,7 +1777,9 @@
           "Indústria Cultural",
           "Identidade e Alteridade",
           "Folclore e Cultura Popular",
-          "Cultura de Massa e Meios de Comunicação"
+          "Cultura de Massa e Meios de Comunicação",
+          "Sociabilidade Urbana",
+          "Diversidade Cultural"
         ]
       },
       "Estrutura Social e Estratificação": {
@@ -1675,7 +1822,8 @@
           "Movimentos Indígenas",
           "Movimentos Ambientais",
           "LGBTQIA+ e Direitos",
-          "Movimentos Sociais no Brasil"
+          "Movimentos Sociais no Brasil",
+          "Povos Indígenas"
         ]
       },
       "Democracia e Cidadania": {
@@ -1706,7 +1854,8 @@
           "Sexismo e Machismo",
           "Feminismos",
           "Violência de Gênero",
-          "LGBTQIA+ e Sociedade"
+          "LGBTQIA+ e Sociedade",
+          "Gênero e Estado"
         ]
       },
       "Religião e Secularização": {
@@ -1716,7 +1865,8 @@
           "Igrejas e Estado",
           "Fundamentalismo Religioso",
           "Religiosidade no Brasil",
-          "Religiões Afro-brasileiras"
+          "Religiões Afro-brasileiras",
+          "Religião e Cultura Corporal"
         ]
       }
     }
