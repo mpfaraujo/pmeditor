@@ -146,7 +146,7 @@ return (
           <TabsContent value="buscar" className="flex flex-col flex-1 min-h-0 gap-3">
             <div className="flex gap-2 shrink-0 flex-wrap">
               <Input
-                placeholder="Trecho do texto…"
+                placeholder="Trecho ou código do texto…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}

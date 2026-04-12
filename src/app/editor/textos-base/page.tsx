@@ -104,7 +104,7 @@ function TextosBaseContent() {
         {/* Filtros */}
         <div className="pm-surface rounded-2xl p-4 flex gap-2">
           <Input
-            placeholder="Buscar por trecho do texto…"
+            placeholder="Buscar por trecho ou código do texto…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}
