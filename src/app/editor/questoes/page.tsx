@@ -54,6 +54,8 @@ const ITEMS_PER_PAGE = 30;
 export default function QuestoesPage() {
   const router = useRouter();
   const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll, selectedQuestions } = useProva();
+  const hasSelectedQuestions = selectedQuestions.length > 0;
+  const effectiveSelectedCount = selectedCount > 0 ? selectedCount : selectedQuestions.length;
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -260,10 +262,10 @@ export default function QuestoesPage() {
 
   // Desmarcar toggle quando zera seleções (evita ficar travado)
   useEffect(() => {
-    if (selectedCount === 0 && showOnlySelected) {
+    if (!hasSelectedQuestions && showOnlySelected) {
       setShowOnlySelected(false);
     }
-  }, [selectedCount, showOnlySelected]);
+  }, [hasSelectedQuestions, showOnlySelected]);
 
   return (
     // Layout 3 colunas: [Filtros esq] | [Questões] | [Filtros dir]
@@ -368,12 +370,12 @@ export default function QuestoesPage() {
                 <div className="w-px h-4 bg-white/15 mx-1" />
                 <Button
                   onClick={handleMontarProva}
-                  disabled={selectedCount === 0}
+                  disabled={!hasSelectedQuestions}
                   size="sm"
                   className="text-xs gap-1 min-w-[138px] justify-center border border-[#E0B22A] bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]"
                 >
-                  <span suppressHydrationWarning className={`rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums min-w-[26px] text-center ${selectedCount > 0 ? "bg-black/10 opacity-100" : "opacity-0"}`}>
-                    {selectedCount > 0 ? selectedCount : "0"}
+                  <span suppressHydrationWarning className={`rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums min-w-[26px] text-center ${hasSelectedQuestions ? "bg-black/10 opacity-100" : "opacity-0"}`}>
+                    {hasSelectedQuestions ? effectiveSelectedCount : "0"}
                   </span>
                   Montar Prova
                 </Button>
@@ -384,7 +386,7 @@ export default function QuestoesPage() {
                   size="sm"
                   variant="ghost"
                   onClick={() => setShowOnlySelected(v => !v)}
-                  disabled={selectedCount === 0}
+                  disabled={!hasSelectedQuestions}
                   className={`text-xs min-w-[148px] justify-center border ${showOnlySelected ? "border-[#FBC02D]/50 bg-white/12 text-[#FFD93D]" : "border-white/10 text-[#D7E2EE] hover:bg-white/10 hover:text-white"}`}
                 >
                   <CheckSquare className="h-3.5 w-3.5" />
@@ -394,7 +396,7 @@ export default function QuestoesPage() {
                   size="sm"
                   variant="ghost"
                   onClick={clearAll}
-                  disabled={selectedCount === 0}
+                  disabled={!hasSelectedQuestions}
                   className="text-xs min-w-[120px] justify-center border border-white/10 text-[#D7E2EE] hover:bg-white/10 hover:text-white disabled:opacity-40"
                 >
                   <X className="h-3.5 w-3.5" />
