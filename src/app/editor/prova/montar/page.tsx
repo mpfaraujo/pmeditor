@@ -811,7 +811,9 @@ const { pages, refs } = usePagination({
   // Resolve line_ref e injeta numeração de linhas após cada re-render do layout
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const container = document.querySelector<HTMLElement>(".a4-sheet");
+    const sheets = Array.from(document.querySelectorAll<HTMLElement>(".a4-sheet"));
+    if (sheets.length === 0) return;
+    const container = sheets[0].parentElement as HTMLElement | null;
     if (!container) return;
     if (
       !container.querySelector("[data-line-ref]") &&
