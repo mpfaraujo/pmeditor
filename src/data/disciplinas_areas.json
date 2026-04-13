@@ -264,7 +264,8 @@
       },
       "Miscelânea": {
         "subareas": [
-          "Outros"
+          "Outros",
+          "Movimento Uniforme (MU)"
         ]
       }
     }
@@ -434,7 +435,9 @@
           "Vocabulary in Context",
           "Author's Purpose and Tone",
           "Cohesive Devices",
-          "Critical Reading"
+          "Critical Reading",
+          "Interpretação de Texto",
+          "Interpretação de texto"
         ]
       },
       "Grammar": {
@@ -493,7 +496,8 @@
           "Tipos de Texto y Géneros",
           "Vocabulario en Contexto",
           "Intención del Autor",
-          "Elementos de Cohesión"
+          "Elementos de Cohesión",
+          "Interpretação de Texto"
         ]
       },
       "Gramática": {
@@ -535,7 +539,8 @@
           "Registro Formal e Informal",
           "Variedades Dialectales",
           "Comunicación Intercultural",
-          "Medios de Comunicación"
+          "Medios de Comunicación",
+          "Variação Linguística"
         ]
       }
     }
@@ -1131,7 +1136,8 @@
           "Tabela Periódica",
           "Cálculos Químicos",
           "Reações Inorgânicas",
-          "Química Inorgânica"
+          "Química Inorgânica",
+          "Radioatividade e Decaimento"
         ]
       },
       "Ligações Químicas e Estrutura Molecular": {
@@ -1310,7 +1316,8 @@
           "Reforma Protestante",
           "Religião e Conhecimento",
           "Revolução Científica",
-          "História Moderna"
+          "História Moderna",
+          "Renascimento"
         ]
       },
       "Revoluções Burguesas": {
@@ -1726,7 +1733,8 @@
           "Rawls e a Justiça como Equidade",
           "Utopia",
           "Poder e Disciplina",
-          "Formas de Governo"
+          "Formas de Governo",
+          "Direitos Humanos"
         ]
       },
       "Epistemologia e Teoria do Conhecimento": {
@@ -1867,6 +1875,118 @@
           "Religiosidade no Brasil",
           "Religiões Afro-brasileiras",
           "Religião e Cultura Corporal"
+        ]
+      }
+    }
+  },
+  "Artes": {
+    "fundamental": {
+      "Artes Visuais": {
+        "subareas": [
+          "Desenho e Ilustração",
+          "Pintura Básica",
+          "Escultura e Modelagem",
+          "Elementos Visuais (Linha, Cor, Forma)"
+        ]
+      },
+      "Música": {
+        "subareas": [
+          "Sons e Silêncios",
+          "Ritmo e Melodia Básica",
+          "Gêneros Musicais Populares",
+          "Música Brasileira e Folclore"
+        ]
+      },
+      "Teatro e Dança": {
+        "subareas": [
+          "Expressão Corporal e Gestual",
+          "Improvisação e Jogos Teatrais",
+          "Danças Folclóricas e Populares"
+        ]
+      },
+      "Cultura e Arte Brasileira": {
+        "subareas": [
+          "Arte Indígena",
+          "Arte Afro-brasileira",
+          "Folclore e Manifestações Culturais",
+          "Artes Indígenas",
+          "Artesanato Brasileiro"
+        ]
+      }
+    },
+    "medio": {
+      "Artes Visuais": {
+        "subareas": [
+          "Desenho e Ilustração",
+          "Pintura",
+          "Escultura",
+          "Fotografia",
+          "Cinema e Audiovisual",
+          "Arte Digital",
+          "Gravura e Impressão",
+          "Arte Abstrata",
+          "Arte Contemporânea",
+          "Elementos Visuais e Composição"
+        ]
+      },
+      "Música": {
+        "subareas": [
+          "Teoria Musical",
+          "Notação Musical",
+          "Ritmo e Melodia",
+          "Harmonia",
+          "Gêneros Musicais",
+          "Instrumentos Musicais",
+          "Música Brasileira",
+          "Música Erudita",
+          "Música Popular"
+        ]
+      },
+      "Teatro": {
+        "subareas": [
+          "História do Teatro",
+          "Dramaturgia",
+          "Atuação e Expressão Corporal",
+          "Teatro Brasileiro",
+          "Teatro Grego e Clássico",
+          "Teatro Contemporâneo",
+          "Performance e Teatro Experimental"
+        ]
+      },
+      "Dança": {
+        "subareas": [
+          "História da Dança",
+          "Danças Brasileiras",
+          "Ballet Clássico",
+          "Dança Contemporânea",
+          "Danças Populares e Folclóricas",
+          "Corpo, Movimento e Ritmo"
+        ]
+      },
+      "História da Arte": {
+        "subareas": [
+          "Arte Pré-Histórica",
+          "Arte Antiga (Egito, Grécia, Roma)",
+          "Arte Medieval",
+          "Renascimento",
+          "Barroco",
+          "Neoclassicismo e Romantismo",
+          "Impressionismo",
+          "Vanguardas Europeias",
+          "Modernismo Brasileiro",
+          "Arte Contemporânea e Pop Art"
+        ]
+      },
+      "Arte e Cultura Brasileira": {
+        "subareas": [
+          "Arte Indígena",
+          "Arte Africana e Afro-brasileira",
+          "Folclore e Cultura Popular",
+          "Carnaval e Manifestações Culturais",
+          "Arte Colonial Brasileira",
+          "Modernismo no Brasil",
+          "Artes Indígenas",
+          "Artesanato Brasileiro"
         ]
       }
     }
