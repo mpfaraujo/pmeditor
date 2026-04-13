@@ -6,7 +6,7 @@ import { EditorView } from "prosemirror-view";
 import { toggleMark } from "prosemirror-commands";
 import { undo as undoCommand, redo as redoCommand } from "prosemirror-history";
 import { schema } from "./schema";
-import { injectLineNumbers } from "@/lib/lineRefMeasure";
+import { resolverRefs, injectLineNumbers } from "@/lib/lineRefMeasure";
 import { ImageUpload } from "./ImageUpload";
 import { SymbolPicker } from "./toolbar/SymbolPicker";
 import { HorizontalToolbar } from "./toolbar/HorizontalToolbar";
@@ -37,7 +37,7 @@ interface EditorToolbarProps {
   isSetQuestions?: boolean;
   itemCount?: number;
 
-  // lista de âncoras disponíveis (para inserir line_ref a partir do montar)
+  // lista de âncoras disponíveis (ex.: textos-base vinculados)
   availableAnchors?: string[];
 }
 
@@ -314,7 +314,7 @@ export function EditorToolbar({
 
   // Insere um node line_ref na posição do cursor
   const handleInsertLineRef = () => {
-    // Coleta âncoras disponíveis: prop externa (montar) OU do próprio doc
+    // Coleta âncoras disponíveis: props externas + âncoras do próprio doc
     const fromProp = availableAnchors ?? [];
     const fromDoc: string[] = [];
     view.state.doc.descendants((node) => {
@@ -328,7 +328,7 @@ export function EditorToolbar({
         }
       });
     });
-    const anchors = fromProp.length > 0 ? fromProp : fromDoc;
+    const anchors = Array.from(new Set([...fromProp, ...fromDoc]));
 
     if (anchors.length === 0) {
       window.alert(
@@ -388,6 +388,7 @@ export function EditorToolbar({
         // Injeta/remove labels de linha no editor após o layout estabilizar
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
+            resolverRefs(view.dom as HTMLElement);
             injectLineNumbers(view.dom as HTMLElement);
           });
         });

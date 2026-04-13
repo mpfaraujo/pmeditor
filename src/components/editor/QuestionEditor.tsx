@@ -180,6 +180,24 @@ function defaultMetadata(): QuestionMetadataV1 {
   };
 }
 
+function collectTextAnchorIdsFromJson(node: any, acc = new Set<string>()): Set<string> {
+  if (!node || typeof node !== "object") return acc;
+
+  const marks = Array.isArray(node.marks) ? node.marks : [];
+  for (const mark of marks) {
+    if (mark?.type === "text_anchor" && typeof mark.attrs?.id === "string" && mark.attrs.id.trim()) {
+      acc.add(mark.attrs.id.trim());
+    }
+  }
+
+  const content = Array.isArray(node.content) ? node.content : [];
+  for (const child of content) {
+    collectTextAnchorIdsFromJson(child, acc);
+  }
+
+  return acc;
+}
+
 type SavedQuestionV1 = { metadata: QuestionMetadataV1; content: any };
 const isSavedQuestionV1 = (x: any): x is SavedQuestionV1 => x && x.metadata && x.content;
 
@@ -542,6 +560,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   const [previewColumns, setPreviewColumns] = useState<1 | 2>(1);
   const [previewBaseTextContent, setPreviewBaseTextContent] = useState<any>(null);
   const [previewBaseTextTag, setPreviewBaseTextTag] = useState<string | null>(null);
+  const [availableBaseTextAnchors, setAvailableBaseTextAnchors] = useState<string[]>([]);
   const previewContainerRef = useLineRefMeasure(previewOpen, [previewColumns]);
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
@@ -715,6 +734,37 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       );
     } catch {}
   }, [meta, view]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const ids = Array.isArray(meta.baseTextIds) && meta.baseTextIds.length > 0
+      ? meta.baseTextIds
+      : (meta.baseTextId ? [meta.baseTextId] : []);
+
+    if (ids.length === 0) {
+      setAvailableBaseTextAnchors([]);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    void Promise.all(ids.map((id) => getBaseText(id))).then((items) => {
+      if (cancelled) return;
+
+      const anchorSet = new Set<string>();
+      for (const item of items) {
+        if (!item?.content) continue;
+        collectTextAnchorIdsFromJson(item.content, anchorSet);
+      }
+
+      setAvailableBaseTextAnchors(Array.from(anchorSet));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [meta.baseTextId, meta.baseTextIds]);
 
   const upsertMath = (latex: string) => {
     if (!view) return;
@@ -1023,6 +1073,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
         <EditorToolbar
           view={view}
           metadata={meta}
+          availableAnchors={availableBaseTextAnchors}
           onOpenMath={() =>
             setMathDialog({ open: true, mode: "new", pos: null, latex: "" })
           }
