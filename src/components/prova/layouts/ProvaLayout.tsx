@@ -79,7 +79,7 @@ export function ProvaLayout({
   return (
     <>
       {/* Camada invisível para medição (NÃO IMPRIMIR) */}
-      <div className="measure-layer absolute -z-10 invisible pointer-events-none">
+      <div className="measure-layer absolute -z-10 opacity-0 pointer-events-none" aria-hidden="true">
         {/* Template 1: com cabeçalho */}
         <div
           className="prova-page mx-auto bg-white"

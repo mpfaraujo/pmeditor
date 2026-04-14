@@ -86,6 +86,213 @@ function formatRef(first: number, last: number): string {
   return first === last ? `l. ${first}` : `ll. ${first}–${last}`;
 }
 
+function escapeAttrValue(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function buildLineYMapForElements(
+  elements: HTMLElement[],
+  excludeTitles = false
+): number[] {
+  const lineYs: number[] = [];
+  for (const el of elements) {
+    for (const y of buildLineYMap(el, excludeTitles)) {
+      if (!lineYs.some((existing) => Math.abs(existing - y) < TOLERANCIA_PX)) {
+        lineYs.push(y);
+      }
+    }
+  }
+  return lineYs.sort((a, b) => a - b);
+}
+
+function buildAnchorMapForQuestion(
+  questionEl: HTMLElement,
+  debugAnchors?: Array<{
+    qId: string;
+    anchorId: string;
+    scopeId: string | null;
+    lineYsCount: number;
+    rectCount: number;
+    firstRectTop: number | null;
+    lastRectTop: number | null;
+    resolvedText: string | null;
+  }>
+): Map<string, string> {
+  const anchorMap = new Map<string, string>();
+  const scopeCache = new Map<string, number[]>();
+  const qId = questionEl.getAttribute("data-q-id") ?? "";
+
+  questionEl.querySelectorAll<HTMLElement>("[data-anchor-id]").forEach((anchorEl) => {
+    const anchorId = anchorEl.getAttribute("data-anchor-id");
+    if (!anchorId) return;
+
+    const scopedAncestor = anchorEl.closest<HTMLElement>("[data-line-scope]");
+    const scopeId = scopedAncestor?.getAttribute("data-line-scope");
+
+    let lineYs: number[];
+    if (scopeId) {
+      if (!scopeCache.has(scopeId)) {
+        const scopeNodes = Array.from(
+          questionEl.querySelectorAll<HTMLElement>(
+            `[data-line-scope="${escapeAttrValue(scopeId)}"]`
+          )
+        );
+        scopeCache.set(scopeId, buildLineYMapForElements(scopeNodes, true));
+      }
+      lineYs = scopeCache.get(scopeId) ?? [];
+    } else {
+      const cacheKey = "__question__";
+      if (!scopeCache.has(cacheKey)) {
+        scopeCache.set(cacheKey, buildLineYMap(questionEl, true));
+      }
+      lineYs = scopeCache.get(cacheKey) ?? [];
+    }
+
+    if (lineYs.length === 0) {
+      debugAnchors?.push({
+        qId,
+        anchorId,
+        scopeId: scopeId ?? null,
+        lineYsCount: 0,
+        rectCount: 0,
+        firstRectTop: null,
+        lastRectTop: null,
+        resolvedText: null,
+      });
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(anchorEl);
+    const rects = Array.from(range.getClientRects()).filter((r) => r.width > 0);
+    if (rects.length === 0) {
+      debugAnchors?.push({
+        qId,
+        anchorId,
+        scopeId: scopeId ?? null,
+        lineYsCount: lineYs.length,
+        rectCount: 0,
+        firstRectTop: null,
+        lastRectTop: null,
+        resolvedText: null,
+      });
+      return;
+    }
+
+    const firstLine = resolveLineNumber(rects[0].top, lineYs);
+    const lastLine = resolveLineNumber(rects[rects.length - 1].top, lineYs);
+    const resolvedText = formatRef(firstLine, lastLine);
+    anchorMap.set(anchorId, resolvedText);
+    debugAnchors?.push({
+      qId,
+      anchorId,
+      scopeId: scopeId ?? null,
+      lineYsCount: lineYs.length,
+      rectCount: rects.length,
+      firstRectTop: rects[0].top,
+      lastRectTop: rects[rects.length - 1].top,
+      resolvedText,
+    });
+  });
+
+  return anchorMap;
+}
+
+export function resolveMountedLineRefs(root: HTMLElement) {
+  const measureWrappers = Array.from(
+    root.querySelectorAll<HTMLElement>(".measure-layer .questao-item-wrapper[data-q-id]")
+  );
+
+  if (measureWrappers.length === 0) {
+    return {
+      debugAnchors: [],
+      debugApplied: [],
+    };
+  }
+
+  const anchorMapsByQId = new Map<string, Map<string, string>>();
+  const baseMapsByParentId = new Map<string, Map<string, string>>();
+  const debugAnchors: Array<{
+    qId: string;
+    anchorId: string;
+    scopeId: string | null;
+    lineYsCount: number;
+    rectCount: number;
+    firstRectTop: number | null;
+    lastRectTop: number | null;
+    resolvedText: string | null;
+  }> = [];
+  const debugApplied: Array<{
+    qId: string;
+    parentId: string | null;
+    ownMap: Array<[string, string]>;
+    mergedMap: Array<[string, string]>;
+    lineRefs: Array<{ anchorId: string; text: string }>;
+  }> = [];
+
+  for (const wrapper of measureWrappers) {
+    const qId = wrapper.getAttribute("data-q-id");
+    if (!qId) continue;
+
+    const anchorMap = buildAnchorMapForQuestion(wrapper, debugAnchors);
+    anchorMapsByQId.set(qId, anchorMap);
+
+    const parentId = wrapper.getAttribute("data-set-parent-id");
+    if (parentId && wrapper.getAttribute("data-is-set-base") === "1") {
+      baseMapsByParentId.set(parentId, anchorMap);
+    }
+  }
+
+  root.querySelectorAll<HTMLElement>(".questao-item-wrapper[data-q-id]").forEach((wrapper) => {
+    if (isInMeasureLayer(wrapper)) return;
+
+    const qId = wrapper.getAttribute("data-q-id");
+    if (!qId) return;
+
+    const ownMap = anchorMapsByQId.get(qId) ?? new Map<string, string>();
+    const mergedMap = new Map(ownMap);
+
+    const parentId = wrapper.getAttribute("data-set-parent-id");
+    if (parentId) {
+      const baseMap = baseMapsByParentId.get(parentId);
+      if (baseMap) {
+        for (const [anchorId, text] of baseMap) {
+          if (!mergedMap.has(anchorId)) mergedMap.set(anchorId, text);
+        }
+      }
+    }
+
+    wrapper.querySelectorAll<HTMLElement>("[data-line-ref]").forEach((refEl) => {
+      const anchorId = refEl.getAttribute("data-line-ref");
+      if (!anchorId) return;
+      refEl.textContent = mergedMap.get(anchorId) ?? "l. ?";
+    });
+
+    debugApplied.push({
+      qId,
+      parentId,
+      ownMap: Array.from(ownMap.entries()),
+      mergedMap: Array.from(mergedMap.entries()),
+      lineRefs: Array.from(wrapper.querySelectorAll<HTMLElement>("[data-line-ref]")).map((refEl) => ({
+        anchorId: refEl.getAttribute("data-line-ref") ?? "",
+        text: (refEl.textContent ?? "").trim(),
+      })),
+    });
+  });
+
+  if (typeof window !== "undefined") {
+    (window as any).__PMEDITOR_LINE_REF_RUNTIME__ = {
+      debugAnchors,
+      debugApplied,
+    };
+  }
+
+  return {
+    debugAnchors,
+    debugApplied,
+  };
+}
+
 // ─── 1. resolverRefs ──────────────────────────────────────────────────────────
 
 /**

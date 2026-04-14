@@ -229,6 +229,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         if (localBaseTextNode) {
           const baseBlocks = renderBaseTextNode(
             localBaseTextNode,
+            `${localKeyPrefix}-base`,
             `${localKeyPrefix}-base`
           );
           const { picked } = pickBlocks(baseBlocks);
@@ -245,7 +246,13 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         localItems.forEach((it, idx) => {
           const itemBlocks = (it.content ?? [])
             .filter((n) => n.type === "statement")
-            .flatMap((n, j) => renderStatementNode(n, `${localKeyPrefix}-essay-${idx}-blk-${j}`));
+            .flatMap((n, j) =>
+              renderBlock(
+                n,
+                `${localKeyPrefix}-essay-${idx}-blk-${j}`,
+                `${localKeyPrefix}-essay-${idx}-statement`
+              )
+            );
           const { picked, hasAny } = pickBlocks(itemBlocks);
           if (!hasAny) return;
 
@@ -322,7 +329,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         {baseTextNode ? (
           <div className="question-readonly">
             <div className="question-text space-y-2">
-              {renderBaseTextNode(baseTextNode, `${keyPrefix}-base`)}
+              {renderBaseTextNode(baseTextNode, `${keyPrefix}-base`, `${keyPrefix}-base`)}
             </div>
           </div>
         ) : null}
@@ -345,9 +352,21 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     nodes.forEach((qNode, j) => {
       if (qNode.type === "base_text" || qNode.type === "statement") {
         if (qNode.type === "base_text") {
-          allBlocks.push(...renderBaseTextNode(qNode, `${keyPrefix}-blk-${j}`));
+          allBlocks.push(
+            ...renderBaseTextNode(
+              qNode,
+              `${keyPrefix}-blk-${j}`,
+              `${keyPrefix}-base-${j}`
+            )
+          );
         } else {
-          allBlocks.push(...renderStatementNode(qNode, `${keyPrefix}-blk-${j}`));
+          allBlocks.push(
+            ...renderBlock(
+              qNode,
+              `${keyPrefix}-blk-${j}`,
+              `${keyPrefix}-statement-${j}`
+            )
+          );
         }
       }
 
@@ -410,21 +429,11 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
 
   function renderBaseTextNode(
     node: PMNode,
-    keyPrefix: string
+    keyPrefix: string,
+    lineScope: string
   ): React.ReactNode[] {
-    const numbered = !!node.attrs?.numbered;
-    const wrapBlocks = (inner: React.ReactNode[]): React.ReactNode[] => [
-      <div
-        key={`${keyPrefix}-bt-wrapper`}
-        className="base-text"
-        {...(numbered ? { "data-numbered": "true" } : {})}
-      >
-        {inner}
-      </div>,
-    ];
-
-    const blocks = renderBlock(node, keyPrefix);
-    if (!baseTextSections || baseTextSections.length === 0) return wrapBlocks(blocks);
+    const blocks = renderBlock(node, keyPrefix, lineScope);
+    if (!baseTextSections || baseTextSections.length === 0) return blocks;
 
     const rendered: React.ReactNode[] = [];
     let cursor = 1;
@@ -476,29 +485,20 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
       rendered.push(...blocks.slice(cursor - 1));
     }
 
-    return wrapBlocks(rendered);
+    return rendered;
   }
 
-  function renderStatementNode(
+  function renderBlock(
     node: PMNode,
-    keyPrefix: string
+    keyPrefix: string,
+    lineScope?: string
   ): React.ReactNode[] {
-    const numbered = !!node.attrs?.numbered;
-    return [
-      <div
-        key={`${keyPrefix}-statement-wrapper`}
-        className="statement"
-        {...(numbered ? { "data-numbered": "true" } : {})}
-      >
-        {renderBlock(node, keyPrefix)}
-      </div>,
-    ];
-  }
-
-  function renderBlock(node: PMNode, keyPrefix: string): React.ReactNode[] {
     return (
       node.content?.map((child, i) => {
         const key = `${keyPrefix}-${i}`;
+        const scopeAttrs = lineScope
+          ? ({ "data-line-scope": lineScope } as Record<string, string>)
+          : undefined;
 
         if (child.type === "paragraph") {
           const align = child?.attrs?.textAlign as
@@ -515,7 +515,13 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
           const numbered = !!child.attrs?.numbered;
 
           return (
-            <p key={key} className="leading-snug" style={style} {...(numbered ? { "data-numbered": "true" } : {})}>
+            <p
+              key={key}
+              className="leading-snug"
+              style={style}
+              {...scopeAttrs}
+              {...(numbered ? { "data-numbered": "true" } : {})}
+            >
               {renderInline(child)}
             </p>
           );
@@ -523,7 +529,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
 
         if (child.type === "bullet_list" || child.type === "ordered_list" || child.type === "roman_list" || child.type === "alpha_list" || child.type === "assertive_list") {
           return (
-            <div key={key} className="leading-snug">
+            <div key={key} className="leading-snug" {...scopeAttrs}>
               {renderInline(child)}
             </div>
           );
@@ -554,6 +560,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
             <div
               key={key}
               className="poem"
+              {...scopeAttrs}
               {...(numbered ? { "data-numbered": "true" } : {})}
             >
               {verseElements}
@@ -563,7 +570,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
 
         if (child.type === "credits") {
           return (
-            <p key={key} className="credits">
+            <p key={key} className="credits" {...scopeAttrs}>
               {renderInline(child)}
             </p>
           );
@@ -575,8 +582,8 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
 
           if (mode !== "prova") {
             return (
-              <div key={key} className="data-box" style={{ width: `${w}%` }}>
-                {renderBlock(child, key)}
+              <div key={key} className="data-box" style={{ width: `${w}%` }} {...scopeAttrs}>
+                {renderBlock(child, key, lineScope)}
               </div>
             );
           }
@@ -609,9 +616,10 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
               style={{ position: "relative", marginLeft: "auto", marginRight: 0, width: `${w}%` }}
               onPointerMove={onDbPointerMove}
               onPointerUp={onDbPointerUp}
+              {...scopeAttrs}
             >
               <div className="data-box" style={{ width: "100%" }}>
-                {renderBlock(child, key)}
+                {renderBlock(child, key, lineScope)}
               </div>
               <span
                 className="no-print"
@@ -634,7 +642,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         }
 
         return (
-          <div key={key} className="leading-snug">
+          <div key={key} className="leading-snug" {...scopeAttrs}>
             {renderInline(child)}
           </div>
         );
@@ -698,7 +706,11 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     }
 
     if (node.type === "line_ref") {
-      return <span className="line-ref" data-line-ref={node.attrs?.anchorId}>l. ?</span>;
+      return (
+        <span className="line-ref" data-line-ref={node.attrs?.anchorId}>
+          l. ?
+        </span>
+      );
     }
 
     if (node.type === "math_inline") {
@@ -972,8 +984,13 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
       if (mark.type === "code") return <code>{acc}</code>;
       if (mark.type === "subscript") return <sub>{acc}</sub>;
       if (mark.type === "superscript") return <sup>{acc}</sup>;
-      if (mark.type === "text_anchor")
-        return <span className="text-anchor" data-anchor-id={mark.attrs?.id}>{acc}</span>;
+      if (mark.type === "text_anchor") {
+        return (
+          <span className="text-anchor" data-anchor-id={mark.attrs?.id}>
+            {acc}
+          </span>
+        );
+      }
       return acc;
     }, text);
   }

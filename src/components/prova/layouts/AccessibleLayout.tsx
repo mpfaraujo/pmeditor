@@ -58,7 +58,7 @@ export function AccessibleLayout({
   return (
     <>
       {/* Camada de medição (invisível) */}
-      <div className="measure-layer absolute -z-10 invisible pointer-events-none">
+      <div className="measure-layer absolute -z-10 opacity-0 pointer-events-none" aria-hidden="true">
         {/* Template 1: com cabeçalho */}
         <div className="prova-page accessible-page mx-auto bg-white" ref={refs.measureFirstPageRef}>
           <AccessibleHeader {...headerProps} isEditable={false} />

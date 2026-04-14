@@ -45,7 +45,7 @@ import {
 } from "@/lib/pagination";
 
 import { getBaseText } from "@/lib/baseTexts";
-import { resolverRefs, injectLineNumbers } from "@/lib/lineRefMeasure";
+import { resolveMountedLineRefs } from "@/lib/lineRefMeasure";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
@@ -293,6 +293,7 @@ export default function MontarProvaPage() {
   const [salvarDialogOpen, setSalvarDialogOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [devMontarDebugEnabled, setDevMontarDebugEnabled] = useState(false);
+  const [lineRefRuntimeSnapshot, setLineRefRuntimeSnapshot] = useState<any | null>(null);
 
   // Estados para tipos de prova
   const [numTipos, setNumTipos] = useState<number>(2);
@@ -808,25 +809,27 @@ const { pages, refs } = usePagination({
   ],
 });
 
-  // Resolve line_ref e injeta numeração de linhas após cada re-render do layout
   useEffect(() => {
     if (typeof window === "undefined") return;
     const sheets = Array.from(document.querySelectorAll<HTMLElement>(".a4-sheet"));
     if (sheets.length === 0) return;
-    const container = sheets[0].parentElement as HTMLElement | null;
-    if (!container) return;
-    if (
-      !container.querySelector("[data-line-ref]") &&
-      !container.querySelector("[data-anchor-id]") &&
-      !container.querySelector("[data-numbered='true']")
-    ) {
-      return;
-    }
-    const id = requestAnimationFrame(() => {
-      resolverRefs(container);
-      injectLineNumbers(container);
+    const root = sheets[0].parentElement as HTMLElement | null;
+    if (!root) return;
+    let raf1 = 0;
+    let raf2 = 0;
+    const timeoutId = window.setTimeout(() => {
+      setLineRefRuntimeSnapshot(resolveMountedLineRefs(root) ?? null);
+    }, 120);
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        setLineRefRuntimeSnapshot(resolveMountedLineRefs(root) ?? null);
+      });
     });
-    return () => cancelAnimationFrame(id);
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      window.clearTimeout(timeoutId);
+    };
   }, [pages, columns, provaConfig.layoutType]);
 
   useEffect(() => {
@@ -960,6 +963,33 @@ const { pages, refs } = usePagination({
       })
       .filter(Boolean);
 
+    const lineRefDebug = {
+      measure: Array.from(
+        document.querySelectorAll<HTMLElement>(".measure-layer .questao-item-wrapper[data-q-id]")
+      ).map((wrapper) => ({
+        qId: wrapper.dataset.qId ?? "",
+        parentId: wrapper.dataset.setParentId ?? null,
+        isSetBase: wrapper.dataset.isSetBase === "1",
+        anchorCount: wrapper.querySelectorAll("[data-anchor-id]").length,
+        anchorIds: Array.from(wrapper.querySelectorAll<HTMLElement>("[data-anchor-id]"))
+          .map((el) => el.dataset.anchorId ?? "")
+          .filter(Boolean),
+        lineScopeCount: wrapper.querySelectorAll("[data-line-scope]").length,
+      })),
+      visible: Array.from(
+        document.querySelectorAll<HTMLElement>(".a4-sheet .questao-item-wrapper[data-q-id]")
+      ).map((wrapper) => ({
+        qId: wrapper.dataset.qId ?? "",
+        parentId: wrapper.dataset.setParentId ?? null,
+        isSetBase: wrapper.dataset.isSetBase === "1",
+        lineRefCount: wrapper.querySelectorAll("[data-line-ref]").length,
+        lineRefs: Array.from(wrapper.querySelectorAll<HTMLElement>("[data-line-ref]")).map((el) => ({
+          anchorId: el.dataset.lineRef ?? "",
+          text: (el.textContent ?? "").trim(),
+        })),
+      })),
+    };
+
     const payload = {
       firstPageCapacity,
       otherPageCapacity,
@@ -967,6 +997,8 @@ const { pages, refs } = usePagination({
       questionHeights,
       wrapperDebug,
       renderedPagesDebug,
+      lineRefDebug,
+      lineRefRuntimeDebug: lineRefRuntimeSnapshot,
       selections: selections.map((s: any) => ({
         kind: s.kind,
         id: s.id,
@@ -999,7 +1031,7 @@ const { pages, refs } = usePagination({
 
     (window as any).__PMEDITOR_MONTAR_DEBUG__ = payload;
     console.log("[montar-debug]", payload);
-  }, [devMontarDebugEnabled, selections, expandedQuestions, setGroups, pages, refs, committedSpacers]);
+  }, [devMontarDebugEnabled, selections, expandedQuestions, setGroups, pages, refs, committedSpacers, lineRefRuntimeSnapshot]);
 
   // Mapa: índice original (q) → número impresso (1-based, ignorando setBase)
   // Baseado na ordem real de aparição nos pages (após bin-packing)
@@ -1100,6 +1132,7 @@ const { pages, refs } = usePagination({
     const baseKey = (question as any).metadata?.id ?? printedIndex;
 
     const isSetItem = !!(question as any).__set; // questão filha — botão fica só no __setBase
+    const setParentId = setBaseMeta?.parentId ?? (question as any).__set?.parentId ?? null;
 
     // Seções de texto para toggles individuais
     const textSections: BaseTextSection[] = isSetBase
@@ -1174,6 +1207,7 @@ const { pages, refs } = usePagination({
         className="questao-item-wrapper allow-break"
         data-q-index={globalIndex}
         data-q-id={questionId ?? ""}
+        data-set-parent-id={setParentId ?? undefined}
         data-is-set-base={isSetBase ? "1" : "0"}
         data-frag-kind={frag?.kind ?? "full"}
         data-frag-from={frag?.from}
