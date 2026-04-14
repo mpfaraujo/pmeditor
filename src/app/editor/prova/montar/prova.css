@@ -1,6 +1,6 @@
 @page {
   size: A4;
-  margin: 1.5cm;
+  margin: 0;
 }
 
 :root {
@@ -186,39 +186,30 @@
 }
 
 /* ====== NUMERAÇÃO DE LINHAS (data-numbered) ====== */
+/* JS marca p[data-line-num] + --ln-top (offset px da linha-alvo no parágrafo).
+   Nenhum nó inserido no DOM → layout e paginação intactos.
+   top: var(--ln-top) posiciona o número na linha visual exata.
+   left: -2.5em → padding do .prova-page (não clipado por overflow:hidden). */
 
-.questao-conteudo,
-.question-readonly,
-.question-text {
-  counter-reset: linha-texto;
-}
-
-.questao-conteudo p[data-numbered="true"],
-.question-readonly p[data-numbered="true"],
-.question-text p[data-numbered="true"],
-.questao-conteudo .verse[data-numbered="true"],
-.question-readonly .verse[data-numbered="true"],
-.question-text .verse[data-numbered="true"] {
-  counter-increment: linha-texto;
+.questao-conteudo p[data-line-num],
+.question-readonly p[data-line-num],
+.question-text p[data-line-num] {
   position: relative;
-  padding-left: 2.2em;
 }
 
-.questao-conteudo p[data-numbered="true"]::before,
-.question-readonly p[data-numbered="true"]::before,
-.question-text p[data-numbered="true"]::before,
-.questao-conteudo .verse[data-numbered="true"]::before,
-.question-readonly .verse[data-numbered="true"]::before,
-.question-text .verse[data-numbered="true"]::before {
-  content: counter(linha-texto);
+.questao-conteudo p[data-line-num]::before,
+.question-readonly p[data-line-num]::before,
+.question-text p[data-line-num]::before {
+  content: attr(data-line-num);
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 1.8em;
+  left: -2.5em;
+  top: var(--ln-top, 0px);
+  width: 2em;
   text-align: right;
-  font-size: 0.78em;
+  font-size: 0.75em;
   color: #555;
   line-height: inherit;
+  pointer-events: none;
 }
 
 /* ====== CRÉDITOS ====== */
@@ -570,12 +561,13 @@
     page-break-after: auto !important;
   }
 
-  /* área útil = 21cm - 2*1.5cm = 18cm x 26.7cm */
+  /* @page margin=0; padding do .prova-page faz as margens (idêntico ao screen).
+     Isso permite que ::before de numeração de linhas fique no padding (não clipado). */
   .prova-page {
-    width: 18cm !important;
-    height: 26.7cm !important;
+    width: 21cm !important;
+    height: 29.7cm !important;
     min-height: 0 !important;
-    padding: 0 !important;
+    padding: 1.5cm !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
     box-shadow: none !important;
@@ -588,12 +580,7 @@
     display: none !important;
   }
 
-  .prova-footer {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-  }
+  /* footer usa os mesmos valores do screen (bottom/left/right: 1.5cm) — não precisa override */
   .questoes-container {
     display: flex !important;
     visibility: visible !important;
@@ -618,11 +605,9 @@
   @media print {
     .prova-page {
       overflow: visible !important;
-      /* Gecko calcula a área de conteúdo de @page diferente do Blink:
-         A4 (29.7cm) - 2×1.5cm de margem dá 26.7cm no Chrome, mas ~27.5cm no Firefox.
-         min-height = 27.5cm ancora bottom:0 do footer no fundo físico da página.
-         ATENÇÃO: 27.6cm já gera página em branco extra — 27.5cm é o limite. */
-      min-height: 27.5cm !important;
+      /* @page margin=0 + padding=1.5cm → altura total A4 = 29.7cm.
+         min-height ancora o footer no fundo da página no Gecko. */
+      min-height: 29.7cm !important;
     }
 
     /* break-after:page em todos os sheets é redundante (break-before já separa).

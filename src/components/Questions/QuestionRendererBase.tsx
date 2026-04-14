@@ -7,6 +7,8 @@ import "katex/dist/katex.min.css";
 import "katex/contrib/mhchem";
 import { essayPartLabel, shouldShowEssayPartLabels } from "@/lib/questionRules";
 import type { OptionPermutation } from "@/lib/GeraTiposDeProva";
+import type { CanonicalLineMap } from "@/lib/lineRefMeasure";
+import { formatLineRef } from "@/lib/lineRefMeasure";
 
 type PMNode = {
   type: string;
@@ -45,9 +47,13 @@ type Props = {
   inlineOptions?: boolean;
   /** Chamado ao clicar no botão de alternar modo de opções */
   onToggleInlineOptions?: () => void;
+  /** Mapa canônico de linhas por âncora (base_text ou statement) */
+  lineMap?: CanonicalLineMap | null;
+  /** Layout atual da prova — seleciona qual sub-mapa usar */
+  layoutKey?: "2col" | "1col" | "acessivel";
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender, baseTextSections, onToggleBaseTextSection, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, baseTextSections, onToggleBaseTextSection, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions, lineMap, layoutKey }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -706,9 +712,13 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     }
 
     if (node.type === "line_ref") {
+      const anchorId = node.attrs?.anchorId;
+      const resolvedLine = anchorId && lineMap && layoutKey
+        ? lineMap[layoutKey]?.[anchorId]
+        : undefined;
       return (
-        <span className="line-ref" data-line-ref={node.attrs?.anchorId}>
-          l. ?
+        <span className="line-ref" data-line-ref={anchorId}>
+          {formatLineRef(resolvedLine)}
         </span>
       );
     }

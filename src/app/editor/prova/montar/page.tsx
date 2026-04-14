@@ -45,7 +45,7 @@ import {
 } from "@/lib/pagination";
 
 import { getBaseText } from "@/lib/baseTexts";
-import { resolveMountedLineRefs } from "@/lib/lineRefMeasure";
+import { resolveMountedLineRefs, injectLineNumbers } from "@/lib/lineRefMeasure";
 import "./prova.css";
 
 const PAGE_HEIGHT = 1183;
@@ -278,6 +278,7 @@ export default function MontarProvaPage() {
     updateProvaConfig,
   } = useProva();
   const columns = (provaConfig.layoutType === "acessivel" ? 1 : Number(provaConfig.columns) === 2 ? 2 : 1) as 1 | 2;
+  const layoutKey = (provaConfig.layoutType === "acessivel" ? "acessivel" : columns === 2 ? "2col" : "1col") as "2col" | "1col" | "acessivel";
 
   // Lista linear de questões (sem divisão coluna1/coluna2)
   const [orderedList, setOrderedList] = useState<QuestionData[]>(() => {
@@ -832,6 +833,21 @@ const { pages, refs } = usePagination({
     };
   }, [pages, columns, provaConfig.layoutType]);
 
+  // Injeta numeração de linhas depois que resolveMountedLineRefs atualizou o estado
+  // (useEffect separado garante que a re-render do snapshot já aconteceu)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sheets = Array.from(document.querySelectorAll<HTMLElement>(".a4-sheet"));
+    if (sheets.length === 0) return;
+    const root = sheets[0].parentElement as HTMLElement | null;
+    if (!root) return;
+    const id = requestAnimationFrame(() => {
+      injectLineNumbers(root);
+    });
+    return () => cancelAnimationFrame(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lineRefRuntimeSnapshot]);
+
   useEffect(() => {
     if (!devMontarDebugEnabled || typeof window === "undefined") return;
 
@@ -1164,6 +1180,28 @@ const { pages, refs } = usePagination({
       ? tiposGerados[tipoAtual - 1]?.permutations.find(p => p.questionId === questionId)?.permutation ?? null
       : null;
 
+    // Mesclar lineMaps de todos os textos base associados a esta questão
+    const questionLineMap = (() => {
+      const btIds: string[] = (() => {
+        const meta = (question as any).metadata ?? {};
+        if (Array.isArray(meta.baseTextIds)) return meta.baseTextIds;
+        if (meta.baseTextId) return [meta.baseTextId];
+        // Para setBase, pegar IDs das textSections
+        return textSections.map((s) => s.id);
+      })();
+      if (btIds.length === 0) return null;
+      const merged = { "2col": {} as Record<string, number>, "1col": {} as Record<string, number>, "acessivel": {} as Record<string, number> };
+      for (const btId of btIds) {
+        const bt = baseTextCache.get(btId) as any;
+        const lm = bt?.lineMap;
+        if (!lm) continue;
+        for (const key of ["2col", "1col", "acessivel"] as const) {
+          if (lm[key]) Object.assign(merged[key], lm[key]);
+        }
+      }
+      return merged;
+    })();
+
     // Calcula quais blocos/opções renderizar (TypeScript, não CSS!)
     const fragmentRender = (() => {
       if (!frag) return undefined;
@@ -1230,7 +1268,7 @@ const { pages, refs } = usePagination({
         [&_img]:!my-0
       "
     >
-      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} baseTextSections={baseTextSectionsForRender} onToggleBaseTextSection={handleToggleBaseTextSection} />
+      <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} baseTextSections={baseTextSectionsForRender} onToggleBaseTextSection={handleToggleBaseTextSection} lineMap={questionLineMap} layoutKey={layoutKey} />
     </div>
   </div>
 ) : (
@@ -1265,7 +1303,7 @@ const { pages, refs } = usePagination({
                 [&_img]:!my-0
               "
             >
-              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} baseTextSections={baseTextSectionsForRender} onToggleBaseTextSection={handleToggleBaseTextSection} />
+              <QuestionRenderer content={(question as any).content} fragmentRender={fragmentRender} permutation={permutation} imageWidthProp={committedImageWidths} onImageResizeCommit={handleImageResizeCommit} dataBoxWidthProp={questionId ? getDataBoxWidthProp(questionId) : {}} onDataBoxWidthCommit={questionId ? makeDataBoxWidthCommit(questionId) : undefined} inlineOptions={inlineOptionsSet.has(questionId ?? "")} onToggleInlineOptions={questionId ? () => handleToggleInlineOptions(questionId) : undefined} baseTextSections={baseTextSectionsForRender} onToggleBaseTextSection={handleToggleBaseTextSection} lineMap={questionLineMap} layoutKey={layoutKey} />
             </div>
           </div>
         )}

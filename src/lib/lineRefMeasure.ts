@@ -1,20 +1,75 @@
 /**
  * lineRefMeasure.ts
  *
- * Duas funções principais:
- *
  * 1. resolverRefs — mede em qual linha visual cada âncora (text_anchor) aparece
  *    e atualiza os nodes line_ref com "(linha N)" ou "(linhas N–M)".
+ *    Usado no preview do editor de questões.
  *
  * 2. injectLineNumbers — injeta labels de numeração na margem de containers
  *    com data-numbered="true" (base_text ou poem), pulando .block-title e
  *    linhas vazias, numerando a cada STEP linhas (padrão: 5).
  *
- * Chamado por useEffect em montar/page.tsx após qualquer mudança de layout.
+ * 3. measureAnchors — mede em que linha cada [data-anchor-id] cai dentro de
+ *    um container já renderizado. Usado pelos containers canônicos de medição
+ *    no editor de textos base para persistir linhas por layout.
  */
 
+/**
+ * Mapa de linhas por âncora: { anchorId → número de linha 1-based }
+ * Resultado de measureAnchors() para um único container (um layout).
+ */
+export type AnchorLineNumbers = Record<string, number>;
+
+/**
+ * Mapa canônico persistido junto do texto base.
+ * Chaves: "2col" | "1col" | "acessivel"
+ * Valores: { anchorId → número de linha }
+ */
+export type CanonicalLineMap = {
+  "2col": AnchorLineNumbers;
+  "1col": AnchorLineNumbers;
+  "acessivel": AnchorLineNumbers;
+};
+
+/**
+ * Mede em que linha VISUAL cada [data-anchor-id] cai dentro de `containerEl`.
+ *
+ * Usa contagem de Ys via getBoundingClientRect (palavra a palavra) — consistente
+ * com o que o aluno vê na numeração injetada por injectLineNumbers.
+ *
+ * Retorna { anchorId → número 1-based }.
+ */
+export function measureAnchors(containerEl: HTMLElement): AnchorLineNumbers {
+  const lineYs = buildLineYMap(containerEl, true);
+  if (lineYs.length === 0) return {};
+
+  const result: AnchorLineNumbers = {};
+
+  containerEl.querySelectorAll<HTMLElement>("[data-anchor-id]").forEach((anchorEl) => {
+    const id = anchorEl.getAttribute("data-anchor-id");
+    if (!id) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(anchorEl);
+    const rects = Array.from(range.getClientRects()).filter((r) => r.width > 0);
+    if (rects.length === 0) return;
+
+    result[id] = resolveLineNumber(rects[0].top, lineYs);
+  });
+
+  return result;
+}
+
+/**
+ * Formata o número de linha para exibição na prova.
+ * Sempre usa "~" para sinalizar que é referência aproximada.
+ */
+export function formatLineRef(line: number | undefined): string {
+  if (line === undefined || line <= 0) return "(l. ~?)";
+  return `(l. ~${line})`;
+}
+
 const TOLERANCIA_PX = 4;
-const LINE_NUMBER_CLASS = "line-number-label";
 
 // ─── Utilitários compartilhados ───────────────────────────────────────────────
 
@@ -83,7 +138,7 @@ function resolveLineNumber(top: number, lineYs: number[]): number {
 }
 
 function formatRef(first: number, last: number): string {
-  return first === last ? `l. ${first}` : `ll. ${first}–${last}`;
+  return first === last ? `(l. ~${first})` : `(ll. ~${first}–${last})`;
 }
 
 function escapeAttrValue(value: string): string {
@@ -372,63 +427,68 @@ export function resolverRefs(provaContainer: HTMLElement): void {
 // ─── 2. injectLineNumbers ─────────────────────────────────────────────────────
 
 /**
- * Remove labels de numeração injetados anteriormente num container.
- */
-function clearLineNumbers(container: HTMLElement): void {
-  container
-    .querySelectorAll(`.${LINE_NUMBER_CLASS}`)
-    .forEach((el) => el.remove());
-}
-
-/**
- * Injeta labels de numeração de linha na margem esquerda de `container`.
- * Pula .block-title e linhas vazias.
- * Numera a cada `step` linhas (ex: 5 → exibe 5, 10, 15...).
- * `containerRect` é o bounding rect do container (para posicionamento relativo).
- */
-function injectLabels(
-  container: HTMLElement,
-  lineYs: number[],
-  step: number
-): void {
-  const containerRect = container.getBoundingClientRect();
-
-  lineYs.forEach((y, idx) => {
-    const lineNum = idx + 1;
-    if (lineNum % step !== 0) return;
-
-    const label = document.createElement("span");
-    label.className = LINE_NUMBER_CLASS;
-    label.setAttribute("data-line-number", String(lineNum));
-    label.setAttribute("aria-hidden", "true");
-    // Posicionado relativamente ao container
-    label.style.top = `${y - containerRect.top}px`;
-    container.appendChild(label);
-  });
-}
-
-/**
- * Ponto de entrada para numeração de linhas.
- * Procura todos os containers com data-numbered="true" dentro de `provaContainer`
- * (tanto .base-text quanto .poem) e injeta os labels na margem.
+ * Numera linhas visuais de texto a cada `step` linhas.
+ *
+ * Conta linhas via rect.height / lineHeight (não usa mapa de Y).
+ * Isso evita o problema de 2 colunas onde col1 e col2 têm o mesmo Y range
+ * e os Ys seriam deduplicados, causando contagem errada.
+ *
+ * Para cada parágrafo: calcula quantas linhas ele ocupa, rastreia o acumulado
+ * e marca com data-line-num + --ln-top quando um múltiplo de `step` cai nele.
+ *
+ * Nenhum nó é inserido no DOM → sem impacto em layout/paginação.
+ * Agrupa por data-q-id para contagem contínua entre fragmentos.
  */
 export function injectLineNumbers(
   provaContainer: HTMLElement,
   step = 5
 ): void {
-  provaContainer
-    .querySelectorAll<HTMLElement>("[data-numbered='true']")
-    .forEach((container) => {
-      // Remove labels anteriores para evitar duplicatas
-      clearLineNumbers(container);
+  // Remove marcações anteriores
+  provaContainer.querySelectorAll<HTMLElement>("p[data-line-num]").forEach((p) => {
+    p.removeAttribute("data-line-num");
+    p.style.removeProperty("--ln-top");
+  });
 
-      // Garante position:relative para posicionamento absoluto dos labels
-      const pos = getComputedStyle(container).position;
-      if (pos === "static") container.style.position = "relative";
+  // Agrupa p[data-numbered] por qId para contagem contínua entre fragmentos
+  const byQId = new Map<string, HTMLElement[]>();
+  provaContainer.querySelectorAll<HTMLElement>("p[data-numbered='true']").forEach((p) => {
+    if (isInMeasureLayer(p)) return;
+    const wrapper = p.closest<HTMLElement>(".questao-item-wrapper");
+    const qId = wrapper?.getAttribute("data-q-id") ?? "__no-id__";
+    if (!byQId.has(qId)) byQId.set(qId, []);
+    byQId.get(qId)!.push(p);
+  });
 
-      const lineYs = buildLineYMap(container, true);
-      if (lineYs.length === 0) return;
+  byQId.forEach((allPs) => {
+    const nonEmpty = allPs.filter((p) => (p.textContent ?? "").trim().length > 0);
+    if (nonEmpty.length === 0) return;
 
-      injectLabels(container, lineYs, step);
-    });
+    // Line height do primeiro parágrafo (browser resolve "normal" para px)
+    const lineHeight = parseFloat(getComputedStyle(nonEmpty[0]).lineHeight) || 14;
+
+    let cumLines = 0; // total de linhas visuais já contadas
+
+    for (const p of nonEmpty) {
+      const rect = p.getBoundingClientRect();
+      // Quantas linhas visuais este parágrafo ocupa
+      const pLines = Math.max(1, Math.round(rect.height / lineHeight));
+
+      const firstLine = cumLines + 1;  // primeira linha deste parágrafo (1-based)
+      const lastLine  = cumLines + pLines;
+
+      // Primeiro múltiplo de `step` que cai neste parágrafo
+      const firstTarget = Math.ceil(firstLine / step) * step;
+      if (firstTarget <= lastLine) {
+        const lineNum = firstTarget;
+        const lineIndexInPara = firstTarget - firstLine; // 0-based dentro do parágrafo
+        const offsetPx = Math.round(lineIndexInPara * lineHeight);
+        if (!p.hasAttribute("data-line-num")) {
+          p.setAttribute("data-line-num", String(lineNum));
+          p.style.setProperty("--ln-top", `${offsetPx}px`);
+        }
+      }
+
+      cumLines += pLines;
+    }
+  });
 }

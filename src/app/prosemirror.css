@@ -449,27 +449,9 @@
   padding: 0.95cm 1.45cm 1.2cm;
 }
 
-.base-text-editor p[data-numbered="true"]:not(:empty),
-.base-text-editor .verse[data-numbered="true"]:not(:empty) {
-  counter-increment: linha-texto;
-  position: relative;
+/* Labels numéricos injetados por JS (injectLineNumbers) */
+.base-text-editor p[data-numbered="true"]:not(:empty) {
   padding-left: 3rem;
-}
-
-.base-text-editor p[data-numbered="true"]::before,
-.base-text-editor .verse[data-numbered="true"]::before {
-  content: counter(linha-texto);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2.2rem;
-  text-align: right;
-  color: #aaa;
-  font-size: 0.78em;
-  line-height: inherit;
-  user-select: none;
-  pointer-events: none;
-  font-family: monospace;
 }
 
 /* ===== TÍTULO DE TEXTO/POEMA ===== */
