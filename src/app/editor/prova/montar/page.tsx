@@ -1035,12 +1035,12 @@ const { pages, refs } = usePagination({
         coluna1: (p.coluna1 ?? []).map((it: any) =>
           typeof it === "number"
             ? { kind: "number", q: it }
-            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to }
+            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to, textBlockCount: it.textBlockCount }
         ),
         coluna2: (p.coluna2 ?? []).map((it: any) =>
           typeof it === "number"
             ? { kind: "number", q: it }
-            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to }
+            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to, textBlockCount: it.textBlockCount }
         ),
       })),
     };
@@ -1230,11 +1230,14 @@ const { pages, refs } = usePagination({
           options: [],
         };
       } else {
-        // N indefinido (não deveria ocorrer normalmente): renderiza tudo no primeiro fragmento
+        // N indefinido: no primeiro fragmento renderiza tudo; nos seguintes usa from/to como índices de texto
         if (frag.first) {
           return undefined;
         } else {
-          return { textBlocks: [], options: [] };
+          return {
+            textBlocks: Array.from({ length: to - from + 1 }, (_, i) => from + i),
+            options: [],
+          };
         }
       }
     })();

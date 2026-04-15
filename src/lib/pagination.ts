@@ -1103,6 +1103,8 @@ export function distributeQuestionsOptimized(
         const splitExpanded = measureSplitInfo(measureItemsRef, qIndex, true);
         if (splitExpanded) {
           built = buildFragmentsForQuestion(qIndex, splitExpanded, capFirst, capNext);
+          // Atualiza split para que buildRemainingFromBlock use o textBlockCount correto
+          if (built) split = splitExpanded;
         }
       }
       return built;
