@@ -53,9 +53,9 @@ const ITEMS_PER_PAGE = 30;
 
 export default function QuestoesPage() {
   const router = useRouter();
-  const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll, selectedQuestions } = useProva();
-  const hasSelectedQuestions = selectedQuestions.length > 0;
+  const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll, selectedQuestions, selections } = useProva();
   const effectiveSelectedCount = selectedCount > 0 ? selectedCount : selectedQuestions.length;
+  const hasSelectedQuestions = effectiveSelectedCount > 0 || selections.length > 0;
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);

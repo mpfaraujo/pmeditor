@@ -1,4 +1,5 @@
 // src/lib/baseTexts.ts — API calls para banco de textos base
+import type { CanonicalLineMap } from "@/lib/lineRefMeasure";
 
 const BT_BASE = (
   process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ??
@@ -25,6 +26,7 @@ export type BaseTextItem = {
   movimento?: string;
   tags?: string[];
   source?: any;
+  lineMap?: CanonicalLineMap;  // linhas canônicas por âncora (2col/1col/acessivel)
   createdAt: string;
   updatedAt: string;
 };
@@ -151,6 +153,7 @@ export async function updateBaseText(payload: {
   ano_pub?: number | null;
   tags?: string[] | null;
   source?: any | null;
+  lineMap?: CanonicalLineMap | null;
 }): Promise<{ success: true; id: string; tag: string; updatedAt: string } | { success: false; error?: string }> {
   try {
     const res = await fetch(`${BT_BASE}/update.php`, {
@@ -195,6 +198,7 @@ export async function createBaseText(payload: {
   tags?: string[];
   source?: any;
   author?: any;
+  lineMap?: CanonicalLineMap;
 }): Promise<{ success: true; id: string; tag: string } | { success: false; duplicate?: boolean; existing_id?: string; existing_tag?: string; error?: string }> {
   try {
     const res = await fetch(`${BT_BASE}/create.php`, {

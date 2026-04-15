@@ -3,7 +3,9 @@
 import { Suspense, useMemo, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
+import { BaseTextMeasurer } from "@/components/editor/BaseTextMeasurer";
 import { getBaseText, updateBaseText, createBaseText, deleteBaseText, type BaseTextItem } from "@/lib/baseTexts";
+import { type CanonicalLineMap } from "@/lib/lineRefMeasure";
 import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -39,6 +41,8 @@ function BaseTextEditorInner() {
   const [genero, setGenero] = useState("");
   const [editorContent, setEditorContent] = useState<any>(null);
   const [initialSnapshot, setInitialSnapshot] = useState<string | null>(null);
+
+  const [lineMap, setLineMap] = useState<CanonicalLineMap | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [savedOk, setSavedOk] = useState(false);
@@ -169,6 +173,7 @@ function BaseTextEditorInner() {
         disciplina: disciplina.trim() || undefined,
         tema: tema.trim() || undefined,
         genero: genero.trim() || undefined,
+        lineMap: lineMap ?? undefined,
       });
       setSaving(false);
       if (result.success) {
@@ -191,6 +196,7 @@ function BaseTextEditorInner() {
       disciplina: disciplina.trim() || null,
       tema: tema.trim() || null,
       genero: genero.trim() || null,
+      lineMap: lineMap,
     });
 
     setSaving(false);
@@ -355,6 +361,14 @@ function BaseTextEditorInner() {
           saving={saving}
         />
       </div>
+
+      {/* Containers ocultos de medição canônica de linhas */}
+      {editorContent && (
+        <BaseTextMeasurer
+          content={editorContent}
+          onMeasure={setLineMap}
+        />
+      )}
 
       <AlertDialog open={leaveDialogOpen} onOpenChange={setLeaveDialogOpen}>
         <AlertDialogContent>

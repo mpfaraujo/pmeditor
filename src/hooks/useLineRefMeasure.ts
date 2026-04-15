@@ -2,10 +2,14 @@ import { useEffect, useRef } from "react";
 import { resolverRefs, injectLineNumbers } from "@/lib/lineRefMeasure";
 
 /**
- * Hook que executa resolverRefs + injectLineNumbers no container referenciado
- * sempre que `open` muda para true (ex: dialog abre).
+ * Hook que executa resolverRefs no container referenciado sempre que `open`
+ * muda para true (ex: dialog abre).
  *
- * Aguarda 180ms antes de medir para garantir que animações de abertura
+ * A numeração visual de linhas (5, 10, 15...) é feita pelo CSS via
+ * counter-increment em p[data-numbered="true"] e .verse[data-numbered="true"]
+ * — não precisa de JS para isso.
+ *
+ * Aguarda 250ms antes de medir para garantir que animações de abertura
  * do Dialog (shadcn/Radix) terminaram e o DOM está totalmente pintado.
  *
  * Uso:
