@@ -1077,8 +1077,8 @@ export function distributeQuestionsOptimized(
     const useConservativeImageFallback =
       shouldUseConservativeImageOptionFallback(measureItemsRef, qIndex);
 
-    let split = measureSplitInfo(measureItemsRef, qIndex);
-    if (!split) {
+    const splitInitial = measureSplitInfo(measureItemsRef, qIndex);
+    if (!splitInitial) {
       // ALTERAÇÃO DOCUMENTADA:
       // Antes esse fallback era silencioso. Mantive o comportamento para não
       // alterar demais o fluxo atual, mas agora ele deixa rastro no console.
@@ -1093,6 +1093,11 @@ export function distributeQuestionsOptimized(
       return;
     }
 
+    // effectiveSplit é não-nulo (o caso nulo retornou acima).
+    // Usamos uma variável separada para que o TypeScript infira SplitInfo (não SplitInfo|null)
+    // mesmo dentro de closures, onde o narrowing do if(!split) não se propaga.
+    let effectiveSplit: SplitInfo = splitInitial;
+
     const tryBuildFragment = (
       baseSplit: SplitInfo,
       capFirst: number,
@@ -1103,8 +1108,8 @@ export function distributeQuestionsOptimized(
         const splitExpanded = measureSplitInfo(measureItemsRef, qIndex, true);
         if (splitExpanded) {
           built = buildFragmentsForQuestion(qIndex, splitExpanded, capFirst, capNext);
-          // Atualiza split para que buildRemainingFromBlock use o textBlockCount correto
-          if (built) split = splitExpanded;
+          // Atualiza effectiveSplit para que buildRemainingFromBlock use o textBlockCount correto
+          if (built) effectiveSplit = splitExpanded;
         }
       }
       return built;
@@ -1155,7 +1160,7 @@ export function distributeQuestionsOptimized(
         ? targetPage.coluna2.remaining
         : otherPageCapacity;
 
-    let frag = tryBuildFragment(split, capHere, capNext);
+    let frag = tryBuildFragment(effectiveSplit, capHere, capNext);
     if (frag && isTinyInitialFragment(frag) && !isFreshStart(targetPage, targetCol)) {
       frag = null;
     }
@@ -1163,7 +1168,7 @@ export function distributeQuestionsOptimized(
     if (!frag && columns === 2 && targetCol === "coluna1" && targetPage.coluna2.remaining > 0) {
       const col2CapHere = targetPage.coluna2.remaining;
       const col2CapNext = otherPageCapacity;
-      const retryCol2 = tryBuildFragment(split, col2CapHere, col2CapNext);
+      const retryCol2 = tryBuildFragment(effectiveSplit, col2CapHere, col2CapNext);
       if (retryCol2 && !(isTinyInitialFragment(retryCol2) && !isFreshStart(targetPage, "coluna2"))) {
         targetCol = "coluna2";
         capHere = col2CapHere;
@@ -1175,7 +1180,7 @@ export function distributeQuestionsOptimized(
       const cleanPage = newPage(pages.length);
       const cleanCapHere = cleanPage.coluna1.remaining;
       const cleanCapNext = columns === 2 ? cleanPage.coluna2.remaining : otherPageCapacity;
-      const retryCleanPage = tryBuildFragment(split, cleanCapHere, cleanCapNext);
+      const retryCleanPage = tryBuildFragment(effectiveSplit, cleanCapHere, cleanCapNext);
       if (retryCleanPage) {
         pages.push(cleanPage);
         targetPage = cleanPage;
@@ -1214,12 +1219,12 @@ export function distributeQuestionsOptimized(
     ) => {
       const remainingSplit: SplitInfo = {
         prefixHeight: 0,
-        suffixHeight: split.suffixHeight,
-        blocksHeights: split.blocksHeights.slice(fromBlockIndex),
+        suffixHeight: effectiveSplit.suffixHeight,
+        blocksHeights: effectiveSplit.blocksHeights.slice(fromBlockIndex),
         textBlockCount:
-          split.textBlockCount == null
+          effectiveSplit.textBlockCount == null
             ? undefined
-            : Math.max(0, split.textBlockCount - fromBlockIndex),
+            : Math.max(0, effectiveSplit.textBlockCount - fromBlockIndex),
       };
 
       const rebuilt = tryBuildFragment(remainingSplit, capFirst, capNextLocal);
@@ -1234,7 +1239,7 @@ export function distributeQuestionsOptimized(
             from: fi.from + fromBlockIndex,
             to: fi.to + fromBlockIndex,
             first: false,
-            textBlockCount: split.textBlockCount,
+            textBlockCount: effectiveSplit.textBlockCount,
           };
         }),
         heights: rebuilt.heights,
