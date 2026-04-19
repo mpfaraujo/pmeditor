@@ -38,32 +38,18 @@
   outline: none;
 }
 
-/* Oculta o caret nativo — substituído pelo plugin de decoração */
+/* Oculta caret nativo — substituído pelo overlay React */
 .ProseMirror {
   caret-color: transparent;
 }
 
-/* Caret customizado via decoration widget.
-   height: 0 + overflow: visible garante que o widget não afeta o layout da linha. */
-.pm-custom-caret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  overflow: visible;
-  vertical-align: baseline;
-  pointer-events: none;
-  position: relative;
-}
-
-.pm-custom-caret::after {
-  content: '';
+/* Caret overlay — renderizado fora do fluxo do editor, zero impacto no layout */
+.pm-caret-overlay {
   position: absolute;
-  left: 0;
-  top: -0.85em;
   width: 2px;
-  height: 1.15em;
   background-color: #1a6680;
   border-radius: 1px;
+  pointer-events: none;
   animation: pm-caret-blink 1.1s step-start infinite;
 }
 
