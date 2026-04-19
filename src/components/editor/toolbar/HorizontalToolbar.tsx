@@ -116,7 +116,7 @@ export function HorizontalToolbar({
               size="sm"
               className={`h-8 w-8 ${activeMarks?.superscript ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
               onClick={() => onAction("mark:superscript")}
-              title="Sobrescrito"
+              title="Sobrescrito (Ctrl+.)"
             >
               <Icons.Superscript className="h-4 w-4" />
             </Button>
@@ -125,7 +125,7 @@ export function HorizontalToolbar({
               size="sm"
               className={`h-8 w-8 ${activeMarks?.subscript ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "hover:bg-gray-100"}`}
               onClick={() => onAction("mark:subscript")}
-              title="Subscrito"
+              title="Subscrito (Ctrl+,)"
             >
               <Icons.Subscript className="h-4 w-4" />
             </Button>
@@ -224,7 +224,7 @@ export function HorizontalToolbar({
                   <Icons.Image className="h-4 w-4 mr-2" /> Imagem
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onAction("math")}>
-                  <Icons.Sigma className="h-4 w-4 mr-2" /> Fórmula
+                  <Icons.Sigma className="h-4 w-4 mr-2" /> Fórmula <span className="ml-auto text-xs text-muted-foreground pl-4">Ctrl+K</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onAction("symbols")}>
                   <Icons.Omega className="h-4 w-4 mr-2" /> Símbolos

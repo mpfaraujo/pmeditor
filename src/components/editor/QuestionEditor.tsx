@@ -7,7 +7,7 @@ import { EditorView } from "prosemirror-view";
 import { schema } from "./schema";
 import { keymap } from "prosemirror-keymap";
 import { history, undo, redo } from "prosemirror-history";
-import { baseKeymap } from "prosemirror-commands";
+import { baseKeymap, toggleMark } from "prosemirror-commands";
 import { inputRules, wrappingInputRule } from "prosemirror-inputrules";
 import { splitListItem, liftListItem, sinkListItem } from "prosemirror-schema-list";
 
@@ -105,7 +105,10 @@ type MathDialogState =
 
 /* ---------- plugins ---------- */
 
-function buildPlugins(onYamlMetadata?: (meta: any) => void): Plugin[] {
+function buildPlugins(
+  onYamlMetadata?: (meta: any) => void,
+  onMathShortcut?: () => void,
+): Plugin[] {
   return [
     history(),
     placeholderPlugin({ paragraph: "Digite aqui..." }),
@@ -129,6 +132,15 @@ function buildPlugins(onYamlMetadata?: (meta: any) => void): Plugin[] {
       onYamlMetadata,
     }),
     keymap({
+      "Mod-b": toggleMark(schema.marks.strong),
+      "Mod-i": toggleMark(schema.marks.em),
+      "Mod-u": toggleMark(schema.marks.underline),
+      "Mod-.": toggleMark(schema.marks.superscript),
+      "Mod-,": toggleMark(schema.marks.subscript),
+      "Mod-k": (_state, _dispatch, _view) => {
+        onMathShortcut?.();
+        return true;
+      },
       Enter: splitListItem(schema.nodes.list_item),
       Tab: sinkListItem(schema.nodes.list_item),
       "Shift-Tab": liftListItem(schema.nodes.list_item),
@@ -563,6 +575,10 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   const [availableBaseTextAnchors, setAvailableBaseTextAnchors] = useState<string[]>([]);
   const previewContainerRef = useLineRefMeasure(previewOpen, [previewColumns]);
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
+  const openMathDialogRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    openMathDialogRef.current = () => setMathDialog({ open: true, mode: "new", pos: null, latex: "" });
+  });
   const [metaDialog, setMetaDialog] = useState({ open: false, saveAfter: false });
   const [baseTextPickerOpen, setBaseTextPickerOpen] = useState(false);
   const [duplicateDialog, setDuplicateDialog] = useState<{
@@ -633,7 +649,11 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
     setPendingYamlItems(null);
   }, [pendingYamlItems, view]);
 
-  const plugins = useMemo(() => buildPlugins(handleYamlMetadata), []);
+  const plugins = useMemo(
+    () => buildPlugins(handleYamlMetadata, () => openMathDialogRef.current()),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   const recompute = (v: EditorView) => {
     requestAnimationFrame(() => {
@@ -658,14 +678,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       state,
       nodeViews: { math_inline: (n) => new MathInlineView(n) },
       handleDOMEvents: {
-        keydown(_view, e) {
-          if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-            e.preventDefault();
-            setMathDialog({ open: true, mode: "new", pos: null, latex: "" });
-            return true;
-          }
-          return false;
-        },
         dblclick(view, e) {
           const hit = view.posAtCoords({
             left: (e as MouseEvent).clientX,
