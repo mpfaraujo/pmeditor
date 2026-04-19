@@ -21,7 +21,7 @@
   
   /* Tipografia padrão Word */
   font-size: 14pt;
-  line-height: 0.5;
+  line-height: 1.4;
   font-family: Calibri, "Segoe UI", Arial, sans-serif;
   color: #333;
   
@@ -38,17 +38,18 @@
   outline: none;
 }
 
-/* Oculta caret nativo — substituído pelo overlay React */
+/* Oculta caret nativo — substituído pelo decorator */
 .ProseMirror {
   caret-color: transparent;
 }
 
-/* Caret overlay — renderizado fora do fluxo do editor, zero impacto no layout */
-.pm-caret-overlay {
-  position: absolute;
-  width: 2px;
-  background-color: #1a6680;
-  border-radius: 1px;
+/* Caret via decorator: display:inline + border-left.
+   Inline elements com apenas border-left não têm dimensão vertical própria
+   — não afetam line-height. A borda é pintada na altura da linha do entorno. */
+.pm-custom-caret {
+  display: inline;
+  border-left: 2px solid #1a6680;
+  margin-left: -2px;
   pointer-events: none;
   animation: pm-caret-blink 1.1s step-start infinite;
 }
@@ -294,7 +295,7 @@
 /* ===== FÓRMULAS MATEMÁTICAS ===== */
 .ProseMirror .math-inline {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: -0.15em;
   padding: 0 2px;
   margin: 0 2px;
 }

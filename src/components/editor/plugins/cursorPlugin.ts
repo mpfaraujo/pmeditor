@@ -2,8 +2,8 @@ import { Plugin } from "prosemirror-state";
 import { Decoration, DecorationSet } from "prosemirror-view";
 import { TextSelection } from "prosemirror-state";
 
-// Caret customizado via decoration — não some em modais nem perde estabilidade.
-// O caret nativo é ocultado via caret-color: transparent no CSS global.
+// Caret customizado via decoration.
+// Usa display:inline + border-left — sem box model vertical, zero impacto no layout da linha.
 export const cursorPlugin = new Plugin({
   props: {
     decorations(state) {

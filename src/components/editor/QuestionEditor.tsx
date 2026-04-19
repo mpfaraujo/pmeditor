@@ -22,6 +22,7 @@ import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from 
 import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
 import { verseNumberingPlugin } from "@/components/editor/plugins/verseNumberingPlugin";
+import { cursorPlugin } from "@/components/editor/plugins/cursorPlugin";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -150,6 +151,7 @@ function buildPlugins(
     keymap({ "Mod-z": undo, "Mod-y": redo }),
     keymap(baseKeymap),
     verseNumberingPlugin,
+    cursorPlugin,
   ];
 }
 
@@ -575,7 +577,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   const [availableBaseTextAnchors, setAvailableBaseTextAnchors] = useState<string[]>([]);
   const previewContainerRef = useLineRefMeasure(previewOpen, [previewColumns]);
   const [mathDialog, setMathDialog] = useState<MathDialogState>({ open: false });
-  const [caretStyle, setCaretStyle] = useState<React.CSSProperties | null>(null);
   const openMathDialogRef = useRef<() => void>(() => {});
   useEffect(() => {
     openMathDialogRef.current = () => setMathDialog({ open: true, mode: "new", pos: null, latex: "" });
@@ -717,24 +718,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
             JSON.stringify({ metadata: metaRef.current, content: ns.doc.toJSON() })
           );
         } catch {}
-
-        // Caret overlay: coordenadas relativas ao container scroll
-        try {
-          const sel = ns.selection;
-          if (sel.empty) {
-            const coords = ev.coordsAtPos(sel.head);
-            const container = ev.dom.offsetParent as HTMLElement | null;
-            const base = container?.getBoundingClientRect() ?? ev.dom.getBoundingClientRect();
-            const scrollTop = container?.scrollTop ?? 0;
-            setCaretStyle({
-              top: coords.top - base.top + scrollTop,
-              left: coords.left - base.left,
-              height: coords.bottom - coords.top,
-            });
-          } else {
-            setCaretStyle(null);
-          }
-        } catch { setCaretStyle(null); }
 
         recompute(ev);
         force((n) => n + 1);
@@ -1139,20 +1122,11 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
 
       {/* Folha A4 — container com scroll horizontal em mobile */}
       <div className="overflow-x-auto pb-4">
-        <div className="relative mx-auto" style={{ width: "210mm" }}>
-          <div
-            ref={editorRef}
-            className="question-editor-sheet focus:outline-none shadow-2xl"
-          />
-          {/* Caret overlay — não toca no DOM do editor, zero impacto no layout */}
-          {caretStyle && (
-            <div
-              aria-hidden
-              className="pm-caret-overlay"
-              style={caretStyle}
-            />
-          )}
-        </div>
+        <div
+          ref={editorRef}
+          className="question-editor-sheet focus:outline-none shadow-2xl mx-auto"
+          style={{ width: "210mm" }}
+        />
       </div>
 
       {/* Modais */}
