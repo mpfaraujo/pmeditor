@@ -43,17 +43,28 @@
   caret-color: transparent;
 }
 
-/* Caret customizado via decoration widget */
+/* Caret customizado via decoration widget.
+   height: 0 + overflow: visible garante que o widget não afeta o layout da linha. */
 .pm-custom-caret {
   display: inline-block;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  vertical-align: baseline;
+  pointer-events: none;
+  position: relative;
+}
+
+.pm-custom-caret::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -0.85em;
   width: 2px;
-  height: 1.1em;
+  height: 1.15em;
   background-color: #1a6680;
-  vertical-align: text-bottom;
-  margin-left: -1px;
   border-radius: 1px;
   animation: pm-caret-blink 1.1s step-start infinite;
-  pointer-events: none;
 }
 
 @keyframes pm-caret-blink {
