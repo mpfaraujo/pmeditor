@@ -1,13 +1,11 @@
 /* ===== EDITOR WORD: FOLHA A4 REAL ===== */
 
-/* Container do editor - fundo cinza (como Word) */
+/* Container do editor */
 .ProseMirror-container {
-  background: #d3d3d3;
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 2rem 0;
 }
 
 /* Folha A4 - largura fixa e centralizada */
@@ -17,10 +15,7 @@
   max-width: 210mm;
   min-height: 297mm;
   background: white;
-  
-  /* Sombra de papel real */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  
+
   /* Margens internas generosas (como Word) */
   padding: 2.54cm;
   
