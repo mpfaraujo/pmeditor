@@ -22,6 +22,7 @@ import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from 
 import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
 import { verseNumberingPlugin } from "@/components/editor/plugins/verseNumberingPlugin";
+import { cursorPlugin } from "@/components/editor/plugins/cursorPlugin";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -150,6 +151,7 @@ function buildPlugins(
     keymap({ "Mod-z": undo, "Mod-y": redo }),
     keymap(baseKeymap),
     verseNumberingPlugin,
+    cursorPlugin,
   ];
 }
 
