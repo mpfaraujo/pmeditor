@@ -146,6 +146,42 @@
 /* ====== FIM FIX LISTAS ====== */
 
 /* ====== POEMA ====== */
+/* poem-verse: cada verso é um bloco direto do question-text para fragmentação verso a verso */
+.questao-conteudo .poem-verse,
+.question-readonly .poem-verse,
+.question-text .poem-verse {
+  display: block;
+  text-align: center;
+  line-height: 1.6;
+  min-height: 1.2em;
+}
+
+/* Cancela o gap do space-y-2 entre versos consecutivos do mesmo poema */
+.questao-conteudo .poem-verse + .poem-verse,
+.question-readonly .poem-verse + .poem-verse,
+.question-text .poem-verse + .poem-verse {
+  margin-top: 0 !important;
+}
+
+.questao-conteudo .poem-verse[data-poem-numbered="true"],
+.question-readonly .poem-verse[data-poem-numbered="true"],
+.question-text .poem-verse[data-poem-numbered="true"] {
+  padding-left: 2em;
+  position: relative;
+}
+
+.questao-conteudo .poem-verse[data-poem-numbered="true"][data-line-num]::before,
+.question-readonly .poem-verse[data-poem-numbered="true"][data-line-num]::before,
+.question-text .poem-verse[data-poem-numbered="true"][data-line-num]::before {
+  content: attr(data-line-num);
+  position: absolute;
+  left: -2em;
+  font-size: 0.8em;
+  color: #555;
+  line-height: inherit;
+}
+
+/* Compatibilidade retroativa: .poem e .verse ainda são suportados no editor */
 .questao-conteudo .poem,
 .question-readonly .poem,
 .question-text .poem {

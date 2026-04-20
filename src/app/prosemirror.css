@@ -243,6 +243,33 @@
   line-height: inherit;
 }
 
+/* poem-verse: versos como blocos diretos (na prova, para fragmentação) */
+.poem-verse {
+  display: block;
+  text-align: center;
+  line-height: 1.6;
+  min-height: 1.2em;
+}
+
+.poem-verse + .poem-verse {
+  margin-top: 0 !important;
+}
+
+.poem-verse[data-poem-numbered="true"] {
+  padding-left: 2em;
+  position: relative;
+  overflow: visible;
+}
+
+.poem-verse[data-poem-numbered="true"][data-line-num]::before {
+  content: attr(data-line-num);
+  position: absolute;
+  left: -2.5em;
+  font-size: 0.8em;
+  color: #555;
+  line-height: inherit;
+}
+
 /* ===== CRÉDITOS ===== */
 .credits {
   font-size: 0.78em;

@@ -500,7 +500,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     lineScope?: string
   ): React.ReactNode[] {
     return (
-      node.content?.map((child, i) => {
+      node.content?.flatMap((child, i) => {
         const key = `${keyPrefix}-${i}`;
         const scopeAttrs = lineScope
           ? ({ "data-line-scope": lineScope } as Record<string, string>)
@@ -544,17 +544,20 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         if (child.type === "poem") {
           const numbered = !!child.attrs?.numbered;
           const verses = child.content ?? [];
-          // Conta só versos não-vazios para numeração
+          // Cada verso é um bloco independente para permitir fragmentação verso a verso.
+          // Versos consecutivos não têm gap (poem-verse + poem-verse { margin-top: 0 }).
           let nonEmptyCount = 0;
-          const verseElements = verses.map((verse, vi) => {
+          return verses.map((verse, vi) => {
             const isEmpty = !verse.content || verse.content.length === 0;
             if (!isEmpty) nonEmptyCount++;
             const lineNum = numbered && !isEmpty && nonEmptyCount % 5 === 0 ? nonEmptyCount : undefined;
             const verseNumbered = !!verse.attrs?.numbered && !isEmpty;
             return (
               <div
-                key={vi}
-                className="verse"
+                key={`${key}-v${vi}`}
+                className="poem-verse"
+                {...(vi === 0 ? scopeAttrs : {})}
+                {...(numbered ? { "data-poem-numbered": "true" } : {})}
                 {...(lineNum ? { "data-line-num": String(lineNum) } : {})}
                 {...(verseNumbered ? { "data-numbered": "true" } : {})}
               >
@@ -562,16 +565,6 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
               </div>
             );
           });
-          return (
-            <div
-              key={key}
-              className="poem"
-              {...scopeAttrs}
-              {...(numbered ? { "data-numbered": "true" } : {})}
-            >
-              {verseElements}
-            </div>
-          );
         }
 
         if (child.type === "credits") {
