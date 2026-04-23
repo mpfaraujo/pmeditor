@@ -54,8 +54,18 @@ teste.yaml
 # provas (PDFs e .tex gerados — não versionar)
 /scripts/
 
-# fila de importação gerada pelo parse-tex
+# fila de importação e relatórios gerados pelo pipeline (arquivos temporários)
 /public/data/import-queue.json
+/public/data/import-queue-*.json
+/public/data/import-queue-*.manifest.json
+/public/data/import-report-*.json
+
+# arquivos temporários de trabalho (imagens, htmls, jsons de debug)
+tmp_*
+tmp-*
+
+# instaladores e executáveis avulsos
+*.msi
 
 # diário de bordo compartilhado entre agentes (Claude + GPT) — local only
 /AGENTS.md

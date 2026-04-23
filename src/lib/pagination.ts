@@ -1176,6 +1176,51 @@ export function distributeQuestionsOptimized(
       }
     }
 
+    // Cenário: targetPage está vazia e buildFragmentsForQuestion retornou null porque
+    // o primeiro bloco (ex: poema, imagem grande) não cabe em capHere, mas cabe em
+    // capNext. Sem tratamento, o fallback de cleanPage deixa targetPage vazia → ela
+    // é filtrada → cleanPage vira a primeira página renderizada com cabeçalho, mas
+    // foi alocada com otherPageCapacity → overflow. Solução: forçar o primeiro bloco
+    // sozinho nesta página (com overflow mínimo) e os blocos restantes na próxima.
+    if (!frag && isFreshStart(targetPage, targetCol) && effectiveSplit.blocksHeights.length > 0) {
+      const firstBlockH = effectiveSplit.blocksHeights[0];
+      if (firstBlockH <= capNext + SLOT_FIT_EPS) {
+        const forcedFirst: LayoutItem = {
+          kind: "frag",
+          q: qIndex,
+          from: 1,
+          to: 1,
+          first: true,
+          textBlockCount: effectiveSplit.textBlockCount,
+        };
+        const forcedFirstHeight = effectiveSplit.prefixHeight + firstBlockH;
+        if (effectiveSplit.blocksHeights.length === 1) {
+          const suffixRoom = Math.max(0, capHere - forcedFirstHeight);
+          const suffixCounted = Math.min(Math.max(0, effectiveSplit.suffixHeight || 0), suffixRoom);
+          frag = { items: [forcedFirst], heights: [forcedFirstHeight + suffixCounted] };
+        } else {
+          const remainingSplit: SplitInfo = {
+            prefixHeight: 0,
+            suffixHeight: effectiveSplit.suffixHeight,
+            blocksHeights: effectiveSplit.blocksHeights.slice(1),
+            textBlockCount: effectiveSplit.textBlockCount == null
+              ? undefined
+              : Math.max(0, effectiveSplit.textBlockCount - 1),
+          };
+          const restFrag = tryBuildFragment(remainingSplit, capNext, capNext);
+          if (restFrag) {
+            frag = {
+              items: [forcedFirst, ...restFrag.items.map((item) => {
+                const fi = item as Extract<LayoutItem, { kind: "frag" }>;
+                return { ...fi, q: qIndex, from: fi.from + 1, to: fi.to + 1, first: false, textBlockCount: effectiveSplit.textBlockCount };
+              })],
+              heights: [forcedFirstHeight, ...restFrag.heights],
+            };
+          }
+        }
+      }
+    }
+
     if (!frag) {
       const cleanPage = newPage(pages.length);
       const cleanCapHere = cleanPage.coluna1.remaining;

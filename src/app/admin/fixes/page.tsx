@@ -776,6 +776,8 @@ function QuestionCard({
   onSaved,
   onReviewAndNext,
   onOpenEditor,
+  onDelete,
+  deleteBusy,
   baseTextCache,
   cardRef,
   forceExpanded,
@@ -786,6 +788,8 @@ function QuestionCard({
   onSaved: (id: string, updated: Partial<QuestionItem>) => void;
   onReviewAndNext: (id: string) => void;
   onOpenEditor: (question: QuestionItem) => void;
+  onDelete: (question: QuestionItem) => void;
+  deleteBusy: boolean;
   baseTextCache: Map<string, BaseTextItem>;
   cardRef?: React.Ref<HTMLDivElement>;
   forceExpanded?: boolean;
@@ -1183,6 +1187,17 @@ function QuestionCard({
             >
               <Eye size={12} /> Página completa
             </a>
+            <Button
+              size="sm"
+              variant="destructive"
+              className="h-7 text-xs"
+              onClick={() => onDelete(q)}
+              disabled={deleteBusy || saving}
+            >
+              {deleteBusy && <Loader2 size={12} className="animate-spin mr-1" />}
+              <Trash2 size={12} className="mr-1" />
+              Excluir questão
+            </Button>
           </div>
         </div>
       )}
@@ -1745,6 +1760,8 @@ export default function FixesPage() {
   const [loading, setLoading] = useState(false);
   const [loadingBatches, setLoadingBatches] = useState(false);
   const [deleteRunBusy, setDeleteRunBusy] = useState(false);
+  const [deleteSelectedBusy, setDeleteSelectedBusy] = useState(false);
+  const [deletingQuestionIds, setDeletingQuestionIds] = useState<Set<string>>(new Set());
 
   // Filtros locais
   const [searchText, setSearchText] = useState("");
@@ -2102,6 +2119,92 @@ export default function FixesPage() {
       window.alert(e?.message ?? "Erro ao excluir importação.");
     } finally {
       setDeleteRunBusy(false);
+    }
+  }
+
+  async function deleteQuestionIds(ids: string[], label: string) {
+    if (ids.length === 0) return;
+
+    const res = await fetch(`${API_BASE}/delete-bulk.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...phpHeaders(),
+      },
+      body: JSON.stringify({ ids }),
+    });
+
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data) {
+      throw new Error(data?.error ?? `Falha ao excluir ${label}.`);
+    }
+
+    const failed = Array.isArray(data.failed) ? data.failed : [];
+    if (failed.length > 0) {
+      throw new Error(
+        `${label}: ${data.deleted ?? 0} excluída(s), ${failed.length} falha(s).`
+      );
+    }
+
+    setSelected((prev) => {
+      const next = new Set(prev);
+      for (const id of ids) next.delete(id);
+      return next;
+    });
+
+    if (selectedRunId) {
+      await loadQuestions(selectedRunId);
+    }
+
+    const deletedCount = Number(data.deleted ?? ids.length);
+    window.alert(`${label}: ${deletedCount} questão(ões) excluída(s).`);
+  }
+
+  async function handleDeleteSingleQuestion(question: QuestionItem) {
+    const numero = question.metadata?.source?.numero ?? question.metadata?.numero ?? "sem número";
+    const ok = window.confirm(
+      [
+        `Excluir a questão ${numero}?`,
+        "",
+        "Use isso para casos como questão anulada.",
+        "A exclusão remove a questão e seus vínculos/variantes.",
+      ].join("\n")
+    );
+    if (!ok) return;
+
+    setDeletingQuestionIds((prev) => new Set(prev).add(question.id));
+    try {
+      await deleteQuestionIds([question.id], `Questão ${numero}`);
+    } finally {
+      setDeletingQuestionIds((prev) => {
+        const next = new Set(prev);
+        next.delete(question.id);
+        return next;
+      });
+    }
+  }
+
+  async function handleDeleteSelectedQuestions() {
+    if (selected.size === 0 || deleteSelectedBusy) return;
+
+    const ids = [...selected];
+    const ok = window.confirm(
+      [
+        `Excluir ${ids.length} questão(ões) selecionada(s)?`,
+        "",
+        "Use isso para remover anuladas ou itens indevidos deste run.",
+        "A exclusão remove as questões e seus vínculos/variantes.",
+      ].join("\n")
+    );
+    if (!ok) return;
+
+    setDeleteSelectedBusy(true);
+    setDeletingQuestionIds(new Set(ids));
+    try {
+      await deleteQuestionIds(ids, "Seleção");
+    } finally {
+      setDeleteSelectedBusy(false);
+      setDeletingQuestionIds(new Set());
     }
   }
 
@@ -2749,6 +2852,8 @@ export default function FixesPage() {
                       onSaved={updateQuestion}
                       onReviewAndNext={handleReviewAndNext}
                       onOpenEditor={setEditingQuestion}
+                      onDelete={handleDeleteSingleQuestion}
+                      deleteBusy={deletingQuestionIds.has(q.id)}
                       baseTextCache={baseTextCache}
                       forceExpanded={activeCardId === q.id}
                       cardRef={(el) => {
@@ -2817,10 +2922,22 @@ export default function FixesPage() {
                       size="sm"
                       className="h-8 text-xs"
                       onClick={applyBulk}
-                      disabled={bulkRunning}
+                      disabled={bulkRunning || deleteSelectedBusy}
                     >
                       {bulkRunning && <Loader2 size={12} className="animate-spin mr-1" />}
                       Aplicar
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="h-8 text-xs"
+                      onClick={handleDeleteSelectedQuestions}
+                      disabled={bulkRunning || deleteSelectedBusy}
+                    >
+                      {deleteSelectedBusy && <Loader2 size={12} className="animate-spin mr-1" />}
+                      <Trash2 size={12} className="mr-1" />
+                      Excluir selecionadas
                     </Button>
 
                     {bulkResult && (

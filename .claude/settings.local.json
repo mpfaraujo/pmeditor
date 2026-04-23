@@ -50,7 +50,8 @@
       "Bash(grep -c \"^[0-9]\\\\{1,2\\\\}\\\\.\" c:/Projetos/pmeditor/scripts/listas/diversas/_lista21_pdf.txt)",
       "Skill(update-config)",
       "Skill(update-config:*)",
-      "Bash(*)"
+      "Bash(*)",
+      "WebFetch(domain:professor.bio.br)"
     ]
   }
 }

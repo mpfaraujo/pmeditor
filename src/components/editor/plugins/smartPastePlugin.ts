@@ -507,7 +507,15 @@ function stripLatexComments(src: string) {
           escaped = true;
           continue;
         }
-        if (ch === "%") break;
+        if (ch === "%") {
+          // % é comentário só quando precedido apenas por espaço (ou início de linha).
+          // "56%", "20% das", "\( x % 2 \)" → % literal.
+          const prevNonSpace = out.trimEnd();
+          const isComment = prevNonSpace.length === 0;
+          if (isComment) break;
+          out += ch;
+          continue;
+        }
         out += ch;
       }
       return out;
@@ -672,6 +680,11 @@ function findNextLatexTokenIndex(s: string, from: number) {
   return best;
 }
 
+/** Normaliza % não escapado para \% dentro de conteúdo de fórmula (KaTeX trata % como comentário) */
+function sanitizeMathLatex(latex: string): string {
+  return latex.replace(/(?<!\\)%/g, "\\%");
+}
+
 /** Remove escapes LaTeX comuns do texto (após parse) */
 function unescapeLatex(text: string): string {
   return text
@@ -731,7 +744,7 @@ function parseInlineLatex(
     if (s.startsWith("$$", i) && !isCurrency$(s, i)) {
       const r = readUntil(i + 2, "$$");
       if (r) {
-        nodes.push(mathInline.create({ latex: r.content.trim() }));
+        nodes.push(mathInline.create({ latex: sanitizeMathLatex(r.content.trim()) }));
         i = r.end;
         continue;
       }
@@ -740,7 +753,7 @@ function parseInlineLatex(
     if (s.startsWith("\\[", i)) {
       const r = readUntil(i + 2, "\\]");
       if (r) {
-        nodes.push(mathInline.create({ latex: r.content.trim() }));
+        nodes.push(mathInline.create({ latex: sanitizeMathLatex(r.content.trim()) }));
         i = r.end;
         continue;
       }
@@ -749,7 +762,7 @@ function parseInlineLatex(
     if (s.startsWith("\\(", i)) {
       const r = readUntil(i + 2, "\\)");
       if (r) {
-        nodes.push(mathInline.create({ latex: r.content.trim() }));
+        nodes.push(mathInline.create({ latex: sanitizeMathLatex(r.content.trim()) }));
         i = r.end;
         continue;
       }
@@ -758,7 +771,7 @@ function parseInlineLatex(
     if (s[i] === "$" && !isCurrency$(s, i)) {
       const r = readUntil(i + 1, "$");
       if (r) {
-        nodes.push(mathInline.create({ latex: r.content.trim() }));
+        nodes.push(mathInline.create({ latex: sanitizeMathLatex(r.content.trim()) }));
         i = r.end;
         continue;
       }
