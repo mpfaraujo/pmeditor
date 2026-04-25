@@ -189,6 +189,8 @@ function childrenToText($: cheerio.CheerioAPI, nodes: any[]): string {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
+(async () => {
+
 const args = process.argv.slice(2);
 let file = '';
 let materia = '';
@@ -311,3 +313,5 @@ if (materia) {
 } else {
   process.stdout.write(clean + '\n');
 }
+
+})();
