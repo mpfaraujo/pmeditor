@@ -22,9 +22,10 @@
  *   --autor-id   <str>   Google ID do autor
  *   --autor-nome <str>   Nome do autor
  *   --sem-imagens        Pula questões com \includegraphics (padrão: inclui)
- *   --force-propose      Quando uma questão é detectada como duplicata, envia propose.php com
- *                        o novo payload em vez de pular — útil para atualizar metadados de
- *                        questões já importadas (ex: adicionar assunto1:/tags1:/resposta1:)
+ *   --propose-duplicates Quando uma questão é detectada como duplicata, envia propose.php com
+ *                        o novo payload em vez de pular — cria uma variante pendente (não
+ *                        sobrescreve a original). Útil para submeter correção de metadados
+ *                        de questões já importadas (ex: assunto1:/tags1:/resposta1:).
  *   --so-imagens         Importa APENAS questões com \includegraphics
  *   --batch    <str>     Label humano do lote (ex: "PUC-Rio 2017 G1") — salvo em metadata.import_batch
  *                        Também resolve automaticamente o arquivo de fila: import-queue-<slug>.json
@@ -978,7 +979,7 @@ async function proposeQuestion(
         "Content-Type": "application/json",
         "X-Questions-Token": token,
       },
-      body: JSON.stringify({ id: existingId, ...payload }),
+      body: JSON.stringify({ questionId: existingId, ...payload }),
     });
     const json: any = await res.json();
     if (json.success) return { ok: true };
@@ -996,7 +997,7 @@ async function main() {
   const dryRun = args.get("dry-run") === true;
   const skipImages = args.get("sem-imagens") === true;
   const onlyImages = args.get("so-imagens") === true;
-  const forcePropose = args.get("force-propose") === true;
+  const forcePropose = args.get("propose-duplicates") === true;
 
   // Token e API base
   const envLocal = loadEnvLocal();
@@ -1270,7 +1271,7 @@ async function main() {
         const propResult = await proposeQuestion(result.duplicate.existingId, payload, apiBase, token);
         if (propResult.ok) {
           ok++;
-          console.log(`  ✓ ${i + 1}/${filtered.length} ${label} proposta enviada → ${result.duplicate.existingId.slice(0, 8)}… (--force-propose)`);
+          console.log(`  ✓ ${i + 1}/${filtered.length} ${label} variante proposta → ${result.duplicate.existingId.slice(0, 8)}… (--propose-duplicates)`);
         } else {
           fail++;
           errors.push({ idx: i + 1, id: result.duplicate.existingId, error: propResult.error ?? "?" });
