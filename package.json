@@ -68,6 +68,7 @@
     "@types/seedrandom": "^3.0.8",
     "@vitest/coverage-v8": "^4.1.0",
     "autoprefixer": "^10.4.23",
+    "cheerio": "^1.2.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
     "jsdom": "^28.1.0",

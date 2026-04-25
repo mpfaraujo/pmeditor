@@ -1,359 +1,485 @@
 [
   {
-    "latex": "\\question Uma liga esportiva elaborou um campeonato de futebol que será disputado em dois turnos. Em cada turno, cada clube jogará exatamente uma partida contra cada um dos outros participantes. Sabendo que o total de partidas será de 306, o número de clubes que participarão do campeonato é igual a:\n\\begin{choices}\n  \\choice 34.\n  \\CorrectChoice 18.\n  \\choice 17.\n  \\choice 12.\n  \\choice 9.\n\\end{choices}",
+    "latex": "\\question \\includegraphics{https://www.projetoagathaedu.com.br/imagens/provas-enem/linguagens-pos/2020/esse-anuncio-publicitario-propoe-solucoes-para-um-problema-social.webp}\n\nEsse anúncio publicitário propõe soluções para um problema social recorrente, ao\n\n\\begin{choices}\n  \\CorrectChoice promover ações de conscientização para reduzir a violência de gênero em eventos esportivos.\n  \\choice estimular o compartilhamento de políticas públicas sobre a igualdade de gênero no esporte.\n  \\choice divulgar para a população as novas regras complementares para as torcidas de futebol.\n  \\choice informar ao público masculino as consequências de condutas ofensivas.\n  \\choice regulamentar normas de boa convivência nos estádios.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "A",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Análise Combinatória",
+      "disciplina": "Sociologia",
+      "assunto": "Violência de Gênero",
+      "gabarito": "A",
       "tags": [
-        "campeonato",
-        "turnos"
+        "violência de gênero",
+        "esporte",
+        "conscientização",
+        "feminismo",
+        "movimentos sociais"
       ],
       "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "01",
-      "gabarito": "B"
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2020,
+      "numero": "1"
     }
   },
   {
-    "latex": "\\question Um aluno do curso de biologia estudou durante nove semanas o crescimento de uma determinada planta, a partir de sua germinação. Observou que, na primeira semana, a planta havia crescido 16 mm. Constatou ainda que, em cada uma das oito semanas seguintes, o crescimento foi sempre a metade do crescimento da semana anterior. Dentre os valores a seguir, o que MELHOR aproxima o tamanho dessa planta, ao final dessas nove semanas, em milímetros, é:\n\\begin{choices}\n  \\choice 48.\n  \\choice 36.\n  \\CorrectChoice 32.\n  \\choice 30.\n  \\choice 24.\n\\end{choices}",
+    "latex": "\\question A propriedade compreende, em seu conteúdo e alcance, além do tradicional direito de uso, gozo e disposição por parte de seu titular, a obrigatoriedade do atendimento de sua função social, cuja definição é inseparável do requisito obrigatório do uso racional da propriedade e dos recursos ambientais que lhe são integrantes. O proprietário, como membro integrante da comunidade, se sujeita a obrigações crescentes que, ultrapassando os limites do direito de vizinhança, no âmbito do direito privado, abrangem o campo dos direitos da coletividade, visando o bem-estar geral, no âmbito do direito público.\n\n\\credits{JELINEK, R. O princípio da função social da propriedade e sua repercussão sobre o sistema do Código Civil. Disponível em: www.mp.rs.gov.br. Acesso em: 20 fev. 2013.}\n\nOs movimentos em prol da reforma agrária, que atuam com base no conceito de direito à propriedade apresentado no texto, propõem-se a\n\n\\begin{choices}\n  \\choice reverter o processo de privatização fundiária.\n  \\choice ressaltar a inviabilidade da produção latifundiária.\n  \\CorrectChoice defender a desapropriação dos espaços improdutivos.\n  \\choice impedir a produção exportadora nas terras agricultáveis.\n  \\choice coibir o funcionamento de empresas agroindustriais no campo.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Progressão Geométrica",
+      "disciplina": "Sociologia",
+      "assunto": "Movimentos Sociais no Brasil",
+      "gabarito": "C",
       "tags": [
-        "crescimento-de-planta",
-        "pg"
+        "reforma agrária",
+        "função social da propriedade",
+        "movimentos agrários",
+        "MST",
+        "direito à terra"
       ],
       "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "02",
-      "gabarito": "C"
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2020,
+      "numero": "2"
     }
   },
   {
-    "latex": "\\question Um soldado do esquadrão anti-bombas tenta desativar um certo artefato explosivo que possui 5 fios expostos. Para desativá-lo, o soldado precisa cortar 2 fios específicos, um de cada vez, em uma determinada ordem. Se cortar um fio errado ou na ordem errada, o artefato explodirá. Se o soldado escolher aleatoriamente 2 fios para cortar, numa determinada ordem, a probabilidade do artefato NÃO explodir ao cortá-los é igual a:\n\\begin{choices}\n  \\choice 2/25.\n  \\CorrectChoice 1/20.\n  \\choice 2/5.\n  \\choice 1/10.\n  \\choice 9/20.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Simples",
-      "tags": [
-        "anti-bombas",
-        "ordem"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "03",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Uma janela foi construída com a parte inferior retangular e a parte superior no formato de um semicírculo, como mostra a figura a seguir. Se a base da janela mede 1,2 metros e a altura total 1,5 metros, dentre os valores adiante, o que melhor aproxima a área total da janela, em metros quadrados, é:\n[[IMG_PENDENTE:imagens/matemática/5787.jpg]]\n\\begin{choices}\n  \\choice 1,40.\n  \\CorrectChoice 1,65.\n  \\choice 1,85.\n  \\choice 2,21.\n  \\choice 2,62.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Área das Figuras Planas",
-      "tags": [
-        "janela",
-        "semicirculo"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "04",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question Na figura a seguir, as retas r e s são perpendiculares e as retas m e n são paralelas. Então, a medida do ângulo α, em graus, é igual a:\n[[IMG_PENDENTE:imagens/matemática/5788.jpg]]\n\\begin{choices}\n  \\CorrectChoice 70.\n  \\choice 60.\n  \\choice 45.\n  \\choice 40.\n  \\choice 30.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Ângulos",
-      "tags": [
-        "retas-paralelas",
-        "perpendiculares"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "05",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Para desencorajar o consumo excessivo de água, o Departamento de Água de certo município aumentou o preço deste líquido. O valor mensal pago em reais por uma residência, em função da quantidade de metros cúbicos consumida, é uma função cujo gráfico é a poligonal representada a seguir.\n\nDe acordo com o gráfico, quanto ao pagamento relativo ao consumo mensal de água de uma residência, é CORRETO afirmar que se o consumo:\n[[IMG_PENDENTE:imagens/matemática/5789.jpg]]\n\\begin{choices}\n  \\choice for nulo, a residência estará isenta do pagamento.\n  \\choice for igual a 5 m\\(^3\\), o valor pago será menor do que se o consumo for igual a 10 m\\(^3\\).\n  \\choice for igual a 20 m\\(^3\\), o valor pago será o dobro do que se o consumo for igual a 10 m\\(^3\\).\n  \\CorrectChoice exceder 25 m\\(^3\\), o valor pago será R$ 16,70 acrescido de R$ 3,60 por m\\(^3\\) excedente.\n  \\choice for igual a 22 m\\(^3\\), o valor pago será R$ 15,00.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Afim",
-      "tags": [
-        "consumo-de-agua",
-        "grafico"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "06",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Sabendo que os polinômios \\(q_1(x) = x^2 - 9\\) e \\(q_2(x) = x^2 - 5x + 6\\) dividem o polinômio \\(p(x) = x^4 + ax^3 + bx^2 + cx + d\\), onde a, b, c e d são reais, é INCORRETO afirmar que:\n\\begin{choices}\n  \\CorrectChoice o polinômio q(x) . q‚(x) divide p(x).\n  \\choice 2, 3 e -3 são raízes de p(x).\n  \\choice o polinômio p(x) não possui raízes complexas.\n  \\choice se d = 36, então a = 0.\n  \\choice se d é irracional, então p(x) possui um zero irracional.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Polinômios",
-      "tags": [
-        "divisibilidade-de-polinomios",
-        "raizes"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "07",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Um topógrafo foi chamado para obter a altura de um edifício. Para fazer isto, ele colocou um teodolito (instrumento ótico para medir ângulos) a 200 metros do edifício e mediu um ângulo de 30°, como indicado na figura a seguir. Sabendo que a luneta do teodolito está a 1,5 metros do solo, pode-se concluir que, dentre os valores adiante, o que MELHOR aproxima a altura do edifício, em metros, é:\n\nUse os valores:\n\\(\\sin 30^\\circ = 0,5\\)\n\\(\\cos 30^\\circ = 0,866\\)\n\\(\\tan 30^\\circ = 0,577\\)\n[[IMG_PENDENTE:imagens/matemática/5793.jpg]]\n\\begin{choices}\n  \\choice 112.\n  \\choice 115.\n  \\CorrectChoice 117.\n  \\choice 120.\n  \\choice 124.\n\\end{choices}",
+    "latex": "\\question Os seringueiros amazônicos eram invisíveis no cenário nacional nos anos 1970. Começaram a se articular como um movimento agrário no início dos anos 1980, e na década seguinte conseguiram reconhecimento nacional, obtendo a implantação das primeiras reservas extrativistas após o assassinato de Chico Mendes. Assim, em vinte anos, os camponeses da floresta passaram da invisibilidade à posição de paradigma de desenvolvimento sustentável com participação popular.\n\n\\credits{ALMEIDA, M. W. B. Direitos à floresta e ambientalismo: seringueiros e suas lutas. Revista Brasileira de Ciências Sociais, n. 55, 2004.}\n\nDe acordo com o texto, a visibilidade dos seringueiros amazônicos foi estabelecida pela relação entre\n\n\\begin{choices}\n  \\choice crescimento econômico e migração de trabalhadores.\n  \\choice produção de borracha e escassez de recursos naturais.\n  \\CorrectChoice reivindicação de terra e preservação de mata nativa.\n  \\choice incentivo governamental e conservação de territórios.\n  \\choice modernização de plantio e comércio de látex.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Razões Trigonométricas no Triângulo Retângulo",
+      "disciplina": "Sociologia",
+      "assunto": "Movimentos Ambientais",
+      "gabarito": "C",
       "tags": [
-        "teodolito",
-        "edificio"
+        "seringueiros",
+        "reserva extrativista",
+        "Chico Mendes",
+        "Amazônia",
+        "desenvolvimento sustentável"
       ],
       "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "08",
-      "gabarito": "C"
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2020,
+      "numero": "3"
     }
   },
   {
-    "latex": "\\question Uma loja de eletrodomésticos anuncia a seguinte promoção:\n\"Televisor 29\", à vista, por apenas R$ 702,00, ou a prazo, em duas prestações mensais iguais de R$ 390,00, sendo a primeira paga no ato da compra\".\nNestas condições, a taxa mensal de juros embutida na venda a prazo é igual a:\n\\begin{choices}\n  \\choice 10\\%.\n  \\choice 15\\%.\n  \\choice 20\\%.\n  \\CorrectChoice 25\\%.\n  \\choice 30\\%.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Matemática Financeira",
-      "tags": [
-        "juros",
-        "prestacoes"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "09",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Uma certa marca de leite em pó era vendida em uma embalagem, completamente cheia, no formato de um cilindro circular reto de altura 12 cm e raio da base 5 cm, pelo preço de R$ 4,00. O fabricante alterou a embalagem, aumentando em 2 cm a altura e diminuindo em 1 cm o raio da base, mas manteve o preço por unidade. Então, na realidade, o preço do produto:\n\\begin{choices}\n  \\choice diminuiu.\n  \\choice se manteve estável.\n  \\choice aumentou entre 10\\% e 20\\%.\n  \\choice aumentou entre 20\\% e 30\\%.\n  \\CorrectChoice aumentou entre 30\\% e 40\\%.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Volume de Cilindro",
-      "tags": [
-        "embalagem",
-        "cilindro"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "10",
-      "gabarito": "E"
-    }
-  },
-  {
-    "latex": "\\question A uma tela de computador está associado um sistema de coordenadas cartesianas, com origem no canto inferior esquerdo. Um certo programa gráfico pode ser usado para desenhar na tela somente retas de inclinações iguais a 0°, 30°, 45°, 60° e 90° em relação ao eixo horizontal. Então, considerando-se os pontos a seguir, o único que NÃO pode estar sobre uma reta, A PARTIR DA ORIGEM, desenhada por este programa é:\n\\begin{choices}\n  \\choice (0, \\(10\\sqrt{3}\\)).\n  \\choice (\\(10\\sqrt{3}\\), 0).\n  \\choice (\\(10\\sqrt{3}\\), \\(10\\sqrt{3}\\)).\n  \\CorrectChoice (\\(10\\sqrt{3}\\), \\(5\\sqrt{3}\\)).\n  \\choice (\\(10\\sqrt{3}\\), 10).\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Geometria Analítica",
-      "tags": [
-        "coordenadas-cartesianas",
-        "inclinacao"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "11",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Em uma vídeo locadora, o acervo de filmes foi dividido, quanto ao preço, em três categorias: Série Ouro (SO), Série Prata (SP) e Série Bronze (SB). Marcelo estava fazendo sua ficha de inscrição, quando viu Paulo alugar dois filmes SO, dois filmes SP e um filme SB e pagar R$ 13,50 pela locação dos filmes. Viu também Marcos alugar quatro filmes SO, dois filmes SP e um filme SB e pagar R$ 20,50 pela locação. Marcelo alugou três filmes SO, um filme SP e dois filmes SB e pagou R$ 16,00 pela locação dos filmes. Então, nesta locadora, o preço da locação de três filmes, um de cada categoria, é igual a:\n\\begin{choices}\n  \\CorrectChoice R$ 7,50.\n  \\choice R$ 8,00.\n  \\choice R$ 8,50.\n  \\choice R$ 9,00.\n  \\choice R$ 10,00.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Sistemas Lineares",
-      "tags": [
-        "videolocadora",
-        "categorias"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "12",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question A figura a seguir é um esboço, no plano cartesiano, do gráfico da função \\(f(x) = \\log_n x\\) com alguns pontos destacados. Supondo que a abscissa do ponto A é igual a 9, é INCORRETO afirmar que:\n[[IMG_PENDENTE:imagens/matemática/5798.jpg]]\n\\begin{choices}\n  \\choice a base n é igual a 3.\n  \\choice a abscissa de C é igual a 1.\n  \\choice \\(f(x) < 0\\) para todo \\(x \\in (0,1)\\).\n  \\CorrectChoice a abscissa de B é igual a 2.\n  \\choice \\(f(x)\\) é crescente.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Logarítmica",
-      "tags": [
-        "grafico-logaritmico",
-        "base"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2002,
-      "numero": "13",
-      "gabarito": "D"
-    }
-  },
-  {
-    "latex": "\\question Uma pesquisa realizada com os alunos do ensino médio de um colégio indicou que 221 alunos gostam da área de saúde, 244 da área de exatas, 176 da área de humanas, 36 da área de humanas e de exatas, 33 da área de humanas e de saúde, 14 da área de saúde e de exatas e 6 gostam das três áreas. O número de alunos que gostam apenas de uma das três áreas é:\n\\begin{choices}\n  \\choice 487.\n  \\CorrectChoice 493.\n  \\choice 564.\n  \\choice 641.\n  \\choice 730.\n\\end{choices}",
+    "latex": "\\question A \\textit{Em Forma} é uma revista destinada às mulheres, às expectativas de consumo que podem ser produzidas ou que se encontram no horizonte de uma feminilidade urbana contemporânea impelida à disputa no mercado afetivo masculino (as mulheres da \\textit{Em Forma} são jovens e heterossexuais). A \\textit{Em Forma} tem como conteúdo central de suas reportagens dietas e séries de exercícios, fármacos para a pele e o cabelo, com fins de embelezamento do corpo e cuidados com a saúde, e reportagens com temas de autoajuda. Ela organiza-se em seções específicas: 1. Fitness; 2. Beleza; 3. Dieta e nutrição; 4. Bem-estar; e 5. Especial. Além dessas seções, apresenta sempre uma reportagem com a \"Garota da capa\" e outras minisseções que veiculam conteúdos similares aos das seções fixas.\n\n\\credits{ALBINO, B. S.; VAZ, A. F. O corpo e as técnicas para o embelezamento feminino. Movimento, n. 1, 2008 (adaptado).}\n\nConsiderando-se as expectativas sobre as feminilidades produzidas pela mídia, na revista mencionada a prática de exercícios tem corroborado para a construção de uma feminilidade\n\n\\begin{choices}\n  \\choice plural, que prioriza a saúde, o bem-estar e a beleza.\n  \\CorrectChoice hegemônica, que normatiza a heterossexualidade e a jovialidade.\n  \\choice heterogênea, prevendo a existência de corpos com diferentes formas.\n  \\choice padronizada, que privilegia a autonomia das mulheres sobre seu estilo de vida.\n  \\choice cristalizada, desconsiderando as expectativas de consumo na contemporaneidade.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Conjuntos",
+      "disciplina": "Sociologia",
+      "assunto": "Feminismos",
+      "gabarito": "B",
       "tags": [
-        "areas-de-interesse",
-        "inclusao-exclusao"
+        "feminilidade",
+        "mídia",
+        "corpo",
+        "heterossexualidade",
+        "normatização"
       ],
       "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2003,
-      "numero": "14",
-      "gabarito": "B"
+      "concurso": "ENEM-DIGITAL",
+      "banca": "INEP",
+      "ano": 2020,
+      "numero": "4"
     }
   },
   {
-    "latex": "\\question Os comprimentos das circunferências de uma seqüência de círculos concêntricos formam uma progressão geométrica de razão 3. As áreas desses círculos formam uma:\n\\begin{choices}\n  \\CorrectChoice progressão geométrica de razão 9.\n  \\choice progressão aritmética de razão 1/3.\n  \\choice progressão geométrica de razão 1/3.\n  \\choice progressão aritmética de razão 9.\n  \\choice progressão geométrica de razão 1/9.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "A",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Progressão Geométrica",
-      "tags": [
-        "circunferencias-concentricas",
-        "areas"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2003,
-      "numero": "15",
-      "gabarito": "A"
-    }
-  },
-  {
-    "latex": "\\question Uma urna contém dez bolas numeradas de 1 a 10. Retiram-se duas bolas da urna sucessivamente e com reposição. A probabilidade de o número da segunda bola ser o dobro do número da primeira bola é de:\n\\begin{choices}\n  \\choice 1/25.\n  \\CorrectChoice 1/20.\n  \\choice 1/10.\n  \\choice 1/5.\n  \\choice 1/4.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Probabilidade Simples",
-      "tags": [
-        "urna",
-        "reposicao"
-      ],
-      "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2003,
-      "numero": "16",
-      "gabarito": "B"
-    }
-  },
-  {
-    "latex": "\\question O valor de y = \\(\\sin^2 10^\\circ + \\sin^2 20^\\circ + \\sin^2 30^\\circ + \\sin^2 40^\\circ + \\sin^2 50^\\circ + \\sin^2 60^\\circ + \\sin^2 70^\\circ + \\sin^2 80^\\circ + \\sin^2 90^\\circ\\) é:\n\\begin{choices}\n  \\choice -1.\n  \\choice 1.\n  \\choice 2.\n  \\choice 4.\n  \\CorrectChoice 5.\n\\end{choices}",
+    "latex": "\\question Localizado a 160 km da cidade de Porto Velho (capital do estado de Rondônia), nos limites da Reserva Extrativista Jaci-Paraná e Terra Indígena Karipunas, o povoado de União Bandeirantes surgiu em 2000 a partir de movimentos de camponeses, madeireiros, pecuaristas e grileiros que, à revelia do ordenamento territorial e diante da passividade governamental, demarcaram e invadiram terras na área rural fundando a vila. Atualmente, constitui-se na região de maior produção agrícola e leiteira do município de Porto Velho, fornecendo, inclusive, alimentos para a Hidrelétrica de Jirau.\n\n\\credits{SILVA, R. G. C. Amazônia globalizada — o exemplo de Rondônia. Confins, n. 23, 2015 (adaptado).}\n\nA dinâmica de ocupação territorial descrita foi decorrente da\n\n\\begin{choices}\n  \\choice mecanização do processo produtivo.\n  \\choice adoção da colonização dirigida.\n  \\choice realização de reforma agrária.\n  \\choice ampliação de franjas urbanas.\n  \\CorrectChoice expansão de frentes pioneiras.\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "E",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Outras Relações Trigonométricas",
+      "disciplina": "Sociologia",
+      "assunto": "Movimentos Sociais no Brasil",
+      "gabarito": "E",
       "tags": [
-        "soma-de-senos",
-        "angulos"
+        "frentes pioneiras",
+        "ocupação territorial",
+        "Amazônia",
+        "Rondônia",
+        "conflito agrário"
       ],
       "fonte": "concurso",
-      "concurso": "UFJF",
-      "banca": "UFJF",
-      "ano": 2003,
-      "numero": "17",
-      "gabarito": "E"
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "5"
+    }
+  },
+  {
+    "latex": "\\question A comunidade de Mumbuca, em Minas Gerais, tem uma organização coletiva de tal forma expressiva que coopera para o abastecimento de mantimentos da cidade do Jequitinhonha, o que pode ser atestado pela feira aos sábados. Em Campinho da Independência, no Rio de Janeiro, o artesanato local encanta os frequentadores do litoral sul do estado, além do restaurante quilombola que atende aos turistas.\n\n\\credits{ALMEIDA, A. W. B. (Org.). Cadernos de debates nova cartografia social: Territórios quilombolas e conflitos. Manaus: Projeto Nova Cartografia Social da Amazônia; UEA Edições, 2010 (adaptado).}\n\nNo texto, as estratégias territoriais dos grupos de remanescentes de quilombo visam garantir:\n\n\\begin{choices}\n  \\choice Perdão de dívidas fiscais.\n  \\choice Reserva de mercado local.\n  \\CorrectChoice Inserção econômica regional.\n  \\choice Protecionismo comercial tarifário.\n  \\choice Benefícios assistenciais públicos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Identidade Negra e Afrocentrismo",
+      "gabarito": "C",
+      "tags": [
+        "quilombolas",
+        "território",
+        "identidade",
+        "economia",
+        "resistência cultural"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "6"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{https://www.projetoagathaedu.com.br/imagens/provas-enem/humanas-pos/2019/fala-se-aqui-de-uma-arte-criada-nas-ruas.webp}\n\nFala-se aqui de uma arte criada nas ruas e para as ruas, marcadas antes de tudo pela vida cotidiana, seus conflitos e suas possibilidades, que poderiam envolver técnicas, agentes e temas que não fossem encontrados nas instituições mais tradicionais e formais.\n\n\\credits{VALVERDE, R. R. H. F. Os limites da inversão: a heterotopia do Beco do Batman. Boletim Goiano de Geografia (Online). Goiânia, v. 37, n. 2, maio/ago. 2017 (adaptado).}\n\nA manifestação artística expressa na imagem e apresentada no texto integra um movimento contemporâneo de\n\n\\begin{choices}\n  \\choice regulação das relações sociais.\n  \\CorrectChoice apropriação dos espaços públicos.\n  \\choice padronização das culturas urbanas.\n  \\choice valorização dos formalismos estéticos.\n  \\choice revitalização dos patrimônios históricos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Sociabilidade Urbana",
+      "gabarito": "B",
+      "tags": [
+        "arte de rua",
+        "graffiti",
+        "espaço público",
+        "cultura urbana",
+        "movimento cultural"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "7"
+    }
+  },
+  {
+    "latex": "\\question O feminismo teve uma relação direta com o descentramento conceitual do sujeito cartesiano e sociológico. Ele questionou a clássica distinção entre o \"dentro\" e o \"fora\", o \"privado\" e o \"público\". O slogan do feminismo era: \"o pessoal é político\". Ele abriu, portanto, para a contestação política, arenas inteiramente novas: a família, a sexualidade, a divisão doméstica do trabalho etc.\n\n\\credits{HALL, S. A identidade cultural na pós-modernidade. Rio de Janeiro: DP\\&A, 2011 (adaptado).}\n\nO movimento descrito no texto contribui para o processo de transformação das relações humanas, na medida em que sua atuação\n\n\\begin{choices}\n  \\choice subverte os direitos de determinadas parcelas da sociedade.\n  \\choice abala a relação da classe dominante com o Estado.\n  \\choice constrói a segregação dos segmentos populares.\n  \\choice limita os mecanismos de inclusão das minorias.\n  \\CorrectChoice redefine a dinâmica das instituições sociais.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Feminismos",
+      "gabarito": "E",
+      "tags": [
+        "feminismo",
+        "esfera pública",
+        "esfera privada",
+        "identidade",
+        "direitos"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM-PPL",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "8"
+    }
+  },
+  {
+    "latex": "\\question \\includegraphics{https://www.projetoagathaedu.com.br/imagens/provas-enem/humanas-pos/2018/esse-onibus-relaciona-se-ao-ato-praticado-em-1955-por-rosa-parks-apresentada-em-fotografia.webp}\n\nEsse ônibus relaciona-se ao ato praticado, em 1955, por Rosa Parks, apresentada em fotografia ao lado de Martin Luther King. O veículo alcançou o estatuto de obra museológica por simbolizar o(a)\n\n\\begin{choices}\n  \\choice impacto do medo da corrida armamentista.\n  \\choice democratização do acesso à escola pública.\n  \\choice preconceito de gênero no transporte coletivo.\n  \\CorrectChoice deflagração do movimento por igualdade civil.\n  \\choice eclosão da rebeldia no comportamento juvenil.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Movimentos Negros",
+      "gabarito": "D",
+      "tags": [
+        "Rosa Parks",
+        "direitos civis",
+        "racismo",
+        "segregação racial",
+        "movimento negro"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2018,
+      "numero": "9"
+    }
+  },
+  {
+    "latex": "\\question A poetisa Emília Freitas subiu a um palanque, nervosa, pedindo desculpas por não possuir títulos nem conhecimentos, mas orgulhosa ofereceu a sua pena que \"sem ser hábil, é, em compensação, guiada pelo poder da vontade\". Maria Tomásia pronunciava orações que levantavam os ouvintes. A escritora Francisca Clotilde arrebatava, declamando seus poemas. Aquelas \"angélicas senhoras\", \"heroínas da caridade\", levantavam dinheiro para comprar liberdades e usavam de seu entusiasmo a fim de convencer os donos de escravos a fazerem alforrias gratuitamente.\n\n\\credits{MIRANDA, A. Disponível em: www.opovoonline.com.br. Acesso em: 10 jun. 2015.}\n\nAs práticas culturais narradas remetem, historicamente, ao movimento\n\n\\begin{oneparchoices}\n  \\choice feminista.\n  \\choice sufragista.\n  \\choice socialista.\n  \\choice republicano.\n  \\CorrectChoice abolicionista.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Escravidão e seus Legados",
+      "gabarito": "E",
+      "tags": [
+        "abolicionismo",
+        "escravidão",
+        "mulheres",
+        "literatura",
+        "Ceará"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2018,
+      "numero": "10"
+    }
+  },
+  {
+    "latex": "\\question Os níveis de desigualdade construídos historicamente não se referem apenas a uma questão de mérito individual, mas à falta de condições iguais de oportunidades de acesso a educação, trabalho, saúde, moradia e lazer. As pesquisas mostram que há um grande abismo racial no Brasil, e as estatísticas, ao apontarem as condições de vida, emprego e escolaridade entre negros e brancos, comprovam que essa desigualdade é fruto da estrutura racista, somada à exclusão social e à desigualdade socioeconômica, que atinge toda a população brasileira e, de modo particular, os negros.\n\n\\credits{MUNANGA, K.; GOMES, N. L. Para entender o negro no Brasil de hoje: história, realidades, problemas e caminhos. São Paulo: Global; Ação Educativa, 2004 (adaptado).}\n\nO conjunto de ações adotado pelo Estado brasileiro, a partir da última década do século XX, para enfrentar os problemas sociais descritos no texto resultaram na\n\n\\begin{choices}\n  \\choice ampliação de planos viários de urbanização.\n  \\CorrectChoice democratização da instrução escolar pública.\n  \\choice manutenção da rede hospitalar universitária.\n  \\choice preservação de espaços de entretenimento locais.\n  \\choice descentralização do sistema nacional de habitação.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Racismo e Discriminação",
+      "gabarito": "B",
+      "tags": [
+        "desigualdade racial",
+        "racismo estrutural",
+        "cotas",
+        "negros",
+        "políticas públicas"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM-PPL",
+      "banca": "INEP",
+      "ano": 2018,
+      "numero": "11"
+    }
+  },
+  {
+    "latex": "\\question A elaboração da Lei n. 11.340/06 (Lei Maria da Penha) partiu, em grande medida, de uma perspectiva crítica aos resultados obtidos pela criação dos Juizados Especiais Criminais direcionada à banalização do conflito de gênero, observada na prática corriqueira da aplicação de medidas alternativas correspondentes ao pagamento de cestas básicas pelos acusados.\n\n\\credits{VASCONCELOS, F. B. Disponível em: www.cartacapital.com.br. Acesso em: 11 dez. 2012 (adaptado).}\n\nNo contexto descrito, a lei citada pode alterar a situação da mulher ao proporcionar sua\n\n\\begin{choices}\n  \\choice atuação como provedora do lar.\n  \\choice inserção no mercado de trabalho.\n  \\choice presença em instituições policiais.\n  \\CorrectChoice proteção contra ações de violência.\n  \\choice participação enquanto gestora pública.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Violência de Gênero",
+      "gabarito": "D",
+      "tags": [
+        "Lei Maria da Penha",
+        "violência doméstica",
+        "gênero",
+        "proteção jurídica",
+        "direitos das mulheres"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM-PPL",
+      "banca": "INEP",
+      "ano": 2018,
+      "numero": "12"
+    }
+  },
+  {
+    "latex": "\\question No Brasil, assim como em vários outros países, os modernos movimentos LGBT representam um desafio às formas de condenação e perseguição social contra desejos e comportamentos sexuais anticonvencionais associados à vergonha, imoralidade, pecado, degeneração, doença. Falar do movimento LGBT implica, portanto, chamar a atenção para a sexualidade como fonte de estigmas, intolerância, opressão.\n\n\\credits{SIMÕES, J. Homossexualidade e movimento LGBT: estigma, diversidade e cidadania. In: BOTELHO, A.; SCHWARCZ, L. M. Cidadania, um projeto em construção. São Paulo: Claro Enigma, 2012 (adaptado).}\n\nO movimento social abordado justifica-se pela defesa do direito de\n\n\\begin{oneparchoices}\n  \\choice organização sindical.\n  \\choice participação partidária.\n  \\choice manifestação religiosa.\n  \\choice formação profissional.\n  \\CorrectChoice afirmação identitária.\n\\end{oneparchoices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "LGBTQIA+ e Direitos",
+      "gabarito": "E",
+      "tags": [
+        "LGBTQIA+",
+        "identidade sexual",
+        "estigma",
+        "direitos",
+        "diversidade"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2017,
+      "numero": "13"
+    }
+  },
+  {
+    "latex": "\\question O conceito de democracia, no pensamento de Habermas, é construído a partir de uma dimensão procedimental, calcada no discurso e na deliberação. A legitimidade democrática exige que o processo de tomada de decisões políticas ocorra a partir de uma ampla discussão pública, para somente então decidir. Assim, o caráter deliberativo corresponde a um processo coletivo de ponderação e análise, permeado pelo discurso, que antecede a decisão.\n\n\\credits{VITALE, D. Jürgen Habermas, modernidade e democracia deliberativa. Cadernos do CRH (UFBA), v. 19, 2006 (adaptado).}\n\nO conceito de democracia proposto por Jürgen Habermas pode favorecer processos de inclusão social. De acordo com o texto, é uma condição para que isso aconteça o(a)\n\n\\begin{choices}\n  \\choice participação direta periódica do cidadão.\n  \\CorrectChoice debate livre e racional entre cidadãos e Estado.\n  \\choice interlocução entre os poderes governamentais.\n  \\choice eleição de lideranças políticas com mandatos temporários.\n  \\choice controle do poder político por cidadãos mais esclarecidos.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Democracia e Participação Política",
+      "gabarito": "B",
+      "tags": [
+        "Habermas",
+        "democracia deliberativa",
+        "participação",
+        "legitimidade",
+        "deliberação"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2017,
+      "numero": "14"
+    }
+  },
+  {
+    "latex": "\\question A demanda da comunidade afro-brasileira por reconhecimento, valorização e afirmação de direitos, no que diz respeito à educação, passou a ser particularmente apoiada com a promulgação da Lei 10.639/2003, que alterou a Lei 9.394/1996, estabelecendo a obrigatoriedade do ensino de história e cultura afro-brasileiras e africanas.\n\n\\credits{Diretrizes Curriculares Nacionais para a Educação das Relações Étnico-Raciais e para o Ensino de História e Cultura Afro-brasileira e Africana. Brasília: Ministério da Educação, 2005.}\n\nA alteração legal no Brasil contemporâneo descrita no texto é resultado do processo de\n\n\\begin{choices}\n  \\choice aumento da renda nacional.\n  \\CorrectChoice mobilização do movimento negro.\n  \\choice melhoria da infraestrutura escolar.\n  \\choice ampliação das disciplinas obrigatórias.\n  \\choice politização das universidades públicas.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Movimentos Negros",
+      "gabarito": "B",
+      "tags": [
+        "Lei 10.639",
+        "cultura afro-brasileira",
+        "história africana",
+        "educação",
+        "movimento negro"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2016,
+      "numero": "15"
+    }
+  },
+  {
+    "latex": "\\question \\begin{poem}\n\\verse{Palpitam-me}\n\\verse{os sons do batuque}\n\\verse{e os ritmos melancólicos do blue.}\n\\verse{Ó negro esfarrapado}\n\\verse{do Harlem}\n\\verse{ó dançarino de Chicago}\n\\verse{ó negro servidor do South}\n\\verse{Ó negro da África}\n\\verse{negros de todo o mundo}\n\\verse{Eu junto}\n\\verse{ao vosso magnífico canto}\n\\verse{a minha pobre voz}\n\\verse{os meus humildes ritmos.}\n\\verse{Eu vos acompanho}\n\\verse{pelas emaranhadas áfricas}\n\\verse{do nosso Rumo.}\n\\verse{Eu vos sinto}\n\\verse{negros de todo o mundo}\n\\verse{eu vivo a nossa história}\n\\verse{meus irmãos.}\n\\end{poem}\n\n\\credits{Disponível em: www.agostinhoneto.org. Acesso em: 30 jun. 2015.}\n\nNesse poema, o líder angolano Agostinho Neto, na década de 1940, evoca o pan-africanismo com o objetivo de\n\n\\begin{choices}\n  \\choice incitar a luta por políticas de ações afirmativas na América e na África.\n  \\choice reconhecer as desigualdades sociais entre os negros de Angola e dos Estados Unidos.\n  \\choice descrever o quadro de pobreza após os processos de independência no continente africano.\n  \\choice solicitar o engajamento dos negros estadunidenses na luta armada pela independência em Angola.\n  \\CorrectChoice conclamar as populações negras de diferentes países a apoiar as lutas por igualdade e independência.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Identidade Negra e Afrocentrismo",
+      "gabarito": "E",
+      "tags": [
+        "pan-africanismo",
+        "identidade negra",
+        "Agostinho Neto",
+        "Angola",
+        "poesia"
+      ],
+      "titulo_texto": "Voz do Sangue",
+      "autor_texto": "Agostinho Neto",
+      "genero": "Poema",
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2016,
+      "numero": "16"
+    }
+  },
+  {
+    "latex": "\\question Ninguém nasce mulher: torna-se mulher. Nenhum destino biológico, psíquico, econômico define a forma que a fêmea humana assume no seio da sociedade; é o conjunto da civilização que elabora esse produto intermediário entre o macho e o castrado que qualificam o feminino.\n\n\\credits{BEAUVOIR, S. O segundo sexo. Rio de Janeiro: Nova Fronteira, 1980.}\n\nNa década de 1960, a proposição de Simone de Beauvoir contribuiu para estruturar um movimento social que teve como marca o(a)\n\n\\begin{choices}\n  \\choice ação do Poder Judiciário para criminalizar a violência sexual.\n  \\choice pressão do Poder Legislativo para impedir a dupla jornada de trabalho.\n  \\CorrectChoice organização de protestos públicos para garantir a igualdade de gênero.\n  \\choice oposição de grupos religiosos para impedir os casamentos homoafetivos.\n  \\choice estabelecimento de políticas governamentais para promover ações afirmativas.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Feminismos",
+      "gabarito": "C",
+      "tags": [
+        "Simone de Beauvoir",
+        "gênero",
+        "sexo social",
+        "feminismo",
+        "igualdade"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2015,
+      "numero": "17"
+    }
+  },
+  {
+    "latex": "\\question Não nos resta a menor dúvida de que a principal contribuição dos diferentes tipos de movimentos sociais brasileiros nos últimos vinte anos foi no plano da reconstrução do processo de democratização do país. E não se trata apenas da reconstrução do regime político, da retomada da democracia e do fim do Regime Militar. Trata-se da reconstrução ou construção de novos rumos para a cultura do país, do preenchimento de vazios na condução da luta pela redemocratização, constituindo-se como agentes interlocutores que dialogam diretamente com a população e com o Estado.\n\n\\credits{GOHN, M. G. M. Os sem-terras, ONGs e cidadania. São Paulo: Cortez, 2003 (adaptado).}\n\nNo processo da redemocratização brasileira, os novos movimentos sociais contribuíram para\n\n\\begin{choices}\n  \\choice diminuir a legitimidade dos novos partidos políticos então criados.\n  \\CorrectChoice tornar a democracia um valor social que ultrapassa os momentos eleitorais.\n  \\choice difundir a democracia representativa como objetivo fundamental da luta política.\n  \\choice ampliar as disputas pela hegemonia das entidades de trabalhadores com os sindicatos.\n  \\choice fragmentar as lutas políticas dos diversos atores sociais frente ao Estado.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Teoria dos Movimentos Sociais",
+      "gabarito": "B",
+      "tags": [
+        "redemocratização",
+        "movimentos sociais",
+        "cultura democrática",
+        "Brasil",
+        "cidadania"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2015,
+      "numero": "18"
+    }
+  },
+  {
+    "latex": "\\question Ao longo das três últimas décadas, houve uma explosão de movimentos sociais pelo mundo. Essa diversidade de movimentos — que vão desde os movimentos por direitos civis e os movimentos feministas dos anos de 1960 e 1970, até os movimentos antinucleares e ecológicos dos anos de 1980 e a campanha pelos direitos homossexuais da década de 1990 — é normalmente denominado pelos comentadores do tema como novos movimentos sociais.\n\n\\credits{GIDDENS, A. Sociologia. Porto Alegre: Artmed, 2005 (adaptado).}\n\nUma explicação para a expansão dos chamados novos movimentos sociais nas últimas três décadas é a\n\n\\begin{choices}\n  \\choice fragilidade das redes globais comunicacionais, como internet e telefonia.\n  \\choice garantia dos direitos sociais constitucionais, como educação e previdência.\n  \\CorrectChoice crise das organizações representativas tradicionais, como partidos e sindicatos.\n  \\choice instabilidade das instituições políticas democráticas, como eleições e parlamentos.\n  \\choice consolidação das corporações transnacionais monopolistas, como petrolíferas e mineradoras.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Teoria dos Movimentos Sociais",
+      "gabarito": "C",
+      "tags": [
+        "novos movimentos sociais",
+        "direitos civis",
+        "feminismo",
+        "ecologia",
+        "representação política"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2013,
+      "numero": "19"
+    }
+  },
+  {
+    "latex": "\\question O sociólogo espanhol Manuel Castells sustenta que a comunicação de valores e a mobilização em torno do sentido são fundamentais. Os movimentos culturais (entendidos como movimentos que têm como objetivo defender ou propor modos próprios de vida e sentido) constroem-se em torno de sistemas de comunicação — essencialmente a internet e os meios de comunicação — porque esta é a principal via que esses movimentos encontram para chegar àquelas pessoas que podem eventualmente partilhar os seus valores, e a partir daqui atuar na consciência da sociedade no seu conjunto.\n\n\\credits{Disponível em: www.compolitica.org. Acesso em: 2 mar. 2012 (adaptado).}\n\nEm 2011, após uma forte mobilização popular via redes sociais, houve a queda do governo de Hosni Mubarak no Egito. Esse evento ratifica o argumento de que\n\n\\begin{choices}\n  \\choice a internet atribui verdadeiros valores culturais aos seus usuários.\n  \\choice a consciência das sociedades foi estabelecida com o advento da internet.\n  \\choice a revolução tecnológica tem como principal objetivo a deposição de governantes antidemocráticos.\n  \\choice os recursos tecnológicos estão a serviço dos opressores e do fortalecimento de suas práticas políticas.\n  \\CorrectChoice os sistemas de comunicação são mecanismos importantes, de adesão e compartilhamento de valores sociais.\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Sociologia",
+      "assunto": "Sociedade em Rede e Tecnologia",
+      "gabarito": "E",
+      "tags": [
+        "internet",
+        "redes sociais",
+        "comunicação",
+        "Castells",
+        "mobilização popular"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2013,
+      "numero": "20"
     }
   }
 ]

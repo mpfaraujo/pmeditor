@@ -374,10 +374,33 @@ const ASSUNTO_ALIASES: Record<string, string> = {
   "química inorgânica":             "Química Geral",
 
   // ── Sociologia — variantes ────────────────────────────────────────────────
-  "povos indígenas":            "Movimentos Indígenas",
-  "diversidade cultural":       "Cultura e Diversidade",
-  "correntes sociológicas":     "Clássicos da Sociologia",
-  "surgimento da sociologia":   "Clássicos da Sociologia",
+  "povos indígenas":                       "Movimentos Indígenas",
+  "diversidade cultural":                  "Cultura e Diversidade",
+  "correntes sociológicas":                "Clássicos da Sociologia",
+  "surgimento da sociologia":              "Clássicos da Sociologia",
+  "sociologia":                            "Clássicos da Sociologia",
+  "marxismo":                              "Karl Marx e o Materialismo Histórico",
+
+  // trabalho
+  "alienação do trabalho":                 "Trabalho e Alienação",
+  "capitalismo":                           "Capitalismo e suas Fases",
+  "capitalismo e trabalho assalariado":    "Capitalismo e suas Fases",
+  "fordismo e pós-fordismo":               "Fordismo, Taylorismo e Toyotismo",
+  "taylorismo":                            "Fordismo, Taylorismo e Toyotismo",
+  "taylorismo e fordismo":                 "Fordismo, Taylorismo e Toyotismo",
+  "divisão do trabalho":                   "Divisão do Trabalho",
+  "trabalho doméstico":                    "Trabalho Doméstico",
+  "relações de trabalho":                  "Trabalho na Sociedade Contemporânea",
+  "trabalho e tecnologia":                 "Trabalho na Sociedade Contemporânea",
+  "flexibilização do trabalho":            "Desemprego e Precarização do Trabalho",
+
+  // raça e gênero
+  "trabalho feminino":                     "Trabalho Feminino",
+  "desigualdade racial":                   "Racismo e Discriminação",
+  "trabalho escravo":                      "Escravidão e seus Legados",
+
+  // estado e democracia
+  "estado, poder e soberania":             "Estado e Formas de Governo",
 
   // ── Arte — variantes ──────────────────────────────────────────────────────
   "artes indígenas":      "Arte Indígena",
