@@ -9,6 +9,7 @@ import { baseKeymap } from "prosemirror-commands";
 import { splitListItem, liftListItem, sinkListItem } from "prosemirror-schema-list";
 import { toggleMark } from "prosemirror-commands";
 import { wrapInList } from "prosemirror-schema-list";
+import { gapCursor } from "prosemirror-gapcursor";
 
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -171,6 +172,7 @@ export function RichTextMiniEditor({ value, onChange, expandable = true, expande
         }),
         keymap({ "Mod-z": undo, "Mod-y": redo }),
         keymap(baseKeymap),
+        gapCursor(),
       ],
     });
 

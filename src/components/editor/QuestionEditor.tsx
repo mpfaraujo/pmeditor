@@ -22,7 +22,7 @@ import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from 
 import { placeholderPlugin } from "./placeholder-plugin";
 import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
 import { verseNumberingPlugin } from "@/components/editor/plugins/verseNumberingPlugin";
-import { cursorPlugin } from "@/components/editor/plugins/cursorPlugin";
+import { gapCursor } from "prosemirror-gapcursor";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -109,6 +109,7 @@ type MathDialogState =
 function buildPlugins(
   onYamlMetadata?: (meta: any) => void,
   onMathShortcut?: () => void,
+  toolbarCallbackRef?: { current: (() => void) | null },
 ): Plugin[] {
   return [
     history(),
@@ -151,7 +152,12 @@ function buildPlugins(
     keymap({ "Mod-z": undo, "Mod-y": redo }),
     keymap(baseKeymap),
     verseNumberingPlugin,
-    cursorPlugin,
+    gapCursor(),
+    new Plugin({
+      view() {
+        return { update() { toolbarCallbackRef?.current?.(); } };
+      },
+    }),
   ];
 }
 
@@ -540,7 +546,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   }>({ open: false });
 
   const [view, setView] = useState<EditorView | null>(null);
-  const [, force] = useState(0);
+  const toolbarCallbackRef = useRef<(() => void) | null>(null);
 
   const [meta, setMeta] = useState<QuestionMetadataV1>(() => {
     const m = defaultMetadata();
@@ -652,7 +658,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   }, [pendingYamlItems, view]);
 
   const plugins = useMemo(
-    () => buildPlugins(handleYamlMetadata, () => openMathDialogRef.current()),
+    () => buildPlugins(handleYamlMetadata, () => openMathDialogRef.current(), toolbarCallbackRef),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
@@ -720,7 +726,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
         } catch {}
 
         recompute(ev);
-        force((n) => n + 1);
       },
     });
 
@@ -922,7 +927,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
     setEditorMaxWidthCm(8.5);
 
     recompute(view);
-    force((n) => n + 1);
   };
 
   const handleRecover = () => {
@@ -939,7 +943,6 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       setMeta(json.metadata);
 
       recompute(view);
-      force((n) => n + 1);
     } catch {}
   };
 
@@ -950,19 +953,16 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       case "convert-to-setquestions": {
         ensureSetQuestionsRoot(view);
         recompute(view);
-        force((n) => n + 1);
         return;
       }
       case "add-question-item": {
         addQuestionItem(view);
         recompute(view);
-        force((n) => n + 1);
         return;
       }
       case "remove-question-item": {
         removeCurrentQuestionItem(view);
         recompute(view);
-        force((n) => n + 1);
         return;
       }
       case "set-type-discursiva": {
@@ -1086,6 +1086,7 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       <div className="mb-4 bg-white rounded-lg shadow-sm p-2 sm:max-w-[210mm] sm:mx-auto">
         <EditorToolbar
           view={view}
+          toolbarCallbackRef={toolbarCallbackRef}
           metadata={meta}
           availableAnchors={availableBaseTextAnchors}
           onOpenMath={() =>

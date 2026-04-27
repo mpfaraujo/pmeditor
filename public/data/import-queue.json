@@ -1,485 +1,398 @@
 [
   {
-    "latex": "\\question \\includegraphics{https://www.projetoagathaedu.com.br/imagens/provas-enem/linguagens-pos/2020/esse-anuncio-publicitario-propoe-solucoes-para-um-problema-social.webp}\n\nEsse anúncio publicitário propõe soluções para um problema social recorrente, ao\n\n\\begin{choices}\n  \\CorrectChoice promover ações de conscientização para reduzir a violência de gênero em eventos esportivos.\n  \\choice estimular o compartilhamento de políticas públicas sobre a igualdade de gênero no esporte.\n  \\choice divulgar para a população as novas regras complementares para as torcidas de futebol.\n  \\choice informar ao público masculino as consequências de condutas ofensivas.\n  \\choice regulamentar normas de boa convivência nos estádios.\n\\end{choices}",
+    "latex": "\\question Um vidraceiro é contratado para colocar uma porta de vidro que escorregará em uma canaleta de largura interna igual a 1,45 cm, como mostra a figura.     \r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2019-2/um-vidraceiro-e-contratado-para-colocar-uma-porta.webp}\r\n\r\nO vidraceiro precisa de uma placa de vidro de maior espessura possível, tal que deixe uma folga total de pelo menos 0,2 cm, para que o vidro possa escorregar na canaleta, e no máximo 0,5 cm para que o vidro não fique batendo com a interferência do vento após a instalação. Para conseguir essa placa de vidro, esse vidraceiro foi até uma loja e lá encontrou placas de vidro com espessuras iguais a: 0,75 cm; 0,95 cm; 1,05 cm; 1,20 cm; 1,40 cm.\r\nPara atender às restrições especificadas, o vidraceiro deverá comprar a placa de espessura, em centímetro, igual a\r\n\r\n\\begin{choices}\r\n  \\choice 0,75.\r\n  \\choice 0,95.\r\n  \\choice 1,05.\r\n  \\CorrectChoice 1,20.\r\n  \\choice 1,40.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "D",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Problemas sobre as 4 Operações",
+      "gabarito": "D",
+      "tags": [
+        "vidraceiro",
+        "canaleta",
+        "folga"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "1"
+    }
+  },
+  {
+    "latex": "\\question O boliche é um esporte cujo objetivo é derrubar, com uma bola, uma série de pinos alinhados em uma pista. A professora de matemática organizou um jogo de boliche em que os pinos são garrafas que possuem rótulos com números, conforme mostra o esquema.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2019-2/o-boliche-e-um-esporte-cujo-objetivo-e-derrubar-de.webp}\r\n\r\nO aluno marca pontos de acordo com a soma das quantidades expressas nos rótulos das garrafas que são derrubadas. Se dois ou mais rótulos representam a mesma quantidade, apenas um deles entra na contagem dos pontos. Um aluno marcou 7,55 pontos em uma jogada. Uma das garrafas que ele derrubou tinha o rótulo 6,8.\r\nA quantidade máxima de garrafas que ele derrubou para obter essa pontuação é igual a\r\n\r\n\\begin{choices}\r\n  \\choice 2.\r\n  \\choice 3.\r\n  \\choice 4.\r\n  \\choice 5.\r\n  \\CorrectChoice 6.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Problemas sobre as 4 Operações",
+      "gabarito": "E",
+      "tags": [
+        "boliche",
+        "pinos",
+        "rótulos"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "2"
+    }
+  },
+  {
+    "latex": "\\question Alguns modelos de rádios automotivos estão protegidos por um código de segurança. Para ativar o sistema de áudio, deve-se digitar o código secreto composto por quatro algarismos. No primeiro caso de erro na digitação, a pessoa deve esperar 60 segundos para digitar o código novamente. O tempo de espera duplica, em relação ao tempo de espera anterior, a cada digitação errada. Uma pessoa conseguiu ativar o rádio somente na quarta tentativa, sendo de 30 segundos o tempo gasto para digitação do código secreto a cada tentativa. Nos casos da digitação incorreta, ela iniciou a nova tentativa imediatamente após a liberação do sistema de espera.\r\nO tempo total, em segundo, gasto por essa pessoa para ativar o rádio foi igual a\r\n\r\n\\begin{choices}\r\n  \\choice 300.\r\n  \\choice 420.\r\n  \\CorrectChoice 540.\r\n  \\choice 660.\r\n  \\choice 1 020.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Progressão Geométrica",
+      "gabarito": "C",
+      "tags": [
+        "rádio",
+        "código",
+        "espera"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2019,
+      "numero": "3"
+    }
+  },
+  {
+    "latex": "\\question Numa atividade de treinamento realizada no Exército de um determinado país, três equipes – \\( \\text{Alpha} \\), \\( \\text{Beta} \\) e \\( \\text{Gama} \\) – foram designadas a percorrer diferentes caminhos, todos com os mesmos pontos de partida e de chegada.\r\n\\begin{itemize}\r\n    \\item A equipe \\( \\text{Alpha} \\) realizou seu percurso em 90 minutos com uma velocidade média de 6,0 km/h.\r\n    \\item A equipe \\( \\text{Beta} \\) também percorreu sua trajetória em 90 minutos, mas sua velocidade média foi de 5,0 km/h.\r\n    \\item Com uma velocidade média de 6,5 km/h, a equipe \\( \\text{Gama} \\) concluiu seu caminho em 60 minutos.\r\n\\end{itemize}\r\nCom base nesses dados, foram comparadas as distâncias percorridas pelas três equipes.\r\nA ordem das distâncias percorridas pelas equipes \\( \\text{Alpha} \\), \\( \\text{Beta} \\) e \\( \\text{Gama} \\) é\r\n\r\n\\begin{choices}\r\n  \\CorrectChoice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-a.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-b.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-c.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-d.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-e.webp}\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "A",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Violência de Gênero",
+      "disciplina": "Matemática",
+      "assunto": "Razões e Proporções",
       "gabarito": "A",
       "tags": [
-        "violência de gênero",
-        "esporte",
-        "conscientização",
-        "feminismo",
-        "movimentos sociais"
+        "treinamento",
+        "velocidade-média",
+        "distância"
       ],
       "fonte": "concurso",
       "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2020,
-      "numero": "1"
-    }
-  },
-  {
-    "latex": "\\question A propriedade compreende, em seu conteúdo e alcance, além do tradicional direito de uso, gozo e disposição por parte de seu titular, a obrigatoriedade do atendimento de sua função social, cuja definição é inseparável do requisito obrigatório do uso racional da propriedade e dos recursos ambientais que lhe são integrantes. O proprietário, como membro integrante da comunidade, se sujeita a obrigações crescentes que, ultrapassando os limites do direito de vizinhança, no âmbito do direito privado, abrangem o campo dos direitos da coletividade, visando o bem-estar geral, no âmbito do direito público.\n\n\\credits{JELINEK, R. O princípio da função social da propriedade e sua repercussão sobre o sistema do Código Civil. Disponível em: www.mp.rs.gov.br. Acesso em: 20 fev. 2013.}\n\nOs movimentos em prol da reforma agrária, que atuam com base no conceito de direito à propriedade apresentado no texto, propõem-se a\n\n\\begin{choices}\n  \\choice reverter o processo de privatização fundiária.\n  \\choice ressaltar a inviabilidade da produção latifundiária.\n  \\CorrectChoice defender a desapropriação dos espaços improdutivos.\n  \\choice impedir a produção exportadora nas terras agricultáveis.\n  \\choice coibir o funcionamento de empresas agroindustriais no campo.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Movimentos Sociais no Brasil",
-      "gabarito": "C",
-      "tags": [
-        "reforma agrária",
-        "função social da propriedade",
-        "movimentos agrários",
-        "MST",
-        "direito à terra"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2020,
-      "numero": "2"
-    }
-  },
-  {
-    "latex": "\\question Os seringueiros amazônicos eram invisíveis no cenário nacional nos anos 1970. Começaram a se articular como um movimento agrário no início dos anos 1980, e na década seguinte conseguiram reconhecimento nacional, obtendo a implantação das primeiras reservas extrativistas após o assassinato de Chico Mendes. Assim, em vinte anos, os camponeses da floresta passaram da invisibilidade à posição de paradigma de desenvolvimento sustentável com participação popular.\n\n\\credits{ALMEIDA, M. W. B. Direitos à floresta e ambientalismo: seringueiros e suas lutas. Revista Brasileira de Ciências Sociais, n. 55, 2004.}\n\nDe acordo com o texto, a visibilidade dos seringueiros amazônicos foi estabelecida pela relação entre\n\n\\begin{choices}\n  \\choice crescimento econômico e migração de trabalhadores.\n  \\choice produção de borracha e escassez de recursos naturais.\n  \\CorrectChoice reivindicação de terra e preservação de mata nativa.\n  \\choice incentivo governamental e conservação de territórios.\n  \\choice modernização de plantio e comércio de látex.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Movimentos Ambientais",
-      "gabarito": "C",
-      "tags": [
-        "seringueiros",
-        "reserva extrativista",
-        "Chico Mendes",
-        "Amazônia",
-        "desenvolvimento sustentável"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2020,
-      "numero": "3"
-    }
-  },
-  {
-    "latex": "\\question A \\textit{Em Forma} é uma revista destinada às mulheres, às expectativas de consumo que podem ser produzidas ou que se encontram no horizonte de uma feminilidade urbana contemporânea impelida à disputa no mercado afetivo masculino (as mulheres da \\textit{Em Forma} são jovens e heterossexuais). A \\textit{Em Forma} tem como conteúdo central de suas reportagens dietas e séries de exercícios, fármacos para a pele e o cabelo, com fins de embelezamento do corpo e cuidados com a saúde, e reportagens com temas de autoajuda. Ela organiza-se em seções específicas: 1. Fitness; 2. Beleza; 3. Dieta e nutrição; 4. Bem-estar; e 5. Especial. Além dessas seções, apresenta sempre uma reportagem com a \"Garota da capa\" e outras minisseções que veiculam conteúdos similares aos das seções fixas.\n\n\\credits{ALBINO, B. S.; VAZ, A. F. O corpo e as técnicas para o embelezamento feminino. Movimento, n. 1, 2008 (adaptado).}\n\nConsiderando-se as expectativas sobre as feminilidades produzidas pela mídia, na revista mencionada a prática de exercícios tem corroborado para a construção de uma feminilidade\n\n\\begin{choices}\n  \\choice plural, que prioriza a saúde, o bem-estar e a beleza.\n  \\CorrectChoice hegemônica, que normatiza a heterossexualidade e a jovialidade.\n  \\choice heterogênea, prevendo a existência de corpos com diferentes formas.\n  \\choice padronizada, que privilegia a autonomia das mulheres sobre seu estilo de vida.\n  \\choice cristalizada, desconsiderando as expectativas de consumo na contemporaneidade.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Feminismos",
-      "gabarito": "B",
-      "tags": [
-        "feminilidade",
-        "mídia",
-        "corpo",
-        "heterossexualidade",
-        "normatização"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM-DIGITAL",
-      "banca": "INEP",
-      "ano": 2020,
+      "ano": 2025,
       "numero": "4"
     }
   },
   {
-    "latex": "\\question Localizado a 160 km da cidade de Porto Velho (capital do estado de Rondônia), nos limites da Reserva Extrativista Jaci-Paraná e Terra Indígena Karipunas, o povoado de União Bandeirantes surgiu em 2000 a partir de movimentos de camponeses, madeireiros, pecuaristas e grileiros que, à revelia do ordenamento territorial e diante da passividade governamental, demarcaram e invadiram terras na área rural fundando a vila. Atualmente, constitui-se na região de maior produção agrícola e leiteira do município de Porto Velho, fornecendo, inclusive, alimentos para a Hidrelétrica de Jirau.\n\n\\credits{SILVA, R. G. C. Amazônia globalizada — o exemplo de Rondônia. Confins, n. 23, 2015 (adaptado).}\n\nA dinâmica de ocupação territorial descrita foi decorrente da\n\n\\begin{choices}\n  \\choice mecanização do processo produtivo.\n  \\choice adoção da colonização dirigida.\n  \\choice realização de reforma agrária.\n  \\choice ampliação de franjas urbanas.\n  \\CorrectChoice expansão de frentes pioneiras.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Movimentos Sociais no Brasil",
-      "gabarito": "E",
-      "tags": [
-        "frentes pioneiras",
-        "ocupação territorial",
-        "Amazônia",
-        "Rondônia",
-        "conflito agrário"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2019,
-      "numero": "5"
-    }
-  },
-  {
-    "latex": "\\question A comunidade de Mumbuca, em Minas Gerais, tem uma organização coletiva de tal forma expressiva que coopera para o abastecimento de mantimentos da cidade do Jequitinhonha, o que pode ser atestado pela feira aos sábados. Em Campinho da Independência, no Rio de Janeiro, o artesanato local encanta os frequentadores do litoral sul do estado, além do restaurante quilombola que atende aos turistas.\n\n\\credits{ALMEIDA, A. W. B. (Org.). Cadernos de debates nova cartografia social: Territórios quilombolas e conflitos. Manaus: Projeto Nova Cartografia Social da Amazônia; UEA Edições, 2010 (adaptado).}\n\nNo texto, as estratégias territoriais dos grupos de remanescentes de quilombo visam garantir:\n\n\\begin{choices}\n  \\choice Perdão de dívidas fiscais.\n  \\choice Reserva de mercado local.\n  \\CorrectChoice Inserção econômica regional.\n  \\choice Protecionismo comercial tarifário.\n  \\choice Benefícios assistenciais públicos.\n\\end{choices}",
+    "latex": "\\question Um edifício tem a numeração dos andares iniciando no térreo (T), e continuando com primeiro, segundo, terceiro, ..., até o último andar. Uma criança entrou no elevador e, tocando no painel, seguiu uma sequência de andares, parando, abrindo e fechando a porta em diversos andares. A partir de onde entrou a criança, o elevador subiu sete andares, em seguida desceu dez, desceu mais treze, subiu nove, desceu quatro e parou no quinto andar, finalizando a sequência. Considere que, no trajeto seguido pela criança, o elevador parou uma vez no último andar do edifício.\r\nDe acordo com as informações dadas, o último andar do edifício é o\r\n\r\n\\begin{choices}\r\n  \\choice 16º\r\n  \\choice 22º\r\n  \\CorrectChoice 23º\r\n  \\choice 25º\r\n  \\choice 32º\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Identidade Negra e Afrocentrismo",
+      "disciplina": "Matemática",
+      "assunto": "Problemas sobre as 4 Operações",
       "gabarito": "C",
       "tags": [
-        "quilombolas",
-        "território",
-        "identidade",
-        "economia",
-        "resistência cultural"
+        "elevador",
+        "andares",
+        "sequência"
       ],
       "fonte": "concurso",
       "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2019,
+      "ano": 2025,
+      "numero": "5"
+    }
+  },
+  {
+    "latex": "\\question O salto ornamental é um esporte em que cada competidor realiza seis saltos. A nota em cada salto é calculada pela soma das notas dos juízes, multiplicada pela nota de partida (o grau de dificuldade de cada salto). Fica em primeiro lugar o atleta que obtiver a maior soma das seis notas recebidas. O atleta 10 irá realizar o último salto da final. Ele observa no Quadro 1, antes de executar o salto, o recorte do quadro parcial de notas com a sua classificação e a dos três primeiros lugares até aquele momento.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/o-salto-ornamental-e-um-esporte-em-que-cada-seis-1.webp}\r\n\r\nEle precisa decidir com seu treinador qual salto deverá realizar. Os dados dos possíveis tipos de salto estão no Quadro 2.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/o-salto-ornamental-e-um-esporte-em-que-cada-seis-2.webp}\r\n\r\nO atleta optará pelo salto com a maior probabilidade de obter a nota estimada, de maneira que lhe permita alcançar o primeiro lugar.\r\nConsiderando essas condições, o salto que o atleta deverá escolher é o de tipo\r\n\r\n\\begin{choices}\r\n  \\choice T1.\r\n  \\choice T2.\r\n  \\CorrectChoice T3.\r\n  \\choice T4.\r\n  \\choice T5.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Médias",
+      "gabarito": "C",
+      "tags": [
+        "salto-ornamental",
+        "notas",
+        "juízes"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2025,
       "numero": "6"
     }
   },
   {
-    "latex": "\\question \\includegraphics{https://www.projetoagathaedu.com.br/imagens/provas-enem/humanas-pos/2019/fala-se-aqui-de-uma-arte-criada-nas-ruas.webp}\n\nFala-se aqui de uma arte criada nas ruas e para as ruas, marcadas antes de tudo pela vida cotidiana, seus conflitos e suas possibilidades, que poderiam envolver técnicas, agentes e temas que não fossem encontrados nas instituições mais tradicionais e formais.\n\n\\credits{VALVERDE, R. R. H. F. Os limites da inversão: a heterotopia do Beco do Batman. Boletim Goiano de Geografia (Online). Goiânia, v. 37, n. 2, maio/ago. 2017 (adaptado).}\n\nA manifestação artística expressa na imagem e apresentada no texto integra um movimento contemporâneo de\n\n\\begin{choices}\n  \\choice regulação das relações sociais.\n  \\CorrectChoice apropriação dos espaços públicos.\n  \\choice padronização das culturas urbanas.\n  \\choice valorização dos formalismos estéticos.\n  \\choice revitalização dos patrimônios históricos.\n\\end{choices}",
+    "latex": "\\question Na teoria das eleições, o Método de Borda sugere que em vez de escolher um candidato, cada juiz deve criar um ranking de sua preferência para os concorrentes (isto é, criar uma lista com a ordem de classificação dos concorrentes). A este ranking é associada uma pontuação: um ponto para o último colocado no ranking, dois pontos para o penúltimo, três para o antepenúltimo e assim sucessivamente. Ao final, soma-se a pontuação atribuída a cada concorrente por cada um dos juízes.\r\nEm uma escola houve um concurso de poesia no qual cinco alunos concorreram a um prêmio, sendo julgados por 25 juízes. Para a escolha da poesia vencedora foi utilizado o Método de Borda. Nos quadros, estão apresentados os rankings dos juízes e a frequência de cada ranking.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/na-teoria-das-eleicoes-o-metodo-de-borda-sugere-em.webp}\r\n\r\nA poesia vencedora foi a de\r\n\r\n\\begin{choices}\r\n  \\choice Edu.\r\n  \\choice Dani.\r\n  \\choice Caio.\r\n  \\choice Edu.\r\n  \\CorrectChoice Ana.\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "E",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Sociabilidade Urbana",
-      "gabarito": "B",
+      "disciplina": "Matemática",
+      "assunto": "Medidas de Tendência Central",
+      "gabarito": "E",
       "tags": [
-        "arte de rua",
-        "graffiti",
-        "espaço público",
-        "cultura urbana",
-        "movimento cultural"
+        "eleições",
+        "Método de Borda",
+        "ranking"
       ],
       "fonte": "concurso",
       "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2019,
+      "ano": 2025,
       "numero": "7"
     }
   },
   {
-    "latex": "\\question O feminismo teve uma relação direta com o descentramento conceitual do sujeito cartesiano e sociológico. Ele questionou a clássica distinção entre o \"dentro\" e o \"fora\", o \"privado\" e o \"público\". O slogan do feminismo era: \"o pessoal é político\". Ele abriu, portanto, para a contestação política, arenas inteiramente novas: a família, a sexualidade, a divisão doméstica do trabalho etc.\n\n\\credits{HALL, S. A identidade cultural na pós-modernidade. Rio de Janeiro: DP\\&A, 2011 (adaptado).}\n\nO movimento descrito no texto contribui para o processo de transformação das relações humanas, na medida em que sua atuação\n\n\\begin{choices}\n  \\choice subverte os direitos de determinadas parcelas da sociedade.\n  \\choice abala a relação da classe dominante com o Estado.\n  \\choice constrói a segregação dos segmentos populares.\n  \\choice limita os mecanismos de inclusão das minorias.\n  \\CorrectChoice redefine a dinâmica das instituições sociais.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Feminismos",
-      "gabarito": "E",
-      "tags": [
-        "feminismo",
-        "esfera pública",
-        "esfera privada",
-        "identidade",
-        "direitos"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM-PPL",
-      "banca": "INEP",
-      "ano": 2019,
-      "numero": "8"
-    }
-  },
-  {
-    "latex": "\\question \\includegraphics{https://www.projetoagathaedu.com.br/imagens/provas-enem/humanas-pos/2018/esse-onibus-relaciona-se-ao-ato-praticado-em-1955-por-rosa-parks-apresentada-em-fotografia.webp}\n\nEsse ônibus relaciona-se ao ato praticado, em 1955, por Rosa Parks, apresentada em fotografia ao lado de Martin Luther King. O veículo alcançou o estatuto de obra museológica por simbolizar o(a)\n\n\\begin{choices}\n  \\choice impacto do medo da corrida armamentista.\n  \\choice democratização do acesso à escola pública.\n  \\choice preconceito de gênero no transporte coletivo.\n  \\CorrectChoice deflagração do movimento por igualdade civil.\n  \\choice eclosão da rebeldia no comportamento juvenil.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Movimentos Negros",
-      "gabarito": "D",
-      "tags": [
-        "Rosa Parks",
-        "direitos civis",
-        "racismo",
-        "segregação racial",
-        "movimento negro"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2018,
-      "numero": "9"
-    }
-  },
-  {
-    "latex": "\\question A poetisa Emília Freitas subiu a um palanque, nervosa, pedindo desculpas por não possuir títulos nem conhecimentos, mas orgulhosa ofereceu a sua pena que \"sem ser hábil, é, em compensação, guiada pelo poder da vontade\". Maria Tomásia pronunciava orações que levantavam os ouvintes. A escritora Francisca Clotilde arrebatava, declamando seus poemas. Aquelas \"angélicas senhoras\", \"heroínas da caridade\", levantavam dinheiro para comprar liberdades e usavam de seu entusiasmo a fim de convencer os donos de escravos a fazerem alforrias gratuitamente.\n\n\\credits{MIRANDA, A. Disponível em: www.opovoonline.com.br. Acesso em: 10 jun. 2015.}\n\nAs práticas culturais narradas remetem, historicamente, ao movimento\n\n\\begin{oneparchoices}\n  \\choice feminista.\n  \\choice sufragista.\n  \\choice socialista.\n  \\choice republicano.\n  \\CorrectChoice abolicionista.\n\\end{oneparchoices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Escravidão e seus Legados",
-      "gabarito": "E",
-      "tags": [
-        "abolicionismo",
-        "escravidão",
-        "mulheres",
-        "literatura",
-        "Ceará"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2018,
-      "numero": "10"
-    }
-  },
-  {
-    "latex": "\\question Os níveis de desigualdade construídos historicamente não se referem apenas a uma questão de mérito individual, mas à falta de condições iguais de oportunidades de acesso a educação, trabalho, saúde, moradia e lazer. As pesquisas mostram que há um grande abismo racial no Brasil, e as estatísticas, ao apontarem as condições de vida, emprego e escolaridade entre negros e brancos, comprovam que essa desigualdade é fruto da estrutura racista, somada à exclusão social e à desigualdade socioeconômica, que atinge toda a população brasileira e, de modo particular, os negros.\n\n\\credits{MUNANGA, K.; GOMES, N. L. Para entender o negro no Brasil de hoje: história, realidades, problemas e caminhos. São Paulo: Global; Ação Educativa, 2004 (adaptado).}\n\nO conjunto de ações adotado pelo Estado brasileiro, a partir da última década do século XX, para enfrentar os problemas sociais descritos no texto resultaram na\n\n\\begin{choices}\n  \\choice ampliação de planos viários de urbanização.\n  \\CorrectChoice democratização da instrução escolar pública.\n  \\choice manutenção da rede hospitalar universitária.\n  \\choice preservação de espaços de entretenimento locais.\n  \\choice descentralização do sistema nacional de habitação.\n\\end{choices}",
+    "latex": "\\question Em um aeroporto, os passageiros devem submeter suas bagagens a uma das cinco máquinas de raio-X disponíveis ao adentrarem a sala de embarque. Num dado instante, o tempo gasto por essas máquinas para escanear a bagagem de cada passageiro e o número de pessoas presentes em cada fila estão apresentados em um painel, como mostrado na figura.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/em-um-aeroporto-os-passageiros-devem-submeter-suas.webp}\r\n\r\nUm passageiro, ao chegar à sala de embarque desse aeroporto no instante indicado, visando esperar o menor tempo possível, deverá se dirigir à máquina\r\n\r\n\\begin{choices}\r\n  \\choice 1.\r\n  \\CorrectChoice 2.\r\n  \\choice 3.\r\n  \\choice 4.\r\n  \\choice 5.\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Racismo e Discriminação",
+      "disciplina": "Matemática",
+      "assunto": "Problemas sobre as 4 Operações",
       "gabarito": "B",
       "tags": [
-        "desigualdade racial",
-        "racismo estrutural",
-        "cotas",
-        "negros",
-        "políticas públicas"
+        "aeroporto",
+        "bagagens",
+        "raio-X"
       ],
       "fonte": "concurso",
-      "concurso": "ENEM-PPL",
+      "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2018,
-      "numero": "11"
+      "ano": 2025,
+      "numero": "8"
     }
   },
   {
-    "latex": "\\question A elaboração da Lei n. 11.340/06 (Lei Maria da Penha) partiu, em grande medida, de uma perspectiva crítica aos resultados obtidos pela criação dos Juizados Especiais Criminais direcionada à banalização do conflito de gênero, observada na prática corriqueira da aplicação de medidas alternativas correspondentes ao pagamento de cestas básicas pelos acusados.\n\n\\credits{VASCONCELOS, F. B. Disponível em: www.cartacapital.com.br. Acesso em: 11 dez. 2012 (adaptado).}\n\nNo contexto descrito, a lei citada pode alterar a situação da mulher ao proporcionar sua\n\n\\begin{choices}\n  \\choice atuação como provedora do lar.\n  \\choice inserção no mercado de trabalho.\n  \\choice presença em instituições policiais.\n  \\CorrectChoice proteção contra ações de violência.\n  \\choice participação enquanto gestora pública.\n\\end{choices}",
+    "latex": "\\question A prefeitura de um pequeno município do interior decide colocar postes para iluminação ao longa de uma estrada retilínea, que inicia em uma praça central e termina numa fazenda na zona rural. Como a praça já possui iluminação, o primeiro poste será colocado a 80 metros da praça, o segundo, a 100 metros, o terceiro, a 120 metros, e a assim sucessivamente, mantendo-se sempre uma distância de vinte metros entre os postes, até que o último poste seja colocado a uma distância de 1 380 metros da praça.\r\nSe a prefeitura pode pagar, no máximo, R$ 8 000,00 por poste colocado, o maior valor que poderá gastar com a colocação desses postes é\r\n\r\n\\begin{choices}\r\n  \\choice R$ 512 000, 00\r\n  \\choice R$ 520 000, 00\r\n  \\CorrectChoice R$ 528 000, 00\r\n  \\choice R$ 552 000, 00\r\n  \\choice R$ 584 000, 00\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "D",
+    "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Violência de Gênero",
-      "gabarito": "D",
+      "disciplina": "Matemática",
+      "assunto": "Progressão Aritmética",
+      "gabarito": "C",
       "tags": [
-        "Lei Maria da Penha",
-        "violência doméstica",
-        "gênero",
-        "proteção jurídica",
-        "direitos das mulheres"
+        "postes",
+        "iluminação",
+        "estrada"
       ],
       "fonte": "concurso",
-      "concurso": "ENEM-PPL",
+      "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2018,
-      "numero": "12"
+      "ano": 2025,
+      "numero": "9"
     }
   },
   {
-    "latex": "\\question No Brasil, assim como em vários outros países, os modernos movimentos LGBT representam um desafio às formas de condenação e perseguição social contra desejos e comportamentos sexuais anticonvencionais associados à vergonha, imoralidade, pecado, degeneração, doença. Falar do movimento LGBT implica, portanto, chamar a atenção para a sexualidade como fonte de estigmas, intolerância, opressão.\n\n\\credits{SIMÕES, J. Homossexualidade e movimento LGBT: estigma, diversidade e cidadania. In: BOTELHO, A.; SCHWARCZ, L. M. Cidadania, um projeto em construção. São Paulo: Claro Enigma, 2012 (adaptado).}\n\nO movimento social abordado justifica-se pela defesa do direito de\n\n\\begin{oneparchoices}\n  \\choice organização sindical.\n  \\choice participação partidária.\n  \\choice manifestação religiosa.\n  \\choice formação profissional.\n  \\CorrectChoice afirmação identitária.\n\\end{oneparchoices}",
+    "latex": "\\question Torneios de tênis, em geral, são disputados em sistema de eliminatória simples. Nesse sistema, são disputadas partidas entre dois competidores, com a eliminação do perdedor e promoção do vencedor para a fase seguinte. Dessa forma, se na 1ª fase o torneio conta com 2n competidores, então na 2ª fase restarão n competidores, e assim sucessivamente até a partida final.\r\nEm um torneio de tênis, disputado nesse sistema, participam 128 tenistas.\r\nPara se definir o campeão desse torneio, o número de partidas necessárias é dado por\r\n\r\n\\begin{choices}\r\n  \\choice 2 x 128\r\n  \\choice 64 + 32 + 16 + 8 + 4 + 2\r\n  \\choice 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1\r\n  \\choice 128 + 64 + 32 + 16 + 8 + 4 + 2\r\n  \\CorrectChoice 64 + 32 + 16 + 8 + 4 + 2 + 1\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "E",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "LGBTQIA+ e Direitos",
+      "disciplina": "Matemática",
+      "assunto": "Progressão Geométrica",
       "gabarito": "E",
       "tags": [
-        "LGBTQIA+",
-        "identidade sexual",
-        "estigma",
-        "direitos",
-        "diversidade"
+        "tênis",
+        "eliminatória",
+        "partidas"
       ],
       "fonte": "concurso",
       "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2025,
+      "numero": "10"
+    }
+  },
+  {
+    "latex": "\\question Uma repartição pública possui um sistema que armazena em seu banco de dados todos os ofícios, memorandos e cartas enviados ao longo dos anos. Para organizar todo esse material e facilitar a localização no sistema, o computador utilizado pela repartição gera um código para cada documento, de forma que os oito primeiros dígitos indicam a data em que o documento foi emitido (DDMMAAAA), os dois dígitos seguintes indicam o tipo de documento (ofício: 01, memorando: 02 e carta: 03) e os três últimos dígitos indicam a ordem do documento. Por exemplo, o código 0703201201003 indica um ofício emitido no dia 7 de março de 2012, cuja ordem é 003. No dia 27 de janeiro de 2001, essa repartição pública emitiu o memorando de ordem 012 e o enviou aos seus funcionários.\r\nO código gerado para esse memorando foi\r\n\r\n\\begin{choices}\r\n  \\choice 0122701200102.\r\n  \\choice 0201227012001.\r\n  \\choice 0227012001012.\r\n  \\choice 2701200101202.\r\n  \\CorrectChoice 2701200102012.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "E",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Sistema de Numeração e Métrico Decimal",
+      "gabarito": "E",
+      "tags": [
+        "repartição-pública",
+        "código",
+        "documentos"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM",
+      "banca": "INEP",
+      "ano": 2025,
+      "numero": "11"
+    }
+  },
+  {
+    "latex": "\\question Os consumidores X, Y e Z desejam trocar seus planos de internet móvel na tentativa de obterem um serviço de melhor qualidade. Após pesquisarem, escolheram uma operadora que oferece cinco planos para diferentes perfis, conforme apresentado no quadro.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/os-consumidores-x-y-e-z-desejam-trocar.webp}\r\n\r\nEm cada plano, o consumidor paga um valor fixo(preço mensal da assinatura) pela franquia contratada e um valor variável, que depende da quantidade de MB utilizado além da franquia. Considere que a velocidade máxima de acesso seja a mesma, independentemente do plano, que os consumos mensais de X, Y e Z são de 190 MB, 450 MB e 890 MB, respectivamente, e que cada um deles escolherá apenas um plano.\r\nCom base nos dados do quadro, as escolhas dos planos com menores custos para os consumidores X, Y e Z, respectivamente, são\r\n\r\n\\begin{choices}\r\n  \\choice A, C e C\r\n  \\choice A, B e D.\r\n  \\CorrectChoice B, B e D.\r\n  \\choice B, C e C\r\n  \\choice B, C e D.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "C",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Afim",
+      "gabarito": "C",
+      "tags": [
+        "internet-móvel",
+        "planos",
+        "custos"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM-PPL",
+      "banca": "INEP",
+      "ano": 2017,
+      "numero": "12"
+    }
+  },
+  {
+    "latex": "\\question Chegando ao destino de uma mesma viagem, os turistas X e Y alugarão, cada um deles, um carro. Fizeram, previamente, cotações com as mesmas três locadoras de automóveis da região. Os valores dos aluguéis estão representados pelas expressões dadas no quadro, sendo K o número de quilômetros percorridos, e No número de diárias pagas pelo aluguel.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/chegando-ao-destino-de-uma-mesma-viagem.webp}\r\n\r\nO turista X alugará um carro em uma mesma locadora por três dias e percorrerá 250 km. Já a pessoa Y usará o carro por apenas um dia e percorrerá 120 km.\r\nCom o intuito de economizarem com as locações dos carros, e mediante as informações, os turistas X e Y alugarão os carros, respectivamente, nas empresas\r\n\r\n\\begin{choices}\r\n  \\choice I e II.\r\n  \\CorrectChoice I e III.\r\n  \\choice II e II.\r\n  \\choice II e III.\r\n  \\choice III e I.\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "disciplina": "Matemática",
+      "assunto": "Função Afim",
+      "gabarito": "B",
+      "tags": [
+        "locação",
+        "carros",
+        "diárias"
+      ],
+      "fonte": "concurso",
+      "concurso": "ENEM-PPL",
       "banca": "INEP",
       "ano": 2017,
       "numero": "13"
     }
   },
   {
-    "latex": "\\question O conceito de democracia, no pensamento de Habermas, é construído a partir de uma dimensão procedimental, calcada no discurso e na deliberação. A legitimidade democrática exige que o processo de tomada de decisões políticas ocorra a partir de uma ampla discussão pública, para somente então decidir. Assim, o caráter deliberativo corresponde a um processo coletivo de ponderação e análise, permeado pelo discurso, que antecede a decisão.\n\n\\credits{VITALE, D. Jürgen Habermas, modernidade e democracia deliberativa. Cadernos do CRH (UFBA), v. 19, 2006 (adaptado).}\n\nO conceito de democracia proposto por Jürgen Habermas pode favorecer processos de inclusão social. De acordo com o texto, é uma condição para que isso aconteça o(a)\n\n\\begin{choices}\n  \\choice participação direta periódica do cidadão.\n  \\CorrectChoice debate livre e racional entre cidadãos e Estado.\n  \\choice interlocução entre os poderes governamentais.\n  \\choice eleição de lideranças políticas com mandatos temporários.\n  \\choice controle do poder político por cidadãos mais esclarecidos.\n\\end{choices}",
+    "latex": "\\question No próximo fim de semana, uma pessoa receberá visitas em sua casa, precisando, portanto, comprar refrigerante. Para isso, ela fez a pesquisa de preços em dois supermercados e montou esta tabela.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/chegando-ao-destino-de-uma-mesma-viagem.webp}\r\n\r\nEla pretende comprar apenas garrafas que tenham a mesma capacidade.\r\nIndependentemente de em qual supermercado essa pessoa fará a compra, a fim de ter o menor custo, ela deverá adquirir garrafas com que capacidade?        \r\n\r\n\\begin{choices}\r\n  \\choice 500 mL\r\n  \\choice 1,5 L\r\n  \\CorrectChoice 2 L\r\n  \\choice 2,5 L\r\n  \\choice 3 L\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Democracia e Participação Política",
-      "gabarito": "B",
+      "disciplina": "Matemática",
+      "assunto": "Razões e Proporções",
+      "gabarito": "C",
       "tags": [
-        "Habermas",
-        "democracia deliberativa",
-        "participação",
-        "legitimidade",
-        "deliberação"
+        "supermercados",
+        "preços",
+        "refrigerante"
       ],
       "fonte": "concurso",
-      "concurso": "ENEM",
+      "concurso": "ENEM-PPL",
       "banca": "INEP",
       "ano": 2017,
       "numero": "14"
     }
   },
   {
-    "latex": "\\question A demanda da comunidade afro-brasileira por reconhecimento, valorização e afirmação de direitos, no que diz respeito à educação, passou a ser particularmente apoiada com a promulgação da Lei 10.639/2003, que alterou a Lei 9.394/1996, estabelecendo a obrigatoriedade do ensino de história e cultura afro-brasileiras e africanas.\n\n\\credits{Diretrizes Curriculares Nacionais para a Educação das Relações Étnico-Raciais e para o Ensino de História e Cultura Afro-brasileira e Africana. Brasília: Ministério da Educação, 2005.}\n\nA alteração legal no Brasil contemporâneo descrita no texto é resultado do processo de\n\n\\begin{choices}\n  \\choice aumento da renda nacional.\n  \\CorrectChoice mobilização do movimento negro.\n  \\choice melhoria da infraestrutura escolar.\n  \\choice ampliação das disciplinas obrigatórias.\n  \\choice politização das universidades públicas.\n\\end{choices}",
+    "latex": "\\question Um funcionário da Secretaria de Meio Ambiente de um município resolve apresentar ao prefeito um plano de priorização para a limpeza das lagoas da cidade. Para a execução desse plano, o prefeito decide voltar suas ações, primeiramente, para aquela lagoa que tiver o maior coeficiente de impacto, o qual é definido como o produto entre o nível de contaminação médio por mercúrio em peixes e o tamanho da população ribeirinha. O quadro mostra as lagoas do município e suas correspondentes informações.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/um-funcionario-da-secretaria-de-meio-ambiente-de.webp}\r\n\r\nA primeira lagoa que sofrerá a intervenção planejada será a\r\n\r\n\\begin{choices}\r\n  \\choice Antiga.\r\n  \\choice Bela.\r\n  \\choice Delícia.\r\n  \\CorrectChoice Salgada.\r\n  \\choice Vermelha.\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "B",
+    "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Movimentos Negros",
-      "gabarito": "B",
+      "disciplina": "Matemática",
+      "assunto": "Problemas sobre as 4 Operações",
+      "gabarito": "D",
       "tags": [
-        "Lei 10.639",
-        "cultura afro-brasileira",
-        "história africana",
-        "educação",
-        "movimento negro"
+        "limpeza",
+        "lagoas",
+        "coeficiente-de-impacto"
       ],
       "fonte": "concurso",
-      "concurso": "ENEM",
+      "concurso": "ENEM-PPL",
       "banca": "INEP",
-      "ano": 2016,
+      "ano": 2017,
       "numero": "15"
     }
   },
   {
-    "latex": "\\question \\begin{poem}\n\\verse{Palpitam-me}\n\\verse{os sons do batuque}\n\\verse{e os ritmos melancólicos do blue.}\n\\verse{Ó negro esfarrapado}\n\\verse{do Harlem}\n\\verse{ó dançarino de Chicago}\n\\verse{ó negro servidor do South}\n\\verse{Ó negro da África}\n\\verse{negros de todo o mundo}\n\\verse{Eu junto}\n\\verse{ao vosso magnífico canto}\n\\verse{a minha pobre voz}\n\\verse{os meus humildes ritmos.}\n\\verse{Eu vos acompanho}\n\\verse{pelas emaranhadas áfricas}\n\\verse{do nosso Rumo.}\n\\verse{Eu vos sinto}\n\\verse{negros de todo o mundo}\n\\verse{eu vivo a nossa história}\n\\verse{meus irmãos.}\n\\end{poem}\n\n\\credits{Disponível em: www.agostinhoneto.org. Acesso em: 30 jun. 2015.}\n\nNesse poema, o líder angolano Agostinho Neto, na década de 1940, evoca o pan-africanismo com o objetivo de\n\n\\begin{choices}\n  \\choice incitar a luta por políticas de ações afirmativas na América e na África.\n  \\choice reconhecer as desigualdades sociais entre os negros de Angola e dos Estados Unidos.\n  \\choice descrever o quadro de pobreza após os processos de independência no continente africano.\n  \\choice solicitar o engajamento dos negros estadunidenses na luta armada pela independência em Angola.\n  \\CorrectChoice conclamar as populações negras de diferentes países a apoiar as lutas por igualdade e independência.\n\\end{choices}",
+    "latex": "\\question Um instituto de pesquisas eleitorais recebe uma encomenda na qual a margem de erro deverá ser de, no máximo, 2 pontos percentuais (0,02).\r\nO instituto tem 5 pesquisas recentes, P1 a P5, sobre o tema objeto da encomenda e irá usar a que tiver o erro menor que o pedido.\r\nOs dados sobre as pesquisas são os seguintes:\r\nO erro pode ser expresso por\r\nem que \\(\\sigma\\) um parâmetro e N é o número de pessoas entrevistadas pela pesquisa.\r\nQual pesquisa deverá ser utilizada?\r\n\r\n\\begin{choices}\r\n  \\choice P1\r\n  \\choice P2\r\n  \\choice P3\r\n  \\CorrectChoice P4\r\n  \\choice P5\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "E",
+    "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Identidade Negra e Afrocentrismo",
-      "gabarito": "E",
+      "disciplina": "Matemática",
+      "assunto": "Medidas de Dispersão",
+      "gabarito": "D",
       "tags": [
-        "pan-africanismo",
-        "identidade negra",
-        "Agostinho Neto",
-        "Angola",
-        "poesia"
+        "pesquisas",
+        "margem-de-erro",
+        "entrevistados"
       ],
-      "titulo_texto": "Voz do Sangue",
-      "autor_texto": "Agostinho Neto",
-      "genero": "Poema",
       "fonte": "concurso",
       "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2016,
+      "ano": 2025,
       "numero": "16"
     }
   },
   {
-    "latex": "\\question Ninguém nasce mulher: torna-se mulher. Nenhum destino biológico, psíquico, econômico define a forma que a fêmea humana assume no seio da sociedade; é o conjunto da civilização que elabora esse produto intermediário entre o macho e o castrado que qualificam o feminino.\n\n\\credits{BEAUVOIR, S. O segundo sexo. Rio de Janeiro: Nova Fronteira, 1980.}\n\nNa década de 1960, a proposição de Simone de Beauvoir contribuiu para estruturar um movimento social que teve como marca o(a)\n\n\\begin{choices}\n  \\choice ação do Poder Judiciário para criminalizar a violência sexual.\n  \\choice pressão do Poder Legislativo para impedir a dupla jornada de trabalho.\n  \\CorrectChoice organização de protestos públicos para garantir a igualdade de gênero.\n  \\choice oposição de grupos religiosos para impedir os casamentos homoafetivos.\n  \\choice estabelecimento de políticas governamentais para promover ações afirmativas.\n\\end{choices}",
+    "latex": "\\question Um instituto de pesquisas eleitorais recebe uma encomenda na qual a margem de erro deverá ser de, no máximo, 2 pontos percentuais (0,02).\r\nO instituto tem 5 pesquisas recentes, P1 a P5, sobre o tema objeto da encomenda e irá usar a que tiver o erro menor que o pedido.\r\nOs dados sobre as pesquisas são os seguintes:\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017/um-instituto-de-pesquisa-eleitorais-recebe-uma-encomenda-na-qual.webp}    \r\n\r\nem que \\(\\sigma\\) é um parâmetro e N é o número de pessoas entrevistadas pela pesquisa.\r\nQual pesquisa deverá ser utilizada?\r\n\r\n\\begin{choices}\r\n  \\choice P1.\r\n  \\choice P2.\r\n  \\choice P3.\r\n  \\CorrectChoice P4.\r\n  \\choice P5.\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C",
+    "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Feminismos",
-      "gabarito": "C",
+      "disciplina": "Matemática",
+      "assunto": "Medidas de Dispersão",
+      "gabarito": "D",
       "tags": [
-        "Simone de Beauvoir",
-        "gênero",
-        "sexo social",
-        "feminismo",
-        "igualdade"
+        "pesquisas",
+        "margem-de-erro",
+        "parâmetro"
       ],
       "fonte": "concurso",
       "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2015,
+      "ano": 2025,
       "numero": "17"
     }
   },
   {
-    "latex": "\\question Não nos resta a menor dúvida de que a principal contribuição dos diferentes tipos de movimentos sociais brasileiros nos últimos vinte anos foi no plano da reconstrução do processo de democratização do país. E não se trata apenas da reconstrução do regime político, da retomada da democracia e do fim do Regime Militar. Trata-se da reconstrução ou construção de novos rumos para a cultura do país, do preenchimento de vazios na condução da luta pela redemocratização, constituindo-se como agentes interlocutores que dialogam diretamente com a população e com o Estado.\n\n\\credits{GOHN, M. G. M. Os sem-terras, ONGs e cidadania. São Paulo: Cortez, 2003 (adaptado).}\n\nNo processo da redemocratização brasileira, os novos movimentos sociais contribuíram para\n\n\\begin{choices}\n  \\choice diminuir a legitimidade dos novos partidos políticos então criados.\n  \\CorrectChoice tornar a democracia um valor social que ultrapassa os momentos eleitorais.\n  \\choice difundir a democracia representativa como objetivo fundamental da luta política.\n  \\choice ampliar as disputas pela hegemonia das entidades de trabalhadores com os sindicatos.\n  \\choice fragmentar as lutas políticas dos diversos atores sociais frente ao Estado.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Teoria dos Movimentos Sociais",
-      "gabarito": "B",
-      "tags": [
-        "redemocratização",
-        "movimentos sociais",
-        "cultura democrática",
-        "Brasil",
-        "cidadania"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2015,
-      "numero": "18"
-    }
-  },
-  {
-    "latex": "\\question Ao longo das três últimas décadas, houve uma explosão de movimentos sociais pelo mundo. Essa diversidade de movimentos — que vão desde os movimentos por direitos civis e os movimentos feministas dos anos de 1960 e 1970, até os movimentos antinucleares e ecológicos dos anos de 1980 e a campanha pelos direitos homossexuais da década de 1990 — é normalmente denominado pelos comentadores do tema como novos movimentos sociais.\n\n\\credits{GIDDENS, A. Sociologia. Porto Alegre: Artmed, 2005 (adaptado).}\n\nUma explicação para a expansão dos chamados novos movimentos sociais nas últimas três décadas é a\n\n\\begin{choices}\n  \\choice fragilidade das redes globais comunicacionais, como internet e telefonia.\n  \\choice garantia dos direitos sociais constitucionais, como educação e previdência.\n  \\CorrectChoice crise das organizações representativas tradicionais, como partidos e sindicatos.\n  \\choice instabilidade das instituições políticas democráticas, como eleições e parlamentos.\n  \\choice consolidação das corporações transnacionais monopolistas, como petrolíferas e mineradoras.\n\\end{choices}",
+    "latex": "\\question Em um parque há dois mirantes de alturas distintas que são acessados por elevador panorâmico. O topo do mirante 1 é acessado pelo elevador 1, enquanto que o topo do mirante 2 é acessado pelo elevador 2. Eles encontram-se a uma distância possível de ser percorrida a pé, e entre os mirantes há um teleférico que os liga que pode ou não ser utilizado pelo visitante.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017/em-um-parque-ha-dois-mirantes-de-alturas-distintas-que-sao-acessados.webp}\r\n\r\nO acesso aos elevadores tem os seguintes custos:\r\n\\begin{itemize}\r\n    \\item Subir pelo elevador 1: R$ 0,15;\r\n    \\item Subir pelo elevador 2: R$ 1,80;\r\n    \\item Descer pelo elevador 1: R$ 0,10;\r\n    \\item Descer pelo elevador 2: R$ 2,30.\r\n\\end{itemize}\r\nO custo da passagem do teleférico partindo do topo do mirante 1 para o topo do mirante 2 é de R$ 2,00, e do topo do mirante 2 para o topo do mirante 1 é de R$ 2,50.\r\nQual é o menor custo, em real, para uma pessoa visitar os topos dos dois mirantes e retornar ao solo?\r\n\r\n\\begin{choices}\r\n  \\choice 2,25\r\n  \\choice 3,90\r\n  \\CorrectChoice 4,35\r\n  \\choice 4,40\r\n  \\choice 4,45\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Teoria dos Movimentos Sociais",
+      "disciplina": "Matemática",
+      "assunto": "Problemas sobre as 4 Operações",
       "gabarito": "C",
       "tags": [
-        "novos movimentos sociais",
-        "direitos civis",
-        "feminismo",
-        "ecologia",
-        "representação política"
+        "mirantes",
+        "elevador",
+        "teleférico"
       ],
       "fonte": "concurso",
       "concurso": "ENEM",
       "banca": "INEP",
-      "ano": 2013,
-      "numero": "19"
-    }
-  },
-  {
-    "latex": "\\question O sociólogo espanhol Manuel Castells sustenta que a comunicação de valores e a mobilização em torno do sentido são fundamentais. Os movimentos culturais (entendidos como movimentos que têm como objetivo defender ou propor modos próprios de vida e sentido) constroem-se em torno de sistemas de comunicação — essencialmente a internet e os meios de comunicação — porque esta é a principal via que esses movimentos encontram para chegar àquelas pessoas que podem eventualmente partilhar os seus valores, e a partir daqui atuar na consciência da sociedade no seu conjunto.\n\n\\credits{Disponível em: www.compolitica.org. Acesso em: 2 mar. 2012 (adaptado).}\n\nEm 2011, após uma forte mobilização popular via redes sociais, houve a queda do governo de Hosni Mubarak no Egito. Esse evento ratifica o argumento de que\n\n\\begin{choices}\n  \\choice a internet atribui verdadeiros valores culturais aos seus usuários.\n  \\choice a consciência das sociedades foi estabelecida com o advento da internet.\n  \\choice a revolução tecnológica tem como principal objetivo a deposição de governantes antidemocráticos.\n  \\choice os recursos tecnológicos estão a serviço dos opressores e do fortalecimento de suas práticas políticas.\n  \\CorrectChoice os sistemas de comunicação são mecanismos importantes, de adesão e compartilhamento de valores sociais.\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Sociologia",
-      "assunto": "Sociedade em Rede e Tecnologia",
-      "gabarito": "E",
-      "tags": [
-        "internet",
-        "redes sociais",
-        "comunicação",
-        "Castells",
-        "mobilização popular"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2013,
-      "numero": "20"
+      "ano": 2025,
+      "numero": "18"
     }
   }
 ]

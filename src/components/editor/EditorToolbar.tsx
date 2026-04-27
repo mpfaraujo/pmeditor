@@ -16,6 +16,7 @@ import { buildPoemFromSelection } from "./poemUtils";
 
 interface EditorToolbarProps {
   view: EditorView | null;
+  toolbarCallbackRef?: { current: (() => void) | null };
   onOpenMath?: () => void;
   onSave?: () => void;
   onLoad?: () => void;
@@ -56,6 +57,7 @@ function pxToCm(px: number) {
 
 export function EditorToolbar({
   view,
+  toolbarCallbackRef,
   onOpenMath,
   onSave,
   onLoad,
@@ -72,6 +74,13 @@ export function EditorToolbar({
   itemCount,
   availableAnchors,
 }: EditorToolbarProps) {
+  const [, forceUpdate] = useState(0);
+  useEffect(() => {
+    if (!toolbarCallbackRef) return;
+    toolbarCallbackRef.current = () => forceUpdate((n) => n + 1);
+    return () => { toolbarCallbackRef.current = null; };
+  }, [toolbarCallbackRef]);
+
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [symbolPickerOpen, setSymbolPickerOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);

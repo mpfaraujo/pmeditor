@@ -21,7 +21,7 @@ export type TexImportRule = {
   run: (ctx: CheckContext) => CheckIssue[];
 };
 
-type QuestionBlock = {
+export type QuestionBlock = {
   number?: string;
   yaml: string;
   body: string;
@@ -37,7 +37,7 @@ function excerpt(line: string): string {
   return line.trim().slice(0, 180);
 }
 
-function questionBlocks(text: string): QuestionBlock[] {
+export function questionBlocks(text: string): QuestionBlock[] {
   const blocks: QuestionBlock[] = [];
   const re = /\\question\s*\n---\n([\s\S]*?)\n---\n([\s\S]*?)(?=(?:\n\\question\s*\n---)|\s*$)/g;
   let m: RegExpExecArray | null;
@@ -55,6 +55,34 @@ function questionBlocks(text: string): QuestionBlock[] {
     });
   }
   return blocks;
+}
+
+// Extrai a parte compartilhada do corpo: até o fim de \credits{...} (inclusive),
+// ou tudo antes de \begin{choices} se não houver \credits.
+export function extractLeadingText(body: string): string {
+  const creditsIdx = body.indexOf("\\credits{");
+  if (creditsIdx >= 0) {
+    let depth = 0;
+    let i = creditsIdx + "\\credits{".length - 1;
+    for (; i < body.length; i++) {
+      if (body[i] === "{") depth++;
+      else if (body[i] === "}") { depth--; if (depth === 0) break; }
+    }
+    return body.slice(0, i + 1)
+      .replace(/\\includegraphics(?:\[[^\]]*\])?\{[^}]*\}/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  const idx = body.indexOf("\\begin{choices}");
+  const raw = idx >= 0 ? body.slice(0, idx) : body;
+  return raw
+    .replace(/\\includegraphics(?:\[[^\]]*\])?\{[^}]*\}/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function hasBaseTextMeta(yaml: string): boolean {
+  return /^(?:titulo_texto|autor_texto|tema):\s*.+$/mi.test(yaml);
 }
 
 function issuesForPattern(
@@ -110,6 +138,28 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
         severity: "warning",
         message: "\\includegraphics com URL (bulk-import faz o upload automaticamente) — verificar se a imagem contém equação química/matemática simples que possa ser transcrita para LaTeX. Se sim, transcrever e remover o \\includegraphics. Tabelas, diagramas e gráficos: manter como URL.",
       }),
+  },
+
+  {
+    id: "includegraphics-placeholder",
+    description: "\\includegraphics com placeholder inventado (sem extensão de arquivo e sem URL) — a IA deveria usar o caminho/URL exato do [IMAGEM: ...] no .txt.",
+    run: ({ text }): CheckIssue[] => {
+      const out: CheckIssue[] = [];
+      const seen = new Set<string>();
+      const re = /\\includegraphics(?:\[[^\]]*\])?\{([^}]*)\}/g;
+      let m: RegExpExecArray | null;
+      while ((m = re.exec(text))) {
+        const arg = (m[1] ?? "").trim();
+        if (/^https?:\/\//i.test(arg)) continue;
+        if (/\.(png|jpg|jpeg|gif|webp|svg|bmp)$/i.test(arg)) continue;
+        const line = lineNumberAt(text, m.index);
+        const key = `includegraphics-placeholder|${line}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push({ ruleId: "includegraphics-placeholder", severity: "error", line, matched: m[0], excerpt: m[0], message: `\\includegraphics{${arg}} — nome sem extensão e sem URL, provavelmente placeholder inventado. Usar o valor exato do [IMAGEM: ...] do .txt: URL completa ou nome do arquivo local (img-001.png).` });
+      }
+      return out;
+    },
   },
 
   {
@@ -220,15 +270,34 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
     run: ({ text }) => {
       const noYaml = text.replace(/\n---\n[\s\S]*?\n---\n/g, (m) => "\n" + " ".repeat(m.length - 2) + "\n");
       const stripped = stripMathRegions(stripComments(noYaml));
-      return issuesForPattern(
-        stripped,
-        /\braiz\b/gi,
-        {
+      const issues = [];
+
+      // Padrões claramente matemáticos → error
+      const mathPatterns: RegExp[] = [
+        /\d+\s*raiz\s+\d+\s*\/\s*\d+/gi,   // "3raiz 3/2", "3raiz3/2"
+        /\braiz\s+\d+\s*\/\s*\d+/gi,         // "raiz 3/2"
+        /\braiz\s+quadrada\b/gi,              // "raiz quadrada"
+        /\braiz\s+de\s+[\d√]/gi,             // "raiz de 3", "raiz de √2"
+        /\d\s*raiz\s*\d/gi,                  // "3raiz3" (sem espaço na fração)
+      ];
+      for (const pattern of mathPatterns) {
+        issues.push(...issuesForPattern(stripped, pattern, {
           ruleId: "sqrt-word-in-text",
           severity: "error",
-          message: "Palavra 'raiz' em texto puro — não renderiza. CORRIGIR: '3raiz 3/2' → '\\(\\frac{3\\sqrt{3}}{2}\\)', 'raiz de x' → '\\(\\sqrt{x}\\)', 'raiz quadrada' → '\\(\\sqrt{}\\)'.",
-        },
-      );
+          message: "Expressão matemática com 'raiz' em texto puro — não renderiza. CORRIGIR: '3raiz 3/2' → '\\(\\frac{3\\sqrt{3}}{2}\\)', 'raiz de 3' → '\\(\\sqrt{3}\\)', 'raiz quadrada' → '\\(\\sqrt{}\\)'.",
+        }));
+      }
+
+      // "raiz" isolado (sem número adjacente) → warning: pode ser palavra comum
+      // Removemos as regiões já capturadas acima para evitar dupla detecção
+      const withoutMath = mathPatterns.reduce((s, p) => s.replace(p, (m) => " ".repeat(m.length)), stripped);
+      issues.push(...issuesForPattern(withoutMath, /\braiz\b/gi, {
+        ruleId: "sqrt-word-in-text",
+        severity: "warning",
+        message: "'raiz' pode ser palavra comum (raiz de planta, raiz de equação/zero, sentido poético) OU expressão matemática não convertida. Verificar: se for \\sqrt{}, converter para LaTeX; se for palavra comum, ignorar.",
+      }));
+
+      return issues;
     },
   },
 
@@ -433,6 +502,45 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
           message: `Sigla "${banca}" em capitalização errada. Deve ser toda maiúscula (ex: ${banca.toUpperCase()}).`,
         });
         issues.push(...found);
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "prefixo-banca-no-enunciado",
+    description: "Nome de banca/concurso ou número de questão embutido no enunciado em vez de no YAML.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      // Padrão: "(SIGLA)", "(SIGLA 2019)", "(Nome)", "(Nome PPL 2019)" — qualquer nome de concurso/banca
+      // Não captura "(Considere...)", "(Use π=...)" — têm conteúdo longo ou sem fechar logo após
+      const PREFIX_BANCA = /^\s*\((?:[A-Z]{2,}[\w\s\-]*?|[A-Z][a-z]{1,12}(?:\s+[A-Z][\w\-]*)*)(?:\s+\d{4})?\)\s/;
+      const PREFIX_NUM   = /^\s*(?:Q\.?\s*)?\d{1,3}[.)]\s/;
+
+      // Varre o texto linha a linha, ignorando blocos YAML e comandos LaTeX
+      let inYaml = false;
+      const linhas = text.split('\n');
+      for (let i = 0; i < linhas.length; i++) {
+        const l = linhas[i];
+        if (l.trim() === '---') { inYaml = !inYaml; continue; }
+        if (inYaml) continue;
+        if (l.trim().startsWith('%') || l.trim().startsWith('\\') || l.trim() === '') continue;
+
+        if (PREFIX_BANCA.test(l + ' ')) {
+          issues.push({
+            ruleId: "prefixo-banca-no-enunciado",
+            severity: "error",
+            line: i + 1,
+            message: `Prefixo de concurso no enunciado: "${l.trim().slice(0, 80)}". Remover do texto — concurso/banca/ano vão no YAML.`,
+          });
+        } else if (PREFIX_NUM.test(l)) {
+          issues.push({
+            ruleId: "prefixo-banca-no-enunciado",
+            severity: "error",
+            line: i + 1,
+            message: `Número de questão no enunciado: "${l.trim().slice(0, 80)}". Remover do texto — vai em numero: no YAML.`,
+          });
+        }
       }
       return issues;
     },
@@ -823,6 +931,57 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
           });
         }
       }
+      return issues;
+    },
+  },
+
+  {
+    id: "shared-base-text-no-metadata",
+    description: "Múltiplas questões consecutivas com texto base compartilhado sem metadados do texto (titulo_texto:, autor_texto:, tema:).",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const blocks = questionBlocks(text);
+      if (blocks.length < 2) return issues;
+
+      function sharedPrefixLen(a: string, b: string): number {
+        let i = 0;
+        while (i < a.length && i < b.length && a[i] === b[i]) i++;
+        return i;
+      }
+
+      const MIN_SHARED = 100;
+
+      // Agrupa questões consecutivas que compartilham prefixo de texto base
+      const groups: QuestionBlock[][] = [];
+      let current: QuestionBlock[] = [blocks[0]];
+
+      for (let i = 1; i < blocks.length; i++) {
+        const prevLead = extractLeadingText(blocks[i - 1].body);
+        const curLead = extractLeadingText(blocks[i].body);
+        if (prevLead.length >= MIN_SHARED && sharedPrefixLen(prevLead, curLead) >= MIN_SHARED) {
+          current.push(blocks[i]);
+        } else {
+          if (current.length >= 2) groups.push(current);
+          current = [blocks[i]];
+        }
+      }
+      if (current.length >= 2) groups.push(current);
+
+      for (const group of groups) {
+        const missingMeta = group.filter((b) => !hasBaseTextMeta(b.yaml));
+        if (missingMeta.length > 0) {
+          const nums = group.map((b) => b.number ?? "?").join(", ");
+          const missing = missingMeta.map((b) => b.number ?? "?").join(", ");
+          issues.push({
+            ruleId: "shared-base-text-no-metadata",
+            severity: "warning",
+            line: group[0].startLine,
+            questionNumber: group[0].number,
+            message: `Questões ${nums} compartilham texto base. Adicionar metadados do texto (titulo_texto:, autor_texto:, tema:) no YAML de TODAS para que o import envie o texto ao banco e as vincule. Faltando nas questões: ${missing}.`,
+          });
+        }
+      }
+
       return issues;
     },
   },

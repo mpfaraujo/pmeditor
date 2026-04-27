@@ -31,6 +31,7 @@ import {
   ChevronDown,
   ChevronUp,
   Eye,
+  EyeOff,
   Loader2,
   Pencil,
   RefreshCw,
@@ -1751,6 +1752,14 @@ export default function FixesPage() {
   const [batches, setBatches] = useState<{ batch: string; run_id: string; count: number }[]>([]);
   const [selectedRunId, setSelectedRunId] = useState<string>("");
   const [selectedBatchLabel, setSelectedBatchLabel] = useState<string>("");
+  const [batchSearch, setBatchSearch] = useState<string>("");
+  const [hiddenBatches, setHiddenBatches] = useState<Set<string>>(() => {
+    try {
+      const raw = localStorage.getItem("pmeditor:fixes:hidden-batches");
+      return raw ? new Set(JSON.parse(raw)) : new Set();
+    } catch { return new Set(); }
+  });
+  const [showHiddenBatches, setShowHiddenBatches] = useState(false);
   const [questions, setQuestions] = useState<QuestionItem[]>([]);
   const [baseTexts, setBaseTexts] = useState<BaseTextItem[]>([]);
   const [duplicates, setDuplicates] = useState<DuplicateCandidate[]>([]);
@@ -2042,6 +2051,15 @@ export default function FixesPage() {
       setLoading(false);
     }
   }, []);
+
+  function toggleHideBatch(runId: string) {
+    setHiddenBatches(prev => {
+      const next = new Set(prev);
+      if (next.has(runId)) next.delete(runId); else next.add(runId);
+      try { localStorage.setItem("pmeditor:fixes:hidden-batches", JSON.stringify([...next])); } catch {}
+      return next;
+    });
+  }
 
   function selectRun(batch: string, runId: string) {
     setSelectedRunId(runId);
@@ -2648,6 +2666,27 @@ export default function FixesPage() {
               <RefreshCw size={13} className={loadingBatches ? "animate-spin" : ""} />
             </button>
           </div>
+          {/* Busca */}
+          <div className="px-2 py-1.5 border-b">
+            <div className="relative">
+              <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar batch…"
+                value={batchSearch}
+                onChange={e => setBatchSearch(e.target.value)}
+                className="w-full pl-6 pr-2 py-1 text-xs border rounded bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-300"
+              />
+              {batchSearch && (
+                <button
+                  onClick={() => setBatchSearch("")}
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={10} />
+                </button>
+              )}
+            </div>
+          </div>
           <div className="flex-1 overflow-y-auto">
             {batches.length === 0 && !loadingBatches && (
               <p className="text-xs text-gray-400 p-3 leading-relaxed">
@@ -2656,23 +2695,54 @@ export default function FixesPage() {
                 Use <code className="bg-gray-100 px-1">--batch</code> no bulk-import.
               </p>
             )}
-            {batches.map((b) => (
-              <button
-                key={b.run_id}
-                onClick={() => selectRun(b.batch, b.run_id)}
-                className={`w-full text-left px-3 py-2 border-b text-xs hover:bg-gray-50 transition-colors ${
-                  selectedRunId === b.run_id
-                    ? "bg-blue-50 border-l-2 border-l-blue-500"
-                    : ""
-                }`}
-              >
-                <div className="font-medium text-gray-700 truncate">{b.batch}</div>
-                <div className="text-gray-400 font-mono truncate text-[10px]">
-                  {b.run_id.slice(0, 16)}…
-                </div>
-                <div className="text-gray-400">{b.count} questões</div>
-              </button>
-            ))}
+            {batches
+              .filter(b => {
+                const q = batchSearch.trim().toLowerCase();
+                if (q && !b.batch.toLowerCase().includes(q)) return false;
+                if (!showHiddenBatches && hiddenBatches.has(b.run_id)) return false;
+                return true;
+              })
+              .map((b) => {
+                const hidden = hiddenBatches.has(b.run_id);
+                return (
+                  <div
+                    key={b.run_id}
+                    className={`flex items-stretch border-b ${hidden ? "opacity-40" : ""} ${
+                      selectedRunId === b.run_id ? "bg-blue-50 border-l-2 border-l-blue-500" : ""
+                    }`}
+                  >
+                    <button
+                      onClick={() => selectRun(b.batch, b.run_id)}
+                      className="flex-1 text-left px-3 py-2 text-xs hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="font-medium text-gray-700 truncate">{b.batch}</div>
+                      <div className="text-gray-400 font-mono truncate text-[10px]">
+                        {b.run_id.slice(0, 16)}…
+                      </div>
+                      <div className="text-gray-400">{b.count} questões</div>
+                    </button>
+                    <button
+                      onClick={() => toggleHideBatch(b.run_id)}
+                      title={hidden ? "Mostrar batch" : "Ocultar batch"}
+                      className="px-1.5 text-gray-300 hover:text-gray-500 transition-colors"
+                    >
+                      {hidden ? <Eye size={11} /> : <EyeOff size={11} />}
+                    </button>
+                  </div>
+                );
+              })}
+          </div>
+          {/* Rodapé — toggle ocultos */}
+          <div className="border-t px-3 py-1.5">
+            <button
+              onClick={() => setShowHiddenBatches(v => !v)}
+              className="text-[10px] text-gray-400 hover:text-gray-600 flex items-center gap-1"
+            >
+              {showHiddenBatches ? <EyeOff size={10} /> : <Eye size={10} />}
+              {showHiddenBatches
+                ? `Ocultar arquivados (${hiddenBatches.size})`
+                : `Mostrar arquivados (${hiddenBatches.size})`}
+            </button>
           </div>
         </aside>
 

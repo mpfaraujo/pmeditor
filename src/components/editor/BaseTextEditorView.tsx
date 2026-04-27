@@ -34,6 +34,7 @@ import { SymbolPicker } from "./toolbar/SymbolPicker";
 import { ensureImageIds } from "./ensureImageIds";
 import { buildPoemFromSelection } from "./poemUtils";
 import "../../app/prosemirror.css";
+import { gapCursor } from "prosemirror-gapcursor";
 
 import {
   Bold, Italic, Underline as UnderlineIcon,
@@ -197,6 +198,7 @@ export function BaseTextEditorView({ value, onSave, onChange, closeAfterSave = f
         keymap({ "Mod-z": undo, "Mod-y": redo }),
         keymap(baseKeymap),
         inputRules({ rules: [] }),
+        gapCursor(),
       ],
     });
 
