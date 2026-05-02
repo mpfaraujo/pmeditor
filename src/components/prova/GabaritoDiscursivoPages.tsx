@@ -208,7 +208,7 @@ export default function GabaritoDiscursivoPages({ respostas }: Props) {
       {/* Referência oculta para medir a altura real da prova-page */}
       <div
         ref={pageHeightRef}
-        className="prova-page"
+        className="prova-page print-measure-page"
         style={{
           position: "fixed",
           top: 0,

@@ -578,6 +578,10 @@
     display: none !important;
   }
 
+  .print-measure-page {
+    display: none !important;
+  }
+
   /* garante que cada sheet comece em página nova (exceto a primeira) */
   .a4-sheet:not(:first-child) {
     break-before: page !important;
@@ -588,11 +592,6 @@
     padding: 0 !important;
     margin: 0 !important;
     background: #fff !important;
-    break-after: page !important;
-    page-break-after: always !important;
-  }
-
-  .a4-sheet:last-of-type {
     break-after: auto !important;
     page-break-after: auto !important;
   }

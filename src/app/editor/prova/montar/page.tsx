@@ -139,6 +139,115 @@ function findSetNode(doc: PMNode | null): PMNode | null {
   return doc?.content?.find((n) => n?.type === "set_questions") ?? null;
 }
 
+function collectPrintFlowDebug(phase: string) {
+  if (typeof window === "undefined" || typeof document === "undefined") return null;
+
+  const sheets = Array.from(document.querySelectorAll<HTMLElement>(".a4-sheet"));
+  const parent = sheets[0]?.parentElement ?? null;
+  const parentChildren = parent ? Array.from(parent.children) as HTMLElement[] : [];
+
+  const classifySheet = (sheet: HTMLElement) => {
+    const text = (sheet.textContent ?? "").replace(/\s+/g, " ").trim();
+    if (sheet.querySelector(".print-measure-page")) return "print-measure-inside-sheet";
+    if (text.includes("Respostas — Questões Discursivas")) return "respostas-discursivas";
+    if (text.includes("GABARITO") || text.includes("QUESTÕES / RESPOSTAS")) return "gabarito-objetivo";
+    if (text.includes("Tabela Periódica")) return "tabela-periodica";
+    if (sheet.querySelector(".questoes-container")) return "questoes";
+    return "unknown-sheet";
+  };
+
+  const computedBreaks = (el: HTMLElement) => {
+    const cs = window.getComputedStyle(el);
+    return {
+      display: cs.display,
+      visibility: cs.visibility,
+      position: cs.position,
+      breakBefore: cs.breakBefore,
+      breakAfter: cs.breakAfter,
+      pageBreakBefore: (cs as any).pageBreakBefore,
+      pageBreakAfter: (cs as any).pageBreakAfter,
+      height: cs.height,
+      minHeight: cs.minHeight,
+      overflow: cs.overflow,
+    };
+  };
+
+  const flow = parentChildren
+    .map((el, domIndex) => {
+      const isSheet = el.classList.contains("a4-sheet");
+      const isMeasureLayer = el.classList.contains("measure-layer");
+      const isPrintMeasurePage = el.classList.contains("print-measure-page");
+      if (!isSheet && !isMeasureLayer && !isPrintMeasurePage) return null;
+
+      const rect = el.getBoundingClientRect();
+      return {
+        domIndex,
+        kind: isSheet
+          ? "a4-sheet"
+          : isMeasureLayer
+            ? "measure-layer"
+            : "print-measure-page",
+        sheetIndex: isSheet ? sheets.indexOf(el) : null,
+        role: isSheet ? classifySheet(el) : null,
+        className: el.className,
+        textStart: (el.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 120),
+        computed: computedBreaks(el),
+        rect: {
+          top: Math.round(rect.top),
+          bottom: Math.round(rect.bottom),
+          height: Math.round(rect.height),
+        },
+      };
+    })
+    .filter(Boolean);
+
+  const sheetBreaks = sheets.map((sheet, sheetIndex) => {
+    const prev = sheets[sheetIndex - 1] ?? null;
+    const next = sheets[sheetIndex + 1] ?? null;
+    return {
+      sheetIndex,
+      role: classifySheet(sheet),
+      prevRole: prev ? classifySheet(prev) : null,
+      nextRole: next ? classifySheet(next) : null,
+      computed: computedBreaks(sheet),
+    };
+  });
+
+  const doubleBreakPairs = sheetBreaks
+    .slice(1)
+    .map((current, i) => {
+      const previous = sheetBreaks[i];
+      const prevAfter = previous.computed.breakAfter || previous.computed.pageBreakAfter;
+      const currentBefore = current.computed.breakBefore || current.computed.pageBreakBefore;
+      const prevForcesBreak = /page|always/i.test(prevAfter ?? "");
+      const currentForcesBreak = /page|always/i.test(currentBefore ?? "");
+      return {
+        between: [previous.sheetIndex, current.sheetIndex],
+        previousRole: previous.role,
+        currentRole: current.role,
+        previousBreakAfter: prevAfter,
+        currentBreakBefore: currentBefore,
+        bothForceBreak: prevForcesBreak && currentForcesBreak,
+      };
+    })
+    .filter((pair) => pair.bothForceBreak);
+
+  return {
+    phase,
+    timestamp: new Date().toISOString(),
+    printMediaMatches: window.matchMedia?.("print")?.matches ?? false,
+    sheetCount: sheets.length,
+    flow,
+    sheetBreaks,
+    doubleBreakPairs,
+    expectedPolicy: {
+      a4SheetBreakBefore: "page except first rendered sheet",
+      a4SheetBreakAfter: "auto; should not also force page",
+      printMeasurePage: "display none during print",
+    },
+  };
+}
+
 function splitSetNode(setNode: PMNode | null): {
   baseText: PMNode | null;
   items: PMNode[];
@@ -1050,11 +1159,39 @@ const { pages, refs } = usePagination({
       assertiveDebug: Array.isArray((window as any).__PMEDITOR_ASSERTIVE_DEBUG__)
         ? (window as any).__PMEDITOR_ASSERTIVE_DEBUG__
         : [],
+      printFlowDebug: collectPrintFlowDebug("montar-debug-snapshot"),
+      printFlowRuntimeDebug: (window as any).__PMEDITOR_PRINT_FLOW_DEBUG__ ?? null,
     };
 
     (window as any).__PMEDITOR_MONTAR_DEBUG__ = payload;
     console.log("[montar-debug]", payload);
   }, [devMontarDebugEnabled, selections, expandedQuestions, setGroups, pages, refs, committedSpacers, lineRefRuntimeSnapshot]);
+
+  useEffect(() => {
+    if (!devMontarDebugEnabled || typeof window === "undefined") return;
+
+    const capture = (phase: string) => {
+      const snapshot = collectPrintFlowDebug(phase);
+      (window as any).__PMEDITOR_PRINT_FLOW_DEBUG__ = snapshot;
+      const current = (window as any).__PMEDITOR_MONTAR_DEBUG__;
+      if (current && typeof current === "object") {
+        current.printFlowRuntimeDebug = snapshot;
+      }
+      console.log("[print-flow-debug]", snapshot);
+    };
+
+    const handleBeforePrint = () => capture("beforeprint");
+    const handleAfterPrint = () => capture("afterprint");
+
+    window.addEventListener("beforeprint", handleBeforePrint);
+    window.addEventListener("afterprint", handleAfterPrint);
+    capture("debug-enabled");
+
+    return () => {
+      window.removeEventListener("beforeprint", handleBeforePrint);
+      window.removeEventListener("afterprint", handleAfterPrint);
+    };
+  }, [devMontarDebugEnabled, pages, provaConfig.showGabarito]);
 
   // Mapa: índice original (q) → número impresso (1-based, ignorando setBase)
   // Baseado na ordem real de aparição nos pages (após bin-packing)
