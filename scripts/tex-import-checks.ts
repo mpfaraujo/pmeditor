@@ -39,19 +39,87 @@ function excerpt(line: string): string {
 
 export function questionBlocks(text: string): QuestionBlock[] {
   const blocks: QuestionBlock[] = [];
-  const re = /\\question\s*\n---\n([\s\S]*?)\n---\n([\s\S]*?)(?=(?:\n\\question\s*\n---)|\s*$)/g;
+
+  // Formato A: \question\n---\nyaml\n---\nbody  (YAML depois do \question)
+  const reAfter = /\\question\s*\n---\n([\s\S]*?)\n---\n([\s\S]*?)(?=(?:\n\\question\s*\n---)|\s*$)/g;
   let m: RegExpExecArray | null;
-  while ((m = re.exec(text))) {
-    const full = m[0];
+  while ((m = reAfter.exec(text))) {
     const yaml = m[1];
-    const body = m[2];
     const numMatch = yaml.match(/^numero:\s*"?(.*?)"?$/m);
     blocks.push({
       number: numMatch?.[1],
       yaml,
-      body,
-      full,
+      body: m[2],
+      full: m[0],
       startLine: lineNumberAt(text, m.index),
+    });
+  }
+
+  // Formato B: ---\nyaml\n---\n\question\nbody  (YAML antes do \question)
+  if (blocks.length === 0) {
+    const markerRe = /\\question\b/g;
+    const markers: number[] = [];
+    let qm: RegExpExecArray | null;
+    while ((qm = markerRe.exec(text))) markers.push(qm.index);
+
+    for (let i = 0; i < markers.length; i++) {
+      const qStart = markers[i];
+      const qEnd = i + 1 < markers.length ? markers[i + 1] : text.length;
+      const prevStart = i > 0 ? markers[i - 1] : 0;
+      const textBefore = text.slice(prevStart, qStart);
+      // matchAll com lazy captura cada ---...--- separadamente; pegamos o último (o mais próximo do \question)
+      const allYaml = [...textBefore.matchAll(/---[ \t]*\r?\n([\s\S]*?)\r?\n[ \t]*---/g)];
+      const yaml = allYaml.length > 0 ? allYaml[allYaml.length - 1][1].replace(/\r/g, "") : "";
+      const body = text.slice(qStart, qEnd).replace(/^\\question\b[^\n]*\n?/, "").trimEnd();
+      const numMatch = yaml.match(/^numero:\s*"?(.*?)"?$/m);
+      blocks.push({
+        number: numMatch?.[1],
+        yaml,
+        body,
+        full: text.slice(prevStart, qEnd),
+        startLine: lineNumberAt(text, qStart),
+      });
+    }
+  }
+
+  return blocks;
+}
+
+export type SetquestionBlock = {
+  number?: string;
+  yaml: string;   // YAML compartilhado (antes do \setquestion)
+  body: string;   // texto do bloco completo (do \setquestion até o próximo marcador)
+  itemCount: number;
+  startLine: number;
+};
+
+export function setquestionBlocks(text: string): SetquestionBlock[] {
+  const blocks: SetquestionBlock[] = [];
+  // Localiza todos os marcadores de nível superior: \setquestion e \question (exceto \questionitem)
+  const markerRe = /\\(setquestion|question)\b(?!item)/g;
+  const markers: Array<{ index: number; isSet: boolean }> = [];
+  let qm: RegExpExecArray | null;
+  while ((qm = markerRe.exec(text))) {
+    markers.push({ index: qm.index, isSet: qm[1] === "setquestion" });
+  }
+
+  for (let i = 0; i < markers.length; i++) {
+    if (!markers[i].isSet) continue;
+    const qStart = markers[i].index;
+    const qEnd = i + 1 < markers.length ? markers[i + 1].index : text.length;
+    const prevStart = i > 0 ? markers[i - 1].index : 0;
+    const textBefore = text.slice(prevStart, qStart);
+    const yamlM = textBefore.match(/---\s*\n([\s\S]*?)\n\s*---\s*\n?\s*$/);
+    const yaml = yamlM ? yamlM[1] : "";
+    const body = text.slice(qStart, qEnd).trimEnd();
+    const numMatch = yaml.match(/^numero:\s*"?(.*?)"?$/m);
+    const itemCount = (body.match(/\\questionitem\b/g) ?? []).length;
+    blocks.push({
+      number: numMatch?.[1],
+      yaml,
+      body,
+      itemCount,
+      startLine: lineNumberAt(text, qStart),
     });
   }
   return blocks;
@@ -514,7 +582,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
       const issues: CheckIssue[] = [];
       // Padrão: "(SIGLA)", "(SIGLA 2019)", "(Nome)", "(Nome PPL 2019)" — qualquer nome de concurso/banca
       // Não captura "(Considere...)", "(Use π=...)" — têm conteúdo longo ou sem fechar logo após
-      const PREFIX_BANCA = /^\s*\((?:[A-Z]{2,}[\w\s\-]*?|[A-Z][a-z]{1,12}(?:\s+[A-Z][\w\-]*)*)(?:\s+\d{4})?\)\s/;
+      const PREFIX_BANCA = /^\s*\((?:[A-Z]{2,}[\w\s\-–—]*?|[A-Z][a-z]{1,12}(?:[\s–—\-]+[A-Z][a-zA-Z\-]*)*)(?:\s+\d{4})?\)\s/;
       const PREFIX_NUM   = /^\s*(?:Q\.?\s*)?\d{1,3}[.)]\s/;
 
       // Varre o texto linha a linha, ignorando blocos YAML e comandos LaTeX
@@ -564,6 +632,89 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
           });
         }
       }
+      return issues;
+    },
+  },
+
+  {
+    id: "discursiva-gabarito-em-resposta",
+    description: "Questão discursiva com gabarito: preenchido mas sem resposta: (inclui setquestion/questionitem).",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+
+      // \question individuais
+      for (const block of questionBlocks(text)) {
+        const isDiscursiva = /^tipo:\s*Discursiva\s*$/mi.test(block.yaml);
+        if (!isDiscursiva) continue;
+        const gabaritoMatch = block.yaml.match(/^gabarito:\s*(.+)$/m);
+        if (!gabaritoMatch) continue;
+        const val = gabaritoMatch[1].trim();
+        if (!val || val === "null") continue;
+        const respostaMatch = block.yaml.match(/^resposta:\s*(.+)$/m);
+        if (respostaMatch && respostaMatch[1].trim()) continue;
+        issues.push({
+          ruleId: "discursiva-gabarito-em-resposta",
+          severity: "error",
+          line: block.startLine,
+          questionNumber: block.number,
+          message: `Discursiva com gabarito: "${val}" mas sem resposta:. Preencher resposta: com o texto da resposta — ou, se gabarito: for texto de resposta, renomear para resposta:.`,
+        });
+      }
+
+      // \setquestion: verifica YAML compartilhado (gabaritoN: sem respostaN:)
+      // e YAML inline de cada \questionitem (gabarito: sem resposta:)
+      const setRe = /\\setquestion\b([\s\S]*?)(?=\\setquestion\b|\\question\b|\s*$)/g;
+      let sm: RegExpExecArray | null;
+      while ((sm = setRe.exec(text))) {
+        const setBlock = sm[1];
+        const setLine = lineNumberAt(text, sm.index);
+
+        // YAML antes do \setquestion (tipo + campos compartilhados)
+        const prevStart = sm.index > 0 ? text.lastIndexOf("\n---\n", sm.index) : 0;
+        const textBefore = text.slice(Math.max(0, prevStart), sm.index);
+        const sharedYamlM = textBefore.match(/---\s*\n([\s\S]*?)\n\s*---\s*\n?\s*$/);
+        const sharedYaml = sharedYamlM ? sharedYamlM[1] : "";
+        const isDiscursiva = /^tipo:\s*Discursiva\s*$/mi.test(sharedYaml);
+        if (!isDiscursiva) continue;
+
+        // Campos gabaritoN no YAML compartilhado
+        const gabNRe = /^gabarito(\d+):\s*(.+)$/gm;
+        let gm: RegExpExecArray | null;
+        while ((gm = gabNRe.exec(sharedYaml))) {
+          const n = gm[1];
+          const val = gm[2].trim();
+          if (!val || val === "null") continue;
+          if (new RegExp(`^resposta${n}:\\s*.+$`, "m").test(sharedYaml)) continue;
+          issues.push({
+            ruleId: "discursiva-gabarito-em-resposta",
+            severity: "error",
+            line: setLine,
+            message: `\\setquestion discursivo: gabarito${n}: "${val}" sem resposta${n}:. Renomear para resposta${n}:.`,
+          });
+        }
+
+        // YAML inline de cada \questionitem
+        // [^\n]* cobre args opcionais na mesma linha; \n\s*--- exige que --- venha na linha seguinte
+        const itemRe = /\\questionitem\b[^\n]*\n\s*---\s*\n([\s\S]*?)\n\s*---/g;
+        let im: RegExpExecArray | null;
+        while ((im = itemRe.exec(setBlock))) {
+          const itemYaml = im[1];
+          const gabM = itemYaml.match(/^gabarito:\s*(.+)$/m);
+          if (!gabM) continue;
+          const val = gabM[1].trim();
+          if (!val || val === "null") continue;
+          const numM = itemYaml.match(/^numero:\s*"?(.*?)"?$/m);
+          if (/^resposta:\s*.+$/m.test(itemYaml)) continue;
+          issues.push({
+            ruleId: "discursiva-gabarito-em-resposta",
+            severity: "error",
+            line: lineNumberAt(text, sm!.index + im.index),
+            questionNumber: numM?.[1],
+            message: `\\questionitem discursivo: gabarito: "${val}" sem resposta:. Renomear para resposta:.`,
+          });
+        }
+      }
+
       return issues;
     },
   },
@@ -772,23 +923,96 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
 
   {
     id: "missing-required-yaml",
-    description: "Campos obrigatórios ausentes no YAML da questão.",
+    description: "Campos obrigatórios ausentes no YAML da questão (\\question e \\setquestion).",
     run: ({ text }) => {
       const issues: CheckIssue[] = [];
-      for (const block of questionBlocks(text)) {
+      const checkYaml = (yaml: string, startLine: number, number?: string) => {
         const missing: string[] = [];
-        if (!/^tipo:\s*.+$/m.test(block.yaml)) missing.push("tipo:");
-        if (!/^dificuldade:\s*.+$/m.test(block.yaml)) missing.push("dificuldade:");
-        if (!/^disciplina:\s*.+$/m.test(block.yaml)) missing.push("disciplina:");
-        if (!/^assunto:\s*.+$/m.test(block.yaml)) missing.push("assunto:");
-        if (!/^tags:\s*.+$/m.test(block.yaml)) missing.push("tags:");
+        if (!/^tipo:\s*.+$/m.test(yaml)) missing.push("tipo:");
+        if (!/^dificuldade:\s*.+$/m.test(yaml)) missing.push("dificuldade:");
+        if (!/^disciplina:\s*.+$/m.test(yaml)) missing.push("disciplina:");
+        if (!/^assunto:\s*.+$/m.test(yaml)) missing.push("assunto:");
+        if (!/^tags:\s*.+$/m.test(yaml)) missing.push("tags:");
         if (missing.length > 0) {
           issues.push({
             ruleId: "missing-required-yaml",
             severity: "error",
+            line: startLine,
+            questionNumber: number,
+            message: `Campos obrigatórios ausentes: ${missing.join(", ")}`,
+          });
+        }
+      };
+      for (const block of questionBlocks(text)) checkYaml(block.yaml, block.startLine, block.number);
+      for (const block of setquestionBlocks(text)) checkYaml(block.yaml, block.startLine, block.number);
+      return issues;
+    },
+  },
+
+  {
+    id: "setquestion-single-item",
+    description: "\\setquestion com menos de 2 \\questionitem — será importado como questão com 1 item.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      for (const block of setquestionBlocks(text)) {
+        if (block.itemCount < 2) {
+          issues.push({
+            ruleId: "setquestion-single-item",
+            severity: "warning",
             line: block.startLine,
             questionNumber: block.number,
-            message: `Campos obrigatórios ausentes: ${missing.join(", ")}`,
+            message: `\\setquestion com ${block.itemCount} \\questionitem — mínimo 2 obrigatório. Se for questão simples, usar \\question.`,
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "questionitem-inline-yaml",
+    description: "\\questionitem com YAML inline (---...---) — parse-tex remove esses blocos ao limpar o YAML da questão seguinte, deixando os itens sem metadados.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      for (const block of setquestionBlocks(text)) {
+        // Detecta \questionitem seguido de bloco ---...---
+        if (/\\questionitem\b[^\n]*\n\s*---/.test(block.body)) {
+          issues.push({
+            ruleId: "questionitem-inline-yaml",
+            severity: "error",
+            line: block.startLine,
+            questionNumber: block.number,
+            message: `\\setquestion com YAML inline em \\questionitem (\\questionitem seguido de ---). BUG: parse-tex interpreta esses blocos como YAML da questão seguinte e os remove. CORREÇÃO: mover os campos para o YAML compartilhado do \\setquestion como resposta1:, resposta2:, numero1:, numero2:, assunto1:, etc.`,
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "setquestion-missing-per-item-fields",
+    description: "\\setquestion sem campos por item (respostaN:, assuntoN:, tagsN:) no YAML compartilhado.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      for (const block of setquestionBlocks(text)) {
+        if (block.itemCount < 2) continue;
+        const yaml = block.yaml;
+        const missing: string[] = [];
+        // Verifica se algum campo numerado existe; se não, lista o que falta
+        const hasResposta = /^resposta\d+:/m.test(yaml);
+        const hasAssunto  = /^assunto\d+:/m.test(yaml);
+        const hasTags     = /^tags\d+:/m.test(yaml);
+        if (!hasResposta) missing.push("resposta1:, resposta2:, ...");
+        if (!hasAssunto)  missing.push("assunto1:, assunto2:, ...");
+        if (!hasTags)     missing.push("tags1:, tags2:, ...");
+        if (missing.length > 0) {
+          issues.push({
+            ruleId: "setquestion-missing-per-item-fields",
+            severity: "warning",
+            line: block.startLine,
+            questionNumber: block.number,
+            message: `\\setquestion sem campos por item no YAML compartilhado: ${missing.join(" ")}`,
           });
         }
       }

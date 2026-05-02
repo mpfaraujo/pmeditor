@@ -78,6 +78,63 @@ describe('pagination - layout e regressões', () => {
     expect(items.every((x: any) => x.kind === 'frag')).toBe(true)
   })
 
+  test('[otimizado] quebra lista romana longa por itens quando ela ficaria isolada', () => {
+    const wrapper = document.createElement('div')
+    wrapper.className = 'questao-item-wrapper'
+    setOffsetHeight(wrapper, 989)
+    setComputedMargins(wrapper, 0, 0)
+
+    const content = document.createElement('div')
+    content.className = 'questao-conteudo'
+    const text = document.createElement('div')
+    text.className = 'question-text'
+
+    const intro = document.createElement('p')
+    intro.textContent = 'Observe as afirmações abaixo.'
+    setRect(intro, { height: 55 })
+    text.appendChild(intro)
+
+    const listBlock = document.createElement('div')
+    listBlock.className = 'leading-snug'
+    setRect(listBlock, { height: 746 })
+    const list = document.createElement('ol')
+    list.className = 'roman-list'
+    ;[250, 250, 246].forEach((h) => {
+      const li = document.createElement('li')
+      setRect(li, { height: h })
+      list.appendChild(li)
+    })
+    listBlock.appendChild(list)
+    text.appendChild(listBlock)
+
+    const conclusion = document.createElement('p')
+    conclusion.textContent = 'Assinale a alternativa CORRETA.'
+    setRect(conclusion, { height: 19 })
+    text.appendChild(conclusion)
+    content.appendChild(text)
+
+    const options = document.createElement('div')
+    options.className = 'question-options'
+    ;[27, 27, 27, 27, 27].forEach((h) => {
+      const option = document.createElement('div')
+      setRect(option, { height: h })
+      options.appendChild(option)
+    })
+    content.appendChild(options)
+    wrapper.appendChild(content)
+
+    const m = document.createElement('div')
+    document.body.appendChild(m)
+    m.appendChild(wrapper)
+
+    const pages = distributeQuestionsOptimized(1, [989], 823, 991, 2, m, [])
+    const items = flattenItems(pages).filter((x) => x.q === 0)
+
+    expect(items.length).toBe(2)
+    expect(items.some((x: any) => x.assertiveListFrag?.blockIdx === 2)).toBe(true)
+    expect(items.every((x: any) => x.kind === 'frag')).toBe(true)
+  })
+
   test('[otimizado] set group com base maior que firstPageCapacity deve fragmentar a base (regressão)', () => {
     // Mesmo cenário mas com set group: base + 1 item
     const m = createMeasurementContainer([

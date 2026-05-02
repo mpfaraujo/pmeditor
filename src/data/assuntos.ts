@@ -42,7 +42,7 @@ const DISCIPLINAS_AREAS_MAP: Record<string, NivelAreasMap> = {
   "espanhol":         DISCIPLINAS_JSON["Língua Espanhola"]!,
   "francês":          DISCIPLINAS_JSON["Língua Francesa"]!,
   "frances":          DISCIPLINAS_JSON["Língua Francesa"]!,
-  "artes":            DISCIPLINAS_JSON["Arte"]!,
+  "arte":             DISCIPLINAS_JSON["Artes"]!,
   "ed. física":       DISCIPLINAS_JSON["Educação Física"]!,
   "ed. fisica":       DISCIPLINAS_JSON["Educação Física"]!,
 };
@@ -660,25 +660,47 @@ const DISCIPLINAS_CANONICAS: Record<string, string> = {
   "física": "Física",
   "química": "Química",
   "biologia": "Biologia",
-  "português": "Português",
+  "língua portuguesa": "Língua Portuguesa",
   "história": "História",
   "geografia": "Geografia",
   "filosofia": "Filosofia",
   "sociologia": "Sociologia",
-  "inglês": "Inglês",
-  "espanhol": "Espanhol",
+  "língua inglesa": "Língua Inglesa",
+  "língua espanhola": "Língua Espanhola",
+  "língua francesa": "Língua Francesa",
   "educação física": "Educação Física",
   "artes": "Artes",
   "ciências": "Ciências",
   "redação": "Redação",
-  "literatura": "Literatura",
   "informática": "Informática",
+  "programação": "Programação",
 };
 
 // Aliases explícitos de disciplinas sujas (chave lowercase → canônico ou "" pra lixo)
 const DISCIPLINA_ALIASES: Record<string, string> = {
+  // Matemática — variantes sujas
   "matemáticas": "Matemática",
   "matemáticafunções afins": "Matemática",
+  // Língua Portuguesa — formas curtas
+  "português": "Língua Portuguesa",
+  "portugues": "Língua Portuguesa",
+  "lingua portuguesa": "Língua Portuguesa",
+  "literatura": "Língua Portuguesa",
+  "literatura brasileira": "Língua Portuguesa",
+  // Língua Inglesa — formas curtas
+  "inglês": "Língua Inglesa",
+  "ingles": "Língua Inglesa",
+  "lingua inglesa": "Língua Inglesa",
+  // Língua Espanhola — formas curtas
+  "espanhol": "Língua Espanhola",
+  "lingua espanhola": "Língua Espanhola",
+  // Língua Francesa — formas curtas
+  "francês": "Língua Francesa",
+  "frances": "Língua Francesa",
+  "lingua francesa": "Língua Francesa",
+  // Artes — variante sem 's'
+  "arte": "Artes",
+  // Lixo
   "testetes": "",
 };
 

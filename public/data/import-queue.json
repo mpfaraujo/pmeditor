@@ -1,398 +1,309 @@
 [
   {
-    "latex": "\\question Um vidraceiro é contratado para colocar uma porta de vidro que escorregará em uma canaleta de largura interna igual a 1,45 cm, como mostra a figura.     \r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2019-2/um-vidraceiro-e-contratado-para-colocar-uma-porta.webp}\r\n\r\nO vidraceiro precisa de uma placa de vidro de maior espessura possível, tal que deixe uma folga total de pelo menos 0,2 cm, para que o vidro possa escorregar na canaleta, e no máximo 0,5 cm para que o vidro não fique batendo com a interferência do vento após a instalação. Para conseguir essa placa de vidro, esse vidraceiro foi até uma loja e lá encontrou placas de vidro com espessuras iguais a: 0,75 cm; 0,95 cm; 1,05 cm; 1,20 cm; 1,40 cm.\r\nPara atender às restrições especificadas, o vidraceiro deverá comprar a placa de espessura, em centímetro, igual a\r\n\r\n\\begin{choices}\r\n  \\choice 0,75.\r\n  \\choice 0,95.\r\n  \\choice 1,05.\r\n  \\CorrectChoice 1,20.\r\n  \\choice 1,40.\r\n\\end{choices}",
+    "latex": "\\question Na figura a seguir, a reta $s$ passa pelo ponto $P$ e pelo centro da circunferência de raio $R$, interceptando-a no ponto $Q$, entre $P$ e o centro. Além disso, a reta $t$ passa por $P$, é tangente à circunferência e forma um ângulo $\\alpha$ com a reta $s$.\r\n\r\nSe $PQ = 2R$, então $\\cos \\alpha$ vale:\r\n\r\n\\includegraphics{C:\\Projetos\\pmeditor\\scripts\\trabalho\\saida\\A_2026-05-02_imagens\\figura-01.png}\r\n\r\n\\begin{choices}\r\n\\choice $\\sqrt{6}/2$\r\n\\choice $\\sqrt{2}/3$\r\n\\choice $\\sqrt{3}/2$\r\n\\CorrectChoice $2\\sqrt{2}/3$\r\n\\choice $3\\sqrt{2}/5$\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "D",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
+      "assunto": "Teorema de Pitágoras",
       "gabarito": "D",
+      "fonte": "FUVEST",
+      "concurso": "FUVEST",
+      "numero": "1",
       "tags": [
-        "vidraceiro",
-        "canaleta",
-        "folga"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2019,
-      "numero": "1"
+        "circunferência",
+        "tangente"
+      ]
     }
   },
   {
-    "latex": "\\question O boliche é um esporte cujo objetivo é derrubar, com uma bola, uma série de pinos alinhados em uma pista. A professora de matemática organizou um jogo de boliche em que os pinos são garrafas que possuem rótulos com números, conforme mostra o esquema.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2019-2/o-boliche-e-um-esporte-cujo-objetivo-e-derrubar-de.webp}\r\n\r\nO aluno marca pontos de acordo com a soma das quantidades expressas nos rótulos das garrafas que são derrubadas. Se dois ou mais rótulos representam a mesma quantidade, apenas um deles entra na contagem dos pontos. Um aluno marcou 7,55 pontos em uma jogada. Uma das garrafas que ele derrubou tinha o rótulo 6,8.\r\nA quantidade máxima de garrafas que ele derrubou para obter essa pontuação é igual a\r\n\r\n\\begin{choices}\r\n  \\choice 2.\r\n  \\choice 3.\r\n  \\choice 4.\r\n  \\choice 5.\r\n  \\CorrectChoice 6.\r\n\\end{choices}",
+    "latex": "\\question Na figura seguinte, têm-se $AC = 3$, $AB = 4$ e $CB = 6$. \r\n\r\n\\includegraphics{C:\\Projetos\\pmeditor\\scripts\\trabalho\\saida\\A_2026-05-02_imagens\\figura-02.png}\r\n\r\nO valor de $CD$ é:\r\n\r\n\\begin{choices}\r\n\\choice $17/12$\r\n\\choice $19/12$\r\n\\choice $23/12$\r\n\\choice $25/12$\r\n\\CorrectChoice $29/12$\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "E",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
+      "assunto": "Teorema de Pitágoras",
       "gabarito": "E",
+      "fonte": "FUVEST",
+      "concurso": "FUVEST",
+      "numero": "2",
       "tags": [
-        "boliche",
-        "pinos",
-        "rótulos"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2019,
-      "numero": "2"
+        "triângulo",
+        "segmentos"
+      ]
     }
   },
   {
-    "latex": "\\question Alguns modelos de rádios automotivos estão protegidos por um código de segurança. Para ativar o sistema de áudio, deve-se digitar o código secreto composto por quatro algarismos. No primeiro caso de erro na digitação, a pessoa deve esperar 60 segundos para digitar o código novamente. O tempo de espera duplica, em relação ao tempo de espera anterior, a cada digitação errada. Uma pessoa conseguiu ativar o rádio somente na quarta tentativa, sendo de 30 segundos o tempo gasto para digitação do código secreto a cada tentativa. Nos casos da digitação incorreta, ela iniciou a nova tentativa imediatamente após a liberação do sistema de espera.\r\nO tempo total, em segundo, gasto por essa pessoa para ativar o rádio foi igual a\r\n\r\n\\begin{choices}\r\n  \\choice 300.\r\n  \\choice 420.\r\n  \\CorrectChoice 540.\r\n  \\choice 660.\r\n  \\choice 1 020.\r\n\\end{choices}",
+    "latex": "\\question Tem-se um triângulo equilátero em que cada lado mede 6 cm. O raio do círculo circunscrito a esse triângulo, em centímetros, mede:\r\n\r\n\\begin{choices}\r\n\\choice $\\sqrt{3}$\r\n\\CorrectChoice $2\\sqrt{3}$\r\n\\choice 4\r\n\\choice $3\\sqrt{2}$\r\n\\choice $3\\sqrt{3}$\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C",
+    "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Progressão Geométrica",
-      "gabarito": "C",
+      "assunto": "Teorema de Pitágoras",
+      "gabarito": "B",
+      "fonte": "UNIFESP",
+      "concurso": "UNIFESP",
+      "numero": "3",
       "tags": [
-        "rádio",
-        "código",
-        "espera"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2019,
-      "numero": "3"
+        "triângulo equilátero",
+        "círculo circunscrito",
+        "raio"
+      ]
     }
   },
   {
-    "latex": "\\question Numa atividade de treinamento realizada no Exército de um determinado país, três equipes – \\( \\text{Alpha} \\), \\( \\text{Beta} \\) e \\( \\text{Gama} \\) – foram designadas a percorrer diferentes caminhos, todos com os mesmos pontos de partida e de chegada.\r\n\\begin{itemize}\r\n    \\item A equipe \\( \\text{Alpha} \\) realizou seu percurso em 90 minutos com uma velocidade média de 6,0 km/h.\r\n    \\item A equipe \\( \\text{Beta} \\) também percorreu sua trajetória em 90 minutos, mas sua velocidade média foi de 5,0 km/h.\r\n    \\item Com uma velocidade média de 6,5 km/h, a equipe \\( \\text{Gama} \\) concluiu seu caminho em 60 minutos.\r\n\\end{itemize}\r\nCom base nesses dados, foram comparadas as distâncias percorridas pelas três equipes.\r\nA ordem das distâncias percorridas pelas equipes \\( \\text{Alpha} \\), \\( \\text{Beta} \\) e \\( \\text{Gama} \\) é\r\n\r\n\\begin{choices}\r\n  \\CorrectChoice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-a.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-b.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-c.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-d.webp}\r\n  \\choice \\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/numa-atividade-de-treinamento-realizada-no-exercito-e.webp}\r\n\\end{choices}",
+    "isSet": true,
+    "baseLatexes": [
+      "Na figura abaixo, a circunferência de centro em $O$ e raio $r$ tangencia o lado $BC$ do triângulo $ABC$ no ponto $D$ e tangencia a reta $AB$ no ponto $E$. Os pontos $A, D$ e $O$ são colineares, $AD = 2r$ e o ângulo $A\\hat{C}O$ é reto.\r\n\r\n\\includegraphics{C:\\Projetos\\pmeditor\\scripts\\trabalho\\saida\\A_2026-05-02_imagens\\figura-04.png}\r\n\r\nDetermine, em função de $r$"
+    ],
+    "items": [
+      {
+        "latex": "a medida do lado $AB$ do triângulo $ABC$.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Teorema de Pitágoras",
+          "tags": [
+            "circunferência",
+            "tangência"
+          ],
+          "resposta": "\\( AB = \\frac{4r\\sqrt{3}}{3} \\)",
+          "numero": "4a"
+        }
+      },
+      {
+        "latex": "a medida do segmento $CO$.",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Teorema de Pitágoras",
+          "tags": [
+            "circunferência",
+            "tangência"
+          ],
+          "resposta": "\\( CO = r\\sqrt{3} \\)",
+          "numero": "4b"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "nivel": "médio",
+      "disciplina": "Matemática",
+      "assunto": "Teorema de Pitágoras",
+      "fonte": "FUVEST",
+      "concurso": "FUVEST",
+      "ano": 2015,
+      "numero": "4",
+      "tags": [
+        "circunferência",
+        "tangência",
+        "colineares"
+      ],
+      "items": [
+        {
+          "assunto": "Teorema de Pitágoras",
+          "numero": "4a",
+          "resposta": "\\( AB = \\frac{4r\\sqrt{3}}{3} \\)",
+          "tags": [
+            "circunferência",
+            "tangência"
+          ]
+        },
+        {
+          "assunto": "Teorema de Pitágoras",
+          "numero": "4b",
+          "resposta": "\\( CO = r\\sqrt{3} \\)",
+          "tags": [
+            "circunferência",
+            "tangência"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "latex": "\\question Na figura, $AC = 2AB = 4DB$. \r\n\r\n\\includegraphics{C:\\Projetos\\pmeditor\\scripts\\trabalho\\saida\\A_2026-05-02_imagens\\figura-05.png}\r\n\r\nA razão entre as medidas de $AD$ e $AC$ é:\r\n\r\n\\begin{choices}\r\n\\choice $\\sqrt{3}/2$\r\n\\CorrectChoice $\\sqrt{3}/4$\r\n\\choice $\\sqrt{3}/6$\r\n\\choice $\\sqrt{2}/2$\r\n\\choice $\\sqrt{2}/4$\r\n\\end{choices}",
+    "tipo": "Múltipla Escolha",
+    "gabarito": "B",
+    "meta": {
+      "tipo": "Múltipla Escolha",
+      "dificuldade": "Média",
+      "nivel": "médio",
+      "disciplina": "Matemática",
+      "assunto": "Teorema de Pitágoras",
+      "gabarito": "B",
+      "fonte": "MACKENZIE",
+      "concurso": "MACKENZIE",
+      "numero": "5",
+      "tags": [
+        "razão",
+        "triângulo"
+      ]
+    }
+  },
+  {
+    "latex": "\\question Dois navios navegavam pelo Oceano Atlântico, supostamente plano: $X$, à velocidade constante de 16 milhas por hora, e $Y$, à velocidade constante de 12 milhas por hora. Sabe-se que, às 15 horas de certo dia, $Y$ estava exatamente a 72 milhas ao sul de $X$, e que, a partir de então, $Y$ navegou em linha reta para o leste, enquanto que $X$ navegou em linha reta para o sul, cada qual mantendo suas respectivas velocidades.\r\n\r\nNessas condições, às 17 horas e 15 minutos do mesmo dia, a distância entre $X$ e $Y$, em milhas, era:\r\n\r\n\\begin{choices}\r\n\\CorrectChoice 45\r\n\\choice 48\r\n\\choice 50\r\n\\choice 55\r\n\\choice 58\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "A",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Razões e Proporções",
+      "assunto": "Teorema de Pitágoras",
       "gabarito": "A",
+      "fonte": "PUC-SP",
+      "concurso": "PUC-SP",
+      "numero": "6",
       "tags": [
-        "treinamento",
-        "velocidade-média",
-        "distância"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "4"
+        "problema",
+        "distância",
+        "navios"
+      ]
     }
   },
   {
-    "latex": "\\question Um edifício tem a numeração dos andares iniciando no térreo (T), e continuando com primeiro, segundo, terceiro, ..., até o último andar. Uma criança entrou no elevador e, tocando no painel, seguiu uma sequência de andares, parando, abrindo e fechando a porta em diversos andares. A partir de onde entrou a criança, o elevador subiu sete andares, em seguida desceu dez, desceu mais treze, subiu nove, desceu quatro e parou no quinto andar, finalizando a sequência. Considere que, no trajeto seguido pela criança, o elevador parou uma vez no último andar do edifício.\r\nDe acordo com as informações dadas, o último andar do edifício é o\r\n\r\n\\begin{choices}\r\n  \\choice 16º\r\n  \\choice 22º\r\n  \\CorrectChoice 23º\r\n  \\choice 25º\r\n  \\choice 32º\r\n\\end{choices}",
+    "latex": "\\question Dados dois números reais estritamente positivos $x$ e $y$, construímos um triângulo retângulo em que a medida da hipotenusa é a média aritmética entre eles e a medida de um dos catetos é a semidiferença entre eles. A medida do outro cateto é:\r\n\r\n\\begin{choices}\r\n\\CorrectChoice a média geométrica entre $x$ e $y$.\r\n\\choice a média harmônica entre $x$ e $y$.\r\n\\choice a média ponderada entre $x$ e $y$, com pesos 1 e 2, respectivamente.\r\n\\choice a média aritmética entre $2x$ e $y$.\r\n\\choice a média geométrica entre $2x$ e $2y$.\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
-    "gabarito": "C",
+    "gabarito": "A",
     "meta": {
       "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
+      "dificuldade": "Difícil",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
-      "gabarito": "C",
+      "assunto": "Teorema de Pitágoras",
+      "gabarito": "A",
+      "fonte": "ESPM",
+      "concurso": "ESPM",
+      "numero": "7",
       "tags": [
-        "elevador",
-        "andares",
-        "sequência"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "5"
+        "triângulo retângulo",
+        "médias"
+      ]
     }
   },
   {
-    "latex": "\\question O salto ornamental é um esporte em que cada competidor realiza seis saltos. A nota em cada salto é calculada pela soma das notas dos juízes, multiplicada pela nota de partida (o grau de dificuldade de cada salto). Fica em primeiro lugar o atleta que obtiver a maior soma das seis notas recebidas. O atleta 10 irá realizar o último salto da final. Ele observa no Quadro 1, antes de executar o salto, o recorte do quadro parcial de notas com a sua classificação e a dos três primeiros lugares até aquele momento.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/o-salto-ornamental-e-um-esporte-em-que-cada-seis-1.webp}\r\n\r\nEle precisa decidir com seu treinador qual salto deverá realizar. Os dados dos possíveis tipos de salto estão no Quadro 2.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/o-salto-ornamental-e-um-esporte-em-que-cada-seis-2.webp}\r\n\r\nO atleta optará pelo salto com a maior probabilidade de obter a nota estimada, de maneira que lhe permita alcançar o primeiro lugar.\r\nConsiderando essas condições, o salto que o atleta deverá escolher é o de tipo\r\n\r\n\\begin{choices}\r\n  \\choice T1.\r\n  \\choice T2.\r\n  \\CorrectChoice T3.\r\n  \\choice T4.\r\n  \\choice T5.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Médias",
-      "gabarito": "C",
-      "tags": [
-        "salto-ornamental",
-        "notas",
-        "juízes"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "6"
-    }
-  },
-  {
-    "latex": "\\question Na teoria das eleições, o Método de Borda sugere que em vez de escolher um candidato, cada juiz deve criar um ranking de sua preferência para os concorrentes (isto é, criar uma lista com a ordem de classificação dos concorrentes). A este ranking é associada uma pontuação: um ponto para o último colocado no ranking, dois pontos para o penúltimo, três para o antepenúltimo e assim sucessivamente. Ao final, soma-se a pontuação atribuída a cada concorrente por cada um dos juízes.\r\nEm uma escola houve um concurso de poesia no qual cinco alunos concorreram a um prêmio, sendo julgados por 25 juízes. Para a escolha da poesia vencedora foi utilizado o Método de Borda. Nos quadros, estão apresentados os rankings dos juízes e a frequência de cada ranking.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/na-teoria-das-eleicoes-o-metodo-de-borda-sugere-em.webp}\r\n\r\nA poesia vencedora foi a de\r\n\r\n\\begin{choices}\r\n  \\choice Edu.\r\n  \\choice Dani.\r\n  \\choice Caio.\r\n  \\choice Edu.\r\n  \\CorrectChoice Ana.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Medidas de Tendência Central",
-      "gabarito": "E",
-      "tags": [
-        "eleições",
-        "Método de Borda",
-        "ranking"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "7"
-    }
-  },
-  {
-    "latex": "\\question Em um aeroporto, os passageiros devem submeter suas bagagens a uma das cinco máquinas de raio-X disponíveis ao adentrarem a sala de embarque. Num dado instante, o tempo gasto por essas máquinas para escanear a bagagem de cada passageiro e o número de pessoas presentes em cada fila estão apresentados em um painel, como mostrado na figura.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2018/em-um-aeroporto-os-passageiros-devem-submeter-suas.webp}\r\n\r\nUm passageiro, ao chegar à sala de embarque desse aeroporto no instante indicado, visando esperar o menor tempo possível, deverá se dirigir à máquina\r\n\r\n\\begin{choices}\r\n  \\choice 1.\r\n  \\CorrectChoice 2.\r\n  \\choice 3.\r\n  \\choice 4.\r\n  \\choice 5.\r\n\\end{choices}",
+    "latex": "\\question A partir de um quadrado $ABCD$ de lado medindo 8 cm, desenha-se uma circunferência que passa pelos vértices $A$ e $D$ e é tangente ao lado $BC$. A medida do raio da circunferência desenhada, em cm, é:\r\n\r\n\\begin{choices}\r\n\\choice 4\r\n\\CorrectChoice 5\r\n\\choice $4\\sqrt{2}$\r\n\\choice 6\r\n\\choice $5\\sqrt{2}$\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "B",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
+      "assunto": "Teorema de Pitágoras",
       "gabarito": "B",
+      "fonte": "FMTM",
+      "concurso": "FMTM",
+      "numero": "8",
       "tags": [
-        "aeroporto",
-        "bagagens",
-        "raio-X"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "8"
+        "quadrado",
+        "circunferência",
+        "raio"
+      ]
     }
   },
   {
-    "latex": "\\question A prefeitura de um pequeno município do interior decide colocar postes para iluminação ao longa de uma estrada retilínea, que inicia em uma praça central e termina numa fazenda na zona rural. Como a praça já possui iluminação, o primeiro poste será colocado a 80 metros da praça, o segundo, a 100 metros, o terceiro, a 120 metros, e a assim sucessivamente, mantendo-se sempre uma distância de vinte metros entre os postes, até que o último poste seja colocado a uma distância de 1 380 metros da praça.\r\nSe a prefeitura pode pagar, no máximo, R$ 8 000,00 por poste colocado, o maior valor que poderá gastar com a colocação desses postes é\r\n\r\n\\begin{choices}\r\n  \\choice R$ 512 000, 00\r\n  \\choice R$ 520 000, 00\r\n  \\CorrectChoice R$ 528 000, 00\r\n  \\choice R$ 552 000, 00\r\n  \\choice R$ 584 000, 00\r\n\\end{choices}",
+    "latex": "\\question No triângulo $ABC$, $AB = 13$, $BC = 14$, $CA = 15$, $M$ é ponto médio de $BC$ e $H$ é o pé da altura do triângulo $ABC$, relativa ao vértice $A$. Nas condições dadas, o perímetro do triângulo $BMH$ é igual a:\r\n\r\n\\includegraphics{C:\\Projetos\\pmeditor\\scripts\\trabalho\\saida\\A_2026-05-02_imagens\\figura-09.png}\r\n\r\n\\begin{choices}\r\n\\choice 16\r\n\\choice 17\r\n\\CorrectChoice 18\r\n\\choice 19\r\n\\choice 20\r\n\\end{choices}",
     "tipo": "Múltipla Escolha",
     "gabarito": "C",
     "meta": {
       "tipo": "Múltipla Escolha",
       "dificuldade": "Média",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Progressão Aritmética",
+      "assunto": "Teorema de Pitágoras",
       "gabarito": "C",
+      "fonte": "FGV",
+      "concurso": "FGV",
+      "numero": "9",
       "tags": [
-        "postes",
-        "iluminação",
-        "estrada"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "9"
+        "triângulo",
+        "perímetro",
+        "ponto médio"
+      ]
     }
   },
   {
-    "latex": "\\question Torneios de tênis, em geral, são disputados em sistema de eliminatória simples. Nesse sistema, são disputadas partidas entre dois competidores, com a eliminação do perdedor e promoção do vencedor para a fase seguinte. Dessa forma, se na 1ª fase o torneio conta com 2n competidores, então na 2ª fase restarão n competidores, e assim sucessivamente até a partida final.\r\nEm um torneio de tênis, disputado nesse sistema, participam 128 tenistas.\r\nPara se definir o campeão desse torneio, o número de partidas necessárias é dado por\r\n\r\n\\begin{choices}\r\n  \\choice 2 x 128\r\n  \\choice 64 + 32 + 16 + 8 + 4 + 2\r\n  \\choice 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1\r\n  \\choice 128 + 64 + 32 + 16 + 8 + 4 + 2\r\n  \\CorrectChoice 64 + 32 + 16 + 8 + 4 + 2 + 1\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
+    "isSet": true,
+    "baseLatexes": [
+      "Para trocar uma lâmpada, Roberto encostou uma escada na parede de sua casa, de forma que o topo da escada ficou a uma altura de aproximadamente $\\sqrt{14}$ m. Enquanto subia os degraus, a base da escada escorregou por 1 m, indo tocar o muro paralelo à parede. Roberto reparou que, após deslizar, a escada passou a fazer um ângulo de 45º com a horizontal.\r\n\r\n\\includegraphics{C:\\Projetos\\pmeditor\\scripts\\trabalho\\saida\\A_2026-05-02_imagens\\figura-10.png}\r\n\r\nPergunta-se:"
+    ],
+    "items": [
+      {
+        "latex": "Qual a distância entre a parede da casa e o muro?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Teorema de Pitágoras",
+          "tags": [
+            "problema",
+            "escada"
+          ],
+          "resposta": "3 m",
+          "numero": "10a"
+        }
+      },
+      {
+        "latex": "Qual é o comprimento da escada de Roberto?",
+        "tipo": "Discursiva",
+        "gabarito": null,
+        "meta": {
+          "assunto": "Teorema de Pitágoras",
+          "tags": [
+            "problema",
+            "escada"
+          ],
+          "resposta": "\\( 3\\sqrt{2} \\) m",
+          "numero": "10b"
+        }
+      }
+    ],
+    "sharedMeta": {
+      "tipo": "Discursiva",
+      "dificuldade": "Difícil",
+      "nivel": "médio",
       "disciplina": "Matemática",
-      "assunto": "Progressão Geométrica",
-      "gabarito": "E",
+      "assunto": "Teorema de Pitágoras",
+      "fonte": "UNICAMP",
+      "concurso": "UNICAMP",
+      "numero": "10",
       "tags": [
-        "tênis",
-        "eliminatória",
-        "partidas"
+        "problema",
+        "escada",
+        "inclinação"
       ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "10"
-    }
-  },
-  {
-    "latex": "\\question Uma repartição pública possui um sistema que armazena em seu banco de dados todos os ofícios, memorandos e cartas enviados ao longo dos anos. Para organizar todo esse material e facilitar a localização no sistema, o computador utilizado pela repartição gera um código para cada documento, de forma que os oito primeiros dígitos indicam a data em que o documento foi emitido (DDMMAAAA), os dois dígitos seguintes indicam o tipo de documento (ofício: 01, memorando: 02 e carta: 03) e os três últimos dígitos indicam a ordem do documento. Por exemplo, o código 0703201201003 indica um ofício emitido no dia 7 de março de 2012, cuja ordem é 003. No dia 27 de janeiro de 2001, essa repartição pública emitiu o memorando de ordem 012 e o enviou aos seus funcionários.\r\nO código gerado para esse memorando foi\r\n\r\n\\begin{choices}\r\n  \\choice 0122701200102.\r\n  \\choice 0201227012001.\r\n  \\choice 0227012001012.\r\n  \\choice 2701200101202.\r\n  \\CorrectChoice 2701200102012.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "E",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Sistema de Numeração e Métrico Decimal",
-      "gabarito": "E",
-      "tags": [
-        "repartição-pública",
-        "código",
-        "documentos"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "11"
-    }
-  },
-  {
-    "latex": "\\question Os consumidores X, Y e Z desejam trocar seus planos de internet móvel na tentativa de obterem um serviço de melhor qualidade. Após pesquisarem, escolheram uma operadora que oferece cinco planos para diferentes perfis, conforme apresentado no quadro.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/os-consumidores-x-y-e-z-desejam-trocar.webp}\r\n\r\nEm cada plano, o consumidor paga um valor fixo(preço mensal da assinatura) pela franquia contratada e um valor variável, que depende da quantidade de MB utilizado além da franquia. Considere que a velocidade máxima de acesso seja a mesma, independentemente do plano, que os consumos mensais de X, Y e Z são de 190 MB, 450 MB e 890 MB, respectivamente, e que cada um deles escolherá apenas um plano.\r\nCom base nos dados do quadro, as escolhas dos planos com menores custos para os consumidores X, Y e Z, respectivamente, são\r\n\r\n\\begin{choices}\r\n  \\choice A, C e C\r\n  \\choice A, B e D.\r\n  \\CorrectChoice B, B e D.\r\n  \\choice B, C e C\r\n  \\choice B, C e D.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Afim",
-      "gabarito": "C",
-      "tags": [
-        "internet-móvel",
-        "planos",
-        "custos"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM-PPL",
-      "banca": "INEP",
-      "ano": 2017,
-      "numero": "12"
-    }
-  },
-  {
-    "latex": "\\question Chegando ao destino de uma mesma viagem, os turistas X e Y alugarão, cada um deles, um carro. Fizeram, previamente, cotações com as mesmas três locadoras de automóveis da região. Os valores dos aluguéis estão representados pelas expressões dadas no quadro, sendo K o número de quilômetros percorridos, e No número de diárias pagas pelo aluguel.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/chegando-ao-destino-de-uma-mesma-viagem.webp}\r\n\r\nO turista X alugará um carro em uma mesma locadora por três dias e percorrerá 250 km. Já a pessoa Y usará o carro por apenas um dia e percorrerá 120 km.\r\nCom o intuito de economizarem com as locações dos carros, e mediante as informações, os turistas X e Y alugarão os carros, respectivamente, nas empresas\r\n\r\n\\begin{choices}\r\n  \\choice I e II.\r\n  \\CorrectChoice I e III.\r\n  \\choice II e II.\r\n  \\choice II e III.\r\n  \\choice III e I.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "B",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Função Afim",
-      "gabarito": "B",
-      "tags": [
-        "locação",
-        "carros",
-        "diárias"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM-PPL",
-      "banca": "INEP",
-      "ano": 2017,
-      "numero": "13"
-    }
-  },
-  {
-    "latex": "\\question No próximo fim de semana, uma pessoa receberá visitas em sua casa, precisando, portanto, comprar refrigerante. Para isso, ela fez a pesquisa de preços em dois supermercados e montou esta tabela.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/chegando-ao-destino-de-uma-mesma-viagem.webp}\r\n\r\nEla pretende comprar apenas garrafas que tenham a mesma capacidade.\r\nIndependentemente de em qual supermercado essa pessoa fará a compra, a fim de ter o menor custo, ela deverá adquirir garrafas com que capacidade?        \r\n\r\n\\begin{choices}\r\n  \\choice 500 mL\r\n  \\choice 1,5 L\r\n  \\CorrectChoice 2 L\r\n  \\choice 2,5 L\r\n  \\choice 3 L\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Razões e Proporções",
-      "gabarito": "C",
-      "tags": [
-        "supermercados",
-        "preços",
-        "refrigerante"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM-PPL",
-      "banca": "INEP",
-      "ano": 2017,
-      "numero": "14"
-    }
-  },
-  {
-    "latex": "\\question Um funcionário da Secretaria de Meio Ambiente de um município resolve apresentar ao prefeito um plano de priorização para a limpeza das lagoas da cidade. Para a execução desse plano, o prefeito decide voltar suas ações, primeiramente, para aquela lagoa que tiver o maior coeficiente de impacto, o qual é definido como o produto entre o nível de contaminação médio por mercúrio em peixes e o tamanho da população ribeirinha. O quadro mostra as lagoas do município e suas correspondentes informações.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017-2/um-funcionario-da-secretaria-de-meio-ambiente-de.webp}\r\n\r\nA primeira lagoa que sofrerá a intervenção planejada será a\r\n\r\n\\begin{choices}\r\n  \\choice Antiga.\r\n  \\choice Bela.\r\n  \\choice Delícia.\r\n  \\CorrectChoice Salgada.\r\n  \\choice Vermelha.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
-      "gabarito": "D",
-      "tags": [
-        "limpeza",
-        "lagoas",
-        "coeficiente-de-impacto"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM-PPL",
-      "banca": "INEP",
-      "ano": 2017,
-      "numero": "15"
-    }
-  },
-  {
-    "latex": "\\question Um instituto de pesquisas eleitorais recebe uma encomenda na qual a margem de erro deverá ser de, no máximo, 2 pontos percentuais (0,02).\r\nO instituto tem 5 pesquisas recentes, P1 a P5, sobre o tema objeto da encomenda e irá usar a que tiver o erro menor que o pedido.\r\nOs dados sobre as pesquisas são os seguintes:\r\nO erro pode ser expresso por\r\nem que \\(\\sigma\\) um parâmetro e N é o número de pessoas entrevistadas pela pesquisa.\r\nQual pesquisa deverá ser utilizada?\r\n\r\n\\begin{choices}\r\n  \\choice P1\r\n  \\choice P2\r\n  \\choice P3\r\n  \\CorrectChoice P4\r\n  \\choice P5\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Medidas de Dispersão",
-      "gabarito": "D",
-      "tags": [
-        "pesquisas",
-        "margem-de-erro",
-        "entrevistados"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "16"
-    }
-  },
-  {
-    "latex": "\\question Um instituto de pesquisas eleitorais recebe uma encomenda na qual a margem de erro deverá ser de, no máximo, 2 pontos percentuais (0,02).\r\nO instituto tem 5 pesquisas recentes, P1 a P5, sobre o tema objeto da encomenda e irá usar a que tiver o erro menor que o pedido.\r\nOs dados sobre as pesquisas são os seguintes:\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017/um-instituto-de-pesquisa-eleitorais-recebe-uma-encomenda-na-qual.webp}    \r\n\r\nem que \\(\\sigma\\) é um parâmetro e N é o número de pessoas entrevistadas pela pesquisa.\r\nQual pesquisa deverá ser utilizada?\r\n\r\n\\begin{choices}\r\n  \\choice P1.\r\n  \\choice P2.\r\n  \\choice P3.\r\n  \\CorrectChoice P4.\r\n  \\choice P5.\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "D",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Medidas de Dispersão",
-      "gabarito": "D",
-      "tags": [
-        "pesquisas",
-        "margem-de-erro",
-        "parâmetro"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "17"
-    }
-  },
-  {
-    "latex": "\\question Em um parque há dois mirantes de alturas distintas que são acessados por elevador panorâmico. O topo do mirante 1 é acessado pelo elevador 1, enquanto que o topo do mirante 2 é acessado pelo elevador 2. Eles encontram-se a uma distância possível de ser percorrida a pé, e entre os mirantes há um teleférico que os liga que pode ou não ser utilizado pelo visitante.\r\n\r\n\\includegraphics{https://projetoagathaedu.com.br/imagens/provas-enem/matematica-pos/2017/em-um-parque-ha-dois-mirantes-de-alturas-distintas-que-sao-acessados.webp}\r\n\r\nO acesso aos elevadores tem os seguintes custos:\r\n\\begin{itemize}\r\n    \\item Subir pelo elevador 1: R$ 0,15;\r\n    \\item Subir pelo elevador 2: R$ 1,80;\r\n    \\item Descer pelo elevador 1: R$ 0,10;\r\n    \\item Descer pelo elevador 2: R$ 2,30.\r\n\\end{itemize}\r\nO custo da passagem do teleférico partindo do topo do mirante 1 para o topo do mirante 2 é de R$ 2,00, e do topo do mirante 2 para o topo do mirante 1 é de R$ 2,50.\r\nQual é o menor custo, em real, para uma pessoa visitar os topos dos dois mirantes e retornar ao solo?\r\n\r\n\\begin{choices}\r\n  \\choice 2,25\r\n  \\choice 3,90\r\n  \\CorrectChoice 4,35\r\n  \\choice 4,40\r\n  \\choice 4,45\r\n\\end{choices}",
-    "tipo": "Múltipla Escolha",
-    "gabarito": "C",
-    "meta": {
-      "tipo": "Múltipla Escolha",
-      "dificuldade": "Média",
-      "disciplina": "Matemática",
-      "assunto": "Problemas sobre as 4 Operações",
-      "gabarito": "C",
-      "tags": [
-        "mirantes",
-        "elevador",
-        "teleférico"
-      ],
-      "fonte": "concurso",
-      "concurso": "ENEM",
-      "banca": "INEP",
-      "ano": 2025,
-      "numero": "18"
+      "items": [
+        {
+          "assunto": "Teorema de Pitágoras",
+          "numero": "10a",
+          "resposta": "3 m",
+          "tags": [
+            "problema",
+            "escada"
+          ]
+        },
+        {
+          "assunto": "Teorema de Pitágoras",
+          "numero": "10b",
+          "resposta": "\\( 3\\sqrt{2} \\) m",
+          "tags": [
+            "problema",
+            "escada"
+          ]
+        }
+      ]
     }
   }
 ]

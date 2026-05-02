@@ -81,6 +81,15 @@
  * ════════════════════════════════════════════════════════════════════════
  */
 
+export type AssertiveListFrag = {
+  /** Índice 1-based do bloco (dentro do .questao-conteudo) que contém a lista */
+  blockIdx: number;
+  /** Primeiro item a renderizar (1-based, inclusivo) */
+  itemFrom: number;
+  /** Último item a renderizar (1-based, inclusivo) */
+  itemTo: number;
+};
+
 export type LayoutItem =
   | { kind: "full"; q: number }
   | {
@@ -91,6 +100,8 @@ export type LayoutItem =
       first: boolean;
       /** Quantos blocos vêm de .question-text (o resto são opções individuais) */
       textBlockCount?: number;
+      /** Quando presente, a assertive-list nesse fragmento exibe só itemFrom..itemTo */
+      assertiveListFrag?: AssertiveListFrag;
     };
 
 export type PageLayout = {
@@ -211,6 +222,8 @@ type SplitInfo = {
   suffixHeight: number; // margem/pós-conteúdo (ex.: margin-bottom do wrapper)
   blocksHeights: number[]; // alturas dos blocos (1:1 com nth-child)
   textBlockCount?: number; // quantos blocos são de .question-text (o resto são opções)
+  /** Alturas dos <li> de assertive-lists, indexado pelo índice 0-based do bloco */
+  listItems?: Map<number, number[]>;
 };
 
 type PickResult = { blocks: HTMLElement[]; textBlockCount?: number };
@@ -348,6 +361,49 @@ function measureSplitInfo(
   // (para não "cobrar" essa margem em todo fragmento).
   const prefixHeight = Math.max(0, total - contentBlocksSum - mb);
 
+  // Mede alturas dos <li> de listas renderizadas como bloco único.
+  // O nome assertiveListFrag é legado, mas o mesmo recorte serve para
+  // roman-list/alpha-list/bullet-list quando a lista é grande demais.
+  const listItemsMap = new Map<number, number[]>();
+  const listSelector = "ul.assertive-list, ol.roman-list, ol.alpha-list, ul, ol";
+  blockEls.forEach((blockEl, bIdx) => {
+    const list = (
+      blockEl.matches(listSelector)
+        ? blockEl
+        : blockEl.querySelector(listSelector)
+    ) as HTMLElement | null;
+    if (!list) return;
+    const liEls = Array.from(list.children) as HTMLElement[];
+    if (liEls.length < 2) return;
+    const liHeights: number[] = [];
+    for (let i = 0; i < liEls.length; i++) {
+      const h = Math.max(Math.ceil(liEls[i].getBoundingClientRect().height), 1);
+      if (i < liEls.length - 1) {
+        const gap = Math.max(0, Math.ceil(
+          liEls[i + 1].getBoundingClientRect().top - liEls[i].getBoundingClientRect().bottom
+        ));
+        liHeights.push(h + gap);
+      } else {
+        liHeights.push(h);
+      }
+    }
+    listItemsMap.set(bIdx, liHeights);
+  });
+
+  if (typeof window !== "undefined") {
+    const key = "__PMEDITOR_ASSERTIVE_DEBUG__";
+    if (!Array.isArray((window as any)[key])) (window as any)[key] = [];
+    (window as any)[key].push({
+      index,
+      expandOptions,
+      blockCount: blockEls.length,
+      blockClasses: blockEls.map((b) => b.className),
+      listItemsDetected: listItemsMap.size > 0
+        ? Object.fromEntries(Array.from(listItemsMap.entries()).map(([k, v]) => [k, v]))
+        : null,
+    });
+  }
+
   appendPaginationDebugTrace({
     type: "measureSplitInfo",
     index,
@@ -358,9 +414,19 @@ function measureSplitInfo(
     textBlockCount,
     blocksHeights,
     blockCount: blockEls.length,
+    listItemsDetected: listItemsMap.size > 0
+      ? Object.fromEntries(Array.from(listItemsMap.entries()).map(([k, v]) => [k, v]))
+      : null,
+    blockClasses: blockEls.map((b) => b.className),
   });
 
-  return { prefixHeight, suffixHeight: mb, blocksHeights, textBlockCount };
+  return {
+    prefixHeight,
+    suffixHeight: mb,
+    blocksHeights,
+    textBlockCount,
+    listItems: listItemsMap.size > 0 ? listItemsMap : undefined,
+  };
 }
 
 function shouldUseConservativeImageOptionFallback(
@@ -396,6 +462,84 @@ function shouldUseConservativeImageOptionFallback(
     ) / optionImages.length;
 
   return avgImageWidth >= 220;
+}
+
+/**
+ * Cria um SplitInfo expandido substituindo o bloco da assertive-list pelos seus <li> individuais.
+ * A altura "extra" (gap entre a lista e o bloco seguinte) é atribuída ao último item.
+ */
+function expandListBlock(split: SplitInfo, blockIdx0: number, liHeights: number[]): SplitInfo {
+  const sumLi = liHeights.reduce((a, b) => a + b, 0);
+  const extra = Math.max(0, split.blocksHeights[blockIdx0] - sumLi);
+  const expandedLi = [...liHeights];
+  if (extra > 0) expandedLi[expandedLi.length - 1] += extra;
+
+  const newBlocksHeights = [
+    ...split.blocksHeights.slice(0, blockIdx0),
+    ...expandedLi,
+    ...split.blocksHeights.slice(blockIdx0 + 1),
+  ];
+
+  const origN = split.textBlockCount;
+  let newTextBlockCount = origN;
+  if (origN != null && blockIdx0 < origN) {
+    newTextBlockCount = origN - 1 + liHeights.length;
+  }
+
+  return {
+    prefixHeight: split.prefixHeight,
+    suffixHeight: split.suffixHeight,
+    blocksHeights: newBlocksHeights,
+    textBlockCount: newTextBlockCount,
+    // listItems deliberadamente omitido: impede recursão no pós-processamento
+  };
+}
+
+/**
+ * Traduz fragmentos gerados sobre o SplitInfo expandido de volta para índices originais,
+ * adicionando assertiveListFrag quando necessário.
+ */
+function translateExpandedFragments(
+  expanded: { items: LayoutItem[]; heights: number[] },
+  listBlockIdx0: number,
+  listItemCount: number,
+  origTextBlockCount: number | undefined
+): { items: LayoutItem[]; heights: number[] } {
+  const listExpandedStart = listBlockIdx0;       // 0-based índice do 1º item expandido
+  const listExpandedEnd = listBlockIdx0 + listItemCount - 1; // 0-based índice do último
+
+  function toOrigIdx0(expandedIdx0: number): number {
+    if (expandedIdx0 < listExpandedStart) return expandedIdx0;
+    if (expandedIdx0 <= listExpandedEnd) return listBlockIdx0;
+    return expandedIdx0 - listItemCount + 1;
+  }
+
+  const newItems = expanded.items.map((it) => {
+    if (it.kind !== "frag") return it;
+    const fi = it as Extract<LayoutItem, { kind: "frag" }>;
+    const eFrom0 = fi.from - 1; // 0-based
+    const eTo0 = fi.to - 1;     // 0-based
+
+    const origFrom = toOrigIdx0(eFrom0) + 1; // 1-based
+    const origTo = toOrigIdx0(eTo0) + 1;     // 1-based
+
+    // Quais itens da lista (expandidos 0-based) estão neste fragmento?
+    const listStart = Math.max(eFrom0, listExpandedStart);
+    const listEnd = Math.min(eTo0, listExpandedEnd);
+
+    let assertiveListFrag: AssertiveListFrag | undefined;
+    if (listStart <= listEnd) {
+      assertiveListFrag = {
+        blockIdx: listBlockIdx0 + 1,              // 1-based original
+        itemFrom: listStart - listExpandedStart + 1, // 1-based item
+        itemTo: listEnd - listExpandedStart + 1,     // 1-based item
+      };
+    }
+
+    return { ...fi, from: origFrom, to: origTo, textBlockCount: origTextBlockCount, assertiveListFrag };
+  });
+
+  return { items: newItems, heights: expanded.heights };
 }
 
 function buildFragmentsForQuestion(
@@ -464,17 +608,56 @@ if (used + h > cap + FIT_EPS) break;
     first = false;
   }
 
+  // Pós-processamento: se há 3+ fragmentos e um deles contém uma lista,
+  // tenta expandir os <li> como blocos individuais para produzir menos fragmentos.
+  const _assertivePostDebug: any = {
+    itemCount: items.length,
+    listItemsSize: split.listItems?.size ?? 0,
+    triggered: false,
+  };
+  if (items.length >= 3 && split.listItems && split.listItems.size > 0) {
+    _assertivePostDebug.triggered = true;
+    _assertivePostDebug.candidates = [];
+    for (const [blockIdx0, liHeights] of split.listItems) {
+      if (liHeights.length < 2) continue;
+      const listBlock1 = blockIdx0 + 1; // 1-based
+      const containsList = items.some(
+        (it) => it.kind === "frag" && it.from <= listBlock1 && it.to >= listBlock1
+      );
+      const candidate: any = { blockIdx0, listBlock1, containsList, liCount: liHeights.length, liHeights };
+      _assertivePostDebug.candidates.push(candidate);
+      if (!containsList) continue;
+
+      const expandedSplit = expandListBlock(split, blockIdx0, liHeights);
+      const expandedResult = buildFragmentsForQuestion(qIndex, expandedSplit, capFirstFrag, capNextFrag);
+      candidate.expandedItemCount = expandedResult?.items.length;
+      if (expandedResult && expandedResult.items.length < items.length) {
+        candidate.improved = true;
+        if (typeof window !== "undefined") {
+          const key = "__PMEDITOR_ASSERTIVE_DEBUG__";
+          if (!Array.isArray((window as any)[key])) (window as any)[key] = [];
+          (window as any)[key].push({ phase: "postProcessing", qIndex, ..._assertivePostDebug });
+        }
+        appendPaginationDebugTrace({
+          type: "buildFragmentsForQuestion",
+          qIndex, capFirstFrag, capNextFrag, prefixHeight, suffixHeight, textBlockCount,
+          blocksHeights, items, heights,
+          postProcessing: _assertivePostDebug,
+        });
+        return translateExpandedFragments(expandedResult, blockIdx0, liHeights.length, textBlockCount);
+      }
+    }
+  }
+  if (typeof window !== "undefined") {
+    const key = "__PMEDITOR_ASSERTIVE_DEBUG__";
+    if (!Array.isArray((window as any)[key])) (window as any)[key] = [];
+    (window as any)[key].push({ phase: "postProcessing", qIndex, ..._assertivePostDebug });
+  }
   appendPaginationDebugTrace({
     type: "buildFragmentsForQuestion",
-    qIndex,
-    capFirstFrag,
-    capNextFrag,
-    prefixHeight,
-    suffixHeight,
-    textBlockCount,
-    blocksHeights,
-    items,
-    heights,
+    qIndex, capFirstFrag, capNextFrag, prefixHeight, suffixHeight, textBlockCount,
+    blocksHeights, items, heights,
+    postProcessing: _assertivePostDebug,
   });
 
   return { items, heights };

@@ -7,6 +7,7 @@ import "katex/dist/katex.min.css";
 import "katex/contrib/mhchem";
 import { essayPartLabel, shouldShowEssayPartLabels } from "@/lib/questionRules";
 import type { OptionPermutation } from "@/lib/GeraTiposDeProva";
+import type { AssertiveListFrag } from "@/lib/pagination";
 import type { CanonicalLineMap } from "@/lib/lineRefMeasure";
 import { formatLineRef } from "@/lib/lineRefMeasure";
 
@@ -25,6 +26,7 @@ type Props = {
   fragmentRender?: {
     textBlocks?: number[];  // quais blocos de texto renderizar
     options?: number[];     // quais opções renderizar
+    assertiveListFrag?: AssertiveListFrag; // filtro de itens dentro de uma assertive-list
   };
   baseTextSections?: Array<{
     id: string;
@@ -354,9 +356,11 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
   function renderQuestionLike(nodes: PMNode[], keyPrefix: string): React.ReactNode {
     const allBlocks: React.ReactNode[] = [];
     const allOptions: React.ReactNode[] = [];
+    const alf = fragmentRender?.assertiveListFrag;
 
     nodes.forEach((qNode, j) => {
       if (qNode.type === "base_text" || qNode.type === "statement") {
+        const blockStart = allBlocks.length + 1; // índice 1-based do primeiro bloco desta chamada
         if (qNode.type === "base_text") {
           allBlocks.push(
             ...renderBaseTextNode(
@@ -370,7 +374,8 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
             ...renderBlock(
               qNode,
               `${keyPrefix}-blk-${j}`,
-              `${keyPrefix}-statement-${j}`
+              `${keyPrefix}-statement-${j}`,
+              alf ? { blockStart, assertiveListFrag: alf } : undefined
             )
           );
         }
@@ -497,7 +502,8 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
   function renderBlock(
     node: PMNode,
     keyPrefix: string,
-    lineScope?: string
+    lineScope?: string,
+    blockFilter?: { blockStart: number; assertiveListFrag: AssertiveListFrag }
   ): React.ReactNode[] {
     return (
       node.content?.flatMap((child, i) => {
@@ -533,10 +539,19 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
           );
         }
 
-        if (child.type === "bullet_list" || child.type === "ordered_list" || child.type === "roman_list" || child.type === "alpha_list" || child.type === "assertive_list") {
+        if (child.type === "assertive_list" || child.type === "bullet_list" || child.type === "ordered_list" || child.type === "roman_list" || child.type === "alpha_list") {
+          const currentBlock = (blockFilter?.blockStart ?? 1) + i;
+          const af = blockFilter?.assertiveListFrag;
+          const shouldFilter = af && af.blockIdx === currentBlock;
+          const listContent = shouldFilter
+            ? (child.content ?? []).slice(af!.itemFrom - 1, af!.itemTo)
+            : (child.content ?? []);
+          const filteredChild = shouldFilter
+            ? { ...child, attrs: { ...(child.attrs ?? {}), start: af!.itemFrom }, content: listContent }
+            : child;
           return (
             <div key={key} className="leading-snug" {...scopeAttrs}>
-              {renderInline(child)}
+              {renderInline(filteredChild)}
             </div>
           );
         }
@@ -921,8 +936,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     }
 
     if (node.type === "ordered_list") {
+      const start = Number(node.attrs?.start) || undefined;
       return (
-        <ol>
+        <ol start={start}>
           {node.content?.map((li, i) => (
             <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
           ))}
@@ -931,8 +947,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     }
 
     if (node.type === "roman_list") {
+      const start = Number(node.attrs?.start) || undefined;
       return (
-        <ol className="roman-list">
+        <ol className="roman-list" start={start}>
           {node.content?.map((li, i) => (
             <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
           ))}
@@ -941,8 +958,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     }
 
     if (node.type === "alpha_list") {
+      const start = Number(node.attrs?.start) || undefined;
       return (
-        <ol className="alpha-list">
+        <ol className="alpha-list" start={start}>
           {node.content?.map((li, i) => (
             <React.Fragment key={i}>{renderInline(li)}</React.Fragment>
           ))}

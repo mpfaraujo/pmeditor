@@ -42,6 +42,7 @@ import {
   measureQuestionHeights,
   calculateFirstPageCapacity,
   calculateOtherPageCapacity,
+  type LayoutItem,
 } from "@/lib/pagination";
 
 import { getBaseText } from "@/lib/baseTexts";
@@ -1035,14 +1036,20 @@ const { pages, refs } = usePagination({
         coluna1: (p.coluna1 ?? []).map((it: any) =>
           typeof it === "number"
             ? { kind: "number", q: it }
-            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to, textBlockCount: it.textBlockCount }
+            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to, textBlockCount: it.textBlockCount, assertiveListFrag: it.assertiveListFrag }
         ),
         coluna2: (p.coluna2 ?? []).map((it: any) =>
           typeof it === "number"
             ? { kind: "number", q: it }
-            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to, textBlockCount: it.textBlockCount }
+            : { kind: it.kind, q: it.q, first: it.first, from: it.from, to: it.to, textBlockCount: it.textBlockCount, assertiveListFrag: it.assertiveListFrag }
         ),
       })),
+      paginationTrace: Array.isArray((window as any).__PMEDITOR_PAGINATION_DEBUG_TRACE__)
+        ? (window as any).__PMEDITOR_PAGINATION_DEBUG_TRACE__
+        : [],
+      assertiveDebug: Array.isArray((window as any).__PMEDITOR_ASSERTIVE_DEBUG__)
+        ? (window as any).__PMEDITOR_ASSERTIVE_DEBUG__
+        : [],
     };
 
     (window as any).__PMEDITOR_MONTAR_DEBUG__ = payload;
@@ -1134,7 +1141,7 @@ const { pages, refs } = usePagination({
   const renderQuestion = (
     question: QuestionData | undefined,
     globalIndex: number,
-    frag?: { kind: "frag"; from: number; to: number; first: boolean; textBlockCount?: number }
+    frag?: Extract<LayoutItem, { kind: "frag" }>
   ) => {
     if (!question) return null;
     const printedIndex = (printNumberMap.get(globalIndex) ?? 1) - 1;
@@ -1209,6 +1216,8 @@ const { pages, refs } = usePagination({
       const N = frag.textBlockCount;
       const { from, to } = frag;
 
+      const alf = frag.assertiveListFrag;
+
       if (N != null && (from > N || to > N)) {
         // Opções foram expandidas: índices abrangem .question-text (1..N) + .question-options > * (N+1..)
         const textFrom = Math.max(from, 1);
@@ -1222,21 +1231,24 @@ const { pages, refs } = usePagination({
         return {
           textBlocks: hasText ? Array.from({ length: textTo - textFrom + 1 }, (_, i) => textFrom + i) : [],
           options: hasOpts ? Array.from({ length: optTo - optFrom + 1 }, (_, i) => optFrom + i) : [],
+          assertiveListFrag: alf,
         };
       } else if (N != null) {
         // Blocos de texto apenas (sem opções neste fragmento): texto base, discursiva, etc.
         return {
           textBlocks: Array.from({ length: to - from + 1 }, (_, i) => from + i),
           options: [],
+          assertiveListFrag: alf,
         };
       } else {
         // N indefinido: no primeiro fragmento renderiza tudo; nos seguintes usa from/to como índices de texto
         if (frag.first) {
-          return undefined;
+          return alf ? { assertiveListFrag: alf } : undefined;
         } else {
           return {
             textBlocks: Array.from({ length: to - from + 1 }, (_, i) => from + i),
             options: [],
+            assertiveListFrag: alf,
           };
         }
       }

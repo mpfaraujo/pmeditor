@@ -96,6 +96,51 @@ describe('QuestionRendererBase - fragmentação de set discursivo', () => {
     expect(screen.getByText('Trecho B1')).toBeInTheDocument()
   })
 
+  test('filtra itens de lista romana dentro de fragmento de bloco', () => {
+    const content = {
+      type: 'doc',
+      content: [
+        {
+          type: 'question',
+          content: [
+            {
+              type: 'statement',
+              content: [
+                { type: 'paragraph', content: [{ type: 'text', text: 'Intro' }] },
+                {
+                  type: 'roman_list',
+                  content: [
+                    { type: 'list_item', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Item I' }] }] },
+                    { type: 'list_item', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Item II' }] }] },
+                    { type: 'list_item', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Item III' }] }] },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }
+
+    render(
+      <QuestionRendererBase
+        content={content}
+        mode="prova"
+        fragmentRender={{
+          textBlocks: [2],
+          options: [],
+          assertiveListFrag: { blockIdx: 2, itemFrom: 2, itemTo: 3 },
+        }}
+      />
+    )
+
+    expect(screen.queryByText('Intro')).not.toBeInTheDocument()
+    expect(screen.queryByText('Item I')).not.toBeInTheDocument()
+    expect(screen.getByText('Item II')).toBeInTheDocument()
+    expect(screen.getByText('Item III')).toBeInTheDocument()
+    expect(document.querySelector('ol.roman-list')?.getAttribute('start')).toBe('2')
+  })
+
   test('oculta label de seção marcada como hidden sem alterar o texto base', () => {
     const content = {
       type: 'doc',

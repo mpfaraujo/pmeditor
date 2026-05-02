@@ -51,7 +51,8 @@
       "Skill(update-config)",
       "Skill(update-config:*)",
       "Bash(*)",
-      "WebFetch(domain:professor.bio.br)"
+      "WebFetch(domain:professor.bio.br)",
+      "PowerShell(cd C:\\\\Projetos\\\\pmeditor && pnpm tsc --noEmit 2>&1 | Where-Object { $_ -notmatch \"\\\\.test\\\\.\" } | Select-Object -First 30)"
     ]
   }
 }

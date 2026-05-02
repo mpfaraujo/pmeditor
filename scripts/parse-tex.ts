@@ -496,7 +496,9 @@ function main() {
       /\\begin\{verbatim\}\s*\n?\s*---[\s\S]*?---\s*\n?\s*\\end\{verbatim\}\s*$/,
       ""
     );
-    blockText = blockText.replace(/\n\s*---\s*\n[\s\S]*?---\s*$/, "");
+    // Greedy: encontra o ÚLTIMO \n---...---$ (não o primeiro), evitando engolir
+    // YAMLs inline de \questionitem que ficam no meio do bloco
+    blockText = blockText.replace(/^([\s\S]*)\n(\s*---\s*\n[\s\S]*?---\s*)$/, "$1");
     blockText = blockText.replace(/\\section\*?\{[^}]*\}\s*$/, "");
     blockText = blockText.trim();
 
