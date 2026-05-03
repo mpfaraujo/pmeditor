@@ -90,7 +90,8 @@ export async function listQuestions(params?: {
   rootType?: string;
   concursos?: string[];
   anos?: string[];
-  myQuestions?: boolean; // Filtrar apenas questões do usuário logado
+  myQuestions?: boolean;
+  hasPendingImage?: boolean;
 }) {
   const q = new URLSearchParams();
   q.set("page", String(params?.page ?? 1));
@@ -131,6 +132,9 @@ export async function listQuestions(params?: {
   }
   if (params?.myQuestions) {
     q.set("myQuestions", "1");
+  }
+  if (params?.hasPendingImage) {
+    q.set("has_pending_image", "1");
   }
 
   const headers: Record<string, string> = {};

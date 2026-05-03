@@ -33,9 +33,11 @@ import {
   ChevronsUp,
   Eye,
   EyeOff,
+  ImageOff,
   Loader2,
   Pencil,
   Trash2,
+  Wrench,
 } from "lucide-react";
 import "@/app/editor/prova/montar/prova.css";
 
@@ -96,6 +98,7 @@ export default function AdminGerenciarPage() {
 
   // Filtros avançados
   const [filterHasVariant, setFilterHasVariant] = useState(false);
+  const [filterPendingImage, setFilterPendingImage] = useState(false);
   const [filterDisciplinas, setFilterDisciplinas] = useState<string[]>([]);
   const [filterBancas, setFilterBancas] = useState<string[]>([]);
   const [filterAnos, setFilterAnos] = useState<string[]>([]);
@@ -132,11 +135,16 @@ export default function AdminGerenciarPage() {
   useEffect(() => {
     if (authLoading || !isAdmin) return;
     setLoadingQuestions(true);
-    listQuestions({ limit: 500, includeContent: true })
+    setQuestions([]);
+    listQuestions({
+      limit: filterPendingImage ? 1000 : 300,
+      includeContent: true,
+      hasPendingImage: filterPendingImage || undefined,
+    })
       .then((data) => setQuestions(data.items ?? []))
       .catch((err) => setErrorMsg(err?.message ?? "Erro ao carregar questões."))
       .finally(() => setLoadingQuestions(false));
-  }, [authLoading, isAdmin]);
+  }, [authLoading, isAdmin, filterPendingImage]);
 
   const TIPOS_CANONICOS = ["Múltipla Escolha", "Certo/Errado", "Discursiva"];
   const DIFICULDADES_CANONICAS = ["Fácil", "Média", "Difícil"];
@@ -172,7 +180,7 @@ export default function AdminGerenciarPage() {
   );
 
   const hasActiveFilters =
-    !!search || !!filterTipo || filterHasVariant ||
+    !!search || !!filterTipo || filterHasVariant || filterPendingImage ||
     filterDisciplinas.length > 0 || filterBancas.length > 0 ||
     filterAnos.length > 0 || filterDificuldades.length > 0 || !!filterTags;
 
@@ -180,6 +188,7 @@ export default function AdminGerenciarPage() {
     setSearch("");
     setFilterTipo("");
     setFilterHasVariant(false);
+    setFilterPendingImage(false);
     setFilterDisciplinas([]);
     setFilterBancas([]);
     setFilterAnos([]);
@@ -193,7 +202,7 @@ export default function AdminGerenciarPage() {
 
   const filtered = useMemo(() => {
     let result = questions;
-    if (!showHidden) result = result.filter((q) => !hiddenIds.has(q.id));
+    if (!showHidden && !filterPendingImage) result = result.filter((q) => !hiddenIds.has(q.id));
     if (filterTipo) result = result.filter((q) => norm(q.tipo) === norm(filterTipo));
     if (filterHasVariant) result = result.filter((q) => (q.variantsCount ?? 0) > 0);
     if (filterDisciplinas.length) {
@@ -222,7 +231,7 @@ export default function AdminGerenciarPage() {
       });
     }
     return result;
-  }, [questions, search, filterTipo, filterHasVariant, filterDisciplinas, filterBancas, filterAnos, filterDificuldades, filterTags, hiddenIds, showHidden]);
+  }, [questions, search, filterTipo, filterHasVariant, filterPendingImage, filterDisciplinas, filterBancas, filterAnos, filterDificuldades, filterTags, hiddenIds, showHidden]);
 
   async function toggleVariants(questionId: string) {
     if (expandedIds.has(questionId)) {
@@ -436,6 +445,15 @@ export default function AdminGerenciarPage() {
               Gerenciar Questões
             </h1>
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push("/admin/fixes")}
+            className="hover:bg-yellow-600/20"
+          >
+            <Wrench className="h-4 w-4 mr-1" />
+            Fixes
+          </Button>
         </div>
       </header>
 
@@ -467,7 +485,7 @@ export default function AdminGerenciarPage() {
             </div>
 
             {/* Tem variante */}
-            <div>
+            <div className="space-y-0.5">
               <button
                 onClick={() => setFilterHasVariant((v) => !v)}
                 className={`w-full text-left text-sm px-2 py-1.5 rounded transition-colors flex items-center gap-2 ${
@@ -476,6 +494,15 @@ export default function AdminGerenciarPage() {
               >
                 <span className={`w-3 h-3 rounded-full border flex-shrink-0 ${filterHasVariant ? "bg-amber-500 border-amber-500" : "border-slate-300"}`} />
                 Com variantes pendentes
+              </button>
+              <button
+                onClick={() => setFilterPendingImage((v) => !v)}
+                className={`w-full text-left text-sm px-2 py-1.5 rounded transition-colors flex items-center gap-2 ${
+                  filterPendingImage ? "bg-orange-100 text-orange-800 font-medium" : "hover:bg-slate-100 text-slate-600"
+                }`}
+              >
+                <ImageOff className={`w-3 h-3 flex-shrink-0 ${filterPendingImage ? "text-orange-600" : "text-slate-400"}`} />
+                Com imagem pendente
               </button>
             </div>
 

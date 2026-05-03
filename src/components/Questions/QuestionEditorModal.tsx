@@ -9,6 +9,7 @@ type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   question: {
+    id?: string;
     metadata: any;
     content: any;
   } | null;
@@ -30,7 +31,9 @@ export function QuestionEditorModal({ open, onOpenChange, question, onSaved }: P
           <QuestionEditor
             modal
             initial={question ? {
-              metadata: question.metadata,
+              metadata: question.id
+                ? { ...question.metadata, id: question.id }
+                : question.metadata,
               content: question.content,
             } : undefined}
             onSaved={async (info) => {

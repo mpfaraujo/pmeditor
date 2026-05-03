@@ -1,6 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { discColor } from "@/components/Questions/QuestionsFilter";
 
 type QuestionCardCompactProps = {
   metadata: {
@@ -16,6 +17,7 @@ type QuestionCardCompactProps = {
   selected?: boolean;
   onSelect?: (id: string, checked: boolean) => void;
   onPreview?: () => void;
+  showSubjectBorder?: boolean;
 };
 
 function extractPlainText(node: any): string {
@@ -37,14 +39,15 @@ const TIPO_LABEL: Record<string, string> = {
   "Discursiva": "Disc.",
 };
 
-export function QuestionCardCompact({ metadata, content, selected, onSelect, onPreview }: QuestionCardCompactProps) {
+export function QuestionCardCompact({ metadata, content, selected, onSelect, onPreview, showSubjectBorder = true }: QuestionCardCompactProps) {
   const { id, disciplina, assunto, dificuldade, tipo, source } = metadata;
 
   const plainText = extractPlainText(content);
-  const preview = plainText.length > 130 ? plainText.slice(0, 130) + "…" : plainText;
+  const preview = plainText.length > 260 ? plainText.slice(0, 260) + "…" : plainText;
 
   const tipoLabel = tipo ? (TIPO_LABEL[tipo] ?? tipo) : null;
   const difColor = dificuldade ? (DIFICULDADE_COLOR[dificuldade] ?? "bg-gray-100 text-gray-600") : null;
+  const subjectColor = disciplina ? discColor(disciplina) : "#64748b";
 
   const isSet = content?.content?.[0]?.type === "set_questions";
   const itemsCount = isSet
@@ -53,21 +56,33 @@ export function QuestionCardCompact({ metadata, content, selected, onSelect, onP
 
   return (
     <div
-      className={`relative flex flex-col h-[190px] rounded-xl border bg-white p-4 cursor-pointer transition-all hover:shadow-md ${
-        selected ? "border-[var(--primary)] ring-1 ring-[var(--primary)]" : "border-gray-200"
+      className={`relative flex h-[210px] cursor-pointer flex-col rounded-lg border p-4 transition-all hover:shadow-md ${
+        showSubjectBorder ? "border-t-4" : ""
+      } ${
+        selected
+          ? "border-[#E0B22A] bg-[#FFF9E6] ring-2 ring-[#FBC02D]/55 shadow-sm"
+          : "border-gray-200 bg-white"
       }`}
+      style={showSubjectBorder ? { borderTopColor: subjectColor } : undefined}
       onClick={() => onPreview?.()}
     >
       {/* Checkbox */}
       <div
-        className="absolute top-2 right-2"
+        className={`absolute top-3 right-3 rounded border shadow-sm ${
+          selected ? "border-[#E0B22A] bg-[#FBC02D]" : "border-slate-200 bg-white"
+        }`}
         onClick={(e) => { e.stopPropagation(); onSelect?.(id, !selected); }}
       >
         <Checkbox checked={selected} />
       </div>
+      {selected && (
+        <div className="absolute right-12 top-3 rounded border border-[#E0B22A] bg-white px-2 py-0.5 text-[11px] font-semibold text-[#5A4500] shadow-sm">
+          Selecionada
+        </div>
+      )}
 
       {/* Header: tipo + dificuldade */}
-      <div className="flex items-center gap-1.5 flex-wrap pr-6 mb-2">
+      <div className="mb-2 flex items-center gap-1.5 flex-wrap pr-7">
         {tipoLabel && (
           <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-blue-50 text-blue-600">
             {isSet ? `Conjunto (${itemsCount ?? "?"} itens)` : tipoLabel}
@@ -81,12 +96,32 @@ export function QuestionCardCompact({ metadata, content, selected, onSelect, onP
       </div>
 
       {/* Disciplina / assunto */}
-      <div className="text-[13px] font-semibold text-gray-700 truncate mb-2">
-        {[disciplina, assunto].filter(Boolean).join(" · ")}
+      <div className="mb-2 flex min-w-0 items-center gap-2">
+        {disciplina && (
+          <span
+            className="shrink-0 rounded px-2 py-0.5 text-[11px] font-semibold text-white"
+            style={{ backgroundColor: subjectColor }}
+          >
+            {disciplina}
+          </span>
+        )}
+        {assunto && (
+          <span className="truncate text-[13px] font-semibold text-gray-700">
+            {assunto}
+          </span>
+        )}
       </div>
 
-      {/* Preview do enunciado */}
-      <div className="flex-1 overflow-hidden text-[13px] text-gray-600 leading-relaxed">
+      <div
+        className={`flex-1 overflow-hidden rounded-md px-3 py-2 text-[13px] leading-relaxed text-gray-700 ${
+          selected ? "bg-white" : "bg-slate-50"
+        }`}
+        style={{
+          display: "-webkit-box",
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: "vertical",
+        }}
+      >
         {preview || <span className="italic">Sem enunciado</span>}
       </div>
 

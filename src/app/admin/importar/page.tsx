@@ -474,6 +474,22 @@ function ImportarPageInner() {
   const [editorKey, setEditorKey] = useState(0);
   const [showLatex, setShowLatex] = useState(false);
   const [activeQueueFile, setActiveQueueFile] = useState<string>("import-queue.json");
+  const [batchDeleted, setBatchDeleted] = useState(false);
+  const [deletingBatch, setDeletingBatch] = useState(false);
+
+  const handleDeleteBatch = async () => {
+    if (activeQueueFile === "import-queue.json") return;
+    setDeletingBatch(true);
+    try {
+      const filesToDelete = [activeQueueFile, activeQueueFile.replace(".json", ".manifest.json")];
+      await Promise.all(filesToDelete.map(f =>
+        fetch("/api/admin/delete-batch", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ filename: f }) })
+      ));
+      setBatchDeleted(true);
+    } finally {
+      setDeletingBatch(false);
+    }
+  };
 
   useEffect(() => {
     // Aceita ?queue=<slug> ou ?queue=<nome-completo>.json para carregar batch específico
@@ -570,6 +586,18 @@ function ImportarPageInner() {
             Todas as {queue.length} questões foram processadas.
           </p>
           <div className="mt-4 flex flex-col items-center gap-2">
+            {activeQueueFile !== "import-queue.json" && !batchDeleted && (
+              <button
+                onClick={handleDeleteBatch}
+                disabled={deletingBatch}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+              >
+                {deletingBatch ? "Apagando…" : "Apagar arquivo do batch"}
+              </button>
+            )}
+            {batchDeleted && (
+              <p className="text-sm text-green-700 font-medium">Arquivo apagado.</p>
+            )}
             <button
               onClick={() => { setCurrentIdx(0); setEditorKey((k) => k + 1); }}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
