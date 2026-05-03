@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useLineRefMeasure } from "@/hooks/useLineRefMeasure";
 import { useRouter } from "next/navigation";
 import QuestionCard from "@/components/Questions/QuestionCard";
 import {
   useQuestionsFilter,
-  QuestionsFilterLeft,
-  QuestionsFilterRight,
+  QuestionsFilterSidebar,
   ActiveFilterChips,
   EMPTY_FILTERS,
 } from "@/components/Questions/QuestionsFilter";
@@ -15,7 +14,8 @@ import type { FilterValues } from "@/components/Questions/QuestionsFilter";
 import { useProva } from "@/contexts/ProvaContext";
 import { listQuestions, QuestionVersion } from "@/lib/questions";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, Rows3, Plus, X, CheckSquare, LayoutDashboard, UserRound } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { LayoutGrid, Rows3, Plus, X, CheckSquare, LayoutDashboard, UserRound, Search } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -25,6 +25,8 @@ import {
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
 import { QuestionCardCompact } from "@/components/Questions/QuestionCardCompact";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { SelectionBar } from "@/components/Questions/SelectionBar";
 import "./print.css";
 
 type QuestionItem = {
@@ -50,15 +52,36 @@ type QuestionItem = {
 type FilterValuesWithMy = FilterValues & { myQuestions?: boolean };
 
 const ITEMS_PER_PAGE = 30;
+const MAX_SELECTION_COUNT = 100;
+const SELECTED_DISPLAY_LIMIT = 50;
+
+function hasAnyFilter(filters: Partial<FilterValuesWithMy>): boolean {
+  return Boolean(
+    filters.disciplinas?.length ||
+    filters.assuntos?.length ||
+    filters.tipos?.length ||
+    filters.dificuldades?.length ||
+    filters.niveis?.length ||
+    filters.tags ||
+    filters.sourceKind ||
+    filters.rootType ||
+    filters.concursos?.length ||
+    filters.anos?.length ||
+    filters.myQuestions
+  );
+}
 
 export default function QuestoesPage() {
   const router = useRouter();
   const { addQuestion, removeQuestion, isSelected, selectedCount, clearAll, selectedQuestions, selections } = useProva();
+  const { toast } = useToast();
   const effectiveSelectedCount = selectedCount > 0 ? selectedCount : selectedQuestions.length;
   const hasSelectedQuestions = effectiveSelectedCount > 0 || selections.length > 0;
+  const loadRequestIdRef = useRef(0);
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [totalResults, setTotalResults] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -77,14 +100,34 @@ export default function QuestoesPage() {
     initialFilters: EMPTY_FILTERS,
   });
   const [viewMode, setViewMode] = useState<"carousel" | "grid">(() => {
-    if (typeof window === "undefined") return "carousel";
-    return (localStorage.getItem("questaoViewMode") as "carousel" | "grid") ?? "carousel";
+    if (typeof window === "undefined") return "grid";
+    return (localStorage.getItem("questaoViewMode") as "carousel" | "grid") ?? "grid";
   });
 
   useEffect(() => { load(EMPTY_FILTERS, 1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    const handleSelectionLimit = (event: Event) => {
+      const detail = (event as CustomEvent<{
+        currentTotal?: number;
+        itemsToAdd?: number;
+        remaining?: number;
+      }>).detail ?? {};
+      toast({
+        title: "Limite de seleção atingido",
+        description: `Cabem mais ${Math.max(0, detail.remaining ?? 0)} questão(ões). Esta seleção adicionaria ${detail.itemsToAdd ?? 1}.`,
+        variant: "destructive",
+      });
+    };
+
+    window.addEventListener("pmeditor:selection-limit", handleSelectionLimit);
+    return () => window.removeEventListener("pmeditor:selection-limit", handleSelectionLimit);
+  }, [toast]);
+
   const load = async (filters: Partial<FilterValuesWithMy>, page: number = 1) => {
+    const requestId = ++loadRequestIdRef.current;
     setLoading(true);
+    setLoadError(null);
     try {
       const baseParams: any = {
         includeContent: true,
@@ -113,13 +156,24 @@ export default function QuestoesPage() {
       const total = response?.total ?? 0;
       const items = Array.isArray(response?.items) ? response.items : [];
 
+      if (requestId !== loadRequestIdRef.current) return;
       setItems(items);
       setTotalResults(total);
       setCurrentPage(page);
       setCurrentIndex(0);
       api?.scrollTo(0);
+    } catch (error) {
+      if (requestId !== loadRequestIdRef.current) return;
+      console.error("[questoes] erro ao buscar questões", error);
+      setItems([]);
+      setTotalResults(0);
+      setCurrentPage(page);
+      setCurrentIndex(0);
+      setLoadError("Não foi possível carregar as questões. Tente novamente.");
     } finally {
-      setLoading(false);
+      if (requestId === loadRequestIdRef.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -139,7 +193,47 @@ export default function QuestoesPage() {
       setPendingRemoveId(id);
       return;
     }
-    checked ? addQuestion(q) : removeQuestion(id);
+    if (checked) {
+      const remaining = MAX_SELECTION_COUNT - effectiveSelectedCount;
+      if (!isSelected(id) && remaining < 1) {
+        toast({
+          title: "Limite de seleção atingido",
+          description: `Cabem mais ${Math.max(0, remaining)} questão(ões) nesta prova.`,
+          variant: "destructive",
+        });
+        return;
+      }
+      addQuestion(q);
+    } else {
+      removeQuestion(id);
+    }
+  };
+
+  const handleSelectCurrentPage = () => {
+    const toAdd = items.filter((q) => !isSelected(q.metadata.id));
+    if (toAdd.length === 0) {
+      toast({
+        title: "Página já selecionada",
+        description: "Todas as questões visíveis nesta página já estão selecionadas.",
+      });
+      return;
+    }
+
+    const remaining = MAX_SELECTION_COUNT - effectiveSelectedCount;
+    if (toAdd.length > remaining) {
+      toast({
+        title: "Não foi possível selecionar a página",
+        description: `Cabem mais ${Math.max(0, remaining)} questão(ões), mas esta página adicionaria ${toAdd.length}. Nenhuma questão foi selecionada.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toAdd.forEach(addQuestion);
+    toast({
+      title: "Página selecionada",
+      description: `${toAdd.length} questão(ões) visíveis adicionadas à seleção.`,
+    });
   };
 
   const handleVersionChange = (questionId: string, versionData: QuestionVersion) => {
@@ -204,8 +298,23 @@ export default function QuestoesPage() {
   // assim mostra todas as selecionadas independente dos filtros atuais.
   const displayItems = useMemo(() => {
     if (!showOnlySelected) return items;
-    return selectedQuestions as QuestionItem[];
+    return (selectedQuestions as QuestionItem[]).slice(0, SELECTED_DISPLAY_LIMIT);
   }, [items, showOnlySelected, selectedQuestions]);
+
+  const selectedDisplayTotal = selectedQuestions.length;
+  const selectedDisplayShown = showOnlySelected ? displayItems.length : 0;
+  const totalPages = Math.max(1, Math.ceil(totalResults / ITEMS_PER_PAGE));
+  const hasDisplayItems = displayItems.length > 0;
+  const activeFilterHasValues = useMemo(() => hasAnyFilter(activeFilters), [activeFilters]);
+  const selectedIdsOnCurrentPage = useMemo(
+    () => new Set(items.map((q) => q.metadata.id)),
+    [items]
+  );
+  const includesSelectedOutsidePage = useMemo(
+    () => selectedQuestions.some((q: any) => !selectedIdsOnCurrentPage.has(q?.metadata?.id)),
+    [selectedQuestions, selectedIdsOnCurrentPage]
+  );
+  const showSubjectBorder = activeFilters.disciplinas.length !== 1;
 
   const currentDisplayItem = useMemo(() => {
     if (displayItems.length === 0) return null;
@@ -268,35 +377,26 @@ export default function QuestoesPage() {
   }, [hasSelectedQuestions, showOnlySelected]);
 
   return (
-    // Layout 3 colunas: [Filtros esq] | [Questões] | [Filtros dir]
     <div className="flex h-screen overflow-hidden" style={{ backgroundColor: "#F4F4F2" }}>
-
-      {/* ── Coluna esquerda: busca + disciplina + assunto ── */}
-      <QuestionsFilterLeft
+      <QuestionsFilterSidebar
         state={filterState}
         totalResults={totalResults}
         loading={loading}
       />
 
-      {/* ── Coluna central: Questões ── */}
       <div
         className="flex-1 flex flex-col min-w-0 overflow-hidden"
         style={{ backgroundColor: "#F4F4F2" }}
       >
-
-        {/* Barra de topo: chips ativos + controles */}
-        <div
-          className="border-b px-4 py-2 shrink-0"
-          style={{ backgroundColor: "#2D3436", borderColor: "rgba(255,255,255,0.08)" }}
-        >
-          <div className="flex items-stretch gap-4">
-            <div className="min-w-0 flex-1 py-1">
-              <div className="flex items-center gap-2 px-1 pb-2">
+        <header className="shrink-0 border-b border-slate-200 bg-white px-6 py-5">
+          <div className="flex items-start justify-between gap-6">
+            <div className="min-w-0 flex-1">
+              <div className="mb-3 flex items-center gap-2">
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => router.push("/dashboard")}
-                  className="h-7 px-2 text-[11px] text-[#9eb4d1] hover:bg-white/10 hover:text-white"
+                  className="h-7 px-2 text-[11px] text-slate-500 hover:bg-slate-100"
                 >
                   <LayoutDashboard className="mr-1 h-3.5 w-3.5" />
                   Dashboard
@@ -305,15 +405,38 @@ export default function QuestoesPage() {
                   size="sm"
                   variant="ghost"
                   onClick={() => router.push("/minha-area")}
-                  className="h-7 px-2 text-[11px] text-[#9eb4d1] hover:bg-white/10 hover:text-white"
+                  className="h-7 px-2 text-[11px] text-slate-500 hover:bg-slate-100"
                 >
                   <UserRound className="mr-1 h-3.5 w-3.5" />
                   Minha Área
                 </Button>
               </div>
-              <div className="min-h-[4.5rem]">
+              <div>
+                <h1 className="text-2xl font-semibold tracking-tight text-slate-950">Banco de Questões</h1>
+                <p className="mt-1 text-sm text-slate-500">Filtre e selecione questões para montar sua prova</p>
+              </div>
+              <div className="mt-4 flex max-w-3xl items-center gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <Input
+                    value={activeFilters.tags}
+                    onChange={(e) => {
+                      const next = { ...activeFilters, tags: e.target.value };
+                      setActiveFilters(next);
+                      filterState.setAndDispatch(() => next);
+                    }}
+                    placeholder="Buscar por tag…"
+                    className="h-11 rounded-lg border-slate-300 bg-white pl-10 text-sm"
+                  />
+                </div>
+                <div className="shrink-0 text-sm font-medium tabular-nums text-slate-700">
+                  {loading ? "Buscando..." : `${totalResults.toLocaleString("pt-BR")} resultados`}
+                </div>
+              </div>
+              <div className="mt-3">
                 <ActiveFilterChips
                   filters={topBarFilters}
+                  variant="light"
                   onChange={(f) => {
                     const next = {
                       ...f,
@@ -346,70 +469,45 @@ export default function QuestoesPage() {
                 )}
               </div>
             </div>
-            <div className="shrink-0 w-[360px] flex flex-col justify-between gap-2 py-1">
-              <div className="flex items-center justify-end gap-1.5 min-h-9">
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              <div className="flex items-center justify-end gap-1.5">
                 <button
                   type="button"
                   title={viewMode === "carousel" ? "Modo grade compacta" : "Modo carrossel"}
                   onClick={toggleViewMode}
-                  className="p-1.5 rounded transition-colors hover:bg-white/10"
-                  style={{ color: "#F4F4F2" }}
+                  className="rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100"
                 >
                   {viewMode === "carousel" ? <LayoutGrid className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}
                 </button>
                 {viewMode === "carousel" ? (
-                  <Button size="sm" variant="ghost" onClick={handleEditAtual} className="text-xs min-w-[72px] justify-center text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+                  <Button size="sm" variant="ghost" onClick={handleEditAtual} className="text-xs text-slate-500 hover:bg-slate-100">
                     Editar
                   </Button>
                 ) : (
                   <div className="w-[72px]" />
                 )}
-                <Button size="sm" variant="ghost" onClick={handleNovaQuestao} className="text-xs gap-1 min-w-[84px] justify-center text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+                <Button size="sm" variant="ghost" onClick={handleNovaQuestao} className="text-xs gap-1 text-slate-500 hover:bg-slate-100">
                   <Plus className="h-3.5 w-3.5" /> Nova
                 </Button>
-                <div className="w-px h-4 bg-white/15 mx-1" />
-                <Button
-                  onClick={handleMontarProva}
-                  disabled={!hasSelectedQuestions}
-                  size="sm"
-                  className="text-xs gap-1 min-w-[138px] justify-center border border-[#E0B22A] bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]"
-                >
-                  <span suppressHydrationWarning className={`rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums min-w-[26px] text-center ${hasSelectedQuestions ? "bg-black/10 opacity-100" : "opacity-0"}`}>
-                    {hasSelectedQuestions ? effectiveSelectedCount : "0"}
-                  </span>
-                  Montar Prova
-                </Button>
               </div>
-
-              <div className="flex items-center justify-end gap-2 min-h-8">
+              <div className="flex items-center justify-end gap-2">
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => setShowOnlySelected(v => !v)}
                   disabled={!hasSelectedQuestions}
-                  className={`text-xs min-w-[148px] justify-center border ${showOnlySelected ? "border-[#FBC02D]/50 bg-white/12 text-[#FFD93D]" : "border-white/10 text-[#D7E2EE] hover:bg-white/10 hover:text-white"}`}
+                  className={`text-xs min-w-[148px] justify-center border ${showOnlySelected ? "border-[#FBC02D]/70 bg-[#FFF4CC] text-[#5A4500]" : "border-slate-200 text-slate-600 hover:bg-slate-100"}`}
                 >
                   <CheckSquare className="h-3.5 w-3.5" />
                   {showOnlySelected ? "Ver todas" : "Mostrar selecionadas"}
                 </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={clearAll}
-                  disabled={!hasSelectedQuestions}
-                  className="text-xs min-w-[120px] justify-center border border-white/10 text-[#D7E2EE] hover:bg-white/10 hover:text-white disabled:opacity-40"
-                >
-                  <X className="h-3.5 w-3.5" />
-                  Limpar seleção
-                </Button>
               </div>
             </div>
           </div>
-        </div>
+        </header>
 
-        {/* Lista de questões */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
-          <div className="px-4 py-4 relative">
+          <div className="relative px-6 py-5 pb-6">
 
             {loading && items.length > 0 && (
               <div className="absolute right-4 top-4 z-10 rounded-full border bg-white px-3 py-1 text-xs text-[#4f4f4d] shadow-sm" style={{ borderColor: "rgba(45,52,54,0.12)" }}>
@@ -419,25 +517,82 @@ export default function QuestoesPage() {
             {loading && items.length === 0 && (
               <div className="text-sm text-muted-foreground py-6 text-center">Carregando…</div>
             )}
-            {!loading && items.length === 0 && (
-              <div className="text-sm text-muted-foreground py-16 text-center">Nenhuma questão encontrada.</div>
+            {!loading && loadError && (
+              <div className="py-16 text-center">
+                <div className="mx-auto max-w-md rounded-lg border border-red-200 bg-white px-5 py-5 text-sm text-red-900 shadow-sm">
+                  <div className="text-base font-semibold">Erro ao carregar questões</div>
+                  <div className="mt-1 text-red-700">{loadError}</div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => load(activeFilters, currentPage)}
+                    className="mt-4 bg-white"
+                  >
+                    Tentar novamente
+                  </Button>
+                </div>
+              </div>
+            )}
+            {!loading && !loadError && !showOnlySelected && items.length === 0 && (
+              <div className="py-16 text-center">
+                {activeFilterHasValues ? (
+                  <div className="mx-auto max-w-md rounded-lg border border-slate-200 bg-white px-5 py-5 text-sm text-slate-700 shadow-sm">
+                    <div className="text-base font-semibold text-slate-950">Nenhum resultado para estes filtros</div>
+                    <div className="mt-1 text-slate-500">Ajuste os filtros ou limpe a seleção atual para ver mais questões.</div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={filterState.clear}
+                      className="mt-4 bg-white"
+                    >
+                      Limpar filtros
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="mx-auto max-w-md rounded-lg border border-slate-200 bg-white px-5 py-5 text-sm text-slate-700 shadow-sm">
+                    <div className="text-base font-semibold text-slate-950">O banco de questões está vazio</div>
+                    <div className="mt-1 text-slate-500">Crie uma questão para começar a montar seu banco.</div>
+                    <Button
+                      size="sm"
+                      onClick={handleNovaQuestao}
+                      className="mt-4 bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]"
+                    >
+                      Criar primeira questão
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+            {!loading && !loadError && showOnlySelected && displayItems.length === 0 && (
+              <div className="text-sm text-muted-foreground py-16 text-center">
+                Nenhuma questão selecionada.
+              </div>
             )}
 
-            {(loading || items.length > 0) && (
+            {!loadError && (loading || hasDisplayItems) && (
               <>
-                {/* Paginação */}
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <button onClick={handlePreviousPage} disabled={currentPage === 1}
-                    className="px-3 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50 bg-white">
-                    ‹
-                  </button>
-                  <span className="text-xs text-muted-foreground px-2 tabular-nums">
-                    {currentPage} / {Math.max(1, Math.ceil(totalResults / ITEMS_PER_PAGE))}
-                  </span>
-                  <button onClick={handleNextPage} disabled={currentPage >= Math.max(1, Math.ceil(totalResults / ITEMS_PER_PAGE))}
-                    className="px-3 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50 bg-white">
-                    ›
-                  </button>
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  {showOnlySelected ? (
+                    <div className="text-xs text-muted-foreground tabular-nums">
+                      Mostrando {selectedDisplayShown} de {selectedDisplayTotal} selecionada(s)
+                      {selectedDisplayTotal > selectedDisplayShown ? ` · limite visual de ${SELECTED_DISPLAY_LIMIT}` : ""}
+                    </div>
+                  ) : (
+                    <div className="text-xs text-muted-foreground">
+                      Selecione questões visíveis ou abra um card para visualizar completo.
+                    </div>
+                  )}
+                  {!showOnlySelected && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleSelectCurrentPage}
+                      disabled={loading || items.length === 0}
+                      className="bg-white"
+                    >
+                      Selecionar página atual
+                    </Button>
+                  )}
                 </div>
 
                 {viewMode === "carousel" ? (
@@ -474,24 +629,47 @@ export default function QuestoesPage() {
                     </Carousel>
                   </div>
                 ) : (
-                  <div className="grid gap-3 grid-cols-1 xl:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
                     {displayItems.map((q) => (
                       <QuestionCardCompact key={q.metadata.id}
                         metadata={q.metadata} content={q.content}
                         selected={isSelected(q.metadata.id)} onSelect={toggleSelect}
                         onPreview={() => setPreviewItem(q)}
+                        showSubjectBorder={showSubjectBorder}
                       />
                     ))}
                   </div>
                 )}
+
               </>
             )}
           </div>
         </div>
-      </div>
 
-      {/* ── Coluna direita: tipo + dificuldade + estrutura + fonte ── */}
-      <QuestionsFilterRight state={filterState} />
+        {!showOnlySelected && !loadError && hasDisplayItems && (
+          <div className="shrink-0 border-t border-slate-200 bg-white/95 px-6 py-3 shadow-[0_-4px_18px_rgba(15,23,42,0.08)]">
+            <div className="flex items-center justify-center gap-2">
+              <button onClick={handlePreviousPage} disabled={currentPage === 1 || loading}
+                className="px-3 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50 bg-white">
+                ‹
+              </button>
+              <span className="text-xs text-muted-foreground px-2 tabular-nums">
+                Página {currentPage} de {totalPages} · {totalResults.toLocaleString("pt-BR")} resultado(s)
+              </span>
+              <button onClick={handleNextPage} disabled={currentPage >= totalPages || loading}
+                className="px-3 py-1 text-sm border rounded disabled:opacity-30 hover:bg-gray-50 bg-white">
+                ›
+              </button>
+            </div>
+          </div>
+        )}
+        <SelectionBar
+          count={effectiveSelectedCount}
+          includesOtherPages={includesSelectedOutsidePage}
+          onClear={clearAll}
+          onBuild={handleMontarProva}
+        />
+      </div>
 
       {/* Confirmação de remoção da seleção */}
       <Dialog open={!!pendingRemoveId} onOpenChange={(open) => { if (!open) setPendingRemoveId(null); }}>
@@ -514,7 +692,7 @@ export default function QuestoesPage() {
             <DialogTitle className="sr-only">Visualizar questão</DialogTitle>
             {previewItem && (
               <>
-                <div className="flex justify-end mb-2">
+                <div className="mb-2 flex justify-end pr-10">
                 <Button size="sm" variant="secondary" onClick={() => { setEditing(previewItem); setEditorOpen(true); setPreviewItem(null); }}>
                   Editar
                 </Button>

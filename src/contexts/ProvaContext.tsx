@@ -186,35 +186,20 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
       const exists = prev.find((q) => q.metadata?.id === question.metadata?.id);
       if (exists) return prev;
 
-      // Calcular quantos items essa questão vai adicionar
-      const doc = safeParseDoc(question.content);
-      let itemsToAdd = 1;
-
-      if (isSetDoc(doc)) {
-        itemsToAdd = getSetItemCount(doc);
-        // Se for set, mas tiver < 2 items, conta como 1
-        if (itemsToAdd < 2) itemsToAdd = 1;
-      }
-
-      // Calcular total atual
-      const currentTotal = prev.reduce((acc, q) => {
-        const qDoc = safeParseDoc(q.content);
-        if (isSetDoc(qDoc)) {
-          const n = getSetItemCount(qDoc);
-          return acc + (n >= 2 ? n : 1);
-        }
-        return acc + 1;
-      }, 0);
+      const itemsToAdd = 1;
+      const currentTotal = prev.length;
 
       // Verificar se vai ultrapassar 100
       if (currentTotal + itemsToAdd > 100) {
         if (typeof window !== "undefined") {
-          alert(
-            `Limite atingido: você pode selecionar no máximo 100 questões por prova.\n\n` +
-            `Atualmente: ${currentTotal} questões\n` +
-            `Tentando adicionar: ${itemsToAdd} questão(ões)\n` +
-            `Total seria: ${currentTotal + itemsToAdd}`
-          );
+          window.dispatchEvent(new CustomEvent("pmeditor:selection-limit", {
+            detail: {
+              currentTotal,
+              itemsToAdd,
+              max: 100,
+              remaining: Math.max(0, 100 - currentTotal),
+            },
+          }));
         }
         return prev;
       }
@@ -363,13 +348,11 @@ export function ProvaProvider({ children }: { children: ReactNode }) {
     return out;
   }, [selectedQuestions, setSelectionsById]);
 
-  // NOVO: contador real (set soma itens)
+  // Contagem da seleção principal: set_questions conta como uma questão.
+  // A fragmentação continua preservada em selections.itemIndexes.
   const selectedCount = useMemo(() => {
-    return selections.reduce((acc, s) => {
-      if (s.kind === "question") return acc + 1;
-      return acc + s.itemIndexes.length;
-    }, 0);
-  }, [selections]);
+    return selectedQuestions.length;
+  }, [selectedQuestions]);
 
   return (
     <ProvaContext.Provider

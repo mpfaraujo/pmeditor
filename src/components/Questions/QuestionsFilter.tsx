@@ -53,7 +53,7 @@ const DISC_COLORS: Record<string, string> = {
   "Educação Física":       "#14b8a6",
 };
 
-function discColor(d: string) {
+export function discColor(d: string) {
   return DISC_COLORS[d] ?? "#1a6680";
 }
 
@@ -260,6 +260,269 @@ export function useQuestionsFilter({
 }
 
 export type QuestionsFilterState = ReturnType<typeof useQuestionsFilter>;
+
+// ─── Sidebar única: todos os filtros ─────────────────────────────────────────
+
+export function QuestionsFilterSidebar({
+  state, totalResults, loading,
+}: {
+  state: QuestionsFilterState;
+  totalResults: number;
+  loading?: boolean;
+}) {
+  const {
+    filters, options, open,
+    assuntoSearch, setAssuntoSearch,
+    concursoSearch, setConcursoSearch,
+    openAreas, setOpenAreas,
+    toggleArr, toggleAreaAssuntos, toggleSection, setAndDispatch, clear,
+    hasAnyFilter, filteredGroups, filteredConcursos,
+  } = state;
+
+  const visibleDisciplinas = filters.disciplinas.length > 0
+    ? options.disciplinas.filter(d => filters.disciplinas.includes(d))
+    : options.disciplinas;
+
+  return (
+    <aside
+      className="w-72 shrink-0 flex flex-col h-screen min-h-0 overflow-hidden border-r border-slate-200/80 shadow-[1px_0_8px_rgba(0,0,0,0.04)]"
+      style={{ backgroundColor: "#0B1020", borderColor: "rgba(255,255,255,0.08)" }}
+    >
+      <div className="px-4 pt-4 pb-3 border-b shrink-0" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal className="h-3.5 w-3.5 text-[#FBC02D]" />
+            <span className="text-sm font-bold text-white">Filtros</span>
+          </div>
+          {hasAnyFilter && (
+            <button
+              type="button"
+              onClick={clear}
+              className="text-[11px] text-[#94A8C4] hover:text-rose-300 transition-colors flex items-center gap-1"
+            >
+              <X className="h-3 w-3" /> Limpar
+            </button>
+          )}
+        </div>
+        <div className="flex items-center gap-1.5 mt-1">
+          {loading
+            ? <Loader2 className="h-3 w-3 animate-spin text-[#FBC02D]" />
+            : <span className="h-2 w-2 rounded-full bg-[#FBC02D]" />
+          }
+          <span className="text-[11px] text-[#94A8C4] tabular-nums">
+            {loading ? "Buscando…" : `${totalResults.toLocaleString("pt-BR")} questões`}
+          </span>
+        </div>
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
+        <div className="px-4 py-2 pb-8 space-y-1">
+          <div>
+            <SectionHeader
+              label="Disciplina"
+              count={filters.disciplinas.length}
+              open={open.disciplina}
+              onToggle={() => toggleSection("disciplina")}
+            />
+            {open.disciplina && (
+              <div className="grid grid-cols-2 gap-1.5 pb-3">
+                {visibleDisciplinas.map(d => (
+                  <Pill key={d} label={d} active={filters.disciplinas.includes(d)} color={discColor(d)} onClick={() => toggleArr("disciplinas", d)} />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {filters.disciplinas.length > 0 && options.assuntos.length > 0 && (
+            <div className="border-t pt-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              <SectionHeader
+                label="Assunto"
+                count={filters.assuntos.length}
+                open={open.assunto}
+                onToggle={() => toggleSection("assunto")}
+              />
+              {open.assunto && (
+                <div className="pb-3">
+                  <LocalSearch value={assuntoSearch} onChange={setAssuntoSearch} placeholder="Filtrar assuntos…" />
+                  <div className="space-y-0.5">
+                    {filteredGroups.map(({ area, assuntos: asList }) => {
+                      const sel = asList.filter(a => filters.assuntos.includes(a)).length;
+                      const allSel = sel === asList.length;
+                      const someSel = sel > 0 && !allSel;
+                      const areaOpen = openAreas.has(area);
+                      return (
+                        <div key={area}>
+                          <div className="flex items-center gap-2 py-1 group">
+                            <Checkbox
+                              checked={allSel ? true : someSel ? "indeterminate" : false}
+                              onCheckedChange={() => toggleAreaAssuntos(asList)}
+                              className="h-3.5 w-3.5 shrink-0"
+                            />
+                            <button
+                              type="button"
+                              className="flex-1 flex items-center justify-between text-left"
+                              onClick={() => setOpenAreas(prev => {
+                                const next = new Set(prev);
+                                next.has(area) ? next.delete(area) : next.add(area);
+                                return next;
+                              })}
+                            >
+                              <span className="text-xs text-[#D7E2EE] font-medium group-hover:text-white">
+                                {area}
+                                {sel > 0 && <span className="ml-1 text-[10px] text-[#FBC02D] font-bold">({sel})</span>}
+                              </span>
+                              {areaOpen ? <ChevronDown className="h-3 w-3 text-[#6E84A3]" /> : <ChevronRight className="h-3 w-3 text-[#6E84A3]" />}
+                            </button>
+                          </div>
+                          {areaOpen && (
+                            <div className="pl-6 space-y-0.5 mb-1">
+                              {asList.map(a => (
+                                <div key={a} className="flex items-center gap-2 py-0.5">
+                                  <Checkbox id={`sidebar-ass-${a}`} checked={filters.assuntos.includes(a)} onCheckedChange={() => toggleArr("assuntos", a)} className="h-3 w-3 shrink-0" />
+                                  <label htmlFor={`sidebar-ass-${a}`} className="text-[11px] text-[#B8C7D9] cursor-pointer leading-tight hover:text-white">{a}</label>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="border-t pt-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <SectionHeader label="Tipo" count={filters.tipos.length} open={open.tipo} onToggle={() => toggleSection("tipo")} />
+            {open.tipo && (
+              <div className="flex flex-wrap gap-1.5 pb-3">
+                {options.tipos.map(t => (
+                  <Pill key={t} label={t === "Múltipla Escolha" ? "MCQ" : t} active={filters.tipos.includes(t)} onClick={() => toggleArr("tipos", t)} compact />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="border-t pt-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <SectionHeader label="Dificuldade" count={filters.dificuldades.length} open={open.dificuldade} onToggle={() => toggleSection("dificuldade")} />
+            {open.dificuldade && (
+              <div className="flex flex-wrap gap-1.5 pb-3">
+                {["Fácil", "Média", "Difícil"].filter(d => options.dificuldades.includes(d)).map(d => (
+                  <Pill key={d} label={d} active={filters.dificuldades.includes(d)} onClick={() => toggleArr("dificuldades", d)} compact />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="border-t pt-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <SectionHeader label="Estrutura" open={open.estrutura} onToggle={() => toggleSection("estrutura")} />
+            {open.estrutura && (
+              <div className="flex flex-wrap gap-1.5 pb-3">
+                {[
+                  { value: "", label: "Todas" },
+                  { value: "question", label: "Individual" },
+                  { value: "set_questions", label: "Conjunto" },
+                ].map(opt => (
+                  <Pill key={opt.value || "todas"} label={opt.label} active={filters.rootType === opt.value} onClick={() => setAndDispatch(prev => ({ ...prev, rootType: opt.value }))} compact />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="border-t pt-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <SectionHeader
+              label="Fonte"
+              count={filters.concursos.length + filters.anos.length + (filters.sourceKind ? 1 : 0)}
+              open={open.fonte}
+              onToggle={() => toggleSection("fonte")}
+            />
+            {open.fonte && (
+              <div className="pb-3 space-y-3">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wide text-[#94A8C4] font-semibold">Origem</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    {[
+                      { value: "", label: "Todas" },
+                      { value: "original", label: "Original" },
+                      { value: "concurso", label: "Concurso" },
+                    ].map(opt => (
+                      <Pill
+                        key={opt.value || "todas"}
+                        label={opt.label}
+                        active={filters.sourceKind === opt.value}
+                        onClick={() => setAndDispatch(prev => ({
+                          ...prev,
+                          sourceKind: opt.value,
+                          concursos: opt.value === "concurso" ? prev.concursos : [],
+                          anos: opt.value === "concurso" ? prev.anos : [],
+                        }))}
+                        compact
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {options.concursos.length > 0 && (
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wide text-[#94A8C4] font-semibold">Concurso</span>
+                    <div className="mt-1">
+                      <LocalSearch value={concursoSearch} onChange={setConcursoSearch} placeholder="ENEM, CEDERJ…" />
+                      <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
+                        {filteredConcursos.map(c => (
+                          <div key={c} className="flex items-center gap-2 py-1">
+                            <Checkbox
+                              id={`sidebar-conc-${c}`}
+                              checked={filters.concursos.includes(c)}
+                              onCheckedChange={() => {
+                                setAndDispatch(prev => ({
+                                  ...prev,
+                                  concursos: prev.concursos.includes(c)
+                                    ? prev.concursos.filter(x => x !== c)
+                                    : [...prev.concursos, c],
+                                  anos: [],
+                                }));
+                              }}
+                              className="h-3 w-3 shrink-0"
+                            />
+                            <label htmlFor={`sidebar-conc-${c}`} className="text-[11px] leading-5 text-[#D7E2EE] cursor-pointer hover:text-white">{c}</label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {filters.concursos.length > 0 && options.anos.length > 0 && (
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wide text-[#94A8C4] font-semibold">Ano</span>
+                    <div className="grid grid-cols-3 gap-1 mt-1">
+                      {options.anos.map(ano => (
+                        <Pill
+                          key={ano}
+                          label={String(ano)}
+                          active={filters.anos.includes(String(ano))}
+                          onClick={() => {
+                            const s = String(ano);
+                            setAndDispatch(prev => ({
+                              ...prev,
+                              anos: prev.anos.includes(s) ? prev.anos.filter(a => a !== s) : [...prev.anos, s],
+                            }));
+                          }}
+                          compact
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}
 
 // ─── Painel esquerdo: busca + disciplina + assunto ────────────────────────────
 
@@ -671,9 +934,11 @@ interface ActiveChip {
 export function ActiveFilterChips({
   filters,
   onChange,
+  variant = "dark",
 }: {
   filters: FilterValues;
   onChange: (f: FilterValues) => void;
+  variant?: "dark" | "light";
 }) {
   const chips: ActiveChip[] = [];
 
@@ -704,13 +969,28 @@ export function ActiveFilterChips({
 
   if (chips.length === 0) return null;
 
+  const chipStyle = variant === "light"
+    ? {
+        backgroundColor: "#FFF4CC",
+        color: "#5A4500",
+        borderColor: "rgba(251, 192, 45, 0.55)",
+      }
+    : {
+        backgroundColor: "rgba(251, 192, 45, 0.16)",
+        color: "#F4F4F2",
+        borderColor: "rgba(251, 192, 45, 0.34)",
+      };
+  const clearClassName = variant === "light"
+    ? "text-[11px] text-slate-500 hover:text-rose-600 transition-colors"
+    : "text-[11px] text-white/65 hover:text-rose-300 transition-colors";
+
   return (
     <div className="flex flex-wrap items-center gap-1.5 px-1 py-2">
       {chips.map((chip, i) => (
         <span
           key={i}
           className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full border"
-          style={{ backgroundColor: "rgba(251, 192, 45, 0.16)", color: "#F4F4F2", borderColor: "rgba(251, 192, 45, 0.34)" }}
+          style={chipStyle}
         >
           {chip.label}
           <button
@@ -726,7 +1006,7 @@ export function ActiveFilterChips({
         <button
           type="button"
           onClick={() => onChange(EMPTY_FILTERS)}
-          className="text-[11px] text-white/65 hover:text-rose-300 transition-colors"
+          className={clearClassName}
         >
           Limpar tudo
         </button>
