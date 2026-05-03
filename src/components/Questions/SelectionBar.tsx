@@ -26,9 +26,9 @@ export function SelectionBar({
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <div className="min-w-0 rounded-lg border border-[#E0B22A]/70 bg-[#FFF9E6] px-3 py-2">
           <div className="text-sm font-bold tabular-nums text-slate-950">
-            {count} selecionada(s)
+            {count} {count === 1 ? "questão selecionada" : "questões selecionadas"}
             {includesOtherPages && (
-              <span className="font-semibold text-[#5A4500]"> · inclui outras páginas</span>
+              <span className="font-normal text-slate-500"> · inclui outras páginas</span>
             )}
           </div>
         </div>
