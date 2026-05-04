@@ -546,7 +546,7 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
     return found;
   };
 
-  // ---------- imagem: largura 1..8 cm ----------
+  // ---------- imagem: largura 1..16 cm ----------
   const adjustSelectedImageWidth = (deltaCm: number) => {
     const img = findSelectedImage();
     if (!img) return;
@@ -554,7 +554,7 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
     const curPx = Number(img.node.attrs?.width ?? 0);
     const curCm = curPx ? pxToCm(curPx) : 0;
 
-    const nextCm = clampInt((curCm || 1) + deltaCm, 1, 8);
+    const nextCm = clampInt((curCm || 1) + deltaCm, 1, 16);
     const nextPx = cmToPx(nextCm);
 
     const tr = view.state.tr.setNodeMarkup(img.pos, undefined, {
