@@ -19,7 +19,8 @@ export function placeholderPlugin(placeholders: Record<string, string>) {
                   span.className = "placeholder";
                   span.textContent = placeholder;
                   span.style.cssText = `
-                    color: #999;
+                    color: #bbb;
+                    font-style: italic;
                     pointer-events: none;
                     position: absolute;
                   `;

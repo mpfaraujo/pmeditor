@@ -478,10 +478,36 @@
   padding: 1.1rem 1.35rem;
 }
 
-/* ===== EDITOR DE QUESTÕES: MENOS BORDA BRANCA NA "FOLHA" ===== */
+/* ===== EDITOR DE QUESTÕES: FOLHA E OPÇÕES COMPACTAS ===== */
 
 .question-editor-sheet .ProseMirror {
-  padding: 0.55cm 1.45cm 1.2cm;
+  padding: 0.55cm 0.9cm 1.2cm;
+}
+
+/* Hierarquia enunciado → opções: statement mais contido, separação clara antes das opções */
+.question-editor-sheet .statement {
+  margin-bottom: 0.4rem;
+}
+
+.question-editor-sheet .options {
+  gap: 6px;
+  margin-top: 0.75rem;
+}
+
+/* Opção integrada ao fluxo: "A) texto" em vez de "(A)  texto" separado */
+.question-editor-sheet .option {
+  padding: 1px 4px 1px 0;
+  gap: 0.25rem;
+}
+
+.question-editor-sheet .option::before {
+  content: attr(data-letter) ")";
+  font-weight: 500;
+  color: #374151;
+  padding-left: 0;
+  padding-top: 0;
+  min-width: 1.4rem;
+  text-align: left;
 }
 
 /* Labels numéricos injetados por JS (injectLineNumbers) */
