@@ -46,6 +46,7 @@ type QuestionCardProps = {
 
   onVersionChange?: (versionData: QuestionVersion) => void;
   showMetaHeader?: boolean;
+  showQuestionTitle?: boolean;
 };
 
 /* ---------------- helpers (somente leitura) ---------------- */
@@ -172,6 +173,7 @@ export default function QuestionCard({
   active,
   onVersionChange,
   showMetaHeader = true,
+  showQuestionTitle = true,
 }: QuestionCardProps) {
   const isEdited = variantsCount > 0;
   const hasBase = !!base?.content;
@@ -310,12 +312,14 @@ export default function QuestionCard({
         </div>
       </div>
 
-      <div className="mt-2 flex items-baseline gap-2">
-        <span className="font-semibold">{headerLabel}</span>
-        <span className="font-mono text-sm text-muted-foreground break-all">
-          {metadata.id}:
-        </span>
-      </div>
+      {showQuestionTitle && (
+        <div className="mt-2 flex items-baseline gap-2">
+          <span className="font-semibold">{headerLabel}</span>
+          <span className="font-mono text-sm text-muted-foreground break-all">
+            {metadata.id}:
+          </span>
+        </div>
+      )}
 
       {/* Conteúdo */}
       <div className="print-mode space-y-3 text-[15px] leading-relaxed">

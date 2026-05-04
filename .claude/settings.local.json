@@ -52,7 +52,9 @@
       "Skill(update-config:*)",
       "Bash(*)",
       "WebFetch(domain:professor.bio.br)",
-      "PowerShell(cd C:\\\\Projetos\\\\pmeditor && pnpm tsc --noEmit 2>&1 | Where-Object { $_ -notmatch \"\\\\.test\\\\.\" } | Select-Object -First 30)"
+      "PowerShell(cd C:\\\\Projetos\\\\pmeditor && pnpm tsc --noEmit 2>&1 | Where-Object { $_ -notmatch \"\\\\.test\\\\.\" } | Select-Object -First 30)",
+      "PowerShell(cd C:\\\\Projetos\\\\pmeditor; pnpm tsc --noEmit 2>&1 | Where-Object { $_ -notmatch \"\\\\.test\\\\.\" } | Select-Object -First 80)",
+      "PowerShell(cd C:\\\\Projetos\\\\pmeditor; $result = pnpm tsc --noEmit 2>&1; $result | Where-Object { $_ -notmatch \"\\\\.test\\\\.\" } | Select-Object -First 80; Write-Host \"Exit: $LASTEXITCODE\")"
     ]
   }
 }

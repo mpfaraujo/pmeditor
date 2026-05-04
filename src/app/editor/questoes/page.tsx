@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/carousel";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
 import { QuestionCardCompact } from "@/components/Questions/QuestionCardCompact";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { SelectionBar } from "@/components/Questions/SelectionBar";
 import "./print.css";
@@ -69,6 +69,17 @@ function hasAnyFilter(filters: Partial<FilterValuesWithMy>): boolean {
     filters.anos?.length ||
     filters.myQuestions
   );
+}
+
+function getSourceLabel(source: QuestionItem["metadata"]["source"]): string | null {
+  if (!source?.kind) return null;
+  if (source.kind === "concurso") {
+    const concurso = (source as any).concurso || "Concurso";
+    const ano = (source as any).ano;
+    return [concurso, ano].filter(Boolean).join(" · ");
+  }
+  if (source.kind === "original") return "Original";
+  return source.kind;
 }
 
 export default function QuestoesPage() {
@@ -663,12 +674,14 @@ export default function QuestoesPage() {
             </div>
           </div>
         )}
-        <SelectionBar
-          count={effectiveSelectedCount}
-          includesOtherPages={includesSelectedOutsidePage}
-          onClear={clearAll}
-          onBuild={handleMontarProva}
-        />
+        {!previewItem && (
+          <SelectionBar
+            count={effectiveSelectedCount}
+            includesOtherPages={includesSelectedOutsidePage}
+            onClear={clearAll}
+            onBuild={handleMontarProva}
+          />
+        )}
       </div>
 
       {/* Confirmação de remoção da seleção */}
@@ -688,27 +701,85 @@ export default function QuestoesPage() {
 
       {/* Modal de preview (modo grade) */}
       <Dialog open={!!previewItem} onOpenChange={(open) => { if (!open) setPreviewItem(null); }}>
-          <DialogContent className="w-[min(96vw,22.5cm)] max-w-[22.5cm] max-h-[90vh] overflow-y-auto p-4">
-            <DialogTitle className="sr-only">Visualizar questão</DialogTitle>
+          <DialogContent className="flex w-[min(96vw,22.5cm)] max-w-[22.5cm] max-h-[90vh] flex-col gap-0 overflow-hidden p-0">
             {previewItem && (
               <>
-                <div className="mb-2 flex justify-end pr-10">
-                <Button size="sm" variant="secondary" onClick={() => { setEditing(previewItem); setEditorOpen(true); setPreviewItem(null); }}>
-                  Editar
-                </Button>
-              </div>
-              <div className="question-readable-preview" ref={previewMeasureRef}>
-                <QuestionCard
-                  metadata={previewItem.metadata}
-                  content={previewItem.content}
-                  base={previewItem.base}
-                  variantsCount={previewItem.variantsCount}
-                  active={previewItem.active}
-                  selected={isSelected(previewItem.metadata.id)}
-                  onSelect={(id, checked) => { toggleSelect(id, checked); }}
-                  showMetaHeader={false}
-                />
-              </div>
+                <div className="shrink-0 border-b border-slate-200 bg-white px-5 py-4 pr-12">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <DialogTitle className="text-lg font-semibold text-slate-950">Questão</DialogTitle>
+                      <div className="mt-1 font-mono text-[11px] text-slate-400 break-all">
+                        {previewItem.metadata.id}
+                      </div>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant={isSelected(previewItem.metadata.id) ? "secondary" : "outline"}
+                      onClick={() => toggleSelect(previewItem.metadata.id, !isSelected(previewItem.metadata.id))}
+                      className={isSelected(previewItem.metadata.id)
+                        ? "shrink-0 border-[#E0B22A] bg-[#FFF4CC] text-[#5A4500] hover:bg-[#FFECA8]"
+                        : "shrink-0 bg-white"}
+                    >
+                      <CheckSquare className="h-3.5 w-3.5" />
+                      {isSelected(previewItem.metadata.id) ? "Selecionada" : "Selecionar questão"}
+                    </Button>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {[
+                      previewItem.metadata.disciplina,
+                      previewItem.metadata.assunto,
+                      previewItem.metadata.tipo,
+                      previewItem.metadata.dificuldade,
+                      getSourceLabel(previewItem.metadata.source),
+                    ].filter(Boolean).map((meta, idx) => (
+                      <span
+                        key={`${meta}-${idx}`}
+                        className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-700"
+                      >
+                        {meta}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto p-4">
+                  <div className="question-readable-preview" ref={previewMeasureRef}>
+                    <QuestionCard
+                      metadata={previewItem.metadata}
+                      content={previewItem.content}
+                      base={previewItem.base}
+                      variantsCount={previewItem.variantsCount}
+                      active={previewItem.active}
+                      selected={isSelected(previewItem.metadata.id)}
+                      showMetaHeader={false}
+                      showQuestionTitle={false}
+                    />
+                  </div>
+                </div>
+                <div className="shrink-0 border-t border-slate-200 bg-white px-5 py-3">
+                  <div className="flex items-center justify-end gap-2">
+                    <DialogClose asChild>
+                      <Button size="sm" variant="outline">Fechar</Button>
+                    </DialogClose>
+                    <Button
+                      size="sm"
+                      variant={isSelected(previewItem.metadata.id) ? "outline" : "default"}
+                      onClick={() => toggleSelect(previewItem.metadata.id, !isSelected(previewItem.metadata.id))}
+                      className={isSelected(previewItem.metadata.id)
+                        ? "bg-white text-slate-700"
+                        : "bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]"}
+                    >
+                      {isSelected(previewItem.metadata.id) ? "Remover seleção" : "Selecionar questão"}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => { setEditing(previewItem); setEditorOpen(true); setPreviewItem(null); }}
+                      className="text-slate-500 hover:bg-slate-100"
+                    >
+                      Editar
+                    </Button>
+                  </div>
+                </div>
             </>
           )}
         </DialogContent>
