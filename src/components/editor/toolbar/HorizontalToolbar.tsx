@@ -190,9 +190,6 @@ export function HorizontalToolbar({
           <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-inc")} title="Aumentar imagem (+1 cm)">
             <Plus className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("preview")} title="Visualizar renderização">
-            <Icons.Eye className="h-4 w-4" />
-          </Button>
         </div>
 
         {/* ── ESTRUTURA ── dropdown + contador de alternativas inline */}
@@ -266,7 +263,7 @@ export function HorizontalToolbar({
           </Button>
         </div>
 
-        {/* ── DOCUMENTO ── New Load ⓘ Salvar */}
+        {/* ── DOCUMENTO ── New Load ⓘ Preview Salvar */}
         <div className="flex items-center gap-1 pl-2">
           <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("new")} title="Nova questão">
             <Icons.FilePlus2 className="h-4 w-4" />
@@ -276,6 +273,10 @@ export function HorizontalToolbar({
           </Button>
           <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("metadata")} title="Informações da questão">
             <Icons.Info className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="h-8 px-2 hover:bg-violet-100 text-violet-700 border border-violet-200" onClick={() => onAction("preview")} title="Visualizar renderização">
+            <Icons.Eye className="h-4 w-4 mr-1" />
+            <span className="text-xs font-medium">Preview</span>
           </Button>
           <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("save")} title="Salvar questão">
             <Icons.Save className="h-4 w-4" />
