@@ -159,6 +159,7 @@ export function EditorToolbar({
     return false;
   })();
 
+
   const hasMark = (markType: string): boolean => {
     const type = schema.marks[markType];
     if (!type) return false;
@@ -566,6 +567,8 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
     view.focus();
   };
 
+  const hasSelectedImage = findSelectedImage() !== null;
+
   // ---------- alinhamento: imagem OU parágrafos ----------
   const applyAlign = (align: "left" | "center" | "right" | "justify") => {
     const img = findSelectedImage();
@@ -759,6 +762,7 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
             isInBaseText={isInBaseText || isInStatement}
             isInTitle={isInTitle}
             isNumbered={isNumbered}
+            hasSelectedImage={hasSelectedImage}
             textAlign={currentTextAlign}
             activeMarks={{
               strong: hasMark("strong"),

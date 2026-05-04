@@ -31,6 +31,7 @@ interface HorizontalToolbarProps {
     subscript?: boolean;
   };
   textAlign?: "left" | "center" | "right" | "justify" | null;
+  hasSelectedImage?: boolean;
 }
 
 export function HorizontalToolbar({
@@ -44,6 +45,7 @@ export function HorizontalToolbar({
   isNumbered = false,
   activeMarks,
   textAlign = null,
+  hasSelectedImage = false,
 }: HorizontalToolbarProps) {
   const clampedOptions = Math.max(0, Math.min(5, Math.floor(optionsCount || 0)));
   const canDec = clampedOptions > 2;
@@ -183,13 +185,17 @@ export function HorizontalToolbar({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <span className="text-xs text-gray-500">Img</span>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-dec")} title="Reduzir imagem (−1 cm)">
-            <Minus className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-inc")} title="Aumentar imagem (+1 cm)">
-            <Plus className="h-4 w-4" />
-          </Button>
+          {hasSelectedImage && (
+            <>
+              <Icons.Image className="h-4 w-4 text-gray-400 mx-1 shrink-0" />
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-dec")} title="Reduzir imagem (−1 cm)">
+                <Minus className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-gray-100" onClick={() => onAction("img-w-inc")} title="Aumentar imagem (+1 cm)">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </>
+          )}
         </div>
 
         {/* ── ESTRUTURA ── dropdown + contador de alternativas inline */}
