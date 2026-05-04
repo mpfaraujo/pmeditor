@@ -478,6 +478,21 @@
   padding: 1.1rem 1.35rem;
 }
 
+/* Label do base_text embutido — só no editor, não na prova */
+.question-editor-sheet .base-text::before {
+  content: "Enunciado compartilhado";
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2563eb;
+  opacity: 0.7;
+  margin-bottom: 0.3em;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* ===== EDITOR DE QUESTÕES: FOLHA E OPÇÕES COMPACTAS ===== */
 
 .question-editor-sheet .ProseMirror {

@@ -569,6 +569,15 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
 
   const hasSelectedImage = findSelectedImage() !== null;
 
+  // Detecta se há base_text embutido no set_questions atual
+  let hasEmbeddedBaseText = false;
+  state.doc.descendants((node: any) => {
+    if (schema.nodes.base_text && node.type === schema.nodes.base_text) {
+      hasEmbeddedBaseText = true;
+      return false;
+    }
+  });
+
   // ---------- alinhamento: imagem OU parágrafos ----------
   const applyAlign = (align: "left" | "center" | "right" | "justify") => {
     const img = findSelectedImage();
@@ -634,7 +643,9 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
       action === "toggle-options" ||
       action === "convert-to-setquestions" ||
       action === "add-question-item" ||
-      action === "remove-question-item"
+      action === "remove-question-item" ||
+      action === "add-base-text" ||
+      action === "remove-base-text"
     ) {
       onAction?.(action);
       return;
@@ -763,6 +774,7 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
             isInTitle={isInTitle}
             isNumbered={isNumbered}
             hasSelectedImage={hasSelectedImage}
+            hasEmbeddedBaseText={hasEmbeddedBaseText}
             textAlign={currentTextAlign}
             activeMarks={{
               strong: hasMark("strong"),

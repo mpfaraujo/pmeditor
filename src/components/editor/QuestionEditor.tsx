@@ -965,6 +965,33 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
         recompute(view);
         return;
       }
+      case "add-base-text": {
+        // Insere base_text vazio no início do set_questions se não existir
+        const root = view.state.doc.childCount ? view.state.doc.child(0) : null;
+        if (!root || root.type !== schema.nodes.set_questions) return;
+        if (docHasBaseText(view.state.doc)) return;
+        const bt = schema.nodes.base_text.create(null, [schema.nodes.paragraph.create()]);
+        // set_questions começa na posição 1 do doc (offset do nó pai)
+        view.dispatch(view.state.tr.insert(1, bt));
+        view.focus();
+        return;
+      }
+      case "remove-base-text": {
+        // Remove o nó base_text do set_questions
+        let btPos = -1;
+        let btSize = 0;
+        view.state.doc.descendants((node: any, pos: number) => {
+          if (node.type === schema.nodes.base_text && btPos === -1) {
+            btPos = pos;
+            btSize = node.nodeSize;
+            return false;
+          }
+        });
+        if (btPos === -1) return;
+        view.dispatch(view.state.tr.delete(btPos, btPos + btSize));
+        view.focus();
+        return;
+      }
       case "set-type-discursiva": {
         const nextTipo = "Discursiva" as QuestionMetadataV1["tipo"];
         setMeta((m) => ({ ...m, tipo: nextTipo, updatedAt: new Date().toISOString() }));

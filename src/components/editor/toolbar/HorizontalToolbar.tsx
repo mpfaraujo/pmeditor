@@ -32,6 +32,7 @@ interface HorizontalToolbarProps {
   };
   textAlign?: "left" | "center" | "right" | "justify" | null;
   hasSelectedImage?: boolean;
+  hasEmbeddedBaseText?: boolean;
 }
 
 export function HorizontalToolbar({
@@ -46,6 +47,7 @@ export function HorizontalToolbar({
   activeMarks,
   textAlign = null,
   hasSelectedImage = false,
+  hasEmbeddedBaseText = false,
 }: HorizontalToolbarProps) {
   const clampedOptions = Math.max(0, Math.min(5, Math.floor(optionsCount || 0)));
   const canDec = clampedOptions > 2;
@@ -231,6 +233,17 @@ export function HorizontalToolbar({
                   <DropdownMenuItem onClick={() => onAction("remove-question-item")} disabled={itemCount <= 1}>
                     <Icons.MinusSquare className="h-4 w-4 mr-2" /> Remover item
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {!hasEmbeddedBaseText && (
+                    <DropdownMenuItem onClick={() => onAction("add-base-text")}>
+                      <Icons.AlignLeft className="h-4 w-4 mr-2" /> Adicionar enunciado
+                    </DropdownMenuItem>
+                  )}
+                  {hasEmbeddedBaseText && (
+                    <DropdownMenuItem onClick={() => onAction("remove-base-text")}>
+                      <Icons.Trash2 className="h-4 w-4 mr-2" /> Remover enunciado
+                    </DropdownMenuItem>
+                  )}
                 </>
               )}
               <DropdownMenuSeparator />
