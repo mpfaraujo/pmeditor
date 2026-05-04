@@ -396,7 +396,7 @@ export default function QuestoesPage() {
       />
 
       <div
-        className="flex-1 flex flex-col min-w-0 overflow-hidden"
+        className="min-h-0 flex-1 flex flex-col min-w-0 overflow-hidden"
         style={{ backgroundColor: "#F4F4F2" }}
       >
         <header className="shrink-0 border-b border-slate-200 bg-white px-6 py-5">
@@ -517,7 +517,7 @@ export default function QuestoesPage() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
           <div className="relative px-6 py-5 pb-6">
 
             {loading && items.length > 0 && (
