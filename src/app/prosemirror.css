@@ -501,7 +501,7 @@
 }
 
 .question-editor-sheet .option::before {
-  content: attr(data-letter) ")";
+  content: "(" attr(data-letter) ")";
   font-weight: 500;
   color: #374151;
   padding-left: 0;
