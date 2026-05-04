@@ -78,6 +78,12 @@
   margin: 1rem 0;
 }
 
+/* No editor: menos espaço vertical — a folha não precisa de tanto respiro quanto a prova */
+.question-editor-sheet .question {
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0;
+}
+
 .ProseMirror .base-text {
   background: #f0f4f8;
   padding: 1rem;
@@ -104,21 +110,22 @@
 .options {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.2rem;
+  margin-top: 0.6rem;
 }
 
 .option {
-  padding: 0.5rem 0.5rem 0.5rem 0;
+  padding: 0.2rem 0.25rem 0.2rem 0;
   position: relative;
   line-height: 1.5;
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
+  border-radius: 3px;
 }
 
 .option:hover {
-  background: #f8f8f8;
+  background: #f4f7fb;
 }
 
 .option::before {
@@ -127,7 +134,7 @@
   color: #2563eb;
   flex-shrink: 0;
   padding-left: 0.5rem;
-  padding-top: 0.5rem;
+  padding-top: 0.2rem;
   min-width: 2rem;
   text-align: center;
 }
@@ -135,6 +142,13 @@
 .option > * {
   margin-left: 0;
   flex: 1;
+}
+
+/* Alternativa selecionada: destaque discreto (sem o bloco alto do selectednode) */
+.question-editor-sheet .option.ProseMirror-selectednode {
+  outline: none;
+  background: #eff6ff;
+  border-left: 2px solid #93c5fd;
 }
 
 /* ===== LISTAS ===== */
@@ -467,7 +481,7 @@
 /* ===== EDITOR DE QUESTÕES: MENOS BORDA BRANCA NA "FOLHA" ===== */
 
 .question-editor-sheet .ProseMirror {
-  padding: 0.95cm 1.45cm 1.2cm;
+  padding: 0.55cm 1.45cm 1.2cm;
 }
 
 /* Labels numéricos injetados por JS (injectLineNumbers) */

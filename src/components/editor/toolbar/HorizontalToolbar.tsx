@@ -51,7 +51,7 @@ export function HorizontalToolbar({
 
   return (
     <div className="w-full bg-gradient-to-b from-blue-50 to-white border-b-2 border-blue-200 shadow-sm">
-      <div className="px-4 pt-2 pb-1 flex flex-col gap-1">
+      <div className="px-3 pt-1 pb-0.5 flex flex-col gap-0.5">
 
         {/* ── LINHA 1 ── */}
         <div className="flex items-center gap-1 flex-wrap">

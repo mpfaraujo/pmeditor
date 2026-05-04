@@ -1081,9 +1081,9 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   // ----------------------------------------------------------------
 
     return (
-    <div className="w-full min-h-screen bg-[#d3d3d3] p-2 sm:p-4">
+    <div className="w-full min-h-screen bg-[#d3d3d3] p-2 sm:p-3">
       {/* Toolbar — largura total em mobile, centralizada (max 210mm) em desktop */}
-      <div className="mb-4 bg-white rounded-lg shadow-sm p-2 sm:max-w-[210mm] sm:mx-auto">
+      <div className="mb-2 bg-white rounded-lg shadow-sm p-2 sm:max-w-[210mm] sm:mx-auto">
         <EditorToolbar
           view={view}
           toolbarCallbackRef={toolbarCallbackRef}
