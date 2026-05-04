@@ -1311,6 +1311,21 @@ function replaceDocWithSingleQuestion(
   view.dispatch(tr.scrollIntoView());
 }
 
+// Retorna true só se o nó não tem texto, imagem nem fórmula — i.e., estrutura vazia de verdade.
+// doc.textContent ignora imagens/math, então a checagem simples falha quando o editor
+// tem só uma figura: textContent="" mas há conteúdo real, e o próximo paste vira "questão nova".
+function nodeIsEffectivelyEmpty(node: PMNode): boolean {
+  if (node.textContent.trim()) return false;
+  let hasContent = false;
+  node.descendants((n: PMNode) => {
+    if (n.type.name === "image" || n.type.name === "math_inline" || n.type.name === "math_block") {
+      hasContent = true;
+      return false;
+    }
+  });
+  return !hasContent;
+}
+
 export function createSmartPastePlugin(cfg: SmartPasteConfig) {
   const maxPx = cmToPx(cfg.maxImageWidthCm ?? 8);
 
@@ -1363,14 +1378,18 @@ export function createSmartPastePlugin(cfg: SmartPasteConfig) {
 
         // Determina o "container relevante": question_item em que o cursor está (se houver)
         // ou o doc inteiro. Só reestrutura se esse container estiver vazio.
+        // Se cursor está em base_text, não reestrutura (só upload de imagem é permitido).
         const { $from: $chk } = view.state.selection;
+        let inBaseText = false;
         let curItemDepth: number | null = null;
         for (let d = $chk.depth; d > 0; d--) {
-          if ($chk.node(d).type.name === "question_item") { curItemDepth = d; break; }
+          const name = $chk.node(d).type.name;
+          if (name === "base_text") { inBaseText = true; break; }
+          if (name === "question_item") { curItemDepth = d; break; }
         }
-        const relevantEmpty = curItemDepth !== null
-          ? $chk.node(curItemDepth).textContent.trim() === ""
-          : view.state.doc.textContent.trim() === "";
+        const relevantEmpty = !inBaseText && (curItemDepth !== null
+          ? nodeIsEffectivelyEmpty($chk.node(curItemDepth))
+          : nodeIsEffectivelyEmpty(view.state.doc));
 
         if (latexParsed && relevantEmpty) {
           event.preventDefault();
