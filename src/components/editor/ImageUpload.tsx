@@ -38,7 +38,7 @@ export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadPr
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [size, setSize] = useState<string>("4"); // padrão 4cm
+  const [size, setSize] = useState<string>("6"); // padrão 6cm
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -72,7 +72,7 @@ export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadPr
       const data = await response.json();
 
       if (data.success && data.url) {
-        const widthCm = clampInt(parseInt(size, 10), 1, 8);
+        const widthCm = clampInt(parseInt(size, 10), 1, 16);
         onImageInsert(data.url, widthCm, crypto.randomUUID());
         onOpenChange(false);
         setFile(null);
@@ -120,6 +120,10 @@ export function ImageUpload({ open, onOpenChange, onImageInsert }: ImageUploadPr
                 <SelectItem value="6">6 cm</SelectItem>
                 <SelectItem value="7">7 cm</SelectItem>
                 <SelectItem value="8">8 cm</SelectItem>
+                <SelectItem value="10">10 cm</SelectItem>
+                <SelectItem value="12">12 cm</SelectItem>
+                <SelectItem value="14">14 cm</SelectItem>
+                <SelectItem value="16">16 cm</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -129,7 +129,7 @@ function buildPlugins(
     createSmartPastePlugin({
       uploadEndpoint: "https://mpfaraujo.com.br/guardafiguras/api/upload.php",
       uploadToken: "uso_exclusivo_para_o_editor_de_textos_proseMirror_editor_de_questoes",
-      maxImageWidthCm: 8,
+      maxImageWidthCm: 16,
       stripAllHtmlImages: false,
       onYamlMetadata,
     }),
