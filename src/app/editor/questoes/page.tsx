@@ -89,6 +89,7 @@ export default function QuestoesPage() {
   const effectiveSelectedCount = selectedCount > 0 ? selectedCount : selectedQuestions.length;
   const hasSelectedQuestions = effectiveSelectedCount > 0 || selections.length > 0;
   const loadRequestIdRef = useRef(0);
+  const tagSearchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [items, setItems] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -114,6 +115,30 @@ export default function QuestoesPage() {
     if (typeof window === "undefined") return "grid";
     return (localStorage.getItem("questaoViewMode") as "carousel" | "grid") ?? "grid";
   });
+
+  // Banner de rascunho: mostra uma vez por sessão se há questões persistidas de sessão anterior
+  const [showDraftBanner, setShowDraftBanner] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (sessionStorage.getItem("pmeditor:draftAcknowledged")) return false;
+    try {
+      const raw = localStorage.getItem("provaQuestions_v1");
+      const parsed = JSON.parse(raw ?? "[]");
+      return Array.isArray(parsed) && parsed.length > 0;
+    } catch {
+      return false;
+    }
+  });
+
+  const handleContinueDraft = () => {
+    sessionStorage.setItem("pmeditor:draftAcknowledged", "1");
+    setShowDraftBanner(false);
+  };
+
+  const handleDiscardDraft = () => {
+    clearAll();
+    sessionStorage.setItem("pmeditor:draftAcknowledged", "1");
+    setShowDraftBanner(false);
+  };
 
   useEffect(() => { load(EMPTY_FILTERS, 1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -434,7 +459,8 @@ export default function QuestoesPage() {
                     onChange={(e) => {
                       const next = { ...activeFilters, tags: e.target.value };
                       setActiveFilters(next);
-                      filterState.setAndDispatch(() => next);
+                      if (tagSearchDebounceRef.current) clearTimeout(tagSearchDebounceRef.current);
+                      tagSearchDebounceRef.current = setTimeout(() => load(next, 1), 400);
                     }}
                     placeholder="Buscar por tag…"
                     className="h-11 rounded-lg border-slate-300 bg-white pl-10 text-sm"
@@ -516,6 +542,24 @@ export default function QuestoesPage() {
             </div>
           </div>
         </header>
+
+        {showDraftBanner && (
+          <div className="shrink-0 flex items-center justify-between gap-4 border-b border-amber-200 bg-amber-50 px-6 py-2.5">
+            <span className="text-sm text-amber-900">
+              Você tem <strong>{selectedQuestions.length}</strong> questão(ões) selecionada(s) de uma sessão anterior.
+            </span>
+            <div className="flex shrink-0 items-center gap-2">
+              <Button size="sm" variant="outline" onClick={handleDiscardDraft}
+                className="h-7 border-amber-300 bg-white text-amber-900 hover:bg-amber-100 text-xs">
+                Descartar
+              </Button>
+              <Button size="sm" onClick={handleContinueDraft}
+                className="h-7 bg-amber-400 text-amber-950 hover:bg-amber-500 text-xs">
+                Continuar
+              </Button>
+            </div>
+          </div>
+        )}
 
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
           <div className="relative px-6 py-5 pb-6">
