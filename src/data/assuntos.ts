@@ -156,6 +156,7 @@ const ASSUNTO_ALIASES: Record<string, string> = {
   "síntese de proteínas":            "Síntese de Proteínas (Transcrição e Tradução)",
   "biotecnologia":                   "Biotecnologia e Engenharia Genética",
   "transgenia":                      "Biotecnologia e Engenharia Genética",
+  "programas de saúde":              "Microbiologia e Virologia",
   "divisão celular":                 "Divisão Celular — Mitose",
   "seleção natural":                 "Seleção Natural e Adaptação",
   "herança e determinação do sexo":  "Herança Ligada ao Sexo",
