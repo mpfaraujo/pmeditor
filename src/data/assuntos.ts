@@ -397,7 +397,9 @@ const ASSUNTO_ALIASES: Record<string, string> = {
   // ── Língua Inglesa — variantes ────────────────────────────────────────────
   "gramática inglesa":              "Grammar",
   "vocabulary":                     "Vocabulary",
-  "interpretação de texto em inglês": "Interpretação de Texto",
+  "vocabulary in context":          "Vocabulary",
+  "word formation":                 "Vocabulary",
+  "interpretação de texto em inglês": "Reading Comprehension",
 
   // ── Língua Espanhola — variantes ─────────────────────────────────────────
   "gramática espanhola": "Gramática",
