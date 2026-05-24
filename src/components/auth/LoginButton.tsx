@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Script from "next/script";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -79,6 +78,20 @@ export function LoginButton() {
   const [gsiReady, setGsiReady] = useState(false);
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (window.google) {
+      setGsiReady(true);
+      return;
+    }
+    const interval = setInterval(() => {
+      if (window.google) {
+        setGsiReady(true);
+        clearInterval(interval);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleCredential = async (token: string) => {
     try {
       await login(token);
@@ -132,11 +145,6 @@ export function LoginButton() {
   // Não logado: botão "Entrar" sempre visível → popover com botão Google
   return (
     <>
-      <Script
-        src="https://accounts.google.com/gsi/client"
-        strategy="afterInteractive"
-        onLoad={() => setGsiReady(true)}
-      />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
