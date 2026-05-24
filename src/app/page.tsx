@@ -362,14 +362,16 @@ function SvgImpressao() {
   );
 }
 
-function SvgVisual() {
-  const Paper = ({ x, y, w, h, children }: { x: number; y: number; w: number; h: number; children?: ReactNode }) => (
+function SvgPaper({ x, y, w, h, children }: { x: number; y: number; w: number; h: number; children?: ReactNode }) {
+  return (
     <g>
       <rect x={x} y={y} width={w} height={h} rx="4" fill="white" />
       {children}
     </g>
   );
+}
 
+function SvgVisual() {
   return (
     <svg viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg">
 
@@ -377,47 +379,47 @@ function SvgVisual() {
       <text x="8" y="14" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1">DECORADORES DE QUESTÃO</text>
 
       {/* V0 Classic */}
-      <Paper x={8} y={20} w={84} h={36}>
+      <SvgPaper x={8} y={20} w={84} h={36}>
         <rect x={12} y={26} width={34} height={14} rx="2" fill="#e5e7eb" stroke="#374151" strokeWidth="0.5" />
         <text x={14} y={35} fill="#111827" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">Questão 1</text>
         <line x1={48} y1={40} x2={88} y2={40} stroke="#374151" strokeWidth="0.5" />
         <text x={12} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Classic</text>
-      </Paper>
+      </SvgPaper>
 
       {/* V1 Bracket */}
-      <Paper x={104} y={20} w={84} h={36}>
+      <SvgPaper x={104} y={20} w={84} h={36}>
         <path d="M 112 25 L 109 25 L 109 41 L 112 41" fill="none" stroke="#374151" strokeWidth="1" />
         <text x={115} y={36} fill="#111827" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">Questão 2</text>
         <line x1={109} y1={41} x2={184} y2={41} stroke="#374151" strokeWidth="0.5" />
         <text x={104} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Bracket</text>
-      </Paper>
+      </SvgPaper>
 
       {/* V2 Badge */}
-      <Paper x={200} y={20} w={84} h={36}>
+      <SvgPaper x={200} y={20} w={84} h={36}>
         <circle cx={220} cy={33} r="9" fill="#111827" />
         <text x={220} y={37} textAnchor="middle" fill="white" fontSize="8" fontFamily="sans-serif" fontWeight="700">3</text>
         <text x={200} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Badge</text>
-      </Paper>
+      </SvgPaper>
 
       {/* V3 Minimal */}
-      <Paper x={296} y={20} w={84} h={36}>
+      <SvgPaper x={296} y={20} w={84} h={36}>
         <text x={304} y={40} fill="#111827" fontSize="14" fontFamily="sans-serif" fontWeight="700">4</text>
         <text x={296} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Minimal</text>
-      </Paper>
+      </SvgPaper>
 
       {/* V4 Corner */}
-      <Paper x={392} y={20} w={84} h={36}>
+      <SvgPaper x={392} y={20} w={84} h={36}>
         <path d="M 396 34 L 396 26 L 404 26" fill="none" stroke="#374151" strokeWidth="1.2" />
         <text x={407} y={36} fill="#111827" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">Questão 5</text>
         <line x1={396} y1={40} x2={472} y2={40} stroke="#374151" strokeWidth="0.5" strokeDasharray="2 2" />
         <text x={392} y={62} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Corner</text>
-      </Paper>
+      </SvgPaper>
 
       {/* ── Cabeçalhos ── */}
       <text x="8" y="82" fill="#94a3b8" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1">MODELOS DE CABEÇALHO (11 variantes)</text>
 
       {/* H0: clássico — logo centro + linhas de campos */}
-      <Paper x={8} y={90} w={148} h={104}>
+      <SvgPaper x={8} y={90} w={148} h={104}>
         <rect x={58} y={96} width={48} height={14} rx="2" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="0.5" />
         <text x={82} y={105} textAnchor="middle" fill="#9ca3af" fontSize="5" fontFamily="sans-serif">Logo</text>
         <text x={82} y={118} textAnchor="middle" fill="#374151" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">ESCOLA ESTADUAL</text>
@@ -435,10 +437,10 @@ function SvgVisual() {
           </g>
         ))}
         <text x={8} y={186} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Clássico</text>
-      </Paper>
+      </SvgPaper>
 
       {/* H1: sidebar — logo barra lateral esquerda + campos à direita */}
-      <Paper x={168} y={90} w={148} h={104}>
+      <SvgPaper x={168} y={90} w={148} h={104}>
         <rect x={168} y={90} width={26} height={104} rx="4" fill="#1e293b" />
         <text x={181} y={145} textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="sans-serif" transform="rotate(-90 181 145)">LOGO</text>
         <text x={200} y={102} fill="#374151" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">ESCOLA EST.</text>
@@ -450,10 +452,10 @@ function SvgVisual() {
           </g>
         ))}
         <text x={168} y={186} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Sidebar</text>
-      </Paper>
+      </SvgPaper>
 
       {/* H2: grade com células */}
-      <Paper x={328} y={90} w={148} h={104}>
+      <SvgPaper x={328} y={90} w={148} h={104}>
         <rect x={328} y={90} width={148} height={20} rx="4" fill="#1e293b" />
         <rect x={328} y={102} width={148} height={8} rx="0" fill="#1e293b" />
         <text x={402} y={101} textAnchor="middle" fill="white" fontSize="5.5" fontFamily="sans-serif" fontWeight="700">ESCOLA ESTADUAL</text>
@@ -466,7 +468,7 @@ function SvgVisual() {
           </g>
         ))}
         <text x={328} y={186} fill="#94a3b8" fontSize="6" fontFamily="sans-serif">Grade</text>
-      </Paper>
+      </SvgPaper>
 
     </svg>
   );
