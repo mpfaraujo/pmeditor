@@ -22,7 +22,7 @@ export function SelectionBar({
   if (!mounted || count <= 0) return null;
 
   return (
-    <div className="shrink-0 border-t border-slate-200 bg-white/95 px-6 py-3 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] print:hidden">
+    <div className="fixed bottom-0 left-72 right-0 z-40 border-t border-slate-200 bg-white/95 px-6 py-3 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] backdrop-blur print:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <div className="min-w-0 rounded-lg border border-[#E0B22A]/70 bg-[#FFF9E6] px-3 py-2">
           <div className="text-sm font-bold tabular-nums text-slate-950">

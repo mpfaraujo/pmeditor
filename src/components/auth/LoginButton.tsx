@@ -13,6 +13,8 @@ import {
 import { LogOut, User, LogIn } from "lucide-react";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
+let googleIdentityInitialized = false;
+let googleCredentialHandler: ((token: string) => void) | null = null;
 
 declare global {
   interface Window {
@@ -41,12 +43,16 @@ function GoogleSignInButton({
 
     const render = () => {
       if (!window.google || !ref.current) return;
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: (resp: any) => {
-          if (resp?.credential) onCredential(resp.credential);
-        },
-      });
+      googleCredentialHandler = onCredential;
+      if (!googleIdentityInitialized) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: (resp: any) => {
+            if (resp?.credential) googleCredentialHandler?.(resp.credential);
+          },
+        });
+        googleIdentityInitialized = true;
+      }
       ref.current.innerHTML = "";
       window.google.accounts.id.renderButton(ref.current, {
         theme: "outline",

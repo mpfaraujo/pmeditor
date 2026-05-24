@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/carousel";
 import { QuestionEditorModal } from "@/components/Questions/QuestionEditorModal";
 import { QuestionCardCompact } from "@/components/Questions/QuestionCardCompact";
-import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { SelectionBar } from "@/components/Questions/SelectionBar";
 import "./print.css";
@@ -398,6 +398,7 @@ export default function QuestoesPage() {
     if (q.metadata.tags?.length) chips.push(...q.metadata.tags.slice(0, 3));
     return [...new Set(chips.map(c => c.trim()).filter(Boolean))];
   }, [currentDisplayItem]);
+  const selectionBarVisible = !previewItem && effectiveSelectedCount > 0;
 
   // Reset index quando toggle muda
   useEffect(() => {
@@ -421,7 +422,7 @@ export default function QuestoesPage() {
       />
 
       <div
-        className="min-h-0 flex-1 flex flex-col min-w-0 overflow-hidden"
+        className={`min-h-0 flex-1 flex flex-col min-w-0 overflow-hidden ${selectionBarVisible ? "pb-[72px]" : ""}`}
         style={{ backgroundColor: "#F4F4F2" }}
       >
         <header className="shrink-0 border-b border-slate-200 bg-white px-6 py-5">
@@ -718,7 +719,7 @@ export default function QuestoesPage() {
             </div>
           </div>
         )}
-        {!previewItem && (
+        {selectionBarVisible && (
           <SelectionBar
             count={effectiveSelectedCount}
             includesOtherPages={includesSelectedOutsidePage}
@@ -732,7 +733,9 @@ export default function QuestoesPage() {
       <Dialog open={!!pendingRemoveId} onOpenChange={(open) => { if (!open) setPendingRemoveId(null); }}>
         <DialogContent className="max-w-sm p-6">
           <DialogTitle>Remover da seleção?</DialogTitle>
-          <p className="text-sm text-muted-foreground mt-1">A questão será removida da lista de selecionadas.</p>
+          <DialogDescription className="mt-1">
+            A questão será removida da lista de selecionadas.
+          </DialogDescription>
           <div className="flex gap-2 justify-end mt-4">
             <Button variant="outline" size="sm" onClick={() => setPendingRemoveId(null)}>Cancelar</Button>
             <Button variant="destructive" size="sm" onClick={() => {
@@ -752,6 +755,9 @@ export default function QuestoesPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <DialogTitle className="text-lg font-semibold text-slate-950">Questão</DialogTitle>
+                      <DialogDescription className="sr-only">
+                        Pré-visualização completa da questão selecionada.
+                      </DialogDescription>
                       <div className="mt-1 font-mono text-[11px] text-slate-400 break-all">
                         {previewItem.metadata.id}
                       </div>
