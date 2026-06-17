@@ -116,17 +116,39 @@
 .questao-conteudo ul.assertive-list > li,
 .question-readonly ul.assertive-list > li,
 .question-text ul.assertive-list > li {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: baseline;
-  gap: 0.4rem;
+  column-gap: 0.4rem;
 }
 
 .questao-conteudo ul.assertive-list > li::before,
 .question-readonly ul.assertive-list > li::before,
 .question-text ul.assertive-list > li::before {
   content: "(\00a0\00a0)";
-  flex-shrink: 0;
   font-family: monospace;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.questao-conteudo ul.assertive-list > li > .list-item-content,
+.question-readonly ul.assertive-list > li > .list-item-content,
+.question-text ul.assertive-list > li > .list-item-content {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.questao-conteudo ul.assertive-list > li > .list-item-content > p,
+.question-readonly ul.assertive-list > li > .list-item-content > p,
+.question-text ul.assertive-list > li > .list-item-content > p {
+  display: inline;
+  margin: 0;
+}
+
+.questao-conteudo ul.assertive-list > li > .list-item-content > p + p::before,
+.question-readonly ul.assertive-list > li > .list-item-content > p + p::before,
+.question-text ul.assertive-list > li > .list-item-content > p + p::before {
+  content: " ";
 }
 
 .questao-conteudo li,

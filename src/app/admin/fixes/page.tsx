@@ -2068,6 +2068,19 @@ export default function FixesPage() {
     loadQuestions(runId);
   }
 
+  function handleFinishReview() {
+    if (!selectedRunId) return;
+    toggleHideBatch(selectedRunId);
+    setSelectedRunId("");
+    setSelectedBatchLabel("");
+    setQuestions([]);
+    setBaseTexts([]);
+    setDuplicates([]);
+    setSelected(new Set());
+    setFixResult(null);
+    setFixError("");
+  }
+
   async function handleDeleteRun() {
     if (!selectedRunId || deleteRunBusy) return;
 
@@ -2772,6 +2785,16 @@ export default function FixesPage() {
                       <Trash2 size={11} className="mr-1" />
                     )}
                     Excluir importação
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleFinishReview}
+                    className="h-6 px-2 text-[11px]"
+                    title="Arquiva este batch e volta para a lista"
+                  >
+                    <CheckCircle2 size={11} className="mr-1" />
+                    Terminar revisão
                   </Button>
                   <span className="text-gray-600 font-medium">{stats.total} questões</span>
                   <span className="text-amber-700 flex items-center gap-1">

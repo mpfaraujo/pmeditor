@@ -1,3 +1,5 @@
+import { getAreasMapPorDisciplina, normalizeAssunto } from "../src/data/assuntos";
+
 export type CheckSeverity = "error" | "warning";
 
 export type CheckIssue = {
@@ -720,13 +722,13 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
   },
 
   {
-    id: "correctchoice-lowercase",
-    description: "\\correctchoice com c minúsculo — gabarito não é registrado.",
+    id: "correctchoice-camelcase",
+    description: "\\CorrectChoice camelCase — forma não canônica. Usar \\correctchoice.",
     run: ({ text }) =>
-      issuesForPattern(text, /\\correctchoice\b/g, {
-        ruleId: "correctchoice-lowercase",
+      issuesForPattern(text, /\\CorrectChoice\b/g, {
+        ruleId: "correctchoice-camelcase",
         severity: "error",
-        message: "\\correctchoice com c minúsculo não registra gabarito. Corrigir para \\CorrectChoice.",
+        message: "\\CorrectChoice com C maiúsculo não é a forma canônica. Corrigir para \\correctchoice.",
       }),
   },
 
@@ -791,7 +793,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
 
   {
     id: "choice-correct-count",
-    description: "Verifica número de \\CorrectChoice em cada bloco de alternativas.",
+    description: "Verifica número de \\correctchoice em cada bloco de alternativas.",
     run: ({ text }) => {
       const issues: CheckIssue[] = [];
       for (const block of questionBlocks(text)) {
@@ -810,7 +812,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
               severity: "error",
               line: block.startLine,
               questionNumber: block.number,
-              message: `Bloco de alternativas com ${correctCount} \\CorrectChoice (deve ser exatamente 1).`,
+              message: `Bloco de alternativas com ${correctCount} \\correctchoice (deve ser exatamente 1).`,
             });
           }
         }
@@ -894,7 +896,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
         while ((m = choicesRe.exec(block.body))) {
           const choicesBody = m[2];
           const imgCount = (choicesBody.match(/\\includegraphics/g) ?? []).length;
-          const choiceCount = (choicesBody.match(/\\(?:choice|CorrectChoice)\b/g) ?? []).length;
+          const choiceCount = (choicesBody.match(/\\(?:choice|correctchoice|CorrectChoice)\b/g) ?? []).length;
           if (imgCount === 0) continue;
           if (imgCount < choiceCount) {
             // Menos imagens do que alternativas — provavelmente uma imagem única cobrindo várias
@@ -1029,6 +1031,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
         "Português": "Língua Portuguesa",
         "portugues": "Língua Portuguesa",
         "LP": "Língua Portuguesa",
+        "Literatura": "Língua Portuguesa",
         "Interpretação de Texto": "Língua Portuguesa (+ assunto: Interpretação de Texto)",
         "matematica": "Matemática",
         "Math": "Matemática",
@@ -1053,6 +1056,117 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
           });
         }
       }
+      return issues;
+    },
+  },
+
+  {
+    id: "invalid-assunto",
+    description: "Valor de assunto: não é canônico (não bate com área/subárea de src/data/disciplinas_areas.json).",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+      const stripQuotes = (s: string) => s.replace(/^["']+|["']+$/g, "").trim();
+
+      const canonicalFor = (disciplina: string, nivel: string | null): { exact: Set<string>; norm: Map<string, string> } | null => {
+        const map = getAreasMapPorDisciplina(disciplina, nivel);
+        if (!map) return null;
+        const exact = new Set<string>();
+        const normMap = new Map<string, string>();
+        for (const [area, info] of Object.entries(map)) {
+          exact.add(area);
+          normMap.set(norm(area), area);
+          for (const sub of info.subareas) {
+            exact.add(sub);
+            normMap.set(norm(sub), sub);
+          }
+        }
+        return { exact, norm: normMap };
+      };
+
+      const checkOne = (params: {
+        disciplina: string;
+        nivel: string | null;
+        assunto: string;
+        line: number;
+        questionNumber?: string;
+        fieldLabel: string;
+      }) => {
+        const { disciplina, nivel, assunto, line, questionNumber, fieldLabel } = params;
+        const can = canonicalFor(disciplina, nivel);
+        if (!can) return; // disciplina desconhecida — invalid-disciplina cuida
+        if (can.exact.has(assunto)) return;
+        const hit = can.norm.get(norm(assunto));
+        if (hit) {
+          issues.push({
+            ruleId: "invalid-assunto",
+            severity: "error",
+            line,
+            questionNumber,
+            message: `${fieldLabel} "${assunto}" difere do canônico apenas por acento/caixa. Usar exatamente: "${hit}".`,
+          });
+          return;
+        }
+        const suggested = normalizeAssunto(assunto);
+        const suggestedHit = suggested && can.norm.get(norm(suggested));
+        const hint = suggestedHit ? ` Sugestão: "${suggestedHit}".` : "";
+        issues.push({
+          ruleId: "invalid-assunto",
+          severity: "error",
+          line,
+          questionNumber,
+          message: `${fieldLabel} "${assunto}" não é canônico para disciplina "${disciplina}". Usar área ou subárea de src/data/disciplinas_areas.json (preferir subárea mais específica).${hint}`,
+        });
+      };
+
+      // \question / formato A e B
+      for (const block of questionBlocks(text)) {
+        const dM = block.yaml.match(/^disciplina:\s*(.+)$/m);
+        const aM = block.yaml.match(/^assunto:\s*(.+)$/m);
+        if (!dM || !aM) continue;
+        const nM = block.yaml.match(/^nivel:\s*(.+)$/m);
+        checkOne({
+          disciplina: stripQuotes(dM[1].trim()),
+          nivel: nM ? stripQuotes(nM[1].trim()) : null,
+          assunto: stripQuotes(aM[1].trim()),
+          line: block.startLine,
+          questionNumber: block.number,
+          fieldLabel: "assunto:",
+        });
+      }
+
+      // \setquestion — assunto: compartilhado e assuntoN: por item
+      for (const block of setquestionBlocks(text)) {
+        const dM = block.yaml.match(/^disciplina:\s*(.+)$/m);
+        if (!dM) continue;
+        const disciplina = stripQuotes(dM[1].trim());
+        const nM = block.yaml.match(/^nivel:\s*(.+)$/m);
+        const nivel = nM ? stripQuotes(nM[1].trim()) : null;
+        const aM = block.yaml.match(/^assunto:\s*(.+)$/m);
+        if (aM) {
+          checkOne({
+            disciplina,
+            nivel,
+            assunto: stripQuotes(aM[1].trim()),
+            line: block.startLine,
+            questionNumber: block.number,
+            fieldLabel: "assunto:",
+          });
+        }
+        const numberedRe = /^assunto(\d+):\s*(.+)$/gm;
+        let nm: RegExpExecArray | null;
+        while ((nm = numberedRe.exec(block.yaml)) !== null) {
+          checkOne({
+            disciplina,
+            nivel,
+            assunto: stripQuotes(nm[2].trim()),
+            line: block.startLine,
+            questionNumber: block.number,
+            fieldLabel: `assunto${nm[1]}:`,
+          });
+        }
+      }
+
       return issues;
     },
   },
@@ -1160,6 +1274,115 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
   },
 
   {
+    id: "editorial-label-in-body",
+    description: "Rótulo editorial no corpo da questão ('TEXTO PARA AS QUESTÕES X', 'TEXTO I', etc.) — entra como parágrafo literal no banco.",
+    run: ({ text }) => {
+      // Remove blocos YAML antes de checar o corpo
+      const noYaml = text.replace(/\n---\n[\s\S]*?\n---\n/g, (m) => "\n" + " ".repeat(m.length - 2) + "\n");
+      return issuesForPattern(
+        noYaml,
+        /^[ \t]*TEXTO\s+PARA\s+A[S]?\s+QUEST[ÃÕ]\S*\s+[\d,\s]+(?:E\s+\d+)?\s*$/gmi,
+        {
+          ruleId: "editorial-label-in-body",
+          severity: "warning",
+          message: "Rótulo editorial no corpo da questão — entra como parágrafo literal no banco. Remover esta linha.",
+        },
+      );
+    },
+  },
+
+  {
+    id: "untranslated-english-word",
+    description: "Palavra em inglês no texto que parece erro de transcrição (ex: 'in 2006' em vez de 'em 2006').",
+    run: ({ text }) => {
+      // Adicionar mais padrões nesta lista conforme identificados
+      const PATTERNS: Array<{ re: RegExp; hint: string }> = [
+        {
+          re: /\bin\s+\d{4}\b/g,
+          hint: '"in" (inglês) antes de ano — provável erro de transcrição. Substituir por "em".',
+        },
+      ];
+      const noYaml = text.replace(/\n---\n[\s\S]*?\n---\n/g, (m) => "\n" + " ".repeat(m.length - 2) + "\n");
+      const issues: CheckIssue[] = [];
+      for (const { re, hint } of PATTERNS) {
+        issues.push(
+          ...issuesForPattern(noYaml, re, {
+            ruleId: "untranslated-english-word",
+            severity: "warning",
+            message: hint,
+          }),
+        );
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "inline-attribution-without-credits",
+    description: "Atribuição de fonte inline (linha isolada entre parênteses) sem \\credits{} — entra como parágrafo literal no banco.",
+    run: ({ text }) => {
+      const noYaml = text.replace(/\n---\n[\s\S]*?\n---\n/g, (m) => "\n" + " ".repeat(m.length - 2) + "\n");
+      return issuesForPattern(
+        noYaml,
+        /^[ \t]*\(.{20,}\)[.\s]*$/gm,
+        {
+          ruleId: "inline-attribution-without-credits",
+          severity: "warning",
+          message: "Atribuição de fonte inline sem \\credits{} — entra como parágrafo literal. Substituir por \\credits{...}.",
+        },
+      );
+    },
+  },
+
+  {
+    id: "base-text-duplicated-in-questions",
+    description: "Texto base com titulo_texto: repetido no corpo de múltiplas questões — deve aparecer apenas na primeira.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const blocks = questionBlocks(text);
+
+      // Agrupa blocos pelo titulo_texto do YAML
+      const groups = new Map<string, QuestionBlock[]>();
+      for (const block of blocks) {
+        const m = block.yaml.match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
+        if (!m) continue;
+        const titulo = m[1].trim();
+        if (!groups.has(titulo)) groups.set(titulo, []);
+        groups.get(titulo)!.push(block);
+      }
+
+      const MIN_SHARED = 80;
+
+      function sharedPrefixLen(a: string, b: string): number {
+        let i = 0;
+        while (i < a.length && i < b.length && a[i] === b[i]) i++;
+        return i;
+      }
+
+      for (const [titulo, group] of groups) {
+        if (group.length < 2) continue;
+        const firstLead = extractLeadingText(group[0].body);
+        if (firstLead.length < MIN_SHARED) continue;
+        // Verifica se alguma outra questão do grupo também tem o texto base no corpo
+        for (let i = 1; i < group.length; i++) {
+          const lead = extractLeadingText(group[i].body);
+          if (lead.length >= MIN_SHARED && sharedPrefixLen(firstLead, lead) >= MIN_SHARED) {
+            issues.push({
+              ruleId: "base-text-duplicated-in-questions",
+              severity: "warning",
+              line: group[i].startLine,
+              questionNumber: group[i].number,
+              message: `Texto base "${titulo}" duplicado no corpo desta questão. Deve aparecer apenas na primeira questão do grupo — as demais têm só o enunciado próprio.`,
+            });
+          }
+        }
+      }
+
+      return issues;
+    },
+  },
+
+  {
     id: "shared-base-text-no-metadata",
     description: "Múltiplas questões consecutivas com texto base compartilhado sem metadados do texto (titulo_texto:, autor_texto:, tema:).",
     run: ({ text }) => {
@@ -1207,6 +1430,146 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
       }
 
       return issues;
+    },
+  },
+
+  {
+    id: "basetext-missing-titulo",
+    description: "Bloco \\basetext sem titulo_texto: no YAML — o importador ignora o bloco e as questões ficam sem vínculo.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const basetextRe = /\\basetext\b\s*\r?\n---\r?\n([\s\S]*?)\r?\n---\r?\n/g;
+      let m: RegExpExecArray | null;
+      while ((m = basetextRe.exec(text)) !== null) {
+        const yaml = m[1];
+        if (!/^titulo_texto:\s*.+$/m.test(yaml)) {
+          const line = text.slice(0, m.index).split("\n").length + 1;
+          issues.push({
+            ruleId: "basetext-missing-titulo",
+            severity: "error",
+            line,
+            message: "\\basetext sem titulo_texto: no YAML — o importador ignora este bloco. Adicionar titulo_texto: para vincular às questões.",
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "titulo-texto-no-basetext-match",
+    description: "Questão com titulo_texto: não tem \\basetext correspondente no arquivo (quando o arquivo usa blocos \\basetext).",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      // Só aplica quando o arquivo tem pelo menos um \basetext
+      if (!/\\basetext\b/.test(text)) return issues;
+
+      // Extrai titulo_texto de cada \basetext
+      const basetextTitles = new Set<string>();
+      const basetextRe = /\\basetext\b\s*\r?\n---\r?\n([\s\S]*?)\r?\n---\r?\n/g;
+      let m: RegExpExecArray | null;
+      while ((m = basetextRe.exec(text)) !== null) {
+        const match = m[1].match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
+        if (match) basetextTitles.add(match[1].trim());
+      }
+
+      for (const block of questionBlocks(text)) {
+        const titleMatch = block.yaml.match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
+        if (!titleMatch) continue;
+        const titulo = titleMatch[1].trim();
+        if (!basetextTitles.has(titulo)) {
+          issues.push({
+            ruleId: "titulo-texto-no-basetext-match",
+            severity: "warning",
+            line: block.startLine,
+            questionNumber: block.number,
+            message: `titulo_texto: "${titulo}" não tem \\basetext correspondente neste arquivo. Adicionar bloco \\basetext antes das questões ou remover o campo se o texto base está no corpo da primeira questão.`,
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "basetext-repeated-in-question",
+    description: "Questão referencia um \\basetext mas tem \\credits{} no corpo — conteúdo que pertence ao bloco \\basetext.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      // Só aplica quando o arquivo tem pelo menos um \basetext
+      if (!/\\basetext\b/.test(text)) return issues;
+
+      // Extrai titulo_texto de cada \basetext válido
+      const basetextTitles = new Set<string>();
+      const basetextRe = /\\basetext\b\s*\r?\n---\r?\n([\s\S]*?)\r?\n---\r?\n/g;
+      let m: RegExpExecArray | null;
+      while ((m = basetextRe.exec(text)) !== null) {
+        const match = m[1].match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
+        if (match) basetextTitles.add(match[1].trim());
+      }
+
+      for (const block of questionBlocks(text)) {
+        const titleMatch = block.yaml.match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
+        if (!titleMatch) continue;
+        const titulo = titleMatch[1].trim();
+        if (!basetextTitles.has(titulo)) continue;
+        // Questão referencia um \basetext — \credits{} de autoria pertence ao \basetext.
+        // Imagens NÃO disparam alerta: podem ser figuras específicas da questão (gráficos, esquemas).
+        if (/\\credits\{/.test(block.body)) {
+          issues.push({
+            ruleId: "basetext-repeated-in-question",
+            severity: "warning",
+            line: block.startLine,
+            questionNumber: block.number,
+            message: `Questão com titulo_texto: "${titulo}" tem \\credits{} no corpo — autoria pertence ao bloco \\basetext. Mover para o \\basetext se for o crédito do texto.`,
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "fake-table-in-center",
+    description: "\\begin{center} usado como tabela fake (linhas com `|`) — tabela deve ser \\includegraphics{tabela-qX}.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const centerRe = /\\begin\{center\}([\s\S]*?)\\end\{center\}/g;
+      let m: RegExpExecArray | null;
+      while ((m = centerRe.exec(text)) !== null) {
+        const inner = m[1];
+        const pipeLines = inner.split("\n").filter((l) => l.includes("|"));
+        if (pipeLines.length >= 2) {
+          const line = text.slice(0, m.index).split("\n").length;
+          const qBlock = questionBlocks(text).find(
+            (b) => b.startLine <= line && (b.endLine ?? Infinity) >= line
+          );
+          issues.push({
+            ruleId: "fake-table-in-center",
+            severity: "warning",
+            line,
+            questionNumber: qBlock?.number,
+            message: `\\begin{center} com ${pipeLines.length} linhas contendo '|' parece uma tabela fake. Tabelas devem ser \\includegraphics{tabela-qX}, nunca ASCII com '|'.`,
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "reference-to-formatting",
+    description: "Enunciado menciona sublinhado/grifado/negritado ou 'trecho marcado' — verificar se a formatação está presente no .tex ou foi perdida na extração.",
+    run: ({ text }) => {
+      return issuesForPattern(
+        text,
+        /\b(sublinhad[ao]s?|grifad[ao]s?|negritad[ao]s?)\b|\b(?:trecho|termo|palavra|segmento|parte)s?\s+marcad[ao]s?\b/gi,
+        {
+          ruleId: "reference-to-formatting",
+          severity: "warning",
+          message: "Enunciado menciona formatação visual (sublinhado/grifado/marcado) — verificar se está presente no .tex ou foi perdida na extração do PDF.",
+        }
+      );
     },
   },
 ];

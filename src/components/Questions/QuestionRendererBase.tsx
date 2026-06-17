@@ -981,9 +981,11 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     if (node.type === "list_item") {
       return (
         <li>
-          {node.content?.map((c, i) => (
-            <React.Fragment key={i}>{renderInline(c)}</React.Fragment>
-          ))}
+          <div className="list-item-content">
+            {node.content?.map((c, i) => (
+              <React.Fragment key={i}>{renderInline(c)}</React.Fragment>
+            ))}
+          </div>
         </li>
       );
     }

@@ -43,6 +43,9 @@ type YamlMeta = {
   // Metadados do texto base (para banco de textos)
   autor_texto?: string;
   titulo_texto?: string;
+  /** Conteúdo do texto base — quando presente, é usado diretamente pelo bulk-import
+   *  em vez de extrair por heurística do corpo da questão. */
+  basetext?: string;
   ano_publicacao?: number;
   tema?: string;
   genero?: string;
@@ -77,7 +80,14 @@ type ImportSetItem = {
   sharedMeta?: YamlMeta;
 };
 
-type QueueEntry = ImportItem | ImportSetItem;
+type ImportBaseTextItem = {
+  isBaseText: true;
+  /** Corpo LaTeX do texto base (sem o marcador \basetext). */
+  latex: string;
+  meta?: YamlMeta;
+};
+
+type QueueEntry = ImportItem | ImportSetItem | ImportBaseTextItem;
 
 /** Parseia frontmatter YAML simples entre --- delimitadores */
 function parseYamlBlock(block: string): YamlMeta {
@@ -100,12 +110,13 @@ function parseYamlBlock(block: string): YamlMeta {
     // Suporte a bloco multiline YAML (resposta: | ou resposta: |-)
     if (val === "|" || val === "|-") {
       const parts: string[] = [];
-      while (lineIdx < rawLines.length && /^[ \t]/.test(rawLines[lineIdx])) {
+      // Linhas indentadas OU em branco (fazem parte do bloco YAML)
+      while (lineIdx < rawLines.length && (/^[ \t]/.test(rawLines[lineIdx]) || rawLines[lineIdx].trim() === "")) {
         parts.push(rawLines[lineIdx++].trim());
       }
       // Remove linhas vazias no final
       while (parts.length && !parts[parts.length - 1]) parts.pop();
-      val = parts.join(" ").trim();
+      val = parts.join("\n").trim();
       if (!val) continue;
     }
 
@@ -155,6 +166,7 @@ function parseYamlBlock(block: string): YamlMeta {
       }
       case "autor_texto": result.autor_texto = val; break;
       case "titulo_texto": result.titulo_texto = val; break;
+      case "basetext": result.basetext = val; break;
       case "tema": result.tema = val; break;
       case "genero": result.genero = val; break;
       case "movimento": result.movimento = val; break;
@@ -462,16 +474,16 @@ function main() {
   const filePath = resolve(args[0]);
   const src = readFileSync(filePath, "utf-8");
 
-  // Encontra todas as posições de \question e \setquestion no texto
-  const markerRe = /\\(setquestion|question)\b/g;
-  const markers: Array<{ index: number; isSet: boolean }> = [];
+  // Encontra todas as posições de \question, \setquestion e \basetext no texto
+  const markerRe = /\\(setquestion|question|basetext)\b/g;
+  const markers: Array<{ index: number; isSet: boolean; isBaseText: boolean }> = [];
   let qm: RegExpExecArray | null;
   while ((qm = markerRe.exec(src))) {
-    markers.push({ index: qm.index, isSet: qm[1] === "setquestion" });
+    markers.push({ index: qm.index, isSet: qm[1] === "setquestion", isBaseText: qm[1] === "basetext" });
   }
 
   if (!markers.length) {
-    console.error("Nenhuma \\question ou \\setquestion encontrada no arquivo.");
+    console.error("Nenhuma \\question, \\setquestion ou \\basetext encontrada no arquivo.");
     process.exit(1);
   }
 
@@ -479,7 +491,7 @@ function main() {
   let skippedMcqSets = 0;
 
   for (let i = 0; i < markers.length; i++) {
-    const { index: qStart, isSet } = markers[i];
+    const { index: qStart, isSet, isBaseText } = markers[i];
     const qEnd = i + 1 < markers.length ? markers[i + 1].index : src.length;
 
     // Texto antes deste marcador (entre o marcador anterior e este)
@@ -501,6 +513,16 @@ function main() {
     blockText = blockText.replace(/^([\s\S]*)\n(\s*---\s*\n[\s\S]*?---\s*)$/, "$1");
     blockText = blockText.replace(/\\section\*?\{[^}]*\}\s*$/, "");
     blockText = blockText.trim();
+
+    if (isBaseText) {
+      // Remove o marcador \basetext
+      let chunk = blockText.replace(/^\\basetext\b\s*/, "").trim();
+      if (!chunk) continue;
+      const { meta: btMeta, latex: btLatex } = extractLeadingYaml(chunk);
+      if (btMeta) chunk = btLatex;
+      queue.push({ isBaseText: true, latex: chunk, ...(btMeta ? { meta: btMeta } : {}) });
+      continue;
+    }
 
     if (isSet) {
       // Remove o marcador \setquestion
@@ -587,8 +609,9 @@ function main() {
   writeFileSync(defaultPath, json, "utf-8");
 
   const total = queue.length;
-  const sets = queue.filter((q) => "isSet" in q).length;
-  const individual = total - sets;
+  const sets = queue.filter((q) => "isSet" in q && (q as ImportSetItem).isSet).length;
+  const baseTxts = queue.filter((q) => "isBaseText" in q && (q as ImportBaseTextItem).isBaseText).length;
+  const individual = total - sets - baseTxts;
 
   if (batchLabel) {
     const slug = toBatchSlug(batchLabel);
@@ -634,7 +657,7 @@ function main() {
 
     if (skippedMcqSets > 0)
       console.log(`\n❌  ${skippedMcqSets} \\setquestion MCQ ignorado(s) — ver erros acima\n`);
-    console.log(`✓ ${total} entradas extraídas (${individual} individual, ${sets} set)`);
+    console.log(`✓ ${total} entradas extraídas (${individual} individual, ${sets} set, ${baseTxts} texto-base)`);
     console.log(`  → public/data/import-queue.json           (padrão / UI)`);
     console.log(`  → public/data/${batchFile}  (batch persistente)`);
     console.log(`  → public/data/import-queue-${slug}.manifest.json`);
@@ -648,14 +671,20 @@ function main() {
         console.log(`     ${w.label}: ${w.reason}\n       ${w.match}`);
     }
   } else {
-    console.log(`✓ ${total} entradas extraídas (${individual} individual, ${sets} set) → public/data/import-queue.json`);
+    console.log(`✓ ${total} entradas extraídas (${individual} individual, ${sets} set, ${baseTxts} texto-base) → public/data/import-queue.json`);
   }
 
   for (let i = 0; i < queue.length; i++) {
     const q = queue[i];
-    if ("isSet" in q && q.isSet) {
-      const base = (q.baseLatexes[0] ?? "").slice(0, 50).replace(/\n/g, " ");
-      console.log(`  ${i + 1}. [SET ${q.items.length} itens] disciplina=${q.sharedMeta?.disciplina ?? "—"} | ${base}...`);
+    if ("isBaseText" in q && (q as ImportBaseTextItem).isBaseText) {
+      const bt = q as ImportBaseTextItem;
+      const titulo = bt.meta?.titulo_texto ?? "sem título";
+      const preview = bt.latex.slice(0, 50).replace(/\n/g, " ");
+      console.log(`  ${i + 1}. [TEXTO BASE] "${titulo}" | ${preview}...`);
+    } else if ("isSet" in q && (q as ImportSetItem).isSet) {
+      const s = q as ImportSetItem;
+      const base = (s.baseLatexes[0] ?? "").slice(0, 50).replace(/\n/g, " ");
+      console.log(`  ${i + 1}. [SET ${s.items.length} itens] disciplina=${s.sharedMeta?.disciplina ?? "—"} | ${base}...`);
     } else {
       const item = q as ImportItem;
       const assunto = item.meta?.assunto || "—";

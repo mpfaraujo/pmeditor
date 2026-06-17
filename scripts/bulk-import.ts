@@ -39,6 +39,7 @@ type YamlMeta = {
   prova?: string;
   autor_texto?: string;
   titulo_texto?: string;
+  basetext?: string;
   ano_publicacao?: number;
   tema?: string;
   genero?: string;
@@ -65,7 +66,13 @@ type ImportSetItem = {
   sharedMeta?: YamlMeta;
 };
 
-type QueueEntry = ImportItem | ImportSetItem;
+type ImportBaseTextItem = {
+  isBaseText: true;
+  latex: string;
+  meta?: YamlMeta;
+};
+
+type QueueEntry = ImportItem | ImportSetItem | ImportBaseTextItem;
 
 type DuplicateReportItem = {
   idx: number;
@@ -439,7 +446,7 @@ function splitBaseFromQuestion(latex: string): { baseLatex: string; questionLate
   }
   const choicesIdx = body.indexOf("\\begin{choices}");
   if (choicesIdx !== -1) {
-    const beforeChoices = body.slice(0, choicesIdx);
+    const beforeChoices = body.slice(0, choicesIdx).trimEnd();
     const paraBreak = beforeChoices.lastIndexOf("\n\n");
     if (paraBreak > 0) return { baseLatex: beforeChoices.slice(0, paraBreak).trim(), questionLatex: "\\question " + beforeChoices.slice(paraBreak).trim() + "\n" + body.slice(choicesIdx) };
   }
@@ -637,18 +644,50 @@ async function main() {
   console.log(`   ✉  ${filtered.length} para importar\n`);
   let ok = 0, fail = 0, dups = 0;
   const errors: any[] = [], dupList: any[] = [], baseTextCache = new Map<string, string>();
+  // Cache secundário: titulo_texto → base text ID (para questões que compartilham
+  // o mesmo título mas só a primeira contém o texto no corpo)
+  const baseTextTitleCache = new Map<string, string>();
+
+  // Pré-passo: processa entradas \basetext antes das questões
+  for (const entry of filtered) {
+    if (!("isBaseText" in entry && (entry as ImportBaseTextItem).isBaseText)) continue;
+    const bt = entry as ImportBaseTextItem;
+    const titulo = bt.meta?.titulo_texto;
+    if (!titulo) { console.log(`  ⚠ \basetext sem titulo_texto — ignorado`); continue; }
+    if (baseTextTitleCache.has(titulo)) continue; // já processado
+    if (!dryRun) {
+      const btResolved = await resolveBaseTextIds(
+        { isSet: true, baseLatexes: [bt.latex], items: [], sharedMeta: bt.meta },
+        baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg
+      );
+      if (!btResolved.ids) { console.log(`  ✘ basetext "${titulo}": ${btResolved.error}`); continue; }
+      baseTextTitleCache.set(titulo, btResolved.ids[0]);
+      console.log(`  📄 texto-base "${titulo}" → ${btResolved.ids[0].slice(0, 8)}...`);
+    } else {
+      baseTextTitleCache.set(titulo, crypto.randomUUID());
+    }
+  }
+
   for (let i = 0; i < filtered.length; i++) {
     const entry = filtered[i];
-    const isSet = "isSet" in entry && entry.isSet;
+    if ("isBaseText" in entry && (entry as ImportBaseTextItem).isBaseText) continue; // já processado no pré-passo
+    const isSet = "isSet" in entry && (entry as ImportSetItem).isSet;
     const label = isSet ? `[SET]` : `[${(entry as ImportItem).tipo === "Múltipla Escolha" ? "MCQ" : "DIS"}]`;
     let payload: any;
     try {
       if (isSet) {
         const setEntry = entry as ImportSetItem;
         if (setEntry.sharedMeta?.titulo_texto) {
-          const btResolved = await resolveBaseTextIds(setEntry, baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg);
-          if (!btResolved.ids) { fail++; console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
-          payload = buildInitialSet(setEntry, batch, btResolved.ids, author, importBatch, importRunId);
+          // \basetext pre-pass já criou o registro — usar ID do cache diretamente
+          const setCachedId = baseTextTitleCache.get(setEntry.sharedMeta.titulo_texto);
+          if (setCachedId) {
+            payload = buildInitialSet(setEntry, batch, [setCachedId], author, importBatch, importRunId);
+          } else {
+            const btResolved = await resolveBaseTextIds(setEntry, baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg);
+            if (!btResolved.ids) { fail++; console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
+            if (setEntry.sharedMeta.titulo_texto && btResolved.ids[0]) baseTextTitleCache.set(setEntry.sharedMeta.titulo_texto, btResolved.ids[0]);
+            payload = buildInitialSet(setEntry, batch, btResolved.ids, author, importBatch, importRunId);
+          }
         } else {
           const latexList = setEntry.baseLatexes?.length ? setEntry.baseLatexes : setEntry.baseLatex ? [setEntry.baseLatex] : [];
           payload = buildInitialSet(setEntry, batch, [], author, importBatch, importRunId, latexList);
@@ -656,12 +695,27 @@ async function main() {
       } else {
         const singleItem = entry as ImportItem;
         if (singleItem.meta?.titulo_texto) {
-          const split = splitBaseFromQuestion(singleItem.latex);
-          if (split) {
-            const btResolved = await resolveBaseTextIds({ isSet: true, baseLatexes: [split.baseLatex], items: [], sharedMeta: singleItem.meta }, baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg);
-            if (!btResolved.ids) { fail++; console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
-            payload = buildInitial({ ...singleItem, latex: split.questionLatex }, batch, author, importBatch, importRunId, btResolved.ids);
-          } else payload = buildInitial(singleItem, batch, author, importBatch, importRunId);
+          // Caso 0: \basetext pre-pass já criou o registro — usar ID do cache, sem heurística
+          const cachedId = baseTextTitleCache.get(singleItem.meta.titulo_texto);
+          if (cachedId) {
+            payload = buildInitial(singleItem, batch, author, importBatch, importRunId, [cachedId]);
+          } else {
+            // Caso 1: basetext: explícito no YAML ou heurística legada (texto base no corpo da Q1)
+            const explicitBase = singleItem.meta.basetext;
+            const baseLatexToUse = explicitBase ?? (() => { const s = splitBaseFromQuestion(singleItem.latex); return s?.baseLatex ?? null; })();
+            const questionLatexToUse = explicitBase ? singleItem.latex : (() => { const s = splitBaseFromQuestion(singleItem.latex); return s?.questionLatex ?? singleItem.latex; })();
+
+            if (baseLatexToUse) {
+              const btResolved = await resolveBaseTextIds({ isSet: true, baseLatexes: [baseLatexToUse], items: [], sharedMeta: singleItem.meta }, baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg);
+              if (!btResolved.ids) { fail++; console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
+              baseTextTitleCache.set(singleItem.meta.titulo_texto, btResolved.ids[0]);
+              payload = buildInitial({ ...singleItem, latex: questionLatexToUse }, batch, author, importBatch, importRunId, btResolved.ids);
+            } else {
+              // Caso 2: Q2/Q3 do formato legado — o ID foi criado pelo processamento da Q1
+              const legacyCachedId = baseTextTitleCache.get(singleItem.meta.titulo_texto);
+              payload = buildInitial(singleItem, batch, author, importBatch, importRunId, legacyCachedId ? [legacyCachedId] : undefined);
+            }
+          }
         } else payload = buildInitial(singleItem, batch, author, importBatch, importRunId);
       }
       payload.content = await materializeImagesInPayloadContent(payload.content, imageCfg);

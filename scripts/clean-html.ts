@@ -295,6 +295,8 @@ const args = process.argv.slice(2);
 let file = '';
 let materia = '';
 let paginas = 1;
+// Aceita variantes comuns de parâmetro de página: ?pagina=, ?pag=, ?page=, ?p=
+const PAGE_PARAM_RE = /([?&](?:pagina|pag|page|p)=)\d+/i;
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--materia') materia = args[++i];
   else if (args[i] === '--paginas') paginas = parseInt(args[++i], 10);
@@ -335,11 +337,11 @@ function finalizarSaida(outPath: string, conteudo: string) {
 
 if (file.startsWith('http://') || file.startsWith('https://')) {
   // URL — suporte a múltiplas páginas via --paginas N
-  if (paginas > 1 && /[?&]pagina=\d+/.test(file)) {
+  if (paginas > 1 && PAGE_PARAM_RE.test(file)) {
     const partes: string[] = [];
     let titulo = '';
     for (let p = 1; p <= paginas; p++) {
-      const url = file.replace(/([?&]pagina=)\d+/, `$1${p}`);
+      const url = file.replace(PAGE_PARAM_RE, `$1${p}`);
       process.stderr.write(`  → página ${p}/${paginas}...\n`);
       const result = await fetchAndProcess(url);
       if (!titulo) {
@@ -383,7 +385,7 @@ if (file.startsWith('http://') || file.startsWith('https://')) {
   if (materiaPergunta) materia = materiaPergunta;
 
   let paginasPergunta = 1;
-  if ((entrada.startsWith('http://') || entrada.startsWith('https://')) && /[?&]pagina=\d+/.test(entrada)) {
+  if ((entrada.startsWith('http://') || entrada.startsWith('https://')) && PAGE_PARAM_RE.test(entrada)) {
     const pStr = (await ask('Quantas páginas tem a prova? [1]: ')).trim();
     paginasPergunta = pStr ? parseInt(pStr, 10) : 1;
   }
@@ -398,11 +400,11 @@ if (file.startsWith('http://') || file.startsWith('https://')) {
   }
 
   if (file.startsWith('http://') || file.startsWith('https://')) {
-    if (paginas > 1 && /[?&]pagina=\d+/.test(file)) {
+    if (paginas > 1 && PAGE_PARAM_RE.test(file)) {
       const partes: string[] = [];
       let titulo = '';
       for (let p = 1; p <= paginas; p++) {
-        const url = file.replace(/([?&]pagina=)\d+/, `$1${p}`);
+        const url = file.replace(PAGE_PARAM_RE, `$1${p}`);
         process.stderr.write(`  → página ${p}/${paginas}...\n`);
         const result = await fetchAndProcess(url);
         if (!titulo) {
