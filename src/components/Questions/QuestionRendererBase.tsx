@@ -64,6 +64,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
     startX: number;
     startW: number;
     lastW: number;
+    moved: boolean;
   } | null>(null);
 
   const [dataBoxWidthOverrides, setDataBoxWidthOverrides] = React.useState<Record<string, number>>({});
@@ -819,14 +820,23 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         if (!id) return;
         e.preventDefault();
         (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-        const startW = widthPx || baseWidthPx || 0;
-        dragRef.current = { id, startX: e.clientX, startW, lastW: startW };
+        const wrapper = (e.currentTarget as HTMLElement).parentElement;
+        const imgEl = wrapper?.querySelector(
+          `img[data-id="${id}"]`
+        ) as HTMLImageElement | null;
+        const measuredW = imgEl
+          ? Math.round(imgEl.getBoundingClientRect().width)
+          : 0;
+        const startW = widthPx || baseWidthPx || measuredW || 0;
+        dragRef.current = { id, startX: e.clientX, startW, lastW: startW, moved: false };
       };
 
       const onPointerMove = (e: React.PointerEvent) => {
         const d = dragRef.current;
         if (!d) return;
         const dx = e.clientX - d.startX;
+        if (!d.moved && Math.abs(dx) < 2) return;
+        d.moved = true;
         const next = Math.max(40, Math.round(d.startW + dx));
         d.lastW = next;
         setImageWidthOverrides((prev) =>
@@ -841,7 +851,7 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
         try {
           (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
         } catch {}
-        onImageResizeCommit?.(d.id, d.lastW);
+        if (d.moved) onImageResizeCommit?.(d.id, d.lastW);
       };
 
       return (
@@ -867,41 +877,48 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
             data-id={id || undefined}
           />
 
-          {id ? (
-            <button
-              className="no-print"
-              type="button"
-              onClick={() =>
-                setImageAlignOverrides((prev) => {
-                  const cur = prev[id];
-                  const next = cur === "center" ? undefined : "center";
-                  const copy = { ...prev };
-                  if (next) copy[id] = next;
-                  else delete copy[id];
-                  return copy;
-                })
-              }
-              style={{
-                position: "absolute",
-                left: -6,
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: 18,
-                height: 18,
-                fontSize: 12,
-                lineHeight: "18px",
-                textAlign: "center",
-                borderRadius: 4,
-                background: "rgba(0,0,0,0.08)",
-                cursor: "pointer",
-                border: "none",
-                userSelect: "none",
-              }}
-              title="Centralizar"
-            >
-              C
-            </button>
-          ) : null}
+          {id ? (() => {
+            const currentAlign: "left" | "center" | "right" =
+              align === "center" ? "center" : align === "right" ? "right" : "left";
+            const nextAlign: "left" | "center" | "right" =
+              currentAlign === "center" ? "right" : currentAlign === "right" ? "left" : "center";
+            const nextLetter =
+              nextAlign === "center" ? "C" : nextAlign === "right" ? "D" : "E";
+            const nextTitle =
+              nextAlign === "center"
+                ? "Centralizar"
+                : nextAlign === "right"
+                  ? "Alinhar à direita"
+                  : "Alinhar à esquerda";
+            return (
+              <button
+                className="no-print"
+                type="button"
+                onClick={() =>
+                  setImageAlignOverrides((prev) => ({ ...prev, [id]: nextAlign }))
+                }
+                style={{
+                  position: "absolute",
+                  left: -6,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 18,
+                  height: 18,
+                  fontSize: 12,
+                  lineHeight: "18px",
+                  textAlign: "center",
+                  borderRadius: 4,
+                  background: "rgba(0,0,0,0.08)",
+                  cursor: "pointer",
+                  border: "none",
+                  userSelect: "none",
+                }}
+                title={nextTitle}
+              >
+                {nextLetter}
+              </button>
+            );
+          })() : null}
 
           {id ? (
             <span
