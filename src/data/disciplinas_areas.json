@@ -87,7 +87,8 @@
           "Médias",
           "Divisibilidade e MMC",
           "Radicais",
-          "Conjuntos Numéricos"
+          "Conjuntos Numéricos",
+          "Relações de Dependência entre Grandezas"
         ]
       },
       "Álgebra": {
@@ -137,7 +138,8 @@
           "Gráficos e Transformações",
           "Paridade",
           "Relações Binárias",
-          "Funções Trigonométricas"
+          "Funções Trigonométricas",
+          "Função Racional"
         ]
       },
       "Análise Combinatória": {
@@ -194,7 +196,8 @@
           "Inscrição e Circunscrição",
           "Área das Figuras Planas",
           "Transformações Geométricas",
-          "Circunferência"
+          "Circunferência",
+          "Simetrias de Figuras Planas"
         ]
       },
       "Geometria Analítica": {
@@ -209,7 +212,9 @@
           "Parábola",
           "Lugar Geométrico",
           "Produto Escalar",
-          "Vetores"
+          "Vetores",
+          "Plano Cartesiano",
+          "Paralelismo e Perpendicularidade"
         ]
       },
       "Geometria Espacial": {
@@ -226,7 +231,8 @@
           "Sólidos Inscritos e Circunscritos",
           "Superfície Poliédrica e Poliedros",
           "Planificação de Sólidos",
-          "Volume de Cilindro"
+          "Volume de Cilindro",
+          "Simetrias de Figuras Espaciais"
         ]
       },
       "Trigonometria": {
@@ -941,6 +947,17 @@
           "Síntese de Proteínas (Transcrição e Tradução)",
           "Biotecnologia e Engenharia Genética"
         ]
+      },
+      "Saúde Pública e Qualidade de Vida": {
+        "subareas": [
+          "Indicadores Sociais e IDH",
+          "Doenças Sexualmente Transmissíveis",
+          "Uso de Drogas e Dependência Química",
+          "Obesidade e Sedentarismo",
+          "Saneamento Básico",
+          "Primeiros Socorros",
+          "Gravidez na Adolescência"
+        ]
       }
     }
   },
@@ -973,7 +990,16 @@
           "Equilíbrio de Forças",
           "Dinâmica e Forças",
           "Conservação de Energia Mecânica",
-          "Energia e Trabalho"
+          "Energia e Trabalho",
+          "Princípio de Arquimedes e Empuxo",
+          "Princípio de Pascal",
+          "Princípio de Stevin",
+          "Leis de Kepler",
+          "Inércia e Sistemas de Referência",
+          "Centro de Massa",
+          "Quantidade de Movimento (Momento Linear)",
+          "Teorema do Impulso",
+          "Torque (Momento de Força)"
         ]
       },
       "Termodinâmica": {
@@ -1067,6 +1093,15 @@
       },
       "Notação Científica": {
         "subareas": []
+      },
+      "Fundamentos da Física": {
+        "subareas": [
+          "Sistema Internacional de Unidades",
+          "Ordem de Grandeza",
+          "Grandezas Vetoriais e Escalares",
+          "Operações com Vetores",
+          "Metodologia Científica em Física"
+        ]
       }
     }
   },
@@ -1091,7 +1126,10 @@
           "Sais e Óxidos",
           "Reatividade e Mecanismos de Reação",
           "Número de Oxidação (NOX)",
-          "Solubilidade"
+          "Solubilidade",
+          "Leis Ponderais das Reações Químicas",
+          "Teoria Cinética dos Gases",
+          "Lei Geral dos Gases Ideais"
         ]
       },
       "Ligações Químicas e Estrutura Molecular": {
@@ -1398,7 +1436,9 @@
           "Primeira República",
           "República Oligárquica",
           "República Velha e Revolução de 1930",
-          "Caudilhismo"
+          "Caudilhismo",
+          "Direitos Sociais nas Constituições Brasileiras",
+          "Políticas Afirmativas"
         ]
       },
       "Brasil Contemporâneo": {
@@ -1614,7 +1654,14 @@
           "Desenvolvimento Sustentável",
           "Conferências Ambientais Internacionais",
           "Questão Ambiental",
-          "Meio Ambiente"
+          "Meio Ambiente",
+          "Camada de Ozônio e CFCs",
+          "Chuva Ácida",
+          "Ilhas de Calor",
+          "Unidades de Conservação",
+          "Zoneamento Ecológico-Econômico",
+          "Corredores Ecológicos",
+          "Origem e Evolução do Conceito de Sustentabilidade"
         ]
       },
       "Fontes de Energia": {

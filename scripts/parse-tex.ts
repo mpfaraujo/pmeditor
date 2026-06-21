@@ -65,6 +65,8 @@ type ImportItem = {
   tipo: "Múltipla Escolha" | "Discursiva";
   gabarito: string | null;
   meta?: YamlMeta;
+  /** Texto base embutido na própria questão (MCQ ENEM-style sem reuso). Sem titulo_texto. */
+  embeddedBaseLatex?: string;
 };
 
 type ImportSetItem = {
@@ -388,7 +390,8 @@ function parseSetBlock(chunk: string, metaFromBefore: YamlMeta | null): ImportSe
   }
 
   const firstTokenIdx = tokens.length > 0 ? tokens[0].index : effectiveChunk.length;
-  const baseLatexRaw = effectiveChunk.slice(0, firstTokenIdx).trim();
+  // Remove marcador \basetext quando presente (Modalidade B explícita: \basetext dentro de \setquestion)
+  const baseLatexRaw = effectiveChunk.slice(0, firstTokenIdx).trim().replace(/^\\basetext\b\s*/, "").trim();
   const baseLatexes = baseLatexRaw.split(/\\newbasetext\b/).map(s => s.trim()).filter(Boolean);
 
   // Extrai chunk de texto de um \questionitem, desembrulhando {conteúdo} se necessário
@@ -476,7 +479,7 @@ function main() {
 
   // Encontra todas as posições de \question, \setquestion e \basetext no texto
   const markerRe = /\\(setquestion|question|basetext)\b/g;
-  const markers: Array<{ index: number; isSet: boolean; isBaseText: boolean }> = [];
+  const markers: Array<{ index: number; isSet: boolean; isBaseText: boolean; consumed?: boolean }> = [];
   let qm: RegExpExecArray | null;
   while ((qm = markerRe.exec(src))) {
     markers.push({ index: qm.index, isSet: qm[1] === "setquestion", isBaseText: qm[1] === "basetext" });
@@ -491,8 +494,23 @@ function main() {
   let skippedMcqSets = 0;
 
   for (let i = 0; i < markers.length; i++) {
+    if (markers[i].consumed) continue;
     const { index: qStart, isSet, isBaseText } = markers[i];
-    const qEnd = i + 1 < markers.length ? markers[i + 1].index : src.length;
+    let qEnd = i + 1 < markers.length ? markers[i + 1].index : src.length;
+
+    // Modalidade B: \basetext embutido em \setquestion ou \question (MCQ ENEM-style)
+    // Se este marcador é \setquestion/\question e o próximo é \basetext sem titulo_texto:,
+    // funde o basetext no chunk (vira nó base_text embutido no doc, sem ir pro banco).
+    if ((isSet || (!isSet && !isBaseText)) && i + 1 < markers.length && markers[i + 1].isBaseText) {
+      const btStart = markers[i + 1].index;
+      const btEnd = i + 2 < markers.length ? markers[i + 2].index : src.length;
+      const btChunk = src.slice(btStart, btEnd).replace(/^\\basetext\b\s*/, "").trim();
+      const { meta: btMeta } = extractLeadingYaml(btChunk);
+      if (!btMeta?.titulo_texto) {
+        qEnd = btEnd;
+        markers[i + 1].consumed = true;
+      }
+    }
 
     // Texto antes deste marcador (entre o marcador anterior e este)
     const prevStart = i > 0 ? markers[i - 1].index : 0;
@@ -549,6 +567,27 @@ function main() {
         }
       }
 
+      // Modalidade B-MCQ: \basetext embutido em \question (ENEM-style, sem reuso/titulo_texto).
+      // Separa texto base do enunciado: basetext vai de \basetext até o último \n\n antes
+      // de \begin{choices} (ou fim do chunk). O statement é o último parágrafo antes das choices.
+      let embeddedBaseLatex: string | undefined;
+      if (/^\\basetext\b/.test(chunk)) {
+        const withoutMarker = chunk.replace(/^\\basetext\b\s*/, "");
+        const choicesIdx = withoutMarker.search(/\\begin\{(choices|oneparchoices)\}/);
+        const upToChoices = choicesIdx >= 0 ? withoutMarker.slice(0, choicesIdx) : withoutMarker;
+        const choicesPart = choicesIdx >= 0 ? withoutMarker.slice(choicesIdx) : "";
+        // Última quebra de parágrafo (\n\n) antes das choices separa basetext do statement.
+        const lastBreak = upToChoices.search(/\n\s*\n(?!.*\n\s*\n)/s);
+        if (lastBreak > 0) {
+          embeddedBaseLatex = upToChoices.slice(0, lastBreak).trim();
+          chunk = (upToChoices.slice(lastBreak).trim() + (choicesPart ? "\n" + choicesPart : "")).trim();
+        } else {
+          // Sem separação clara — tudo vira basetext, statement vazio
+          embeddedBaseLatex = upToChoices.trim();
+          chunk = choicesPart.trim();
+        }
+      }
+
       // Detecta \begin{parts} → set_questions discursivo
       if (/\\begin\{parts\}/.test(chunk)) {
         queue.push(parsePartsBlock(chunk, effectiveMeta));
@@ -578,7 +617,7 @@ function main() {
       }
 
       const latex = "\\question " + chunk;
-      queue.push({ latex, tipo, gabarito, ...(effectiveMeta ? { meta: effectiveMeta } : {}) });
+      queue.push({ latex, tipo, gabarito, ...(effectiveMeta ? { meta: effectiveMeta } : {}), ...(embeddedBaseLatex ? { embeddedBaseLatex } : {}) });
     }
   }
 

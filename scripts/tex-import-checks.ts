@@ -155,6 +155,18 @@ export function hasBaseTextMeta(yaml: string): boolean {
   return /^(?:titulo_texto|autor_texto|tema):\s*.+$/mi.test(yaml);
 }
 
+// Normaliza títulos para comparação tolerante: NFC, sem aspas tipográficas/retas,
+// espaços colapsados, case-insensitive. Usado nas regras que casam titulo_texto
+// entre \basetext e \question.
+export function normalizeTitulo(raw: string): string {
+  return raw
+    .normalize("NFC")
+    .replace(/[“”‘’"']/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLocaleLowerCase("pt-BR");
+}
+
 function issuesForPattern(
   text: string,
   pattern: RegExp,
@@ -233,6 +245,54 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
   },
 
   {
+    id: "eaten-escape-control-char",
+    description: "Comandos LaTeX danificados por interpretação de escape C (\\t, \\b, \\v, \\f) na transcrição — aparecem como caractere de controle + sufixo do comando (ex.: <tab>itle{, <BS>egin{).",
+    run: ({ text }): CheckIssue[] => {
+      const out: CheckIssue[] = [];
+      const seen = new Set<string>();
+      // 1) Caracteres de controle que nunca aparecem em .tex legítimo: 0x08 (BS), 0x0B (VT), 0x0C (FF).
+      //    Sinalizam \b, \v, \f interpretados como C-escape.
+      const reCtrl = /[\x08\x0B\x0C]/g;
+      let m: RegExpExecArray | null;
+      while ((m = reCtrl.exec(text))) {
+        const line = lineNumberAt(text, m.index);
+        const key = `eaten-escape|ctrl|${line}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        const rawLine = text.split("\n")[line - 1] ?? "";
+        const code = m[0].charCodeAt(0);
+        const escName = code === 0x08 ? "\\b" : code === 0x0B ? "\\v" : "\\f";
+        out.push({
+          ruleId: "eaten-escape-control-char",
+          severity: "error",
+          line,
+          excerpt: excerpt(rawLine.replace(/[\x08\x0B\x0C]/g, "·")),
+          matched: `<U+00${code.toString(16).toUpperCase().padStart(2, "0")}>`,
+          message: `Caractere de controle U+00${code.toString(16).toUpperCase().padStart(2, "0")} no .tex — provavelmente comando LaTeX começando com ${escName} foi interpretado como escape C na transcrição (ex.: \\begin → <BS>egin, \\verse → <VT>erse, \\frac → <FF>rac). Restaurar a barra invertida.`,
+        });
+      }
+      // 2) Tab (0x09) no início de comando danificado (\title, \textbf, \textit, \times etc.).
+      const reTab = /\t(itle|extbf|extit|extrm|imes|able|ab)\b/g;
+      while ((m = reTab.exec(text))) {
+        const line = lineNumberAt(text, m.index);
+        const key = `eaten-escape|tab|${line}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        const rawLine = text.split("\n")[line - 1] ?? "";
+        out.push({
+          ruleId: "eaten-escape-control-char",
+          severity: "error",
+          line,
+          excerpt: excerpt(rawLine.replace(/\t/g, "·")),
+          matched: m[0],
+          message: `Tab seguido de "${m[1]}" — comando LaTeX \\t${m[1]} teve o \\t interpretado como tab na transcrição. Restaurar a barra invertida (\\t${m[1]}).`,
+        });
+      }
+      return out;
+    },
+  },
+
+  {
     id: "parts-needs-conversion",
     description: "\\begin{parts} sinaliza questão discursiva com subitens — converter para \\setquestion + \\questionitem.",
     run: ({ text }) =>
@@ -249,7 +309,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
     run: ({ text }) =>
       issuesForPattern(
         text,
-        /\\begin\{(subparts|exercises|solution|answer|tabular|subenum)\}/g,
+        /\\begin\{(subparts|exercises|solution|answer|tabular|subenum|quote|quotation|verbatim|figure|minipage)\}/g,
         {
           ruleId: "unsupported-environment",
           severity: "error",
@@ -405,10 +465,12 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
 
       // Pass 1: word-boundary + requer espaço ou dígito/paren para evitar falsos positivos
       // Captura: 'cos x', 'sin 2x', 'cos(x)', 'log10', 'cos2x'
+      // Quando seguido de espaço + letra, exige que a letra NÃO seja início de palavra de 2+ letras
+      // (evita "sin precedentes" / "sin modales" / "sin cambiar" do espanhol, "cos da função" em pt etc.)
       const issues1 = issuesForPattern(
         stripped,
         new RegExp(
-          `\\b(cos|sin|tan|cot|sec|csc|log|ln)${PTBR_EXCLUDE.source}(?:\\s+[a-zA-Z0-9(°]|[\\d(°])`,
+          `\\b(cos|sin|tan|cot|sec|csc|log|ln)${PTBR_EXCLUDE.source}(?:\\s+[a-zA-Z](?![a-zA-Z]{2,})|\\s+[0-9(°]|[\\d(°])`,
           "gi",
         ),
         {
@@ -525,6 +587,38 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
         severity: "error",
         message: "-- ou --- viram texto literal no banco. Use Unicode: – (en dash) ou — (em dash).",
       });
+    },
+  },
+
+  {
+    id: "dashes-as-list-bullets",
+    description: "Duas ou mais linhas consecutivas iniciadas por `--` — provável lista do PDF transcrita com hífens em vez de ambiente LaTeX.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const stripped = stripComments(text);
+      const lines = stripped.split("\n");
+      // Linha "marcador de lista com --": começa com -- (exatamente dois) + espaço + texto
+      const isDashLine = lines.map((l) => /^\s*--(?!-)\s+\S/.test(l));
+      let i = 0;
+      while (i < lines.length) {
+        if (isDashLine[i]) {
+          let j = i;
+          while (j < lines.length && isDashLine[j]) j++;
+          const count = j - i;
+          if (count >= 2) {
+            issues.push({
+              ruleId: "dashes-as-list-bullets",
+              severity: "error",
+              line: i + 1,
+              message: `${count} linhas consecutivas iniciadas por "--" — provável lista transcrita do PDF com hífens em vez de ambiente. Converter para o ambiente apropriado (\\begin{itemize}, \\begin{alphaitems}, \\begin{romanitems}, \\begin{assertiveitems}, etc.). NÃO substituir por – (en dash) — perderia a semântica de lista.`,
+            });
+          }
+          i = j;
+        } else {
+          i++;
+        }
+      }
+      return issues;
     },
   },
 
@@ -1252,14 +1346,17 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
 
   {
     id: "yaml-base-text-metadata-without-title",
-    description: "Texto-base com metadados incompletos.",
+    description: "Texto-base com metadados incompletos. Não dispara em Modalidade B-MCQ (\\basetext embutido dentro de \\question).",
     run: ({ text }) => {
       const issues: CheckIssue[] = [];
       for (const block of questionBlocks(text)) {
         const hasAuthor = /^autor_texto:\s*.+$/mi.test(block.yaml);
         const hasTheme = /^tema:\s*.+$/mi.test(block.yaml);
         const hasTitle = /^titulo_texto:\s*.+$/mi.test(block.yaml);
-        if ((hasAuthor || hasTheme) && !hasTitle) {
+        // Modalidade B-MCQ: \basetext embutido na questão — autor_texto/genero/tema são
+        // metadata da questão, texto fica embutido sem ir pro banco. titulo_texto não exigido.
+        const hasEmbeddedBaseText = /^\\basetext\b/m.test(block.body);
+        if ((hasAuthor || hasTheme) && !hasTitle && !hasEmbeddedBaseText) {
           issues.push({
             ruleId: "yaml-base-text-metadata-without-title",
             severity: "warning",
@@ -1341,12 +1438,12 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
       const issues: CheckIssue[] = [];
       const blocks = questionBlocks(text);
 
-      // Agrupa blocos pelo titulo_texto do YAML
+      // Agrupa blocos pelo titulo_texto do YAML (normalizado)
       const groups = new Map<string, QuestionBlock[]>();
       for (const block of blocks) {
         const m = block.yaml.match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
         if (!m) continue;
-        const titulo = m[1].trim();
+        const titulo = normalizeTitulo(m[1]);
         if (!groups.has(titulo)) groups.set(titulo, []);
         groups.get(titulo)!.push(block);
       }
@@ -1435,12 +1532,30 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
 
   {
     id: "basetext-missing-titulo",
-    description: "Bloco \\basetext sem titulo_texto: no YAML — o importador ignora o bloco e as questões ficam sem vínculo.",
+    description: "Bloco \\basetext sem titulo_texto: no YAML — o importador ignora o bloco e as questões ficam sem vínculo. Aplica-se apenas a \\basetext no escopo de arquivo (Modalidade A). \\basetext logo após um \\setquestion (Modalidade B, embutido) não exige titulo_texto.",
     run: ({ text }) => {
       const issues: CheckIssue[] = [];
+
+      // Posições de \basetext considerados "embutidos" em \setquestion (Modalidade B):
+      // aparecem entre um \setquestion e o próximo \question/\setquestion de topo.
+      const markerRe = /\\(setquestion|question|basetext)\b/g;
+      const embeddedBasetextPositions = new Set<number>();
+      let lastSetquestion = -1;
+      let mm: RegExpExecArray | null;
+      while ((mm = markerRe.exec(text)) !== null) {
+        const tag = mm[1];
+        if (tag === "setquestion") lastSetquestion = mm.index;
+        else if (tag === "question") lastSetquestion = -1;
+        else if (tag === "basetext" && lastSetquestion >= 0) {
+          embeddedBasetextPositions.add(mm.index);
+          lastSetquestion = -1;
+        }
+      }
+
       const basetextRe = /\\basetext\b\s*\r?\n---\r?\n([\s\S]*?)\r?\n---\r?\n/g;
       let m: RegExpExecArray | null;
       while ((m = basetextRe.exec(text)) !== null) {
+        if (embeddedBasetextPositions.has(m.index)) continue; // Modalidade B — esperado
         const yaml = m[1];
         if (!/^titulo_texto:\s*.+$/m.test(yaml)) {
           const line = text.slice(0, m.index).split("\n").length + 1;
@@ -1464,20 +1579,20 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
       // Só aplica quando o arquivo tem pelo menos um \basetext
       if (!/\\basetext\b/.test(text)) return issues;
 
-      // Extrai titulo_texto de cada \basetext
+      // Extrai titulo_texto de cada \basetext (normalizado)
       const basetextTitles = new Set<string>();
       const basetextRe = /\\basetext\b\s*\r?\n---\r?\n([\s\S]*?)\r?\n---\r?\n/g;
       let m: RegExpExecArray | null;
       while ((m = basetextRe.exec(text)) !== null) {
         const match = m[1].match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
-        if (match) basetextTitles.add(match[1].trim());
+        if (match) basetextTitles.add(normalizeTitulo(match[1]));
       }
 
       for (const block of questionBlocks(text)) {
         const titleMatch = block.yaml.match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
         if (!titleMatch) continue;
         const titulo = titleMatch[1].trim();
-        if (!basetextTitles.has(titulo)) {
+        if (!basetextTitles.has(normalizeTitulo(titulo))) {
           issues.push({
             ruleId: "titulo-texto-no-basetext-match",
             severity: "warning",
@@ -1499,20 +1614,20 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
       // Só aplica quando o arquivo tem pelo menos um \basetext
       if (!/\\basetext\b/.test(text)) return issues;
 
-      // Extrai titulo_texto de cada \basetext válido
+      // Extrai titulo_texto de cada \basetext válido (normalizado)
       const basetextTitles = new Set<string>();
       const basetextRe = /\\basetext\b\s*\r?\n---\r?\n([\s\S]*?)\r?\n---\r?\n/g;
       let m: RegExpExecArray | null;
       while ((m = basetextRe.exec(text)) !== null) {
         const match = m[1].match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
-        if (match) basetextTitles.add(match[1].trim());
+        if (match) basetextTitles.add(normalizeTitulo(match[1]));
       }
 
       for (const block of questionBlocks(text)) {
         const titleMatch = block.yaml.match(/^titulo_texto:\s*["']?(.+?)["']?\s*$/m);
         if (!titleMatch) continue;
         const titulo = titleMatch[1].trim();
-        if (!basetextTitles.has(titulo)) continue;
+        if (!basetextTitles.has(normalizeTitulo(titulo))) continue;
         // Questão referencia um \basetext — \credits{} de autoria pertence ao \basetext.
         // Imagens NÃO disparam alerta: podem ser figuras específicas da questão (gráficos, esquemas).
         if (/\\credits\{/.test(block.body)) {

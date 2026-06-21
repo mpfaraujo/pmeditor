@@ -655,6 +655,8 @@ function findNextLatexTokenIndex(s: string, from: number) {
     "$",
     "\\textbf",
     "\\textit",
+    "\\textsuperscript",
+    "\\textsubscript",
     "\\emph",
     "\\underline",
     "\\ce",
@@ -703,6 +705,8 @@ function parseInlineLatex(
   const strong = getMark(schema, "strong");
   const em = getMark(schema, "em");
   const underline = getMark(schema, "underline");
+  const superscript = getMark(schema, "superscript");
+  const subscript = getMark(schema, "subscript");
 
   const textNode = (s: string, marks: Mark[]) => {
     if (!s) return null;
@@ -819,6 +823,26 @@ function parseInlineLatex(
       }
     }
 
+    if (s.startsWith("\\textsuperscript", i)) {
+      const j = i + "\\textsuperscript".length;
+      const br = readBraced(skipSpaces(s, j));
+      if (br && superscript) {
+        nodes.push(...parseInlineLatex(schema, br.content, [...active, superscript]));
+        i = br.end;
+        continue;
+      }
+    }
+
+    if (s.startsWith("\\textsubscript", i)) {
+      const j = i + "\\textsubscript".length;
+      const br = readBraced(skipSpaces(s, j));
+      if (br && subscript) {
+        nodes.push(...parseInlineLatex(schema, br.content, [...active, subscript]));
+        i = br.end;
+        continue;
+      }
+    }
+
     // \ce{...} — notação química (mhchem) → math_inline
     if (s.startsWith("\\ce{", i) || s.startsWith("\\ce {", i)) {
       const braceStart = s.indexOf("{", i + 3);
@@ -897,7 +921,8 @@ function parseInlineLatex(
 type SpecialBlockKind =
   | "enumerate" | "itemize"
   | "assertiveitems" | "romanitems" | "alphaitems"
-  | "poem" | "databox" | "codeblock" | "credits" | "title";
+  | "poem" | "databox" | "codeblock" | "credits" | "title"
+  | "align-center" | "align-right" | "align-left";
 
 function findNextSpecialBlock(src: string, from: number): { idx: number; kind: SpecialBlockKind } | null {
   const candidates: Array<{ search: string; kind: SpecialBlockKind }> = [
@@ -911,6 +936,9 @@ function findNextSpecialBlock(src: string, from: number): { idx: number; kind: S
     { search: "\\begin{codeblock}", kind: "codeblock" },
     { search: "\\credits{", kind: "credits" },
     { search: "\\title{", kind: "title" },
+    { search: "\\begin{center}", kind: "align-center" },
+    { search: "\\begin{flushright}", kind: "align-right" },
+    { search: "\\begin{flushleft}", kind: "align-left" },
   ];
   let best: { idx: number; kind: SpecialBlockKind } | null = null;
   for (const { search, kind } of candidates) {
@@ -1036,6 +1064,36 @@ export function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[]
       const inlines = parseInlineLatex(schema, arg.content.trim());
       blocks.push(titleType.create(null, inlines.length ? inlines : []));
       i = arg.end;
+      continue;
+    }
+
+    // ── \begin{center|flushright|flushleft}...\end{...} ───────────────────
+    if (kind === "align-center" || kind === "align-right" || kind === "align-left") {
+      const envAlignName =
+        kind === "align-center" ? "center" :
+        kind === "align-right"  ? "flushright" : "flushleft";
+      const alignValue: "center" | "right" | "left" =
+        kind === "align-center" ? "center" :
+        kind === "align-right"  ? "right"  : "left";
+      const beginTagA = `\\begin{${envAlignName}}`;
+      const endTagA   = `\\end{${envAlignName}}`;
+      const bodyStartA = beginIdx + beginTagA.length;
+      const endPosA    = src.indexOf(endTagA, bodyStartA);
+      if (endPosA === -1) {
+        pushTextAsParagraphs(src.slice(beginIdx, beginIdx + beginTagA.length));
+        i = beginIdx + beginTagA.length;
+        continue;
+      }
+      const bodyA = src.slice(bodyStartA, endPosA).trim();
+      const inner = buildBlocksFromLatex(schema, bodyA);
+      for (const node of inner) {
+        if (node.type.name === "paragraph") {
+          blocks.push(paragraph.create({ ...node.attrs, textAlign: alignValue }, node.content));
+        } else {
+          blocks.push(node);
+        }
+      }
+      i = endPosA + endTagA.length;
       continue;
     }
 

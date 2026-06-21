@@ -51,6 +51,8 @@ type ImportItem = {
   tipo: "Múltipla Escolha" | "Discursiva";
   gabarito: string | null;
   meta?: YamlMeta;
+  /** Texto base embutido na própria questão (MCQ ENEM-style, sem reuso, sem titulo_texto). */
+  embeddedBaseLatex?: string;
 };
 
 type ImportSetItem = {
@@ -485,7 +487,15 @@ function buildInitial(item: ImportItem, batch: BatchConfig, author?: { id?: stri
     const parsed = parseQuestionFromLatexText(item.latex);
     if (parsed) {
       const node = buildQuestionNodeLatex(schema, parsed);
-      content = { type: "doc", content: [node.toJSON()] };
+      // Modalidade B-MCQ: prepende nó base_text embutido como filho da question.
+      if (item.embeddedBaseLatex) {
+        const stmtNode = parseToStatementNode(item.embeddedBaseLatex);
+        const baseTextNode = schema.nodes.base_text.create(null, stmtNode.content);
+        const newQuestion = schema.nodes.question.create(node.attrs, [baseTextNode, ...(node.content as any)?.content ?? []]);
+        content = { type: "doc", content: [newQuestion.toJSON()] };
+      } else {
+        content = { type: "doc", content: [node.toJSON()] };
+      }
     } else content = fallbackContent;
   } catch { content = fallbackContent; }
   const now = new Date().toISOString();
