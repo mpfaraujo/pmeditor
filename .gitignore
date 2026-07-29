@@ -80,3 +80,6 @@ tmp-*
 /.venv/
 
 scripts/tmp/
+
+# worktrees do superpowers (isolamento de branches)
+.worktrees/
