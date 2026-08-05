@@ -83,3 +83,8 @@ scripts/tmp/
 
 # worktrees do superpowers (isolamento de branches)
 .worktrees/
+
+# pipeline de transcricao — uso local apenas, nunca vai pra main
+/transcricao/
+/docs/superpowers/specs/2026-08-05-pipeline-transcricao-design.md
+/docs/superpowers/plans/2026-08-05-pipeline-transcricao.md
