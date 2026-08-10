@@ -43,6 +43,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { ASSUNTOS_CANONICOS } from "@/data/assuntos";
+import { REVIEW_FLAGS, type ImportedReviewHint, type ReviewFlag } from "@/lib/importReview";
 import "@/app/editor/prova/montar/prova.css";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
@@ -51,6 +52,7 @@ type QuestionItem = {
   id: string;
   metadata: any;
   content?: any;
+  reviewHint?: ImportedReviewHint;
 };
 
 type BaseTextItem = {
@@ -76,6 +78,16 @@ type DuplicateCandidate = {
     content: any;
   };
   existingQuestion?: QuestionItem | null;
+  reviewHint?: ImportedReviewHint;
+};
+
+const REVIEW_FLAG_LABELS: Record<ReviewFlag, string> = {
+  visual_reconstruction: "Reconstrução visual",
+  visual_formula: "Fórmula visual",
+  visual_image: "Figura/alternativa gráfica",
+  ocr_missing_content: "Conteúdo ausente no OCR",
+  ocr_boundary: "Fronteira/segmentação",
+  visual_failed: "Reconstrução visual falhou",
 };
 
 type DuplicateMetaField = "disciplina" | "assunto" | "dificuldade" | "tipo" | "tags" | "gabarito";
@@ -946,6 +958,13 @@ function QuestionCard({
           </span>
         ))}
 
+        {q.reviewHint?.flags.map((flag) => (
+          <span key={flag} className="text-xs px-1.5 py-0.5 rounded flex items-center bg-purple-100 text-purple-700 border border-purple-200">
+            <AlertTriangle size={10} className="inline mr-0.5" />
+            {REVIEW_FLAG_LABELS[flag]}
+          </span>
+        ))}
+
         {meta.reviewed && (
           <span className="text-xs px-1.5 py-0.5 rounded bg-green-100 text-green-700 flex items-center gap-1">
             <CheckCircle2 size={11} /> Revisado
@@ -978,6 +997,12 @@ function QuestionCard({
       {/* Expandido */}
       {expanded && (
         <div className="mt-3 space-y-3 ml-5">
+          {q.reviewHint && (
+            <div className="rounded border border-purple-200 bg-purple-50 p-2 text-xs text-purple-800">
+              <div className="font-semibold">Sinais externos da transcrição</div>
+              {q.reviewHint.details.map((detail) => <div key={detail}>• {detail}</div>)}
+            </div>
+          )}
           {rendered.content && (
             <div className="space-y-1.5">
               <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
@@ -1631,6 +1656,11 @@ function DuplicateCard({
           Duplicata {Math.round(item.similarity * 100)}%
         </span>
         <span className="text-gray-500">{item.label}</span>
+        {item.reviewHint?.flags.map((flag) => (
+          <span key={flag} className="rounded bg-purple-100 text-purple-700 border border-purple-200 px-1.5 py-0.5">
+            {REVIEW_FLAG_LABELS[flag]}
+          </span>
+        ))}
         <span className="text-gray-400">→</span>
         <span className="font-mono text-gray-500">{item.existingId.slice(0, 12)}…</span>
         <label className="flex items-center gap-1 text-xs text-gray-500 cursor-pointer">
@@ -1778,6 +1808,7 @@ export default function FixesPage() {
   const [filterTipo, setFilterTipo] = useState("all");
   const [filterSeverity, setFilterSeverity] = useState<"all" | WarningSeverity>("all");
   const [filterReviewed, setFilterReviewed] = useState<"all" | "reviewed" | "pending">("all");
+  const [filterReviewFlag, setFilterReviewFlag] = useState<"all" | "any" | ReviewFlag>("all");
 
   // Seleção múltipla
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -1965,6 +1996,9 @@ export default function FixesPage() {
         );
         if (reportRes.ok) {
           const report = await reportRes.json();
+          const reviewHints: ImportedReviewHint[] = Array.isArray(report?.reviewHints) ? report.reviewHints : [];
+          const reviewByQuestionId = new Map(reviewHints.filter((hint) => hint.questionId).map((hint) => [hint.questionId!, hint]));
+          setQuestions(items.map((item) => ({ ...item, reviewHint: reviewByQuestionId.get(item.id) })));
           const dupItems: DuplicateCandidate[] = Array.isArray(report?.duplicates) ? report.duplicates : [];
 
           for (const item of dupItems) {
@@ -2261,6 +2295,8 @@ export default function FixesPage() {
         if (filterSeverity !== "all" && severity !== filterSeverity) return false;
         if (filterReviewed === "reviewed" && !meta.reviewed) return false;
         if (filterReviewed === "pending" && meta.reviewed) return false;
+        if (filterReviewFlag === "any" && !q.reviewHint) return false;
+        if (filterReviewFlag !== "all" && filterReviewFlag !== "any" && !q.reviewHint?.flags.includes(filterReviewFlag)) return false;
         return true;
       })
       .sort((a, b) => {
@@ -2271,7 +2307,7 @@ export default function FixesPage() {
         return compareByQuestionNumber(aNum, bNum, a.index, b.index);
       })
       .map(({ q }) => q);
-  }, [questions, searchText, filterDisciplina, filterTipo, filterSeverity, filterReviewed]);
+  }, [questions, searchText, filterDisciplina, filterTipo, filterSeverity, filterReviewed, filterReviewFlag]);
 
   const filteredDuplicates = useMemo(() => {
     return duplicates
@@ -2296,6 +2332,8 @@ export default function FixesPage() {
         if (filterSeverity !== "all" && severity !== filterSeverity) return false;
         if (filterReviewed === "reviewed" && !reviewed) return false;
         if (filterReviewed === "pending" && reviewed) return false;
+        if (filterReviewFlag === "any" && !item.reviewHint) return false;
+        if (filterReviewFlag !== "all" && filterReviewFlag !== "any" && !item.reviewHint?.flags.includes(filterReviewFlag)) return false;
         return true;
       })
       .sort((a, b) => {
@@ -2306,7 +2344,7 @@ export default function FixesPage() {
         return compareByQuestionNumber(aNum, bNum, a.index, b.index);
       })
       .map(({ item }) => item);
-  }, [duplicates, duplicateReviewed, searchText, filterDisciplina, filterTipo, filterSeverity, filterReviewed]);
+  }, [duplicates, duplicateReviewed, searchText, filterDisciplina, filterTipo, filterSeverity, filterReviewed, filterReviewFlag]);
 
   const filteredBaseTexts = useMemo(() => {
     return baseTexts.filter((bt) => {
@@ -2907,6 +2945,19 @@ export default function FixesPage() {
                       <SelectItem value="all">Todos</SelectItem>
                       <SelectItem value="reviewed">Revisados</SelectItem>
                       <SelectItem value="pending">Não revisadas</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={filterReviewFlag} onValueChange={(v) => setFilterReviewFlag(v as typeof filterReviewFlag)}>
+                    <SelectTrigger className="h-7 text-xs w-44">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos sinais</SelectItem>
+                      <SelectItem value="any">Com sinal da transcrição</SelectItem>
+                      {REVIEW_FLAGS.filter((flag) => flag !== "visual_failed").map((flag) => (
+                        <SelectItem key={flag} value={flag}>{REVIEW_FLAG_LABELS[flag]}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
 

@@ -20,6 +20,12 @@ import {
   extractLatexAnswerKey,
 } from "../src/components/editor/plugins/smartPastePlugin";
 import { normalizeDisciplina, normalizeAssunto } from "../src/data/assuntos";
+import {
+  associateReviewHints,
+  parseTranscriptionReviewReport,
+  type ImportedReviewHint,
+  type TranscriptionReviewHint,
+} from "../src/lib/importReview";
 
 type YamlMeta = {
   tipo?: string;
@@ -104,6 +110,8 @@ type ImportReport = {
   };
   duplicates: DuplicateReportItem[];
   errors: Array<{ idx: number; id: string; error: string }>;
+  reviewHints?: ImportedReviewHint[];
+  unresolvedReviewHints?: Array<TranscriptionReviewHint & { queueIndex: number; outcome: "duplicate" | "error" }>;
 };
 
 type BatchConfig = {
@@ -131,6 +139,7 @@ type ImageImportConfig = {
   uploaded: Set<string>;
   possibleFormulaImages: Array<{ name: string; alt: string }>;
   imagesDir?: string;
+  dryRun: boolean;
 };
 
 const DEFAULT_UPLOAD_ENDPOINT = "https://mpfaraujo.com.br/guardafiguras/api/upload.php";
@@ -268,6 +277,12 @@ async function uploadRemoteImage(name: string, imageUrl: string, cfg: ImageImpor
   const cached = cfg.uploadCache.get(imageUrl);
   if (cached) return cached;
   const filename = guessUploadFilename(imageUrl, name);
+  if (cfg.dryRun) {
+    const simulatedUrl = `https://dry-run.invalid/${encodeURIComponent(filename)}`;
+    cfg.uploadCache.set(imageUrl, simulatedUrl);
+    cfg.uploaded.add(name);
+    return simulatedUrl;
+  }
   let blob: Blob | undefined;
   if (cfg.imagesDir) {
     const localPath = resolve(cfg.imagesDir, filename);
@@ -598,6 +613,26 @@ async function proposeQuestion(existingId: string, payload: any, apiBase: string
   } catch (e: any) { return { ok: false, error: e.message }; }
 }
 
+async function postImportReport(report: ImportReport, apiBase: string, token: string): Promise<void> {
+  const res = await fetch(`${apiBase}/import-reports.php`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Questions-Token": token },
+    body: JSON.stringify(report),
+  });
+  const json: any = await res.json().catch(() => ({}));
+  if (!res.ok || !json.success) throw new Error(json.error ?? `HTTP ${res.status}`);
+}
+
+async function assertImportReportAbsent(runId: string, apiBase: string, token: string): Promise<void> {
+  const res = await fetch(`${apiBase}/import-reports.php?run_id=${encodeURIComponent(runId)}`, {
+    headers: { "X-Questions-Token": token },
+  });
+  if (res.status === 404) return;
+  if (res.ok) throw new Error(`já existe relatório externo para run_id ${runId}; use um run_id novo para não sobrescrevê-lo`);
+  const json: any = await res.json().catch(() => ({}));
+  throw new Error(`não foi possível verificar o relatório externo: ${json.error ?? `HTTP ${res.status}`}`);
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   const args = parseArgs(argv);
@@ -605,6 +640,7 @@ async function main() {
   const skipImages = args.get("sem-imagens") === true;
   const onlyImages = args.get("so-imagens") === true;
   const forcePropose = args.get("propose-duplicates") === true;
+  const reviewReportPath = args.get("review-report") as string | undefined;
   const envLocal = loadEnvLocal();
   const token = (args.get("token") as string) || process.env.NEXT_PUBLIC_QUESTIONS_TOKEN || envLocal.get("NEXT_PUBLIC_QUESTIONS_TOKEN") || "";
   const apiBase = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE || envLocal.get("NEXT_PUBLIC_QUESTIONS_API_BASE") || "https://mpfaraujo.com.br/guardafiguras/api/questoes";
@@ -623,7 +659,7 @@ async function main() {
   const { sourceMap, altMap } = htmlUrls.length > 0 ? await buildImageSourceMapFromHtmls(htmlUrls) : { sourceMap: new Map<string, string>(), altMap: new Map<string, string>() };
   const imagesDirRaw = args.get("images-dir") as string | undefined;
   const imagesDir = imagesDirRaw ? resolve(imagesDirRaw) : undefined;
-  const imageCfg: ImageImportConfig = { htmlUrls, uploadEndpoint, uploadToken, sourceMap, altMap, uploadCache: new Map<string, string>(), unresolved: new Set<string>(), uploaded: new Set<string>(), possibleFormulaImages: [], imagesDir };
+  const imageCfg: ImageImportConfig = { htmlUrls, uploadEndpoint, uploadToken, sourceMap, altMap, uploadCache: new Map<string, string>(), unresolved: new Set<string>(), uploaded: new Set<string>(), possibleFormulaImages: [], imagesDir, dryRun };
   const dificRaw = (args.get("dific") as string) ?? "Média";
   const batch: BatchConfig = { assunto: (args.get("assunto") as string) ?? "", dificuldade: "Média", disciplina: (args.get("disciplina") as string) ?? "Matemática", tags: [], source: { kind: args.has("concurso") ? "concurso" : "original", concurso: args.get("concurso") as string | undefined, banca: args.get("banca") as string | undefined, ano: args.has("ano") ? Number(args.get("ano")) : undefined } };
   const author = args.has("autor-id") || args.has("autor-nome") ? { id: args.get("autor-id") as string | undefined, name: args.get("autor-nome") as string | undefined } : undefined;
@@ -640,6 +676,16 @@ async function main() {
   } else queuePath = resolve(dataDir, "import-queue.json");
   if (!existsSync(queuePath)) { console.error(`❌ Fila não encontrada: ${queuePath}`); process.exit(1); }
   const queue: QueueEntry[] = JSON.parse(readFileSync(queuePath, "utf-8"));
+  const reviewHintsByQueueIndex = reviewReportPath
+    ? associateReviewHints(
+        queue,
+        parseTranscriptionReviewReport(JSON.parse(readFileSync(resolve(process.cwd(), reviewReportPath), "utf-8")))
+      )
+    : new Map<number, TranscriptionReviewHint>();
+  if (reviewReportPath) {
+    console.log(`   🔎 Review report: ${reviewHintsByQueueIndex.size} hints, ${reviewHintsByQueueIndex.size} associados, 0 ambíguos, 0 ausentes`);
+  }
+  const originalIndexByEntry = new Map<QueueEntry, number>(queue.map((entry, index) => [entry, index]));
   const entryHasImage = (entry: QueueEntry) => {
     if ("isSet" in entry && entry.isSet) {
       const s = entry as ImportSetItem;
@@ -650,10 +696,20 @@ async function main() {
   };
   const filtered = onlyImages ? queue.filter(entryHasImage) : skipImages ? queue.filter(entry => !entryHasImage(entry)) : queue;
   const skipped = queue.length - filtered.length;
+  if (reviewReportPath) {
+    const indicesProcessados = new Set(filtered.map((entry) => originalIndexByEntry.get(entry)!));
+    const hintsIgnorados = [...reviewHintsByQueueIndex.keys()].filter((index) => !indicesProcessados.has(index));
+    if (hintsIgnorados.length > 0) {
+      throw new Error(`review report: ${hintsIgnorados.length} questão(ões) com sinal seriam ignoradas pelos filtros --so-imagens/--sem-imagens`);
+    }
+    if (!dryRun) await assertImportReportAbsent(importRunId, apiBase, token);
+  }
   console.log(`\n📋 Fila: ${queue.length} entradas`);
   console.log(`   ✉  ${filtered.length} para importar\n`);
   let ok = 0, fail = 0, dups = 0;
   const errors: any[] = [], dupList: any[] = [], baseTextCache = new Map<string, string>();
+  const importedReviewHints: ImportedReviewHint[] = [];
+  const unresolvedReviewHints: Array<TranscriptionReviewHint & { queueIndex: number; outcome: "duplicate" | "error" }> = [];
   // Cache secundário: titulo_texto → base text ID (para questões que compartilham
   // o mesmo título mas só a primeira contém o texto no corpo)
   const baseTextTitleCache = new Map<string, string>();
@@ -680,10 +736,17 @@ async function main() {
 
   for (let i = 0; i < filtered.length; i++) {
     const entry = filtered[i];
+    const queueIndex = originalIndexByEntry.get(entry)!;
+    const reviewHint = reviewHintsByQueueIndex.get(queueIndex);
     if ("isBaseText" in entry && (entry as ImportBaseTextItem).isBaseText) continue; // já processado no pré-passo
     const isSet = "isSet" in entry && (entry as ImportSetItem).isSet;
     const label = isSet ? `[SET]` : `[${(entry as ImportItem).tipo === "Múltipla Escolha" ? "MCQ" : "DIS"}]`;
     let payload: any;
+    const registrarErroDaEntrada = (error: string, id = "") => {
+      fail++;
+      errors.push({ idx: queueIndex, id, error, ...(reviewHint ? { reviewHint: { ...reviewHint, queueIndex } } : {}) });
+      if (reviewHint) unresolvedReviewHints.push({ ...reviewHint, queueIndex, outcome: "error" });
+    };
     try {
       if (isSet) {
         const setEntry = entry as ImportSetItem;
@@ -694,7 +757,7 @@ async function main() {
             payload = buildInitialSet(setEntry, batch, [setCachedId], author, importBatch, importRunId);
           } else {
             const btResolved = await resolveBaseTextIds(setEntry, baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg);
-            if (!btResolved.ids) { fail++; console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
+            if (!btResolved.ids) { registrarErroDaEntrada(btResolved.error ?? "falha ao resolver texto base"); console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
             if (setEntry.sharedMeta.titulo_texto && btResolved.ids[0]) baseTextTitleCache.set(setEntry.sharedMeta.titulo_texto, btResolved.ids[0]);
             payload = buildInitialSet(setEntry, batch, btResolved.ids, author, importBatch, importRunId);
           }
@@ -717,7 +780,7 @@ async function main() {
 
             if (baseLatexToUse) {
               const btResolved = await resolveBaseTextIds({ isSet: true, baseLatexes: [baseLatexToUse], items: [], sharedMeta: singleItem.meta }, baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg);
-              if (!btResolved.ids) { fail++; console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
+              if (!btResolved.ids) { registrarErroDaEntrada(btResolved.error ?? "falha ao resolver texto base"); console.log(`  ✘ ${i + 1} ${btResolved.error}`); continue; }
               baseTextTitleCache.set(singleItem.meta.titulo_texto, btResolved.ids[0]);
               payload = buildInitial({ ...singleItem, latex: questionLatexToUse }, batch, author, importBatch, importRunId, btResolved.ids);
             } else {
@@ -729,19 +792,60 @@ async function main() {
         } else payload = buildInitial(singleItem, batch, author, importBatch, importRunId);
       }
       payload.content = await materializeImagesInPayloadContent(payload.content, imageCfg);
-    } catch (e: any) { fail++; console.log(`  ✘ ${i + 1} build error: ${e.message}`); continue; }
+    } catch (e: any) {
+      registrarErroDaEntrada(`build error: ${e.message}`);
+      console.log(`  ✘ ${i + 1} build error: ${e.message}`);
+      continue;
+    }
     if (dryRun) { ok++; continue; }
     const result = await postQuestion(payload, apiBase, token);
-    if (result.ok) { ok++; console.log(`  ✓ ${i + 1}/${filtered.length} ${label} ${result.id.slice(0, 8)}...`); }
+    if (result.ok) {
+      ok++;
+      if (reviewHint) importedReviewHints.push({ ...reviewHint, questionId: result.id, queueIndex });
+      console.log(`  ✓ ${i + 1}/${filtered.length} ${label} ${result.id.slice(0, 8)}...`);
+    }
     else if (result.duplicate) {
         if (forcePropose) {
             const propResult = await proposeQuestion(result.duplicate.existingId, payload, apiBase, token);
-            if (propResult.ok) { ok++; console.log(`  ✓ ${i + 1} variante proposta`); }
-            else { fail++; console.log(`  ✘ ${i + 1} propose falhou`); }
-        } else { dups++; console.log(`  ⚠ ${i + 1} DUPLICATA`); }
-    } else { fail++; console.log(`  ✘ ${i + 1} ${result.error}`); }
+            if (propResult.ok) {
+              ok++;
+              if (reviewHint) unresolvedReviewHints.push({ ...reviewHint, queueIndex, outcome: "duplicate" });
+              console.log(`  ✓ ${i + 1} variante proposta`);
+            }
+            else { registrarErroDaEntrada(propResult.error ?? "propose falhou", result.id); console.log(`  ✘ ${i + 1} propose falhou`); }
+        } else {
+          dups++;
+          dupList.push({ idx: queueIndex, existingId: result.duplicate.existingId, similarity: result.duplicate.similarity, label, preview: JSON.stringify(payload.content).slice(0, 180), payload, ...(reviewHint ? { reviewHint: { ...reviewHint, queueIndex } } : {}) });
+          if (reviewHint) unresolvedReviewHints.push({ ...reviewHint, queueIndex, outcome: "duplicate" });
+          console.log(`  ⚠ ${i + 1} DUPLICATA`);
+        }
+    } else {
+      registrarErroDaEntrada(result.error ?? "falha desconhecida", result.id);
+      console.log(`  ✘ ${i + 1} ${result.error}`);
+    }
   }
   console.log(`\n─── Resultado ───\n  ✓ ${ok} importadas\n  🖼  ${imageCfg.uploaded.size} imagens materializadas\n  ⚠  ${imageCfg.unresolved.size} pendentes\n`);
+  console.log(`   run_id: ${importRunId}`);
+  if (reviewReportPath && !dryRun) {
+    const report: ImportReport = {
+      batch: importBatch,
+      runId: importRunId,
+      queuePath,
+      createdAt: new Date().toISOString(),
+      dryRun,
+      summary: { imported: ok, duplicates: dups, failed: fail, skipped, totalQueue: queue.length, processed: filtered.length },
+      duplicates: dupList,
+      errors,
+      reviewHints: importedReviewHints,
+      unresolvedReviewHints,
+    };
+    try {
+      await postImportReport(report, apiBase, token);
+      console.log(`   relatório externo salvo para run_id ${importRunId}`);
+    } catch (error: any) {
+      throw new Error(`questões importadas, mas falhou ao salvar relatório externo do run ${importRunId}: ${error.message}`);
+    }
+  }
 }
 function toBatchSlug(l: string): string { return l.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
 
