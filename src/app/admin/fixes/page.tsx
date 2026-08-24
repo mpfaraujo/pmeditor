@@ -229,9 +229,15 @@ const PAGE_SIZE = 200;
 const BASE_TEXT_REVIEW_KEY = "pmeditor:fixes:base-text-reviewed";
 const DUPLICATE_REVIEW_KEY = "pmeditor:fixes:duplicate-reviewed";
 
-/** Para chamadas ao PHP (list/get/update) — só aceita X-Questions-Token no CORS */
+/** Auth pro PHP: manda sessão (usuário admin logado) e também token pros endpoints
+ *  de leitura que ainda só aceitam token. Backend usa o que reconhecer. */
 function phpHeaders(): Record<string, string> {
-  return { "X-Questions-Token": TOKEN };
+  const session = typeof window !== "undefined"
+    ? (localStorage.getItem("pmeditor:session") ?? "")
+    : "";
+  return session
+    ? { "X-Questions-Token": TOKEN, "X-Session-Token": session }
+    : { "X-Questions-Token": TOKEN };
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -1261,7 +1267,7 @@ function BaseTextCard({
     try {
       const res = await fetch(`${API_BASE_TEXTS}/update.php`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Questions-Token": TOKEN },
+        headers: { "Content-Type": "application/json", ...phpHeaders() },
         body: JSON.stringify({ id: bt.id, titulo, autor, tema, genero }),
       });
       if (res.ok) {

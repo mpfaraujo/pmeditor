@@ -45,7 +45,7 @@ export async function createQuestion(payload: QuestionPayload) {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Questions-Token": TOKEN,
+      "X-Session-Token": getSessionToken(),
     },
     body: JSON.stringify(payload),
   });
@@ -58,7 +58,7 @@ export async function proposeQuestion(payload: ProposePayload) {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Questions-Token": TOKEN,
+      "X-Session-Token": getSessionToken(),
     },
     body: JSON.stringify(payload),
   });

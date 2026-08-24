@@ -8,10 +8,24 @@ const BT_BASE = (
 
 const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
 
+// Reads: token (funcionam sem login)
 const HEADERS = {
   "Content-Type": "application/json",
   "X-Questions-Token": TOKEN,
 };
+
+// Writes: session do usuário logado
+function getSessionToken(): string {
+  return typeof window !== "undefined"
+    ? (localStorage.getItem("pmeditor:session") ?? "")
+    : "";
+}
+function writeHeaders(): Record<string, string> {
+  return {
+    "Content-Type": "application/json",
+    "X-Session-Token": getSessionToken(),
+  };
+}
 
 export type BaseTextItem = {
   id: string;
@@ -132,7 +146,7 @@ export async function linkBaseTexts(
   try {
     const res = await fetch(`${Q_BASE}/link-base-texts.php`, {
       method: "POST",
-      headers: HEADERS,
+      headers: writeHeaders(),
       body: JSON.stringify({ question_id: questionId, base_text_ids: baseTextIds }),
     });
     return await res.json();
@@ -158,7 +172,7 @@ export async function updateBaseText(payload: {
   try {
     const res = await fetch(`${BT_BASE}/update.php`, {
       method: "POST",
-      headers: HEADERS,
+      headers: writeHeaders(),
       body: JSON.stringify(payload),
     });
     return await res.json();
@@ -177,7 +191,7 @@ export async function deleteBaseText(
   try {
     const res = await fetch(`${BT_BASE}/delete.php`, {
       method: "POST",
-      headers: HEADERS,
+      headers: writeHeaders(),
       body: JSON.stringify({ id, force }),
     });
     return await res.json();
@@ -203,7 +217,7 @@ export async function createBaseText(payload: {
   try {
     const res = await fetch(`${BT_BASE}/create.php`, {
       method: "POST",
-      headers: HEADERS,
+      headers: writeHeaders(),
       body: JSON.stringify(payload),
     });
     return await res.json();
