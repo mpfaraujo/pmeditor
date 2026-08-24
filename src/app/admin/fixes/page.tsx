@@ -224,20 +224,16 @@ const API_BASE =
   process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ??
   "https://mpfaraujo.com.br/guardafiguras/api/questoes";
 const API_BASE_TEXTS = API_BASE.replace(/\/questoes\/?$/, "/base_texts");
-const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
 const PAGE_SIZE = 200;
 const BASE_TEXT_REVIEW_KEY = "pmeditor:fixes:base-text-reviewed";
 const DUPLICATE_REVIEW_KEY = "pmeditor:fixes:duplicate-reviewed";
 
-/** Auth pro PHP: manda sessão (usuário admin logado) e também token pros endpoints
- *  de leitura que ainda só aceitam token. Backend usa o que reconhecer. */
+/** Auth pro PHP: sessão do admin logado. */
 function phpHeaders(): Record<string, string> {
   const session = typeof window !== "undefined"
     ? (localStorage.getItem("pmeditor:session") ?? "")
     : "";
-  return session
-    ? { "X-Questions-Token": TOKEN, "X-Session-Token": session }
-    : { "X-Questions-Token": TOKEN };
+  return { "X-Session-Token": session };
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

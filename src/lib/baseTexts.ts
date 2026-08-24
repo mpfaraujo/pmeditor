@@ -6,13 +6,8 @@ const BT_BASE = (
   "https://mpfaraujo.com.br/guardafiguras/api/questoes"
 ).replace(/\/questoes\/?$/, "/base_texts");
 
-const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
-
-// Reads: token (funcionam sem login)
-const HEADERS = {
-  "Content-Type": "application/json",
-  "X-Questions-Token": TOKEN,
-};
+// Reads são públicas — sem auth. Só Content-Type quando manda body.
+const READ_HEADERS = { "Content-Type": "application/json" };
 
 // Writes: session do usuário logado
 function getSessionToken(): string {
@@ -54,7 +49,7 @@ export async function getBaseTexts(ids: string[]): Promise<BaseTextItem[]> {
 export async function getBaseText(id: string): Promise<BaseTextItem | null> {
   try {
     const res = await fetch(`${BT_BASE}/get.php?id=${encodeURIComponent(id)}`, {
-      headers: HEADERS,
+      headers: READ_HEADERS,
     });
     const json = await res.json();
     if (!json.success) return null;
@@ -87,7 +82,7 @@ export async function listBaseTexts(
   if (params.limit)      qs.set("limit", String(params.limit ?? 20));
 
   try {
-    const res = await fetch(`${BT_BASE}/list.php?${qs}`, { headers: HEADERS });
+    const res = await fetch(`${BT_BASE}/list.php?${qs}`, { headers: READ_HEADERS });
     const json = await res.json();
     if (!json.success) return { items: [], total: 0 };
     return { items: json.items ?? [], total: json.total ?? 0 };
@@ -111,7 +106,7 @@ export async function listQuestionsByBaseText(
     const qs = new URLSearchParams({ base_text_id: baseTextId, limit: "100" });
     const res = await fetch(
       `${BT_BASE.replace(/\/base_texts\/?$/, "/questoes")}/list.php?${qs}`,
-      { headers: HEADERS }
+      { headers: READ_HEADERS }
     );
     const json = await res.json();
     if (!json.success) return [];

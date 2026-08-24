@@ -22,7 +22,7 @@ import { createTurma } from "@/lib/turmas";
 import { useToast } from "@/hooks/use-toast";
 
 const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
-const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
+// filters.php é público — sem token.
 
 interface FilterOptions {
   disciplinas: string[];
@@ -73,9 +73,7 @@ export default function NovaTurmaPage() {
       const params = new URLSearchParams();
       disciplinas.forEach(d => params.append("disciplinas[]", d));
 
-      const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
-        headers: { "X-Questions-Token": TOKEN },
-      });
+      const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`);
       const data = await res.json();
 
       if (data.success) {

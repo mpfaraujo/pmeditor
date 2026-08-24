@@ -49,7 +49,7 @@ interface QuestionsFilterMobileProps {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
-const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
+// filters.php é público — sem token.
 
 export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilterMobileProps) {
   const [open, setOpen] = useState(false);
@@ -91,9 +91,7 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
       try {
         const params = new URLSearchParams();
         filters.concursos.forEach(c => params.append("concursos[]", c));
-        const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
-          headers: { "X-Questions-Token": TOKEN },
-        });
+        const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`);
         const data = await res.json();
         if (data.success) setAvailableAnos(data.anos || []);
       } catch {}
@@ -106,9 +104,7 @@ export function QuestionsFilterMobile({ onFilter, totalResults }: QuestionsFilte
       const params = new URLSearchParams();
       disciplinas.forEach(d => params.append("disciplinas[]", d));
 
-      const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`, {
-        headers: { "X-Questions-Token": TOKEN },
-      });
+      const res = await fetch(`${BASE_URL}/filters.php?${params.toString()}`);
       const data = await res.json();
 
       if (data.success) {

@@ -61,7 +61,7 @@ export function discColor(d: string) {
 
 const BASE_URL = process.env.NEXT_PUBLIC_QUESTIONS_API_BASE
   ?? "https://mpfaraujo.com.br/guardafiguras/api/questoes";
-const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
+// filters.php é público — sem token.
 
 // ─── Sub-componentes ──────────────────────────────────────────────────────────
 
@@ -160,9 +160,7 @@ export function useQuestionsFilter({
       const params = new URLSearchParams();
       discs.forEach(d => params.append("disciplinas[]", d));
       concs.forEach(c => params.append("concursos[]", c));
-      const res = await fetch(`${BASE_URL}/filters.php?${params}`, {
-        headers: { "X-Questions-Token": TOKEN },
-      });
+      const res = await fetch(`${BASE_URL}/filters.php?${params}`);
       const data = await res.json();
       if (!data.success) return;
 

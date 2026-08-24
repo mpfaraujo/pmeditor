@@ -17,7 +17,8 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ??
   "https://mpfaraujo.com.br/guardafiguras/api/questoes";
 
-const TOKEN = process.env.NEXT_PUBLIC_QUESTIONS_TOKEN ?? "";
+// Reads são públicas — nenhum token é enviado.
+// Writes usam X-Session-Token (via getSessionToken abaixo).
 
 async function handle(res: Response) {
   const text = await res.text();
@@ -66,9 +67,7 @@ export async function proposeQuestion(payload: ProposePayload) {
 }
 
 export async function getQuestion(id: string) {
-  const res = await fetch(`${BASE_URL}/get.php?id=${encodeURIComponent(id)}`, {
-    headers: { "X-Questions-Token": TOKEN },
-  });
+  const res = await fetch(`${BASE_URL}/get.php?id=${encodeURIComponent(id)}`);
   return handle(res);
 }
 
@@ -139,14 +138,13 @@ export async function listQuestions(params?: {
 
   const headers: Record<string, string> = {};
 
-  // Se for filtro de "minhas questões", usa session token
+  // Filtro "minhas questões" precisa da sessão pro backend saber quem é.
+  // Fora disso a rota é pública, nenhum header de auth.
   if (params?.myQuestions) {
     const sessionToken = typeof window !== "undefined" ? localStorage.getItem("pmeditor:session") : null;
     if (sessionToken) {
       headers["X-Session-Token"] = sessionToken;
     }
-  } else {
-    headers["X-Questions-Token"] = TOKEN;
   }
 
   const res = await fetch(`${BASE_URL}/list.php?${q.toString()}`, { headers });
@@ -177,9 +175,7 @@ export async function getQuestionVariants(
   const params = new URLSearchParams({ questionId });
   if (includeContent) params.set("includeContent", "1");
 
-  const res = await fetch(`${BASE_URL}/variants.php?${params}`, {
-    headers: { "X-Questions-Token": TOKEN },
-  });
+  const res = await fetch(`${BASE_URL}/variants.php?${params}`);
 
   return handle(res);
 }
