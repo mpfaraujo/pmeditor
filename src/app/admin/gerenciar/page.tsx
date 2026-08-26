@@ -33,12 +33,14 @@ import {
   ChevronsUp,
   Eye,
   EyeOff,
+  Flag,
   ImageOff,
   Loader2,
   Pencil,
   Trash2,
   Wrench,
 } from "lucide-react";
+import { clearReports } from "@/lib/reactions";
 import "@/app/editor/prova/montar/prova.css";
 
 type QuestionItem = {
@@ -73,6 +75,167 @@ type ConfirmAction =
   | { type: "question"; id: string; label: string }
   | { type: "variant"; id: string; questionId: string; label: string }
   | null;
+
+/* ---------------- Reportadas (curtidas e reports admin) ---------------- */
+
+type ReportedItem = {
+  id: string;
+  disciplina?: string;
+  assunto?: string;
+  blocked: boolean;
+  reports: Array<{ reason: string; count: number }>;
+};
+
+function ReportadasSection() {
+  const [items, setItems] = useState<ReportedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(true);
+  const [clearing, setClearing] = useState<string | null>(null);
+
+  const loadReported = () => {
+    setLoading(true);
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("pmeditor:session") ?? ""
+        : "";
+    const API_BASE =
+      process.env.NEXT_PUBLIC_QUESTIONS_API_BASE ??
+      "https://mpfaraujo.com.br/guardafiguras/api/questoes";
+    fetch(`${API_BASE}/list.php?limit=500`, {
+      headers: token ? { "X-Session-Token": token } : {},
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        const withReports: ReportedItem[] = (data.items ?? [])
+          .filter((q: any) => q.blocked || (q.reports?.length ?? 0) > 0)
+          .map((q: any) => ({
+            id: q.id,
+            disciplina: q.disciplina,
+            assunto: q.assunto,
+            blocked: !!q.blocked,
+            reports: q.reports ?? [],
+          }));
+        withReports.sort((a, b) => {
+          if (a.blocked !== b.blocked) return a.blocked ? -1 : 1;
+          const ta = a.reports.reduce((s, r) => s + r.count, 0);
+          const tb = b.reports.reduce((s, r) => s + r.count, 0);
+          return tb - ta;
+        });
+        setItems(withReports);
+      })
+      .catch(() => setItems([]))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadReported();
+  }, []);
+
+  const handleClear = async (id: string) => {
+    if (!confirm("Limpar todos os reports desta questão?")) return;
+    setClearing(id);
+    try {
+      await clearReports(id);
+      setItems((prev) => prev.filter((q) => q.id !== id));
+    } catch (e) {
+      alert("Erro ao limpar reports: " + (e as Error).message);
+    } finally {
+      setClearing(null);
+    }
+  };
+
+  const pendingCount = items.length;
+
+  return (
+    <div className="mb-6 stripe-card-gradient p-4">
+      <button
+        className="w-full flex items-center justify-between text-left"
+        onClick={() => setExpanded((v) => !v)}
+      >
+        <div className="flex items-center gap-2">
+          <Flag
+            className={
+              pendingCount > 0 ? "text-orange-600" : "text-slate-400"
+            }
+            size={18}
+          />
+          <h2 className="font-semibold text-slate-800">
+            Reportadas{" "}
+            {pendingCount > 0 && (
+              <span className="ml-1 text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
+                {pendingCount}
+              </span>
+            )}
+          </h2>
+        </div>
+        {expanded ? (
+          <ChevronDown size={16} className="text-slate-500" />
+        ) : (
+          <ChevronRight size={16} className="text-slate-500" />
+        )}
+      </button>
+
+      {expanded && (
+        <div className="mt-3">
+          {loading ? (
+            <div className="text-sm text-slate-500 py-2">Carregando…</div>
+          ) : items.length === 0 ? (
+            <div className="text-sm text-slate-500 py-2">
+              Nenhuma questão reportada. 🎉
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {items.map((q) => (
+                <div
+                  key={q.id}
+                  className="border rounded p-3 bg-white flex items-start justify-between gap-3"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      {q.blocked && (
+                        <span className="text-xs font-semibold text-red-600">
+                          BLOQUEADA
+                        </span>
+                      )}
+                      <span className="font-mono text-xs text-slate-400">
+                        {q.id.slice(0, 8)}…
+                      </span>
+                    </div>
+                    <div className="text-sm mt-1">
+                      {q.disciplina ?? "?"} / {q.assunto ?? "?"}
+                    </div>
+                    <div className="text-xs text-orange-600 mt-1">
+                      {q.reports
+                        .map((r) => `${r.reason}×${r.count}`)
+                        .join(" · ")}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1 shrink-0">
+                    <a
+                      href={`/editor/questoes?id=${q.id}`}
+                      className="text-xs underline text-slate-600 hover:text-slate-900"
+                    >
+                      Ver
+                    </a>
+                    <button
+                      onClick={() => handleClear(q.id)}
+                      disabled={clearing === q.id}
+                      className="text-xs underline text-slate-600 hover:text-red-600 disabled:opacity-50"
+                    >
+                      {clearing === q.id ? "Limpando…" : "Limpar reports"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
 
 export default function AdminGerenciarPage() {
   const router = useRouter();
@@ -636,6 +799,8 @@ export default function AdminGerenciarPage() {
 
         {/* Conteúdo principal */}
         <main className="flex-1 min-w-0">
+          <ReportadasSection />
+
           {errorMsg && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
               {errorMsg}

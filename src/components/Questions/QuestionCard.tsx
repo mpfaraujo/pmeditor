@@ -5,7 +5,8 @@ import QuestionRenderer from "./QuestionRenderer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { VersionHistoryModal } from "./VersionHistoryModal";
-import { QuestionVersion } from "@/lib/questions";
+import { QuestionVersion, type QuestionReactions as ReactionsType } from "@/lib/questions";
+import { QuestionReactions } from "./QuestionReactions";
 import { getBaseText } from "@/lib/baseTexts";
 import {
   type PMNode,
@@ -47,6 +48,9 @@ type QuestionCardProps = {
   onVersionChange?: (versionData: QuestionVersion) => void;
   showMetaHeader?: boolean;
   showQuestionTitle?: boolean;
+
+  /** Reações: se ausente, a barra de curtidas/reports não é renderizada. */
+  reactions?: ReactionsType;
 };
 
 /* ---------------- helpers (somente leitura) ---------------- */
@@ -174,7 +178,10 @@ export default function QuestionCard({
   onVersionChange,
   showMetaHeader = true,
   showQuestionTitle = true,
+  reactions,
 }: QuestionCardProps) {
+  const loggedIn = typeof window !== "undefined"
+    && !!localStorage.getItem("pmeditor:session");
   const isEdited = variantsCount > 0;
   const hasBase = !!base?.content;
 
@@ -418,6 +425,17 @@ export default function QuestionCard({
           </>
         )}
       </div>
+
+      {/* Barra de reações (curtida + report) */}
+      {reactions && (
+        <div className="border-t pt-2 mt-2">
+          <QuestionReactions
+            questionId={metadata.id}
+            initial={reactions}
+            loggedIn={loggedIn}
+          />
+        </div>
+      )}
 
       {/* Modal de histórico de versões */}
       {onVersionChange && (

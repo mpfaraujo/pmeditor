@@ -1,5 +1,21 @@
 // src/lib/questions.ts
 
+export type ReportReason =
+  | "content" | "answer" | "wording" | "missing_image" | "duplicate" | "metadata";
+
+export type MyReport = {
+  reason: ReportReason;
+  duplicate_of: string | null;
+};
+
+export type QuestionReactions = {
+  likes_count: number;
+  reports: Array<{ reason: ReportReason; count: number }>;
+  my_liked: boolean;
+  my_report: MyReport | null;
+  blocked: boolean;
+};
+
 export type QuestionPayload = {
   metadata: any;
   content: any;
