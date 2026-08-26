@@ -824,6 +824,17 @@ export default function QuestoesPage() {
                       selected={isSelected(previewItem.metadata.id)}
                       showMetaHeader={false}
                       showQuestionTitle={false}
+                      reactions={
+                        (previewItem as any).likes_count !== undefined
+                          ? {
+                              likes_count: (previewItem as any).likes_count ?? 0,
+                              reports: (previewItem as any).reports ?? [],
+                              my_liked: (previewItem as any).my_liked ?? false,
+                              my_report: (previewItem as any).my_report ?? null,
+                              blocked: (previewItem as any).blocked ?? false,
+                            }
+                          : undefined
+                      }
                     />
                   </div>
                 </div>
