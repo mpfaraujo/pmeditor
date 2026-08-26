@@ -2,6 +2,8 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { discColor } from "@/components/Questions/QuestionsFilter";
+import { QuestionReactions } from "./QuestionReactions";
+import type { QuestionReactions as ReactionsType } from "@/lib/questions";
 
 type QuestionCardCompactProps = {
   metadata: {
@@ -18,6 +20,7 @@ type QuestionCardCompactProps = {
   onSelect?: (id: string, checked: boolean) => void;
   onPreview?: () => void;
   showSubjectBorder?: boolean;
+  reactions?: ReactionsType;
 };
 
 function extractPlainText(node: any): string {
@@ -33,7 +36,8 @@ const TIPO_LABEL: Record<string, string> = {
   "Discursiva": "Disc.",
 };
 
-export function QuestionCardCompact({ metadata, content, selected, onSelect, onPreview, showSubjectBorder = true }: QuestionCardCompactProps) {
+export function QuestionCardCompact({ metadata, content, selected, onSelect, onPreview, showSubjectBorder = true, reactions }: QuestionCardCompactProps) {
+  const loggedIn = typeof window !== "undefined" && !!localStorage.getItem("pmeditor:session");
   const { id, disciplina, assunto, dificuldade, tipo, source } = metadata;
 
   const plainText = extractPlainText(content);
@@ -109,12 +113,25 @@ export function QuestionCardCompact({ metadata, content, selected, onSelect, onP
         {preview || <span className="italic">Sem enunciado</span>}
       </div>
 
-      {/* Rodapé: origem */}
-      {source?.kind === "concurso" && (source.concurso || source.ano) && (
-        <div className="text-[11px] text-gray-400 mt-1.5 truncate">
-          {[source.concurso, source.ano].filter(Boolean).join(" · ")}
-        </div>
-      )}
+      {/* Rodapé: origem + reações */}
+      <div className="flex items-center justify-between gap-2 mt-1.5">
+        {source?.kind === "concurso" && (source.concurso || source.ano) ? (
+          <div className="text-[11px] text-gray-400 truncate flex-1">
+            {[source.concurso, source.ano].filter(Boolean).join(" · ")}
+          </div>
+        ) : (
+          <div className="flex-1" />
+        )}
+        {reactions && (
+          <div onClick={(e) => e.stopPropagation()}>
+            <QuestionReactions
+              questionId={id}
+              initial={reactions}
+              loggedIn={loggedIn}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

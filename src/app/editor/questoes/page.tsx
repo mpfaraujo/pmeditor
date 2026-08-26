@@ -703,6 +703,17 @@ export default function QuestoesPage() {
                         selected={isSelected(q.metadata.id)} onSelect={toggleSelect}
                         onPreview={() => setPreviewItem(q)}
                         showSubjectBorder={showSubjectBorder}
+                        reactions={
+                          (q as any).likes_count !== undefined
+                            ? {
+                                likes_count: (q as any).likes_count ?? 0,
+                                reports: (q as any).reports ?? [],
+                                my_liked: (q as any).my_liked ?? false,
+                                my_report: (q as any).my_report ?? null,
+                                blocked: (q as any).blocked ?? false,
+                              }
+                            : undefined
+                        }
                       />
                     ))}
                   </div>
