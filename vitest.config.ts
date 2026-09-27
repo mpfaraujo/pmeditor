@@ -6,7 +6,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    include: ['src/tests/**/*.test.ts', 'src/tests/**/*.test.tsx'],
+    include: ['src/tests/**/*.test.ts', 'src/tests/**/*.test.tsx', 'transcricao/tests/**/*.test.ts'],
     exclude: ['src/tests/pagination-tests-package/**'],
     testTimeout: 10000,
   },

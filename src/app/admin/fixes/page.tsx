@@ -1847,7 +1847,7 @@ export default function FixesPage() {
       const map = new Map<string, { batch: string; run_id: string; count: number }>();
 
       const [dbRes, reportsRes] = await Promise.all([
-        fetch(`${API_BASE}/list.php?limit=200&page=1`, {
+        fetch(`${API_BASE}/list.php?limit=500&page=1`, {
           headers: phpHeaders(),
         }),
         fetch(`${API_BASE}/import-reports.php`, {

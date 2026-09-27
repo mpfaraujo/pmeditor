@@ -13,6 +13,7 @@
 
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import { basename, extname, resolve } from "path";
+import sharp from "sharp";
 import { schema } from "../src/components/editor/schema";
 import {
   parseQuestionFromLatexText,
@@ -135,6 +136,7 @@ type ImageImportConfig = {
   sourceMap: Map<string, string>;
   altMap: Map<string, string>;
   uploadCache: Map<string, string>;
+  naturalWidthCache: Map<string, number>;
   unresolved: Set<string>;
   uploaded: Set<string>;
   possibleFormulaImages: Array<{ name: string; alt: string }>;
@@ -306,6 +308,14 @@ async function uploadRemoteImage(name: string, imageUrl: string, cfg: ImageImpor
       blob = await imageRes.blob();
     }
   }
+  // captura naturalWidth do buffer antes do upload
+  try {
+    const buf = Buffer.from(await blob!.arrayBuffer());
+    const meta = await sharp(buf).metadata();
+    if (meta.width && meta.width > 0) {
+      cfg.naturalWidthCache.set(imageUrl, meta.width);
+    }
+  } catch { /* ignora — fallback é width:null */ }
   const fd = new FormData();
   fd.append("image", blob!, filename);
   const uploadRes = await fetch(cfg.uploadEndpoint, {
@@ -319,8 +329,13 @@ async function uploadRemoteImage(name: string, imageUrl: string, cfg: ImageImpor
   }
   cfg.uploadCache.set(imageUrl, json.url);
   cfg.uploaded.add(name);
+  // propaga naturalWidth para o cache indexado pela URL final também
+  const nw = cfg.naturalWidthCache.get(imageUrl);
+  if (nw) cfg.naturalWidthCache.set(json.url, nw);
   return json.url;
 }
+
+const MAX_IMAGE_WIDTH_PX = 302; // 8 cm a 96 dpi
 
 async function materializeTextWithRemoteImages(text: string, cfg: ImageImportConfig): Promise<any[]> {
   const nodes: any[] = [];
@@ -340,7 +355,9 @@ async function materializeTextWithRemoteImages(text: string, cfg: ImageImportCon
       if (remoteUrl) {
         try {
           const uploadedUrl = await uploadRemoteImage(name, remoteUrl, cfg);
-          nodes.push({ type: "image", attrs: { id: crypto.randomUUID(), src: uploadedUrl, width: null, align: null } });
+          const nw = cfg.naturalWidthCache.get(uploadedUrl);
+          const width = nw ? Math.min(nw, MAX_IMAGE_WIDTH_PX) : null;
+          nodes.push({ type: "image", attrs: { id: crypto.randomUUID(), src: uploadedUrl, width, align: null } });
           replaced = true;
         } catch (e: any) { cfg.unresolved.add(name); console.warn(`   ⚠ imagem não subiu (${name.slice(0, 60)}): ${e?.message ?? e}`); }
       } else { cfg.unresolved.add(name); }
@@ -525,7 +542,7 @@ function buildInitial(item: ImportItem, batch: BatchConfig, author?: { id?: stri
   } else gabarito = m?.resposta?.trim() ? { kind: "essay" as const, rubric: parseRespostaToDoc(m.resposta.trim()) } : null;
   const VALID_DIFIC = ["Fácil", "Média", "Difícil"] as const;
   const dificuldade = (m?.dificuldade && VALID_DIFIC.find(d => d.toLowerCase() === m.dificuldade!.toLowerCase())) || batch.dificuldade;
-  const source = m?.concurso || m?.banca || m?.ano || m?.fonte ? { kind: (m.fonte === "concurso" ? "concurso" : "original") as "original" | "concurso", concurso: m.concurso || batch.source.concurso, banca: m.banca || batch.source.banca, ano: m.ano || batch.source.ano, cargo: m.cargo || batch.source.cargo, numero: m.numero || undefined, prova: m.prova || undefined } : { ...batch.source };
+  const source = m?.concurso || m?.banca || m?.ano || m?.fonte || m?.numero ? { kind: (m.fonte === "concurso" ? "concurso" : "original") as "original" | "concurso", concurso: m.concurso || batch.source.concurso, banca: m.banca || batch.source.banca, ano: m.ano || batch.source.ano, cargo: m.cargo || batch.source.cargo, numero: m.numero || undefined, prova: m.prova || undefined } : { ...batch.source };
   const tags = m?.tags?.length ? [...m.tags] : batch.tags.length ? [...batch.tags] : [];
   const metadata = { schemaVersion: 1, id: newId(), createdAt: now, updatedAt: now, tipo: item.tipo, disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina), assunto: normalizeAssunto(m?.assunto || batch.assunto || "") || undefined, dificuldade, gabarito: gabarito ?? normalizeGabaritoForTipo(item.tipo), tags, source, author, ...(baseTextIds?.length ? { baseTextIds, baseTextId: baseTextIds[0] } : {}), ...(importBatch ? { import_batch: importBatch } : {}), ...(importRunId ? { import_run_id: importRunId } : {}) };
   return { metadata, content };
@@ -659,7 +676,7 @@ async function main() {
   const { sourceMap, altMap } = htmlUrls.length > 0 ? await buildImageSourceMapFromHtmls(htmlUrls) : { sourceMap: new Map<string, string>(), altMap: new Map<string, string>() };
   const imagesDirRaw = args.get("images-dir") as string | undefined;
   const imagesDir = imagesDirRaw ? resolve(imagesDirRaw) : undefined;
-  const imageCfg: ImageImportConfig = { htmlUrls, uploadEndpoint, uploadToken, sourceMap, altMap, uploadCache: new Map<string, string>(), unresolved: new Set<string>(), uploaded: new Set<string>(), possibleFormulaImages: [], imagesDir, dryRun };
+  const imageCfg: ImageImportConfig = { htmlUrls, uploadEndpoint, uploadToken, sourceMap, altMap, uploadCache: new Map<string, string>(), naturalWidthCache: new Map<string, number>(), unresolved: new Set<string>(), uploaded: new Set<string>(), possibleFormulaImages: [], imagesDir, dryRun };
   const dificRaw = (args.get("dific") as string) ?? "Média";
   const batch: BatchConfig = { assunto: (args.get("assunto") as string) ?? "", dificuldade: "Média", disciplina: (args.get("disciplina") as string) ?? "Matemática", tags: [], source: { kind: args.has("concurso") ? "concurso" : "original", concurso: args.get("concurso") as string | undefined, banca: args.get("banca") as string | undefined, ano: args.has("ano") ? Number(args.get("ano")) : undefined } };
   const author = args.has("autor-id") || args.has("autor-nome") ? { id: args.get("autor-id") as string | undefined, name: args.get("autor-nome") as string | undefined } : undefined;

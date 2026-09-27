@@ -29,10 +29,15 @@ export type QuestionBlock = {
   body: string;
   full: string;
   startLine: number;
+  endLine: number;
 };
 
 function lineNumberAt(text: string, index: number): number {
   return text.slice(0, index).split("\n").length;
+}
+
+function inclusiveEndLine(text: string, startIndex: number, endIndexExclusive: number): number {
+  return lineNumberAt(text, Math.max(startIndex, endIndexExclusive - 1));
 }
 
 function excerpt(line: string): string {
@@ -54,6 +59,7 @@ export function questionBlocks(text: string): QuestionBlock[] {
       body: m[2],
       full: m[0],
       startLine: lineNumberAt(text, m.index),
+      endLine: inclusiveEndLine(text, m.index, m.index + m[0].length),
     });
   }
 
@@ -80,6 +86,7 @@ export function questionBlocks(text: string): QuestionBlock[] {
         body,
         full: text.slice(prevStart, qEnd),
         startLine: lineNumberAt(text, qStart),
+        endLine: inclusiveEndLine(text, qStart, qEnd),
       });
     }
   }
@@ -381,16 +388,62 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
     run: ({ text }) => {
       const noYaml = text.replace(/\n---\n[\s\S]*?\n---\n/g, (m) => "\n" + " ".repeat(m.length - 2) + "\n");
       const stripped = stripMathRegions(stripComments(noYaml));
-      return issuesForPattern(
-        stripped,
-        // pi em contexto aritmético (pi/3, = pi, pi +), ou letras gregas por extenso
-        /\bpi\s*[/=+\-*)\]^]|\bpi\s*$|\b(theta|alpha|beta|gamma|delta|lambda|sigma|omega|phi|epsilon|rho)\b/gim,
-        {
+      const issues: CheckIssue[] = [];
+      const palavraGrega = /\b(pi|theta|alpha|beta|gamma|delta|lambda|sigma|omega|phi|epsilon|rho)\b/gi;
+      const contextoMatematico = /[=<>+*/^_°≤≥≠]|\b(?:ângulo|angulo|coeficiente|parâmetro|parametro|variável|variavel|valor|expressão|expressao|equação|equacao|razão|razao)\b/i;
+      let m: RegExpExecArray | null;
+      while ((m = palavraGrega.exec(stripped)) !== null) {
+        const lineStart = stripped.lastIndexOf("\n", m.index) + 1;
+        const lineEndRaw = stripped.indexOf("\n", m.index);
+        const lineEnd = lineEndRaw < 0 ? stripped.length : lineEndRaw;
+        const lineText = stripped.slice(lineStart, lineEnd);
+        const contextoProximo = stripped.slice(Math.max(lineStart, m.index - 32), Math.min(lineEnd, m.index + m[0].length + 32));
+        const contextoSemMarcadorLista = contextoProximo.replace(/^\s*[*•]\s*/, "");
+        const depois = stripped.slice(m.index + m[0].length, Math.min(stripped.length, m.index + m[0].length + 4));
+        const piAritmetico = m[1].toLowerCase() === "pi" && /^\s*[/=+\-*)\]^]/.test(depois);
+        if (!piAritmetico && !contextoMatematico.test(contextoSemMarcadorLista)) continue;
+        issues.push({
           ruleId: "greek-word-in-text",
           severity: "error",
-          message: "Nome de letra grega em texto puro — não renderiza. CORRIGIR: 'theta' → '\\(\\theta\\)', 'pi/3' → '\\(\\pi/3\\)', 'alpha' → '\\(\\alpha\\)', 'beta' → '\\(\\beta\\)', 'delta' → '\\(\\delta\\)'. Toda a expressão matemática deve estar dentro de \\( \\) ou \\[ \\].",
-        },
-      );
+          line: lineNumberAt(stripped, m.index),
+          message: "Nome de letra grega em contexto matemático e em texto puro — não renderiza. Envolver toda a expressão em \\( \\) ou \\[ \\].",
+          excerpt: excerpt(lineText),
+          matched: m[0],
+        });
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "unknown-environment",
+    description: "Ambiente não reconhecido pelo parser/KaTeX pode desaparecer silenciosamente.",
+    run: ({ text }) => {
+      const conhecidos = new Set([
+        "questions", "choices", "oneparchoices",
+        "itemize", "enumerate", "romanitems", "alphaitems", "assertiveitems",
+        "poem", "databox", "codeblock", "center", "flushright", "flushleft",
+        "cases", "bmatrix", "pmatrix", "vmatrix", "array", "aligned", "alignedat", "gathered",
+        // Conhecidos mas tratados por regras bloqueantes específicas.
+        "parts", "subparts", "exercises", "solution", "answer", "tabular", "subenum",
+        "quote", "quotation", "verbatim", "figure", "minipage",
+      ]);
+      const issues: CheckIssue[] = [];
+      const re = /\\begin\{([^}]+)\}/g;
+      let match: RegExpExecArray | null;
+      while ((match = re.exec(text))) {
+        const ambiente = match[1].trim();
+        if (conhecidos.has(ambiente)) continue;
+        issues.push({
+          ruleId: "unknown-environment",
+          severity: "error",
+          line: lineNumberAt(text, match.index),
+          excerpt: excerpt(text.split("\n")[lineNumberAt(text, match.index) - 1] ?? match[0]),
+          matched: match[0],
+          message: `Ambiente \\begin{${ambiente}} não é reconhecido pelo contrato do parser; o conteúdo pode desaparecer.`,
+        });
+      }
+      return issues;
     },
   },
 
@@ -470,7 +523,7 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
       const issues1 = issuesForPattern(
         stripped,
         new RegExp(
-          `\\b(cos|sin|tan|cot|sec|csc|log|ln)${PTBR_EXCLUDE.source}(?:\\s+[a-zA-Z](?![a-zA-Z]{2,})|\\s+[0-9(°]|[\\d(°])`,
+          `\\b(cos|sin|tan|cot|sec|csc|log|ln)${PTBR_EXCLUDE.source}(?:\\s+[a-zA-Z](?![a-zA-ZáéíóúñÁÉÍÓÚÑâêîôûÂÊÎÔÛãõÃÕçÇ])|\\s+[0-9(°]|[\\d(°])`,
           "gi",
         ),
         {
@@ -616,6 +669,131 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
           i = j;
         } else {
           i++;
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "literal-list-markers",
+    description: "Duas ou mais linhas com marcadores literais/Markdown em vez de ambiente de lista.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      const lines = stripComments(text).split("\n");
+      const isMarker = (line: string) => /^\s*(?:\*|[•●▪◦])\s+\S/.test(line);
+      let sequenceStart: number | null = null;
+      let count = 0;
+
+      const flush = () => {
+        if (sequenceStart !== null && count >= 2) {
+          issues.push({
+            ruleId: "literal-list-markers",
+            severity: "error",
+            line: sequenceStart + 1,
+            excerpt: excerpt(lines[sequenceStart] ?? ""),
+            message: `${count} itens usam marcador literal/Markdown. Use \\begin{itemize}, \\item e \\end{itemize}.`,
+          });
+        }
+        sequenceStart = null;
+        count = 0;
+      };
+
+      for (let i = 0; i < lines.length; i++) {
+        if (isMarker(lines[i])) {
+          if (sequenceStart === null) sequenceStart = i;
+          count++;
+        } else if (lines[i].trim() !== "") {
+          flush();
+        }
+      }
+      flush();
+      return issues;
+    },
+  },
+
+  {
+    id: "linearized-table",
+    description: "Tabela convertida em linhas de texto separadas por travessões ou pipes.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      for (const block of questionBlocks(text)) {
+        const hasTableCue = /\b(?:a|esta)\s+tabela\s+(?:a\s+seguir|abaixo|apresenta|mostra|indica|fornece|cont[eé]m)\b|\btabela\s+(?:a\s+seguir|abaixo|apresentada|mostrada|indicada|fornecida)\b/i.test(block.body);
+        if (!hasTableCue) continue;
+        const tabularLines = block.body
+          .split("\n")
+          .filter((line) => ((line.match(/[—|]/g) ?? []).length >= 2));
+        if (tabularLines.length < 3) continue;
+        issues.push({
+          ruleId: "linearized-table",
+          severity: "error",
+          line: block.startLine,
+          questionNumber: block.number,
+          excerpt: excerpt(tabularLines[0]),
+          message: "Tabela linearizada como texto. Toda tabela deve ser preservada com \\includegraphics; nunca converter linhas e colunas em parágrafos.",
+        });
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "markdown-inline-formatting",
+    description: "Ênfase Markdown não é convertida em marcas do ProseMirror.",
+    run: ({ text }) => {
+      const noYaml = text.replace(/---\r?\n[\s\S]*?\r?\n---/g, " ");
+      const noCode = noYaml.replace(/\\begin\{codeblock\}[\s\S]*?\\end\{codeblock\}/g, " ");
+      const stripped = stripMathRegions(stripComments(noCode));
+      return issuesForPattern(stripped, /\*\*[^*\n]+\*\*|__[^_\n]+__/g, {
+        ruleId: "markdown-inline-formatting",
+        severity: "error",
+        message: "Markdown não cria formatação no ProseMirror. Use \\textbf{}, \\textit{} ou \\underline{} conforme a fonte.",
+      });
+    },
+  },
+
+  {
+    id: "credit-line-without-command",
+    description: "Linha de fonte/crédito/legenda fora de \\credits{}.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      // Padrões de linha de crédito/legenda que precisam virar \credits{}:
+      //   "Fonte: ...", "Disponível em: ...", "Adaptado de: ..."
+      //   "SOBRENOME, Nome. Obra. ..." (padrão vestibular)
+      //   "\\ AUTOR, ..." (legenda de imagem após \\)
+      //   "BOSI, Alfredo. História concisa da literatura brasileira. ..."
+      const PATTERNS: Array<{ re: RegExp; hint: string }> = [
+        {
+          re: /^\s*(?:Fonte|Disponível em|Adaptado de):\s*\S.*$/gmi,
+          hint: "Crédito/fonte em parágrafo solto. Use \\credits{...}.",
+        },
+        {
+          // \\ seguido de SOBRENOME, Nome — inline em qualquer posição (típico de legenda após \includegraphics)
+          re: /\\\\\s+[A-ZÁÊÇÕÍÚÓÂÔÀÜÑ]{2,}[A-Za-zÀ-ÿ\-]*\s*,\s*[A-ZÁÊÇÕÍÚÓÂÔÀÜÑ][A-Za-zÀ-ÿ]+/g,
+          hint: "Legenda de imagem introduzida por \\\\ — deve ser \\credits{...} em linha própria após o \\includegraphics, não \\\\ inline.",
+        },
+        {
+          // SOBRENOME, Nome. Obra... como linha própria (referência bibliográfica solta)
+          re: /^\s*[A-ZÁÊÇÕÍÚÓÂÔÀÜÑ]{2,}[A-Za-zÀ-ÿ\-]*\s*,\s*[A-ZÁÊÇÕÍÚÓÂÔÀÜÑ][a-zà-ÿ]+(?:\s+[A-ZÁÊÇÕÍÚÓÂÔÀÜÑ][a-zà-ÿ]+)*\.\s+.{5,}$/gm,
+          hint: "Referência bibliográfica (SOBRENOME, Nome. Obra...) em parágrafo solto. Use \\credits{...}.",
+        },
+      ];
+      for (const block of questionBlocks(text)) {
+        // Remove tudo que já está dentro de \credits{...} e YAML antes de procurar
+        const body = block.body.replace(/\\credits\{[^}]*\}/g, " ");
+        for (const { re, hint } of PATTERNS) {
+          re.lastIndex = 0;
+          let m: RegExpExecArray | null;
+          while ((m = re.exec(body)) !== null) {
+            issues.push({
+              ruleId: "credit-line-without-command",
+              severity: "error",
+              line: block.startLine + lineNumberAt(body, m.index) - 1,
+              questionNumber: block.number,
+              excerpt: excerpt(m[0]),
+              message: hint,
+            });
+          }
         }
       }
       return issues;
@@ -1372,19 +1550,43 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
 
   {
     id: "editorial-label-in-body",
-    description: "Rótulo editorial no corpo da questão ('TEXTO PARA AS QUESTÕES X', 'TEXTO I', etc.) — entra como parágrafo literal no banco.",
+    description: "Rótulo editorial no corpo da questão ('TEXTO PARA AS QUESTÕES X', 'Leia o texto abaixo', etc.) — entra como parágrafo literal no banco.",
     run: ({ text }) => {
       // Remove blocos YAML antes de checar o corpo
       const noYaml = text.replace(/\n---\n[\s\S]*?\n---\n/g, (m) => "\n" + " ".repeat(m.length - 2) + "\n");
-      return issuesForPattern(
-        noYaml,
-        /^[ \t]*TEXTO\s+PARA\s+A[S]?\s+QUEST[ÃÕ]\S*\s+[\d,\s]+(?:E\s+\d+)?\s*$/gmi,
-        {
-          ruleId: "editorial-label-in-body",
-          severity: "warning",
-          message: "Rótulo editorial no corpo da questão — entra como parágrafo literal no banco. Remover esta linha.",
-        },
+      const issues: CheckIssue[] = [];
+      // Padrões editoriais que precedem texto base — cobrem variações comuns:
+      //   "TEXTO PARA AS QUESTÕES 1, 2 e 3."   "Texto para a questão 13."
+      //   "Texto I"                              "Leia o texto a seguir"
+      //   "Considere o texto abaixo para responder às questões 5 e 6"
+      //   "Use o texto a seguir para responder à próxima questão"
+      //   "Baseado no texto abaixo, responda as questões 4 a 6"
+      // Remove wrappers de formatação (\textbf{...}, \textit{...}, \emph{...}, \underline{...}) preservando comprimento
+      // pra os padrões baterem tanto em "Texto para..." quanto em "\textbf{Texto para...}"
+      const noWrap = noYaml.replace(
+        /\\(?:textbf|textit|emph|underline)\{([^{}]*)\}/g,
+        (_m, inner) => " ".repeat(_m.length - inner.length) + inner,
       );
+      const PATTERNS: RegExp[] = [
+        // "Texto para a(s) questão/questões N[, M, ... e/ou K]" — aceita ponto/dois pontos/travessão/fecha-chave no fim
+        /^[ \t]*Texto\s+para\s+as?\s+quest\S+(?:[\s\S]{0,80}?)[.:\-—}]?\s*$/gmi,
+        // "TEXTO I", "TEXTO II" ...
+        /^[ \t]*TEXTO\s+[IVX]+\s*[.:\-—}]?\s*$/gm,
+        // "Leia/Considere/Use/Analise ... (o|a) texto ... (a seguir|abaixo|acima|seguinte)"
+        /^[ \t]*(?:Leia|Considere|Use|Utilize|Analise|Observe|Baseado\s+n[oa])\s+[^.\n]{0,120}texto[^.\n]{0,120}(?:seguir|abaixo|acima|seguinte)[^.\n]{0,120}[.:}]?\s*$/gmi,
+        // "Texto a seguir:" / "Texto abaixo:" isolados
+        /^[ \t]*Texto\s+(?:a\s+seguir|abaixo|acima|seguinte)\s*[.:}]?\s*$/gmi,
+      ];
+      for (const re of PATTERNS) {
+        issues.push(
+          ...issuesForPattern(noWrap, re, {
+            ruleId: "editorial-label-in-body",
+            severity: "warning",
+            message: "Rótulo editorial no corpo da questão — entra como parágrafo literal no banco. Remover a linha e/ou converter para \\basetext.",
+          }),
+        );
+      }
+      return issues;
     },
   },
 
@@ -1665,6 +1867,64 @@ export const TEX_IMPORT_RULES: TexImportRule[] = [
             line,
             questionNumber: qBlock?.number,
             message: `\\begin{center} com ${pipeLines.length} linhas contendo '|' parece uma tabela fake. Tabelas devem ser \\includegraphics{tabela-qX}, nunca ASCII com '|'.`,
+          });
+        }
+      }
+      return issues;
+    },
+  },
+
+  {
+    id: "prose-inside-math",
+    description: "Prosa em português dentro de bloco math via \\text{} ou \\quad/\\qquad usado como separador — fechar math, escrever texto, reabrir math.",
+    run: ({ text }) => {
+      const issues: CheckIssue[] = [];
+      // Unidades e símbolos comuns que legitimamente vão em \text{} dentro de math
+      const UNIT_WHITELIST = /^(?:k?m|c?m|mm|kg|mol|atm|g|s|min|h|ha|m?L|mL|Pa|N|J|W|V|A|Hz|K|°C|°F|cm\^?\d*|m\^?\d*|km\/h|m\/s\^?\d*|g\/(?:cm\^?\d*|mol|L)|mol\/L)$/;
+      // Palavras em português que NUNCA deveriam estar em \text{} dentro de math
+      // (conectivos, preposições, verbos, advérbios — prosa clara)
+      const PROSE_HINT = /^(?:e|ou|se|para|com|onde|então|logo|quando|assim|desde|tal|que|no|na|do|da|dos|das|até|entre|antes|depois|sobre|sem|por|é|são|deve|pode|temos|seja|sejam|nota|obs|isto|isso|isso é|note)$/i;
+
+      const mathRe = /\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$/g;
+      let m: RegExpExecArray | null;
+      while ((m = mathRe.exec(text)) !== null) {
+        const block = m[0];
+        const blockStart = m.index;
+
+        // Pass 1: \text{...} com prosa
+        const textRe = /\\text\{([^{}]+)\}/g;
+        let t: RegExpExecArray | null;
+        while ((t = textRe.exec(block)) !== null) {
+          const content = t[1].trim();
+          if (!content) continue;
+          if (UNIT_WHITELIST.test(content)) continue;
+          if (PROSE_HINT.test(content)) {
+            const line = lineNumberAt(text, blockStart + t.index);
+            issues.push({
+              ruleId: "prose-inside-math",
+              severity: "warning",
+              line,
+              excerpt: excerpt(text.split("\n")[line - 1] ?? ""),
+              matched: t[0],
+              message: `\\text{${content}} dentro de math é prosa em português. CORRIGIR: fechar o LaTeX, escrever "${content}" em texto puro, reabrir o LaTeX. Ex: \\(a=1\\) e \\(b=2\\) — NÃO \\[a=1 \\text{ e } b=2\\].`,
+            });
+          }
+        }
+
+        // Pass 2: \quad ou \qquad seguido de \text{} (padrão típico de separador de prosa)
+        const quadTextRe = /\\q?quad\s*\\text\{|\\text\{[^{}]+\}\s*\\q?quad/g;
+        let q: RegExpExecArray | null;
+        while ((q = quadTextRe.exec(block)) !== null) {
+          const line = lineNumberAt(text, blockStart + q.index);
+          // Evitar duplicar com o pass 1 na mesma linha
+          if (issues.some((i) => i.line === line && i.ruleId === "prose-inside-math")) continue;
+          issues.push({
+            ruleId: "prose-inside-math",
+            severity: "warning",
+            line,
+            excerpt: excerpt(text.split("\n")[line - 1] ?? ""),
+            matched: q[0],
+            message: "\\quad/\\qquad + \\text{} usado como separador de prosa dentro de math. CORRIGIR: fechar o LaTeX, escrever a palavra em texto puro, reabrir o LaTeX. \\quad/\\qquad é pra espaçamento DENTRO de expressão matemática, não pra intercalar prosa.",
           });
         }
       }
