@@ -43,6 +43,15 @@ export type ProvaConfig = {
   // header layout (0..10)
   headerLayout: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   questionHeaderVariant: 0 | 1 | 2 | 3 | 4;
+
+  // trilha "diagramar" (aditivo; vazio = comportamento clássico)
+  imageOverrides?: Record<
+    string, // questionId
+    Record<string, { align?: "left" | "center" | "right"; widthCm?: number }> // imageId → override
+  >;
+  pontuacoes?: Record<string, number>; // questionId → pontos
+  rodapeMensagem?: string; // substitui "Tipo X" no rodapé central
+  numeracaoFixa?: boolean; // true = numeração segue ordem de selectedQuestions, não pós-paginação
 };
 
 export type Selection =
