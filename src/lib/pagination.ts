@@ -30,9 +30,16 @@
  * Sem essa restrição, qualquer questão com h > firstPageCapacity em
  * qualquer página intermediária seria fragmentada desnecessariamente.
  *
+ * A MESMA regra vale no caminho linear (distributeQuestionsAcrossPages,
+ * usado com ordem travada: reordenação manual e trilha /diagramar): o plano
+ * "slot limpo = nova página" é ignorado quando a página atual está vazia.
+ *
  * Testes de regressão: src/tests/pagination/layout.test.ts
  *   "[otimizado] questão maior que firstPageCapacity deve ser fragmentada"
  *   "[otimizado] set group com base maior que firstPageCapacity deve fragmentar a base"
+ *   "[linear] questão maior que firstPageCapacity deve ser fragmentada na 1ª página"
+ *   "[linear][2 colunas] 1ª questão maior que a coluna da 1ª página não deixa a página 0 vazia"
+ *   "[linear] questão > firstPageCapacity em página intermediária NÃO é fragmentada"
  *
  * 2. appendOptions e textBlockCount
  * ───────────────────────────────────
@@ -780,7 +787,12 @@ export function distributeQuestionsAcrossPages(
     // 2) tenta próximo slot limpo SEM fragmentar;
     // 3) só fragmenta se não couber nem em slot limpo.
     const cleanSlotPlan = getCleanSlotPlan(fullH);
-    if (cleanSlotPlan) {
+    // Mesma regra do item (1) do cabeçalho: com a página atual VAZIA, pular para
+    // uma página nova deixaria a página 0 vazia → removida no fim → a página
+    // dimensionada com otherPageCapacity vira a 1ª (com cabeçalho) → overflow.
+    // Nesse caso segue para a fragmentação usando o espaço da página atual.
+    const currentPageEmpty = isEmptyPage(page);
+    if (cleanSlotPlan && !(cleanSlotPlan.kind === "page" && currentPageEmpty)) {
       if (cleanSlotPlan.kind === "column") {
         // Próximo slot limpo = coluna2 da mesma página.
         nextColumnOrPage();

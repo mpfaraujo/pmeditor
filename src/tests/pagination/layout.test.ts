@@ -55,6 +55,41 @@ describe('pagination - layout e regressões', () => {
     expect(items.every((x: any) => x.kind === 'frag')).toBe(true)
   })
 
+  // Mesmo bug da página vazia, no caminho linear (ordem travada / diagramar).
+  test('[linear] questão maior que firstPageCapacity deve ser fragmentada na 1ª página (regressão overflow)', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 829, blockHeights: [300, 300, 200], noOptions: true },
+    ])
+    const pages = distributeQuestionsAcrossPages(1, [829], 742, 931, 1, m)
+    const items = flattenItems(pages).filter((x) => x.q === 0)
+    expect(items.length).toBeGreaterThan(1)
+    expect(items.every((x: any) => x.kind === 'frag')).toBe(true)
+  })
+
+  test('[linear][2 colunas] 1ª questão maior que a coluna da 1ª página não deixa a página 0 vazia (regressão overflow)', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 829, blockHeights: [300, 300, 200], noOptions: true },
+      { wrapperHeight: 300, blockHeights: [200, 80], noOptions: true },
+    ])
+    const pages = distributeQuestionsAcrossPages(2, [829, 300], 742, 931, 2, m)
+    // A página renderizada 0 (com cabeçalho) começa com o 1º fragmento de q0,
+    // não com q0 inteira dimensionada para uma página sem cabeçalho.
+    const firstCol1 = pages[0].coluna1[0] as any
+    expect(firstCol1.q).toBe(0)
+    expect(firstCol1.kind).toBe('frag')
+    expect(flattenItems(pages).map((x) => x.q)).toEqual([0, 0, 1])
+  })
+
+  test('[linear] questão > firstPageCapacity em página intermediária NÃO é fragmentada', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 600, blockHeights: [300, 280], noOptions: true },
+      { wrapperHeight: 829, blockHeights: [300, 300, 200], noOptions: true },
+    ])
+    const pages = distributeQuestionsAcrossPages(2, [600, 829], 742, 931, 1, m)
+    const q1 = flattenItems(pages).filter((x) => x.q === 1)
+    expect(q1).toEqual([{ kind: 'full', q: 1 }])
+  })
+
   // ─── Bug de regressão — overflow na primeira página ────────────────────────
   //
   // Quando q.height > firstPageCapacity mas q.height <= otherPageCapacity,
