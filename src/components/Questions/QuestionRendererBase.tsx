@@ -39,6 +39,8 @@ type Props = {
   permutation?: OptionPermutation | null;
   /** Larguras comprometidas vindas do pai (sobrepõe localStorage na renderização) */
   imageWidthProp?: Record<string, number>;
+  /** Alinhamentos comprometidos vindos do pai (sobrepõe localStorage na renderização) */
+  imageAlignProp?: Record<string, "left" | "center" | "right">;
   /** Chamado no pointerup com (id, novaLargura) para acionar re-paginação */
   onImageResizeCommit?: (id: string, width: number) => void;
   /** Larguras (%) das caixas de dados, vindas do pai */
@@ -55,7 +57,7 @@ type Props = {
   layoutKey?: "2col" | "1col" | "acessivel";
 };
 
-export default function QuestionRendererBase({ content, mode, fragmentRender, baseTextSections, onToggleBaseTextSection, permutation, imageWidthProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions, lineMap, layoutKey }: Props) {
+export default function QuestionRendererBase({ content, mode, fragmentRender, baseTextSections, onToggleBaseTextSection, permutation, imageWidthProp, imageAlignProp, onImageResizeCommit, dataBoxWidthProp, onDataBoxWidthCommit, inlineOptions, onToggleInlineOptions, lineMap, layoutKey }: Props) {
   const [imageWidthOverrides, setImageWidthOverrides] = React.useState<
     Record<string, number>
   >({});
@@ -789,8 +791,9 @@ export default function QuestionRendererBase({ content, mode, fragmentRender, ba
       const widthPx = (id ? (imageWidthProp?.[id] ?? imageWidthOverrides[id]) : undefined) ?? baseWidthPx;
 
       const baseAlign = node.attrs?.align as "left" | "center" | "right" | undefined;
+      const propAlign = id ? imageAlignProp?.[id] : undefined;
       const overrideAlign = id ? imageAlignOverrides[id] : undefined;
-      const align = (overrideAlign ?? baseAlign) as
+      const align = (propAlign ?? overrideAlign ?? baseAlign) as
         | "left"
         | "center"
         | "right"
