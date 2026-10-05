@@ -98,7 +98,8 @@ const [logoPlaceholder, setLogoPlaceholder] = useState<string>(
       logoUrl:noLogo? null : logoUrl,
       logoPlaceholder: noLogo ? logoPlaceholder : "",
       headerLayout,
-      questionHeaderVariant
+      questionHeaderVariant,
+      numeracaoFixa: false, // trilha clássica: bin-packing livre
     } as any);
 
     router.push("/editor/prova/montar");

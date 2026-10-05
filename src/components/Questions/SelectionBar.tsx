@@ -8,6 +8,7 @@ type SelectionBarProps = {
   includesOtherPages?: boolean;
   onClear: () => void;
   onBuild: () => void;
+  onDiagramar?: () => void;
 };
 
 export function SelectionBar({
@@ -15,6 +16,7 @@ export function SelectionBar({
   includesOtherPages,
   onClear,
   onBuild,
+  onDiagramar,
 }: SelectionBarProps) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -36,6 +38,11 @@ export function SelectionBar({
           <Button variant="outline" size="sm" onClick={onClear}>
             Limpar seleção
           </Button>
+          {onDiagramar && (
+            <Button size="sm" variant="outline" onClick={onDiagramar}>
+              Diagramar
+            </Button>
+          )}
           <Button size="sm" onClick={onBuild} className="bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]">
             Montar Prova
           </Button>

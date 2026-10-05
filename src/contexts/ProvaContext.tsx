@@ -49,7 +49,7 @@ export type ProvaConfig = {
     string, // questionId
     Record<string, { align?: "left" | "center" | "right"; widthCm?: number }> // imageId → override
   >;
-  pontuacoes?: Record<string, number>; // questionId → pontos
+  pontuacoes?: Record<string, string>; // questionId (expandido, ex: "abc#2") → texto livre
   rodapeMensagem?: string; // substitui "Tipo X" no rodapé central
   numeracaoFixa?: boolean; // true = numeração segue ordem de selectedQuestions, não pós-paginação
 };

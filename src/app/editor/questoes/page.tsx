@@ -747,6 +747,7 @@ export default function QuestoesPage() {
             includesOtherPages={includesSelectedOutsidePage}
             onClear={clearAll}
             onBuild={handleMontarProva}
+            onDiagramar={() => router.push("/editor/prova/diagramar")}
           />
         )}
       </div>

@@ -203,10 +203,21 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
     return [...initialQuestions];
   });
 
+  // No diagramar a ordem é editada no painel (contexto), então o preview acompanha.
+  useEffect(() => {
+    if (variant !== "diagramar") return;
+    setOrderedList([...initialQuestions]);
+  }, [variant, initialQuestions]);
+
   // Flag: professor reordenou manualmente → desativa bin-packing
   const [manualOrder, setManualOrder] = useState(false);
+  // Trilha diagramar: ordem definida pelo professor, nunca reordenada pelo bin-packing
+  const ordemTravada = variant === "diagramar" || !!provaConfig.numeracaoFixa;
 
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
+  useEffect(() => {
+    if (variant === "diagramar") setLogoUrl(provaConfig.logoUrl);
+  }, [variant, provaConfig.logoUrl]);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [reorderModalOpen, setReorderModalOpen] = useState(false);
   const [salvarDialogOpen, setSalvarDialogOpen] = useState(false);
@@ -373,6 +384,16 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
       coluna1: initialQuestions,
       coluna2: [],
     });
+  };
+
+  const setPontuacao = (questionId: string, texto: string) => {
+    const valor = texto.trim();
+    const atual = provaConfig.pontuacoes ?? {};
+    if ((atual[questionId] ?? "") === valor) return;
+    const next = { ...atual };
+    if (valor) next[questionId] = valor;
+    else delete next[questionId];
+    updateProvaConfig({ pontuacoes: next });
   };
 
   const handlePrint = () => {
@@ -712,12 +733,30 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
     return groups;
   }, [expandedQuestions]);
 
+  // Preview ao vivo: mudanças visuais que alteram alturas repaginam sozinhas no diagramar
+  const diagramarLayoutKey = variant === "diagramar"
+    ? JSON.stringify([
+        provaConfig.layoutType,
+        provaConfig.headerLayout,
+        provaConfig.questionHeaderVariant,
+        provaConfig.titulo,
+        provaConfig.instituicao,
+        provaConfig.professor,
+        provaConfig.turma,
+        provaConfig.disciplina,
+        provaConfig.data,
+        provaConfig.logoUrl,
+        committedImageWidthsKey,
+        [...inlineOptionsSet].sort(),
+      ])
+    : "";
+
 const { pages, refs } = usePagination({
   config: {
     pageHeight: PAGE_HEIGHT,
     safetyMargin: SAFETY_PX,
     columns,
-    optimizeLayout: !manualOrder,
+    optimizeLayout: !(manualOrder || ordemTravada),
     setGroups,
     spacers: committedSpacers,
   },
@@ -725,6 +764,7 @@ const { pages, refs } = usePagination({
   dependencies: [
     repaginateVersion,
     expandedQuestionsContentKey,
+    diagramarLayoutKey,
   ],
 });
 
@@ -1142,6 +1182,7 @@ const { pages, refs } = usePagination({
 
     // Buscar permutação para esta questão
     const questionId = (question as any).metadata?.id;
+    const pontosTexto = questionId ? provaConfig.pontuacoes?.[questionId] ?? "" : "";
     const permutation = tiposGerados && questionId
       ? tiposGerados[tipoAtual - 1]?.permutations.find(p => p.questionId === questionId)?.permutation ?? null
       : null;
@@ -1261,11 +1302,20 @@ const { pages, refs } = usePagination({
                     variant={provaConfig.questionHeaderVariant ?? 0}
                   />
                 )}
+                {/* key remonta o span quando o valor muda: evita o React duplicar texto em contentEditable */}
                 <span
+                  key={`pts-${pontosTexto}`}
                   contentEditable
                   suppressContentEditableWarning
                   className="pontos-editavel"
-                />
+                  onBlur={
+                    variant === "diagramar" && questionId
+                      ? (e) => setPontuacao(questionId, e.currentTarget.textContent ?? "")
+                      : undefined
+                  }
+                >
+                  {pontosTexto}
+                </span>
               </div>
             )}
 
@@ -1310,6 +1360,7 @@ const { pages, refs } = usePagination({
   return (
     <>
       <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
+        {variant === "montar" && (<>
         <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center gap-x-2 gap-y-2 justify-between border-b px-4 py-3" style={{ background: 'var(--yellow-brand)' }}>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => router.push("/editor/questoes?from=montar")} className="bg-white hover:bg-slate-50">
@@ -1447,6 +1498,7 @@ const { pages, refs } = usePagination({
         </div>
 
         <div className="print:hidden h-[130px] sm:h-[104px] lg:h-[60px]" />
+        </>)}
 
         <LayoutComponent
           pages={pages as any}

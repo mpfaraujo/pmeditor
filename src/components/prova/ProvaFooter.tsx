@@ -1,4 +1,5 @@
 // src/components/prova/ProvaFooter.tsx
+import { useProva } from "@/contexts/ProvaContext";
 
 interface ProvaFooterProps {
   disciplina?: string;
@@ -18,6 +19,8 @@ export function ProvaFooter({ disciplina, currentPage, totalPages, spacerHeight 
     ? (disciplina ? `Lista de Exercícios - ${disciplina}` : "Lista de Exercícios")
     : (disciplina ? `Prova de ${disciplina}` : "Prova");
   const tipoTexto = (numTipos && numTipos > 1) ? `Tipo ${tipoAtual}` : "";
+  const { provaConfig } = useProva();
+  const textoCentral = provaConfig.rodapeMensagem || tipoTexto;
 
   return (
     <>
@@ -27,8 +30,9 @@ export function ProvaFooter({ disciplina, currentPage, totalPages, spacerHeight 
       />
       <div className="prova-footer">
         <span>{prefix}</span>
-        <span contentEditable suppressContentEditableWarning className="footer-editavel">
-          {tipoTexto}
+        {/* key remonta o span quando o texto muda: evita o React duplicar texto em contentEditable */}
+        <span key={textoCentral} contentEditable suppressContentEditableWarning className="footer-editavel">
+          {textoCentral}
         </span>
         <span>Página {currentPage} de {totalPages}</span>
       </div>
