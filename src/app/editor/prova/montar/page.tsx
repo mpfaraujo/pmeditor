@@ -1194,10 +1194,24 @@ const { pages, refs } = usePagination({
   }, [devMontarDebugEnabled, pages, provaConfig.showGabarito]);
 
   // Mapa: índice original (q) → número impresso (1-based, ignorando setBase)
-  // Baseado na ordem real de aparição nos pages (após bin-packing)
+  // Padrão: ordem real de aparição nos pages (após bin-packing).
+  // numeracaoFixa=true: ordem de expandedQuestions (não muda com rearranjo de paginação).
   const printNumberMap = useMemo(() => {
     const map = new Map<number, number>();
     let counter = 0;
+
+    if (provaConfig.numeracaoFixa) {
+      expandedQuestions.forEach((q: any, idx: number) => {
+        const isBase = !!(q as any)?.__setBase;
+        if (isBase) {
+          map.set(idx, -1);
+        } else {
+          counter++;
+          map.set(idx, counter);
+        }
+      });
+      return map;
+    }
 
     for (const p of pages) {
       for (const col of [(p as any).coluna1, (p as any).coluna2]) {
@@ -1217,7 +1231,7 @@ const { pages, refs } = usePagination({
     }
 
     return map;
-  }, [pages, expandedQuestions]);
+  }, [pages, expandedQuestions, provaConfig.numeracaoFixa]);
 
   const respostas = useMemo(() => {
     const out: Record<number, Alt> = {};
