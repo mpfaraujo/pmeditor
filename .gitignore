@@ -90,3 +90,4 @@ scripts/tmp/
 # planos e specs — uso local, NUNCA vai pra main
 /docs/superpowers/
 /.claude/
+.codex/
