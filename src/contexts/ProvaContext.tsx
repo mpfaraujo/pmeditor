@@ -52,6 +52,11 @@ export type ProvaConfig = {
   pontuacoes?: Record<string, string>; // questionId (expandido, ex: "abc#2") → texto livre
   rodapeMensagem?: string; // substitui "Tipo X" no rodapé central
   numeracaoFixa?: boolean; // true = numeração segue ordem de selectedQuestions, não pós-paginação
+
+  // Ajustes feitos no preview que precisam sobreviver à troca /diagramar → /montar
+  inlineOptions?: string[]; // questionIds com alternativas em linha (oneparchoices)
+  dataBoxWidths?: Record<string, number>; // `${questionId}:${boxKey}` → largura %
+  hiddenBaseTextLabels?: string[]; // `${scopeKey}::${textId}` com rótulo "Texto X" oculto
 };
 
 export type Selection =

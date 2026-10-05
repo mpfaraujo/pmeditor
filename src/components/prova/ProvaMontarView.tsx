@@ -244,7 +244,9 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
 
   // Larguras de imagens comprometidas (dispara re-paginação no pointerup)
   const [committedImageWidths, setCommittedImageWidths] = useState<Record<string, number>>({});
-  const [hiddenBaseTextLabels, setHiddenBaseTextLabels] = useState<Set<string>>(new Set());
+  const [hiddenBaseTextLabels, setHiddenBaseTextLabels] = useState<Set<string>>(
+    () => new Set(provaConfig.hiddenBaseTextLabels ?? [])
+  );
   const makeBaseTextLabelKey = (scopeKey: string, textId: string) => `${scopeKey}::${textId}`;
   const toggleBaseTextLabel = (scopeKey: string, textId: string) =>
     setHiddenBaseTextLabels(prev => {
@@ -263,7 +265,9 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
   );
 
   // Larguras (%) das caixas de dados — chave: `${questionId}:${boxKey}`
-  const [committedDataBoxWidths, setCommittedDataBoxWidths] = useState<Record<string, number>>({});
+  const [committedDataBoxWidths, setCommittedDataBoxWidths] = useState<Record<string, number>>(
+    () => provaConfig.dataBoxWidths ?? {}
+  );
   const makeDataBoxWidthCommit = (questionId: string) => (key: string, width: number) =>
     setCommittedDataBoxWidths(prev => ({ ...prev, [`${questionId}:${key}`]: width }));
   const getDataBoxWidthProp = (questionId: string): Record<string, number> =>
@@ -277,7 +281,20 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
   const [repaginateVersion, setRepaginateVersion] = useState(0);
 
   // Questões com opções em linha (oneparchoices)
-  const [inlineOptionsSet, setInlineOptionsSet] = useState<Set<string>>(new Set());
+  const [inlineOptionsSet, setInlineOptionsSet] = useState<Set<string>>(
+    () => new Set(provaConfig.inlineOptions ?? [])
+  );
+
+  // Espelha no contexto os ajustes feitos no preview, para sobreviverem à troca
+  // de página (/diagramar → /montar). Chaves são ids, não índices.
+  useEffect(() => {
+    updateProvaConfig({
+      inlineOptions: [...inlineOptionsSet],
+      dataBoxWidths: committedDataBoxWidths,
+      hiddenBaseTextLabels: [...hiddenBaseTextLabels],
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inlineOptionsSet, committedDataBoxWidths, hiddenBaseTextLabels]);
 
   // Cache de textos base (baseTextId → conteúdo PMNode)
   const [baseTextCache, setBaseTextCache] = useState<Map<string, PMNode>>(new Map());
@@ -704,7 +721,7 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
     setSpacers(new Map());
     setCommittedSpacers(new Map());
     setCommittedImageWidths({});
-    setInlineOptionsSet(new Set());
+    // inlineOptionsSet não é zerado: chaves são ids e o ajuste deve sobreviver à troca de página
   }, [expandedQuestionsKey]);
 
   // Monta grupos explícitos de set (base + itens) pelo parentId
