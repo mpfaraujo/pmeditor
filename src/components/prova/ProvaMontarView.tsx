@@ -16,6 +16,7 @@ import {
   Square,
   Save,
   RefreshCw,
+  PanelLeft,
 } from "lucide-react";
 import DevDebugTools from "@/components/dev/DevDebugTools";
 import { LogoPicker } from "@/components/editor/LogoPicker";
@@ -1388,6 +1389,11 @@ const { pages, refs } = usePagination({
             <Button variant="outline" onClick={handleEditarConfiguracao} className="bg-white hover:bg-slate-50">
               <Settings className="h-4 w-4 mr-2" />
               Configuração
+            </Button>
+
+            <Button variant="outline" onClick={() => router.push("/editor/prova/diagramar")} className="bg-white hover:bg-slate-50">
+              <PanelLeft className="h-4 w-4 mr-2" />
+              Diagramar
             </Button>
           </div>
 
