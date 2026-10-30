@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
+// Arquivos *.dev.tsx / *.dev.ts (ex.: /dev/revisar) só viram rota em `next dev`.
+// No build de produção a extensão não é reconhecida e a rota não existe.
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
+  pageExtensions: isDev ? ["dev.tsx", "dev.ts", "tsx", "ts", "jsx", "js"] : ["tsx", "ts", "jsx", "js"],
   turbopack: {
     root: __dirname,
   },
