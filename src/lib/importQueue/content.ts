@@ -13,6 +13,7 @@ import {
   isBaseTextEntry,
   isSetEntry,
   type QueueEntry,
+  type QueueImportItem,
   type QueueSetItem,
 } from "./types";
 
@@ -119,8 +120,8 @@ export function attachQueueContent<T extends QueueEntry>(queue: T[]): T[] {
       const embutidos = entry.sharedMeta?.titulo_texto ? [] : bases;
       return { ...entry, content: buildSetContent(entry, embutidos) };
     }
-    const titulo = entry.meta?.titulo_texto;
+    const titulo = (entry as QueueImportItem).meta?.titulo_texto;
     if (titulo && !titulosBaseText.has(titulo)) return entry;
-    return { ...entry, content: buildItemContent(entry) };
+    return { ...entry, content: buildItemContent(entry as QueueImportItem) };
   });
 }
