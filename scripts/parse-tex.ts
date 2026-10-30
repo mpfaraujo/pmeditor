@@ -13,6 +13,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { resolve, dirname, basename } from "path";
+import { attachQueueContent } from "../src/lib/importQueue/content";
 
 /** Converte um label humano em slug de arquivo: "PUC-Rio 2017 G1" → "puc-rio-2017-g1" */
 function toBatchSlug(label: string): string {
@@ -67,6 +68,8 @@ type ImportItem = {
   meta?: YamlMeta;
   /** Texto base embutido na própria questão (MCQ ENEM-style sem reuso). Sem titulo_texto. */
   embeddedBaseLatex?: string;
+  /** ProseMirror JSON pronto (preenchido por attachQueueContent). */
+  content?: any;
 };
 
 type ImportSetItem = {
@@ -80,6 +83,8 @@ type ImportSetItem = {
     meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta" | "numero">;
   }>;
   sharedMeta?: YamlMeta;
+  /** ProseMirror JSON pronto (preenchido por attachQueueContent). */
+  content?: any;
 };
 
 type ImportBaseTextItem = {
@@ -87,6 +92,8 @@ type ImportBaseTextItem = {
   /** Corpo LaTeX do texto base (sem o marcador \basetext). */
   latex: string;
   meta?: YamlMeta;
+  /** ProseMirror JSON pronto (preenchido por attachQueueContent). */
+  content?: any;
 };
 
 type QueueEntry = ImportItem | ImportSetItem | ImportBaseTextItem;
@@ -644,7 +651,9 @@ function main() {
   mkdirSync(dataDir, { recursive: true });
 
   const defaultPath = resolve(dataDir, "import-queue.json");
-  const json = JSON.stringify(queue, null, 2);
+  const queueComConteudo = attachQueueContent(queue);
+  const semConteudo = queueComConteudo.filter((q) => !q.content).length;
+  const json = JSON.stringify(queueComConteudo, null, 2);
   writeFileSync(defaultPath, json, "utf-8");
 
   const total = queue.length;
@@ -697,6 +706,8 @@ function main() {
     if (skippedMcqSets > 0)
       console.log(`\n❌  ${skippedMcqSets} \\setquestion MCQ ignorado(s) — ver erros acima\n`);
     console.log(`✓ ${total} entradas extraídas (${individual} individual, ${sets} set, ${baseTxts} texto-base)`);
+    if (semConteudo > 0)
+      console.log(`  ⚠️  ${semConteudo} entrada(s) no formato legado (texto base no corpo) — não editáveis em /dev/revisar`);
     console.log(`  → public/data/import-queue.json           (padrão / UI)`);
     console.log(`  → public/data/${batchFile}  (batch persistente)`);
     console.log(`  → public/data/import-queue-${slug}.manifest.json`);
