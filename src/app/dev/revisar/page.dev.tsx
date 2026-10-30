@@ -6,6 +6,7 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
 import { isBaseTextEntry, isSetEntry, type QueueEntry } from "@/lib/importQueue/types";
@@ -74,6 +75,7 @@ function RevisarInner() {
   const [status, setStatus] = useState<string>("");
 
   useEffect(() => {
+    if (!slug) return;
     fetch(`/api/dev/fila?slug=${encodeURIComponent(slug)}`)
       .then(async r => { const j = await r.json(); if (!r.ok) throw new Error(j.error); setDados(j); })
       .catch(e => setErro(String(e.message ?? e)));
@@ -116,7 +118,14 @@ function RevisarInner() {
     setStatus("salvo na fila");
   };
 
-  if (erro) return <p className="p-4 text-red-600">{erro}</p>;
+  if (!slug || erro) {
+    return (
+      <div className="p-4 text-sm">
+        {slug ? <p className="text-red-600 mb-2">{erro}</p> : <p className="mb-2">Nenhum lote escolhido.</p>}
+        <Link className="text-blue-700 underline" href="/dev">Escolher lote em /dev</Link>
+      </div>
+    );
+  }
   if (!dados || !entrada) return <p className="p-4">Carregando…</p>;
 
   const total = dados.fila.length;
@@ -125,6 +134,7 @@ function RevisarInner() {
   return (
     <div className="h-screen flex flex-col">
       <div className="flex items-center gap-3 p-2 border-b bg-gray-50 text-sm">
+        <Link className="text-blue-700 underline" href="/dev">← lotes</Link>
         <strong>Revisão: {slug}</strong>
         <button className="border rounded px-2" onClick={() => ir(idx - 1)}>◀</button>
         <select value={idx} onChange={e => ir(Number(e.target.value))} className="border rounded">
