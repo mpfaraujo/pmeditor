@@ -10,7 +10,7 @@ import Link from "next/link";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
 import { isBaseTextEntry, isSetEntry, type QueueEntry } from "@/lib/importQueue/types";
-import { chavesRecorte, rotuloEntrada, paginaDoTexto } from "@/lib/importQueue/fila";
+import { chavesRecorte, rotuloEntrada, paginaDoTexto, vinculoTextoBase } from "@/lib/importQueue/fila";
 import { paraRevisao, deRevisao, coletarCaminhosLocais, DEV_IMG_PREFIX } from "@/lib/importQueue/imagensRevisao";
 
 const MAX_IMAGE_WIDTH_PX = 302; // mesmo limite do bulk-import (8 cm a 96 dpi)
@@ -67,6 +67,20 @@ function PainelOriginal({ arquivos, paginas, paginaInicial }: { arquivos: string
       {modoPagina
         ? paginas[pagina - 1] ? <img src={urlArquivo(paginas[pagina - 1])} alt={`página ${pagina}`} className="w-full" /> : <p className="text-sm text-gray-500">Sem páginas renderizadas (rodar crop-questoes.py).</p>
         : arquivos.map(a => <img key={a} src={urlArquivo(a)} alt="recorte" className="w-full border" />)}
+    </div>
+  );
+}
+
+function AvisoVinculo({ vinculo, irPara }: { vinculo: ReturnType<typeof vinculoTextoBase>; irPara: (i: number) => void }) {
+  if (!vinculo) return null;
+  return (
+    <div className="px-4 py-2 text-sm border-b bg-sky-50">
+      Vinculada ao texto base: <em>{vinculo.titulo}</em>
+      {vinculo.indice !== null ? (
+        <button className="ml-2 text-blue-700 underline" onClick={() => irPara(vinculo.indice!)}>ver entrada {vinculo.indice + 1}</button>
+      ) : (
+        <span className="ml-2 text-amber-700">(sem {"\\basetext"} com esse título na fila — formato legado)</span>
+      )}
     </div>
   );
 }
@@ -155,6 +169,7 @@ function RevisarInner() {
       <div className="flex-1 grid grid-cols-2 min-h-0">
         <PainelOriginal key={`o-${idx}`} arquivos={recorte.arquivos} paginas={dados.mapa?.paginas ?? []} paginaInicial={recorte.pagina} />
         <div className="overflow-auto border-l">
+          <AvisoVinculo vinculo={vinculoTextoBase(dados.fila, idx)} irPara={ir} />
           {!entrada.content ? (
             <div className="p-4 text-sm">
               <p className="text-amber-700 mb-2">Formato legado (texto base no corpo) — não editável aqui.</p>

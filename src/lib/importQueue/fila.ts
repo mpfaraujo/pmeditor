@@ -31,6 +31,19 @@ export function rotuloEntrada(e: QueueEntry): string {
   return nums.length ? `Q${nums[0]}` : "Questão sem número";
 }
 
+/**
+ * Vínculo de uma questão com texto base, pelo titulo_texto (é assim que o bulk-import vincula).
+ * `indice` = entrada \basetext da fila com o mesmo título, ou null se não houver (formato legado).
+ */
+export function vinculoTextoBase(fila: QueueEntry[], index: number): { titulo: string; indice: number | null } | null {
+  const e = fila[index];
+  if (!e || isBaseTextEntry(e)) return null;
+  const titulo = isSetEntry(e) ? e.sharedMeta?.titulo_texto : e.meta?.titulo_texto;
+  if (!titulo) return null;
+  const indice = fila.findIndex(x => isBaseTextEntry(x) && x.meta?.titulo_texto === titulo);
+  return { titulo, indice: indice === -1 ? null : indice };
+}
+
 /** Só letras/dígitos, sem acento e minúsculo — o texto do PDF vem com quebras e hifenização. */
 function normalizar(s: string): string {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");

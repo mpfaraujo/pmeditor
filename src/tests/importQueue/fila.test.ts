@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { aplicarEdicao, chavesRecorte, rotuloEntrada, paginaDoTexto } from "@/lib/importQueue/fila";
+import { aplicarEdicao, chavesRecorte, rotuloEntrada, paginaDoTexto, vinculoTextoBase } from "@/lib/importQueue/fila";
 
 const MC = "Múltipla Escolha" as const;
 const fila: any[] = [
@@ -30,6 +30,25 @@ describe("rotuloEntrada", () => {
     expect(rotuloEntrada(fila[0])).toBe("Texto base: Salgado");
     expect(rotuloEntrada(fila[1])).toBe("Q23");
     expect(rotuloEntrada(fila[3])).toBe("Q24–25 (set)");
+  });
+});
+
+describe("vinculoTextoBase", () => {
+  const f: any[] = [
+    { isBaseText: true, latex: "", meta: { titulo_texto: "Salgado" } },
+    { latex: "", tipo: MC, gabarito: "A", meta: { titulo_texto: "Salgado" } },
+    { latex: "", tipo: MC, gabarito: "A", meta: { titulo_texto: "Legado" } },
+    { latex: "", tipo: MC, gabarito: "A", meta: {} },
+    { isSet: true, items: [], sharedMeta: { titulo_texto: "Salgado" } },
+  ];
+  it("acha a entrada \\basetext pelo titulo_texto", () => {
+    expect(vinculoTextoBase(f, 1)).toEqual({ titulo: "Salgado", indice: 0 });
+    expect(vinculoTextoBase(f, 4)).toEqual({ titulo: "Salgado", indice: 0 });
+  });
+  it("título sem \\basetext na fila → indice null; sem título ou texto base → null", () => {
+    expect(vinculoTextoBase(f, 2)).toEqual({ titulo: "Legado", indice: null });
+    expect(vinculoTextoBase(f, 3)).toBeNull();
+    expect(vinculoTextoBase(f, 0)).toBeNull();
   });
 });
 
