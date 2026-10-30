@@ -11,7 +11,7 @@ A região de uma questão vai da âncora até a próxima âncora, na ordem de le
 Saída em scripts/tmp/revisao/<slug>/:
   q-<NN>-<ocorr>-<seg>.png   recortes (300 dpi por padrão)
   paginas/p-NNN.png          páginas inteiras (fallback)
-  mapa.json                  {numero, ocorrencia, paginas, arquivos}
+  mapa.json                  {questoes: [{numero, ocorrencia, paginas, arquivos}], paginas, textoPaginas}
 
 Uso:
   python scripts/crop-questoes.py <pdf> --slug uerj-2027-1eq
@@ -135,6 +135,8 @@ def main():
         "pdf": os.path.abspath(args.pdf),
         "geradoEm": datetime.now(timezone.utc).isoformat(),
         "paginas": paginas_png,
+        # Texto de cada página — a tela usa para achar a página de um texto base.
+        "textoPaginas": [page.get_text() for page in doc],
         "questoes": questoes,
     }
     with open(os.path.join(saida, "mapa.json"), "w", encoding="utf-8") as f:

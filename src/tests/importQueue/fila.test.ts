@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { aplicarEdicao, chavesRecorte, rotuloEntrada } from "@/lib/importQueue/fila";
+import { aplicarEdicao, chavesRecorte, rotuloEntrada, paginaDoTexto } from "@/lib/importQueue/fila";
 
 const MC = "Múltipla Escolha" as const;
 const fila: any[] = [
@@ -30,6 +30,27 @@ describe("rotuloEntrada", () => {
     expect(rotuloEntrada(fila[0])).toBe("Texto base: Salgado");
     expect(rotuloEntrada(fila[1])).toBe("Q23");
     expect(rotuloEntrada(fila[3])).toBe("Q24–25 (set)");
+  });
+});
+
+describe("paginaDoTexto", () => {
+  const base = { type: "base_text", content: [
+    { type: "paragraph", content: [{ type: "text", text: "A GEOPOLÍTICA NAS LENTES" }] },
+    { type: "paragraph", content: [{ type: "text", text: "A ausência de Sebastião Salgado deixará um profundo " }, { type: "text", text: "vazio no panorama", marks: [{ type: "em" }] }] },
+  ] };
+  it("acha a página pelo começo do texto, ignorando quebras e acentos do PDF", () => {
+    const paginas = ["capa", "instruções", "A ausencia de Sebastiao\nSalgado deixará um pro-\nfundo vazio no panorama", "QUESTÃO 01"];
+    expect(paginaDoTexto(base, paginas)).toBe(3);
+  });
+  it("ignora parágrafo que é só placeholder de imagem", () => {
+    const comImagem = { type: "base_text", content: [
+      { type: "paragraph", content: [{ type: "text", text: "[[IMG_PENDENTE: C:/Projetos/pmeditor/scripts/tmp/img-027-040.png]]" }] },
+      { type: "paragraph", content: [{ type: "text", text: "A baunilha é uma especiaria bastante apreciada, sendo um de seus componentes" }] },
+    ] };
+    expect(paginaDoTexto(comImagem, ["x", "A baunilha é uma especiaria bastante apreciada, sendo um de seus componentes"])).toBe(2);
+  });
+  it("devolve null quando não acha", () => {
+    expect(paginaDoTexto(base, ["nada aqui"])).toBeNull();
   });
 });
 

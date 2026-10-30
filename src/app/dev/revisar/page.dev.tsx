@@ -10,13 +10,14 @@ import Link from "next/link";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
 import { isBaseTextEntry, isSetEntry, type QueueEntry } from "@/lib/importQueue/types";
-import { chavesRecorte, rotuloEntrada } from "@/lib/importQueue/fila";
+import { chavesRecorte, rotuloEntrada, paginaDoTexto } from "@/lib/importQueue/fila";
 import { paraRevisao, deRevisao, coletarCaminhosLocais, DEV_IMG_PREFIX } from "@/lib/importQueue/imagensRevisao";
 
 const MAX_IMAGE_WIDTH_PX = 302; // mesmo limite do bulk-import (8 cm a 96 dpi)
 
 type Mapa = {
   paginas: string[];
+  textoPaginas?: string[];
   questoes: Array<{ numero: number; ocorrencia: number; paginas: number[]; arquivos: string[] }>;
 };
 
@@ -97,12 +98,15 @@ function RevisarInner() {
   const recorte = useMemo(() => {
     const mapa = dados?.mapa;
     if (!mapa) return { arquivos: [] as string[], pagina: 1 };
-    let ks = chaves[idx] ?? [];
-    // Texto base não tem número: usa o recorte da próxima questão.
-    if (ks.length === 0) ks = chaves.slice(idx + 1).find(k => k.length > 0) ?? [];
+    const ks = chaves[idx] ?? [];
+    // Texto base não tem número: abre a página inteira onde o texto aparece no PDF.
+    if (ks.length === 0) {
+      const pagina = entrada?.content && mapa.textoPaginas ? paginaDoTexto(entrada.content, mapa.textoPaginas) : null;
+      return { arquivos: [] as string[], pagina: pagina ?? 1 };
+    }
     const qs = ks.map(k => mapa.questoes.find(q => q.numero === k.numero && q.ocorrencia === k.ocorrencia)).filter(Boolean) as Mapa["questoes"];
     return { arquivos: qs.flatMap(q => q.arquivos), pagina: qs[0]?.paginas[0] ?? 1 };
-  }, [dados, chaves, idx]);
+  }, [dados, chaves, idx, entrada]);
 
   const salvar = async (content: any) => {
     if (!dados) return;

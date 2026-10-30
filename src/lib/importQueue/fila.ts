@@ -31,6 +31,35 @@ export function rotuloEntrada(e: QueueEntry): string {
   return nums.length ? `Q${nums[0]}` : "Questão sem número";
 }
 
+/** Só letras/dígitos, sem acento e minúsculo — o texto do PDF vem com quebras e hifenização. */
+function normalizar(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function paragrafos(node: any, out: string[] = []): string[] {
+  if (!node || typeof node !== "object") return out;
+  if (node.type === "paragraph") {
+    const texto = (node.content ?? []).map((c: any) => (c.type === "text" ? c.text : "")).join("");
+    out.push(texto.replace(/\[\[IMG_PENDENTE[^\]]*\]\]/g, ""));
+    return out;
+  }
+  if (Array.isArray(node.content)) for (const c of node.content) paragrafos(c, out);
+  return out;
+}
+
+/**
+ * Página (1-based) do PDF onde está o texto (texto base sem número de questão).
+ * Usa o primeiro parágrafo longo — títulos curtos se repetem em cabeçalhos.
+ */
+export function paginaDoTexto(content: any, textoPaginas: string[]): number | null {
+  const ps = paragrafos(content).map(normalizar).filter(p => p.length >= 30);
+  if (ps.length === 0) return null;
+  const trecho = ps[0].slice(0, 60);
+  const paginas = textoPaginas.map(normalizar);
+  const i = paginas.findIndex(p => p.includes(trecho));
+  return i === -1 ? null : i + 1;
+}
+
 export function aplicarEdicao(fila: QueueEntry[], index: number, content: any): QueueEntry[] {
   if (!Number.isInteger(index) || index < 0 || index >= fila.length) throw new Error(`índice inválido: ${index}`);
   if (!fila[index].content) throw new Error("entrada no formato legado não é editável");
