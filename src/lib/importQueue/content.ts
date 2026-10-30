@@ -111,7 +111,7 @@ export function buildBaseTextContent(baseLatex: string): any {
  */
 export function attachQueueContent<T extends QueueEntry>(queue: T[]): T[] {
   const titulosBaseText = new Set(
-    queue.filter(isBaseTextEntry).map(e => e.meta?.titulo_texto).filter((t): t is string => !!t)
+    (queue as QueueEntry[]).filter(isBaseTextEntry).map(e => e.meta?.titulo_texto).filter((t): t is string => !!t)
   );
   return queue.map((entry) => {
     if (isBaseTextEntry(entry)) return { ...entry, content: buildBaseTextContent(entry.latex) };
