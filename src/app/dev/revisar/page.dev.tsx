@@ -40,7 +40,11 @@ function metaParaEditor(e: QueueEntry, i: number): any {
   const now = new Date().toISOString();
   const meta: any = isSetEntry(e) ? e.sharedMeta : (e as any).meta;
   const tipo = isSetEntry(e) ? meta?.tipo ?? "Discursiva" : (e as any).tipo;
-  return { schemaVersion: 1, id: `revisao-${i}`, createdAt: now, updatedAt: now, tipo, disciplina: meta?.disciplina, assunto: meta?.assunto };
+  // Só exibição: o gabarito que vai pro banco sai do \correctchoice do LaTeX (bulk-import).
+  // Sem isto o editor assume "A" por padrão.
+  const letra = isSetEntry(e) ? null : (e as any).gabarito;
+  const gabarito = tipo === "Múltipla Escolha" && letra ? { kind: "mcq", correct: letra } : undefined;
+  return { schemaVersion: 1, id: `revisao-${i}`, createdAt: now, updatedAt: now, tipo, disciplina: meta?.disciplina, assunto: meta?.assunto, tags: meta?.tags, gabarito };
 }
 
 function PainelOriginal({ arquivos, paginas, paginaInicial }: { arquivos: string[]; paginas: string[]; paginaInicial: number }) {
