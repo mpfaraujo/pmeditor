@@ -14,13 +14,12 @@
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import { basename, extname, resolve } from "path";
 import sharp from "sharp";
-import { schema } from "../src/components/editor/schema";
 import {
   parseQuestionFromLatexText,
-  buildQuestionNodeLatex,
   extractLatexAnswerKey,
 } from "../src/components/editor/plugins/smartPastePlugin";
 import { normalizeDisciplina, normalizeAssunto } from "../src/data/assuntos";
+import { buildItemContent, buildSetContent, buildBaseTextContent, parseRespostaToDoc } from "../src/lib/importQueue/content";
 import {
   associateReviewHints,
   parseTranscriptionReviewReport,
@@ -60,6 +59,7 @@ type ImportItem = {
   meta?: YamlMeta;
   /** Texto base embutido na própria questão (MCQ ENEM-style, sem reuso, sem titulo_texto). */
   embeddedBaseLatex?: string;
+  content?: any;
 };
 
 type ImportSetItem = {
@@ -73,12 +73,14 @@ type ImportSetItem = {
     meta?: Pick<YamlMeta, "assunto" | "tags" | "gabarito" | "resposta" | "numero">;
   }>;
   sharedMeta?: YamlMeta;
+  content?: any;
 };
 
 type ImportBaseTextItem = {
   isBaseText: true;
   latex: string;
   meta?: YamlMeta;
+  content?: any;
 };
 
 type QueueEntry = ImportItem | ImportSetItem | ImportBaseTextItem;
@@ -150,28 +152,6 @@ const IMAGE_PLACEHOLDER_RE = /\[\[IMG_PENDENTE(?::\s*([^\]]+))?\]\]/g;
 
 function newId(): string {
   return crypto.randomUUID();
-}
-
-function makeTextDoc(text: string) {
-  return {
-    type: "doc",
-    content: [{ type: "paragraph", content: [{ type: "text", text }] }],
-  };
-}
-
-function parseRespostaToDoc(text: string): any {
-  try {
-    const parsed = parseQuestionFromLatexText("\\question " + text);
-    if (parsed) {
-        const questionNode = buildQuestionNodeLatex(schema, parsed);
-        const stmt = questionNode.firstChild;
-        if (stmt && stmt.type === schema.nodes.statement) {
-            const doc = schema.nodes.doc.create(null, stmt.content);
-            return doc.toJSON();
-        }
-    }
-  } catch {}
-  return makeTextDoc(text);
 }
 
 function normalizeGabaritoForTipo(tipo: string): any {
@@ -372,6 +352,17 @@ async function materializeTextWithRemoteImages(text: string, cfg: ImageImportCon
 
 async function materializeImagesInNode(node: any, cfg: ImageImportConfig): Promise<any> {
   if (!node || typeof node !== "object") return node;
+  if (node.type === "image" && typeof node.attrs?.src === "string" && isLocalPath(node.attrs.src)) {
+    const local = node.attrs.src as string;
+    try {
+      const uploadedUrl = await uploadRemoteImage(basename(local), local, cfg);
+      return { ...node, attrs: { ...node.attrs, src: uploadedUrl } };
+    } catch (e: any) {
+      cfg.unresolved.add(local);
+      console.warn(`   ⚠ imagem não subiu (${local.slice(0, 60)}): ${e?.message ?? e}`);
+      return node;
+    }
+  }
   if (node.type === "text" && typeof node.text === "string" && node.text.includes("[[IMG_PENDENTE")) {
     const replacement = await materializeTextWithRemoteImages(node.text, cfg);
     if (replacement.length === 1) return replacement[0];
@@ -487,49 +478,8 @@ function splitBaseFromQuestion(latex: string): { baseLatex: string; questionLate
   return null;
 }
 
-function parseToStatementNode(text: string) {
-  try {
-    const parsed = parseQuestionFromLatexText("\\question " + text);
-    if (parsed) {
-      const questionNode = buildQuestionNodeLatex(schema, parsed);
-      const stmt = questionNode.firstChild;
-      if (stmt && stmt.type === schema.nodes.statement) return stmt;
-    }
-  } catch {}
-  return schema.nodes.statement.create(null, [schema.nodes.paragraph.create(null, text.trim() ? [schema.text(text.trim())] : [])]);
-}
-
-function parseToItemNodes(text: string): any[] {
-  try {
-    const parsed = parseQuestionFromLatexText("\\question " + text);
-    if (parsed) {
-      const questionNode = buildQuestionNodeLatex(schema, parsed);
-      const nodes: any[] = [];
-      (questionNode.content ?? []).forEach((n: any) => { if (n.type === schema.nodes.statement || n.type === schema.nodes.options) nodes.push(n); });
-      if (nodes.length > 0) return nodes;
-    }
-  } catch {}
-  return [schema.nodes.statement.create(null, [schema.nodes.paragraph.create(null, text.trim() ? [schema.text(text.trim())] : [])])];
-}
-
 function buildInitial(item: ImportItem, batch: BatchConfig, author?: { id?: string; name?: string }, importBatch?: string, importRunId?: string, baseTextIds?: string[]) {
-  const fallbackContent = { type: "doc", content: [{ type: "question", attrs: { tipo: null }, content: [{ type: "statement", content: [{ type: "paragraph", content: [{ type: "text", text: item.latex }] }] }] }] };
-  let content: any;
-  try {
-    const parsed = parseQuestionFromLatexText(item.latex);
-    if (parsed) {
-      const node = buildQuestionNodeLatex(schema, parsed);
-      // Modalidade B-MCQ: prepende nó base_text embutido como filho da question.
-      if (item.embeddedBaseLatex) {
-        const stmtNode = parseToStatementNode(item.embeddedBaseLatex);
-        const baseTextNode = schema.nodes.base_text.create(null, stmtNode.content);
-        const newQuestion = schema.nodes.question.create(node.attrs, [baseTextNode, ...(node.content as any)?.content ?? []]);
-        content = { type: "doc", content: [newQuestion.toJSON()] };
-      } else {
-        content = { type: "doc", content: [node.toJSON()] };
-      }
-    } else content = fallbackContent;
-  } catch { content = fallbackContent; }
+  const content = item.content ?? buildItemContent(item);
   const now = new Date().toISOString();
   const m = item.meta;
   let gabarito: any;
@@ -554,27 +504,11 @@ function buildInitialSet(item: ImportSetItem, batch: BatchConfig, baseTextIds: s
   const VALID_DIFIC = ["Fácil", "Média", "Difícil"] as const;
   const dificuldade = (m?.dificuldade && VALID_DIFIC.find(d => d.toLowerCase() === m.dificuldade!.toLowerCase())) || batch.dificuldade;
   const source = m?.concurso || m?.banca || m?.ano || m?.fonte ? { kind: (m!.fonte === "concurso" ? "concurso" : "original") as "original" | "concurso", concurso: m!.concurso || batch.source.concurso, banca: m!.banca || batch.source.banca, ano: m!.ano || batch.source.ano, cargo: m!.cargo || batch.source.cargo } : { ...batch.source };
-  const questionItemNodes = item.items.map((it) => {
-    const answerKey = it.gabarito && it.tipo === "Múltipla Escolha" ? { kind: "mcq", correct: it.gabarito } : it.meta?.resposta?.trim() ? { kind: "essay", rubric: parseRespostaToDoc(it.meta.resposta.trim()) } : { kind: "essay" };
-    const itemNodes = parseToItemNodes(it.latex);
-    const itemAssunto = normalizeAssunto(it.meta?.assunto ?? "") || null;
-    return schema.nodes.question_item.create({ answerKey, assunto: itemAssunto, tags: it.meta?.tags ?? null }, itemNodes);
-  });
-  const hasChoices = item.items.some(it => it.tipo === "Múltipla Escolha");
-  const embeddedBaseNodes = (embeddedBaseLatexes ?? []).map(latex => { const stmtNode = parseToStatementNode(latex); return schema.nodes.base_text.create(null, stmtNode.content); });
-  const setNode = schema.nodes.set_questions.create({ mode: hasChoices ? "set" : null }, [...embeddedBaseNodes, ...questionItemNodes]);
-  const doc = schema.nodes.doc.create(null, [setNode]);
-  const content = doc.toJSON();
+  const content = item.content ?? buildSetContent(item, embeddedBaseLatexes);
   const allItemTags = item.items.flatMap(it => it.meta?.tags ?? []);
   const mergedTags = m?.tags?.length ? [...m.tags] : allItemTags.length ? [...new Set(allItemTags)] : batch.tags.length ? [...batch.tags] : [];
   const metadata = { schemaVersion: 1, id: newId(), createdAt: now, updatedAt: now, tipo: m?.tipo ?? "Discursiva", disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina), dificuldade, assunto: normalizeAssunto(m?.assunto || item.items[0]?.meta?.assunto || batch.assunto || "") || undefined, gabarito: null, tags: mergedTags, source, author, ...(baseTextIds.length ? { baseTextIds, baseTextId: baseTextIds[0] } : {}), ...(importBatch ? { import_batch: importBatch } : {}), ...(importRunId ? { import_run_id: importRunId } : {}) };
   return { metadata, content };
-}
-
-function buildBaseTextDoc(baseLatex: string): any {
-  const stmtNode = parseToStatementNode(baseLatex);
-  const baseTextNode = schema.nodes.base_text.create(null, stmtNode.content);
-  return baseTextNode.toJSON();
 }
 
 async function postBaseText(payload: any, apiBase: string, token: string) {
@@ -587,7 +521,7 @@ async function postBaseText(payload: any, apiBase: string, token: string) {
   } catch (e: any) { return { ok: false, baseTextId: payload.id, error: e.message }; }
 }
 
-async function resolveBaseTextIds(setEntry: ImportSetItem, baseTextCache: Map<string, string>, batch: BatchConfig, apiBaseTexts: string, token: string, dryRun: boolean, author?: { id?: string; name?: string }, imageCfg?: ImageImportConfig) {
+async function resolveBaseTextIds(setEntry: ImportSetItem, baseTextCache: Map<string, string>, batch: BatchConfig, apiBaseTexts: string, token: string, dryRun: boolean, author?: { id?: string; name?: string }, imageCfg?: ImageImportConfig, baseContentOverride?: any) {
   const latexList = setEntry.baseLatexes?.length ? setEntry.baseLatexes : setEntry.baseLatex ? [setEntry.baseLatex] : [];
   if (latexList.length === 0) return { ids: null, error: "sem baseLatex" };
   const m = setEntry.sharedMeta;
@@ -598,7 +532,8 @@ async function resolveBaseTextIds(setEntry: ImportSetItem, baseTextCache: Map<st
     if (!id) {
       id = newId();
       if (!dryRun) {
-        const baseTextContent = await materializeImagesInPayloadContent(buildBaseTextDoc(latex), imageCfg);
+        const baseDoc = latexList.length === 1 && baseContentOverride ? baseContentOverride : buildBaseTextContent(latex);
+        const baseTextContent = await materializeImagesInPayloadContent(baseDoc, imageCfg);
         const btResult = await postBaseText({ id, content: baseTextContent, autor: m?.autor_texto, titulo: m?.titulo_texto, ano_pub: m?.ano_publicacao, disciplina: normalizeDisciplina(m?.disciplina || batch.disciplina), tema: m?.tema, genero: m?.genero, movimento: m?.movimento, tags: m?.tags, source: m?.concurso || m?.banca || m?.ano ? { concurso: m?.concurso, banca: m?.banca, ano: m?.ano, prova: m?.prova } : undefined, author }, apiBaseTexts, token);
         if (!btResult.ok) return { ids: null, error: `base_text error: ${btResult.error}` };
         id = btResult.baseTextId;
@@ -741,7 +676,7 @@ async function main() {
     if (!dryRun) {
       const btResolved = await resolveBaseTextIds(
         { isSet: true, baseLatexes: [bt.latex], items: [], sharedMeta: bt.meta },
-        baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg
+        baseTextCache, batch, apiBaseTexts, token, dryRun, author, imageCfg, bt.content
       );
       if (!btResolved.ids) { console.log(`  ✘ basetext "${titulo}": ${btResolved.error}`); continue; }
       baseTextTitleCache.set(titulo, btResolved.ids[0]);
