@@ -1,77 +1,34 @@
-// src/app/page.tsx
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { PlusCircle, BookOpen, FileText, ClipboardCopy, Settings, User } from "lucide-react";
-import { StatCard } from "@/components/dashboard/StatCard";
-import { ActionCard } from "@/components/dashboard/ActionCard";
-import { ProtectedActionCard } from "@/components/dashboard/ProtectedActionCard";
-import { LoginButton } from "@/components/auth/LoginButton";
+"use client";
 
-const SHOW_METRICS = false;
+import Link from "next/link";
+import { ArrowRight, BookOpen, ClipboardCopy, FilePlus2, FolderOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
 
 export default function Home() {
+  const { isLoggedIn, loading } = useAuth();
   return (
-    <main className="min-h-screen bg-[#070B1D] text-white">
-      <header className="sticky top-0 z-40 px-4 pt-4">
-        <div className="pm-shell-inner px-6 py-5 flex items-center justify-between animate-fade-in-up border border-white/6 bg-[#0B1020]">
-          <div className="min-w-0">
-            <h1 className="text-3xl font-bold text-white">
-              ProvaMarela
-            </h1>
-            <p className="mt-1 text-sm text-[#9eb4d1]">
-              Editor de questões e montagem de provas
-            </p>
-          </div>
-          <LoginButton />
+    <WorkspaceShell section="dashboard" title="Seu espaço de preparação">
+      <main className="workspace-dashboard">
+        <div className="workspace-dashboard-intro">
+          <div><h1>Prepare sua próxima prova</h1><p>Encontre questões, organize seus materiais e monte a avaliação.</p></div>
+          {isLoggedIn && <Button asChild variant="outline"><Link href="/minha-area?tab=provas"><FolderOpen size={16} />Suas provas</Link></Button>}
         </div>
-      </header>
-
-      <div className="pm-shell-inner px-4 py-8">
-        {SHOW_METRICS && (<>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <StatCard label="Questões Criadas" value={0} tone="blue" />
-          <StatCard label="Provas Geradas" value={0} tone="green" />
-          <StatCard label="Alunos Avaliados" value={0} tone="purple" />
-        </div></>)}
-
-        <Separator className="my-8 bg-white/8 opacity-100" />
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-  <ProtectedActionCard
-    href="/editor"
-    title="Nova Questão"
-    description="Crie uma nova questão no editor."
-    icon={<PlusCircle className="h-6 w-6" />}
-    accent="blue"
-  />
-
-  <ActionCard
-    href="/editor/questoes"
-    title="Banco de Questões"
-    description="Filtre, navegue e selecione questões para montar provas."
-    icon={<BookOpen className="h-6 w-6" />}
-    accent="purple"
-  />
-
-  <ActionCard
-    href="/template"
-    title="Modelo de Questão"
-    description="Copie o modelo para pré-preencher as informações da questão."
-    icon={<ClipboardCopy className="h-6 w-6" />}
-    accent="green"
-  />
-
-  <ProtectedActionCard
-    href="/minha-area"
-    title="Minha Área"
-    description="Perfil, turmas, questões salvas e provas."
-    icon={<User className="h-6 w-6" />}
-    accent="gray"
-  />
-</div>
-
-      </div>
-    </main>
+        <div className="workspace-dashboard-grid">
+          <section className="workspace-dashboard-feature">
+            <BookOpen size={30} strokeWidth={1.6} aria-hidden="true" />
+            <h2>Comece pelas questões</h2>
+            <p>Filtre por disciplina, assunto e origem. Confira o conteúdo e acompanhe a seleção enquanto prepara sua prova.</p>
+            <Button asChild className="workspace-primary"><Link href="/editor/questoes">Explorar banco de questões<ArrowRight size={16} /></Link></Button>
+          </section>
+          <section className="workspace-dashboard-links" aria-label="Outras tarefas">
+            {isLoggedIn ? <Link href="/editor?skipYaml=1"><FilePlus2 size={22} aria-hidden="true" /><div><strong>Nova questão</strong><p>Abra o editor para criar seu conteúdo.</p></div><ArrowRight className="ml-auto shrink-0" size={16} /></Link> : <div className="py-6"><strong>Nova questão</strong><p className="workspace-help mt-2">{loading ? "Carregando sua sessão…" : "Entre na sua conta para criar questões."}</p></div>}
+            <Link href="/template"><ClipboardCopy size={22} aria-hidden="true" /><div><strong>Modelo de questão</strong><p>Copie o modelo para preencher informações.</p></div><ArrowRight className="ml-auto shrink-0" size={16} /></Link>
+            {isLoggedIn ? <Link href="/minha-area"><FolderOpen size={22} aria-hidden="true" /><div><strong>Minha área</strong><p>Perfil, turmas, questões e provas salvas.</p></div><ArrowRight className="ml-auto shrink-0" size={16} /></Link> : <div className="py-6"><strong>Minha área</strong><p className="workspace-help mt-2">Entre para acessar seus materiais.</p></div>}
+          </section>
+        </div>
+      </main>
+    </WorkspaceShell>
   );
 }

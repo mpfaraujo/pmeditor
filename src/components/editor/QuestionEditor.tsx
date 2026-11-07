@@ -40,6 +40,7 @@ import { getBaseText } from "@/lib/baseTexts";
 import { useLineRefMeasure } from "@/hooks/useLineRefMeasure";
 type QuestionEditorProps = {
   modal?: boolean;
+  workspace?: boolean;
   onSaved?: (info: { questionId: string; kind: "base" | "variant" }) => void;
   onNewRequest?: () => void;
   initial?: {
@@ -536,7 +537,7 @@ function writeItemMetaAtPos(v: EditorView, pos: number, patch: { assunto?: strin
 
 /* ---------- component ---------- */
 
-export function QuestionEditor({ modal, onSaved, onNewRequest, initial, overrideSave }: QuestionEditorProps) {
+export function QuestionEditor({ modal, workspace = false, onSaved, onNewRequest, initial, overrideSave }: QuestionEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const { user, isLoggedIn, defaultDisciplina, isAdmin } = useAuth();
   const [changeDescription, setChangeDescription] = useState("");
@@ -1108,9 +1109,10 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
   // ----------------------------------------------------------------
 
     return (
-    <div className="w-full min-h-screen bg-[#d3d3d3] p-2 sm:p-3">
+    <div className={workspace ? "workspace-editor-layout" : "w-full min-h-screen bg-[#d3d3d3] p-2 sm:p-3"}>
+      <div className={workspace ? "workspace-editor-stage workspace-editor-desk" : undefined}>
       {/* Toolbar — largura total em mobile, centralizada (max 210mm) em desktop */}
-      <div className="mb-2 bg-white rounded-lg shadow p-2 sm:max-w-[210mm] sm:mx-auto border-b border-blue-100">
+      <div className={workspace ? "workspace-editor-toolbar" : "mb-2 bg-white rounded-lg shadow p-2 sm:max-w-[210mm] sm:mx-auto border-b border-blue-100"}>
         <EditorToolbar
           view={view}
           toolbarCallbackRef={toolbarCallbackRef}
@@ -1149,13 +1151,32 @@ export function QuestionEditor({ modal, onSaved, onNewRequest, initial, override
       </div>
 
       {/* Folha A4 — container com scroll horizontal em mobile */}
-      <div className="overflow-x-auto pb-4">
+      <div className={workspace ? "workspace-editor-sheet-wrap" : "overflow-x-auto pb-4"}>
         <div
           ref={editorRef}
           className="question-editor-sheet focus:outline-none shadow-2xl mx-auto"
           style={{ width: "210mm" }}
         />
       </div>
+      </div>
+      {workspace && (
+        <aside className="workspace-inspector" aria-label="Informações da questão">
+          <h2>Informações da questão</h2>
+          <dl>
+            <div><dt>Disciplina</dt><dd>{meta.disciplina}</dd></div>
+            <div><dt>Assunto</dt><dd>{meta.assunto}</dd></div>
+            <div><dt>Tipo</dt><dd>{meta.tipo}</dd></div>
+            <div><dt>Dificuldade</dt><dd>{meta.dificuldade}</dd></div>
+            <div><dt>Tags</dt><dd>{meta.tags?.join(", ")}</dd></div>
+          </dl>
+          <Button variant="outline" className="w-full" onClick={() => setMetaDialog({ open: true, saveAfter: false })}>Editar informações</Button>
+          <div className="workspace-inspector-section">
+            <h2>{docKind === "set_questions" ? "Conjunto de itens" : "Gabarito"}</h2>
+            <p className="workspace-help">{docKind === "set_questions" ? `${allItems.length} itens. Selecione um item no editor para editar sua resposta.` : meta.gabarito?.kind === "essay" ? "Resposta discursiva" : meta.gabarito?.correct || "Não informado"}</p>
+          </div>
+          <div className="workspace-inspector-section"><p className="workspace-help">A folha mantém o formato original. Fórmulas, imagens e textos base continuam nas ferramentas do editor.</p></div>
+        </aside>
+      )}
 
       {/* Modais */}
         <MathInsert

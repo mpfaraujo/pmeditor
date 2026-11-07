@@ -1,5 +1,8 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "../library-workspace.css";
+
 import { Suspense, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -64,7 +67,7 @@ function TextosBaseContent() {
 
   if (authLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="library-state" role="status">
         <div className="animate-pulse text-slate-400">Carregando…</div>
       </div>
     );
@@ -72,7 +75,7 @@ function TextosBaseContent() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <div className="library-state">
         <p className="text-slate-600">Faça login para gerenciar textos base.</p>
         <Button onClick={() => router.push("/")}>Voltar ao início</Button>
       </div>
@@ -80,18 +83,18 @@ function TextosBaseContent() {
   }
 
   return (
-    <div className="pm-shell">
+    <div className="library-page">
       {/* Cabeçalho */}
-      <div className="sticky top-0 z-10 px-4 pt-4">
-        <div className="max-w-6xl mx-auto pm-topbar-dark px-5 py-4 flex items-center justify-between gap-4">
+      <div className="library-heading-wrap">
+        <div className="library-heading">
           <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/minha-area")} className="text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+          <Button variant="ghost" size="sm" onClick={() => router.push("/minha-area")} className="library-back">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Minha área
           </Button>
-          <h1 className="text-sm font-semibold text-white">Textos Base</h1>
+          <div><h1>Textos base</h1><p className="library-help">Encontre, visualize e edite os textos vinculados às suas questões.</p></div>
         </div>
-        <Button size="sm" asChild className="border border-[#E0B22A] bg-[#FBC02D] text-[#2D3436] hover:bg-[#FFD93D]">
+        <Button size="sm" asChild className="workspace-primary">
           <Link href="/editor/texto-base/novo">
             <Plus className="h-4 w-4 mr-1" />
             Novo texto base
@@ -100,21 +103,23 @@ function TextosBaseContent() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-6 space-y-4">
+      <div className="library-content space-y-6">
         {/* Filtros */}
-        <div className="pm-surface rounded-2xl p-4 flex gap-2">
+        <div className="library-search">
           <Input
+            aria-label="Buscar por trecho ou código do texto"
             placeholder="Buscar por trecho ou código do texto…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}
           />
           <Input
+            aria-label="Filtrar textos por disciplina"
             placeholder="Disciplina"
             value={filterDisciplina}
             onChange={(e) => setFilterDisciplina(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") doSearch(); }}
-            className="w-44"
+            className="library-search-discipline"
           />
           <Button variant="outline" onClick={doSearch} disabled={loading}>
             {loading ? "…" : "Buscar"}
@@ -130,10 +135,10 @@ function TextosBaseContent() {
           <p className="text-xs text-muted-foreground text-right">{total} encontrados — mostrando os primeiros {items.length}</p>
         )}
 
-        <div className="space-y-2">
+        <div className="library-base-list">
           {items.map((item) => (
-            <div key={item.id} className="pm-surface rounded-2xl overflow-hidden">
-              <div className="flex items-start justify-between gap-3 p-3">
+            <div key={item.id} className="library-base-row">
+              <div className="library-base-row-heading">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-mono text-xs bg-[#FFF4CC] text-[#5A4500] border border-[#FBC02D]/35 px-1.5 py-0.5 rounded-md font-bold">
@@ -150,6 +155,8 @@ function TextosBaseContent() {
                     size="sm"
                     variant="ghost"
                     onClick={() => setExpandedId((p) => p === item.id ? null : item.id)}
+                    aria-label={`${expandedId === item.id ? "Ocultar" : "Visualizar"} texto ${item.titulo || item.tag}`}
+                    aria-expanded={expandedId === item.id}
                     title={expandedId === item.id ? "Ocultar" : "Visualizar"}
                   >
                     {expandedId === item.id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -180,8 +187,8 @@ function TextosBaseContent() {
 
 export default function TextosBasePage() {
   return (
-    <Suspense>
+    <WorkspaceShell section="area" title="Textos base"><Suspense fallback={<div className="library-state" role="status">Carregando textos base…</div>}>
       <TextosBaseContent />
-    </Suspense>
+    </Suspense></WorkspaceShell>
   );
 }

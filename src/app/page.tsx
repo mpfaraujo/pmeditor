@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import "./support.css";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -103,18 +104,8 @@ const STEPS: Step[] = [
   { kind: "cta" },
 ];
 
-const N = STEPS.length;
 
 // ─── SVGs placeholder — substitua pelos seus ─────────────────────────────────
-
-function SvgHero() {
-  return (
-    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="100" cy="100" r="90" fill="#1e293b" />
-      <text x="100" y="118" textAnchor="middle" fill="#fbbf24" fontSize="48" fontWeight="bold" fontFamily="sans-serif">PM</text>
-    </svg>
-  );
-}
 
 function SvgModelo() {
   const lines: [string, string][] = [
@@ -490,222 +481,28 @@ const FEATURE_SVGS = [
 export default function Home() {
   const router = useRouter();
   const { isLoggedIn, loading } = useAuth();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scrolledVH, setScrolledVH] = useState(0);
 
   useEffect(() => {
-    if (!loading && isLoggedIn) {
-      router.replace("/dashboard");
-    }
+    if (!loading && isLoggedIn) router.replace("/dashboard");
   }, [isLoggedIn, loading, router]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const { top } = el.getBoundingClientRect();
-      const scrolled = -top;
-      const vh = window.innerHeight;
-      setScrolledVH(Math.max(0, scrolled / vh));
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const currentStep = Math.min(Math.floor(scrolledVH), N - 1);
-  const stepProgress = scrolledVH % 1;
-
-  // Opacidade do texto: aparece em 0–0.15, some em 0.82–1.0
-  const textOpacity =
-    stepProgress < 0.15
-      ? stepProgress / 0.15
-      : stepProgress > 0.82
-      ? 1 - (stepProgress - 0.82) / 0.18
-      : 1;
-
-  const textY =
-    stepProgress < 0.15
-      ? (1 - stepProgress / 0.15) * 24
-      : stepProgress > 0.82
-      ? -((stepProgress - 0.82) / 0.18) * 24
-      : 0;
-
-  const step = STEPS[currentStep];
-
   return (
-    <div ref={containerRef} style={{ height: `${(N + 1) * 100}vh` }} className="relative">
-      <div className="sticky top-0 h-screen overflow-hidden bg-slate-950 flex flex-col">
-
-        {/* Nav */}
-        <nav className="flex-none flex items-center justify-between px-4 py-3 md:px-8 md:py-5 z-10">
-          <span className="text-yellow-400 font-bold text-xl tracking-tight">ProvaMarela</span>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/dashboard"
-              className="text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1.5"
-            >
-              <span className="hidden sm:inline">Pular apresentação</span>
-              <span className="sm:hidden">Pular</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-sm font-medium px-4 py-1.5 rounded-full bg-yellow-400 text-slate-900 hover:bg-yellow-300 transition-colors"
-            >
-              Entrar
-            </Link>
-          </div>
-        </nav>
-
-        {/* Conteúdo central */}
-        <div className="flex-1 flex items-center justify-center px-4 md:px-8">
-
-          {/* HERO */}
-          {step.kind === "hero" && (
-            <div
-              className="flex flex-col items-center text-center"
-              style={{ opacity: stepProgress > 0.75 ? 1 - (stepProgress - 0.75) / 0.25 : 1 }}
-            >
-              <div className="w-20 h-20 mb-5 md:w-32 md:h-32 md:mb-8"><SvgHero /></div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-5 tracking-tight">ProvaMarela</h1>
-              <p className="text-base md:text-xl text-slate-400 max-w-lg leading-relaxed">
-                Editor de questões e montagem de provas para professores
-              </p>
-              <div className="mt-10 md:mt-14 flex flex-col items-center gap-2 text-slate-600 select-none">
-                <span className="text-xs uppercase tracking-widest">Role para ver como funciona</span>
-                <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
-              </div>
-            </div>
-          )}
-
-          {/* SEÇÃO — divisor entre serviços */}
-          {step.kind === "section" && (
-            <div
-              className="flex flex-col items-center text-center max-w-2xl"
-              style={{
-                opacity: textOpacity,
-                transform: `translateY(${textY}px)`,
-              }}
-            >
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-6 tracking-tight">
-                {step.title}
-              </h2>
-              <p className="text-sm md:text-xl text-slate-400 leading-relaxed">
-                {step.subtitle}
-              </p>
-              <div className="mt-10 md:mt-12 text-slate-600 select-none flex flex-col items-center gap-1">
-                <span className="text-xs uppercase tracking-widest">Continue rolando</span>
-                <span className="text-slate-500 animate-bounce text-lg mt-1">↓</span>
-              </div>
-            </div>
-          )}
-
-          {/* FEATURES */}
-          {step.kind === "feature" && (
-            <div className="w-full max-w-5xl flex flex-col md:flex-row md:items-center gap-6 md:gap-16">
-              {/* Texto */}
-              <div
-                className="w-full md:flex-1 min-w-0 text-center md:text-left"
-                style={{
-                  opacity: textOpacity,
-                  transform: `translateY(${textY}px)`,
-                }}
-              >
-                <span className="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-3 md:mb-5 block">
-                  {step.label}
-                </span>
-                <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-6 leading-tight">
-                  {step.title}
-                </h2>
-                <p className="text-sm md:text-lg text-slate-400 leading-relaxed">
-                  {step.desc}
-                </p>
-                {step.href && (
-                  <Link
-                    href={step.href}
-                    className="inline-flex items-center gap-2 mt-6 md:mt-8 text-sm font-medium text-yellow-400 hover:text-yellow-300 transition-colors"
-                  >
-                    {step.hrefLabel} <ArrowRight className="h-4 w-4" />
-                  </Link>
-                )}
-              </div>
-
-              {/* SVG — oculto em mobile para não comprimir o texto */}
-              <div
-                className="hidden md:flex flex-1 items-center justify-center"
-                style={{
-                  opacity: textOpacity,
-                  transform: `translateY(${textY * 0.4}px)`,
-                }}
-              >
-                <div className="w-full max-w-md">
-                  {FEATURE_SVGS[step.svgIdx]}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* CTA */}
-          {step.kind === "cta" && (
-            <div
-              className="flex flex-col items-center text-center"
-              style={{ opacity: stepProgress < 0.25 ? stepProgress / 0.25 : 1 }}
-            >
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-5 tracking-tight">
-                Pronto para começar?
-              </h2>
-              <p className="text-slate-400 mb-8 md:mb-10 max-w-md text-base md:text-lg leading-relaxed">
-                Crie suas primeiras questões e monte a próxima prova em minutos.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-                <Link
-                  href="/editor"
-                  className="px-8 py-3 bg-yellow-400 text-slate-900 rounded-full font-semibold hover:bg-yellow-300 transition-colors text-sm"
-                >
-                  Abrir o editor
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="px-8 py-3 border border-slate-700 text-slate-300 rounded-full font-medium hover:border-slate-500 hover:text-white transition-colors text-sm"
-                >
-                  Ver todas as opções
-                </Link>
-              </div>
-            </div>
-          )}
+    <div className="support-public">
+      <header className="support-public-header">
+        <Link href="/" className="support-public-brand">Prova<span>Marela</span></Link>
+        <nav aria-label="Apresentação"><a href="#recursos">Como funciona</a><Link href="/dashboard" className="support-public-enter">Entrar <ArrowRight size={16} aria-hidden="true" /></Link></nav>
+      </header>
+      <main>
+        <section className="support-public-hero">
+          <div><h1>Da questão à prova pronta.</h1><p>Editor de questões e montagem de provas para professores.</p><div className="support-public-actions"><Link href="/dashboard" className="support-public-enter">Começar <ArrowRight size={16} aria-hidden="true" /></Link><Link href="/editor/questoes">Explorar banco de questões</Link></div></div>
+          <figure className="support-public-product"><div>{FEATURE_SVGS[6]}</div><figcaption>Visualização ilustrativa do fluxo de impressão</figcaption></figure>
+        </section>
+        <div id="recursos" className="support-public-resources">
+          {STEPS.map((step, index) => step.kind === "section" ? <section className="support-public-section" key={index}><h2>{step.title}</h2><p>{step.subtitle}</p></section> : step.kind === "feature" ? <section className="support-public-feature" key={index}><div><h3>{step.title}</h3><p>{step.desc}</p>{step.href && <Link href={step.href}>{step.hrefLabel} <ArrowRight size={16} aria-hidden="true" /></Link>}</div><figure><div>{FEATURE_SVGS[step.svgIdx]}</div></figure></section> : null)}
         </div>
-
-        {/* Indicador de progresso */}
-        <div className="flex-none flex justify-center items-center gap-2 pb-8">
-          {STEPS.map((s, i) => {
-            const isSection = s.kind === "section";
-            const isCurrent = i === currentStep;
-            return (
-              <div
-                key={i}
-                className="transition-all duration-500"
-                style={
-                  isSection
-                    ? {
-                        width: 6,
-                        height: 6,
-                        transform: "rotate(45deg)",
-                        backgroundColor: isCurrent ? "#fbbf24" : "#334155",
-                        borderRadius: 1,
-                      }
-                    : {
-                        width: isCurrent ? 28 : 6,
-                        height: 6,
-                        borderRadius: 9999,
-                        backgroundColor: isCurrent ? "#fbbf24" : "#1e293b",
-                      }
-                }
-              />
-            );
-          })}
-        </div>
-      </div>
+        <section className="support-public-cta"><h2>Pronto para começar?</h2><p>Crie suas primeiras questões e monte a próxima prova em minutos.</p><div className="support-public-actions"><Link href="/editor" className="support-public-enter">Abrir o editor <ArrowRight size={16} aria-hidden="true" /></Link><Link href="/dashboard">Ver todas as opções</Link></div></section>
+      </main>
+      <footer className="support-public-footer"><Link href="/dashboard" className="support-public-brand">ProvaMarela</Link><span>Editor de questões e montagem de provas</span></footer>
     </div>
   );
 }

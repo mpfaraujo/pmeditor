@@ -53,7 +53,7 @@ export function QuestionCardCompact({ metadata, content, selected, onSelect, onP
 
   return (
     <div
-      className={`relative flex h-[190px] cursor-pointer flex-col rounded-lg border p-3 transition-all hover:shadow-md ${
+      className={`workspace-question-card relative flex h-[210px] cursor-pointer flex-col rounded-xl border p-4 transition-shadow hover:shadow-md ${
         showSubjectBorder ? "border-t-4" : ""
       } ${
         selected

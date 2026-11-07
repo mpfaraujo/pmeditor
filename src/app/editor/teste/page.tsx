@@ -1,9 +1,12 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "../library-workspace.css";
+
 import { useState } from "react";
 import { createQuestion, getQuestion, listQuestions } from "../../../lib/questions";
 
-export default function TesteApiPage() {
+function TesteApiContent() {
   const [id, setId] = useState("q_test_1");
   const [disciplina, setDisciplina] = useState("Matemática");
 
@@ -49,85 +52,30 @@ export default function TesteApiPage() {
   }
 
   return (
-    <div style={{ padding: 16, display: "grid", gap: 12, maxWidth: 900 }}>
-      <h1 style={{ fontSize: 18, fontWeight: 600 }}>Teste API Questões</h1>
-
-      <div style={{ display: "grid", gap: 8 }}>
-        <label style={{ display: "grid", gap: 4 }}>
-          <span>ID</span>
-          <input
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            style={{
-              padding: 8,
-              border: "1px solid #ccc",
-              borderRadius: 6,
-            }}
-          />
-        </label>
-
-        <label style={{ display: "grid", gap: 4 }}>
-          <span>Disciplina</span>
-          <input
-            value={disciplina}
-            onChange={(e) => setDisciplina(e.target.value)}
-            style={{
-              padding: 8,
-              border: "1px solid #ccc",
-              borderRadius: 6,
-            }}
-          />
-        </label>
+    <div className="library-page">
+      <header className="library-heading">
+        <div><h1>Teste da API de questões</h1><p className="library-help">Consultar, carregar e criar registros pela API existente.</p></div>
+      </header>
+      <div className="library-content library-api-grid">
+        <section className="library-api-controls" aria-label="Parâmetros da consulta">
+          <h2>Parâmetros</h2>
+          <label><span>ID</span><input value={id} onChange={(e) => setId(e.target.value)} /></label>
+          <label><span>Disciplina</span><input value={disciplina} onChange={(e) => setDisciplina(e.target.value)} /></label>
+          <div className="library-api-actions">
+            <button type="button" onClick={onCarregar}>Carregar (get)</button>
+            <button type="button" onClick={onListar}>Listar (list)</button>
+            <button type="button" onClick={onSalvar} className="library-api-create">Salvar (create)</button>
+          </div>
+        </section>
+        <section className="library-api-response" aria-label="Resposta da API">
+          <h2>Resposta</h2>
+          <pre aria-live="polite">{result || "Execute uma ação para consultar o resultado."}</pre>
+        </section>
       </div>
-
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button
-          onClick={onSalvar}
-          style={{
-            padding: "8px 12px",
-            border: "1px solid #ccc",
-            borderRadius: 6,
-            cursor: "pointer",
-          }}
-        >
-          Salvar (create)
-        </button>
-        <button
-          onClick={onCarregar}
-          style={{
-            padding: "8px 12px",
-            border: "1px solid #ccc",
-            borderRadius: 6,
-            cursor: "pointer",
-          }}
-        >
-          Carregar (get)
-        </button>
-        <button
-          onClick={onListar}
-          style={{
-            padding: "8px 12px",
-            border: "1px solid #ccc",
-            borderRadius: 6,
-            cursor: "pointer",
-          }}
-        >
-          Listar (list)
-        </button>
-      </div>
-
-      <pre
-        style={{
-          whiteSpace: "pre-wrap",
-          wordBreak: "break-word",
-          padding: 12,
-          border: "1px solid #ccc",
-          borderRadius: 6,
-          minHeight: 220,
-        }}
-      >
-        {result}
-      </pre>
     </div>
   );
+}
+
+export default function TesteApiPage() {
+  return <WorkspaceShell section="bank" title="Teste da API de questões"><TesteApiContent /></WorkspaceShell>;
 }

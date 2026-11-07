@@ -37,6 +37,7 @@ export function ProvasTab() {
   const [provaToDelete, setProvaToDelete] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [loadingProva, setLoadingProva] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     loadProvas();
@@ -201,9 +202,12 @@ export function ProvasTab() {
           </Button>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-          {provas.map((prova) => (
-            <Card key={prova.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+        <label className="workspace-material-search block text-sm text-muted-foreground">Buscar prova
+          <input className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900" value={search} onChange={event => setSearch(event.target.value)} placeholder="Nome ou disciplina" />
+        </label>
+        <div className="workspace-material-list divide-y divide-slate-200">
+          {provas.filter(prova => `${prova.nome} ${prova.disciplina ?? ""}`.toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))).map((prova) => (
+            <Card key={prova.id} className="rounded-none border-0 bg-transparent py-2 shadow-none">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -234,6 +238,7 @@ export function ProvasTab() {
                       onClick={() => handleDeleteClick(prova.id)}
                       disabled={loadingProva !== null || deleting}
                       className="h-9 w-9 p-0"
+                      aria-label={`Excluir prova ${prova.nome}`}
                     >
                       <Trash className="h-4 w-4" />
                     </Button>
@@ -243,6 +248,7 @@ export function ProvasTab() {
             </Card>
           ))}
         </div>
+        {search && !provas.some(prova => `${prova.nome} ${prova.disciplina ?? ""}`.toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))) && <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma prova encontrada para esta busca.</p>}
       </div>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

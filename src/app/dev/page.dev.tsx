@@ -1,6 +1,7 @@
 // src/app/dev/page.dev.tsx
 // Índice das ferramentas locais. Só existe em `pnpm dev` (pageExtensions).
 import Link from "next/link";
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
 import { notFound } from "next/navigation";
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import { resolve } from "path";
@@ -35,6 +36,7 @@ export default function DevIndexPage() {
   if (process.env.NODE_ENV !== "development") notFound();
   const filas = listarFilas();
   return (
+    <WorkspaceShell section="area" title="Ferramentas locais">
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-xl font-semibold mb-1">Ferramentas locais</h1>
       <p className="text-sm text-gray-600 mb-6">Só existem em <code>pnpm dev</code>.</p>
@@ -73,5 +75,6 @@ export default function DevIndexPage() {
         </table>
       )}
     </div>
+    </WorkspaceShell>
   );
 }

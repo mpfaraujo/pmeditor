@@ -1,5 +1,7 @@
 "use client";
 
+import { AdminWorkspace } from "../admin-workspace";
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -147,7 +149,7 @@ function ReportadasSection() {
   const pendingCount = items.length;
 
   return (
-    <div className="mb-6 stripe-card-gradient p-4">
+    <div className="admin-report-panel">
       <button
         className="w-full flex items-center justify-between text-left"
         onClick={() => setExpanded((v) => !v)}
@@ -181,7 +183,7 @@ function ReportadasSection() {
             <div className="text-sm text-slate-500 py-2">Carregando…</div>
           ) : items.length === 0 ? (
             <div className="text-sm text-slate-500 py-2">
-              Nenhuma questão reportada. 🎉
+              Nenhuma questão reportada.
             </div>
           ) : (
             <div className="space-y-2">
@@ -237,7 +239,7 @@ function ReportadasSection() {
 
 /* ---------------------------------------------------------------------- */
 
-export default function AdminGerenciarPage() {
+function AdminGerenciarPageContent() {
   const router = useRouter();
   const { isAdmin, loading: authLoading } = useAuth();
 
@@ -560,7 +562,7 @@ export default function AdminGerenciarPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="admin-state" role="status">
         <Loader2 className="animate-spin h-6 w-6 text-gray-400" />
       </div>
     );
@@ -568,8 +570,8 @@ export default function AdminGerenciarPage() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow text-center">
+      <div className="admin-state">
+        <div className="admin-state-panel">
           <h1 className="text-xl font-bold text-red-600 mb-2">
             Acesso restrito
           </h1>
@@ -589,10 +591,10 @@ export default function AdminGerenciarPage() {
   }
 
   return (
-    <div className="min-h-screen stripe-grid-bg">
+    <div className="admin-page">
       {/* Cabeçalho */}
-      <header className="brand-header sticky top-0 z-40">
-        <div className="mx-auto max-w-7xl px-4 flex items-center justify-between">
+      <header className="admin-page-head">
+        <div className="admin-page-head-inner">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -604,7 +606,7 @@ export default function AdminGerenciarPage() {
               Minha Área
             </Button>
             <div className="h-5 w-px bg-slate-400/40" />
-            <h1 className="text-lg font-bold text-slate-800">
+            <h1 className="admin-page-title">
               Gerenciar Questões
             </h1>
           </div>
@@ -620,10 +622,10 @@ export default function AdminGerenciarPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-7xl px-4 py-6 flex gap-6">
+      <div className="admin-manage-grid">
         {/* Sidebar: filtros */}
-        <aside className="w-72 flex-shrink-0">
-          <div className="stripe-card-gradient p-4 space-y-4 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <aside className="admin-manage-sidebar">
+          <div className="admin-filter-panel space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-slate-700">Filtros</h2>
               {hasActiveFilters && (
@@ -829,7 +831,7 @@ export default function AdminGerenciarPage() {
                     className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm"
                   >
                     {/* Barra de ações admin */}
-                    <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-200">
+                    <div className="admin-question-actions">
                       <button
                         onClick={() => toggleVariants(item.id)}
                         className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 transition-colors"
@@ -841,7 +843,7 @@ export default function AdminGerenciarPage() {
                         )}
                         {item.variantsCount ?? 0} versão(ões)
                       </button>
-                      <div className="flex items-center gap-2">
+                      <div className="admin-question-action-group">
                         <Button
                           size="sm"
                           variant="ghost"
@@ -929,7 +931,7 @@ export default function AdminGerenciarPage() {
                             Sem versões registradas.
                           </p>
                         ) : (
-                          <table className="w-full text-sm">
+                          <div className="admin-variant-table-scroll"><table className="admin-variant-table w-full text-sm">
                             <thead>
                               <tr className="text-left text-xs text-slate-400 border-b border-slate-200">
                                 <th className="pb-2 pr-2 w-6" />
@@ -1023,7 +1025,7 @@ export default function AdminGerenciarPage() {
                                 </tr>
                               ))}
                             </tbody>
-                          </table>
+                          </table></div>
                         )}
                       </div>
                     )}
@@ -1106,9 +1108,9 @@ export default function AdminGerenciarPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid grid-cols-2 divide-x divide-slate-200">
+          <div className="admin-comparison-grid divide-x divide-slate-200">
             {/* Coluna esquerda: versão oficial */}
-            <div className="p-4">
+            <div className="admin-comparison-cell">
               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">
                 Versão oficial (base)
               </p>
@@ -1123,7 +1125,7 @@ export default function AdminGerenciarPage() {
             </div>
 
             {/* Coluna direita: variante */}
-            <div className="p-4">
+            <div className="admin-comparison-cell">
               <p className="text-xs font-semibold text-amber-600 uppercase tracking-wide mb-3">
                 Esta versão (variante)
               </p>
@@ -1230,4 +1232,8 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
       {label}
     </button>
   );
+}
+
+export default function AdminGerenciarPage() {
+  return <AdminWorkspace current="gerenciar"><AdminGerenciarPageContent /></AdminWorkspace>;
 }

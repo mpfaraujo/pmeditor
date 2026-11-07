@@ -6,8 +6,9 @@ import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { parseYamlMeta, generateYamlTemplate, type YamlItemMeta } from "@/lib/yamlMeta";
 import type { QuestionMetadataV1 } from "@/components/editor/QuestionMetaBar";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, SkipForward, Copy, Check, X, ArrowLeft } from "lucide-react";
+import { ArrowRight, SkipForward, Copy, Check, X } from "lucide-react";
 import Link from "next/link";
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
 
 type Step = "yaml" | "editor";
 
@@ -107,27 +108,13 @@ function EditorContent() {
 
   if (step === "editor") {
     return (
-      <div className="min-h-screen bg-[#070B1D] py-6">
-        <div className="pm-shell-inner animate-fade-in-up">
-          <div className="mb-5">
-            <div className="pm-topbar-dark flex items-start gap-5 px-5 py-4">
-              <div className="shrink-0">
-                <Link
-                  href="/minha-area"
-                  className="inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm text-[#9eb4d1] transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" />
-                  Minha Área
-                </Link>
-              </div>
-              <div className="min-w-0">
-                <h1 className="pm-work-title">
-                  Editor de Questões
-                </h1>
-              </div>
-            </div>
-          </div>
+      <div>
+        <div className="workspace-page-heading">
+          <div><h1>Editor de questões</h1><p>Conteúdo na folha, informações e ferramentas ao redor.</p></div>
+          <Button asChild variant="outline" size="sm"><Link href="/template" target="_blank" rel="noopener noreferrer">Consultar modelo</Link></Button>
+        </div>
           <QuestionEditor
+            workspace
             initial={
               initialMeta
                 ? {
@@ -143,39 +130,17 @@ function EditorContent() {
               setStep("yaml");
             }}
           />
-        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#070B1D]">
-      <header className="sticky top-0 z-40 px-4 pt-4">
-        <div className="mx-auto max-w-5xl animate-fade-in-up pm-topbar-dark px-5 py-4">
-          <div className="flex items-start gap-5">
-            <div className="shrink-0">
-              <Link
-                href="/minha-area"
-                className="inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm text-[#9eb4d1] transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" />
-                Minha Área
-              </Link>
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-[2rem] font-bold leading-tight text-white">
-                Nova Questão
-              </h1>
-              <p className="mt-1 text-sm leading-relaxed text-[#9eb4d1]">
-                Preencha as informações da questão no modelo abaixo e cole aqui, ou
-                pule direto para o editor.
-              </p>
-            </div>
-          </div>
-        </div>
+    <div>
+      <header className="workspace-page-heading">
+        <div><h1>Nova questão</h1><p>Preencha as informações pelo modelo ou abra diretamente o editor.</p></div>
+        <Button onClick={handleSkip} className="workspace-primary">Abrir editor <ArrowRight size={16} /></Button>
       </header>
-
-      <div className="mx-auto max-w-5xl px-4 py-5 space-y-5 animate-fade-in-up">
+      <div className="workspace-editor-intake space-y-5">
         {/* Botão copiar modelo */}
         <div className="pm-surface rounded-2xl px-5 py-4 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
@@ -318,6 +283,7 @@ function EditorContent() {
 
 export default function EditorPage() {
   return (
+    <WorkspaceShell section="editor" title="Editor de questões">
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
@@ -327,6 +293,7 @@ export default function EditorPage() {
     >
       <EditorContent />
     </Suspense>
+    </WorkspaceShell>
   );
 }
 

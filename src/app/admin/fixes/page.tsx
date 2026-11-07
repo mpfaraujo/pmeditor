@@ -1,5 +1,7 @@
 "use client";
 
+import { AdminWorkspace } from "../admin-workspace";
+
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -32,6 +34,7 @@ import {
   ChevronUp,
   Eye,
   EyeOff,
+  ImageOff,
   Loader2,
   Pencil,
   RefreshCw,
@@ -1777,7 +1780,7 @@ function duplicateToAttemptedQuestion(item: DuplicateCandidate): QuestionItem {
 
 // ─── Página principal ─────────────────────────────────────────────────────────
 
-export default function FixesPage() {
+function FixesPageContent() {
   const router = useRouter();
   const { isAdmin, loading: authLoading } = useAuth();
 
@@ -2684,7 +2687,7 @@ export default function FixesPage() {
   // ── Render ─────────────────────────────────────────────────────────────────
   if (authLoading)
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="admin-state" role="status">
         <Loader2 className="animate-spin" />
       </div>
     );
@@ -2694,21 +2697,21 @@ export default function FixesPage() {
     filteredQuestions.length > 0 && selected.size === filteredQuestions.length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="admin-page">
       {/* Topbar */}
-      <header className="bg-white border-b px-6 py-3 flex items-center gap-4">
+      <header className="admin-page-head flex flex-wrap items-center gap-4">
         <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-600 text-sm">
           ← Voltar
         </button>
-        <h1 className="font-semibold text-gray-800">Fixes pós-import</h1>
+        <h1 className="admin-page-title">Fixes pós-import</h1>
         <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Admin</span>
       </header>
 
-      <div className="flex h-[calc(100vh-52px)]">
+      <div className="admin-review-layout">
         {/* Sidebar — batches */}
-        <aside className="w-64 border-r bg-white flex flex-col shrink-0">
+        <aside className="admin-review-sidebar">
           <div className="p-3 border-b flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+            <span className="text-xs font-semibold text-gray-600">
               Batches
             </span>
             <button
@@ -2800,7 +2803,7 @@ export default function FixesPage() {
         </aside>
 
         {/* Conteúdo */}
-        <main className="flex-1 overflow-hidden flex flex-col">
+        <main className="admin-review-main">
           {!selectedRunId ? (
             <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
               Selecione um batch à esquerda
@@ -2808,7 +2811,7 @@ export default function FixesPage() {
           ) : (
             <Tabs defaultValue="questoes" className="flex-1 flex flex-col overflow-hidden">
               {/* Stats + Tabs */}
-              <div className="bg-white border-b px-4 pt-2">
+              <div className="admin-review-tabs">
                 {/* Linha de stats */}
                 <div className="flex flex-wrap gap-3 mb-2 text-xs">
                   <Button
@@ -2847,7 +2850,7 @@ export default function FixesPage() {
                     <AlertTriangle size={11} /> {stats.attention} atenção
                   </span>
                   <span className="text-orange-500 flex items-center gap-1">
-                    🖼 {stats.images} imagens pendentes
+                    <ImageOff size={11} aria-hidden="true" /> {stats.images} imagens pendentes
                   </span>
                   <span className="text-purple-600 flex items-center gap-1">
                     <Tag size={11} /> {stats.nonCanonic} assuntos não canônicos
@@ -2856,7 +2859,7 @@ export default function FixesPage() {
                     <CheckCircle2 size={11} /> {stats.reviewed}/{stats.total} revisadas
                   </span>
                 </div>
-                <TabsList className="h-8 mb-0">
+                <TabsList className="admin-review-tab-list">
                   <TabsTrigger value="questoes" className="text-xs h-6">
                     Questões ({stats.total})
                   </TabsTrigger>
@@ -2878,7 +2881,7 @@ export default function FixesPage() {
               {/* ── Tab Questões ───────────────────────────────────────────── */}
               <TabsContent value="questoes" className="flex-1 overflow-hidden flex flex-col m-0">
                 {/* Filtros */}
-                <div className="bg-white border-b px-4 py-2 flex flex-wrap gap-2 items-center">
+                <div className="admin-review-toolbar">
                   {/* Checkbox selecionar todos */}
                   <Checkbox
                     checked={allSelected}
@@ -2930,9 +2933,9 @@ export default function FixesPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Todos warnings</SelectItem>
-                      <SelectItem value="error">🔴 Error</SelectItem>
-                      <SelectItem value="attention">🟠 Atenção</SelectItem>
-                      <SelectItem value="info">⚪ Info</SelectItem>
+                      <SelectItem value="error">Erro</SelectItem>
+                      <SelectItem value="attention">Atenção</SelectItem>
+                      <SelectItem value="info">Informação</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -3012,7 +3015,7 @@ export default function FixesPage() {
 
                 {/* Barra de ações em lote — fixada no rodapé */}
                 {selected.size > 0 && (
-                  <div className="absolute bottom-0 left-64 right-0 bg-white border-t shadow-lg px-4 py-3 flex items-center gap-3 flex-wrap z-10">
+                  <div className="admin-bulk-bar">
                     <span className="text-sm font-medium text-gray-700">
                       {selected.size} selecionada{selected.size > 1 ? "s" : ""}
                     </span>
@@ -3104,7 +3107,7 @@ export default function FixesPage() {
                 value="duplicadas"
                 className="flex-1 overflow-hidden flex flex-col m-0"
               >
-                <div className="bg-white border-b px-4 py-2 flex flex-wrap gap-2 items-center">
+                <div className="admin-review-toolbar">
                   <div className="relative">
                     <Search size={13} className="absolute left-2 top-1.5 text-gray-400" />
                     <Input
@@ -3148,9 +3151,9 @@ export default function FixesPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Todos warnings</SelectItem>
-                      <SelectItem value="error">🔴 Error</SelectItem>
-                      <SelectItem value="attention">🟠 Atenção</SelectItem>
-                      <SelectItem value="info">⚪ Info</SelectItem>
+                      <SelectItem value="error">Erro</SelectItem>
+                      <SelectItem value="attention">Atenção</SelectItem>
+                      <SelectItem value="info">Informação</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -3209,7 +3212,7 @@ export default function FixesPage() {
                 value="textosbase"
                 className="flex-1 overflow-hidden flex flex-col m-0"
               >
-                <div className="bg-white border-b px-4 py-2 flex flex-wrap gap-2 items-center">
+                <div className="admin-review-toolbar">
                   <div className="relative">
                     <Search size={13} className="absolute left-2 top-1.5 text-gray-400" />
                     <Input
@@ -3399,4 +3402,8 @@ export default function FixesPage() {
       />
     </div>
   );
+}
+
+export default function FixesPage() {
+  return <AdminWorkspace current="fixes"><FixesPageContent /></AdminWorkspace>;
 }

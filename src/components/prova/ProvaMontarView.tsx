@@ -7,6 +7,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import QuestionRenderer from "@/components/Questions/QuestionRendererProva";
 import { Button } from "@/components/ui/button";
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import type { ReactNode } from "react";
 import {
   ArrowLeft,
   Printer,
@@ -71,6 +73,10 @@ import {
   type PMNode,
   type BaseTextSection,
 } from "@/lib/montarBuilders";
+
+function MountWorkspace({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  return enabled ? <WorkspaceShell section="mount" title="Montagem de prova">{children}</WorkspaceShell> : <>{children}</>;
+}
 
 function collectPrintFlowDebug(phase: string) {
   if (typeof window === "undefined" || typeof document === "undefined") return null;
@@ -1366,20 +1372,26 @@ const { pages, refs } = usePagination({
   // Estado vazio
   if (initialQuestions.length === 0) {
     return (
-      <div className="p-8 text-center">
-        <p className="text-muted-foreground mb-4">Nenhuma questão selecionada</p>
+      <MountWorkspace enabled={variant === "montar"}>
+      <div className="workspace-mount-empty">
+        <h1>Prepare sua prova</h1>
+        <p className="text-muted-foreground mb-4">Selecione questões no banco para começar a montagem.</p>
         <Button onClick={() => router.push("/editor/questoes?from=montar")}>
           Voltar para seleção
         </Button>
       </div>
+      </MountWorkspace>
     );
   }
 
   return (
-    <>
-      <PaginatedA4 className="SEU_WRAPPER_ATUAL_DO_A4">
+    <MountWorkspace enabled={variant === "montar"}>
+      <div className={variant === "montar" ? "workspace-mount-stage" : undefined}>
+      <PaginatedA4 className={variant === "montar" ? "SEU_WRAPPER_ATUAL_DO_A4 workspace-mount-canvas" : "SEU_WRAPPER_ATUAL_DO_A4"}>
         {variant === "montar" && (<>
-        <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center gap-x-2 gap-y-2 justify-between border-b px-4 py-3" style={{ background: 'var(--yellow-brand)' }}>
+        <div className="workspace-mount-controls print:hidden" aria-label="Ferramentas da montagem">
+          <h1>Montagem da prova</h1>
+          <p>{expandedQuestions.length} questões / {pages.length} páginas</p>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => router.push("/editor/questoes?from=montar")} className="bg-white hover:bg-slate-50">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -1520,7 +1532,11 @@ const { pages, refs } = usePagination({
           </div>
         </div>
 
-        <div className="print:hidden h-[130px] sm:h-[104px] lg:h-[60px]" />
+        <aside className="workspace-mount-sequence print:hidden" aria-label="Sequência de questões">
+          <h2 className="font-semibold">Sequência</h2>
+          <ol>{expandedQuestions.map((question, index) => <li key={`${question.metadata.id}-${index}`}><span className="workspace-help">Questão {index + 1}</span><p className="mt-1 font-medium">{question.metadata.assunto || question.metadata.disciplina || "Questão"}</p></li>)}</ol>
+          <Button variant="outline" size="sm" className="mt-4 w-full" onClick={() => setReorderModalOpen(true)}>Reordenar</Button>
+        </aside>
         </>)}
 
         <LayoutComponent
@@ -1593,7 +1609,7 @@ const { pages, refs } = usePagination({
           }}
         />
       </PaginatedA4>
-
-    </>
+      </div>
+    </MountWorkspace>
   );
 }

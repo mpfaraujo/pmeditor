@@ -1,5 +1,7 @@
 "use client";
 
+import { AdminWorkspace } from "../admin-workspace";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,7 +32,7 @@ function formatDate(iso: string) {
   return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" });
 }
 
-export default function AdminUsuariosPage() {
+function AdminUsuariosPageContent() {
   const router = useRouter();
   const { isAdmin, loading } = useAuth();
   const [stats, setStats] = useState<Stats | null>(null);
@@ -56,53 +58,54 @@ export default function AdminUsuariosPage() {
       .finally(() => setLoadingStats(false));
   }, [loading, isAdmin]);
 
-  if (loading || !isAdmin) return null;
+  if (loading) return <div className="admin-state" role="status">Carregando administração…</div>;
+  if (!isAdmin) return <div className="admin-state" role="status">Redirecionando para sua área de trabalho…</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="admin-page">
+      <div className="admin-users-body">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="admin-page-head-inner mb-6">
           <Button variant="ghost" size="sm" onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Voltar
           </Button>
-          <h1 className="text-xl font-bold">Dashboard Admin</h1>
+          <div><h1 className="admin-page-title">Usuários e banco de questões</h1><p className="admin-page-subtitle">Acompanhe os cadastros e a participação no banco.</p></div>
         </div>
 
-        {loadingStats && <p className="text-muted-foreground">Carregando…</p>}
-        {erro && <p className="text-red-500">{erro}</p>}
+        {loadingStats && <p className="text-muted-foreground py-8" role="status">Carregando usuários…</p>}
+        {erro && <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700" role="alert">{erro}</p>}
 
         {stats && (
           <>
             {/* Cards de resumo */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-white rounded-xl border p-5 flex items-center gap-4">
-                <div className="bg-blue-100 p-3 rounded-lg">
+            <div className="admin-summary">
+              <div className="admin-summary-item">
+                <div className="admin-summary-icon">
                   <BookOpen className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{stats.totalQuestoes}</div>
+                  <div className="text-2xl font-semibold tabular-nums">{stats.totalQuestoes}</div>
                   <div className="text-sm text-muted-foreground">Questões no banco</div>
                 </div>
               </div>
-              <div className="bg-white rounded-xl border p-5 flex items-center gap-4">
-                <div className="bg-green-100 p-3 rounded-lg">
+              <div className="admin-summary-item">
+                <div className="admin-summary-icon">
                   <Users className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{stats.totalUsuarios}</div>
+                  <div className="text-2xl font-semibold tabular-nums">{stats.totalUsuarios}</div>
                   <div className="text-sm text-muted-foreground">Usuários cadastrados</div>
                 </div>
               </div>
             </div>
 
             {/* Tabela de usuários */}
-            <div className="bg-white rounded-xl border overflow-hidden">
-              <div className="px-5 py-4 border-b">
+            <div className="admin-table-surface">
+              <div className="admin-table-title">
                 <h2 className="font-semibold">Usuários</h2>
               </div>
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-xs text-muted-foreground uppercase tracking-wide">
+              <div className="admin-table-scroll"><table className="admin-user-table w-full text-sm">
+                <thead className="bg-gray-50 text-xs text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 text-left">Usuário</th>
                     <th className="px-4 py-3 text-left">Email</th>
@@ -129,12 +132,12 @@ export default function AdminUsuariosPage() {
                       <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
                       <td className="px-4 py-3">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                          u.role === "admin" ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-600"
+                          u.role === "admin" ? "admin-role admin-role-admin" : "admin-role"
                         }`}>
                           {u.role}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right font-mono">
+                      <td className="px-4 py-3 text-right tabular-nums">
                         {u.totalQuestoes > 0 ? (
                           <span className="font-semibold text-blue-600">{u.totalQuestoes}</span>
                         ) : (
@@ -145,11 +148,15 @@ export default function AdminUsuariosPage() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table></div>
             </div>
           </>
         )}
       </div>
     </div>
   );
+}
+
+export default function AdminUsuariosPage() {
+  return <AdminWorkspace current="usuarios"><AdminUsuariosPageContent /></AdminWorkspace>;
 }

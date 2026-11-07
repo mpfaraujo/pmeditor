@@ -1,5 +1,7 @@
 "use client";
 
+import { AdminWorkspace } from "../admin-workspace";
+
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -326,10 +328,10 @@ function BatchConfigForm({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="admin-state">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow w-full max-w-md space-y-4"
+        className="admin-import-form"
       >
         <div className="flex items-center gap-3 mb-1">
           <Link href="/admin/gerenciar" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 transition-colors">
@@ -452,7 +454,7 @@ function BatchConfigForm({
 
         <button
           type="submit"
-          className="w-full py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+          className="admin-primary w-full"
         >
           Começar importação
         </button>
@@ -530,8 +532,8 @@ function ImportarPageInner() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow text-center">
+      <div className="admin-state">
+        <div className="admin-state-panel">
           <h1 className="text-xl font-bold text-red-600 mb-2">Acesso restrito</h1>
           <p className="text-gray-600">Essa página é exclusiva para administradores.</p>
           <Link href="/minha-area" className="mt-4 inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800">
@@ -544,7 +546,7 @@ function ImportarPageInner() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="admin-state">
         <p className="text-gray-500">Carregando fila de importação...</p>
       </div>
     );
@@ -552,8 +554,8 @@ function ImportarPageInner() {
 
   if (error || !queue.length) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow text-center">
+      <div className="admin-state">
+        <div className="admin-state-panel">
           <h1 className="text-xl font-bold mb-2">Importar Questões</h1>
           <p className="text-gray-600">
             {error
@@ -579,8 +581,8 @@ function ImportarPageInner() {
   // Etapa 2: fila terminada
   if (currentIdx >= queue.length) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow text-center">
+      <div className="admin-state">
+        <div className="admin-state-panel">
           <h1 className="text-xl font-bold text-green-600 mb-2">Importação concluída!</h1>
           <p className="text-gray-600">
             Todas as {queue.length} questões foram processadas.
@@ -600,7 +602,7 @@ function ImportarPageInner() {
             )}
             <button
               onClick={() => { setCurrentIdx(0); setEditorKey((k) => k + 1); }}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="admin-primary"
             >
               Recomeçar
             </button>
@@ -627,15 +629,15 @@ function ImportarPageInner() {
   };
 
   return (
-    <div className="min-h-screen bg-[#d3d3d3]">
+    <div className="admin-page">
       {/* Header de navegação */}
-      <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
-        <div className="max-w-[210mm] mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <div className="admin-import-toolbar">
+        <div className="admin-import-toolbar-inner">
+          <div className="admin-import-toolbar-group">
             <Link href="/admin/gerenciar" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 transition-colors">
               <ArrowLeft className="h-4 w-4" />
             </Link>
-            <h1 className="text-lg font-bold whitespace-nowrap">Importar Questões</h1>
+            <h1 className="admin-page-title">Importar Questões</h1>
             {activeQueueFile !== "import-queue.json" && (
               <span className="text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-mono">
                 {activeQueueFile}
@@ -643,7 +645,7 @@ function ImportarPageInner() {
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="admin-import-toolbar-group">
             <span className="text-sm text-gray-500">
               Questão {currentIdx + 1} de {queue.length}
             </span>
@@ -735,6 +737,7 @@ function ImportarPageInner() {
 
       {/* Editor */}
       <QuestionEditor
+        workspace
         key={editorKey}
         initial={initial!}
         onSaved={handleNext}
@@ -745,8 +748,10 @@ function ImportarPageInner() {
 
 export default function ImportarPage() {
   return (
-    <Suspense>
-      <ImportarPageInner />
-    </Suspense>
+    <AdminWorkspace current="importar">
+      <Suspense fallback={<div className="admin-state" role="status">Carregando importação…</div>}>
+        <ImportarPageInner />
+      </Suspense>
+    </AdminWorkspace>
   );
 }

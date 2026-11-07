@@ -1,14 +1,17 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "@/app/support.css";
+
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, ArrowRight, ArrowLeft } from "lucide-react";
+import { Copy, Check, ArrowRight } from "lucide-react";
 import { generateYamlTemplate, generateYamlSetTemplate } from "@/lib/yamlMeta";
 
 type Tab = "individual" | "conjunto";
 
-export default function TemplatePage() {
+function TemplatePageContent() {
   const [tab, setTab] = useState<Tab>("individual");
   const [copied, setCopied] = useState(false);
   const template = generateYamlTemplate();
@@ -23,33 +26,17 @@ export default function TemplatePage() {
   };
 
   return (
-    <main className="pm-shell">
-      <header className="sticky top-0 z-40 px-4 pt-4">
-        <div className="mx-auto max-w-5xl px-6 py-5 animate-fade-in-up pm-topbar-dark">
-          <Link
-            href="/dashboard"
-            className="mb-2 inline-flex items-center gap-1 text-sm text-[#9eb4d1] transition-colors hover:text-white"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-white">
-            Modelo de Informações da Questão
-          </h1>
-          <p className="mt-1 text-sm text-[#9eb4d1]">
-            Copie o modelo abaixo, preencha num editor de texto e cole ao criar
-            a questão.
-          </p>
-        </div>
-      </header>
+    <main className="support-template">
+      <header className="workspace-page-heading"><div><h1>Modelo de informações da questão</h1><p>Copie o modelo, preencha num editor de texto e cole ao criar a questão.</p></div><Link href="/editor" className="support-inline-link">Abrir editor <ArrowRight size={16} /></Link></header>
 
-      <div className="mx-auto max-w-5xl px-4 py-6 space-y-6 animate-fade-in-up">
+      <div className="support-template-layout">
         {/* Template com tabs */}
-        <div className="relative overflow-hidden rounded-2xl pm-surface pm-surface-accent">
+        <div className="support-template-code">
           {/* Tabs */}
-          <div className="flex items-center justify-between border-b bg-slate-50/80 px-4 py-3">
+          <div className="support-template-toolbar">
             <div className="flex gap-1">
               <button
+                aria-pressed={tab === "individual"}
                 onClick={() => { setTab("individual"); setCopied(false); }}
                 className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
                   tab === "individual"
@@ -60,6 +47,7 @@ export default function TemplatePage() {
                 Questão individual
               </button>
               <button
+                aria-pressed={tab === "conjunto"}
                 onClick={() => { setTab("conjunto"); setCopied(false); }}
                 className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
                   tab === "conjunto"
@@ -93,7 +81,7 @@ export default function TemplatePage() {
         </div>
 
         {/* Instruções */}
-        <div className="pm-surface rounded-2xl p-6 space-y-4">
+        <div className="support-template-guide space-y-4">
           <h2 className="text-lg font-semibold">Como usar</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
             <li>
@@ -191,4 +179,8 @@ export default function TemplatePage() {
       </div>
     </main>
   );
+}
+
+export default function TemplatePage() {
+  return <WorkspaceShell section="editor" title="Modelo de questão"><TemplatePageContent /></WorkspaceShell>;
 }

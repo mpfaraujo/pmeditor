@@ -1,11 +1,14 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "../library-workspace.css";
+
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import disciplinasJson from "@/data/disciplinas_areas.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoginButton } from "@/components/auth/LoginButton";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronRight, Pencil, X } from "lucide-react";
 
 // ──────────────────────────────────────────────
 // Tipos
@@ -69,15 +72,17 @@ function AreaCard({
   };
 
   return (
-    <div className="mb-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.05)]">
+    <div className="library-area-block">
       {/* Cabeçalho da área */}
-      <div className="flex items-center gap-2 border-b bg-slate-50/90 px-4 py-3">
+      <div className="library-area-heading">
         <button
           onClick={() => setExpanded((e) => !e)}
           className="text-slate-400 hover:text-slate-700 text-xs w-4"
+          aria-label={`${expanded ? "Recolher" : "Expandir"} área ${areaName}`}
+          aria-expanded={expanded}
           title={expanded ? "Recolher" : "Expandir"}
         >
-          {expanded ? "▼" : "▶"}
+          {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
         </button>
 
         {editingArea ? (
@@ -138,7 +143,7 @@ function AreaCard({
           ))}
           {subareas.length === 0 && (
             <li className="text-xs text-slate-400 italic px-2">
-              Nenhum assunto cadastrado. Clique em "+ Assunto" para adicionar.
+              Nenhum assunto cadastrado. Clique em &quot;+ Assunto&quot; para adicionar.
             </li>
           )}
         </ul>
@@ -206,20 +211,22 @@ function SubareaRow({
       )}
 
       {!editing && (
-        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="library-row-actions">
           <button
             onClick={() => setEditing(true)}
             className="text-xs px-1.5 py-0.5 rounded text-slate-500 hover:text-blue-600 hover:bg-blue-50"
+            aria-label={`Editar assunto ${value}`}
             title="Editar"
           >
-            ✏️
+            <Pencil size={14} />
           </button>
           <button
             onClick={onDelete}
             className="text-xs px-1.5 py-0.5 rounded text-slate-500 hover:text-red-600 hover:bg-red-50"
+            aria-label={`Remover assunto ${value}`}
             title="Remover"
           >
-            ✕
+            <X size={14} />
           </button>
         </div>
       )}
@@ -231,7 +238,7 @@ function SubareaRow({
 // Componente principal
 // ──────────────────────────────────────────────
 
-export default function AssuntosPage() {
+function AssuntosContent() {
   const router = useRouter();
   const { isLoggedIn, loading } = useAuth();
 
@@ -423,7 +430,7 @@ export default function AssuntosPage() {
 
   if (loading) {
     return (
-      <div className="pm-shell flex items-center justify-center">
+      <div className="library-state" role="status">
         <span className="text-sm text-slate-400">Carregando...</span>
       </div>
     );
@@ -431,8 +438,8 @@ export default function AssuntosPage() {
 
   if (!isLoggedIn) {
     return (
-      <div className="pm-shell flex items-center justify-center p-4">
-        <div className="w-full max-w-sm rounded-2xl p-8 text-center pm-surface">
+      <div className="library-state">
+        <div className="library-auth-panel">
           <h1 className="text-xl font-bold text-slate-800 mb-2">Editar Assuntos</h1>
           <p className="text-sm text-slate-500 mb-6">
             Você precisa estar logado para editar os assuntos.
@@ -451,31 +458,32 @@ export default function AssuntosPage() {
   const niveisDisponiveis = NIVEIS.filter(n => BASE_DATA[disciplinaAtual]?.[n.value] !== undefined);
 
   return (
-    <div className="pm-shell">
-      <div className="max-w-5xl mx-auto py-6 px-4">
+    <div className="library-page">
+      <div className="library-content">
         {/* Cabeçalho */}
         <div className="mb-6">
-          <div className="pm-topbar-dark pm-work-header">
+          <div className="library-heading library-taxonomy-heading">
             <button
               onClick={() => router.push("/minha-area")}
-              className="mb-4 flex items-center gap-1.5 text-sm text-[#9eb4d1] transition-colors hover:text-white"
+              className="library-back mb-4 flex items-center gap-1.5 text-sm"
             >
               <ArrowLeft className="h-4 w-4" />
               Voltar para Minha Área
             </button>
-            <h1 className="pm-work-title text-white">Editar Assuntos por Disciplina</h1>
-            <p className="pm-work-subtitle">
+            <h1 className="library-heading-title">Editar Assuntos por Disciplina</h1>
+            <p className="library-help">
               Edite as áreas e assuntos de cada disciplina e nível. Ao terminar, clique em{" "}
-              <strong className="text-white">Gerar JSON</strong> e envie para o administrador.
+              <strong>Gerar JSON</strong> e envie para o administrador.
             </p>
           </div>
         </div>
 
+        <div className="library-taxonomy-grid">
         {/* Seletor de disciplina e nível */}
-        <div className="mb-4 rounded-2xl p-5 pm-surface">
-          <div className="flex gap-3">
+        <div className="library-taxonomy-selectors">
+          <div className="library-taxonomy-fields">
             <div className="flex-1">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+              <label className="block text-xs font-medium text-slate-600 mb-2">
                 Disciplina
               </label>
               <select
@@ -493,8 +501,8 @@ export default function AssuntosPage() {
               </select>
             </div>
 
-            <div className="w-40">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+            <div className="library-level-field">
+              <label className="block text-xs font-medium text-slate-600 mb-2">
                 Nível
               </label>
               <select
@@ -520,7 +528,7 @@ export default function AssuntosPage() {
         </div>
 
         {/* Áreas */}
-        <div className="mb-4 rounded-2xl p-5 pm-surface">
+        <div className="library-taxonomy-editor">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-slate-700">
               Áreas de {disciplinaAtual} — {NIVEIS.find(n => n.value === nivelAtual)?.label}{" "}
@@ -536,7 +544,7 @@ export default function AssuntosPage() {
 
           {areas.length === 0 && (
             <p className="text-sm text-slate-400 italic">
-              Nenhuma área cadastrada para este nível. Clique em "+ Nova área" para começar.
+              Nenhuma área cadastrada para este nível. Clique em &quot;+ Nova área&quot; para começar.
             </p>
           )}
 
@@ -554,8 +562,9 @@ export default function AssuntosPage() {
           ))}
         </div>
 
+        </div>
         {/* Exportar */}
-        <div className="rounded-2xl p-5 pm-surface">
+        <div className="library-export-panel">
           <div className="flex items-center gap-3 mb-3 flex-wrap">
             <button
               onClick={gerarJson}
@@ -625,4 +634,8 @@ export default function AssuntosPage() {
       </div>
     </div>
   );
+}
+
+export default function AssuntosPage() {
+  return <WorkspaceShell section="area" title="Assuntos por disciplina"><AssuntosContent /></WorkspaceShell>;
 }

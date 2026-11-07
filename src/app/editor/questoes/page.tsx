@@ -27,6 +27,9 @@ import { QuestionCardCompact } from "@/components/Questions/QuestionCardCompact"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { SelectionBar } from "@/components/Questions/SelectionBar";
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import { SelectionPanel } from "@/components/workspace/SelectionPanel";
+import { SlidersHorizontal } from "lucide-react";
 import "./print.css";
 
 type QuestionItem = {
@@ -100,6 +103,8 @@ export default function QuestoesPage() {
   const [api, setApi] = useState<CarouselApi>();
 
   const [editorOpen, setEditorOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [workspaceMounted, setWorkspaceMounted] = useState(false);
   const [editing, setEditing] = useState<QuestionItem | null>(null);
   const [previewItem, setPreviewItem] = useState<QuestionItem | null>(null);
   const previewMeasureRef = useLineRefMeasure(!!previewItem);
@@ -140,7 +145,7 @@ export default function QuestoesPage() {
     setShowDraftBanner(false);
   };
 
-  useEffect(() => { load(EMPTY_FILTERS, 1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setWorkspaceMounted(true); load(EMPTY_FILTERS, 1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const handleSelectionLimit = (event: Event) => {
@@ -413,22 +418,27 @@ export default function QuestoesPage() {
     }
   }, [hasSelectedQuestions, showOnlySelected]);
 
+  if (!workspaceMounted) return <WorkspaceShell section="bank" title="Banco de questões"><div className="p-8 text-sm text-muted-foreground" role="status">Carregando banco de questões…</div></WorkspaceShell>;
+
   return (
-    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: "#F4F4F2" }}>
+    <WorkspaceShell section="bank" title="Banco de questões">
+    <div className={`workspace-bank-layout ${filtersOpen ? "workspace-filters-open" : ""}`}>
+      <div className="workspace-bank-filters" id="workspace-bank-filters">
+        <div className="workspace-bank-filters-close"><Button variant="ghost" size="sm" onClick={() => setFiltersOpen(false)}>Fechar filtros<X size={16} /></Button></div>
       <QuestionsFilterSidebar
         state={filterState}
         totalResults={totalResults}
         loading={loading}
       />
+      </div>
 
       <div
-        className={`min-h-0 flex-1 flex flex-col min-w-0 overflow-hidden ${selectionBarVisible ? "pb-[72px]" : ""}`}
-        style={{ backgroundColor: "#F4F4F2" }}
+        className="workspace-bank-main"
       >
-        <header className="shrink-0 border-b border-slate-200 bg-white px-6 py-5">
+        <header className="workspace-bank-heading shrink-0">
           <div className="flex items-start justify-between gap-6">
             <div className="min-w-0 flex-1">
-              <div className="mb-3 flex items-center gap-2">
+              <div className="workspace-legacy-links mb-3 flex items-center gap-2">
                 <Button
                   size="sm"
                   variant="ghost"
@@ -449,7 +459,7 @@ export default function QuestoesPage() {
                 </Button>
               </div>
               <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-slate-950">Banco de Questões</h1>
+                <div className="workspace-bank-topline"><Button className="workspace-filter-toggle" variant="outline" size="sm" aria-controls="workspace-bank-filters" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}><SlidersHorizontal size={16} />Filtros</Button><h1 className="text-2xl font-semibold tracking-tight text-slate-950">Banco de Questões</h1></div>
                 <p className="mt-1 text-sm text-slate-500">Filtre e selecione questões para montar sua prova</p>
               </div>
               <div className="mt-4 flex max-w-3xl items-center gap-3">
@@ -670,6 +680,7 @@ export default function QuestoesPage() {
                       <CarouselContent>
                         {displayItems.map((q) => (
                           <CarouselItem key={q.metadata.id}>
+                            <div className="overflow-x-auto">
                             <div className="question-readable-preview mx-auto px-2 w-[20.5cm] max-w-[20.5cm]">
                               <QuestionCard
                                 metadata={q.metadata} content={q.content} base={q.base}
@@ -689,6 +700,7 @@ export default function QuestoesPage() {
                                     : undefined
                                 }
                               />
+                            </div>
                             </div>
                           </CarouselItem>
                         ))}
@@ -751,6 +763,8 @@ export default function QuestoesPage() {
           />
         )}
       </div>
+
+      <SelectionPanel onBuild={handleMontarProva} onDiagramar={() => router.push("/editor/prova/diagramar")} />
 
       {/* Confirmação de remoção da seleção */}
       <Dialog open={!!pendingRemoveId} onOpenChange={(open) => { if (!open) setPendingRemoveId(null); }}>
@@ -910,5 +924,6 @@ export default function QuestoesPage() {
         }}
       />
     </div>
+    </WorkspaceShell>
   );
 }

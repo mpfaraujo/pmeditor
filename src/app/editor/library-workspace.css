@@ -1,0 +1,81 @@
+/* ProvaMarela · auxiliary library workspaces · application chrome only.
+   Deliberately no selectors for ProseMirror, previews, A4 or measuring layers. */
+@media screen {
+  .library-page { min-height: calc(100dvh - var(--ws-header)); background: var(--ws-bg); }
+  .library-heading-wrap { background: var(--ws-paper); border-bottom: 1px solid var(--ws-line); }
+  .library-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 28px; color: var(--ws-ink); background: var(--ws-paper); }
+  .library-heading > .flex { flex-wrap: wrap; }
+  .library-heading h1, .library-heading-title { font-size: 25px; font-weight: 600; letter-spacing: -.7px; line-height: 1.25; text-wrap: balance; color: var(--ws-ink); }
+  .library-help { font-size: 13px; line-height: 1.65; color: var(--ws-muted); margin-top: 8px; }
+  .library-back, .library-close { color: var(--ws-muted); }
+  .library-back:hover, .library-close:hover { color: var(--ws-ink); background: var(--ws-selected); }
+  .library-back:focus-visible, .library-close:focus-visible, .library-copy-button:focus-visible, .library-row-actions button:focus-visible { outline: 3px solid var(--ws-brand); outline-offset: 3px; }
+  .library-close { padding: 8px; border-radius: 6px; flex-shrink: 0; }
+  .library-content { max-width: 1400px; margin: 0 auto; padding: 28px; }
+  .library-search { display: grid; grid-template-columns: minmax(0,1fr) minmax(160px,220px) auto; gap: 12px; align-items: center; padding-bottom: 24px; border-bottom: 1px solid var(--ws-line); }
+  .library-search input { background: var(--ws-paper); }
+  .library-search-discipline { width: 100%; }
+  .library-base-list { background: var(--ws-paper); border-radius: 12px; overflow: clip; }
+  .library-base-row + .library-base-row { border-top: 1px solid var(--ws-line); }
+  .library-base-row-heading { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding: 20px 24px; }
+  .library-base-editor-heading { flex-wrap: wrap; }
+  .library-base-editor-heading > div:last-child { flex-wrap: wrap; }
+  .library-metadata-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; padding: 24px; background: var(--ws-paper); border: 1px solid var(--ws-line); border-radius: 12px; }
+  .library-metadata-title { grid-column: 1/-1; font-size: 16px; color: var(--ws-ink); font-weight: 600; }
+  .library-base-document-scroll { overflow-x: auto; }
+  /* Match the incumbent max-w-6xl viewport measure even when the rail consumes
+     horizontal space. Scroll the surrounding application, never shrink text. */
+  .library-base-document { width: min(72rem,calc(100% + var(--ws-rail))); max-width: none; }
+  .library-state { min-height: calc(100dvh - var(--ws-header)); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; padding: 32px; color: var(--ws-muted); text-align: center; }
+  .library-auth-panel { width: 100%; max-width: 440px; padding: 32px; border: 1px solid var(--ws-line); border-radius: 12px; background: var(--ws-paper); color: var(--ws-ink); text-align: center; }
+  .library-taxonomy-heading { display: block; border-radius: 12px; }
+  .library-taxonomy-grid { display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 24px; align-items: start; }
+  .library-taxonomy-selectors { padding: 24px; background: var(--ws-paper); border-radius: 12px; }
+  .library-taxonomy-fields { display: grid; gap: 24px; }
+  .library-taxonomy-fields select { background: var(--ws-paper); }
+  .library-level-field { min-width: 0; }
+  .library-taxonomy-editor { min-width: 0; }
+  .library-taxonomy-editor > div:first-child { gap: 16px; flex-wrap: wrap; }
+  .library-area-block { margin-bottom: 16px; background: var(--ws-paper); border: 1px solid var(--ws-line); border-radius: 12px; overflow: clip; }
+  .library-area-heading { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 16px; border-bottom: 1px solid var(--ws-line); background: var(--ws-paper); }
+  .library-area-heading > span:first-of-type { min-width: 120px; }
+  .library-row-actions { display: flex; gap: 4px; }
+  .library-row-actions button { display: grid; place-items: center; min-width: 28px; min-height: 28px; }
+  .library-export-panel { margin-top: 24px; padding: 24px; background: var(--ws-paper); border: 1px solid var(--ws-line); border-radius: 12px; }
+  .library-consult-selectors { display: grid; grid-template-columns: minmax(0,1fr) 200px; gap: 16px; margin-bottom: 28px; }
+  .library-consult-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 24px; }
+  .library-consult-grid .library-area-block { margin-bottom: 0; }
+  .library-copy-button { flex-shrink: 0; padding: 4px 8px; border: 1px solid var(--ws-line); border-radius: 5px; background: var(--ws-paper); color: var(--ws-good); font-size: 12px; }
+  .library-copy-button:hover { background: var(--ws-selected); }
+  .library-api-grid { display: grid; grid-template-columns: 280px minmax(0,1fr); gap: 28px; align-items: start; }
+  .library-api-controls { background: var(--ws-paper); border: 1px solid var(--ws-line); padding: 24px; border-radius: 12px; }
+  .library-api-controls h2, .library-api-response h2 { margin-bottom: 20px; font-size: 16px; font-weight: 600; color: var(--ws-ink); }
+  .library-api-controls label { display: grid; gap: 8px; margin-bottom: 20px; color: var(--ws-muted); font-size: 12px; }
+  .library-api-controls input { min-width: 0; width: 100%; padding: 10px 12px; border: 1px solid var(--ws-line); border-radius: 6px; background: var(--ws-paper); color: var(--ws-ink); font-size: 14px; }
+  .library-api-actions { display: grid; gap: 8px; }
+  .library-api-actions button { min-height: 36px; padding: 8px 12px; border: 1px solid var(--ws-line); border-radius: 6px; background: var(--ws-paper); color: var(--ws-ink); font-size: 13px; }
+  .library-api-actions button:hover { background: var(--ws-selected); }
+  .library-api-actions button:focus-visible, .library-api-controls input:focus-visible { outline: 3px solid var(--ws-brand); outline-offset: 3px; }
+  .library-api-actions .library-api-create { background: var(--ws-brand); color: var(--ws-brand-ink); border-color: var(--ws-brand); }
+  .library-api-response { min-width: 0; }
+  .library-api-response pre { white-space: pre-wrap; overflow-wrap: anywhere; min-height: 320px; padding: 24px; background: var(--ws-paper); border: 1px solid var(--ws-line); border-radius: 12px; font-size: 12px; color: var(--ws-ink); }
+  @media(max-width:1023px) {
+    .library-taxonomy-grid { grid-template-columns: minmax(0,1fr); }
+    .library-taxonomy-fields { grid-template-columns: minmax(0,1fr) 180px; }
+    .library-consult-grid { grid-template-columns: minmax(0,1fr); }
+    .library-api-grid { grid-template-columns: 240px minmax(0,1fr); }
+  }
+  @media(max-width:639px) {
+    .library-heading { padding: 20px 16px; flex-wrap: wrap; gap: 16px; }
+    .library-heading h1, .library-heading-title { font-size: 22px; }
+    .library-content { padding: 20px 16px; }
+    .library-search { grid-template-columns: minmax(0,1fr) auto; }
+    .library-search > input:first-child { grid-column: 1/-1; }
+    .library-base-row-heading { padding: 16px; flex-wrap: wrap; }
+    .library-metadata-grid { grid-template-columns: minmax(0,1fr); padding: 20px; }
+    .library-taxonomy-fields, .library-consult-selectors, .library-api-grid { grid-template-columns: minmax(0,1fr); }
+    .library-consult-selectors > select { width: 100%; }
+    .library-area-heading { gap: 8px; }
+    .library-copy-button { min-height: 40px; }
+  }
+}

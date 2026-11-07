@@ -72,6 +72,7 @@ function SectionHeader({
     <button
       type="button"
       onClick={onToggle}
+      aria-expanded={open}
       className="flex items-center justify-between w-full py-2 text-left group"
     >
       <span className="text-xs font-semibold uppercase tracking-wide text-[#B8C7D9] group-hover:text-white transition-colors">
@@ -99,6 +100,7 @@ function Pill({
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={active}
       className={`
         relative rounded-md border text-xs font-medium transition-all duration-150 select-none
         ${compact ? "px-2.5 py-1" : "px-3 py-1.5"}

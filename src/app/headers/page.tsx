@@ -2,6 +2,9 @@
 
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "@/app/support.css";
+
 import { useState } from "react";
 import { ProvaHeader } from "@/components/prova/headers/ProvaHeader";
 
@@ -31,20 +34,20 @@ const LAYOUT_NOMES: Record<number, string> = {
   10: "Layout 10 - Completo",
 };
 
-export default function DemoHeadersPage() {
+function DemoHeadersPageContent() {
   const [layoutAtivo, setLayoutAtivo] = useState<number>(0);
 
   const layouts = Array.from({ length: 11 }, (_, i) => ({ id: i, nome: LAYOUT_NOMES[i] }));
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">
+    <div className="support-page">
+      <div className="support-page-inner">
+        <h1 className="support-title mb-6">
           Layouts de Cabeçalho - Demo
         </h1>
 
         {/* Seletor de Layout */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-8">
+        <div className="support-header-selector">
           <h2 className="text-lg font-semibold mb-3 text-gray-700">
             Selecione um layout:
           </h2>
@@ -52,10 +55,11 @@ export default function DemoHeadersPage() {
             {layouts.map((layout) => (
               <button
                 key={layout.id}
+                aria-pressed={layoutAtivo === layout.id}
                 onClick={() => setLayoutAtivo(layout.id)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   layoutAtivo === layout.id
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[var(--ws-brand)] text-[var(--ws-brand-ink)]"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
@@ -66,7 +70,7 @@ export default function DemoHeadersPage() {
         </div>
 
         {/* Preview do Layout Selecionado */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="support-header-preview">
           <h2 className="text-xl font-bold mb-4 text-gray-700">
             {layouts.find((l) => l.id === layoutAtivo)?.nome}
           </h2>
@@ -84,7 +88,7 @@ export default function DemoHeadersPage() {
           </h2>
           <div className="space-y-8">
             {layouts.map((layout) => (
-              <div key={layout.id} className="bg-white rounded-lg shadow-md p-6">
+              <div key={layout.id} className="support-header-preview">
                 <h3 className="text-lg font-bold mb-4 text-gray-700">
                   {layout.nome}
                 </h3>
@@ -100,4 +104,8 @@ export default function DemoHeadersPage() {
       </div>
     </div>
   );
+}
+
+export default function DemoHeadersPage() {
+  return <WorkspaceShell section="mount" title="Modelos de cabeçalho"><DemoHeadersPageContent /></WorkspaceShell>;
 }

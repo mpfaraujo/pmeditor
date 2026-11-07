@@ -1,5 +1,8 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "../../library-workspace.css";
+
 import { Suspense, useMemo, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
@@ -223,7 +226,7 @@ function BaseTextEditorInner() {
 
   if (authLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="library-state" role="status">
         <div className="animate-pulse text-slate-400">Carregando…</div>
       </div>
     );
@@ -231,7 +234,7 @@ function BaseTextEditorInner() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <div className="library-state">
         <p className="text-slate-600">Faça login para editar textos base.</p>
         <Button onClick={() => router.push("/")}>Voltar ao início</Button>
       </div>
@@ -240,7 +243,7 @@ function BaseTextEditorInner() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="library-state" role="status">
         <p className="text-muted-foreground">Carregando texto base…</p>
       </div>
     );
@@ -248,7 +251,7 @@ function BaseTextEditorInner() {
 
   if (!isNew && (notFound || !item)) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+      <div className="library-state">
         <p className="text-destructive">Texto base não encontrado.</p>
         <Link href="/editor/textos-base" className="text-sm text-primary underline">Voltar</Link>
       </div>
@@ -256,12 +259,12 @@ function BaseTextEditorInner() {
   }
 
   return (
-    <div className="min-h-screen bg-[#070B1D]">
+    <div className="library-page">
       {/* Barra superior */}
-      <div className="sticky top-0 z-10 px-4 pt-4">
-        <div className="max-w-6xl mx-auto pm-topbar-dark px-5 py-3 flex items-center justify-between gap-4">
+      <div className="library-heading-wrap">
+        <div className="library-heading library-base-editor-heading">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={handleBack} className="text-[#F4F4F2] hover:bg-white/10 hover:text-white">
+          <Button variant="ghost" size="sm" onClick={handleBack} className="library-back">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Voltar
           </Button>
@@ -271,9 +274,9 @@ function BaseTextEditorInner() {
                 {item.tag}
               </span>
             )}
-            <span className="text-sm text-[#9eb4d1]">
+            <h1 className="library-heading-title">
               {isNew ? "Novo texto base" : "Editar texto base"}
-            </span>
+            </h1>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -288,6 +291,7 @@ function BaseTextEditorInner() {
               size="sm"
               variant="ghost"
               className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              aria-label="Excluir texto base"
               onClick={() => setDeleteState("confirm")}
             >
               <Trash2 className="h-4 w-4" />
@@ -318,41 +322,42 @@ function BaseTextEditorInner() {
             </div>
           )}
           {deleteState === "deleting" && (
-            <span className="text-xs text-[#9eb4d1]">Excluindo…</span>
+            <span className="library-help">Excluindo…</span>
           )}
         </div>
         </div>
       </div>
 
       {/* Metadados */}
-      <div className="max-w-6xl mx-auto px-4 pt-6 pb-4">
-        <div className="pm-surface rounded-2xl p-4 grid grid-cols-2 gap-3">
-          <h2 className="col-span-2 text-sm font-semibold text-muted-foreground">Metadados</h2>
+      <div className="max-w-6xl mx-auto px-4 pt-6 pb-4 library-metadata-wrap">
+        <div className="library-metadata-grid">
+          <h2 className="library-metadata-title">Metadados</h2>
           <div className="space-y-1">
-            <label className="text-xs font-medium">Título</label>
-            <Input value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Ex: Texto I" className="h-8 text-sm" />
+            <label htmlFor="base-titulo" className="text-xs font-medium">Título</label>
+            <Input id="base-titulo" value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Ex: Texto I" className="h-8 text-sm" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium">Autor</label>
-            <Input value={autor} onChange={(e) => setAutor(e.target.value)} placeholder="Ex: Machado de Assis" className="h-8 text-sm" />
+            <label htmlFor="base-autor" className="text-xs font-medium">Autor</label>
+            <Input id="base-autor" value={autor} onChange={(e) => setAutor(e.target.value)} placeholder="Ex: Machado de Assis" className="h-8 text-sm" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium">Disciplina</label>
-            <Input value={disciplina} onChange={(e) => setDisciplina(e.target.value)} placeholder="Ex: Língua Portuguesa" className="h-8 text-sm" />
+            <label htmlFor="base-disciplina" className="text-xs font-medium">Disciplina</label>
+            <Input id="base-disciplina" value={disciplina} onChange={(e) => setDisciplina(e.target.value)} placeholder="Ex: Língua Portuguesa" className="h-8 text-sm" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium">Tema</label>
-            <Input value={tema} onChange={(e) => setTema(e.target.value)} placeholder="Ex: meio ambiente" className="h-8 text-sm" />
+            <label htmlFor="base-tema" className="text-xs font-medium">Tema</label>
+            <Input id="base-tema" value={tema} onChange={(e) => setTema(e.target.value)} placeholder="Ex: meio ambiente" className="h-8 text-sm" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium">Gênero</label>
-            <Input value={genero} onChange={(e) => setGenero(e.target.value)} placeholder="Ex: crônica, poema" className="h-8 text-sm" />
+            <label htmlFor="base-genero" className="text-xs font-medium">Gênero</label>
+            <Input id="base-genero" value={genero} onChange={(e) => setGenero(e.target.value)} placeholder="Ex: crônica, poema" className="h-8 text-sm" />
           </div>
         </div>
       </div>
 
       {/* Editor */}
-      <div className="max-w-6xl mx-auto px-4 pb-12">
+      <div className="library-base-document-scroll">
+      <div className="library-base-document mx-auto px-4 pb-12">
         <BaseTextEditorView
           value={isNew ? null : item?.content}
           onSave={handleSave}
@@ -360,6 +365,7 @@ function BaseTextEditorInner() {
           closeAfterSave
           saving={saving}
         />
+      </div>
       </div>
 
       {/* Containers ocultos de medição canônica de linhas */}
@@ -401,8 +407,8 @@ function BaseTextEditorInner() {
 
 export default function BaseTextEditorPage() {
   return (
-    <Suspense>
+    <WorkspaceShell section="editor" title="Editor de texto base"><Suspense fallback={<div className="library-state" role="status">Carregando editor…</div>}>
       <BaseTextEditorInner />
-    </Suspense>
+    </Suspense></WorkspaceShell>
   );
 }

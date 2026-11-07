@@ -1,5 +1,8 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "@/app/support.css";
+
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -31,7 +34,7 @@ interface FilterOptions {
   dificuldades: string[];
 }
 
-export default function EditarTurmaPage() {
+function EditarTurmaPageContent() {
   const router = useRouter();
   const params = useParams();
   const turmaId = Number(params.id);
@@ -179,33 +182,33 @@ export default function EditarTurmaPage() {
 
   if (loading) {
     return (
-      <div className="pm-shell p-4 md:p-8 flex items-center justify-center">
-        <p className="text-slate-600">Carregando...</p>
+      <div className="support-page support-loading">
+        <p className="text-slate-600" role="status">Carregando turma…</p>
       </div>
     );
   }
 
   if (!turma) {
-    return null;
+    return <div className="support-page support-loading"><div><h1 className="support-title">Turma indisponível</h1><p className="support-description mb-5">Não foi possível carregar os dados desta turma.</p><Button variant="outline" onClick={() => router.push("/minha-area?tab=turmas")}>Voltar para turmas</Button></div></div>;
   }
 
   return (
-    <div className="pm-shell p-4 md:p-8">
-      <div className="pm-shell-inner max-w-6xl">
+    <div className="support-page">
+      <div className="support-page-inner">
         <div className="mb-6">
           <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4 border border-slate-200 bg-white hover:bg-slate-50">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar para Turmas
           </Button>
-          <div className="pm-topbar-dark pm-work-header">
-            <h1 className="pm-work-title text-white">Editar Turma</h1>
-            <p className="pm-work-subtitle">Atualize os filtros da turma</p>
+          <div className="support-page-heading">
+            <h1 className="support-title">Editar Turma</h1>
+            <p className="support-description">Atualize os filtros da turma</p>
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="support-turma-grid">
           {/* Informações Básicas */}
-          <Card className="rounded-2xl border-0 shadow-none pm-surface">
+          <Card className="support-card">
             <CardHeader>
               <CardTitle>Informações da Turma</CardTitle>
             </CardHeader>
@@ -235,7 +238,7 @@ export default function EditarTurmaPage() {
           </Card>
 
           {/* Filtros */}
-          <Card className="rounded-2xl border-0 shadow-none pm-surface">
+          <Card className="support-card">
             <CardHeader>
               <CardTitle>Filtros da Turma</CardTitle>
               <CardDescription>
@@ -377,7 +380,7 @@ export default function EditarTurmaPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleSave} disabled={!nome.trim() || saving} className="pm-accent-button">
+            <Button onClick={handleSave} disabled={!nome.trim() || saving} className="workspace-primary">
               {saving ? "Salvando..." : "Salvar Alterações"}
             </Button>
           </div>
@@ -385,4 +388,8 @@ export default function EditarTurmaPage() {
       </div>
     </div>
   );
+}
+
+export default function EditarTurmaPage() {
+  return <WorkspaceShell section="area" title="Editar turma"><EditarTurmaPageContent /></WorkspaceShell>;
 }

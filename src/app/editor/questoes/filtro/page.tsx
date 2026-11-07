@@ -1,5 +1,8 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "../../library-workspace.css";
+
 import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -13,8 +16,8 @@ function LegacyFiltroRedirect() {
   }, [router, searchParams]);
 
   return (
-    <div className="pm-shell flex items-center justify-center p-6">
-      <div className="pm-surface rounded-2xl px-6 py-5 text-center">
+    <div className="library-state" role="status">
+      <div className="library-auth-panel">
         <h1 className="text-lg font-semibold text-slate-900">Redirecionando…</h1>
         <p className="mt-1 text-sm text-slate-500">
           A configuração da prova agora fica separada do banco de questões.
@@ -26,8 +29,8 @@ function LegacyFiltroRedirect() {
 
 export default function FiltroQuestoesPage() {
   return (
-    <Suspense>
+    <WorkspaceShell section="mount" title="Configuração da prova"><Suspense fallback={<div className="library-state" role="status">Preparando configuração…</div>}>
       <LegacyFiltroRedirect />
-    </Suspense>
+    </Suspense></WorkspaceShell>
   );
 }

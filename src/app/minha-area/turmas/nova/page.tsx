@@ -1,5 +1,8 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "@/app/support.css";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -31,7 +34,7 @@ interface FilterOptions {
   dificuldades: string[];
 }
 
-export default function NovaTurmaPage() {
+function NovaTurmaPageContent() {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -144,22 +147,22 @@ export default function NovaTurmaPage() {
   };
 
   return (
-    <div className="pm-shell p-4 md:p-8">
-      <div className="pm-shell-inner max-w-6xl">
+    <div className="support-page">
+      <div className="support-page-inner">
         <div className="mb-6">
           <Button variant="ghost" onClick={() => router.push("/minha-area?tab=turmas")} className="mb-4 border border-slate-200 bg-white hover:bg-slate-50">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar para Turmas
           </Button>
-          <div className="pm-topbar-dark pm-work-header">
-            <h1 className="pm-work-title text-white">Nova Turma</h1>
-            <p className="pm-work-subtitle">Configure os filtros que serão aplicados automaticamente</p>
+          <div className="support-page-heading">
+            <h1 className="support-title">Nova Turma</h1>
+            <p className="support-description">Configure os filtros que serão aplicados automaticamente</p>
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="support-turma-grid">
           {/* Informações Básicas */}
-          <Card className="rounded-2xl border-0 shadow-none pm-surface">
+          <Card className="support-card">
             <CardHeader>
               <CardTitle>Informações da Turma</CardTitle>
             </CardHeader>
@@ -189,7 +192,7 @@ export default function NovaTurmaPage() {
           </Card>
 
           {/* Filtros */}
-          <Card className="rounded-2xl border-0 shadow-none pm-surface">
+          <Card className="support-card">
             <CardHeader>
               <CardTitle>Filtros da Turma</CardTitle>
               <CardDescription>
@@ -331,7 +334,7 @@ export default function NovaTurmaPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleSave} disabled={!nome.trim() || saving} className="pm-accent-button">
+            <Button onClick={handleSave} disabled={!nome.trim() || saving} className="workspace-primary">
               {saving ? "Salvando..." : "Salvar Turma"}
             </Button>
           </div>
@@ -339,4 +342,8 @@ export default function NovaTurmaPage() {
       </div>
     </div>
   );
+}
+
+export default function NovaTurmaPage() {
+  return <WorkspaceShell section="area" title="Nova turma"><NovaTurmaPageContent /></WorkspaceShell>;
 }

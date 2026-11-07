@@ -1,5 +1,8 @@
 "use client";
 
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
+import "@/app/support.css";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useProva } from "@/contexts/ProvaContext";
@@ -23,7 +26,7 @@ type LayoutType = "prova" | "exercicio" | "acessivel";
 type ColumnCount = 1 | 2;
 
 
-export default function SelecionarLayoutPage() {
+function SelecionarLayoutPageContent() {
   
   const router = useRouter();
   const { provaConfig, updateProvaConfig } = useProva();
@@ -130,70 +133,56 @@ useEffect(() => {
 if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-[#070B1D] text-white p-4 md:p-8">
-      <div className="pm-shell-inner max-w-6xl">
-        <div className="mb-5 animate-fade-in-up">
-          <div className="flex items-start gap-5 border border-white/6 bg-[#0B1020] px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.22)]">
-            <div className="shrink-0">
-              <Button variant="ghost" onClick={handleVoltar} className="h-9 text-[#9eb4d1] hover:bg-white/10 hover:text-white">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Voltar
-              </Button>
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-[1.85rem] font-bold leading-tight text-white">
-                Configurar Prova
-              </h1>
-              <p className="mt-0.5 text-[0.95rem] leading-relaxed text-[#9eb4d1]">
-                Escolha o layout e preencha os dados
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="support-page support-config">
+      <div className="support-page-inner">
+        <header className="support-page-heading"><div><h1>Configurar prova</h1><p>Escolha o formato, ajuste a apresentação e preencha os dados do cabeçalho.</p></div><Button variant="outline" onClick={handleVoltar}><ArrowLeft size={16} />Voltar ao banco</Button></header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up">
+        <div className="support-config-grid">
           {/* Layout */}
           <div className="lg:col-span-1">
-            <Card className="h-full rounded-2xl border border-white/8 bg-[#10172B] text-[#F4F4F2] shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
+            <Card className="support-card support-format-panel">
               <CardHeader className="pb-4">
-                <CardTitle className="text-white">Layout</CardTitle>
-                <CardDescription className="text-[#9eb4d1]">Formato e colunas</CardDescription>
+                <CardTitle className="text-[var(--ws-ink)]">Layout</CardTitle>
+                <CardDescription className="text-[var(--ws-muted)]">Formato e colunas</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <button
                     type="button"
+                    aria-pressed={layoutType === "prova"}
                     onClick={() => setLayoutType("prova")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "prova"
-                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
-                        : "border-white/10 bg-white/4 text-white"
+                        ? "border-[var(--ws-good)] bg-[var(--ws-selected)] text-[var(--ws-ink)]"
+                        : "border-[var(--ws-line)] bg-[var(--ws-paper)] text-[var(--ws-ink)]"
                     }`}
                   >
                     <div className="font-semibold">Prova</div>
                   </button>
                   <button
                     type="button"
+                    aria-pressed={layoutType === "exercicio"}
                     onClick={() => setLayoutType("exercicio")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "exercicio"
-                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
-                        : "border-white/10 bg-white/4 text-white"
+                        ? "border-[var(--ws-good)] bg-[var(--ws-selected)] text-[var(--ws-ink)]"
+                        : "border-[var(--ws-line)] bg-[var(--ws-paper)] text-[var(--ws-ink)]"
                     }`}
                   >
                     <div className="font-semibold">Lista de Exercício</div>
                   </button>
                   <button
                     type="button"
+                    aria-pressed={layoutType === "acessivel"}
                     onClick={() => setLayoutType("acessivel")}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       layoutType === "acessivel"
-                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
-                        : "border-white/10 bg-white/4 text-white"
+                        ? "border-[var(--ws-good)] bg-[var(--ws-selected)] text-[var(--ws-ink)]"
+                        : "border-[var(--ws-line)] bg-[var(--ws-paper)] text-[var(--ws-ink)]"
                     }`}
                   >
                     <div className="font-semibold">Acessível (TEA / TDAH)</div>
-                    <div className={`mt-0.5 text-xs ${layoutType === "acessivel" ? "text-[#2D3436]/75" : "text-[#9eb4d1]"}`}>1 coluna, tipografia ampliada, espaçamento aumentado</div>
+                    <div className={`mt-0.5 text-xs ${layoutType === "acessivel" ? "text-[#2D3436]/75" : "text-[var(--ws-muted)]"}`}>1 coluna, tipografia ampliada, espaçamento aumentado</div>
                   </button>
                 </div>
 
@@ -201,22 +190,24 @@ if (!mounted) return null;
                 <div className="space-y-2">
                   <button
                     type="button"
+                    aria-pressed={columns === 1}
                     onClick={() => setColumns(1)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       columns === 1
-                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
-                        : "border-white/10 bg-white/4 text-white"
+                        ? "border-[var(--ws-good)] bg-[var(--ws-selected)] text-[var(--ws-ink)]"
+                        : "border-[var(--ws-line)] bg-[var(--ws-paper)] text-[var(--ws-ink)]"
                     }`}
                   >
                     1 Coluna
                   </button>
                   <button
                     type="button"
+                    aria-pressed={columns === 2}
                     onClick={() => setColumns(2)}
                     className={`w-full p-3 rounded-lg border-2 text-left ${
                       columns === 2
-                        ? "border-[#FBC02D] bg-[#FBC02D] text-[#2D3436]"
-                        : "border-white/10 bg-white/4 text-white"
+                        ? "border-[var(--ws-good)] bg-[var(--ws-selected)] text-[var(--ws-ink)]"
+                        : "border-[var(--ws-line)] bg-[var(--ws-paper)] text-[var(--ws-ink)]"
                     }`}
                   >
                     2 Colunas
@@ -225,7 +216,7 @@ if (!mounted) return null;
 
                 {/* Header */}
                 <div className="space-y-2">
-                  <Label className="text-[#F4F4F2]">Modelo de cabeçalho</Label>
+                  <Label className="text-[var(--ws-ink)]">Modelo de cabeçalho</Label>
                   <DotPicker
                     value={headerLayout}
                     options={headerOptions}
@@ -234,7 +225,7 @@ if (!mounted) return null;
                 </div>
                 {/* Decorador da questão */}
                 <div className="space-y-2">
-                  <Label className="text-[#F4F4F2]">Decorador da questão</Label>
+                  <Label className="text-[var(--ws-ink)]">Decorador da questão</Label>
                   <DotPicker
                   value={questionHeaderVariant}
                   options={decoratorOptions}
@@ -250,7 +241,7 @@ if (!mounted) return null;
                     checked={showGabarito}
                     onCheckedChange={(v) => setShowGabarito(Boolean(v))}
                   />
-                  <Label htmlFor="showGabarito" className="text-[#F4F4F2]">Mostrar gabaritos</Label>
+                  <Label htmlFor="showGabarito" className="text-[var(--ws-ink)]">Mostrar gabaritos</Label>
                 </div>
               </CardContent>
             </Card>
@@ -258,7 +249,7 @@ if (!mounted) return null;
 
           {/* Dados */}
           <div className="lg:col-span-2">
-            <Card className="rounded-2xl border border-white/8 bg-[#F8FAFC] text-[#0F172A] shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+            <Card className="support-card">
               <CardHeader>
                 <CardTitle>Dados da Prova</CardTitle>
                 <CardDescription className="text-[#64748B]">Cabeçalho</CardDescription>
@@ -374,4 +365,8 @@ if (!mounted) return null;
 )}
     </div>
   );
+}
+
+export default function SelecionarLayoutPage() {
+  return <WorkspaceShell section="mount" title="Configurar prova"><SelecionarLayoutPageContent /></WorkspaceShell>;
 }

@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import ProvaMontarView from "@/components/prova/ProvaMontarView";
 import { LogoPicker } from "@/components/editor/LogoPicker";
 import { Button } from "@/components/ui/button";
+import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -394,8 +395,9 @@ export default function DiagramarProvaPage() {
   if (!mounted) return null;
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <aside className="print:hidden fixed inset-y-0 left-0 z-40 flex w-[380px] flex-col border-r border-slate-200 bg-slate-50">
+    <WorkspaceShell section="mount" title="Diagramação da prova">
+    <div className="workspace-diagramar-layout">
+      <aside className="workspace-diagramar-controls print:hidden" aria-label="Configurações de diagramação">
         <div className="flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-3 py-2.5">
           <Button variant="ghost" size="sm" onClick={() => router.push("/editor/questoes?from=montar")}>
             <ArrowLeft className="mr-1 h-4 w-4" />
@@ -425,7 +427,7 @@ export default function DiagramarProvaPage() {
         </div>
       </aside>
 
-      <main className="min-w-0 flex-1 pl-[380px] print:pl-0">
+      <main className="workspace-diagramar-canvas">
         <ProvaMontarView variant="diagramar" />
       </main>
 
@@ -436,5 +438,6 @@ export default function DiagramarProvaPage() {
         instituicao={provaConfig.instituicao}
       />
     </div>
+    </WorkspaceShell>
   );
 }
