@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ProvaHeader — componente único para todos os layouts de cabeçalho (0–10).
+ * ProvaHeader — componente único para todos os layouts de cabeçalho (0–11).
  * Cada layout é uma função interna que recebe os mesmos campos e helpers.
  *
  * Para adicionar um novo layout:
@@ -12,7 +12,7 @@
 import React from "react";
 
 export interface ProvaHeaderProps {
-  layout?: number; // 0–10, default 0
+  layout?: number; // 0–11, default 0
   logoUrl: string | null;
   logoPlaceholder?: string;
   onLogoClick: () => void;
@@ -840,6 +840,75 @@ function Layout10({
   );
 }
 
+/** Campo com rótulo estilo legenda de fieldset (corta a borda de cima). Usado pelo Layout11. */
+function CampoLegenda({
+  label, flex, editAttrs, children,
+}: {
+  label: string;
+  flex: number;
+  editAttrs: React.HTMLAttributes<HTMLElement>;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className="relative h-full box-border border border-[#9aa0ab] rounded-[8px] px-[10px] flex items-center min-w-0"
+      style={{ flex }}
+    >
+      <span className="absolute top-[-7px] left-[7px] bg-white px-[4px] text-[9.5px] leading-none text-[#6b7684] whitespace-nowrap">
+        {label}
+      </span>
+      <span
+        className="text-[13px] leading-[1.3] text-[#1f2430] outline-none w-full overflow-hidden whitespace-nowrap"
+        {...editAttrs}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
+
+/** Layout11 — "H3": logo em coluna própria, campos com legenda, barra de aviso clara, sem moldura. */
+function Layout11({
+  logoUrl, logoPlaceholder, onLogoClick, isEditable,
+  nome, turma, professor, disciplina, data, nota, instituicao,
+  onFieldChange,
+}: ProvaHeaderProps) {
+  const E = (f: string) => ed(f, !!isEditable, onFieldChange);
+  return (
+    <div className="w-[18cm] mb-4 flex bg-white [print-color-adjust:exact] [-webkit-print-color-adjust:exact]">
+      <div
+        className={`w-[74px] shrink-0 self-stretch flex items-center justify-center bg-[#f8f9fb] border-r border-[#e3e5e9] ${isEditable ? "cursor-pointer" : "cursor-default"}`}
+        onClick={isEditable ? onLogoClick : undefined}
+      >
+        {logoUrl ? (
+          <img src={logoUrl} alt="Logo da instituição" className="w-[52px] h-[52px] object-contain" />
+        ) : (
+          <span className="text-xs font-bold text-center px-1">{logoPlaceholder?.trim() ?? ""}</span>
+        )}
+      </div>
+
+      <div className="flex-1 min-w-0 box-border py-[10px] px-[6px] flex flex-col justify-center gap-[6px]">
+        <div className="flex gap-[8px] h-[32px]">
+          <CampoLegenda label="Nome" flex={3} editAttrs={E("nome")}>{nome ?? ""}</CampoLegenda>
+          <CampoLegenda label="Turma" flex={1} editAttrs={E("turma")}>{turma ?? ""}</CampoLegenda>
+        </div>
+        <div className="flex gap-[8px] h-[32px]">
+          <CampoLegenda label="Professor" flex={2} editAttrs={E("professor")}>{professor ?? ""}</CampoLegenda>
+          <CampoLegenda label="Disciplina" flex={2} editAttrs={E("disciplina")}>{disciplina ?? ""}</CampoLegenda>
+          <CampoLegenda label="Data" flex={1} editAttrs={E("data")}>{formatDateBR(data ?? "")}</CampoLegenda>
+          <CampoLegenda label="Nota" flex={1} editAttrs={E("nota")}>{nota ?? ""}</CampoLegenda>
+        </div>
+        <div
+          className="bg-[#f1f3f6] text-[#3a4150] text-center text-[12px] font-semibold py-[5px] rounded-[4px] outline-none min-h-[1.5em]"
+          {...E("instituicao")}
+        >
+          {instituicao ?? ""}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── componente principal ────────────────────────────────────────────────────
 
 const LAYOUT_MAP: Record<number, React.ComponentType<ProvaHeaderProps>> = {
@@ -854,6 +923,7 @@ const LAYOUT_MAP: Record<number, React.ComponentType<ProvaHeaderProps>> = {
   8: Layout8,
   9: Layout9,
   10: Layout10,
+  11: Layout11,
 };
 
 export function ProvaHeader(props: ProvaHeaderProps) {

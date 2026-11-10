@@ -97,7 +97,7 @@ export function HeaderPreviewModal({
             {/* TAB: CABEÇALHOS */}
             <TabsContent value="headers" className="flex-1 overflow-hidden flex flex-col space-y-4">
               <div className="flex flex-wrap gap-2 justify-center p-2 bg-slate-50 rounded-lg border">
-                {Array.from({ length: 11 }, (_, i) => (
+                {Array.from({ length: 12 }, (_, i) => (
                   <Button
                     key={i}
                     variant={selectedHeaderLayout === i ? "default" : "outline"}

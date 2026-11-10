@@ -40,8 +40,8 @@ export type ProvaConfig = {
   logoPlaceholder: string;
 
 
-  // header layout (0..10)
-  headerLayout: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  // header layout (0..11)
+  headerLayout: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   questionHeaderVariant: 0 | 1 | 2 | 3 | 4;
 
   // trilha "diagramar" (aditivo; vazio = comportamento clássico)
@@ -137,9 +137,9 @@ function isSetDoc(doc: PMNode | null): boolean {
   return !!doc?.content?.some((n) => n?.type === "set_questions");
 }
 
-function normalizeHeaderLayout(v: any): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 {
+function normalizeHeaderLayout(v: any): ProvaConfig["headerLayout"] {
   const n = typeof v === "number" ? v : Number(v);
-  if (n >= 0 && n <= 10) return n as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  if (Number.isInteger(n) && n >= 0 && n <= 11) return n as ProvaConfig["headerLayout"];
   return 0;
 }
 

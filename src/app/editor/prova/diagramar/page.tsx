@@ -16,7 +16,7 @@ import { moverPara, numeracaoPrevista, somarPontos, trechoInicial } from "@/lib/
 
 type Aba = "prova" | "ordem" | "pontos";
 
-const headerOptions: DotPickerOption[] = Array.from({ length: 11 }, (_, i) => ({
+const headerOptions: DotPickerOption[] = Array.from({ length: 12 }, (_, i) => ({
   value: i,
   title: i === 0 ? "Cabeçalho original" : `Cabeçalho ${i}`,
   ariaLabel: `Cabeçalho ${i}`,

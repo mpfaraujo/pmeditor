@@ -66,7 +66,7 @@ const [logoPlaceholder, setLogoPlaceholder] = useState<string>(
     (provaConfig as any).headerLayout ?? 0
   );
 
-  const headerOptions: DotPickerOption[] = Array.from({ length: 11 }, (_, i) => ({
+  const headerOptions: DotPickerOption[] = Array.from({ length: 12 }, (_, i) => ({
     value: i,
     title: i === 0 ? "Header original" : `Header layout ${i}`,
     ariaLabel: `Header layout ${i}`,
