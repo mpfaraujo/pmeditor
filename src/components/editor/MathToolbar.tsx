@@ -38,12 +38,12 @@ function MathPaletteIcon({ latex }: { latex: string }) {
 export default function MathToolbar({ value, onChange, textareaRef }: Props) {
   return (
     <Tabs defaultValue="basic" className="mt-1">
-      <TabsList className="h-7 w-full justify-start gap-px overflow-x-auto rounded-sm border border-[#3A3323] bg-[#161B2E] px-px py-px">
+      <TabsList className="h-7 w-full justify-start gap-px overflow-x-auto rounded-sm border border-[var(--ws-line,#dce2de)] bg-[var(--ws-bg,#edf0ee)] px-px py-px">
         {mathPalette.map(g => (
           <TabsTrigger
             key={g.id}
             value={g.id}
-            className="h-6 rounded-none px-1.5 text-[10px] font-medium text-[#D8D0BE] data-[state=active]:bg-[#EAD7A4] data-[state=active]:text-[#241E12] data-[state=active]:shadow-none"
+            className="h-6 rounded-none px-1.5 text-[10px] font-medium text-[var(--ws-muted,#5e7069)] data-[state=active]:bg-[var(--ws-brand,#e6c76a)] data-[state=active]:text-[var(--ws-brand-ink,#302b1d)] data-[state=active]:shadow-none"
           >
             {g.label}
           </TabsTrigger>
@@ -52,8 +52,8 @@ export default function MathToolbar({ value, onChange, textareaRef }: Props) {
 
       {mathPalette.map(group => (
         <TabsContent key={group.id} value={group.id} className="mt-1">
-          <ScrollArea className="h-[54px] rounded-sm border border-[#3A3323] bg-[#161B2E]">
-            <div className="flex flex-wrap content-start gap-px bg-[#3A3323] p-px">
+          <ScrollArea className="h-[54px] rounded-sm border border-[var(--ws-line,#dce2de)] bg-[var(--ws-bg,#edf0ee)]">
+            <div className="flex flex-wrap content-start gap-px bg-[var(--ws-line,#dce2de)] p-px">
               {group.items.map(item => {
                 if (item.id === "matrix") {
                   return (
@@ -71,7 +71,7 @@ export default function MathToolbar({ value, onChange, textareaRef }: Props) {
                     key={item.id}
                     type="button"
                     variant="outline"
-                    className="h-6 w-6 rounded-none border-0 bg-[#F2E6C8] p-0 text-[10px] text-[#241E12] shadow-none hover:bg-[#E8D7AE]"
+                    className="h-6 w-6 rounded-none border-0 bg-white p-0 text-[10px] text-[var(--ws-ink,#263433)] shadow-none hover:bg-[var(--ws-soft,#fbf4df)]"
                     onClick={() =>
                       item.insert({
                         value,

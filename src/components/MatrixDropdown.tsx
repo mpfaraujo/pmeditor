@@ -54,7 +54,7 @@ export default function MatrixDropdown({
         <Button
           type="button"
           variant="outline"
-          className="h-6 w-6 rounded-none border-0 bg-[#F2E6C8] p-0 text-[#241E12] shadow-none hover:bg-[#E8D7AE]"
+          className="h-6 w-6 rounded-none border-0 bg-white p-0 text-[var(--ws-ink,#263433)] shadow-none hover:bg-[var(--ws-soft,#fbf4df)]"
         >
           <MatrixTriggerIcon />
         </Button>

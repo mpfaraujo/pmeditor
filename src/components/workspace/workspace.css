@@ -137,6 +137,11 @@
     .workspace-mount-canvas { padding-left: 204px; }
   }
   @media(max-width:1279px) { .workspace-selection { display: none; } }
+  /* Tablet 11" deitado (~1194px): menu 72 + painel 300 + folha 794 cabem sem rolagem horizontal. */
+  @media(min-width:1024px) and (max-width:1279px) {
+    .workspace-diagramar-controls { width: 300px; }
+    .workspace-diagramar-canvas { margin-left: 300px; }
+  }
   @media(max-width:1023px) {
     .workspace-diagramar-controls { position: static; width: auto; max-height: 60dvh; border-bottom: 1px solid var(--ws-line); border-right: 0; }
     .workspace-diagramar-canvas { margin-left: 0; }

@@ -94,10 +94,10 @@ export function MathInsert({
   return (
     <TooltipProvider>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[560px] border border-white/10 bg-[#0B1020] p-3 text-white shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+        <DialogContent className="max-w-[560px] border border-[var(--ws-line,#dce2de)] bg-[var(--ws-paper,#fff)] p-3 text-[var(--ws-ink,#263433)] shadow-[0_24px_80px_rgba(0,0,0,0.18)]">
           <DialogHeader className="space-y-1">
             <DialogTitle className="text-base">{title}</DialogTitle>
-            <DialogDescription className="text-xs text-slate-300">
+            <DialogDescription className="text-xs text-[var(--ws-muted,#5e7069)]">
               Use a paleta ou edite diretamente o LaTeX.
             </DialogDescription>
           </DialogHeader>
@@ -113,7 +113,7 @@ export function MathInsert({
           <div className="space-y-2 mt-2">
             <textarea
               ref={textareaRef}
-              className="h-[96px] w-full rounded-md border border-white/10 bg-[#121A2E] px-2 py-1 text-xs text-white placeholder:text-slate-400"
+              className="h-[96px] w-full rounded-md border border-[var(--ws-line,#dce2de)] bg-white px-2 py-1 font-mono text-xs text-[var(--ws-ink,#263433)] placeholder:text-slate-400"
               value={latex}
               onChange={(e) => setLatex(e.target.value)}
               placeholder="LaTeX..."
@@ -135,7 +135,7 @@ export function MathInsert({
           <DialogFooter className="gap-2 pt-1">
             <Button
               variant="outline"
-              className="h-7 border-white/12 bg-white/5 px-3 text-xs text-white hover:bg-white/10 hover:text-white"
+              className="h-7 px-3 text-xs"
               onClick={() => {
                 onOpenChange(false);
                 setErr("");
@@ -143,7 +143,7 @@ export function MathInsert({
             >
               Cancelar
             </Button>
-            <Button className="h-7 px-3 text-xs" onClick={handleInsert}>
+            <Button className="workspace-primary h-7 px-3 text-xs" onClick={handleInsert}>
               Salvar
             </Button>
           </DialogFooter>

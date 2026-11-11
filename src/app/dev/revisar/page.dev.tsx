@@ -7,7 +7,6 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { WorkspaceShell } from "@/components/workspace/WorkspaceShell";
 import { QuestionEditor } from "@/components/editor/QuestionEditor";
 import { BaseTextEditorView } from "@/components/editor/BaseTextEditorView";
 import { isBaseTextEntry, isSetEntry, type QueueEntry } from "@/lib/importQueue/types";
@@ -195,10 +194,8 @@ function RevisarInner() {
 
 export default function RevisarPage() {
   return (
-    <WorkspaceShell section="area" title="Revisão pré-importação">
     <Suspense>
       <RevisarInner />
     </Suspense>
-    </WorkspaceShell>
   );
 }
