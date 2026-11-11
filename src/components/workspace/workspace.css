@@ -72,6 +72,7 @@
   .workspace-bank-filters [role="checkbox"][data-state="checked"] { color: var(--ws-paper); }
   .workspace-bank-filters .uppercase { text-transform: none; letter-spacing: normal; }
   .workspace-bank-filters-close { display: none; }
+  .workspace-filters-backdrop { display: none; }
   .workspace-bank-main { min-height: 0; flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: var(--ws-bg); }
   .workspace-bank-heading { padding: 16px 24px; background: var(--ws-paper); border-bottom: 1px solid var(--ws-line); }
   .workspace-bank-heading .workspace-legacy-links { display: none; }
@@ -149,8 +150,11 @@
     .workspace-diagramar-canvas { margin-left: 0; }
     .workspace-bank-filters { display: none; }
     .workspace-filter-toggle { display: inline-flex; }
-    .workspace-filters-open .workspace-bank-filters { display: flex; flex-direction: column; position: absolute; inset: 0 auto 0 0; width: min(300px, 88vw); z-index: 35; background: var(--ws-dark); box-shadow: 12px 0 30px color-mix(in srgb, var(--ws-dark) 20%, transparent); }
-    .workspace-bank-filters-close { display: flex; justify-content: end; padding: 8px; color: var(--ws-dark-ink); }
+    .workspace-filters-open .workspace-bank-filters { display: flex; flex-direction: column; position: absolute; inset: 0 auto 0 0; width: min(300px, 80vw); z-index: 35; background: var(--ws-paper); box-shadow: 12px 0 30px color-mix(in srgb, var(--ws-dark) 20%, transparent); }
+    .workspace-filters-backdrop { display: block; position: absolute; inset: 0; z-index: 34; background: color-mix(in srgb, var(--ws-dark) 35%, transparent); }
+    /* Botão de fechar fica no rodapé da gaveta, sempre visível; precisa vencer a regra que força cor de texto nos botões do filtro. */
+    .workspace-bank-filters-close { display: flex; order: 2; padding: 10px; border-top: 1px solid var(--ws-line); background: var(--ws-paper); }
+    .workspace-bank-filters .workspace-bank-filters-close button { color: var(--ws-brand-ink); }
     .workspace-bank-filters > aside { min-height: 0; flex: 1; }
     .workspace-editor-layout { grid-template-columns: minmax(0, 1fr); }
     .workspace-inspector { border-left: 0; border-top: 1px solid var(--ws-line); }

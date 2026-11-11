@@ -423,8 +423,9 @@ export default function QuestoesPage() {
   return (
     <WorkspaceShell section="bank" title="Banco de questões">
     <div className={`workspace-bank-layout ${filtersOpen ? "workspace-filters-open" : ""}`}>
+      {filtersOpen && <button type="button" className="workspace-filters-backdrop" aria-label="Fechar filtros" onClick={() => setFiltersOpen(false)} />}
       <div className="workspace-bank-filters" id="workspace-bank-filters">
-        <div className="workspace-bank-filters-close"><Button variant="ghost" size="sm" onClick={() => setFiltersOpen(false)}>Fechar filtros<X size={16} /></Button></div>
+        <div className="workspace-bank-filters-close"><Button size="sm" className="workspace-primary w-full" onClick={() => setFiltersOpen(false)}>Ver {totalResults} {totalResults === 1 ? "questão" : "questões"}<X size={16} /></Button></div>
       <QuestionsFilterSidebar
         state={filterState}
         totalResults={totalResults}
