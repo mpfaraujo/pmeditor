@@ -32,12 +32,13 @@ const LAYOUT_NOMES: Record<number, string> = {
   8: "Layout 8 - Com Ícones",
   9: "Layout 9 - Moderno",
   10: "Layout 10 - Completo",
+  11: "Layout 11 - Legenda (H3)",
 };
 
 function DemoHeadersPageContent() {
   const [layoutAtivo, setLayoutAtivo] = useState<number>(0);
 
-  const layouts = Array.from({ length: 11 }, (_, i) => ({ id: i, nome: LAYOUT_NOMES[i] }));
+  const layouts = Array.from({ length: 12 }, (_, i) => ({ id: i, nome: LAYOUT_NOMES[i] }));
 
   return (
     <div className="support-page">
