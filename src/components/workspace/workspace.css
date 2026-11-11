@@ -137,6 +137,8 @@
     .workspace-mount-canvas { padding-left: 204px; }
   }
   @media(max-width:1279px) { .workspace-selection { display: none; } }
+  /* A partir de 1280px o painel lateral "Sua prova" assume as ações; a barra inferior só aparece abaixo disso. */
+  @media(min-width:1280px) { .workspace-selectionbar { display: none; } }
   /* Tablet 11" deitado (~1194px): menu 72 + painel 300 + folha 794 cabem sem rolagem horizontal. */
   @media(min-width:1024px) and (max-width:1279px) {
     .workspace-diagramar-controls { width: 300px; }

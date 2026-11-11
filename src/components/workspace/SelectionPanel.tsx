@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useProva } from "@/contexts/ProvaContext";
 
 export function SelectionPanel({ onBuild, onDiagramar }: { onBuild: () => void; onDiagramar: () => void }) {
-  const { selectedQuestions, removeQuestion, selectedCount } = useProva();
+  const { selectedQuestions, removeQuestion, selectedCount, clearAll } = useProva();
   return (
     <aside className="workspace-selection print:hidden" aria-label="Questões da sua prova">
       <div className="workspace-selection-heading"><h2>Sua prova</h2><span>{selectedCount}</span></div>
@@ -26,6 +26,7 @@ export function SelectionPanel({ onBuild, onDiagramar }: { onBuild: () => void; 
       <div className="workspace-selection-actions">
         <Button onClick={onBuild} disabled={selectedCount === 0} className="workspace-primary w-full">Montar prova<ArrowRight size={16} /></Button>
         <Button variant="outline" onClick={onDiagramar} disabled={selectedCount === 0} className="w-full">Diagramar</Button>
+        <Button variant="ghost" size="sm" onClick={clearAll} disabled={selectedCount === 0} className="w-full text-muted-foreground">Limpar seleção</Button>
       </div>
     </aside>
   );
