@@ -41,6 +41,13 @@
  *   "[linear][2 colunas] 1ª questão maior que a coluna da 1ª página não deixa a página 0 vazia"
  *   "[linear] questão > firstPageCapacity em página intermediária NÃO é fragmentada"
  *
+ * Caso irmão (linear, 2026-11-20 — "Q22"): questão MAIOR que a página chega
+ * numa coluna com sobra pequena; o 1º fragmento não cabe na sobra. NÃO pôr
+ * a questão inteira na coluna limpa: avançar e dividir de novo a partir dela.
+ * Testes: "[linear] questão maior que a página recomeça a divisão na página
+ * limpa quando a sobra é pequena" e "[linear] bloco único maior que a página
+ * continua no último recurso (full), sem travar".
+ *
  * 2. appendOptions e textBlockCount
  * ───────────────────────────────────
  * appendOptions retorna:
@@ -865,10 +872,32 @@ export function distributeQuestionsAcrossPages(
       }
     }
 
+    // Regressão Q22 (2026-11-20): a divisão falhou porque o 1º fragmento não
+    // cabe na SOBRA da coluna atual (ex.: 196px livres, cabeçalho + imagem =
+    // 224px). Antes, o último recurso abaixo punha a questão INTEIRA na coluna
+    // limpa — overflow quando ela é maior que a coluna. Agora: avança para a
+    // coluna/página limpa e tenta dividir DE NOVO com a capacidade cheia.
+    // Só vale com a coluna atual ocupada (used > 0): a página atual não fica
+    // vazia, então a regra da página 0 (item 1 do cabeçalho) não é afetada.
+    if (!frag && used > 0) {
+      nextColumnOrPage();
+      const capLimpo = getCap();
+      const capNextLimpo = columns === 2 && col === "coluna1" ? getCap() : otherPageCapacity;
+      frag = buildFragmentsForQuestion(i, split, capLimpo, capNextLimpo);
+      if (!frag) {
+        const splitExpanded = measureSplitInfo(measureItemsRef, i, true);
+        if (splitExpanded) {
+          frag = buildFragmentsForQuestion(i, splitExpanded, capLimpo, capNextLimpo);
+        }
+      }
+    }
+
     if (!frag) {
       // ALTERAÇÃO DOCUMENTADA:
       // Antes esse fallback era silencioso. Mantive o comportamento, mas agora
       // ele deixa um aviso explícito para depuração.
+      // Chega aqui só se nem a coluna limpa permite dividir (ex.: bloco único
+      // maior que a página) — caso sem solução pela paginação.
       console.warn(
         `[pagination][linear] Falha ao fragmentar questão ${i}. Inserindo como 'full' por fallback.`
       );

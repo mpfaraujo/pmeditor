@@ -91,6 +91,34 @@ describe('pagination - layout e regressões', () => {
     expect(q1).toEqual([{ kind: 'full', q: 1 }])
   })
 
+  // Regressão (Q22, 2026-11-20): questão maior que a página chega numa coluna
+  // com sobra pequena (196px). O 1º fragmento não cabe na sobra → a divisão
+  // falhava e o último recurso punha a questão INTEIRA na página limpa,
+  // vazando sobre o rodapé. Correto: na página limpa, medir de novo e dividir.
+  test('[linear] questão maior que a página recomeça a divisão na página limpa quando a sobra é pequena', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 795, blockHeights: [400, 395], noOptions: true },
+      { wrapperHeight: 1102, blockHeights: [250, 250, 250, 250, 102], noOptions: true },
+    ])
+    const pages = distributeQuestionsAcrossPages(2, [795, 1102], 991, 991, 1, m)
+    const q1 = flattenItems(pages).filter((x) => x.q === 1)
+    expect(q1.length).toBeGreaterThan(1)
+    expect(q1.every((x: any) => x.kind === 'frag')).toBe(true)
+    // q0 sozinha na 1ª página; q1 começa na página limpa
+    expect(pages[0].coluna1).toEqual([{ kind: 'full', q: 0 }])
+    expect(pages[1].coluna1[0]).toMatchObject({ kind: 'frag', q: 1, first: true })
+  })
+
+  test('[linear] bloco único maior que a página continua no último recurso (full), sem travar', () => {
+    const m = createMeasurementContainer([
+      { wrapperHeight: 795, blockHeights: [400, 395], noOptions: true },
+      { wrapperHeight: 1200, blockHeights: [1200], noOptions: true },
+    ])
+    const pages = distributeQuestionsAcrossPages(2, [795, 1200], 991, 991, 1, m)
+    expect(flattenItems(pages).filter((x) => x.q === 1)).toEqual([{ kind: 'full', q: 1 }])
+    expect(pages[1].coluna1).toEqual([{ kind: 'full', q: 1 }])
+  })
+
   // ─── Bug de regressão — overflow na primeira página ────────────────────────
   //
   // Quando q.height > firstPageCapacity mas q.height <= otherPageCapacity,
