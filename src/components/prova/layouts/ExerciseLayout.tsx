@@ -13,6 +13,7 @@ import { ProvaFooter } from "../ProvaFooter";
 import { useProva } from "@/contexts/ProvaContext";
 import type { QuestionPermutation } from "@/lib/GeraTiposDeProva";
 import { SpacerHandle } from "../SpacerHandle";
+import { MeasureLayer } from "./MeasureLayer";
 
 interface ExerciseLayoutProps extends LayoutProps {
   columns: ColumnCount;
@@ -33,6 +34,7 @@ export function ExerciseLayout({
   onLogoClick,
   renderQuestion,
   refs,
+  blocos,
   columns,
   tipoAtual,
   numTipos,
@@ -73,48 +75,30 @@ export function ExerciseLayout({
 
   return (
     <>
-      {/* Camada invisível para medição (NÃO IMPRIMIR) */}
-      <div className="measure-layer absolute -z-10 opacity-0 pointer-events-none" aria-hidden="true">
-        {/* Template 1: com cabeçalho */}
-        <div className="prova-page mx-auto bg-white" ref={refs.measureFirstPageRef}>
-          <ExerciseHeader
-            logoUrl={logoUrl}
-            onLogoClick={onLogoClick}
-            isEditable={false}
-            instituicao={provaConfig.instituicao}
-            titulo={provaConfig.layoutType === "exercicio" ? "Lista de Exercícios" : "Exercícios"}
-            professor={provaConfig.professor}
-            disciplina={provaConfig.disciplina}
-            turma={provaConfig.turma}
-            data={provaConfig.data}
-          />
-          <div className="questoes-container" ref={refs.measureFirstQuestoesRef}>
-            <div className="coluna coluna-1" />
-            {columns === 2 && <div className="coluna coluna-2" />}
-          </div>
-        </div>
-
-        {/* Template 2: sem cabeçalho */}
-        <div className="prova-page mx-auto bg-white" ref={refs.measureOtherPageRef}>
-          <div className="questoes-container" ref={refs.measureOtherQuestoesRef}>
-            <div className="coluna coluna-1" />
-            {columns === 2 && <div className="coluna coluna-2" />}
-          </div>
-        </div>
-
-        {/* Template 3: alturas das questões */}
-        <div className="prova-page mx-auto bg-white">
-          <div className={`questoes-container columns-${columns}`}>
-            <div className="coluna coluna-1" ref={refs.measureItemsRef}>
-              {orderedQuestions.map((q, idx) => renderQuestion(q, idx))}
-            </div>
-
-            {/* CRÍTICO: precisa existir coluna-2 no DOM para ativar o :has(.coluna-2)
-                e medir a coluna-1 com 8.5cm quando columns=2 */}
-            {columns === 2 && <div className="coluna coluna-2" />}
-          </div>
-        </div>
-      </div>
+      {/* Camadas invisíveis para medição (NÃO IMPRIMIR) — uma por bloco de paginação */}
+      {(blocos ?? [{ columns, refs, inicio: 0, fim: orderedQuestions.length }]).map((b) => (
+        <MeasureLayer
+          key={`${b.inicio}-${b.columns}`}
+          header={
+            <ExerciseHeader
+              logoUrl={logoUrl}
+              onLogoClick={onLogoClick}
+              isEditable={false}
+              instituicao={provaConfig.instituicao}
+              titulo={provaConfig.layoutType === "exercicio" ? "Lista de Exercícios" : "Exercícios"}
+              professor={provaConfig.professor}
+              disciplina={provaConfig.disciplina}
+              turma={provaConfig.turma}
+              data={provaConfig.data}
+            />
+          }
+          columns={b.columns}
+          refs={b.refs}
+          questions={orderedQuestions.slice(b.inicio, b.fim)}
+          inicio={b.inicio}
+          renderQuestion={renderQuestion}
+        />
+      ))}
 
       {/* Renderização das páginas */}
       {(pages.length ? pages : [{ coluna1: [], coluna2: [], remainingHeight: 0 }] as any).map((p: any, pageIndex: number) => (
@@ -158,7 +142,7 @@ export function ExerciseLayout({
                   })}
                 </div>
 
-                {columns === 2 && (
+                {(p.columns ?? columns) === 2 && (
                   <div className="coluna coluna-2">
                     {(p.coluna2 ?? []).map((it: any, idx: number) => {
                       const items = p.coluna2 ?? [];

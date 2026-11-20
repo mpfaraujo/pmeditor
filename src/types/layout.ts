@@ -19,14 +19,30 @@ export interface LayoutProps {
   logoUrl: string | null;
   onLogoClick: () => void;
   renderQuestion: (question: QuestionData | undefined, globalIndex: number) => React.ReactNode;
-  refs: {
-    measureFirstPageRef: React.RefObject<HTMLDivElement|null>;
-    measureFirstQuestoesRef: React.RefObject<HTMLDivElement|null>;
-    measureOtherPageRef: React.RefObject<HTMLDivElement|null>;
-    measureOtherQuestoesRef: React.RefObject<HTMLDivElement|null>;
-    measureItemsRef: React.RefObject<HTMLDivElement|null>;
-  };
+  refs: PaginationRefs;
+  /**
+   * Diagramação híbrida: uma camada de medição por bloco (colunas próprias,
+   * fatia [inicio, fim) de orderedQuestions). Ausente = uma camada com `refs`.
+   */
+  blocos?: BlocoMedicao[];
 }
+
+export type PaginationRefs = {
+  measureFirstPageRef: React.RefObject<HTMLDivElement|null>;
+  measureFirstQuestoesRef: React.RefObject<HTMLDivElement|null>;
+  measureOtherPageRef: React.RefObject<HTMLDivElement|null>;
+  measureOtherQuestoesRef: React.RefObject<HTMLDivElement|null>;
+  measureItemsRef: React.RefObject<HTMLDivElement|null>;
+};
+
+export type BlocoMedicao = {
+  columns: ColumnCount;
+  refs: PaginationRefs;
+  /** índice global da 1ª questão do bloco */
+  inicio: number;
+  /** exclusivo */
+  fim: number;
+};
 
 export type PageLayout = {
   coluna1: number[];

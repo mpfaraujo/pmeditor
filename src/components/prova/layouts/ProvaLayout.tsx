@@ -12,6 +12,7 @@ import { ProvaFooter } from "../ProvaFooter";
 import { useProva } from "@/contexts/ProvaContext";
 import type { QuestionPermutation } from "@/lib/GeraTiposDeProva";
 import { SpacerHandle } from "../SpacerHandle";
+import { MeasureLayer } from "./MeasureLayer";
 
 interface ProvaLayoutProps extends LayoutProps {
   columns: ColumnCount;
@@ -33,6 +34,7 @@ export function ProvaLayout({
   onLogoClick,
   renderQuestion,
   refs,
+  blocos,
   columns,
   tipoAtual,
   numTipos,
@@ -74,69 +76,46 @@ export function ProvaLayout({
       sum + (spacers?.get(qKey(it)) ?? 0), 0);
 
   const safePages = (pages.length ? pages : [{ coluna1: [], coluna2: [] }] as any) as any[];
+
+  const measureHeader = (
+    <>
+      <ProvaHeader
+        layout={headerLayout}
+        logoUrl={logoUrl}
+        onLogoClick={onLogoClick}
+        logoPlaceholder={logoPlaceholder}
+        isEditable={false}
+        nome=" "
+        turma={provaConfig.turma}
+        professor={provaConfig.professor}
+        disciplina={provaConfig.disciplina}
+        data={provaConfig.data}
+        nota=" "
+        instituicao={provaConfig.instituicao}
+      />
+      {provaConfig.titulo && (
+        <div className="text-[11pt] font-bold text-center uppercase pt-0 pb-3">
+          {provaConfig.titulo}
+        </div>
+      )}
+    </>
+  );
   
 
   return (
     <>
-      {/* Camada invisível para medição (NÃO IMPRIMIR) */}
-      <div className="measure-layer absolute -z-10 opacity-0 pointer-events-none" aria-hidden="true">
-        {/* Template 1: com cabeçalho */}
-        <div
-          className="prova-page mx-auto bg-white"
-          ref={refs.measureFirstPageRef}
-        >
-          <ProvaHeader
-            layout={headerLayout}
-            logoUrl={logoUrl}
-            onLogoClick={onLogoClick}
-            logoPlaceholder={logoPlaceholder}
-            isEditable={false}
-            nome=" "
-            turma={provaConfig.turma}
-            professor={provaConfig.professor}
-            disciplina={provaConfig.disciplina}
-            data={provaConfig.data}
-            nota=" "
-            instituicao={provaConfig.instituicao}
-          />
-          {provaConfig.titulo && (
-            <div className="text-[11pt] font-bold text-center uppercase pt-0 pb-3">
-              {provaConfig.titulo}
-            </div>
-          )}
-          <div
-            className="questoes-container"
-            ref={refs.measureFirstQuestoesRef}
-          >
-            <div className="coluna coluna-1" />
-            {columns === 2 && <div className="coluna coluna-2" />}
-          </div>
-        </div>
-
-        {/* Template 2: sem cabeçalho */}
-        <div
-          className="prova-page mx-auto bg-white"
-          ref={refs.measureOtherPageRef}
-        >
-          <div className="questoes-container" ref={refs.measureOtherQuestoesRef}>
-            <div className="coluna coluna-1" />
-            {columns === 2 && <div className="coluna coluna-2" />}
-          </div>
-        </div>
-
-        {/* Template 3: alturas das questões */}
-        <div className="prova-page mx-auto bg-white">
-          <div className={`questoes-container columns-${columns}`}>
-            <div className="coluna coluna-1" ref={refs.measureItemsRef}>
-              {orderedQuestions.map((q, idx) => renderQuestion(q, idx))}
-            </div>
-
-            {/* CRÍTICO: precisa existir coluna-2 no DOM para ativar o :has(.coluna-2)
-                e medir a coluna-1 com 8.5cm quando columns=2 */}
-            {columns === 2 && <div className="coluna coluna-2" />}
-          </div>
-        </div>
-      </div>
+      {/* Camadas invisíveis para medição (NÃO IMPRIMIR) — uma por bloco de paginação */}
+      {(blocos ?? [{ columns, refs, inicio: 0, fim: orderedQuestions.length }]).map((b) => (
+        <MeasureLayer
+          key={`${b.inicio}-${b.columns}`}
+          header={measureHeader}
+          columns={b.columns}
+          refs={b.refs}
+          questions={orderedQuestions.slice(b.inicio, b.fim)}
+          inicio={b.inicio}
+          renderQuestion={renderQuestion}
+        />
+      ))}
 
       {/* Renderização normal (tela): páginas virtuais */}
       <div >
@@ -196,7 +175,7 @@ export function ProvaLayout({
                   })}
                 </div>
 
-                {columns === 2 && (
+                {(p.columns ?? columns) === 2 && (
                   <div className="coluna coluna-2">
                     {(p.coluna2 ?? []).map((it: any, idx: number) => {
                       const items = p.coluna2 ?? [];

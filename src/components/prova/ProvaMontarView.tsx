@@ -1,7 +1,7 @@
 // src/components/prova/ProvaMontarView.tsx
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { useProva } from "@/contexts/ProvaContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -46,7 +46,9 @@ import {
   calculateFirstPageCapacity,
   calculateOtherPageCapacity,
   type LayoutItem,
+  type PageLayout,
 } from "@/lib/pagination";
+import { blocoDaQuestao, ordenarPorBloco } from "@/lib/diagramar";
 
 import { getBaseText } from "@/lib/baseTexts";
 import { resolveMountedLineRefs, injectLineNumbers } from "@/lib/lineRefMeasure";
@@ -203,7 +205,6 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
     updateProvaConfig,
   } = useProva();
   const columns = (provaConfig.layoutType === "acessivel" ? 1 : Number(provaConfig.columns) === 2 ? 2 : 1) as 1 | 2;
-  const layoutKey = (provaConfig.layoutType === "acessivel" ? "acessivel" : columns === 2 ? "2col" : "1col") as "2col" | "1col" | "acessivel";
 
   // Lista linear de questões (sem divisão coluna1/coluna2)
   const [orderedList, setOrderedList] = useState<QuestionData[]>(() => {
@@ -220,6 +221,9 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
   const [manualOrder, setManualOrder] = useState(false);
   // Trilha diagramar: ordem definida pelo professor, nunca reordenada pelo bin-packing
   const ordemTravada = variant === "diagramar" || !!provaConfig.numeracaoFixa;
+  // Diagramação híbrida (bloco 1 coluna + bloco 2 colunas): só com ordem travada, nunca no acessível
+  const colunasMistas =
+    provaConfig.layoutType !== "acessivel" && ordemTravada ? provaConfig.colunasMistas : undefined;
 
   const [logoUrl, setLogoUrl] = useState<string | null>(provaConfig.logoUrl);
   useEffect(() => {
@@ -451,13 +455,31 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
 
   // orderedQuestions agora vem da lista linear
   const orderedQuestions = useMemo(() => {
-    return [...orderedList];
-  }, [orderedList]);
+    return colunasMistas ? ordenarPorBloco(orderedList as any[], colunasMistas) : [...orderedList];
+  }, [orderedList, colunasMistas]);
 
-
-  const expandedQuestions = useMemo(() => {
-    const out: any[] = [];
+  // Modo misto: questões do bloco que abre a prova (A) e do que vem depois (B).
+  // Se um dos blocos ficar vazio, vira passe único com as colunas do bloco restante.
+  const particao = useMemo(() => {
+    const vazio: QuestionData[] = [];
+    if (!colunasMistas) return { listaA: orderedQuestions, listaB: vazio, colunasA: columns };
     const qs = orderedQuestions as any[];
+    const outro: 1 | 2 = colunasMistas.primeiro === 1 ? 2 : 1;
+    const ehA = (q: any) => blocoDaQuestao(qs, colunasMistas, q?.metadata?.id) === colunasMistas.primeiro;
+    const a = qs.filter(ehA) as QuestionData[];
+    const b = qs.filter((q) => !ehA(q)) as QuestionData[];
+    if (!b.length) return { listaA: a, listaB: vazio, colunasA: colunasMistas.primeiro };
+    if (!a.length) return { listaA: b, listaB: vazio, colunasA: outro };
+    return { listaA: a, listaB: b, colunasA: colunasMistas.primeiro };
+  }, [orderedQuestions, colunasMistas, columns]);
+  const { listaA, listaB } = particao;
+
+
+  // Expansão (sets → base + itens, agrupamento por texto base). Roda por bloco no modo misto:
+  // equivale a expandir tudo junto porque nenhum grupo de texto base atravessa blocos.
+  const expandir = useCallback((lista: QuestionData[]) => {
+    const out: any[] = [];
+    const qs = lista as any[];
     const processed = new Set<number>();
 
     for (let i = 0; i < qs.length; i++) {
@@ -708,7 +730,20 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
     }
 
     return out as QuestionData[];
-  }, [orderedQuestions, selections, baseTextCache]);
+  }, [selections, baseTextCache]);
+
+  const expandedA = useMemo(() => expandir(listaA), [expandir, listaA]);
+  const expandedB = useMemo(() => (listaB.length ? expandir(listaB) : []), [expandir, listaB]);
+  const expandedQuestions = useMemo(
+    () => (expandedB.length ? [...expandedA, ...expandedB] : expandedA),
+    [expandedA, expandedB]
+  );
+  const inicioB = expandedA.length;
+  const hibrido = expandedA.length > 0 && expandedB.length > 0;
+  const colsA: 1 | 2 = particao.colunasA;
+  const colsB: 1 | 2 = colsA === 1 ? 2 : 1;
+  /** Colunas da questão de índice global `idx` (por bloco no modo misto). */
+  const colunasDe = (idx: number): 1 | 2 => (hibrido && idx >= inicioB ? colsB : colsA);
 
   // Reset dos spacers ao mudar o conjunto de questões (IDs mudam → spacers zerados)
   const expandedQuestionsKey = useMemo(() =>
@@ -732,11 +767,11 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
   }, [expandedQuestionsKey]);
 
   // Monta grupos explícitos de set (base + itens) pelo parentId
-  const setGroups = useMemo(() => {
+  const buildSetGroups = (lista: QuestionData[]) => {
     const baseMap = new Map<string, number>(); // parentId → baseIndex
     const itemMap = new Map<string, number[]>(); // parentId → itemIndexes[]
 
-    expandedQuestions.forEach((q: any, i) => {
+    lista.forEach((q: any, i) => {
       const baseInfo = (q as any)?.__setBase;
       if (baseInfo?.parentId) {
         baseMap.set(baseInfo.parentId, i);
@@ -755,7 +790,9 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
       groups.push({ baseIndex, itemIndexes: itemMap.get(parentId) ?? [] });
     }
     return groups;
-  }, [expandedQuestions]);
+  };
+  const setGroups = useMemo(() => buildSetGroups(expandedA), [expandedA]);
+  const setGroupsB = useMemo(() => buildSetGroups(expandedB), [expandedB]);
 
   // Preview ao vivo: mudanças visuais que alteram alturas repaginam sozinhas no diagramar
   const diagramarLayoutKey = variant === "diagramar"
@@ -775,22 +812,85 @@ export default function ProvaMontarView({ variant = "montar" }: { variant?: Prov
       ])
     : "";
 
-const { pages, refs } = usePagination({
-  config: {
-    pageHeight: PAGE_HEIGHT,
-    safetyMargin: SAFETY_PX,
-    columns,
-    optimizeLayout: !(manualOrder || ordemTravada),
-    setGroups,
-    spacers: committedSpacers,
-  },
-  questionCount: expandedQuestions.length,
-  dependencies: [
-    repaginateVersion,
-    expandedQuestionsContentKey,
-    diagramarLayoutKey,
-  ],
-});
+  // Spacers têm chave global q${i}; o passe B pagina com índices locais (i - inicioB)
+  const [spacersA, spacersB] = useMemo(() => {
+    if (!hibrido) return [committedSpacers, new Map<string, number>()];
+    const a = new Map<string, number>();
+    const b = new Map<string, number>();
+    for (const [k, v] of committedSpacers) {
+      const i = Number(k.slice(1));
+      if (i < inicioB) a.set(k, v);
+      else b.set(`q${i - inicioB}`, v);
+    }
+    return [a, b];
+  }, [committedSpacers, hibrido, inicioB]);
+
+  // Passe A: bloco que abre a prova (ou a prova inteira fora do modo misto)
+  const passeA = usePagination({
+    config: {
+      pageHeight: PAGE_HEIGHT,
+      safetyMargin: SAFETY_PX,
+      columns: colsA,
+      optimizeLayout: !(manualOrder || ordemTravada),
+      setGroups,
+      spacers: spacersA,
+    },
+    questionCount: expandedA.length,
+    dependencies: [
+      repaginateVersion,
+      expandedQuestionsContentKey,
+      diagramarLayoutKey,
+    ],
+  });
+
+  // Passe B: segundo bloco do modo misto — sem cabeçalho, sempre linear
+  const passeB = usePagination({
+    enabled: hibrido,
+    config: {
+      pageHeight: PAGE_HEIGHT,
+      safetyMargin: SAFETY_PX,
+      columns: colsB,
+      optimizeLayout: false,
+      skipHeader: true,
+      setGroups: setGroupsB,
+      spacers: spacersB,
+    },
+    questionCount: expandedB.length,
+    dependencies: [
+      repaginateVersion,
+      expandedQuestionsContentKey,
+      diagramarLayoutKey,
+    ],
+  });
+
+  const refs = passeA.refs;
+
+  const pages = useMemo<PageLayout[]>(() => {
+    if (!hibrido) return passeA.pages;
+    // Enquanto o passe B não terminou, mostra só A (evita páginas com índices errados)
+    if (!passeB.pages.length) return passeA.pages.map((p) => ({ ...p, columns: colsA }));
+    const desloca = (it: LayoutItem): LayoutItem => ({ ...it, q: it.q + inicioB });
+    return [
+      ...passeA.pages.map((p) => ({ ...p, columns: colsA })),
+      ...passeB.pages.map((p) => ({
+        ...p,
+        columns: colsB,
+        coluna1: p.coluna1.map(desloca),
+        coluna2: p.coluna2.map(desloca),
+      })),
+    ];
+  }, [hibrido, passeA.pages, passeB.pages, inicioB, colsA, colsB]);
+
+  const blocosMedicao = useMemo(
+    () =>
+      hibrido
+        ? [
+            { columns: colsA, refs: passeA.refs, inicio: 0, fim: inicioB },
+            { columns: colsB, refs: passeB.refs, inicio: inicioB, fim: expandedQuestions.length },
+          ]
+        : [{ columns: colsA, refs: passeA.refs, inicio: 0, fim: expandedQuestions.length }],
+    [hibrido, colsA, colsB, passeA.refs, passeB.refs, inicioB, expandedQuestions.length]
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1168,6 +1268,9 @@ const { pages, refs } = usePagination({
   ) => {
     if (!question) return null;
     const printedIndex = (printNumberMap.get(globalIndex) ?? 1) - 1;
+    // Modo misto: colunas (e layout canônico das line refs) dependem do bloco da questão
+    const colunasQuestao = colunasDe(globalIndex);
+    const layoutKey = (provaConfig.layoutType === "acessivel" ? "acessivel" : colunasQuestao === 2 ? "2col" : "1col") as "2col" | "1col" | "acessivel";
 
 
     const isSetBase = !!(question as any).__setBase;
@@ -1321,7 +1424,7 @@ const { pages, refs } = usePagination({
                 ) : (
                   <QuestionHeaderSvg
                     numero={printedIndex + 1}
-                    totalMm={columns === 2 ? 85 : 180}
+                    totalMm={colunasQuestao === 2 ? 85 : 180}
                     boxMm={28}
                     variant={provaConfig.questionHeaderVariant ?? 0}
                   />
@@ -1547,7 +1650,8 @@ const { pages, refs } = usePagination({
           onLogoClick={() => setLogoDialogOpen(true)}
           renderQuestion={renderQuestion as any}
           refs={refs}
-          columns={columns}
+          blocos={blocosMedicao}
+          columns={colsA}
           tipoAtual={tipoAtual}
           numTipos={tiposGerados ? numTipos : undefined}
           permutations={tiposGerados?.[tipoAtual - 1]?.permutations ?? null}

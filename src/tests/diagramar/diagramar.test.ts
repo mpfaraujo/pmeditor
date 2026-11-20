@@ -65,3 +65,42 @@ describe('trechoInicial', () => {
     expect(trechoInicial(doc)).toBe('Calcule [fórmula]')
   })
 })
+
+import { ordenarPorBloco, alternarBloco, blocoDaQuestao, chaveTextoBase } from '@/lib/diagramar'
+
+describe('diagramação híbrida — blocos', () => {
+  const q = (id: string, bt?: string[]) => ({ metadata: { id, baseTextIds: bt }, content: null })
+  const lista = [q('a'), q('b', ['T1']), q('c'), q('d', ['T1']), q('e')]
+
+  it('chaveTextoBase usa baseTextIds e cai no legado baseTextId', () => {
+    expect(chaveTextoBase(q('x', ['T1', 'T2']))).toBe('T1,T2')
+    expect(chaveTextoBase({ metadata: { id: 'y', baseTextId: 'T9' }, content: null })).toBe('T9')
+    expect(chaveTextoBase(q('z'))).toBeNull()
+  })
+
+  it('primeiro=1 põe o bloco de 1 coluna antes, ordem estável', () => {
+    const r = ordenarPorBloco(lista, { primeiro: 1, umaColuna: ['c', 'e'] })
+    expect(r.map((x) => x.metadata.id)).toEqual(['c', 'e', 'a', 'b', 'd'])
+  })
+
+  it('primeiro=2 põe o bloco de 2 colunas antes', () => {
+    const r = ordenarPorBloco(lista, { primeiro: 2, umaColuna: ['c', 'e'] })
+    expect(r.map((x) => x.metadata.id)).toEqual(['a', 'b', 'd', 'c', 'e'])
+  })
+
+  it('grupo de texto base segue o bloco do primeiro membro', () => {
+    expect(blocoDaQuestao(lista, { primeiro: 1, umaColuna: ['d'] }, 'd')).toBe(2)
+  })
+
+  it('alternarBloco move o grupo inteiro de texto base', () => {
+    const r = alternarBloco(lista, { primeiro: 1, umaColuna: [] }, 'd')
+    expect([...r].sort()).toEqual(['b', 'd'])
+    expect(alternarBloco(lista, { primeiro: 1, umaColuna: r }, 'b')).toEqual([])
+  })
+
+  it('ordenarPorBloco é idempotente', () => {
+    const cfg = { primeiro: 1 as const, umaColuna: ['c', 'd'] }
+    const uma = ordenarPorBloco(lista, cfg)
+    expect(ordenarPorBloco(uma, cfg)).toEqual(uma)
+  })
+})

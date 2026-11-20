@@ -4,6 +4,7 @@ import {
   measureQuestionHeights,
   calculateFirstPageCapacity,
   calculateOtherPageCapacity,
+  calculatePageLayout,
 } from '@/lib/pagination'
 import {
   createMeasurementContainer,
@@ -564,5 +565,32 @@ describe('pagination - layout e regressões', () => {
     expect(item2.length).toBeGreaterThan(1)
     expect(pages[0].coluna1[2]).toMatchObject({ kind: 'frag', q: 2, first: true })
     expect(pages[0].coluna2[0]).toMatchObject({ kind: 'frag', q: 2, first: false })
+  })
+
+  // ─── Diagramação híbrida: skipHeader (bloco que não abre a prova) ─────────
+
+  function skipHeaderFixture() {
+    const first = createPageFixture({ pageHeight: 1000, occupiedTop: 180 }) // firstCap = 742
+    const other = createPageFixture({ pageHeight: 1000, occupiedTop: 90 }) // otherCap = 832
+    const m = createMeasurementContainer([{ wrapperHeight: 800, blockHeights: [400, 400], noOptions: true }])
+    setOffsetHeight(m, 800)
+    return {
+      firstPageRef: first.page,
+      firstQuestoesRef: first.questions,
+      otherPageRef: other.page,
+      otherQuestoesRef: other.questions,
+      measureItemsRef: m,
+    }
+  }
+
+  test('[skipHeader] 1ª página do bloco usa otherPageCapacity: questão de 800px entra inteira', () => {
+    const pages = calculatePageLayout({ pageHeight: 1000, safetyMargin: 43, columns: 1, skipHeader: true }, skipHeaderFixture(), 1)!
+    expect(pages.length).toBe(1)
+    expect(pages[0].coluna1).toEqual([{ kind: 'full', q: 0 }])
+  })
+
+  test('[skipHeader] sem a flag a mesma questão é fragmentada (comportamento atual preservado)', () => {
+    const pages = calculatePageLayout({ pageHeight: 1000, safetyMargin: 43, columns: 1 }, skipHeaderFixture(), 1)!
+    expect((pages[0].coluna1[0] as any).kind).toBe('frag')
   })
 })

@@ -21,6 +21,8 @@ export interface UsePaginationProps {
   config: PaginationConfig;
   questionCount: number;
   dependencies: any[];
+  /** false = não pagina e devolve pages=[] (ex.: 2º passe da diagramação híbrida desligado). */
+  enabled?: boolean;
 }
 
 function stableStringify(value: any): string {
@@ -127,6 +129,7 @@ export function usePagination({
   config,
   questionCount,
   dependencies,
+  enabled = true,
 }: UsePaginationProps) {
   const measureItemsRef = useRef<HTMLDivElement | null>(null);
   const measureFirstPageRef = useRef<HTMLDivElement | null>(null);
@@ -144,8 +147,14 @@ export function usePagination({
   const optimizeLayout = config.optimizeLayout ?? false;
   const setGroups = config.setGroups ?? [];
   const spacers = config.spacers;
+  const skipHeader = config.skipHeader ?? false;
 
   useEffect(() => {
+    if (!enabled) {
+      setPages([]);
+      return;
+    }
+
     const controller = new AbortController();
     const { signal } = controller;
 
@@ -196,6 +205,7 @@ export function usePagination({
             optimizeLayout,
             setGroups,
             spacers,
+            skipHeader,
           },
           {
             firstPageRef: measureFirstPageRef.current,
@@ -222,7 +232,7 @@ export function usePagination({
 
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depsKey, pageHeight, safetyMargin, columns, optimizeLayout, questionCount]);
+  }, [depsKey, pageHeight, safetyMargin, columns, optimizeLayout, questionCount, enabled, skipHeader]);
 
   return {
     pages,

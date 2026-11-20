@@ -85,6 +85,16 @@
  *   "[residual] NÃO fragmenta quando espaço residual < 30%"
  *   "[residual] NÃO fragmenta quando fragmento inicial < 30% do total"
  *   "[residual] NÃO fragmenta quando coluna está vazia"
+ *
+ * 6. Diagramação híbrida (skipHeader)
+ * ────────────────────────────────────
+ * A prova híbrida é paginada em DOIS passes independentes (bloco de 1 coluna
+ * e bloco de 2 colunas), concatenados em ProvaMontarView. O bloco que vem em
+ * segundo passa skipHeader: true, e calculatePageLayout usa
+ * firstPageCapacity = otherPageCapacity. NÃO alterar as funções distribute*
+ * para suportar blocos: a partição acontece fora deste arquivo.
+ *
+ * Testes: "[skipHeader] ..." em src/tests/pagination/layout.test.ts
  * ════════════════════════════════════════════════════════════════════════
  */
 
@@ -119,6 +129,8 @@ export type PageLayout = {
   /** Espaço livre por coluna — usado para limitar spacers arrastáveis */
   col1Remaining?: number;
   col2Remaining?: number;
+  /** Diagramação híbrida: colunas desta página. Ausente = usar o `columns` global. */
+  columns?: 1 | 2;
 };
 
 /** Grupo explícito: texto base + seus itens (por parentId) */
@@ -136,6 +148,11 @@ export interface PaginationConfig {
   setGroups?: SetGroupDef[];
   /** Spacers arrastáveis: "q${i}" → px extras adicionados à altura da questão i */
   spacers?: Map<string, number>;
+  /**
+   * Bloco que NÃO abre a prova (diagramação híbrida): não tem cabeçalho, então
+   * a 1ª página usa a mesma capacidade das demais. Ver decisão 6 no cabeçalho.
+   */
+  skipHeader?: boolean;
 }
 
 // Altura reservada para o footer (margin + padding + texto): ~1.1cm = 31px
@@ -1663,19 +1680,23 @@ export function calculatePageLayout(
     return null;
   }
 
-  const firstPageCapacity = calculateFirstPageCapacity(
-    refs.firstPageRef,
-    refs.firstQuestoesRef,
-    config.pageHeight,
-    config.safetyMargin
-  );
-
   const otherPageCapacity = calculateOtherPageCapacity(
     refs.otherPageRef,
     refs.otherQuestoesRef,
     config.pageHeight,
     config.safetyMargin
   );
+
+  // skipHeader: a 1ª página do bloco não tem cabeçalho → mesma capacidade das demais.
+  // As funções distribute* NÃO mudam; com capacidades iguais o bug da página vazia não ocorre.
+  const firstPageCapacity = config.skipHeader
+    ? otherPageCapacity
+    : calculateFirstPageCapacity(
+        refs.firstPageRef,
+        refs.firstQuestoesRef,
+        config.pageHeight,
+        config.safetyMargin
+      );
 
   if (firstPageCapacity <= 0 || otherPageCapacity <= 0) return null;
 

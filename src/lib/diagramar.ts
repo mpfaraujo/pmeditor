@@ -1,4 +1,4 @@
-import type { Selection } from "@/contexts/ProvaContext";
+import type { ColunasMistas, Selection } from "@/contexts/ProvaContext";
 
 type Q = { metadata: any; content: any };
 
@@ -92,4 +92,69 @@ export function somarPontos(valores: string[]): number | null {
     total += Number(m[0]);
   }
   return Math.round(total * 100) / 100;
+}
+
+/* ============================================================
+   Diagramação híbrida (bloco de 1 coluna + bloco de 2 colunas)
+   ============================================================ */
+
+/** Mesma chave de agrupamento por texto base usada no /montar (baseTextIds + legado baseTextId). */
+export function chaveTextoBase(q: Q): string | null {
+  const meta = q?.metadata ?? {};
+  const ids: string[] = Array.isArray(meta.baseTextIds)
+    ? meta.baseTextIds.filter((id: any) => typeof id === "string" && id !== "")
+    : meta.baseTextId
+      ? [meta.baseTextId]
+      : [];
+  return ids.length ? ids.join(",") : null;
+}
+
+/** Bloco de cada questão; um grupo de texto base herda o bloco do seu 1º membro na ordem atual. */
+function mapaDeBlocos(questions: Q[], cfg: ColunasMistas): Map<string, 1 | 2> {
+  const marcadas = new Set(cfg.umaColuna);
+  const porGrupo = new Map<string, 1 | 2>();
+  const out = new Map<string, 1 | 2>();
+  for (const q of questions) {
+    const id: string | undefined = q?.metadata?.id;
+    if (!id) continue;
+    const g = chaveTextoBase(q);
+    let b: 1 | 2 = marcadas.has(id) ? 1 : 2;
+    if (g) {
+      const doGrupo = porGrupo.get(g);
+      if (doGrupo) b = doGrupo;
+      else porGrupo.set(g, b);
+    }
+    out.set(id, b);
+  }
+  return out;
+}
+
+export function blocoDaQuestao(questions: Q[], cfg: ColunasMistas, id: string): 1 | 2 {
+  return mapaDeBlocos(questions, cfg).get(id) ?? 2;
+}
+
+/** Ordem estável: o bloco `cfg.primeiro` inteiro, depois o outro. */
+export function ordenarPorBloco<T extends Q>(questions: T[], cfg: ColunasMistas): T[] {
+  const m = mapaDeBlocos(questions, cfg);
+  const bloco = (q: T) => m.get(q?.metadata?.id) ?? 2;
+  return [
+    ...questions.filter((q) => bloco(q) === cfg.primeiro),
+    ...questions.filter((q) => bloco(q) !== cfg.primeiro),
+  ];
+}
+
+/** Novo `umaColuna` após trocar o bloco da questão `id` (e de todo o seu grupo de texto base). */
+export function alternarBloco(questions: Q[], cfg: ColunasMistas, id: string): string[] {
+  const m = mapaDeBlocos(questions, cfg);
+  const alvo = questions.find((q) => q?.metadata?.id === id);
+  if (!alvo) return cfg.umaColuna;
+  const g = chaveTextoBase(alvo);
+  const afetados = new Set(
+    questions
+      .filter((q) => q?.metadata?.id === id || (g !== null && chaveTextoBase(q) === g))
+      .map((q) => q.metadata.id as string)
+  );
+  const novoBloco: 1 | 2 = m.get(id) === 1 ? 2 : 1;
+  const resto = [...m.entries()].filter(([k, b]) => b === 1 && !afetados.has(k)).map(([k]) => k);
+  return novoBloco === 1 ? [...resto, ...afetados] : resto;
 }

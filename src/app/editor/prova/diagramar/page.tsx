@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
-import { useProva, type ProvaConfig } from "@/contexts/ProvaContext";
+import { useProva, type ColunasMistas, type ProvaConfig } from "@/contexts/ProvaContext";
 import { useAuth } from "@/contexts/AuthContext";
 import ProvaMontarView from "@/components/prova/ProvaMontarView";
 import { LogoPicker } from "@/components/editor/LogoPicker";
@@ -13,7 +13,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DotPicker, type DotPickerOption } from "@/components/ui/dot-picker";
-import { moverPara, numeracaoPrevista, somarPontos, trechoInicial } from "@/lib/diagramar";
+import {
+  alternarBloco,
+  blocoDaQuestao,
+  chaveTextoBase,
+  moverPara,
+  numeracaoPrevista,
+  ordenarPorBloco,
+  somarPontos,
+  trechoInicial,
+} from "@/lib/diagramar";
 
 type Aba = "prova" | "ordem" | "pontos";
 
@@ -83,10 +92,24 @@ function OpcaoBotao({ ativo, onClick, children }: { ativo: boolean; onClick: () 
   );
 }
 
+/**
+ * Grava `colunasMistas` e mantém selectedQuestions já ordenada por bloco
+ * (numeração prevista, pontuação e /montar dependem dessa ordem).
+ */
+function useAplicarColunasMistas() {
+  const { selectedQuestions, updateProvaConfig, updateColumnLayout } = useProva();
+  return (cfg: ColunasMistas | undefined, lista = selectedQuestions) => {
+    updateProvaConfig({ colunasMistas: cfg });
+    updateColumnLayout({ coluna1: cfg ? ordenarPorBloco(lista, cfg) : lista, coluna2: [] });
+  };
+}
+
 function AbaProva({ onAbrirLogo }: { onAbrirLogo: () => void }) {
   const { provaConfig, updateProvaConfig } = useProva();
+  const aplicarMistas = useAplicarColunasMistas();
   const set = (patch: Partial<ProvaConfig>) => updateProvaConfig(patch);
   const semLogo = !provaConfig.logoUrl;
+  const mistas = provaConfig.colunasMistas;
 
   return (
     <div className="space-y-5">
@@ -99,8 +122,21 @@ function AbaProva({ onAbrirLogo }: { onAbrirLogo: () => void }) {
         </div>
         {provaConfig.layoutType !== "acessivel" && (
           <div className="flex gap-1">
-            <OpcaoBotao ativo={Number(provaConfig.columns) === 1} onClick={() => set({ columns: 1 })}>1 coluna</OpcaoBotao>
-            <OpcaoBotao ativo={Number(provaConfig.columns) === 2} onClick={() => set({ columns: 2 })}>2 colunas</OpcaoBotao>
+            <OpcaoBotao ativo={!mistas && Number(provaConfig.columns) === 1} onClick={() => set({ columns: 1, colunasMistas: undefined })}>1 coluna</OpcaoBotao>
+            <OpcaoBotao ativo={!mistas && Number(provaConfig.columns) === 2} onClick={() => set({ columns: 2, colunasMistas: undefined })}>2 colunas</OpcaoBotao>
+            <OpcaoBotao ativo={!!mistas} onClick={() => !mistas && aplicarMistas({ primeiro: 1, umaColuna: [] })}>Misto</OpcaoBotao>
+          </div>
+        )}
+        {provaConfig.layoutType !== "acessivel" && mistas && (
+          <div className="space-y-1.5 rounded-md bg-slate-50 p-2">
+            <div className="text-xs text-slate-600">Começar por:</div>
+            <div className="flex gap-1">
+              <OpcaoBotao ativo={mistas.primeiro === 1} onClick={() => aplicarMistas({ ...mistas, primeiro: 1 })}>1 coluna</OpcaoBotao>
+              <OpcaoBotao ativo={mistas.primeiro === 2} onClick={() => aplicarMistas({ ...mistas, primeiro: 2 })}>2 colunas</OpcaoBotao>
+            </div>
+            <p className="text-[11px] text-slate-500">
+              Escolha na aba Ordem quais questões vão para 1 coluna. As demais ficam em 2 colunas.
+            </p>
           </div>
         )}
       </section>
@@ -208,6 +244,9 @@ function LinhaOrdem({
   titulo,
   trecho,
   onMover,
+  bloco,
+  dicaBloco,
+  onAlternarBloco,
 }: {
   pos: number;
   total: number;
@@ -215,6 +254,10 @@ function LinhaOrdem({
   titulo: string;
   trecho: string;
   onMover: (destino: number) => void;
+  /** Modo misto: bloco atual da questão */
+  bloco?: 1 | 2;
+  dicaBloco?: string;
+  onAlternarBloco?: () => void;
 }) {
   const [valor, setValor] = useState(String(pos + 1));
   useEffect(() => setValor(String(pos + 1)), [pos]);
@@ -252,6 +295,17 @@ function LinhaOrdem({
           <span className="truncate text-[11px] text-slate-500">{titulo}</span>
         </div>
         <div className="line-clamp-2 text-xs text-slate-600">{trecho || "—"}</div>
+        {bloco && onAlternarBloco && (
+          <button
+            type="button"
+            onClick={onAlternarBloco}
+            title={dicaBloco}
+            className="mt-1 rounded border border-slate-300 px-1.5 py-0.5 text-[11px] text-slate-700 hover:bg-slate-100"
+          >
+            Mover para {bloco === 1 ? "2 colunas" : "1 coluna"}
+            {dicaBloco ? " *" : ""}
+          </button>
+        )}
       </div>
       <div className="flex shrink-0 flex-col">
         <button
@@ -278,7 +332,9 @@ function LinhaOrdem({
 }
 
 function AbaOrdem() {
-  const { selectedQuestions, selections, updateColumnLayout } = useProva();
+  const { selectedQuestions, selections, updateColumnLayout, provaConfig } = useProva();
+  const aplicarMistas = useAplicarColunasMistas();
+  const mistas = provaConfig.layoutType !== "acessivel" ? provaConfig.colunasMistas : undefined;
   const numeracao = useMemo(() => numeracaoPrevista(selectedQuestions, selections), [selectedQuestions, selections]);
 
   const faixaPorPos = useMemo(() => {
@@ -288,8 +344,80 @@ function AbaOrdem() {
   }, [numeracao]);
 
   const mover = (from: number, to: number) => {
-    updateColumnLayout({ coluna1: moverPara(selectedQuestions, from, to), coluna2: [] });
+    const lista = moverPara(selectedQuestions, from, to);
+    // Modo misto: a questão não atravessa a fronteira entre blocos pela posição
+    updateColumnLayout({ coluna1: mistas ? ordenarPorBloco(lista, mistas) : lista, coluna2: [] });
   };
+
+  /** Dica quando trocar de bloco arrasta outras questões (mesmo texto base). */
+  const dicaGrupo = (pos: number): string | undefined => {
+    const g = chaveTextoBase(selectedQuestions[pos]);
+    if (!g) return undefined;
+    const outras = selectedQuestions
+      .map((q, i) => ({ q, i }))
+      .filter(({ q, i }) => i !== pos && chaveTextoBase(q) === g)
+      .flatMap(({ i }) => faixaPorPos.get(i) ?? []);
+    return outras.length ? `Move junto ${outras.map((n) => `Q${n}`).join(", ")} (mesmo texto base)` : undefined;
+  };
+
+  const renderLinha = (q: any, pos: number) => {
+    const nums = faixaPorPos.get(pos) ?? [];
+    const numeros = nums.length > 1 ? `Q${nums[0]}–${nums[nums.length - 1]}` : `Q${nums[0] ?? "?"}`;
+    const meta = q.metadata ?? {};
+    const titulo = [meta.disciplina, meta.assunto].filter(Boolean).join(" · ");
+    const id: string | undefined = meta.id;
+    return (
+      <LinhaOrdem
+        key={id ?? pos}
+        pos={pos}
+        total={selectedQuestions.length}
+        numeros={numeros}
+        titulo={titulo}
+        trecho={trechoInicial(q.content)}
+        onMover={(destino) => mover(pos, destino)}
+        bloco={mistas && id ? blocoDaQuestao(selectedQuestions, mistas, id) : undefined}
+        dicaBloco={mistas ? dicaGrupo(pos) : undefined}
+        onAlternarBloco={
+          mistas && id
+            ? () => aplicarMistas({ ...mistas, umaColuna: alternarBloco(selectedQuestions, mistas, id) })
+            : undefined
+        }
+      />
+    );
+  };
+
+  if (mistas) {
+    const outro: 1 | 2 = mistas.primeiro === 1 ? 2 : 1;
+    const secoes = [mistas.primeiro, outro].map((cols, k) => ({
+      cols,
+      titulo: `Bloco ${k + 1} — ${cols} coluna${cols === 2 ? "s" : ""}`,
+      itens: selectedQuestions
+        .map((q, pos) => ({ q, pos }))
+        .filter(({ q }) => blocoDaQuestao(selectedQuestions, mistas, q?.metadata?.id) === cols),
+    }));
+    return (
+      <div className="space-y-3">
+        <p className="text-xs text-slate-500">
+          Use &quot;Mover para…&quot; para trocar a questão de bloco. Questões com o mesmo texto base mudam
+          juntas (*). A posição digitada vale dentro do bloco: cada bloco começa em página nova.
+        </p>
+        {secoes.map((sec) => (
+          <section key={sec.cols} className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+              {sec.titulo} ({sec.itens.length})
+            </h3>
+            {sec.itens.length ? (
+              sec.itens.map(({ q, pos }) => renderLinha(q, pos))
+            ) : (
+              <p className="rounded-md border border-dashed border-slate-300 p-2 text-xs text-slate-500">
+                Nenhuma questão neste bloco.
+              </p>
+            )}
+          </section>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-2">
@@ -297,23 +425,7 @@ function AbaOrdem() {
         Digite a nova posição e tecle Enter. As outras deslizam. Questões que compartilham texto base
         ficam juntas na prova, mesmo se separadas aqui.
       </p>
-      {selectedQuestions.map((q, pos) => {
-        const nums = faixaPorPos.get(pos) ?? [];
-        const numeros = nums.length > 1 ? `Q${nums[0]}–${nums[nums.length - 1]}` : `Q${nums[0] ?? "?"}`;
-        const meta = q.metadata ?? {};
-        const titulo = [meta.disciplina, meta.assunto].filter(Boolean).join(" · ");
-        return (
-          <LinhaOrdem
-            key={meta.id ?? pos}
-            pos={pos}
-            total={selectedQuestions.length}
-            numeros={numeros}
-            titulo={titulo}
-            trecho={trechoInicial(q.content)}
-            onMover={(destino) => mover(pos, destino)}
-          />
-        );
-      })}
+      {selectedQuestions.map((q, pos) => renderLinha(q, pos))}
     </div>
   );
 }
@@ -379,6 +491,18 @@ export default function DiagramarProvaPage() {
     if (!provaConfig.numeracaoFixa) updateProvaConfig({ numeracaoFixa: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Modo misto: mantém selectedQuestions agrupada por bloco (ex.: questões adicionadas depois no banco)
+  const { updateColumnLayout } = useProva();
+  useEffect(() => {
+    const cfg = provaConfig.colunasMistas;
+    if (!cfg) return;
+    const ordenada = ordenarPorBloco(selectedQuestions, cfg);
+    if (ordenada.some((q, i) => q !== selectedQuestions[i])) {
+      updateColumnLayout({ coluna1: ordenada, coluna2: [] });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedQuestions, provaConfig.colunasMistas]);
 
   // Mesmo auto-preenchimento do selecionar-layout (só campos vazios)
   useEffect(() => {

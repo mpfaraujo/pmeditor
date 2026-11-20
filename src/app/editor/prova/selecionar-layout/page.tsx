@@ -103,6 +103,7 @@ const [logoPlaceholder, setLogoPlaceholder] = useState<string>(
       headerLayout,
       questionHeaderVariant,
       numeracaoFixa: false, // trilha clássica: bin-packing livre
+      colunasMistas: undefined, // diagramação híbrida só existe na trilha /diagramar
     } as any);
 
     router.push("/editor/prova/montar");

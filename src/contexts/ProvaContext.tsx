@@ -22,6 +22,13 @@ type ColumnLayout = {
 type LayoutType = "prova" | "exercicio" | "acessivel";
 type ColumnCount = 1 | 2;
 
+export type ColunasMistas = {
+  /** Qual bloco vem primeiro na prova */
+  primeiro: 1 | 2;
+  /** ids (metadata.id) das questões do bloco de 1 coluna; o resto vai para 2 colunas */
+  umaColuna: string[];
+};
+
 export type ProvaConfig = {
   layoutType: LayoutType;
   columns: ColumnCount;
@@ -52,6 +59,8 @@ export type ProvaConfig = {
   pontuacoes?: Record<string, string>; // questionId (expandido, ex: "abc#2") → texto livre
   rodapeMensagem?: string; // substitui "Tipo X" no rodapé central
   numeracaoFixa?: boolean; // true = numeração segue ordem de selectedQuestions, não pós-paginação
+  /** Diagramação híbrida. undefined = desligado (usa `columns`). Só tem efeito com numeracaoFixa. */
+  colunasMistas?: ColunasMistas;
 
   // Ajustes feitos no preview que precisam sobreviver à troca /diagramar → /montar
   inlineOptions?: string[]; // questionIds com alternativas em linha (oneparchoices)
