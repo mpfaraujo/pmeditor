@@ -245,6 +245,7 @@ function LinhaOrdem({
   trecho,
   onMover,
   bloco,
+  destino,
   dicaBloco,
   onAlternarBloco,
 }: {
@@ -256,6 +257,8 @@ function LinhaOrdem({
   onMover: (destino: number) => void;
   /** Modo misto: bloco atual da questão */
   bloco?: 1 | 2;
+  /** Bloco marcado no rascunho (ainda não aplicado) */
+  destino?: 1 | 2;
   dicaBloco?: string;
   onAlternarBloco?: () => void;
 }) {
@@ -300,9 +303,15 @@ function LinhaOrdem({
             type="button"
             onClick={onAlternarBloco}
             title={dicaBloco}
-            className="mt-1 rounded border border-slate-300 px-1.5 py-0.5 text-[11px] text-slate-700 hover:bg-slate-100"
+            className={`mt-1 rounded border px-1.5 py-0.5 text-[11px] ${
+              destino && destino !== bloco
+                ? "border-[#FBC02D] bg-[#FFF8E1] font-semibold text-slate-800"
+                : "border-slate-300 text-slate-700 hover:bg-slate-100"
+            }`}
           >
-            Mover para {bloco === 1 ? "2 colunas" : "1 coluna"}
+            {destino && destino !== bloco
+              ? `Vai para ${destino === 1 ? "1 coluna" : "2 colunas"} (desmarcar)`
+              : `Mover para ${bloco === 1 ? "2 colunas" : "1 coluna"}`}
             {dicaBloco ? " *" : ""}
           </button>
         )}
@@ -335,6 +344,16 @@ function AbaOrdem() {
   const { selectedQuestions, selections, updateColumnLayout, provaConfig } = useProva();
   const aplicarMistas = useAplicarColunasMistas();
   const mistas = provaConfig.layoutType !== "acessivel" ? provaConfig.colunasMistas : undefined;
+  // Rascunho de troca de bloco: marcar várias questões sem renumerar; só reorganiza ao Aplicar
+  const [rascunho, setRascunho] = useState<string[] | null>(null);
+  const cfgRascunho = mistas && rascunho ? { ...mistas, umaColuna: rascunho } : mistas;
+  const pendentes =
+    mistas && rascunho
+      ? selectedQuestions.filter((q) => {
+          const id = q?.metadata?.id;
+          return id && blocoDaQuestao(selectedQuestions, mistas, id) !== blocoDaQuestao(selectedQuestions, cfgRascunho!, id);
+        }).length
+      : 0;
   const numeracao = useMemo(() => numeracaoPrevista(selectedQuestions, selections), [selectedQuestions, selections]);
 
   const faixaPorPos = useMemo(() => {
@@ -376,10 +395,11 @@ function AbaOrdem() {
         trecho={trechoInicial(q.content)}
         onMover={(destino) => mover(pos, destino)}
         bloco={mistas && id ? blocoDaQuestao(selectedQuestions, mistas, id) : undefined}
+        destino={cfgRascunho && id ? blocoDaQuestao(selectedQuestions, cfgRascunho, id) : undefined}
         dicaBloco={mistas ? dicaGrupo(pos) : undefined}
         onAlternarBloco={
-          mistas && id
-            ? () => aplicarMistas({ ...mistas, umaColuna: alternarBloco(selectedQuestions, mistas, id) })
+          cfgRascunho && id
+            ? () => setRascunho(alternarBloco(selectedQuestions, cfgRascunho, id))
             : undefined
         }
       />
@@ -398,9 +418,27 @@ function AbaOrdem() {
     return (
       <div className="space-y-3">
         <p className="text-xs text-slate-500">
-          Use &quot;Mover para…&quot; para trocar a questão de bloco. Questões com o mesmo texto base mudam
-          juntas (*). A posição digitada vale dentro do bloco: cada bloco começa em página nova.
+          Marque com &quot;Mover para…&quot; todas as questões que mudam de bloco e clique em Aplicar: a
+          numeração só muda depois. Questões com o mesmo texto base mudam juntas (*). A posição digitada
+          vale dentro do bloco: cada bloco começa em página nova.
         </p>
+        {pendentes > 0 && (
+          <div className="sticky top-0 z-10 flex gap-1 bg-white py-1">
+            <Button
+              size="sm"
+              className="btn-primary flex-1"
+              onClick={() => {
+                aplicarMistas({ ...mistas, umaColuna: rascunho! });
+                setRascunho(null);
+              }}
+            >
+              Aplicar ({pendentes})
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => setRascunho(null)}>
+              Descartar
+            </Button>
+          </div>
+        )}
         {secoes.map((sec) => (
           <section key={sec.cols} className="space-y-2">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-600">
