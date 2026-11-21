@@ -33,6 +33,9 @@ interface HorizontalToolbarProps {
   textAlign?: "left" | "center" | "right" | "justify" | null;
   hasSelectedImage?: boolean;
   hasEmbeddedBaseText?: boolean;
+  /** "blocos" = texto base / resposta: sem alternativas, tipo, conjunto, abrir/novo, informações, preview. */
+  variant?: "questao" | "blocos";
+  canSave?: boolean;
 }
 
 export function HorizontalToolbar({
@@ -48,7 +51,10 @@ export function HorizontalToolbar({
   textAlign = null,
   hasSelectedImage = false,
   hasEmbeddedBaseText = false,
+  variant = "questao",
+  canSave = true,
 }: HorizontalToolbarProps) {
+  const questao = variant === "questao";
   const clampedOptions = Math.max(0, Math.min(5, Math.floor(optionsCount || 0)));
   const canDec = clampedOptions > 2;
   const canInc = clampedOptions < 5;
@@ -175,9 +181,11 @@ export function HorizontalToolbar({
               <DropdownMenuItem onClick={() => onAction("codeblock")}>
                 <Icons.FileCode className="h-4 w-4 mr-2" /> Bloco de Código
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onAction("basetext")}>
-                <Icons.FileText className="h-4 w-4 mr-2" /> Texto-base
-              </DropdownMenuItem>
+              {questao && (
+                <DropdownMenuItem onClick={() => onAction("basetext")}>
+                  <Icons.FileText className="h-4 w-4 mr-2" /> Texto-base
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem onClick={() => onAction("insert-credits")}>
                 <Icons.Quote className="h-4 w-4 mr-2" /> Créditos
               </DropdownMenuItem>
@@ -211,6 +219,8 @@ export function HorizontalToolbar({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
+              {questao && (
+                <>
               {/* Tipo */}
               <DropdownMenuItem onClick={() => onAction("set-type-multipla")}>
                 <Icons.CheckSquare className="h-4 w-4 mr-2" /> Múltipla Escolha
@@ -247,6 +257,8 @@ export function HorizontalToolbar({
                 </>
               )}
               <DropdownMenuSeparator />
+                </>
+              )}
               {/* Ref. de linha */}
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
@@ -273,33 +285,43 @@ export function HorizontalToolbar({
           </DropdownMenu>
 
           {/* Contador de alternativas inline */}
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-green-100" onClick={() => onAction("dec-options")} disabled={!canDec} title="Remover alternativa">
-            <Minus className="h-4 w-4" />
-          </Button>
-          <span className="text-xs font-bold text-gray-600 min-w-[1.5rem] text-center">{clampedOptions}</span>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-green-100" onClick={() => onAction("inc-options")} disabled={!canInc} title="Adicionar alternativa">
-            <Plus className="h-4 w-4" />
-          </Button>
+          {questao && (
+            <>
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-green-100" onClick={() => onAction("dec-options")} disabled={!canDec} title="Remover alternativa">
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="text-xs font-bold text-gray-600 min-w-[1.5rem] text-center">{clampedOptions}</span>
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-green-100" onClick={() => onAction("inc-options")} disabled={!canInc} title="Adicionar alternativa">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </>
+          )}
         </div>
 
         {/* ── DOCUMENTO ── New Load ⓘ Preview Salvar */}
         <div className="flex items-center gap-1 pl-2">
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("new")} title="Nova questão">
-            <Icons.FilePlus2 className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("load")} title="Abrir questão">
-            <Icons.FolderOpen className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("metadata")} title="Informações da questão">
-            <Icons.Info className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 px-2 hover:bg-violet-100 text-violet-700 border border-violet-200" onClick={() => onAction("preview")} title="Visualizar renderização">
-            <Icons.Eye className="h-4 w-4 mr-1" />
-            <span className="text-xs font-medium">Preview</span>
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("save")} title="Salvar questão">
-            <Icons.Save className="h-4 w-4" />
-          </Button>
+          {questao && (
+            <>
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("new")} title="Nova questão">
+                <Icons.FilePlus2 className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("load")} title="Abrir questão">
+                <Icons.FolderOpen className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("metadata")} title="Informações da questão">
+                <Icons.Info className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-2 hover:bg-violet-100 text-violet-700 border border-violet-200" onClick={() => onAction("preview")} title="Visualizar renderização">
+                <Icons.Eye className="h-4 w-4 mr-1" />
+                <span className="text-xs font-medium">Preview</span>
+              </Button>
+            </>
+          )}
+          {canSave && (
+            <Button variant="ghost" size="sm" className="h-8 w-8 hover:bg-blue-100" onClick={() => onAction("save")} title={questao ? "Salvar questão" : "Salvar"}>
+              <Icons.Save className="h-4 w-4" />
+            </Button>
+          )}
         </div>
 
       </div>

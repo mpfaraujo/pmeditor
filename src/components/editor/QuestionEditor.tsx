@@ -5,24 +5,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { EditorState, Plugin } from "prosemirror-state";
 import { EditorView } from "prosemirror-view";
 import { schema } from "./schema";
-import { keymap } from "prosemirror-keymap";
-import { history, undo, redo } from "prosemirror-history";
-import { baseKeymap, toggleMark } from "prosemirror-commands";
-import { inputRules, wrappingInputRule } from "prosemirror-inputrules";
-import { splitListItem, liftListItem, sinkListItem } from "prosemirror-schema-list";
-
-import "katex/dist/katex.min.css";
-import katex from "katex";
-import "katex/contrib/mhchem";
+import { buildEditorPlugins, editorNodeViews, mathAtDblClick } from "./editorCore";
 
 import { EditorToolbar } from "./EditorToolbar";
 import { MathInsert } from "./MathInsert";
 import { QuestionMetadataModal } from "./QuestionMetadataModal";
 import { QuestionMetadataV1, normalizeGabaritoForTipo, type QuestionType } from "./QuestionMetaBar";
-import { placeholderPlugin } from "./placeholder-plugin";
-import { createSmartPastePlugin } from "@/components/editor/plugins/smartPastePlugin";
-import { verseNumberingPlugin } from "@/components/editor/plugins/verseNumberingPlugin";
-import { gapCursor } from "prosemirror-gapcursor";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -69,97 +57,18 @@ function estimateLines(el: HTMLElement): number {
   return Math.max(0, Math.round(rect.height / lineHeight));
 }
 
-/* ---------- Math NodeView ---------- */
-
-class MathInlineView {
-  dom: HTMLSpanElement;
-  private node: any;
-
-  constructor(node: any) {
-    this.node = node;
-    this.dom = document.createElement("span");
-    this.dom.className = "math-inline";
-    this.dom.contentEditable = "false";
-    this.render();
-  }
-
-  render() {
-    const latex = (this.node.attrs?.latex || "").toString();
-    this.dom.innerHTML = "";
-    try {
-      katex.render(latex || "\\;", this.dom, { throwOnError: false });
-    } catch {
-      this.dom.textContent = latex;
-    }
-  }
-
-  update(node: any) {
-    if (node.type !== this.node.type) return false;
-    this.node = node;
-    this.render();
-    return true;
-  }
-}
-
 type MathDialogState =
   | { open: false }
   | { open: true; mode: "new" | "edit"; pos: number | null; latex: string };
 
-/* ---------- plugins ---------- */
+/* ---------- plugins (núcleo compartilhado: editorCore.ts) ---------- */
 
 function buildPlugins(
   onYamlMetadata?: (meta: any) => void,
   onMathShortcut?: () => void,
   toolbarCallbackRef?: { current: (() => void) | null },
 ): Plugin[] {
-  return [
-    history(),
-    placeholderPlugin({ paragraph: "Digite aqui..." }),
-    inputRules({
-      rules: [
-        wrappingInputRule(/^\s*([-+*])\s$/, schema.nodes.bullet_list),
-        wrappingInputRule(/^(\d+)\.\s$/, schema.nodes.ordered_list),
-        wrappingInputRule(
-          /^(I{1,3}|IV|V|VI{0,3}|IX|X)\.\s$/i,
-          schema.nodes.roman_list
-        ),
-        wrappingInputRule(/^([a-z])\.\s$/, schema.nodes.alpha_list),
-        wrappingInputRule(/^\(VF\)\s$/i, schema.nodes.assertive_list),
-      ],
-    }),
-    createSmartPastePlugin({
-      uploadEndpoint: "https://mpfaraujo.com.br/guardafiguras/api/upload.php",
-      uploadToken: "uso_exclusivo_para_o_editor_de_textos_proseMirror_editor_de_questoes",
-      maxImageWidthCm: 16,
-      stripAllHtmlImages: false,
-      onYamlMetadata,
-    }),
-    keymap({
-      "Mod-b": toggleMark(schema.marks.strong),
-      "Mod-i": toggleMark(schema.marks.em),
-      "Mod-u": toggleMark(schema.marks.underline),
-      "Mod-.": toggleMark(schema.marks.superscript),
-      "Mod-,": toggleMark(schema.marks.subscript),
-      "Mod-k": (_state, _dispatch, _view) => {
-        onMathShortcut?.();
-        return true;
-      },
-      Enter: splitListItem(schema.nodes.list_item),
-      Tab: sinkListItem(schema.nodes.list_item),
-      "Shift-Tab": liftListItem(schema.nodes.list_item),
-      "Mod-[": liftListItem(schema.nodes.list_item),
-      "Mod-]": sinkListItem(schema.nodes.list_item),
-    }),
-    keymap({ "Mod-z": undo, "Mod-y": redo }),
-    keymap(baseKeymap),
-    verseNumberingPlugin,
-    gapCursor(),
-    new Plugin({
-      view() {
-        return { update() { toolbarCallbackRef?.current?.(); } };
-      },
-    }),
-  ];
+  return buildEditorPlugins({ placeholder: "Digite aqui...", onYamlMetadata, onMathShortcut, toolbarCallbackRef });
 }
 
 /* ---------- defaults ---------- */
@@ -685,33 +594,12 @@ export function QuestionEditor({ modal, workspace = false, onSaved, onNewRequest
 
     const ev = new EditorView(editorRef.current, {
       state,
-      nodeViews: { math_inline: (n) => new MathInlineView(n) },
+      nodeViews: editorNodeViews,
       handleDOMEvents: {
         dblclick(view, e) {
-          const hit = view.posAtCoords({
-            left: (e as MouseEvent).clientX,
-            top: (e as MouseEvent).clientY,
-          });
+          const hit = mathAtDblClick(view, e);
           if (!hit) return false;
-
-          const $pos = view.state.doc.resolve(hit.pos);
-          const node =
-            $pos.nodeAfter?.type === schema.nodes.math_inline
-              ? $pos.nodeAfter
-              : $pos.nodeBefore?.type === schema.nodes.math_inline
-                ? $pos.nodeBefore
-                : null;
-
-          if (!node) return false;
-
-          const pos = node === $pos.nodeAfter ? hit.pos : hit.pos - node.nodeSize;
-
-          setMathDialog({
-            open: true,
-            mode: "edit",
-            pos,
-            latex: (node.attrs?.latex || "").toString(),
-          });
+          setMathDialog({ open: true, mode: "edit", pos: hit.pos, latex: hit.latex });
           return true;
         },
       },

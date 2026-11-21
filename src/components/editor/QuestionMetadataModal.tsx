@@ -554,7 +554,7 @@ export function QuestionMetadataModal({
             <RichTextMiniEditor
               value={value.resolucao}
               onChange={(docJson) => set({ resolucao: docJson })}
-              expandable={true}
+              title="Resolução"
             />
           </div>
 

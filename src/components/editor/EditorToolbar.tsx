@@ -40,6 +40,9 @@ interface EditorToolbarProps {
 
   // lista de âncoras disponíveis (ex.: textos-base vinculados)
   availableAnchors?: string[];
+
+  /** "questao" (padrão) ou "blocos" (texto base / resposta): esconde alternativas, tipo, conjunto, abrir/novo, informações. */
+  variant?: "questao" | "blocos";
 }
 
 function clampInt(n: number, min: number, max: number) {
@@ -73,6 +76,7 @@ export function EditorToolbar({
   isSetQuestions,
   itemCount,
   availableAnchors,
+  variant = "questao",
 }: EditorToolbarProps) {
   const [, forceUpdate] = useState(0);
   useEffect(() => {
@@ -765,6 +769,8 @@ const handleImageInsert = (url: string, widthCm: number, id?: string) => {
   return (
     <>
           <HorizontalToolbar
+            variant={variant}
+            canSave={variant === "questao" || !!onSave}
             onAction={handleAction}
             optionsCount={optionsCount}
             isSetQuestions={isSetQuestions ?? false}
