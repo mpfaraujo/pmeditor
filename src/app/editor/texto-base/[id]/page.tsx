@@ -364,6 +364,7 @@ function BaseTextEditorInner() {
           onChange={setEditorContent}
           closeAfterSave
           saving={saving}
+          workspace
         />
       </div>
       </div>

@@ -19,9 +19,11 @@ interface BaseTextEditorViewProps {
   onChange?: (baseTextContent: any) => void;
   closeAfterSave?: boolean;
   saving?: boolean;
+  /** Mesma moldura do editor de questão dentro do WorkspaceShell. */
+  workspace?: boolean;
 }
 
-export function BaseTextEditorView({ value, onSave, onChange, saving = false }: BaseTextEditorViewProps) {
+export function BaseTextEditorView({ value, onSave, onChange, saving = false, workspace = false }: BaseTextEditorViewProps) {
   // Referência estável: o editor só é recriado quando o conteúdo de origem muda
   const blocks = useMemo(() => (value?.content ?? null) as any[] | null, [value]);
 
@@ -36,6 +38,7 @@ export function BaseTextEditorView({ value, onSave, onChange, saving = false }: 
       onChange={onChange ? handleChange : undefined}
       onSave={(b) => onSave({ type: "base_text", content: b })}
       saving={saving}
+      workspace={workspace}
       placeholder="Conteúdo do texto base…"
     />
   );

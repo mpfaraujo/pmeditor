@@ -34,11 +34,11 @@ export interface BlocosEditorProps {
   onSave?: (blocks: any[]) => void;
   saving?: boolean;
   placeholder?: string;
-  /** Classe extra no contêiner da folha. */
-  className?: string;
+  /** Mesma moldura do QuestionEditor: true dentro do WorkspaceShell (como /editor), false fora (como /dev/revisar). */
+  workspace?: boolean;
 }
 
-export function BlocosEditor({ blocks, onChange, onSave, saving = false, placeholder, className }: BlocosEditorProps) {
+export function BlocosEditor({ blocks, onChange, onSave, saving = false, placeholder, workspace = false }: BlocosEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<EditorView | null>(null);
   const toolbarCallbackRef = useRef<(() => void) | null>(null);
@@ -99,24 +99,23 @@ export function BlocosEditor({ blocks, onChange, onSave, saving = false, placeho
   };
 
   return (
-    <div className={className}>
-      <div className="mb-2 bg-white rounded-lg shadow p-2 border-b border-blue-100 flex items-center gap-2">
-        <div className="flex-1 min-w-0">
-          <EditorToolbar
-            view={view}
-            variant="blocos"
-            toolbarCallbackRef={toolbarCallbackRef}
-            onOpenMath={() => setMathDialog({ open: true, pos: null, latex: "" })}
-            onSave={onSave ? handleSave : undefined}
-          />
-        </div>
-        {saving ? <span className="text-xs text-slate-500 shrink-0">Salvando…</span> : null}
+    // Moldura idêntica à do QuestionEditor (mesmas classes nos dois modos)
+    <div className={workspace ? "workspace-editor-stage workspace-editor-desk" : "w-full bg-[#d3d3d3] p-2 sm:p-3"}>
+      <div className={workspace ? "workspace-editor-toolbar" : "mb-2 bg-white rounded-lg shadow p-2 sm:max-w-[210mm] sm:mx-auto border-b border-blue-100"}>
+        <EditorToolbar
+          view={view}
+          variant="blocos"
+          toolbarCallbackRef={toolbarCallbackRef}
+          onOpenMath={() => setMathDialog({ open: true, pos: null, latex: "" })}
+          onSave={onSave ? handleSave : undefined}
+        />
+        {saving ? <div className="text-xs px-2 py-1 text-slate-500">Salvando…</div> : null}
       </div>
 
-      <div className="overflow-x-auto pb-4">
+      <div className={workspace ? "workspace-editor-sheet-wrap" : "overflow-x-auto pb-4"}>
         <div
           ref={editorRef}
-          className="question-editor-sheet base-text-editor focus:outline-none shadow-2xl mx-auto bg-white"
+          className="question-editor-sheet base-text-editor focus:outline-none shadow-2xl mx-auto"
           style={{ width: "210mm" }}
         />
       </div>
