@@ -3,6 +3,8 @@
 // com src local (saída da revisão). Na tela /dev/revisar viram nó image servido pela rota dev;
 // ao salvar, o src volta a ser o caminho local. O bulk-import sobe os dois formatos.
 
+import { larguraPadraoPx, alinhamentoPadrao } from "./imagensPadrao";
+
 export const DEV_IMG_PREFIX = "/api/dev/arquivo?path=";
 const PLACEHOLDER_RE = /\[\[IMG_PENDENTE(?::\s*([^\]]+))?\]\]/g;
 
@@ -25,19 +27,20 @@ export function coletarCaminhosLocais(node: any, out: string[] = []): string[] {
   return out;
 }
 
-function imagemDev(path: string, larguras: Map<string, number>, attrs?: any) {
+/** `larguras` = largura NATURAL (px) de cada arquivo; o padrão de largura/alinhamento vem de imagensPadrao. */
+function imagemDev(path: string, larguras: Map<string, number>, attrs: any, emAlternativa: boolean) {
   return {
     type: "image",
     attrs: {
       id: attrs?.id ?? crypto.randomUUID(),
       src: DEV_IMG_PREFIX + encodeURIComponent(path),
-      width: attrs?.width ?? larguras.get(path) ?? null,
-      align: attrs?.align ?? null,
+      width: attrs?.width ?? larguraPadraoPx(larguras.get(path), emAlternativa),
+      align: attrs ? attrs.align ?? null : alinhamentoPadrao(emAlternativa),
     },
   };
 }
 
-function dividirTexto(node: any, larguras: Map<string, number>): any[] {
+function dividirTexto(node: any, larguras: Map<string, number>, emAlternativa: boolean): any[] {
   const out: any[] = [];
   let last = 0;
   for (const m of node.text.matchAll(PLACEHOLDER_RE)) {
@@ -45,7 +48,7 @@ function dividirTexto(node: any, larguras: Map<string, number>): any[] {
     if (!p) continue;
     const idx = m.index!;
     if (idx > last) out.push({ ...node, text: node.text.slice(last, idx) });
-    out.push(imagemDev(p, larguras));
+    out.push(imagemDev(p, larguras, null, emAlternativa));
     last = idx + m[0].length;
   }
   if (out.length === 0) return [node];
@@ -54,16 +57,18 @@ function dividirTexto(node: any, larguras: Map<string, number>): any[] {
 }
 
 /** Fila → editor: placeholders e src locais viram src da rota dev. */
-export function paraRevisao(node: any, larguras: Map<string, number>): any {
+export function paraRevisao(node: any, larguras: Map<string, number>, emAlternativa = false): any {
   if (!node || typeof node !== "object") return node;
   if (node.type === "image" && typeof node.attrs?.src === "string" && isLocalPath(node.attrs.src)) {
-    return imagemDev(node.attrs.src, larguras, node.attrs);
+    // imagem já salva na revisão: mantém o que o usuário escolheu
+    return imagemDev(node.attrs.src, larguras, node.attrs, emAlternativa);
   }
   if (!Array.isArray(node.content)) return node;
+  const dentro = emAlternativa || node.type === "option";
   const content: any[] = [];
   for (const c of node.content) {
-    if (c?.type === "text" && typeof c.text === "string" && c.text.includes("[[IMG_PENDENTE")) content.push(...dividirTexto(c, larguras));
-    else content.push(paraRevisao(c, larguras));
+    if (c?.type === "text" && typeof c.text === "string" && c.text.includes("[[IMG_PENDENTE")) content.push(...dividirTexto(c, larguras, dentro));
+    else content.push(paraRevisao(c, larguras, dentro));
   }
   return { ...node, content };
 }

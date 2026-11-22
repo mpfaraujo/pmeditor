@@ -993,6 +993,15 @@ export function buildBlocksFromLatex(schema: Schema, rawLatex: string): PMNode[]
       .map((p) => p.trim())
       .filter(Boolean);
     for (const p of parts) {
+      // Fórmula de destaque sozinha no parágrafo (\[ … \] ou $$ … $$): centralizada e em
+      // tamanho de exibição (fração cheia), como no original impresso.
+      const display = p.match(/^\\\[([\s\S]+)\\\]$/) ?? p.match(/^\$\$([\s\S]+)\$\$$/);
+      if (display && !/\\\]|\$\$/.test(display[1]) && schema.nodes.math_inline) {
+        const latex = sanitizeMathLatex(display[1].trim());
+        const node = schema.nodes.math_inline.create({ latex: /^\\displaystyle\b/.test(latex) ? latex : `\\displaystyle ${latex}` });
+        blocks.push(paragraph.create({ textAlign: "center" }, [node]));
+        continue;
+      }
       blocks.push(paragraph.create(null, parseInlineLatex(schema, p)));
     }
   };

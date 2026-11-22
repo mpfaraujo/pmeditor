@@ -30,7 +30,8 @@ function urlArquivo(path: string) {
 function carregarLargura(path: string): Promise<[string, number]> {
   return new Promise((ok) => {
     const img = new Image();
-    img.onload = () => ok([path, Math.min(img.naturalWidth, MAX_IMAGE_WIDTH_PX)]);
+    // largura NATURAL; o padrão (8–13 cm, centralizada) é aplicado em paraRevisao/imagensPadrao
+    img.onload = () => ok([path, img.naturalWidth]);
     img.onerror = () => ok([path, MAX_IMAGE_WIDTH_PX]);
     img.src = urlArquivo(path);
   });

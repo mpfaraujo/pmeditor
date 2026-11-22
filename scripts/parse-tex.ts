@@ -581,7 +581,9 @@ function main() {
       if (/^\\basetext\b/.test(chunk)) {
         const withoutMarker = chunk.replace(/^\\basetext\b\s*/, "");
         const choicesIdx = withoutMarker.search(/\\begin\{(choices|oneparchoices)\}/);
-        const upToChoices = choicesIdx >= 0 ? withoutMarker.slice(0, choicesIdx) : withoutMarker;
+        // trimEnd: linha em branco logo antes de \begin{choices} não pode ser tomada como a
+        // "última quebra" — senão o enunciado inteiro vai para o texto base (UNICAMP 2023 Q1, Q2, Q5).
+        const upToChoices = (choicesIdx >= 0 ? withoutMarker.slice(0, choicesIdx) : withoutMarker).trimEnd();
         const choicesPart = choicesIdx >= 0 ? withoutMarker.slice(choicesIdx) : "";
         // Última quebra de parágrafo (\n\n) antes das choices separa basetext do statement.
         const lastBreak = upToChoices.search(/\n\s*\n(?!.*\n\s*\n)/s);

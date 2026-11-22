@@ -19,6 +19,7 @@ import {
   extractLatexAnswerKey,
 } from "../src/components/editor/plugins/smartPastePlugin";
 import { normalizeDisciplina, normalizeAssunto } from "../src/data/assuntos";
+import { larguraPadraoPx, alinhamentoPadrao } from "../src/lib/importQueue/imagensPadrao";
 import { buildItemContent, buildSetContent, buildBaseTextContent, parseRespostaToDoc } from "../src/lib/importQueue/content";
 import {
   associateReviewHints,
@@ -315,9 +316,8 @@ async function uploadRemoteImage(name: string, imageUrl: string, cfg: ImageImpor
   return json.url;
 }
 
-const MAX_IMAGE_WIDTH_PX = 302; // 8 cm a 96 dpi
 
-async function materializeTextWithRemoteImages(text: string, cfg: ImageImportConfig): Promise<any[]> {
+async function materializeTextWithRemoteImages(text: string, cfg: ImageImportConfig, emAlternativa = false): Promise<any[]> {
   const nodes: any[] = [];
   let lastIdx = 0;
   let match: RegExpExecArray | null;
@@ -336,8 +336,9 @@ async function materializeTextWithRemoteImages(text: string, cfg: ImageImportCon
         try {
           const uploadedUrl = await uploadRemoteImage(name, remoteUrl, cfg);
           const nw = cfg.naturalWidthCache.get(uploadedUrl);
-          const width = nw ? Math.min(nw, MAX_IMAGE_WIDTH_PX) : null;
-          nodes.push({ type: "image", attrs: { id: crypto.randomUUID(), src: uploadedUrl, width, align: null } });
+          // padrão compartilhado com o /dev/revisar: enunciado centralizado, 8–13 cm; alternativa até 8 cm
+          const width = larguraPadraoPx(nw, emAlternativa);
+          nodes.push({ type: "image", attrs: { id: crypto.randomUUID(), src: uploadedUrl, width, align: alinhamentoPadrao(emAlternativa) } });
           replaced = true;
         } catch (e: any) { cfg.unresolved.add(name); console.warn(`   ⚠ imagem não subiu (${name.slice(0, 60)}): ${e?.message ?? e}`); }
       } else { cfg.unresolved.add(name); }
@@ -350,7 +351,7 @@ async function materializeTextWithRemoteImages(text: string, cfg: ImageImportCon
   return nodes;
 }
 
-async function materializeImagesInNode(node: any, cfg: ImageImportConfig): Promise<any> {
+async function materializeImagesInNode(node: any, cfg: ImageImportConfig, emAlternativa = false): Promise<any> {
   if (!node || typeof node !== "object") return node;
   if (node.type === "image" && typeof node.attrs?.src === "string" && isLocalPath(node.attrs.src)) {
     const local = node.attrs.src as string;
@@ -364,14 +365,15 @@ async function materializeImagesInNode(node: any, cfg: ImageImportConfig): Promi
     }
   }
   if (node.type === "text" && typeof node.text === "string" && node.text.includes("[[IMG_PENDENTE")) {
-    const replacement = await materializeTextWithRemoteImages(node.text, cfg);
+    const replacement = await materializeTextWithRemoteImages(node.text, cfg, emAlternativa);
     if (replacement.length === 1) return replacement[0];
     return replacement;
   }
   if (!Array.isArray(node.content)) return node;
+  const dentro = emAlternativa || node.type === "option";
   const nextContent: any[] = [];
   for (const child of node.content) {
-    const mapped = await materializeImagesInNode(child, cfg);
+    const mapped = await materializeImagesInNode(child, cfg, dentro);
     if (Array.isArray(mapped)) nextContent.push(...mapped);
     else nextContent.push(mapped);
   }
